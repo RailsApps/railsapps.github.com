@@ -1,0 +1,100 @@
+h1. railsapps.github.com
+
+This repository contains the static web pages for the site at "http://railsapps.github.com":http://railsapps.github.com.
+
+h2. Goals
+
+Anyone can add to the site (or make corrections) by editing the repository's "wiki pages":https://github.com/railsapps/railsapps.github.com/wiki/_pages directly.
+
+As the maintainer of the site, I will generate static web pages from the wiki files when I notice changes to the wiki pages. You can create a "GitHub issue":http://github.com/railsapps/railsapps.github.com/issues if you want me to alert me to changes.
+
+Generating static web pages from the wiki files makes it possible to apply layout templates to add formatting and  functionality to make the site more attractive and useful. Plus, a Google Analytics tracking script is added so I can see if the web site is being used.
+
+Hosting the site on GitHub (rather than elsewhere) is free and associates the site directly with the "RailsApps project repository":https://github.com/RailsApps.
+
+h2. Publishing Workflow
+
+Here's how you can generate a new version of the website from the wiki pages. You'll need repository read+write permission as an organization team member.
+
+The "gollum-site":https://github.com/dreverri/gollum-site gem is used to generate static web pages from the "wiki":https://github.com/railsapps/railsapps.github.com/wiki/_pages.
+
+Note that there are two repositories: the "site repo":https://github.com/RailsApps/railsapps.github.com (for the static web pages) and the "wiki repo":https://github.com/RailsApps/railsapps.github.com/wiki (for the wiki pages).
+
+Install the gollum-site gem plus the RedCloth gem (to support "Textile":http://www.textism.com/tools/textile/ markup).
+
+<pre>
+$ gem install gollum-site
+$ gem install RedCloth
+</pre>
+
+We'll assume you will create a directory for the project and download the needed files.
+
+<pre>
+$ mkdir ~/railsapps
+$ cd ~/railsapps
+$ git clone git@github.com:RailsApps/railsapps.github.com.git
+$ git clone git@github.com:RailsApps/railsapps.github.com.wiki.git
+</pre>
+
+You may have edited the "wiki pages online":https://github.com/railsapps/railsapps.github.com/wiki/_pages. If you want, you can edit them locally in a text editor. Make sure you are in the git "master" branch and commit any changes.
+
+<pre>
+$ cd ~/railsapps/railsapps.github.com.wiki
+$ git checkout master
+## edit wiki pages with a text editor
+$ git commit -am "update wiki"
+</pre>
+
+When you are ready to generate the static pages, switch to a git "working_branch" and apply changes from the "master" branch. Using a "working_branch" will make it easy to discard the static pages after you've copied them to the site repo.
+
+<pre>
+$ git checkout working_branch
+$ git rebase master
+</pre>
+
+Use the gollum-site gem to generate the static web pages in the wiki repo.
+
+<pre>
+$ gollum-site import ## to import a default layout
+$ gollum-site generate ## to generate static webpages in "./_site" folder
+$ gollum-site serve ## to view the static site at http://localhost:8000
+$ gollum-site serve --watch ## to view changes to the static site as the files are saved
+</pre>
+
+Copy the generated @_site@ directory to the site repo. Rename the @Home.html@ page as @index.html@. Commit the changes and push the repo up to GitHub. GitHub will automatically publish the updated site in not much more than a minute.
+
+<pre>
+$ cp -R _site/* ~/railsapps/railsapps.github.com
+$ cd ~/railsapps/railsapps.github.com
+$ mv Home.html index.html
+$ git add .
+$ git commit -am "update website"
+$ git push origin master
+</pre>
+
+See the updated site at "http://railsapps.github.com":http://railsapps.github.com.
+
+h4. Alternative Approaches
+
+I looked at "Jekyll":https://github.com/mojombo/jekyll. It generates static pages from markup but it's more complex and better suited to publishing a blog.
+
+I looked at "Smeagol":https://github.com/benbjohnson/smeagol. It is a server that hosts and renders a "Gollum":http://github.com/github/gollum wiki (such as GitHub wiki pages). It requires installation as an app on a hosting site that runs Ruby. It would require maintaining a server and would not allow the site to be hosted on a GitHub subdomain.
+
+h2. Issues
+
+Improvements or corrections to the web site? You can edit the "wiki pages":https://github.com/railsapps/railsapps.github.com/wiki/_pages directly.
+
+Suggestions? Questions? Please create a "GitHub issue":http://github.com/railsapps/railsapps.github.com/issues.
+
+h2. Credits
+
+Daniel Kehoe ("http://danielkehoe.com/":http://danielkehoe.com/) maintains the website.
+
+You are welcome to contribute.
+
+h2. License
+
+h4. Public Domain Dedication
+
+This work is a compilation and derivation from other previously released works. With the exception of various included works, which may be restricted by other licenses, the author or authors of this code dedicate any and all copyright interest in this code to the public domain. We make this dedication for the benefit of the public at large and to the detriment of our heirs and successors. We intend this dedication to be an overt act of relinquishment in perpetuity of all present and future rights to this code under copyright law.
+
