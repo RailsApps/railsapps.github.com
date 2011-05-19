@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Heroku Tutorial for Rails</title>
+    <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css" charset="utf-8" />
+    <script src="/javascript/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="/javascript/gollum.js" type="text/javascript"></script>
+    <script src="/javascript/MathJax/MathJax.js" type="text/javascript">
+      MathJax.OutputJax.fontDir = "http://github-assets.s3.amazonaws.com/javascripts/MathJax/fonts"
+      MathJax.Hub.Config({
+      jax: ["input/TeX", "output/HTML-CSS"]
+      })
+    </script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5109366-14']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="main">
+      <div class="site">
+        <div id="guides">
+          <div class="guide">
+            <div class="main">
+              <div class="actions">
+                <div>
+                  <a href="http://railsapps.github.com/">Rails Apps</a>
+                </div>
+                <divstyle="float: right;">
+                  <a href="https://github.com/RailsApps">GitHub Repository</a>
+                </div>
+              </div>
+              <h1>Heroku Tutorial for Rails</h1>
+              <div class="content wikistyle gollum textile">
+                <h1>Heroku Tutorial for Rails</h1>
+<p>For your convenience, here are instructions for deploying your app to Heroku. Heroku provides low cost, easily configured Rails application hosting.</p>
+<h4>Set Up Heroku</h4>
+<p>To deploy an app to Heroku, you must have a Heroku account. If you need to obtain one, visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
+<p>Make sure the Heroku gem is in your <strong>Gemfile</strong> <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
+<p><code>gem "heroku"</code></p>
+<p>If it&#x2019;s not, add it and run</p>
+<p><code>$ bundle install</code></p>
+<p>to set up your gems again.</p>
+<p>Add your public key immediately after installing the heroku gem so that you can use git to push or clone Heroku app repositories. See <a href="http://devcenter.heroku.com/articles/heroku-command">http://devcenter.heroku.com/articles/heroku-command</a> for details.</p>
+<h4>Create Your Application on Heroku</h4>
+<p>Use the Heroku create command to create and name your new app.</p>
+<p><code>$ heroku create _myapp_</code></p>
+<p>As of 9 February 2011, bamboo-ree-1.8.7 is the default stack for new Heroku apps.</p>
+<p>If you want to use Ruby 1.9.2, you can create your app with:</p>
+<p><code>heroku create _myapp_ --stack bamboo-mri-1.9.2</code></p>
+<h4>Check Heroku Configuration</h4>
+<p>You can check that everything has been added correctly by running:</p>
+<p><code>$ heroku info --app myapp</code></p>
+<p>If you see <code>Stack: bamboo-ree-1.8.7</code> and you want to use Ruby 1.9.2, you can migrate:</p>
+<p><code>heroku stack:migrate bamboo-mri-1.9.2</code></p>
+<h4>Push Your Application to Heroku</h4>
+<p>Push your application to Heroku:</p>
+<p><code>$ git push heroku master</code></p>
+<p>Initialize your application database:</p>
+<p><code>$ heroku rake db:seed</code></p>
+<h4>Visit Your Site</h4>
+<p>Open your Heroku site in your default web browser:</p>
+<p><code>$ heroku open</code></p>
+<h4>Troubleshooting</h4>
+<p>If you get errors, you can troubleshoot by reviewing the log files:</p>
+<p><code>$ heroku logs</code></p>
+<h2>Using MongoDB with Heroku</h2>
+<h4>Heroku Add-on for MongoHQ</h4>
+<p>You can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
+<p>To enable the add-on, you can use the Heroku web interface or you can enter the following commands:</p>
+<p><code>$ heroku addons:add mongohq:free</code></p>
+<h4>Fix Problems Connecting to MongoHQ</h4>
+<p>If you get the error message &#x201C;failed to connect to any given host:port&#x201D; or &#x201C;Failed to connect to a master node at localhost:27017&#x201D;, the <strong>config/mongoid.yml</strong> file may not have the correct MongoHQ connection parameters.</p>
+<p>If the file <strong>config/mongoid.yml</strong> contains this:</p>
+<pre>
+# set these environment variables on your prod server
+production:
+  host: &lt;%= ENV['MONGOID_HOST'] %&gt;
+  port: &lt;%= ENV['MONGOID_PORT'] %&gt;
+  username: &lt;%= ENV['MONGOID_USERNAME'] %&gt;
+  password: &lt;%= ENV['MONGOID_PASSWORD'] %&gt;
+  database: &lt;%= ENV['MONGOID_DATABASE'] %&gt;
+</pre>
+<p>modify it to look like this:</p>
+<pre>
+# set these environment variables on your prod server
+production:
+  uri: &lt;%= ENV['MONGOHQ_URL'] %&gt;
+</pre>
+<p>Then push your application to Heroku again with <code>$ git push heroku master</code> and run <code>$ heroku rake db:seed</code> again.</p>
+              </div>
+            </div>
+          </div>
+          <div class="admin">
+            <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
+            <div style="float: right;">
+              <small>Last edited by <b>Daniel Kehoe</b>, 2011-05-19 06:04:59</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
