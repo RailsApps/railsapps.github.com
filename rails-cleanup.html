@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Heroku Tutorial for Rails</title>
+    <title>Rails Cleanup</title>
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/syntax.css" type="text/css" charset="utf-8" />
@@ -36,64 +36,40 @@
                   <a href="https://github.com/RailsApps">GitHub Repository</a>
                 </div>
               </div>
-              <h1>Heroku Tutorial for Rails</h1>
+              <h1>Rails Cleanup</h1>
               <div class="content wikistyle gollum textile">
-                <h1>Heroku Tutorial for Rails</h1>
-<p>For your convenience, here are instructions for deploying your app to Heroku. Heroku provides low cost, easily configured Rails application hosting.</p>
-<h4>Set Up Heroku</h4>
-<p>To deploy an app to Heroku, you must have a Heroku account. If you need to obtain one, visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
-<p>Make sure the Heroku gem is in your <strong>Gemfile</strong> <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
-<p><code>gem "heroku"</code></p>
-<p>If it&#x2019;s not, add it and run</p>
-<p><code>$ bundle install</code></p>
-<p>to set up your gems again.</p>
-<p>Add your public key immediately after installing the heroku gem so that you can use git to push or clone Heroku app repositories. See <a href="http://devcenter.heroku.com/articles/heroku-command">http://devcenter.heroku.com/articles/heroku-command</a> for details.</p>
-<h4>Create Your Application on Heroku</h4>
-<p>Use the Heroku create command to create and name your new app.</p>
-<p><code>$ heroku create _myapp_</code></p>
-<p>As of 9 February 2011, bamboo-ree-1.8.7 is the default stack for new Heroku apps.</p>
-<p>If you want to use Ruby 1.9.2, you can create your app with:</p>
-<p><code>heroku create _myapp_ --stack bamboo-mri-1.9.2</code></p>
-<h4>Check Heroku Configuration</h4>
-<p>You can check that everything has been added correctly by running:</p>
-<p><code>$ heroku info --app myapp</code></p>
-<p>If you see <code>Stack: bamboo-ree-1.8.7</code> and you want to use Ruby 1.9.2, you can migrate:</p>
-<p><code>heroku stack:migrate bamboo-mri-1.9.2</code></p>
-<h4>Push Your Application to Heroku</h4>
-<p>Push your application to Heroku:</p>
-<p><code>$ git push heroku master</code></p>
-<p>Initialize your application database:</p>
-<p><code>$ heroku rake db:seed</code></p>
-<h4>Visit Your Site</h4>
-<p>Open your Heroku site in your default web browser:</p>
-<p><code>$ heroku open</code></p>
-<h4>Troubleshooting</h4>
-<p>If you get errors, you can troubleshoot by reviewing the log files:</p>
-<p><code>$ heroku logs</code></p>
-<h2>Using MongoDB with Heroku</h2>
-<h4>Heroku Add-on for MongoHQ</h4>
-<p>You can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
-<p>To enable the add-on, you can use the Heroku web interface or you can enter the following commands:</p>
-<p><code>$ heroku addons:add mongohq:free</code></p>
-<h4>Fix Problems Connecting to MongoHQ</h4>
-<p>If you get the error message &#x201C;failed to connect to any given host:port&#x201D; or &#x201C;Failed to connect to a master node at localhost:27017&#x201D;, the <strong>config/mongoid.yml</strong> file may not have the correct MongoHQ connection parameters.</p>
-<p>If the file <strong>config/mongoid.yml</strong> contains this:</p>
+                <h1>Rails Cleanup</h1>
+<p>Several unneeded files are generated in the process of creating a new Rails application.</p>
+<p>Additionally, you may want to prevent search engines from indexing your website if you&#x2019;ve deployed it publicly while still in development.</p>
+<p>Here&#x2019;s details about files you may wish to remove or change.</p>
+<h2>Remove Unneeded Files</h2>
+<blockquote>
+<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/cleanup.rb">cleanup</a> recipe from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
+</blockquote>
+<p>Remove various unneeded files from your application:</p>
 <pre>
-# set these environment variables on your prod server
-production:
-  host: &lt;%= ENV['MONGOID_HOST'] %&gt;
-  port: &lt;%= ENV['MONGOID_PORT'] %&gt;
-  username: &lt;%= ENV['MONGOID_USERNAME'] %&gt;
-  password: &lt;%= ENV['MONGOID_PASSWORD'] %&gt;
-  database: &lt;%= ENV['MONGOID_DATABASE'] %&gt;
+$ rm public/favicon.ico
 </pre>
-<p>modify it to look like this:</p>
+<p>In <strong>Rails 3.1</strong>:</p>
 <pre>
-# set these environment variables on your prod server
-production:
-  uri: &lt;%= ENV['MONGOHQ_URL'] %&gt;
+$ rm app/assets/images/rails.png
 </pre>
-<p>Then push your application to Heroku again with <code>$ git push heroku master</code> and run <code>$ heroku rake db:seed</code> again.</p>
+<p>In <strong>Rails 3.0</strong>:</p>
+<pre>
+$ rm public/images/rails.png
+</pre>
+<p>To run and test your application, you likely already deleted the default home page from your application. But if you didn&#x2019;t already:</p>
+<p><code>$ rm public/index.html</code></p>
+<h2>Ban Spiders</h2>
+<blockquote>
+<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/ban_spiders.rb">ban_spiders</a> recipe from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
+</blockquote>
+<p>You may want to modify the file public/robots.txt to prevent indexing by search engines if you plan to have a development version on a publicly accessible server:</p>
+<pre>
+# To ban all spiders from the entire site uncomment the next two lines:
+User-Agent: *
+Disallow: /
+</pre>
               </div>
             </div>
           </div>
@@ -108,8 +84,8 @@ production:
                 var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
 
                 // The following are highly recommended additional parameters.
-                // var disqus_identifier = 'rails-heroku-tutorial.html';
-                // var disqus_url = 'http://railsapps.github.com/rails-heroku-tutorial.html';
+                // var disqus_identifier = 'rails-cleanup.html';
+                // var disqus_url = 'http://railsapps.github.com/rails-cleanup.html';
 
                 /* * * DON'T EDIT BELOW THIS LINE * * */
                 (function() {
