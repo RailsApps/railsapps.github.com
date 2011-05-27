@@ -36,9 +36,14 @@
               <h1>Managing Rails Versions and Gems</h1>
               <div class="content wikistyle gollum textile">
                 <h1>Managing Rails Versions and Gems</h1>
-<p>The Ruby on Rails platform is an ecosystem: an interacting community of developers, their projects, and complex dependencies among the projects. At times (often before and after the release of a major new version of Rails) the ecosystem enters a state of disequilibrium and important pieces no longer work together easily. These times of disequilibrium are innovative and valuable for the ecosystem because, as a whole, Rails improves during these times. For you as a developer, it may feel like a trainwreck. You productivity will stall as you try to sort out what is broken and how to fix it.</p>
-<p>The example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository can be helpful. Each shows a set of useful, popular Rails gems that are integrated into a working application. Each example app is known to work and can serve as your personal &#x201C;reference implementation&#x201D;. Each is an open source project so many people use the apps and report problems and propose solutions as GitHub issues.</p>
-<p>These examples from the RailsApps project provide a working <strong>Rails app</strong> with a <strong>detailed tutorial</strong> plus an <strong>application template</strong> that can be used to create a <strong>starter app</strong>.</p>
+<p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
+<h2>Background</h2>
+<p>The Ruby on Rails platform is a living ecosystem: a community of developers, their projects, and complex dependencies among their projects. At times (often before and after the release of a major new version of Rails) the ecosystem enters a state of disequilibrium and important pieces no longer work together easily. These times of disequilibrium are valuable for the ecosystem because, as a whole, developers innovate and Rails improves during these times.</p>
+<p>For you as a developer, it may feel like a trainwreck. You productivity will stall as you try to sort out what is broken and how to fix it. But there is help here.</p>
+<h2>Example Apps</h2>
+<p>The example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository help you keep current with changing Rails and gem versions.</p>
+<p>Each example provides a set of useful, popular Rails gems integrated into a working application. Each example is known to work and can serve as your personal &#x201C;reference implementation&#x201D;. Each is an open source project. Many developers use the apps, report problems as they arise, and propose solutions as GitHub issues.</p>
+<p>These examples provide a working <strong>Rails app</strong> with a <strong>detailed tutorial</strong> plus an <strong>application template</strong> that can be used to create a <strong>starter app</strong>.</p>
 <table><tr><th>Author </th>
 		<th>Example App </th>
 		<th>Tutorial </th>
@@ -59,7 +64,14 @@
 		<td> <a href="https://github.com/railsapps/rails3-mongoid-omniauth/wiki/Tutorial">Tutorial</a> </td>
 		<td> <a href="https://github.com/RailsApps/rails3-application-templates">App Template</a>  </td>
 		<td>  Combines OmniAuth with MongoDB </td>
-	</tr></table><p>Before you install one of the <a href="https://github.com/RailsApps">Rails example apps</a>, there are a few things you should know about managing the pieces of the Rails platform. Often, everything &#x201C;just works,&#x201D; but when it doesn&#x2019;t, here&#x2019;s what you need to review.</p>
+	</tr></table><h2>Gemfiles for the Example Apps (Rails 3.1)</h2>
+<p>For the example apps built with Rails 3.1, see the <a href="http://railsapps.github.com/rails-3-1-example-gemfile.html">Rails 3.1 example gemfile</a>.</p>
+<h2>Gemfiles for the Example Apps (Rails 3.0.8)</h2>
+<p>If you use Rails 3.0.8, see the <a href="http://railsapps.github.com/rails-3-0-8-example-gemfile.html">Rails 3.0.8 example gemfile</a>.</p>
+<h2>Gemfiles for the Example Apps (Rails 3.0.7)</h2>
+<p>If you must use Rails 3.0.7, see the <a href="http://railsapps.github.com/rails-3-0-7-example-gemfile.html">Rails 3.0.7 example gemfile</a>.</p>
+<h2>Dependencies</h2>
+<p>Before you install one of the <a href="https://github.com/RailsApps">Rails example apps</a>, there are a few things you should know about managing the pieces of the Rails platform. Often, everything &#x201C;just works,&#x201D; but when it doesn&#x2019;t, here&#x2019;s what you need to review.</p>
 <h2>Ruby</h2>
 <p>Ruby is the programming language used for Rails projects.</p>
 <p>What version of Ruby is installed on your machine? Check with:</p>
@@ -72,18 +84,20 @@
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
 <p><code>$ gem -v</code></p>
-<p>For the example apps it should be version 1.7.2 (recommended) or newer.</p>
+<p>For the example apps it should be version 1.8.4 or newer.</p>
 <p>Though the RubyGems package management system is part of a standard Ruby language installation, it can be updated by installing the rubygems-update gem.</p>
 <p>You can check for the current <a href="https://rubygems.org/gems/rubygems-update">rubygems-update gem</a>.</p>
-<p>Use <code>gem update --system</code> to upgrade the RubyGems system (but before you do, read the next paragraph).</p>
-<p>As of release 1.8.0 (4 May 2011), the RubyGems system gem began a series of rapid updates and began displaying deprecation warnings that are very important for gem developers and very annoying for everyone else running Ruby. If you are using one of these &#x201C;noisy&#x201D; versions, you can roll back to an older version of RubyGems:</p>
+<p>Use <code>gem update --system</code> to upgrade the RubyGems system.</p>
+<p>As of release 1.8.0 (4 May 2011), the RubyGems system gem began a series of rapid updates (with accompanying <a href="http://blog.majesticseacreature.com/mending-the-rubygems-fences">controversy</a>). The example apps all work with version 1.8.4 but if you install a gem and find it doesn&#x2019;t work, try a roll back to an older version of RubyGems:</p>
 <p><code>gem update --system 1.7.2</code></p>
+<p>or even:</p>
+<p><code>gem update --system 1.3.7</code></p>
 <h2>Rails</h2>
 <p>Rails itself is a gem, which means it can be installed and updated like any other gem.</p>
 <p>What version of Rails is installed on your machine? Check with:</p>
 <p><code>$ rails -v</code></p>
 <p>For the example apps it should be version 3.1.</p>
-<p>If you must use an earlier release of Rails, there is a Rails 3.0.7 branch of the examples in each repository.</p>
+<p>Each repository contains branches for earlier versions of Rails if you cannot use Rails 3.1.</p>
 <p>You can check for the newest released <a href="https://rubygems.org/gems/rails">Rails version</a>.</p>
 <p>Use <code>gem update rails</code> to install a newer version of Rails. It&#x2019;s recommended that you create a new gemset using <a href="http://rvm.beginrescueend.com/">rvm</a> before installing a new version of Rails (see below). With rvm, if you need to, you can switch gemsets to run your application under an earlier version of Rails.</p>
 <h2>Rake</h2>
@@ -92,7 +106,7 @@
 <p><code>$ rake --version</code></p>
 <p>You can check for the newest released <a href="https://rubygems.org/gems/rake">rake gem</a>.</p>
 <p>For apps built with Rails 3.1, use the newest version of rake.</p>
-<p>As of release 0.9.0 (20 May 2011), the rake gem broke Rails 3.0.7 and required Rails 3.1 (which was still in beta at the time). For apps built with Rails 3.0.7, use rake version 0.8.7. See how to bind rake to version 0.8.7 in the <a href="http://railsapps.github.com/rails-3-0-7-example-gemfile.html">Rails 3.0.7 example gemfile</a>.</p>
+<p>For apps built with Rails 3.0.7, see a note about problems with rake in the <a href="http://railsapps.github.com/rails-3-0-7-example-gemfile.html">Rails 3.0.7 example gemfile</a>.</p>
 <h2>Bundler and the Gemfile</h2>
 <p>The <a href="http://gembundler.com/">Ruby Bundler</a> manages an application&#x2019;s gems. Bundler works by reading a <strong>Gemfile</strong> in an application&#x2019;s root directory, downloading and unpacking specified versions of each required gem, resolving any dependencies among gems, and creating a <strong>Gemfile.lock</strong> file to force use of the specified gem versions.</p>
 <p>Each of the example apps is provided with a gemfile that specifies a known working set of required gems.</p>
@@ -112,21 +126,18 @@
 <p>which is shorthand for</p>
 <p><code>gem 'library', '&gt;= 2.2.0', '&lt; 3.0'</code></p>
 <p>which means use any gem version newer than 2.2.0 but don&#x2019;t install 3.0 or anything newer.</p>
-<p>We seldom specify pessimistic version constraint for gems in the example apps.</p>
+<p>We seldom specify pessimistic version constraint for gems in the example apps unless a gem developer recommends it.</p>
+<p>See recommendations about using pessimistic version constraint in a blog post by Dan Croak titled <a href="http://robots.thoughtbot.com/post/2508037841/twiddle-wakka">Twiddle Wakka</a> (yes, the <code>~&gt;</code> operator is variously known as the &#x201C;twiddle wakka,&#x201D; &#x201C;tildemator,&#x201D; or &#x201C;spermy operator.&#x201D;)</p>
 <h4>Absolute Version Constraint</h4>
 <p>In the example apps, we use &#x201C;absolute version constraint&#x201D; to specify a known working version of a gem if we&#x2019;ve seen reported problems with newer versions. Absolute version constraint looks like this:</p>
 <p><code>gem 'library', '2.2'</code></p>
-<h2>Gems for the Example Apps (Rails 3.1)</h2>
-<p>For the example apps built with Rails 3.1, see the <a href="http://railsapps.github.com/rails-3-1-example-gemfile.html">Rails 3.1 example gemfile</a>.</p>
-<h2>Gems for the Example Apps (Rails 3.0.7)</h2>
-<p>If you must use Rails 3.0.7, see the <a href="http://railsapps.github.com/rails-3-0-7-example-gemfile.html">Rails 3.0.7 example gemfile</a>.</p>
 <h2>Using rvm to Manage Multiple Versions of Rails</h2>
 <p>I recommend installing rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>. It&#x2019;s essential if you must use multiple versions of Rails. And rvm makes it easy to switch sets of gems if you suspect a problem with incompatibilities among gems.</p>
 <h4>Using the .rvmrc file for Project-Specific Gemsets</h4>
 <p>After you&#x2019;ve created an rvm gemset that you&#x2019;ll use for a project, you can create an <strong>.rvmrc</strong> file in the application&#x2019;s root directory. <span class="caps">RVM</span> recgonizes an <strong>.rvmrc</strong> file in a directory and loads the gemset specified inside.</p>
 <p>Here&#x2019;s how to create an <strong>.rvmrc</strong> file if you&#x2019;re using a gemset named &#x201C;ruby192@rails31beta&#x201D;:</p>
 <pre>
-$ echo "rvm use ruby192@rails31beta" &gt; .rvmrc
+$ echo "rvm ruby192@rails31beta" &gt; .rvmrc
 </pre>
 <p>Using an <strong>.rvmrc</strong> file means you&#x2019;ll automatically be using the correct Rails and gem version when you run your application on your local machine. This works best if you create an rvm gemset specifically for your application.</p>
               </div><!-- class="content" -->
@@ -166,7 +177,7 @@ $ echo "rvm use ruby192@rails31beta" &gt; .rvmrc
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-05-26 16:18:23</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-05-27 11:15:15</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
