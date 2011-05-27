@@ -1,24 +1,40 @@
-h1. railsapps.github.com
+h1. The RailsApps Website
 
 This repository contains the static web pages for the site at "http://railsapps.github.com":http://railsapps.github.com.
 
-h2. Goals
+To update the content for this website, use the GitHub wiki:
 
-Anyone can add to the site (or make corrections) by editing the repository's "wiki pages":https://github.com/railsapps/railsapps.github.com/wiki/_pages directly.
+* "https://github.com/railsapps/railsapps.github.com/wiki":https://github.com/railsapps/railsapps.github.com/wiki
 
-As the maintainer of the site, I will generate static web pages from the wiki files when I notice changes to the wiki pages. You can create a "GitHub issue":http://github.com/railsapps/railsapps.github.com/issues if you want me to alert me to changes.
+To change the layout and design, edit the *_Layout.html* file and CSS and Javascript in the railsapps.github.com.wiki repository.
 
-Generating static web pages from the wiki files makes it possible to apply layout templates to add formatting and  functionality to make the site more attractive and useful. Plus, a Google Analytics tracking script is added so I can see if the web site is being used.
+Then use the "gollum-site":https://github.com/dreverri/gollum-site gem to generate static web pages from the wiki. To commit the generated web pages, you'll need repository read+write permission as an organization team member.
 
-Hosting the site on GitHub (rather than elsewhere) is free and associates the site directly with the "RailsApps project repository":https://github.com/RailsApps.
+h2. Objectives
+
+Here are the goals I had in mind when I set up the RailsApp site:
+
+* I wanted to use GitHub's capability for hosting the site. The hosting is free and the wiki is familiar to GitHub users. I didn't want to deploy a dedicated CMS or use a wiki hosted elsewhere.
+
+* I'd like any GitHub user to be able to add to the site (or make corrections) by editing the repository's "wiki pages":https://github.com/railsapps/railsapps.github.com/wiki/_pages directly.
+
+* I like being able to edit the wiki pages locally using Textile markup and commit changes to the GitHub repository. I use the same text editor and workflow that I use for maintaining code.
+
+* On its own, the GitHub wiki does not provide everything needed for the project website. I wanted to improve the layout and design to make the site more attractive and useful. I wanted to add Javascript for the Disqus commenting system as well as a Google Analytics tracking script. I anticipated I would use a tool such as "Jekyll":https://github.com/mojombo/jekyll to combine the wiki files with a layout template and generate static web pages to upload to GitHub for site hosting.
+
+* As the maintainer of the site, I anticipate generating static web pages from the wiki files periodically (or when I notice changes to the wiki pages or am alerted with a "GitHub issue":http://github.com/railsapps/railsapps.github.com/issues). I don't need to have the site updated dynamically.
+
+I looked at several "static website generators":http://nanoc.stoneship.org/docs/1-introduction/, including "Jekyll":https://github.com/mojombo/jekyll, and decided "gollum-site":https://github.com/dreverri/gollum-site most closely fit my requirements.
 
 h2. Publishing Workflow
 
-Here's how you can generate a new version of the website from the wiki pages. You'll need repository read+write permission as an organization team member.
+You can edit the "wiki pages online":https://github.com/railsapps/railsapps.github.com/wiki/_pages. Alternatively, you can edit them locally in a text editor after cloning the repository.
+
+Here's how you can edit the pages locally and generate a new version of the website from the wiki pages.
 
 The "gollum-site":https://github.com/dreverri/gollum-site gem is used to generate static web pages from the "wiki":https://github.com/railsapps/railsapps.github.com/wiki/_pages.
 
-Note that there are two repositories: the "site repo":https://github.com/RailsApps/railsapps.github.com (for the static web pages) and the "wiki repo":https://github.com/RailsApps/railsapps.github.com/wiki (for the wiki pages).
+h4. Install the Gollum-Site Gem
 
 Install the gollum-site gem plus the RedCloth gem (to support "Textile":http://www.textism.com/tools/textile/ markup).
 
@@ -26,6 +42,10 @@ Install the gollum-site gem plus the RedCloth gem (to support "Textile":http://w
 $ gem install gollum-site
 $ gem install RedCloth
 </pre>
+
+h4. Clone the Repos
+
+Note that there are two repositories: the "site repo":https://github.com/RailsApps/railsapps.github.com (for the static web pages) and the "wiki repo":https://github.com/RailsApps/railsapps.github.com/wiki (for the wiki pages).
 
 We'll assume you will create a directory for the project and download the needed files.
 
@@ -36,7 +56,9 @@ $ git clone git@github.com:RailsApps/railsapps.github.com.git
 $ git clone git@github.com:RailsApps/railsapps.github.com.wiki.git
 </pre>
 
-You may have edited the "wiki pages online":https://github.com/railsapps/railsapps.github.com/wiki/_pages. If you want, you can edit them locally in a text editor. Make sure you are in the git "master" branch and commit any changes.
+h4. Edit the Content
+
+Make sure you are in the git "master" branch. Edit the wiki pages and commit any changes.
 
 <pre>
 $ cd ~/railsapps/railsapps.github.com.wiki
@@ -45,26 +67,32 @@ $ git checkout master
 $ git commit -am "update wiki"
 </pre>
 
-When you are ready to generate the static pages, switch to a git "working_branch" and apply changes from the "master" branch. Using a "working_branch" will make it easy to discard the static pages after you've copied them to the site repo.
+h4. Change the Layout and Design
+
+To change the layout and design, edit the *_Layout.html* file and change any CSS and Javascript files in the railsapps.github.com.wiki repository. Then commit any changes.
 
 <pre>
-$ git checkout working_branch
-$ git rebase master
+## edit the *_Layout.html* file with a text editor
+## edit the *css/screen.css* file with a text editor
+$ git commit -am "update layout"
 </pre>
 
-Use the gollum-site gem to generate the static web pages in the wiki repo.
+h4. Generate Static Web Pages
+
+When you are ready to generate the static pages, use the gollum-site gem to generate the static web pages in the wiki repo. Gollum-site has a built-in web server if you want to view the site locally before committing and publishing to GitHub.
 
 <pre>
-$ gollum-site import ## to import a default layout
 $ gollum-site generate ## to generate static webpages in "./_site" folder
 $ gollum-site serve ## to view the static site at http://localhost:8000
-$ gollum-site serve --watch ## to view changes to the static site as the files are saved
 </pre>
 
-Copy the generated @_site@ directory to the site repo. Rename the @Home.html@ page as @index.html@. Commit the changes and push the repo up to GitHub. GitHub will automatically publish the updated site in not much more than a minute.
+h4. Publish to GitHub
+
+Copy the generated @_site@ directory to the site repo. Rename the @Home.html@ page as @index.html@. Commit the changes and push the repo up to GitHub.To commit the generated web pages, you'll need repository read+write permission as an organization team member. GitHub will automatically publish the updated site in less than a minute.
 
 <pre>
 $ cp -R _site/* ~/railsapps/railsapps.github.com
+$ rm -rf _site/ ## to remove the generated files
 $ cd ~/railsapps/railsapps.github.com
 $ mv Home.html index.html
 $ git add .
