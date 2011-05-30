@@ -42,11 +42,10 @@
 <p>You can read more about how the building blocks of the Rails platform work together by reading the article <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a>. It explains the relationships among Ruby, RubyGems, Rails, Rake, Bundler, and gemfiles and offers some advice.</p>
 <h4>Rails 3.1</h4>
 <p>Rails 3.1 was released in June 2011. Rails 3.1 introduced the <a href="http://www.youtube.com/watch?v=cGdCI2HhfAU">asset pipeline</a> which enables proper organization of <span class="caps">CSS</span> and JavaScript. Other features include <a href="http://railscasts.com/episodes/266-http-streaming"><span class="caps">HTTP</span> streaming</a>, default jQuery, reversible migrations, mountable engines, identity map, prepared statements, Rack::Cache on by default, forced <span class="caps">SSL</span>, role-based mass-assignment protection, has_secure_password, and custom serializers. See the <a href="http://weblog.rubyonrails.org/2011/5/22/rails-3-1-release-candidate">Rails 3.1 release candidate announcement</a> for details. There&#x2019;s a <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Rails 3.1 Overview</a> from Ryan Bates and a <a href="https://gist.github.com/958283">changelog</a> for more details.</p>
-<h4>Impact on Developers</h4>
 <p>The greatest impact for developers moving from Rails 3.0 to 3.1 is the new location for <span class="caps">CSS</span> and JavaScript files and changes to the application layout file.</p>
 <h4>Rake 0.9</h4>
 <p><a href="http://rubygems.org/gems/rake">Rake</a> is the build tool for Ruby. Rake 0.8.7 installs as part of Ruby 1.9.2. On 20 May 2011 (a day before the release of the first Rails 3.1 release candidate), Rake version 0.9.0 was released.  Many gems depend on Rake and conflicting dependencies can be a problem (see an explanation from David Chelimsky in his blog post <a href="http://blog.davidchelimsky.net/2011/05/28/rake-09-and-gem-version-constraints/">Rake 0.9 and Gem Version Constraints</a>). To minimize problems caused by rake dependencies, I recommend updating Rake 0.8.7 to Rake 0.9.0 (or <a href="http://rubygems.org/gems/rake">newer</a>) before building the example apps.</p>
-<h4>Importance of <span class="caps">RVM</span></h4>
+<h4><span class="caps">RVM</span></h4>
 <p>Use rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a> to manage your Rails versions and create a gemset specifically for each application you build. If you encounter conflicting gem dependencies, you can isolate the errors by creating different gemsets with rvm.</p>
 <h2>Installing Rails 3.1</h2>
 <p>Follow these instructions to set up Rails 3.1 as a platform for the example apps.</p>
@@ -131,17 +130,17 @@ $ rails new testapp
 <p>You can use the files in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository to build the example apps.</p>
 <p>Use the <code>"rails new app_name -m"</code> command to generate a Rails web application from a template.</p>
 <p>You can add the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
-<h4>Template for Rails 3 + Devise + RSpec + Cucumber</h4>
+<h4>Rails 3 + Devise + RSpec + Cucumber</h4>
 <p>To build the &#x201C;rails3-devise-rspec-cucumber&#x201D; example application, run the command:</p>
 <p><code>$ rails new APP_NAME -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-devise-rspec-cucumber-template.rb -T</code></p>
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>See the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber"><span class="caps">README</span></a> or <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/wiki/Tutorial">tutorial</a> to learn how to configure and run the application.</p>
-<h4>Template for Rails 3 + Mongoid + Devise</h4>
+<h4>Rails 3 + Mongoid + Devise</h4>
 <p>To build the &#x201C;rails3-mongoid-devise&#x201D; example application, run the command:</p>
 <p><code>$ rails new APP_NAME -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-mongoid-devise-template.rb -T -O</code></p>
 <p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
 <p>See the <a href="https://github.com/RailsApps/rails3-mongoid-devise"><span class="caps">README</span></a> or <a href="http://github.com/RailsApps/rails3-mongoid-devise/wiki/Tutorial">tutorial</a> to learn how to configure and run the application.</p>
-<h4>Template for Rails 3 + Mongoid + OmniAuth</h4>
+<h4>Rails 3 + Mongoid + OmniAuth</h4>
 <p>To build the &#x201C;rails3-mongoid-omniauth&#x201D; example application, run the command:</p>
 <p><code>$ rails new APP_NAME -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-mongoid-omniauth-template.rb -T -O</code></p>
 <p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
@@ -155,7 +154,8 @@ $ echo "rvm ruby192@rails31" &gt; .rvmrc
 <p>Using an <strong>.rvmrc</strong> file means you&#x2019;ll automatically be using the correct Rails and gem version when you run your application on your local machine. This works best if you create an rvm gemset specifically for your application.</p>
 <h2>Troubleshooting</h2>
 <p>Problems? Check the <a href="http://github.com/RailsApps/rails3-application-templates/issues">issues</a>.</p>
-<h4>Rake</h4>
+<h4>Problems with Rake</h4>
+<p>If you see:</p>
 <pre>
 The template ... could not be loaded.
 Error: You have already activated rake 0.8.7, but your Gemfile requires rake 0.9.0.
@@ -199,7 +199,7 @@ Consider using bundle exec.
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-05-30 14:45:16</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-05-30 15:01:56</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
