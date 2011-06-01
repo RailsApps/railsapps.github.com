@@ -41,7 +41,7 @@
 <h2>Background</h2>
 <p>You can read more about how the building blocks of the Rails platform work together by reading the article <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a>. It explains the relationships among Ruby, RubyGems, Rails, Rake, Bundler, and gemfiles and offers some advice.</p>
 <h4>Rails 3.1</h4>
-<p>Rails 3.1 was released in June 2011. Rails 3.1 introduced the <a href="http://www.youtube.com/watch?v=cGdCI2HhfAU">asset pipeline</a> which enables proper organization of <span class="caps">CSS</span> and JavaScript. Other features include <a href="http://railscasts.com/episodes/266-http-streaming"><span class="caps">HTTP</span> streaming</a>, default jQuery, reversible migrations, mountable engines, identity map, prepared statements, Rack::Cache on by default, forced <span class="caps">SSL</span>, role-based mass-assignment protection, has_secure_password, and custom serializers. See the <a href="http://weblog.rubyonrails.org/2011/5/22/rails-3-1-release-candidate">Rails 3.1 release candidate announcement</a> for details. There&#x2019;s a <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Rails 3.1 Overview</a> from Ryan Bates and a <a href="https://gist.github.com/958283">changelog</a> for more details.</p>
+<p>Rails 3.1.0.rc1 was released May 21, 2011. Rails 3.1 introduced the <a href="http://www.youtube.com/watch?v=cGdCI2HhfAU">asset pipeline</a> which enables proper organization of <span class="caps">CSS</span> and JavaScript. Other features include <a href="http://railscasts.com/episodes/266-http-streaming"><span class="caps">HTTP</span> streaming</a>, default jQuery, reversible migrations, mountable engines, identity map, prepared statements, Rack::Cache on by default, forced <span class="caps">SSL</span>, role-based mass-assignment protection, has_secure_password, and custom serializers. See the <a href="http://weblog.rubyonrails.org/2011/5/22/rails-3-1-release-candidate">Rails 3.1 release candidate announcement</a> for details. There&#x2019;s a <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Rails 3.1 Overview</a> from Ryan Bates and a <a href="https://gist.github.com/958283">changelog</a> for all the details.</p>
 <p>The greatest impact for developers moving from Rails 3.0 to 3.1 is the new location for <span class="caps">CSS</span> and JavaScript files and changes to the application layout file.</p>
 <h4>Rake 0.9</h4>
 <p><a href="http://rubygems.org/gems/rake">Rake</a> is the build tool for Ruby. Rake 0.8.7 installs as part of Ruby 1.9.2. On 20 May 2011 (a day before the release of the first Rails 3.1 release candidate), Rake version 0.9.0 was released.  Many gems depend on Rake and conflicting dependencies can be a problem (see an explanation from David Chelimsky in his blog post <a href="http://blog.davidchelimsky.net/2011/05/28/rake-09-and-gem-version-constraints/">Rake 0.9 and Gem Version Constraints</a>). To minimize problems caused by rake dependencies, I recommend updating Rake 0.8.7 to Rake 0.9.1 (or <a href="http://rubygems.org/gems/rake">newer</a>) before building the example apps.</p>
@@ -56,11 +56,12 @@
 <p>If you already have rvm installed, update it to the latest version.</p>
 <pre>
 $ rvm get latest
+$ rvm reload
 </pre>
 <h4>Install Ruby 1.9.2</h4>
 <p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
 <p>Ruby 1.9.2 patch level 180 was current when this was written.</p>
-<p>Use rvm to install the recommended version of Ruby and make it your default:</p>
+<p>If you don&#x2019;t have it already, use rvm to install the recommended version of Ruby and make it your default:</p>
 <pre>
 $ rvm install ruby-1.9.2-p180
 $ rvm --default use ruby-1.9.2-p180
@@ -70,11 +71,17 @@ $ ruby -v
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
 <p><code>$ gem -v</code></p>
-<p>For the example apps it should be version 1.8.5 or newer. See <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for advice about updating the RubyGems system.</p>
+<p>For the example apps it should be version 1.8.5 or newer.</p>
+<p>Use <code>gem update --system</code> to upgrade the RubyGems system.</p>
+<p>See <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for advice about updating the RubyGems system.</p>
 <h4>Create a Rails 3.1 Gemset</h4>
 <p>Create a default Rails 3.1 gemset. It&#x2019;s advisable to create a new gemset for each application you build. But to get started with the example apps, create just one new Rails 3.1 gemset as your default.</p>
 <pre>
 $ rvm ruby-1.9.2-p180@rails31 --create --default
+</pre>
+<p>To see a list of the gemsets you have installed:</p>
+<pre>
+$ rvm gemset list
 </pre>
 <h4>Update Rake</h4>
 <p>Update from Rake 0.8.7 (installed with Ruby 1.9.2) to Rake 0.9.1 (or <a href="http://rubygems.org/gems/rake">newer</a>) before you install Rails 3.1.</p>
@@ -82,6 +89,7 @@ $ rvm ruby-1.9.2-p180@rails31 --create --default
 $ gem update rake
 $ rake --version
 </pre>
+<p>See <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for more about recent changes to Rake.</p>
 <h4>Install Rails 3.1</h4>
 <p>Now you can install Rails 3.1.</p>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>.</p>
@@ -106,7 +114,13 @@ $ rails -v
 <pre>
 $ rails new testapp
 </pre>
-<p>See the <a href="http://guides.rubyonrails.org/getting_started.html">Rails Guides</a> for an introduction to building and running a Rails app. See a list of <a href="http://railsapps.github.com/best-recommended-learning-rails-books-resources.html">recommended books and online resources for learning Rails</a> if you&#x2019;re just getting started.</p>
+<p>Switch to the application root directory and see a list of Rake tasks as a quick test of success.</p>
+<pre>
+$ cd testapp
+$ rake -T
+</pre>
+<p>See the <a href="http://guides.rubyonrails.org/getting_started.html">Rails Guides</a> for an introduction to building and running a Rails app.</p>
+<p>See a list of <a href="http://railsapps.github.com/best-recommended-learning-rails-books-resources.html">Recommended Books and Online Resources for Learning Rails</a> if you&#x2019;re just getting started.</p>
 <h2>Install Example Apps</h2>
 <p>The example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository help you keep current with changing Rails and gem versions. You can build and examine any of these apps if you want to see a good example of a Rails 3.1 app.</p>
 <h4>Example Apps</h4>
@@ -205,7 +219,7 @@ Consider using bundle exec.
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-06-01 15:04:14</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-06-01 15:50:04</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
