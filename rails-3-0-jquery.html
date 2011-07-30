@@ -37,15 +37,15 @@
               <div class="content wikistyle gollum textile">
                 <h1>jQuery with Rails 3.0</h1>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
+<p>The example applications don’t make use of jQuery. But many Rails developers prefer it as an alternative to the Prototype Javascript framework so instructions are included here for Rails 3.0 projects.</p>
 <blockquote>
 <p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/jquery.rb">jquery</a> recipe from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
 </blockquote>
-<h2>Background</h2>
+<h2>jQuery is the Default for Rails 3.1</h2>
 <p>Rails 3.1 uses jQuery by default so no additional effort is required.</p>
-<p>The example applications don&#x2019;t make use of jQuery. But many Rails developers prefer it as an alternative to the Prototype Javascript framework so instructions are included here for Rails 3.0 projects.</p>
-<h2>How to Manually Install jQuery</h2>
-<p>Here&#x2019;s how to manually install jQuery.</p>
-<p>If you used the <code>-J</code> flag when you ran <code>rails new</code> the Prototype Javascript files won&#x2019;t be there. If not, remove the Prototype Javascript files from the <strong>public/javascripts</strong> directory:</p>
+<h2>How to Manually Install jQuery for Rails 3.0</h2>
+<p>Here’s how to manually install jQuery for Rails 3.0.</p>
+<p>If you used the <code>-J</code> flag when you ran <code>rails new</code> the Prototype Javascript files won’t be there. If not, remove the Prototype Javascript files from the <strong>public/javascripts</strong> directory:</p>
 <ul><li>controls.js</li>
 	<li>dragdrop.js</li>
 	<li>effects.js</li>
@@ -56,14 +56,14 @@ cd public/javascripts
 curl -o rails.js https://github.com/rails/jquery-ujs/raw/master/src/rails.js
 curl -o jquery.js http://code.jquery.com/jquery-1.6.min.js
 </pre>
-<p>If you used the <code>-J</code> flag when you ran <code>rails new</code> the following statement will be uncommented and you don&#x2019;t need to do anything. Otherwise, uncomment the following statement in the <strong>config/application.rb</strong> file (or add it if it is missing):</p>
+<p>If you used the <code>-J</code> flag when you ran <code>rails new</code> the following statement will be uncommented and you don’t need to do anything. Otherwise, uncomment the following statement in the <strong>config/application.rb</strong> file (or add it if it is missing):</p>
 <pre>
 config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 </pre>
 <p>This configures the template helper <code>javascript_include_tag :defaults</code> to generate <span class="caps">SCRIPT</span> tags to load jQuery and the <strong>rails.js</strong> script.</p>
-<h2>How to Automatically Install jQuery</h2>
+<h2>How to Automatically Install jQuery for Rails 3.0</h2>
 <p>If you used the <code>-J</code> flag when you ran <code>rails new</code> it is best to manually install jQuery as described above.</p>
-<p>As an alternative to manual installation of jQuery, you can add a gem and run a generator command.</p>
+<p>As an alternative to manual installation of jQuery for Rails 3.0, you can add a gem and run a generator command.</p>
 <pre>
 # Gemfile
 gem 'jquery-rails', '&gt;= 0.2.7'
@@ -74,7 +74,7 @@ $ bundle install
 $ rails generate jquery:install
 </pre>
 <p>This will remove the Prototype files from the <strong>public/javascripts</strong> directory, download jQuery files, and download the <strong>rails.js</strong> file. Be sure to choose to overwrite the <strong>rails.js</strong> file (or remove it first).</p>
-<p><strong>Note:</strong> If you used the <code>-J</code> flag when you ran <code>rails new</code> (using the &#x201C;-J&#x201D; flag to eliminate the Prototype files) then in the <strong>config/application.rb</strong> file the statement <code>config.action_view.javascript_expansions[:defaults] = %w()</code> is not commented out and the jquery-rails gem <strong>lib/jquery-rails.rb</strong> file cannot override <code>config.action_view.javascript_expansions[:defaults]</code> to include the jquery files and you&#x2019;ll get an error &#x201C;No expansion found for :defaults&#x201D; when you run your app. See this <a href="https://github.com/indirect/jquery-rails/issues#issue/54">issue</a> for more information. The solution is to comment out the statement <code>config.action_view.javascript_expansions[:defaults] = %w()</code> in the <strong>config/application.rb</strong> file (it takes precedence over the jquery-rails gem <strong>lib/jquery-rails.rb</strong> file).</p>
+<p><strong>Note:</strong> If you used the <code>-J</code> flag when you ran <code>rails new</code> (using the “-J” flag to eliminate the Prototype files) then in the <strong>config/application.rb</strong> file the statement <code>config.action_view.javascript_expansions[:defaults] = %w()</code> is not commented out and the jquery-rails gem <strong>lib/jquery-rails.rb</strong> file cannot override <code>config.action_view.javascript_expansions[:defaults]</code> to include the jquery files and you’ll get an error “No expansion found for :defaults” when you run your app. See this <a href="https://github.com/indirect/jquery-rails/issues#issue/54">issue</a> for more information. The solution is to comment out the statement <code>config.action_view.javascript_expansions[:defaults] = %w()</code> in the <strong>config/application.rb</strong> file (it takes precedence over the jquery-rails gem <strong>lib/jquery-rails.rb</strong> file).</p>
               </div><!-- class="content" -->
               <div class="comments">
                 <div class="content wikistyle gollum">
@@ -112,7 +112,7 @@ $ rails generate jquery:install
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-07-13 17:39:41</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-07-30 12:23:05</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
