@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Heroku Tutorial for Rails</title>
+    <title>Deploying to Heroku with Rails 3.1</title>
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/syntax.css" type="text/css" charset="utf-8" />
@@ -33,43 +33,81 @@
                   <a href="http://railsapps.github.com/">Rails Apps</a>
                   <a href="https://github.com/RailsApps">GitHub Repository</a>
               </div><!-- class="actions" -->
-              <h1>Heroku Tutorial for Rails</h1>
+              <h1>Deploying to Heroku with Rails 3.1</h1>
               <div class="content wikistyle gollum textile">
-                <h1>Heroku Tutorial for Rails</h1>
-<p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
+                <h1>Deploying to Heroku with Rails 3.1</h1>
+<p>This is a tutorial for developers using the Rails 3.1 example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <h2>Background</h2>
 <p>For your convenience, here are instructions for deploying your app to Heroku. Heroku provides low cost, easily configured Rails application hosting.</p>
+<p>For more detail, see Heroku’s document <a href="http://devcenter.heroku.com/articles/rails3">Getting started with Rails 3 on Heroku/Cedar</a>. See also <a href="http://devcenter.heroku.com/articles/rails31_heroku_cedar">Rails 3.1 on Heroku Cedar</a>.</p>
+<p>You’ll be using Heroku’s Celadon Cedar stack which requires Ruby 1.9.2.</p>
 <h2>Set Up Heroku</h2>
-<p>To deploy an app to Heroku, you must have a Heroku account. If you need to obtain one, visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
+<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
+<h4>Replace SQLite with PostgreSQL</h4>
+<p>First, before you get caught up in choosing between PostgreSQL, SQLite or MySQL for development, I recommend looking at MongoDB as an alternative. It simplifies development by eliminating schemas and migrations and is supported as an add-on by Heroku.</p>
+<p>If you are developing locally using SQLite, you will need to switch to PostgreSQL for deployment to Heroku. Heroku does not support SQLite or MySQL. If you don’t want to develop using PostgreSQL locally, you can set up your Gemfile to use SQLite for development and PostgreSQL for production.</p>
+<p>To switch from SQLite to PostgreSQL for deployment to Heroku, edit your Gemfile and change this line:</p>
+<p>
+  <code>gem 'sqlite3'</code>
+</p>
+<p>To this:</p>
+<pre>
+group :production do
+  gem 'pg'
+end
+group :development, :test do
+  gem 'sqlite3'
+end
+</pre>
+<h4>Replace Webrick with Thin</h4>
+<p>By default, when you run <code>rails server</code> locally, Rails launches the simple Webrick web server. For production apps Heroku recommends using a more robust webserver such as <a href="http://code.macournoyer.com/thin/">Thin</a>.</p>
+<p>To use Thin, add the gem to your Gemfile:</p>
+<p>
+  <code>gem "thin"</code>
+</p>
+<p>Heroku recommends adding a Procfile to your app. Procfile is a mechanism for declaring what commands are run when your web app runs on the Heroku platform. A Procfile is not necessary to deploy a Rails app to Heroku, but Heroku recommends it for greater control and flexibility over your app. If you add a Procfile, you can specify Thin as your web process in the Procfile.</p>
+<p>For simplicity, there’s no need to create a Procfile if you use Thin. If you declare the Thin gem in your Gemfile, Heroku sets up an appropriate web process without requiring a Procfile.</p>
 <h4>Heroku Gem</h4>
-<p>Make sure the Heroku gem is in your <strong>Gemfile</strong> <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
+<p>Make sure the Heroku gem is in your Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
 <p>
   <code>gem "heroku"</code>
 </p>
-<p>If it’s not, add it and run</p>
+<h4>Install Gems</h4>
+<p>Install your gems with:</p>
 <p>
   <code>$ bundle install</code>
 </p>
-<p>to set up your gems again.</p>
-<p>Add your public key immediately after installing the heroku gem so that you can use git to push or clone Heroku app repositories. See <a href="http://devcenter.heroku.com/articles/heroku-command">http://devcenter.heroku.com/articles/heroku-command</a> for details.</p>
+<p>If you haven’t done so, add your public key after installing the heroku gem so that you can use git to push or clone Heroku app repositories. See <a href="http://devcenter.heroku.com/articles/heroku-command">http://devcenter.heroku.com/articles/heroku-command</a> for details.</p>
+<h4>Rails 3.1 for Heroku</h4>
+<p>By default, Rails 3.1 includes the following setting in <strong>config/environments/production.rb</strong>:</p>
+<p>
+  <code>config.action_dispatch.x_sendfile_header = "X-Sendfile"</code>
+</p>
+<p>This setting is incompatible with Heroku and will cause compiled and static assets to fail to load. To fix this, change this setting to:</p>
+<p>
+  <code>config.action_dispatch.x_sendfile_header = nil</code>
+</p>
+<p>Heroku supports Rails 3.1 on Heroku’s Cedar stack. Heroku will precompile Javascript and <span class="caps">CSS</span> assets when you deploy your app. Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed as of Rails 3.1.0.rc5 and should not be used.</p>
+<h4>Commit to Git</h4>
+<p>Store the modified application in the Git repository:</p>
+<p>
+  <code>$ git commit -am "Configured for deployment to Heroku"</code>
+</p>
 <h4>Create Your Application on Heroku</h4>
 <p>Use the Heroku create command to create and name your new app.</p>
 <p>
-  <code>$ heroku create _myapp_</code>
-</p>
-<p>As of 9 February 2011, bamboo-ree-1.8.7 is the default stack for new Heroku apps.</p>
-<p>If you want to use Ruby 1.9.2, you can create your app with:</p>
-<p>
-  <code>heroku create _myapp_ --stack bamboo-mri-1.9.2</code>
+  <code>$ heroku create _myapp_ --stack cedar</code>
 </p>
 <h4>Check Heroku Configuration</h4>
 <p>You can check that everything has been added correctly by running:</p>
 <p>
   <code>$ heroku info --app myapp</code>
 </p>
-<p>If you see <code>Stack: bamboo-ree-1.8.7</code> and you want to use Ruby 1.9.2, you can migrate:</p>
+<h4>Heroku Add-on for MongoDB</h4>
+<p>If you are using MongoDB, you can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
+<p>To enable the add-on, enter the following command:</p>
 <p>
-  <code>heroku stack:migrate bamboo-mri-1.9.2</code>
+  <code>$ heroku addons:add mongohq:free</code>
 </p>
 <h4>Push Your Application to Heroku</h4>
 <p>Push your application to Heroku:</p>
@@ -78,7 +116,7 @@
 </p>
 <p>Initialize your application database:</p>
 <p>
-  <code>$ heroku rake db:seed</code>
+  <code>$ heroku run rake db:seed</code>
 </p>
 <h4>Visit Your Site</h4>
 <p>Open your Heroku site in your default web browser:</p>
@@ -90,14 +128,7 @@
 <p>
   <code>$ heroku logs</code>
 </p>
-<h2>Using MongoDB with Heroku</h2>
-<h4>Heroku Add-on for MongoHQ</h4>
-<p>You can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
-<p>To enable the add-on, you can use the Heroku web interface or you can enter the following commands:</p>
-<p>
-  <code>$ heroku addons:add mongohq:free</code>
-</p>
-<h4>Fix Problems Connecting to MongoHQ</h4>
+<h4>Troubleshooting Problems Connecting to MongoHQ</h4>
 <p>If you get the error message “failed to connect to any given host:port” or “Failed to connect to a master node at localhost:27017”, the <strong>config/mongoid.yml</strong> file may not have the correct MongoHQ connection parameters.</p>
 <p>If the file <strong>config/mongoid.yml</strong> contains this:</p>
 <pre>
@@ -153,7 +184,7 @@ production:
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-07-30 12:23:05</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-07-30 16:51:20</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
