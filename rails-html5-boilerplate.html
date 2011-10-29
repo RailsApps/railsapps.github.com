@@ -38,11 +38,6 @@
                 <h1>Guide to HTML5 Boilerplate for Rails Developers</h1>
 <h4>by Daniel Kehoe</h4>
 <p>This is a guide to <a href="http://html5boilerplate.com/">HTML5 Boilerplate</a> for Rails developers. Like Rails on the server side or “backend”, HTML5 Boilerplate provides structure and conventions for setting up HTML5, CSS3 styles, and Javascript for front-end development. It is a popular starting point for many front-end developers. However, some aspects of HTML5 Boilerplate are not useful for Rails projects. Sorting through the HTML5 Boilerplate documentation to find what’s useful for Rails can be confusing. This article lists each component of HTML5 Boilerplate and identifies its usefulness for Rails applications.</p>
-<h3><img src="http://railsapps.github.com/images/work-in-progress-36x36.jpg" title="Work In Progress" alt="Work In Progress" /> Work In Progress</h3>
-<p>This is the article’s first draft. Please suggest corrections or add comments (with Disqus, below). You can also email me at daniel@danielkehoe.com.</p>
-<p>
-  <strong>Know someone who can offer expert peer review? Please forward the article and encourage critical feedback.</strong>
-</p>
 <h3><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h3>
 <p>Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter if you want more. Please tweet some praise if you like what you’ve found.</p>
 <h2>About HTML5 Boilerplate</h2>
@@ -58,12 +53,9 @@
 <p>There are other popular Rails 3 application templates that include HTML5 Boilerplate:</p>
 <ul><li><a href="https://github.com/Xac/Rails-3-HTML5-Boilerplate">Rails-3-HTML5-Boilerplate</a></li>
 	<li><a href="https://github.com/russfrisch/h5bp-rails">h5bp-rails</a></li>
-	<li><a href="https://github.com/russfrisch/Rails-HTML5-Boilerplate-Template">Rails-HTML5-Boilerplate-Template</a></li>
-</ul><p>(Are there others? Please suggest.)</p>
+</ul><p>(Are there others? Please suggest with a comment below.)</p>
 <p>Or use a Ruby gem to add HTML5 Boilerplate to your application:</p>
 <ul><li><a href="https://github.com/khelben/rails-boilerplate">rails-boilerplate</a></li>
-</ul><p>If you are not using Rails and want HTML5 Boilerplate as a set of downloadable files, use a custom HTML5 template generator website:</p>
-<ul><li>Jonathan Verrecchia’s <a href="http://www.initializr.com/">Initializr</a></li>
 </ul><h2>Useful for Rails Projects</h2>
 <p>Consider adding the following components to your Rails application.</p>
 <h3>Default Application Layout</h3>
@@ -119,10 +111,8 @@
 <ul><li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-scripts">placeholder Javascript files</a></li>
 	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/plugins.js-and-script.js/">placeholder Javascript files</a></li>
 </ul><h3>jQuery</h3>
-<p>In Rails 3.1 <a href="http://weblog.rubyonrails.org/2011/4/21/jquery-new-default">jQuery is the default JavaScript library</a>. The <code>jquery-rails</code> gem provides <code>jquery.js</code> and <code>jquery_ujs.js</code> files via the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>. You won’t see these files in the application assets directory and you won’t need to include them using <code>&lt;script&gt;</code> tags. The HTML5 Boilerplate <code>index.html</code> file shows how to add jQuery to a non-Rails web page. For a Rails app, don’t modify your application layout to match the HTML5 Boilerplate example. Use the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>.</p>
-<blockquote>
-<p>Note: Google serves a <code>jquery.js</code> file through its <span class="caps">CDN</span> (content delivery network) and HTML5 Boilerplate recommends using it. It’s not clear to me why Rails provides its own version of the <code>jquery.js</code> file and why we don’t use the Google <span class="caps">CDN</span> version. Comments?</p>
-</blockquote>
+<p>The HTML5 Boilerplate <code>index.html</code> file shows how to add jQuery to a non-Rails web page. For a Rails app, don’t modify your application layout to match the HTML5 Boilerplate example. In Rails 3.1 <a href="http://weblog.rubyonrails.org/2011/4/21/jquery-new-default">jQuery is the default JavaScript library</a>. The default <code>jquery-rails</code> gem provides <code>jquery.js</code> and <code>jquery_ujs.js</code> files. You won’t need to include these files using <code>&lt;script&gt;</code> tags because they are automatically included via the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>.</p>
+<p>HTML5 Boilerplate recommends loading jQuery from Google’s <span class="caps">CDN</span> (content delivery network). You can write code that checks if a connection to the <span class="caps">CDN</span> is available, then checks if the version in the <span class="caps">CDN</span> matches the version in the <code>jquery-rails</code> gem, and falls back to the version in the Rails asset pipeline if the <span class="caps">CDN</span> is not available. If you do so, you’ll only save a single <span class="caps">HTTP</span> request (the first time a user visits the app). The assets pipeline produces a cached minified Javascript file which is used for all subsequent requests. For ultimate performance, you can consider using the <span class="caps">CDN</span>; for most projects, it’s probably not worth the extra code.</p>
 <ul><li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;jquerydev">jQuery</a></li>
 	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#google-cdn-for-jquery">jQuery</a></li>
 </ul><h3>X-UA-Compatible Metatag</h3>
@@ -164,7 +154,7 @@
 <ul><li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-mediaqueryprint"><span class="caps">CSS</span> print styles</a></li>
 	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-style/#print-styles"><span class="caps">CSS</span> print styles</a></li>
 </ul><h3><span class="caps">CSS</span> Media Queries for Responsive Design</h3>
-<p>You’ll want to design your Rails app to accommodate a variety of devices. The term <a href="http://www.alistapart.com/articles/responsive-web-design/">responsive web design</a> was coined by Ethan Marcotte and refers to using fluid grids, flexible images, and CSS3 media queries to modify a web page to accommodate devices with differing screen sizes and resolutions such as a smartphones, tablets, and desktop computers. A media query in a <span class="caps">CSS</span> stylesheet (such as <code>media screen and (max-width:320px)</code>) can detect the width of a smartphone’s screen and adjust <span class="caps">CSS</span> rules accordingly. HTML5 Boilerplate provides placeholders for media queries in its <code>style.css</code> file but does not provide <span class="caps">CSS</span> styles for different devices.</p>
+<p>You’ll want to design your Rails app to accommodate a variety of devices. The term <a href="http://www.alistapart.com/articles/responsive-web-design/">responsive web design</a> was coined by Ethan Marcotte and refers to using fluid grids, flexible images, and CSS3 media queries to modify a web page to accommodate devices with differing screen sizes and resolutions such as a smartphones, tablets, and desktop computers. A media query in a <span class="caps">CSS</span> stylesheet (such as <code>media screen and (max-width:320px)</code>) can detect the width of a smartphone’s screen and adjust <span class="caps">CSS</span> rules accordingly. HTML5 Boilerplate provides placeholders for media queries in its <code>style.css</code> file but does not provide <span class="caps">CSS</span> styles for different devices. You can use a <span class="caps">CSS</span> toolkit such as <a href="http://getskeleton.com/">Skeleton</a> or <a href="http://foundation.zurb.com/">Zurb Foundation</a> to design sites that adapt to different browser page sizes.</p>
 <ul><li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-mediaqueries">media queries placeholders</a></li>
 	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-style/#media-queries">media queries placeholders</a></li>
 </ul><h3><span class="caps">CSS</span> Paged Media Styles</h3>
@@ -221,7 +211,7 @@
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-10-27 13:28:34</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-10-29 07:42:22</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
