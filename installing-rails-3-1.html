@@ -66,7 +66,7 @@
 <p>This guide is all you need if you are installing Rails 3.1 on a Mac.</p>
 <p>For Windows, start with <a href="http://railsinstaller.org/">RailsInstaller</a> from Engine Yard.</p>
 <p>For Ubuntu Linux, there are several useful guides:</p>
-<ul><li><a href="http://www.mirceagoia.com/downloads/Installation_Ruby-on-Rails_for_Ubuntu-Linux-Mint_www-mirceagoia-com.pdf">Mircea Goia’s tutorial</a>.</li>
+<ul><li><a href="http://www.mirceagoia.com/downloads/Installation_Ruby-on-Rails_for_Ubuntu-Linux-Mint_www-mirceagoia-com.pdf">Mircea Goia’s tutorial</a></li>
 	<li><a href="https://github.com/joshfng/railsready">Joshua Frye’s Rails Ready setup script</a></li>
 	<li><a href="http://ryanbigg.com/2010/12/ubuntu-ruby-rvm-rails-and-you/">Ryan Bigg’s tutorial</a></li>
 	<li><a href="http://www.rubyinside.com/how-to-install-ruby-1-9-2-and-rails-3-0-on-ubuntu-10-10-4148.html">Peter Cooper’s screencast</a></li>
@@ -136,6 +136,17 @@ $ rails -v
 </pre>
 <p>Or you can get a specific version (sometimes the newest version is broken).</p>
 <p>For example, if you want the Rails 3.1.0 final release, install with <code>--version=3.1.0</code>.</p>
+<h4>JavaScript Runtime for Ubuntu</h4>
+<p>For Rails 3.1, a JavaScript runtime is needed for development on Linux Ubuntu. It is not needed for Mac OS X or Windows.</p>
+<p>For development on Linux Ubuntu, it’s best to install the <a href="http://nodejs.org/">Node.js</a> server-side JavaScript environment:</p>
+<p>
+  <code>sudo apt-get install nodejs</code>
+</p>
+<p>and set it in your <code>$PATH</code>.</p>
+<p>If you don’t install Node.js, you’ll need to add this to the Gemfile for each Rails application you build:</p>
+<pre>
+gem 'therubyracer'
+</pre>
 <h2>Generate a Rails App</h2>
 <p>You can create a test application:</p>
 <pre>
@@ -144,11 +155,6 @@ $ rails new testapp
 <p>Switch to the application root directory to examine and test what you’ve built.</p>
 <pre>
 $ cd testapp
-</pre>
-<h4>Ubuntu Linux</h4>
-<p>For Rails 3.1, a JavaScript runtime is needed for Linux Ubuntu. It is not needed for Mac OS X or Windows. Add this to your Gemfile:</p>
-<pre>
-gem 'therubyracer', '&gt;= 0.9.8'
 </pre>
 <h4>Quick Test</h4>
 <p>For a “smoke test” to see if everything runs, display a list of Rake tasks.</p>
@@ -272,7 +278,7 @@ Consider using bundle exec.
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-11-09 15:13:57</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-11-09 15:33:55</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
