@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>How to Upgrade to Rails 3.1</title>
+    <title>Ruby OpenSSL Certificate Verify Failed</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
@@ -34,34 +34,41 @@
                   <a href="http://railsapps.github.com/">Rails Apps</a>
                   <a href="https://github.com/RailsApps">GitHub Repository</a>
               </div><!-- class="actions" -->
-              <h1>How to Upgrade to Rails 3.1</h1>
+              <h1>Ruby OpenSSL Certificate Verify Failed</h1>
               <div class="content wikistyle gollum textile">
-                <h1>How to Upgrade to Rails 3.1</h1>
-<p>Here you’ll find detailed instructions on how to update an app from Rails 3.0 to Rails 3.1.</p>
-<p>You can find <a href="http://railsapps.github.com/">Rails 3.1 example apps</a> in the <a href="https://github.com/RailsApps">Rails Apps</a> repository.</p>
-<h2>Articles</h2>
-<table>
-  <tr><th>Author </th>
-		<th>Twitter </th>
-		<th>Article </th>
-		<th>Date </th>
-	</tr>
-  <tr><td> Fabio Akita </td>
-		<td> @AkitaOnRails </td>
-		<td> <a href="http://www.akitaonrails.com/2011/05/31/migrating-my-blog-over-to-rails-3-1-beta">Migrating my blog over to Rails 3.1 beta</a> </td>
-		<td> 31 May 2011 </td>
-	</tr>
-  <tr><td> Richard Taylor </td>
-		<td> @moomerman </td>
-		<td> <a href="https://moocode.com/posts/1-deploying-a-rails-3-1-application-to-production">Deploying a Rails 3.1 Application to Production</a> </td>
-		<td> 26 May 26 2011 </td>
-	</tr>
-  <tr><td> David Rice </td>
-		<td> @davidjrice </td>
-		<td> <a href="http://davidjrice.co.uk/2011/05/25/how-to-upgrade-a-rails-application-to-version-3-1-0.html">How to Upgrade to Rails 3.1.0</a> </td>
-		<td> 25 May 2011 </td>
-	</tr>
-</table>
+                <h1>Ruby OpenSSL Certificate Verify Failed</h1>
+<p>This is a note for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
+<h2>Error</h2>
+<p>You may received an error message if you’ve tried to create a new Rails application using an application template hosted on GitHub.</p>
+<p>For example, you may have entered</p>
+<pre>
+$ rails new myapp -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-mongoid-devise-template.rb -T -O
+</pre>
+<p>and seen the following error message:</p>
+<pre>
+SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)
+</pre>
+<p>The Ruby language interpreter uses OpenSSL to connect to GitHub to request an application template file. GitHub requires all connections to be made using <span class="caps">SSL</span>. The connection failed because OpenSSL was unable to verify the server certificate.</p>
+<p>This can happen when the certificate file on your computer is out of date, missing, or can’t be found.</p>
+<h2>Solution for Mac OS 10.6.8</h2>
+<p>Download a certificate file:</p>
+<pre>
+$ cd /opt/local/etc/openssl
+$ sudo curl -O http://curl.haxx.se/ca/cacert.pem
+$ sudo mv cacert.pem cert.pem
+</pre>
+<p>
+  <em>Doesn’t work for you? Please add to the comments below.</em>
+</p>
+<h2>Solution for Windows</h2>
+<p>You can try the hack offered here: <a href="http://blog.dominicsayers.com/2011/08/16/howto-use-a-rails-template-from-github-on-windows/">How to Use an Application Template from Github when You’re Developing in Rails on Windows</a></p>
+<p>
+  <em>Any advice to offer? Please add to the comments below.</em>
+</p>
+<h2>Solution for Ubuntu</h2>
+<p>
+  <em>Any advice to offer? Please add to the comments below.</em>
+</p>
               </div><!-- class="content" -->
               <div class="comments">
                 <div class="content wikistyle gollum">
@@ -74,8 +81,8 @@
                     var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
 
                     // The following are highly recommended additional parameters.
-                    // var disqus_identifier = 'upgrading-to-rails-3-1.html';
-                    // var disqus_url = 'http://railsapps.github.com/upgrading-to-rails-3-1.html';
+                    // var disqus_identifier = 'openssl-certicate-verify-failed.html';
+                    // var disqus_url = 'http://railsapps.github.com/openssl-certicate-verify-failed.html';
 
                     /* * * DON'T EDIT BELOW THIS LINE * * */
                     (function() {

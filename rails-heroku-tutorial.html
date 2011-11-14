@@ -189,6 +189,18 @@ $ heroku addons:add zerigo_dns:basic
 $ heroku domains:add mydomain.com
 </pre>
 <p>As soon as <span class="caps">DNS</span> records propagate (usually a few minutes but sometimes longer), your app should be running at <a href="http://mydomain.com/">http://mydomain.com/</a>.</p>
+<h4>Usin Subdomains</h4>
+<p>You’ll need to enable “wildcard domains” if you want your application to accommodate arbitrary subdomains (for example, a different subdomain for each user account),</p>
+<p>
+  <code>$ heroku addons:add wildcard_domains</code>
+</p>
+<p>
+  <code>$ heroku domains:add *.mydomain.com</code>
+</p>
+<p>You can check that everything has been added correctly by running:</p>
+<p>
+  <code>$ heroku info --app myapp</code>
+</p>
 <h3>Troubleshooting</h3>
 <p>Your best source for help with Heroku is <a href="http://stackoverflow.com/questions/tagged/heroku">Stack Overflow</a>. For problems, please ask on <a href="http://stackoverflow.com/">Stack Overflow</a>.</p>
 <p>You can also check the <a href="http://devcenter.heroku.com/">Heroku Dev Center</a> or the <a href="http://groups.google.com/group/heroku/">Heroku Google Group</a>.</p>
@@ -243,7 +255,7 @@ production:
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-11-09 15:33:55</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-11-13 17:39:22</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
