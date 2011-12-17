@@ -37,6 +37,8 @@
               <h1>Rails 3.1 on Heroku</h1>
               <div class="content wikistyle gollum textile">
                 <h1>Rails 3.1 on Heroku</h1>
+<h4>by Daniel Kehoe</h4>
+<h4>Last updated 17 December 2011</h4>
 <p>Here’s how to set up an app with Rails 3.1 on Heroku. Heroku provides low cost, easily configured Rails 3.1 application hosting.</p>
 <p>This is a tutorial for developers using the Rails 3.1 example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>If you find this tutorial helpful, be sure to take a look at the tutorials and example apps for <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, and Cucumber</a>, <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid and Devise</a>, <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid and OmniAuth</a>, or <a href="https://github.com/RailsApps/rails3-subdomains">Subdomains with Devise and Mongoid</a>.</p>
@@ -66,23 +68,32 @@ heroku accounts:set work
 </pre>
 <h3>Database Configuration</h3>
 <p>Heroku uses PostgreSQL as its default database. Heroku does not support SQLite or MySQL, the databases most commonly used for local development.</p>
+<h4>The MongoDB Alternative</h4>
 <p>I recommend considering MongoDB as an alternative. It simplifies development by eliminating the schemas and migrations required by SQLite, MySQL, or PostgreSQL. The <a href="http://addons.heroku.com/mongohq">MongoHQ</a> add-on is offered by Heroku and provides a hosted MongoDB datastore.</p>
 <p>If you decide to try MongoDB, take a look at the example apps (with detailed tutorials) that combine <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid with Devise</a> or <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid with OmniAuth</a>.</p>
-<h4>Replace SQLite with PostgreSQL</h4>
-<p>If you are developing locally using SQLite, you will need to switch to PostgreSQL for deployment to Heroku. If you don’t want to develop using PostgreSQL locally, you can set up your Gemfile to use SQLite for development and PostgreSQL for production.</p>
+<h4>Use SQLite Locally and PostgreSQL on Heroku</h4>
+<p>You can develop locally using SQLite and use the PostgreSQL database on Heroku. If you don’t want to develop using PostgreSQL locally, you can set up your Gemfile to use SQLite for development and PostgreSQL for production.</p>
 <p>To switch from SQLite to PostgreSQL for deployment to Heroku, edit your Gemfile and change this line:</p>
 <p>
   <code>gem 'sqlite3'</code>
 </p>
 <p>To this:</p>
 <pre>
-group :production do
-  gem 'pg'
-end
 group :development, :test do
   gem 'sqlite3'
 end
 </pre>
+<p>There is no need to include <code>gem 'pg'</code> in your Gemfile. Heroku only needs to know that you aren’t using sqlite3 for production. If no database gem is specified for production, Heroku will assume you are using PostgreSQL for production.</p>
+<h4>Use PostgreSQL Locally and on Heroku</h4>
+<p>If you’d like to switch from SQLite to PostgreSQL locally and use PostgreSQL on Heroku for production, edit your Gemfile and change this line:</p>
+<p>
+  <code>gem 'sqlite3'</code>
+</p>
+<p>To this:</p>
+<pre>
+@gem 'pg'@
+</pre>
+<p>You’ll have to install PostgreSQL locally before running <code>bundle install</code>.</p>
 <h3>Adding a Rails Server</h3>
 <p>By default, when you run <code>rails server</code> locally, Rails launches the simple Webrick web server. For production apps Heroku recommends using a more robust webserver such as <a href="http://code.macournoyer.com/thin/">Thin</a>.</p>
 <p>To use Thin, add the gem to your Gemfile:</p>
@@ -255,7 +266,7 @@ production:
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-12-16 13:20:08</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-12-17 14:23:55</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
