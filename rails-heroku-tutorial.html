@@ -38,7 +38,7 @@
               <div class="content wikistyle gollum textile">
                 <h1>Rails 3.1 on Heroku</h1>
 <h4>by Daniel Kehoe</h4>
-<h4>Last updated 17 December 2011</h4>
+<h4>Last updated 21 December 2011</h4>
 <p>Here’s how to set up an app with Rails 3.1 on Heroku. Heroku provides low cost, easily configured Rails 3.1 application hosting.</p>
 <p>This is a tutorial for developers using the Rails 3.1 example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>If you find this tutorial helpful, be sure to take a look at the tutorials and example apps for <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, and Cucumber</a>, <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid and Devise</a>, <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid and OmniAuth</a>, or <a href="https://github.com/RailsApps/rails3-subdomains">Subdomains with Devise and Mongoid</a>.</p>
@@ -82,8 +82,11 @@ heroku accounts:set work
 group :development, :test do
   gem 'sqlite3'
 end
+group :production do
+  gem 'pg'
+end
 </pre>
-<p>There is no need to include <code>gem 'pg'</code> in your Gemfile. Heroku only needs to know that you aren’t using sqlite3 for production. If no database gem is specified for production, Heroku will assume you are using PostgreSQL for production.</p>
+<p>Run <code>bundle install --without production</code> to update your gems. The flag <code>--without production</code> allows you to skip local installation of the pg gem; otherwise, you will have to install PostgreSQL locally (the pg gem won’t install if PostgreSQL is not installed).</p>
 <h4>Use PostgreSQL Locally and on Heroku</h4>
 <p>If you’d like to switch from SQLite to PostgreSQL locally and use PostgreSQL on Heroku for production, edit your Gemfile and change this line:</p>
 <p>
@@ -159,6 +162,10 @@ production:
 <p>Push your application to Heroku:</p>
 <p>
   <code>$ git push heroku master</code>
+</p>
+<p>If you are using SQLite, MySQL, or PostgreSQL, you’ll need to run your database migrations:</p>
+<p>
+  <code>$ heroku run rake db:migrate</code>
 </p>
 <p>Initialize your application database:</p>
 <p>
@@ -266,7 +273,7 @@ production:
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-12-17 14:23:55</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-12-21 11:21:18</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
