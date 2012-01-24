@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Rails 3.1 on Heroku</title>
+    <title>Rails 3.2 on Heroku</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
@@ -34,21 +34,30 @@
                   <a href="http://railsapps.github.com/">Rails Apps</a>
                   <a href="https://github.com/RailsApps">GitHub Repository</a>
               </div><!-- class="actions" -->
-              <h1>Rails 3.1 on Heroku</h1>
+              <h1>Rails 3.2 on Heroku</h1>
               <div class="content wikistyle gollum textile">
-                <h1>Rails 3.1 on Heroku</h1>
+                <h1>Rails 3.2 on Heroku</h1>
 <h4>by Daniel Kehoe</h4>
-<h4>Last updated 21 December 2011</h4>
-<p>Here’s how to set up an app with Rails 3.1 on Heroku. Heroku provides low cost, easily configured Rails 3.1 application hosting.</p>
-<p>This is a tutorial for developers using the Rails 3.1 example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<p>If you find this tutorial helpful, be sure to take a look at the tutorials and example apps for <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, and Cucumber</a>, <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid and Devise</a>, <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid and OmniAuth</a>, or <a href="https://github.com/RailsApps/rails3-subdomains">Subdomains with Devise and Mongoid</a>.</p>
-<h2>Set Up Heroku</h2>
-<p>You’ll be using Heroku’s Celadon Cedar stack which requires Ruby 1.9.2.</p>
-<p>For more detail, see Heroku’s document <a href="http://devcenter.heroku.com/articles/rails3">Getting started with Rails 3 on Heroku/Cedar</a>. See also <a href="http://devcenter.heroku.com/articles/rails31_heroku_cedar">Rails 3.1 on Heroku Cedar</a>.</p>
-<h3>Heroku Account</h3>
+<h4>Last updated 23 January 2012</h4>
+<p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
+<p>This is a tutorial for developers using the Rails 3.2 example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. The Rails Apps project provides tutorials and example apps for <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, and Cucumber</a>, <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid and Devise</a>, <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid and OmniAuth</a>, or <a href="https://github.com/RailsApps/rails3-subdomains">Subdomains with Devise and Mongoid</a>.</p>
+<h2>Heroku Gem</h2>
+<p>Add the Heroku gem to your application’s Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
+<p>
+  <code>gem "heroku"</code>
+</p>
+<p>Install your gems with:</p>
+<p>
+  <code>$ bundle install</code>
+</p>
+<p>If you haven’t done so, add your public key after installing the heroku gem so that you can use git to push or clone Heroku app repositories. For more information, see Heroku’s documentation <a href="http://devcenter.heroku.com/articles/keys">Managing Your <span class="caps">SSH</span> Keys</a>.</p>
+<p>As an alternative to installing the Heroku gem, Heroku offers a stand-alone “Heroku Toolbelt” which installs the Heroku command-line client and the Git revision control system. You can use either the Heroku gem or the Heroku Toolbelt. For more information, see Heroku’s documentation <a href="http://devcenter.heroku.com/articles/heroku-command">Installing the Heroku <span class="caps">CLI</span></a>.</p>
+<h2>Heroku Account</h2>
 <p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
-<h4>Using a Client’s Account</h4>
-<p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). David Dollar’s <a href="https://github.com/ddollar/heroku-accounts">heroku-accounts plugin</a> will help if you must use multiple accounts on Heroku.</p>
+<h3>Using a Client’s Account</h3>
+<p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. Log in to your client’s account on Heroku and under “My Apps” and “General Info” you’ll find a form where you can add yourself as a collaborator.</p>
+<h3>Deploying for Multiple Accounts</h3>
+<p>David Dollar’s <a href="https://github.com/ddollar/heroku-accounts">heroku-accounts plugin</a> will help if you must use multiple accounts on Heroku. With the heroku-accounts plugin, you can configure each application to deploy to the appropriate account.</p>
 <p>To install the heroku-accounts plugin:</p>
 <pre>
 heroku plugins:install git://github.com/ddollar/heroku-accounts.git
@@ -66,14 +75,11 @@ $ heroku accounts
 # in project root
 heroku accounts:set work
 </pre>
-<h3>Database Configuration</h3>
+<h2>Database Configuration</h2>
 <p>Heroku uses PostgreSQL as its default database. Heroku does not support SQLite or MySQL, the databases most commonly used for local development.</p>
-<h4>The MongoDB Alternative</h4>
-<p>I recommend considering MongoDB as an alternative. It simplifies development by eliminating the schemas and migrations required by SQLite, MySQL, or PostgreSQL. The <a href="http://addons.heroku.com/mongohq">MongoHQ</a> add-on is offered by Heroku and provides a hosted MongoDB datastore.</p>
-<p>If you decide to try MongoDB, take a look at the example apps (with detailed tutorials) that combine <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid with Devise</a> or <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid with OmniAuth</a>.</p>
-<h4>Use SQLite Locally and PostgreSQL on Heroku</h4>
-<p>You can develop locally using SQLite and use the PostgreSQL database on Heroku. If you don’t want to develop using PostgreSQL locally, you can set up your Gemfile to use SQLite for development and PostgreSQL for production.</p>
-<p>To switch from SQLite to PostgreSQL for deployment to Heroku, edit your Gemfile and change this line:</p>
+<h3>Use SQLite Locally and PostgreSQL on Heroku</h3>
+<p>As a general practice, you should use the same environment for local development as you do for production, which means using the same database systems locally and in production. In practice, with ActiveRecord isolating the database system, this may not be critically important.</p>
+<p>If you don’t want to develop using PostgreSQL locally, you can set up your Gemfile to use SQLite for development and PostgreSQL for production. To switch from SQLite to PostgreSQL for deployment to Heroku, edit your Gemfile and change this line:</p>
 <p>
   <code>gem 'sqlite3'</code>
 </p>
@@ -87,59 +93,19 @@ group :production do
 end
 </pre>
 <p>Run <code>bundle install --without production</code> to update your gems. The flag <code>--without production</code> allows you to skip local installation of the pg gem; otherwise, you will have to install PostgreSQL locally (the pg gem won’t install if PostgreSQL is not installed).</p>
-<h4>Use PostgreSQL Locally and on Heroku</h4>
-<p>If you’d like to switch from SQLite to PostgreSQL locally and use PostgreSQL on Heroku for production, edit your Gemfile and change this line:</p>
+<h3>Use PostgreSQL Locally and on Heroku</h3>
+<p>If you’d like to use PostgreSQL both locally and on Heroku for production, edit your Gemfile and change this line:</p>
 <p>
   <code>gem 'sqlite3'</code>
 </p>
 <p>To this:</p>
-<pre>
-@gem 'pg'@
-</pre>
+<p>
+  <code>gem 'pg'</code>
+</p>
 <p>You’ll have to install PostgreSQL locally before running <code>bundle install</code>.</p>
-<h3>Adding a Rails Server</h3>
-<p>By default, when you run <code>rails server</code> locally, Rails launches the simple Webrick web server. For production apps Heroku recommends using a more robust webserver such as <a href="http://code.macournoyer.com/thin/">Thin</a>.</p>
-<p>To use Thin, add the gem to your Gemfile:</p>
-<p>
-  <code>gem "thin"</code>
-</p>
-<p>Heroku recommends adding a Procfile to your app. Procfile is a mechanism for declaring what commands are run when your web app runs on the Heroku platform. A Procfile is not necessary to deploy a Rails app to Heroku, but Heroku recommends it for greater control and flexibility over your app. If you add a Procfile, you can specify Thin as your web process in the Procfile.</p>
-<p>For simplicity, there’s no need to create a Procfile if you use Thin. If you declare the Thin gem in your Gemfile, Heroku sets up an appropriate web process without requiring a Procfile.</p>
-<h3>Heroku Gem</h3>
-<p>Make sure the Heroku gem is in your Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
-<p>
-  <code>gem "heroku"</code>
-</p>
-<h3>Install Gems</h3>
-<p>Install your gems with:</p>
-<p>
-  <code>$ bundle install</code>
-</p>
-<p>If you haven’t done so, add your public key after installing the heroku gem so that you can use git to push or clone Heroku app repositories. See <a href="http://devcenter.heroku.com/articles/heroku-command">http://devcenter.heroku.com/articles/heroku-command</a> for details.</p>
-<h3>Rails 3.1 for Heroku</h3>
-<p>Heroku supports Rails 3.1 on Heroku’s Cedar stack. Heroku will precompile Javascript and <span class="caps">CSS</span> assets when you deploy your app. Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed for Rails 3.1 and should not be used.</p>
-<h3>Commit to Git</h3>
-<p>Store the modified application in the Git repository:</p>
-<p>
-  <code>$ git commit -am "Configured for deployment to Heroku"</code>
-</p>
-<h3>Create Your Application on Heroku</h3>
-<p>Use the Heroku create command to create and name your new app.</p>
-<p>
-  <code>$ heroku create _myapp_ --stack cedar</code>
-</p>
-<h3>Check Heroku Configuration</h3>
-<p>You can check that everything has been added correctly by running:</p>
-<p>
-  <code>$ heroku info --app myapp</code>
-</p>
-<h3>Using MongoDB</h3>
-<p>If you are using MongoDB, you can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
-<h4>Enable the MongoHQ Add-on</h4>
-<p>To use MongoDB with your app, enable the add-on with the following command:</p>
-<p>
-  <code>$ heroku addons:add mongohq:free</code>
-</p>
+<h3>The MongoDB Alternative</h3>
+<p>I recommend considering MongoDB as an alternative. It simplifies development by eliminating the schemas and migrations required by SQLite, MySQL, or PostgreSQL. The <a href="http://addons.heroku.com/mongohq">MongoHQ</a> add-on is offered by Heroku and provides a hosted MongoDB datastore.</p>
+<p>If you decide to try MongoDB, take a look at the example apps (with detailed tutorials) that combine <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid with Devise</a> or <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid with OmniAuth</a>.</p>
 <h4>Configure Mongoid</h4>
 <p>By default, the file <strong>config/mongoid.yml</strong> contains this:</p>
 <pre>
@@ -157,12 +123,106 @@ production:
 production:
   uri: &lt;%= ENV['MONGOHQ_URL'] %&gt;
 </pre>
-<p>Be sure to commit these changes to Git before pushing your app to Heroku.</p>
-<h3>Push Your Application to Heroku</h3>
+<h2>Specifying a Rails Server</h2>
+<p>By default, when you run <code>rails server</code> locally, Rails launches the simple Webrick web server. For production apps Heroku recommends using a more robust webserver such as <a href="http://code.macournoyer.com/thin/">Thin</a>.</p>
+<p>To use Thin, add the gem to your Gemfile:</p>
+<p>
+  <code>gem 'thin'</code>
+</p>
+<p>If you want to continue to use Webrick as your local web server, with Thin on Heroku, set up your Gemfile like this:</p>
+<pre>
+group :production do
+  gem 'thin'
+end
+</pre>
+<p>Run <code>bundle install --without production</code> to update your gems.</p>
+<h3>Procfile Not Needed</h3>
+<p>Heroku recommends adding a Procfile to your app. Procfile is a mechanism for declaring what commands are run when your web app runs on the Heroku platform. A Procfile is not necessary to deploy a Rails app to Heroku, but Heroku recommends it for greater control and flexibility over your app. If you add a Procfile, you can specify Thin as your web process in the Procfile.</p>
+<p>For simplicity, there’s no need to create a Procfile if you use Thin. If you declare the Thin gem in your Gemfile, Heroku sets up an appropriate web process without requiring a Procfile.</p>
+<h2>Commit to Git</h2>
+<p>Your application must be committed to a Git repository before you can use Heroku. See <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a> to learn how to set up Git for your application.</p>
+<p>Store the modified application in the Git repository:</p>
+<p>
+  <code>$ git commit -am "Configured for deployment to Heroku"</code>
+</p>
+<h2>Create Your Application on Heroku</h2>
+<p>Use the Heroku create command to create and name your new app.</p>
+<p>
+  <code>$ heroku create myapp --stack cedar</code>
+</p>
+<p>Heroku demands a unique name for every hosted application. Replace “myapp” with something unique. If it is not unique, you’ll see an error, “name is already taken.”</p>
+<h4>Workaround for Ruby 1.9.3</h4>
+<p>If you get a “segmentation fault” failure, you will need to temporarily switch to Ruby 1.9.2 to set up Heroku.</p>
+<p>If you’ve installed Ruby 1.9.2 with rvm, you may be able to easily switch:</p>
+<p>
+  <code>$ rvm use ruby-1.9.2-p290</code>
+</p>
+<p>You’ll need to use an rvm gemset that includes Rails 3.2:</p>
+<p>
+  <code>$ rvm gemset use rails32</code>
+</p>
+<p>Then install the gems needed for your application:</p>
+<p>
+  <code>$ bundle install --without production</code>
+</p>
+<p>You can switch back to Ruby 1.9.3 after you’ve configured Heroku.</p>
+<p>
+  <strong><em>Note:</em> If you have information to share about problems with Ruby 1.9.3 on Heroku, please add a comment or email the author.</strong>
+</p>
+<h3>Check Heroku Configuration</h3>
+<p>You can check that everything has been added correctly by running:</p>
+<p>
+  <code>$ heroku info --app myapp</code>
+</p>
+<h2>Ruby 1.9.3 and Rails 3.2 on Heroku</h2>
+<p>Heroku’s newest stack, “Celadon Cedar,” supports Rails 3.2 but installs Ruby 1.9.2 by default. Ruby 1.9.3 is recommended for Rails 3.2.</p>
+<p>You can configure the Heroku environment to use Ruby 1.9.3.</p>
+<p>At the time this was written (23 January 2012), Ruby 1.9.2 was needed to run these commands (see the workaround described above).</p>
+<p>Install the heroku-labs plugin:</p>
+<p>
+  <code>$ heroku plugins:install http://github.com/heroku/heroku-labs.git</code>
+</p>
+<p>Enable the “user_env_compile” feature (see Heroku’s <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">documentation</a>):</p>
+<p>
+  <code>$ heroku labs:enable user_env_compile -a myapp</code>
+</p>
+<p>Set the RUBY_VERSION variable:</p>
+<p>
+  <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p0</code>
+</p>
+<p>Set the Heroku <span class="caps">PATH</span> config variable to include “bin”:</p>
+<p>
+  <code>$ heroku config:add PATH=bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin</code>
+</p>
+<p>You can check that everything has been configured correctly by running:</p>
+<p>
+  <code>$ heroku config</code>
+</p>
+<h4>Documentation for Rails 3.0 and Rails 3.1</h4>
+<p>Heroku has no specific documentation for Rails 3.2 but the following articles on Rails 3.0 and Rails 3.1 are helpful:</p>
+<ul><li><a href="http://devcenter.heroku.com/articles/rails3">Getting started with Rails 3 on Heroku/Cedar</a></li>
+	<li><a href="http://devcenter.heroku.com/articles/rails31_heroku_cedar">Rails 3.1 on Heroku Cedar</a>.</li>
+</ul><p><em>Note:</em> Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed for Rails 3.2 and should not be used.</p>
+<h2>Using MongoDB</h2>
+<p>If you are using MongoDB, you can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
+<p>To use MongoDB with your app, enable the add-on with the following command:</p>
+<p>
+  <code>$ heroku addons:add mongohq:free</code>
+</p>
+<h4>Troubleshooting Problems Connecting to MongoHQ</h4>
+<p>If you deploy your app and get the error message “failed to connect to any given host:port” or “Failed to connect to a master node at localhost:27017”, the <strong>config/mongoid.yml</strong> file may not have the correct MongoHQ connection parameters.</p>
+<p>The file <strong>config/mongoid.yml</strong> should look like this:</p>
+<pre>
+# set these environment variables on your prod server
+production:
+  uri: &lt;%= ENV['MONGOHQ_URL'] %&gt;
+</pre>
+<h2>Push Your Application to Heroku</h2>
 <p>Push your application to Heroku:</p>
 <p>
   <code>$ git push heroku master</code>
 </p>
+<p><em>Note:</em> If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. Read “Using a Client’s Account” above.</p>
 <p>If you are using SQLite, MySQL, or PostgreSQL, you’ll need to run your database migrations:</p>
 <p>
   <code>$ heroku run rake db:migrate</code>
@@ -171,17 +231,16 @@ production:
 <p>
   <code>$ heroku run rake db:seed</code>
 </p>
-<h4>Using a Client’s Heroku Account</h4>
-<p>If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. First you should read “Using a Client’s Account” above to set the client’s account locally. Then log in to your client’s account on Heroku and under “My Apps” and “General Info” you’ll find a form where you can add yourself as a collaborator.</p>
-<h3>Visit Your Site</h3>
+<p><em>Note:</em> If you’ve switched to Ruby 1.9.2 to configure Heroku, you can switch back to Ruby 1.9.3 to push your application to Heroku. You only need to use Ruby 1.9.2 to run the Heroku command line application.</p>
+<h2>Visit Your Site</h2>
 <p>Open your Heroku site in your default web browser:</p>
 <p>
   <code>$ heroku open</code>
 </p>
 <p>Your app will be running at <a href="http://my-app-name.herokuapp.com/">http://my-app-name.herokuapp.com/</a>.</p>
-<h3>Your Own Domain</h3>
+<h2>Your Own Domain</h2>
 <p>You’ll likely want to use your own domain name for your app. The easiest way to set up your own domain with Heroku is to use the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>. See <a href="http://devcenter.heroku.com/articles/zerigo">Heroku’s article about setting up Zerigo <span class="caps">DNS</span></a> and <a href="http://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for more information.</p>
-<h4>Use Zerigo’s Nameservers</h4>
+<h3>Use Zerigo’s Nameservers</h3>
 <p>Visit your domain registrar and set your domain’s nameserver records to point to Zerigo’s <span class="caps">DNS</span> servers:</p>
 <pre>
 a.ns.zerigo.net
@@ -190,24 +249,24 @@ c.ns.zerigo.net
 d.ns.zerigo.net
 e.ns.zerigo.net
 </pre>
-<h4>Enable Custom Domains</h4>
+<h3>Enable Custom Domains</h3>
 <p>Use the command line to enable Heroku to use a custom domain for your app:</p>
 <pre>
 $ heroku addons:add custom_domains:basic
 </pre>
-<h4>Enable the Zerigo <span class="caps">DNS</span> Add-on</h4>
+<h3>Enable the Zerigo <span class="caps">DNS</span> Add-on</h3>
 <p>Use the command line to enable the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>:</p>
 <pre>
 $ heroku addons:add zerigo_dns:basic
 </pre>
-<h4>Set Your Domain Name</h4>
+<h3>Set Your Domain Name</h3>
 <p>With the Zerigo <span class="caps">DNS</span> add-on enabled, domain names added via the command line will automatically be added to Zerigo’s <span class="caps">DNS</span> servers. Updates happen instantly and Heroku keeps the <span class="caps">DNS</span> records up-to-date should Heroku change the IP addresses of its servers.</p>
 <p>This command tells Heroku that your app should respond to requests to “mydomain.com”:</p>
 <pre>
 $ heroku domains:add mydomain.com
 </pre>
 <p>As soon as <span class="caps">DNS</span> records propagate (usually a few minutes but sometimes longer), your app should be running at <a href="http://mydomain.com/">http://mydomain.com/</a>.</p>
-<h4>Usin Subdomains</h4>
+<h3>Using Subdomains</h3>
 <p>You’ll need to enable “wildcard domains” if you want your application to accommodate arbitrary subdomains (for example, a different subdomain for each user account),</p>
 <p>
   <code>$ heroku addons:add wildcard_domains</code>
@@ -219,23 +278,14 @@ $ heroku domains:add mydomain.com
 <p>
   <code>$ heroku info --app myapp</code>
 </p>
-<h3>Troubleshooting</h3>
+<h2>Troubleshooting</h2>
 <p>Your best source for help with Heroku is <a href="http://stackoverflow.com/questions/tagged/heroku">Stack Overflow</a>. For problems, please ask on <a href="http://stackoverflow.com/">Stack Overflow</a>.</p>
 <p>You can also check the <a href="http://devcenter.heroku.com/">Heroku Dev Center</a> or the <a href="http://groups.google.com/group/heroku/">Heroku Google Group</a>.</p>
-<h4>Check the Heroku Logs</h4>
+<h3>Check the Heroku Logs</h3>
 <p>If you get errors, you can troubleshoot by reviewing the log files:</p>
 <p>
   <code>$ heroku logs</code>
 </p>
-<h4>Troubleshooting Problems Connecting to MongoHQ</h4>
-<p>If you get the error message “failed to connect to any given host:port” or “Failed to connect to a master node at localhost:27017”, the <strong>config/mongoid.yml</strong> file may not have the correct MongoHQ connection parameters.</p>
-<p>The file <strong>config/mongoid.yml</strong> should look like this:</p>
-<pre>
-# set these environment variables on your prod server
-production:
-  uri: &lt;%= ENV['MONGOHQ_URL'] %&gt;
-</pre>
-<p>Then push your application to Heroku again with <code>$ git push heroku master</code> and run <code>$ heroku rake db:seed</code> again.</p>
               </div><!-- class="content" -->
               <div class="comments">
                 <div class="content wikistyle gollum">
@@ -273,7 +323,7 @@ production:
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2011-12-21 11:21:18</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2012-01-23 17:50:18</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
