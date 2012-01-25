@@ -151,24 +151,6 @@ end
   <code>$ heroku create myapp --stack cedar</code>
 </p>
 <p>Heroku demands a unique name for every hosted application. Replace “myapp” with something unique. If it is not unique, you’ll see an error, “name is already taken.”</p>
-<h4>Workaround for Ruby 1.9.3</h4>
-<p>If you get a “segmentation fault” failure, you will need to temporarily switch to Ruby 1.9.2 to set up Heroku.</p>
-<p>If you’ve installed Ruby 1.9.2 with rvm, you may be able to easily switch:</p>
-<p>
-  <code>$ rvm use ruby-1.9.2-p290</code>
-</p>
-<p>You’ll need to use an rvm gemset that includes Rails 3.2:</p>
-<p>
-  <code>$ rvm gemset use rails32</code>
-</p>
-<p>Then install the gems needed for your application:</p>
-<p>
-  <code>$ bundle install --without production</code>
-</p>
-<p>You can switch back to Ruby 1.9.3 after you’ve configured Heroku.</p>
-<p>
-  <strong><em>Note:</em> If you have information to share about problems with Ruby 1.9.3 on Heroku, please add a comment or email the author.</strong>
-</p>
 <h3>Check Heroku Configuration</h3>
 <p>You can check that everything has been added correctly by running:</p>
 <p>
@@ -177,7 +159,6 @@ end
 <h2>Ruby 1.9.3 and Rails 3.2 on Heroku</h2>
 <p>Heroku’s newest stack, “Celadon Cedar,” supports Rails 3.2 but installs Ruby 1.9.2 by default. Ruby 1.9.3 is recommended for Rails 3.2.</p>
 <p>You can configure the Heroku environment to use Ruby 1.9.3.</p>
-<p>At the time this was written (23 January 2012), Ruby 1.9.2 was needed to run these commands (see the workaround described above).</p>
 <p>Install the heroku-labs plugin:</p>
 <p>
   <code>$ heroku plugins:install http://github.com/heroku/heroku-labs.git</code>
@@ -231,7 +212,6 @@ production:
 <p>
   <code>$ heroku run rake db:seed</code>
 </p>
-<p><em>Note:</em> If you’ve switched to Ruby 1.9.2 to configure Heroku, you can switch back to Ruby 1.9.3 to push your application to Heroku. You only need to use Ruby 1.9.2 to run the Heroku command line application.</p>
 <h2>Visit Your Site</h2>
 <p>Open your Heroku site in your default web browser:</p>
 <p>
@@ -323,7 +303,7 @@ $ heroku domains:add mydomain.com
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2012-01-24 14:41:51</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2012-01-25 13:22:30</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
