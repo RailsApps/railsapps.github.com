@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Rails 3.2 on Heroku</title>
+    <title>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
@@ -34,11 +34,11 @@
                   <a href="http://railsapps.github.com/">Rails Apps</a>
                   <a href="https://github.com/RailsApps">GitHub Repository</a>
               </div><!-- class="actions" -->
-              <h1>Rails 3.2 on Heroku</h1>
+              <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</h1>
               <div class="content wikistyle gollum textile">
-                <h1>Rails 3.2 on Heroku</h1>
+                <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</h1>
 <h4>by Daniel Kehoe</h4>
-<h4>Last updated 23 January 2012</h4>
+<h4>Last updated 27 January 2012</h4>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p>This is a tutorial for developers using the Rails 3.2 example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. The Rails Apps project provides tutorials and example apps for <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, and Cucumber</a>, <a href="https://github.com/RailsApps/rails3-mongoid-devise">Mongoid and Devise</a>, <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">Mongoid and OmniAuth</a>, or <a href="https://github.com/RailsApps/rails3-subdomains">Subdomains with Devise and Mongoid</a>.</p>
 <h2>Heroku Gem</h2>
@@ -175,6 +175,7 @@ end
 <p>
   <code>$ heroku config:add PATH=bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin</code>
 </p>
+<p>(Yes, the library path includes “1.9.1”: that’s not a typo.)</p>
 <p>You can check that everything has been configured correctly by running:</p>
 <p>
   <code>$ heroku config</code>
@@ -204,13 +205,27 @@ production:
   <code>$ git push heroku master</code>
 </p>
 <p><em>Note:</em> If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. Read “Using a Client’s Account” above.</p>
-<p>If you are using SQLite, MySQL, or PostgreSQL, you’ll need to run your database migrations:</p>
+<p>You’ll need to run your database migrations if you are using SQLite, MySQL, or PostgreSQL:</p>
 <p>
   <code>$ heroku run rake db:migrate</code>
 </p>
-<p>Initialize your application database:</p>
+<p>Initialize your application database if your application requires it:</p>
 <p>
   <code>$ heroku run rake db:seed</code>
+</p>
+<p>These two commands can be combined as:</p>
+<p>
+  <code>$ heroku run rake db:setup</code>
+</p>
+<h4>PostgreSQL Database Reset</h4>
+<p>Heroku doesn’t support <code>rake db:reset</code>.</p>
+<p>Need to reset your Heroku PostgreSQL database? Here’s how:</p>
+<p>
+  <code>$ heroku pg:reset SHARED_DATABASE --confirm myapp</code>
+</p>
+<p>Don’t forget to restart your application or you won’t see any changes:</p>
+<p>
+  <code>$ heroku restart</code>
 </p>
 <h2>Visit Your Site</h2>
 <p>Open your Heroku site in your default web browser:</p>
@@ -218,6 +233,32 @@ production:
   <code>$ heroku open</code>
 </p>
 <p>Your app will be running at <a href="http://my-app-name.herokuapp.com/">http://my-app-name.herokuapp.com/</a>.</p>
+<h2>Enabling Email</h2>
+<p>Unless you enable email on Heroku, you’ll get errors when your application tries to send email from Heroku.</p>
+<p>Heroku offers several options for sending email from your Rails application. See Heroku’s documentation <a href="http://devcenter.heroku.com/articles/smtp">Sending Email from Your App</a>.</p>
+<p>If you’re sending test emails during development, Gmail is the easiest option.</p>
+<p>To use Gmail from Heroku, add the following to your <em>config/environments/production.rb</em> file:</p>
+<pre>
+config.action_mailer.default_url_options = { :host =&gt; 'myapp.heroku.com' }
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = false
+config.action_mailer.default :charset =&gt; "utf-8"
+config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "myapp.heroku.com",
+  authentication: "plain",
+  enable_starttls_auto: true,
+  user_name: ENV["GMAIL_USERNAME"],
+  password: ENV["GMAIL_PASSWORD"]
+}
+</pre>
+<p>To avoid storing your Gmail username and password in your Git repository, use environment variables to pass the username and password to your application. See Heroku’s documentation <a href="http://devcenter.heroku.com/articles/config-vars">Configuration and Config Vars</a>.</p>
+<p>Set your Gmail username and password as Heroku environment variables:</p>
+<pre>
+$ heroku config:add GMAIL_USERNAME=no-reply@example.com GMAIL_PASSWORD=please
+</pre>
 <h2>Your Own Domain</h2>
 <p>You’ll likely want to use your own domain name for your app. The easiest way to set up your own domain with Heroku is to use the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>. See <a href="http://devcenter.heroku.com/articles/zerigo">Heroku’s article about setting up Zerigo <span class="caps">DNS</span></a> and <a href="http://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for more information.</p>
 <h3>Use Zerigo’s Nameservers</h3>
@@ -259,13 +300,13 @@ $ heroku domains:add mydomain.com
   <code>$ heroku info --app myapp</code>
 </p>
 <h2>Troubleshooting</h2>
-<p>Your best source for help with Heroku is <a href="http://stackoverflow.com/questions/tagged/heroku">Stack Overflow</a>. For problems, please ask on <a href="http://stackoverflow.com/">Stack Overflow</a>.</p>
-<p>You can also check the <a href="http://devcenter.heroku.com/">Heroku Dev Center</a> or the <a href="http://groups.google.com/group/heroku/">Heroku Google Group</a>.</p>
-<h3>Check the Heroku Logs</h3>
-<p>If you get errors, you can troubleshoot by reviewing the log files:</p>
+<p>When you get errors, troubleshoot by reviewing the log files:</p>
 <p>
   <code>$ heroku logs</code>
 </p>
+<h4>Where to Get Help</h4>
+<p>Your best source for help with Heroku is <a href="http://stackoverflow.com/questions/tagged/heroku">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<p>You can also check the <a href="http://devcenter.heroku.com/">Heroku Dev Center</a> or the <a href="http://groups.google.com/group/heroku/">Heroku Google Group</a>.</p>
               </div><!-- class="content" -->
               <div class="comments">
                 <div class="content wikistyle gollum">
@@ -303,7 +344,7 @@ $ heroku domains:add mydomain.com
               <div class="admin">
                 <small>Corrections? Additions? You can edit this page <a href="https://github.com/railsapps/railsapps.github.com/wiki/_pages">on the wiki</a>.</small>
                 <div style="float: right;">
-                  <small>Last edited by <b>Daniel Kehoe</b>, 2012-01-26 16:54:24</small>
+                  <small>Last edited by <b>Daniel Kehoe</b>, 2012-01-27 12:45:27</small>
                 </div>
               </div><!-- class="admin" -->
             </div><!-- class="main" -->
