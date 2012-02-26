@@ -50,7 +50,7 @@
       <h1>Read This Before Installing Rails 3.2</h1>
 <h4>by Daniel Kehoe</h4>
 <blockquote>
-<p>Last updated 16 February 2012</p>
+<p>Last updated 25 February 2012</p>
 </blockquote>
 <p>Installing Rails 3.2.1: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
@@ -80,10 +80,11 @@
 <p><em>Recommended:</em> You should use rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, to create a new gemset and install the new Rails version. Then you can switch between versions if necessary.</p>
 <p><em>Not recommended:</em> If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get the newest version of Rails. But it is well worth the effort to install and use rvm to manage Rails versions.</p>
 <h4>Ruby, gcc, and rvm</h4>
-<p>You’ll need to install Ruby 1.9.3 on your computer using <a href="http://rvm.beginrescueend.com/">rvm</a>. Ruby may already be installed on your computer. You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm. If you already have Ruby 1.9.3 but are not using rvm, I recommend installing rvm and a fresh version of Ruby 1.9.3 (detailed instructions below).</p>
+<p>You’ll need to install Ruby 1.9.3 on your computer using <a href="http://rvm.beginrescueend.com/">rvm</a>. Ruby may already be installed on your computer (Mac OS X 10.7 comes with Ruby 1.8.7 preinstalled). You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm. If you already have Ruby 1.9.3 but are not using rvm, I recommend installing rvm and a fresh version of Ruby 1.9.3 (detailed instructions below).</p>
+<p>Sam Stephenson offers an alternative to rvm named <a href="https://github.com/sstephenson/rbenv">rbenv</a> that lets you switch between multiple versions of Ruby. With Jamis Buck’s <a href="https://github.com/jamis">rbenv-gemset</a> you can switch between gemsets as well. The utilities rbenv and rbenv-gemset are less “magic” than Wayne Seguin’s rvm and can be useful if you encounter issues with rvm.</p>
 <p>You need a C language compiler to install Ruby and any gems that require native extensions. Linux operating systems include the necessary <a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection">gcc compiler</a>. Default installations of Windows or Mac OS X don’t include gcc.</p>
 <h4>Preparing a Mac</h4>
-<p>To prepare a Mac for installation of Ruby 1.9.3, you could <a href="http://itunes.apple.com/us/app/xcode/id448457090">install XCode</a> for free from the Mac App Store to get development tools including a C language compiler. XCode includes <a href="http://en.wikipedia.org/wiki/Clang">clang</a>, a gcc replacement. <a href="http://en.wikipedia.org/wiki/Xcode">XCode</a> is a huge tool suite (2.5GB) and may take many minutes to download. Therefore, unless you are going to use XCode for other reasons, I recommend using Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler before attempting to install Ruby. See a guide to <a href="http://installfest.railsbridge.org/installfest/macintosh">Installing Rails on Macintosh</a> from Railsbridge Installfest for step-by-step instructions.</p>
+<p>To prepare a Mac for installation of Ruby 1.9.3, you could <a href="http://itunes.apple.com/us/app/xcode/id497799835?mt=12">install XCode</a> for free from the Mac App Store to get development tools including a C language compiler. XCode includes <a href="http://en.wikipedia.org/wiki/Clang">clang</a>, a gcc replacement based on the <a href="http://en.wikipedia.org/wiki/LLVM"><span class="caps">LLVM</span></a> compiler project. <a href="http://en.wikipedia.org/wiki/Xcode">XCode</a> is a huge tool suite (1.35GB) and may take many minutes to download. Therefore, unless you are going to use XCode for other reasons, I recommend using Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler before attempting to install Ruby. See a guide to <a href="http://installfest.railsbridge.org/installfest/macintosh">Installing Rails on Macintosh</a> from Railsbridge Installfest for step-by-step instructions.</p>
 <h4>Preparing Ubuntu Linux</h4>
 <p>To install Ruby 1.9.3 on Ubuntu Linux, there are several useful guides:</p>
 <ul><li><a href="http://installfest.railsbridge.org/installfest/ubuntu">Installing Rails on Ubuntu</a> from Railsbridge Installfest</li>
@@ -92,7 +93,7 @@
 	<li><a href="http://ryanbigg.com/2010/12/ubuntu-ruby-rvm-rails-and-you/">Ryan Bigg’s tutorial</a></li>
 	<li><a href="http://www.rubyinside.com/how-to-install-ruby-1-9-2-and-rails-3-0-on-ubuntu-10-10-4148.html">Peter Cooper’s screencast</a></li>
 </ul><h4>Preparing Windows</h4>
-<p><em>Note:</em> Developing Rails applications on Windows can be frustrating. Ruby runs slowly on Windows and some gems may be difficult to install. Most developers use Mac OS X or Ubuntu to develop Rails applications.</p>
+<p><em>Note:</em> You can develop with Rails on Windows but be aware that most developers use Mac OS X or Ubuntu to develop Rails applications. Some gems requiring native extensions may be difficult to install on Windows. Developers (including <a href="http://thecodeshop.github.com/projects.html">The Code Shop</a>) are working to improve the speed of Ruby 1.9.3 on Windows (see a <a href="http://itreallymatters.net/post/12897174267/speedup-ruby-1-9-3-on-windows">benchmark</a>) as earlier versions were frustratingly slow.</p>
 <p>To prepare Windows for installation of Ruby 1.9.3, start with <a href="http://railsinstaller.org/">RailsInstaller</a> from Engine Yard. RailsInstaller includes a “DevKit”: which installs gcc and other Unix build tools. At the time this was written, RailsInstaller included Ruby 1.9.2-p290 and Rails 3.1.1. A version with Ruby 1.9.3 and Rails 3.2 should be out soon. In the meantime, you can use <a href="http://rubyinstaller.org/">Ruby Installer</a> to upgrade Ruby after running RailsInstaller. See a guide to <a href="http://installfest.railsbridge.org/installfest/windows">Installing Rails on Windows</a> from Railsbridge Installfest for step-by-step instructions. On Windows, use <a href="http://github.com/vertiginous/pik">Pik</a> for services similar to rvm.</p>
 <h4>Install or Update <span class="caps">RVM</span></h4>
 <p>Use rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, to manage your Rails versions and create a gemset specifically for each application you build. If you encounter conflicting gem dependencies, you can isolate the errors by creating different gemsets with rvm.</p>
@@ -105,14 +106,16 @@ $ rvm reload
 $ rvm -v
 </pre>
 <h4>Install Ruby 1.9.3</h4>
-<p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 125 was current when this was written.</p>
+<p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 125 was current when this was written. There are other Ruby interpreters (<a href="http://www.rubyenterpriseedition.com/"><span class="caps">REE</span></a> from Phusion, <a href="http://jruby.org/">JRuby</a>, <a href="http://rubini.us/">Rubinius</a>, <a href="http://maglev.github.com/">MagLev</a>, and <a href="http://www.macruby.org/">MacRuby</a>) but Ruby 1.9.3 is your best choice for most Rails application development.</p>
 <p>If you don’t have it already, use rvm to install the recommended version of Ruby and make it your default:</p>
 <pre>
 $ rvm install ruby-1.9.3-p125
 $ rvm --default use ruby-1.9.3-p125
 $ ruby -v
 </pre>
-<p><em>Note:</em> On a Mac, users with Xcode 4.2 encountered issues installing Ruby-1.9.3-p0 with rvm because XCode 4.2 doesn’t use the standard gcc compiler. Reportedly, Ruby-1.9.3-p125 doesn’t have this issue. If you encounter this issue, use Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler.</p>
+<p><em>Note:</em> On a Mac, users with Xcode 4.2 encountered issues installing Ruby with rvm because XCode 4.2 doesn’t use the standard gcc compiler. If you encounter this issue, use Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler.</p>
+<p><em>Note:</em> Installing Ruby 1.9.3-p125 on Mac OS X 10.7.3 with Xcode 4.2.1 requires the following command line switch to succeed: <code>rvm install 1.9.3-p125 --with-gcc=clang</code>.</p>
+<p><em>Note:</em> Have you installed Ruby 1.9.3-p125 on Mac OS X 10.7.3? Did you use Kenneth Reitz’s “<span class="caps">OSX</span> <span class="caps">GCC</span> Installer”? Or did you use Xcode 4.3? Did you need to add a command line switch to rvm such as <code>--with-gcc=clang</code> to succeed? Please leave a comment below.</p>
 <h4>RubyGems</h4>
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
@@ -302,7 +305,7 @@ Consider using bundle exec.
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-02-22 06:30:26</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-02-26 11:50:01</p>
       </div>
     </div>
 
