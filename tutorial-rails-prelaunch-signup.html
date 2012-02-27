@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Rails Tutorial for a Startup Prelaunch Signup Site</title>
+    <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="/css/site.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css" charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+    <script src="/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="/javascript/gollum.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5109366-14']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a href="/" class="brand">RailsApps Project</a>
+        <ul class="pull-right nav">
+          <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
+          <li><a href="https://plus.google.com/117374718581973393536" class="google">Google +</a></li>
+          <li><a href="https://github.com/RailsApps" class="github">GitHub Repository</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container"> 
+    
+    <div class="page-header">
+      <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
+    </div>
+
+    <div class="content wikistyle gollum textile">
+      <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
+<h4>by Daniel Kehoe</h4>
+<p>
+  <em>Last updated 27 February 2012</em>
+</p>
+<p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for Rails 3.2 for a startup prelaunch signup site.</p>
+<p>
+  <strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong>
+</p>
+<p><a href="http://github.com/plataformatec/devise">Devise</a> gives us ready-made authentication and user management. It is easy to build <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> for a Rails application. It is even easier to build an application that simply saves email addresses to a database. We’ll use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password. By using Devise for the prelaunch signup application, you can use the same user database for a post-launch site.</p>
+<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and mark the user account as “inactive.” When you are ready to invite users to try your site (either in beta or post-launch) you can mark the account as “active” and send the user an email invitation.</p>
+<p>This app uses the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  example app as a starter app. You can see a <a href="http://railsapps.github.com/tutorial-rails-mongoid-devise.html">tutorial for the rails3-devise-rspec-cucumber example app</a> to see how the starter app is built.</p>
+<h4>Similar Examples and Tutorials</h4>
+<p>See a list of additional <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
+<p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
+<h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
+<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See a list of <a href="http://railsapps.github.com/best-recommended-learning-rails-books-resources.html">recommended resources for Rails</a>.</p>
+<h2>Before You Start</h2>
+<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
+<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
+<p>To improve this tutorial, please edit this wiki page.</p>
+<h2>Creating the Application</h2>
+<h4>Option One</h4>
+<blockquote>
+<p><ins>Cut and paste the code.</ins></p>
+</blockquote>
+<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
+<h4>Option Two</h4>
+<blockquote>
+<p><ins>Use the ready-made application template to generate the code.</ins></p>
+</blockquote>
+<p>We’ll soon offer an application template to generate a new Rails app with code that closely matches the tutorial. It’s not available yet.</p>
+<h2>Assumptions</h2>
+<p>Before beginning this tutorial, you need to install</p>
+<ul><li>The Ruby language (version 1.9.3)</li>
+	<li>Rails 3.2</li>
+</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br /><code>$ ruby -v</code><br /><code>$ rails -v</code></p>
+<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> and <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for detailed instructions and advice.</p>
+<h2>Create the Rails Application</h2>
+<p>You’ll start by generating the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app using an application template.</p>
+<p>Use the command:</p>
+<pre>
+$ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T
+</pre>
+<p>Use the <code>-T</code> flags to skip Test::Unit files.</p>
+<p>This creates a new Rails app (named <code>rails-prelaunch-signup</code>) on your computer. For this tutorial, the name is “rails-prelaunch-signup.” You can use a different name if you wish.</p>
+<p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
+<p>Would you like to use Haml instead of <span class="caps">ERB</span>? <strong>Yes.</strong><br />
+Would you like to use RSpec instead of TestUnit? <strong>Yes.</strong><br />
+Would you like to use factory_girl for test fixtures with RSpec? <strong>Yes.</strong><br />
+Would you like to use machinist for test fixtures with RSpec? <strong>No.</strong><br />
+Would you like to use Cucumber for your <span class="caps">BDD</span>? <strong>Yes.</strong><br />
+Would you like to use Guard to automate your workflow? <strong>No.</strong><br />
+Would you like to enable the LiveReload guard? <strong>No.</strong><br />
+Would you like to use Devise for authentication? <strong>Yes.</strong><br />
+Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap</strong><br />
+Would you like to use ‘rails-footnotes’ during development? <strong>No.</strong><br />
+Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></p>
+<p>After you create the application, switch to its folder to continue work directly in the application:</p>
+<p>
+  <code>$ cd rails-prelaunch-signup</code>
+</p>
+<h4>Please Remember: Edit the <span class="caps">README</span></h4>
+<p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
+<h2>Set Up Source Control (Git)</h2>
+<p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
+<p>See instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
+<h2>Set Up Gems</h2>
+<h4>About Required Gems</h4>
+<p>The application uses the following gems:</p>
+<ul><li><a href="http://rubygems.org/gems/rails">rails</a></li>
+	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
+	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
+	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
+	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
+	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
+	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
+</ul><h4>Set up Your Gemfile</h4>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> application template sets up your gemfile.</p>
+<p>See an example <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Rails 3.2 Gemfile</a>.</p>
+<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> for advice and details. It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>.</p>
+<h4>Install the Required Gems</h4>
+<p>Install the required gems on your computer:</p>
+<p>
+  <code>$ bundle install</code>
+</p>
+<p>You can check which gems are installed on your computer with:</p>
+<p>
+  <code>$ gem list --local</code>
+</p>
+<p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
+<h2>Haml</h2>
+<p>In this example, we’ll use Haml instead of the default “<span class="caps">ERB</span>” Rails template engine. The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up Haml. You can see details about <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
+<h2>RSpec</h2>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app uses RSpec for unit testing. Run <code>rake -T</code> to check that rake tasks for RSpec are available. You should be able to run <code>rake spec</code> to run all specs provided with the example app.</p>
+<h2>Cucumber</h2>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up Cucumber for specifications and acceptance testing. You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run the Cucumber scenarios and steps provided with the example app.</p>
+<h2>Configure Email for Devise</h2>
+<p>Configure email by modifying</p>
+<p>
+  <strong>config/initializers/devise.rb</strong>
+</p>
+<p>and setting the return email address for emails sent from the application.</p>
+<p>You may need to set values for your mailhost in</p>
+<p>
+  <strong>config/environments/development.rb</strong>
+  <br />
+  <strong>config/environments/production.rb</strong>
+</p>
+<h2>Set Up the Database</h2>
+<p>Set up the database and add the default user by running the commands:</p>
+<pre>
+$ rake db:migrate
+$ rake db:seed
+</pre>
+<p>Set up the database for testing:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<h2>Test the Starter App</h2>
+<p>You can check that the example app runs properly by entering the command</p>
+<p>
+  <code>$ rails server</code>
+</p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
+<p>Stop the server with Control-C.</p>
+<h2>Software Development Process</h2>
+<p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You’ll benefit by following a process that works for development of more complex applications.</p>
+<p>Here’s the software development process we’ll use:</p>
+<ul><li>write user stories</li>
+	<li>write a short specification for our feature set using Cucumber scenarios</li>
+	<li>create acceptance tests using Cucumber step definitions</li>
+	<li>code each feature</li>
+	<li>run acceptance tests as each feature is completed</li>
+</ul><p>By practicing the process that leads from concept to code, you’ll be prepared for more complex applications.</p>
+<h2>Write Your User Stories</h2>
+<p><a href="http://en.wikipedia.org/wiki/User_story">User stories</a> are a way to discuss and describe the requirements for a software application. By making a list of user stories, you’ll force yourself to describe what your application will do. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories also will help you organize your work and track progress toward completion.</p>
+<p>User stories are generally expressed in the following format:</p>
+<pre>
+As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
+</pre>
+<p>As an example, here are three user stories we will implement for this application:</p>
+<pre>
+*Request Invitation*
+As a visitor to the website
+I want to request an invitation 
+so I'll be notified when the site is launched
+
+*See Invitation Requests*
+As the owner of the site
+I want to view a list of visitors who have requested invitations
+so I can know if my offer is gaining traction
+
+*Collect Email Addresses*
+As the owner of the site
+I want to collect email addresses for a mailing list
+so I can send an announcement when I launch the site
+</pre>
+<p>Here’s a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/implemented.textile">user stories that have been implemented</a>. There is also a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/unimplemented.textile">user stories that have not been implemented</a>. If you have ideas for additional features for this application, edit the file and submit a pull request. Or simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
+<h2>Feature: Request Invitation</h2>
+<p>The next step in our development process is to pick a user story and turn it into a specification that will guide implementation of a feature.</p>
+<h4>User Story</h4>
+<p>Here’s the user story we’ll specify and implement:</p>
+<pre>
+*Request Invitation*
+As a visitor to the website
+I want to request an invitation 
+so I'll be notified when the site is launched
+</pre>
+<p>In many situations, your user story is all you need to guide you in coding the implementation. If you are both the product owner and a hands-on developer, you don’t need a written specification to implement a feature.</p>
+<p>Before you begin coding directly from a user story, consider the benefits of writing a specification:</p>
+<ul><li>If you are part of a team you can use a specification to communicate what needs to be accomplished.</li>
+	<li>Creating a specification can help us discover the functionality we need to implement.</li>
+	<li>A specification will describe the functionality so we can discuss it with our business partners.</li>
+	<li>Specifications can become the basis for acceptance testing or integration testing.</li>
+</ul><p>For the purposes of this tutorial, acceptance tests and integration tests are synonymous. Acceptance tests demonstrate that developers have succeeded in implementing a specification. Integration tests assure you that your application runs as intended.</p>
+<p>For these reasons, we want to create a detailed specification from this user story. We can use the specification to create an automated acceptance test so we know when the feature has been successfully implemented. Our acceptance tests can also serve as integration tests so we can continue to test the code as we build out or maintain the application.</p>
+<p>We’ll use Cucumber to create our specification and acceptance tests. Not all developers use Cucumber. Some developers create integration tests using <a href="http://inancgumus.com/66712574">Capybara in combination with RSpec</a> as described in Ryan Bates’s <a href="http://railscasts.com/episodes/275-how-i-test">How I Test</a> Railscast. Cucumber is appropriate when a team includes nonprogrammers who are involved in defining product requirements or there is a need for a specification and acceptance tests to be maintained independently of implementation (for example, when implementation is outsourced). For this tutorial, we may all be programmers, but using Cucumber to create a specification helps to describe the features, organize the tutorial, and break the work into discrete tasks.</p>
+<h4>Git Workflow</h4>
+<p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b request-invitation
+</pre>
+<p>The command creates a new branch named “request-invitation” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
+<h4>Cucumber Scenario</h4>
+<p>Now we begin writing our specification.</p>
+<p>The <strong>features</strong> directory contains our Cucumber feature files. We can organize Cucumber feature files any way we wish by placing them in subdirectories. For this application, we’ll organize features by roles in subdirectories for “visitors” and “owner”. Create a subdirectory <strong>features/visitors</strong> and then create the following file:</p>
+<p>
+  <strong>features/visitors/request_invitation.feature</strong>
+</p>
+<pre>
+Feature: Request Invitation
+  As a visitor to the website
+  I want to request an invitation 
+  so I can be notified when the site is launched
+
+  Background:
+    Given I am not logged in
+
+  Scenario: User views home page
+    When I visit the home page
+    Then I should see a button "Request Invitation"
+
+  Scenario: User views invitation request form
+    When I visit the home page
+    And I click a button "Request Invitation"
+    Then I should see a form with a field "Email"
+
+  Scenario: User signs up with valid data
+    When I request an invitation with valid user data
+    Then I should see a message "Thank You"
+    And my email address should be stored in the database
+    And my account should be designated inactive
+    And I should receive an email with subject "Request Received"
+
+  Scenario: User signs up with invalid email
+    When I request an invitation with an invalid email
+    Then I should see an invalid email message
+</pre>
+<p>This Cucumber feature file contains the specification needed to implement the user story “Request Invitation.”</p>
+<p>It’s important to note that user stories don’t necessarily translate directly into Cucumber features. In this case, our first user story is easily transformed into a set of Cucumber scenarios that describe the user story completely. This is not always the case; don’t be concerned if <a href="http://blog.mattwynne.net/2010/10/22/features-user-stories/">Features != User Stories</a> as explained in Matt Wynne’s blog post.</p>
+<h4>Cucumber Step Definitions</h4>
+<p>Here we turn our specification into an automated acceptance test.</p>
+<p>Cucumber scenarios can be read as plain English text. Alone, they serve as specifications. To create an acceptance test or integration test, we must write test code for each step in a scenario, called “step definitions.”</p>
+<p>We’ll create step definitions for all the scenario steps in our “Feature: Request Invitation” file.</p>
+<p>Create the following file:</p>
+<p>
+  <strong>features/step_definitions/visitor_steps.rb</strong>
+</p>
+<pre>
+def new_user
+  @user ||= { :email =&gt; "example@example.com",
+    :password =&gt; "please", :password_confirmation =&gt; "please" }
+end
+
+def invitation_request user
+  visit '/users/sign_up'
+  fill_in "Email", :with =&gt; user[:email]
+  click_button "Request Invitation"
+end
+
+When /^I visit the home page$/ do
+    visit root_path
+end
+
+Then /^I should see a button "([^\"]*)"$/ do |arg1|
+  page.should have_button (arg1)
+end
+
+When /^I click a button "([^"]*)"$/ do |arg1|
+  click_button (arg1)
+end
+
+Then /^I should see a form with a field "([^"]*)"$/ do |arg1|
+  page.should have_content (arg1)
+end
+
+Then /^I should see a message "([^\"]*)"$/ do |arg1|
+  page.should have_content (arg1)
+end
+
+Then /^my email address should be stored in the database$/ do
+  test_user = User.find_by_email("example@example.com")
+  test_user.should respond_to(:email)
+end
+
+Then /^my account should be designated inactive$/ do
+  test_user = User.find_by_email("example@example.com")
+  test_user.active.should be_false
+end
+
+When /^I request an invitation with valid user data$/ do
+  invitation_request new_user
+end
+
+When /^I request an invitation with an invalid email$/ do
+  user = new_user.merge(:email =&gt; "notanemail")
+  invitation_request user
+end
+</pre>
+<p>These step definitions accommodate all scenarios in our “Request Invitation” feature.</p>
+<p>Cucumber uses all the step definitions in separate files in the <strong>features/step_definitions/</strong> directory so we can group the step definitions in as many files as we want.</p>
+<p>Be sure you’ve set up the database for testing before running Cucumber:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<p>Then we can run our integration test with the following command:</p>
+<pre>
+$ bundle exec cucumber features/visitors/request_invitation.feature --require features
+</pre>
+<p>The test should fail indicating that the home page has no button “Request Invitation.”</p>
+<h4>Implement “Request Invitation” Form</h4>
+<p>We begin implementing the actual application here.</p>
+<p>The application’s home page doesn’t contain a “Request Invitation” form. We could add a sign-up form to the home page but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to use the existing Devise mechanism.</p>
+<p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
+<ul><li>We’ll change the heading from “Sign up” to “Request Invitation.”</li>
+</ul><ul><li>We’ll remove the password fields and add a hidden input field with a placeholder password. Devise won’t let us create a new user without a password so we’ll trick Devise by providing a placeholder password.</li>
+</ul><ul><li>We’ll remove the user name field (you could keep it if you wish).</li>
+</ul><ul><li>We’ll change the submit button text from “Sign up” to “Request Invitation.”</li>
+</ul><pre>
+%h2 Request Invitation
+= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
+  = devise_error_messages!
+  %input{:type=&gt;'hidden', :name=&gt;"user[password]", :value=&gt;'please'}
+  %p
+    = f.label :email
+    %br/
+    = f.email_field :email
+  %p= f.submit "Request Invitation"
+= render :partial =&gt; "devise/shared/links"
+</pre>
+<h4>Use Devise Registrations Page for the Home Page</h4>
+<p>Edit the <strong>config/routes.rb</strong> file to use the Devise registrations page as our home page.</p>
+<p>Replace <code>root :to =&gt; "home#index"</code> with:</p>
+<pre>
+devise_scope :user do
+  root :to =&gt; "devise/registrations#new"
+end
+</pre>
+<h4>Create a “Thank You” Page</h4>
+<p>For a simple “thank you” page, there’s no need to create a dynamic page with a controller and view. Instead, create a file for a static web page:</p>
+<p>
+  <strong>public/thankyou.html</strong>
+</p>
+<pre>
+&lt;h1&gt;Thank You&lt;/h1&gt;
+</pre>
+<h4>Redirect to “Thank You” Page After Successful Sign Up</h4>
+<p>The Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Redirect-to-a-specific-page-on-successful-sign-up-%28registration%29/">How to Redirect to a Specific Page on Successful Sign Up</a>.</p>
+<p>Override the Devise::RegistrationsController with a new controller. Create a file:</p>
+<p>
+  <strong>app/controllers/registrations_controller.rb</strong>
+</p>
+<pre>
+class RegistrationsController &lt; Devise::RegistrationsController
+  protected
+
+  def after_inactive_sign_up_path_for(resource)
+    '/thankyou.html'
+  end
+  
+  def after_sign_up_path_for(resource)
+    '/thankyou.html'
+  end
+  
+end
+</pre>
+<p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
+<pre>
+devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations" }
+</pre>
+<h4>Make New Accounts “Inactive”</h4>
+<p>Devise supports an “inactive accounts” feature. We’ll use Devise to create a user account when a visitor requests an invitation. By default, any account will be designated as “inactive” when it is created. In the future, when we want the user to try the site, we’ll mark the account as “active” and send the user an email invitation.</p>
+<p>Create a database migration to add an “active” attribute:</p>
+<pre>
+$ rails generate migration add_active_to_users active:boolean
+</pre>
+<p>Modify the migration file <strong>db/migrate/[timestamp]_add_active_to_users.rb</strong> to add <code>:default =&gt; false, :null =&gt; false</code>:</p>
+<pre>
+class AddActiveToUsers &lt; ActiveRecord::Migration
+  def change
+    add_column :users, :active, :boolean, :default =&gt; false, :null =&gt; false
+  end
+end
+</pre>
+<p>Change the file <strong>db/seeds.rb</strong> to add the new attribute to the default user with <code>:active =&gt; true</code>:</p>
+<pre>
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :active =&gt; true
+puts 'New user created: ' &lt;&lt; user.name
+</pre>
+<p>Change the file <strong>app/models/user.rb</strong> to add the new attribute to the list of accessible attributes so that you can do bulk assignment when creating new users:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :active
+end
+</pre>
+<p>Run the migration and recreate the database with the new default user:</p>
+<pre>
+$ bundle exec rake db:migrate
+$ bundle exec rake db:reset
+</pre>
+<p>Be sure to reset the database for testing:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<p>You’ve added the “active” attribute to the database and User model. Now modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :active
+
+  # override Devise method
+  def active_for_authentication?
+    super &amp;&amp; active?
+  end
+
+  # override Devise method
+  def inactive_message
+    if !active?
+      :inactive
+    else
+      super
+    end
+  end
+
+  # override Devise method
+  def self.send_reset_password_instructions(attributes={})
+    recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
+    if !recoverable.active?
+      recoverable.errors[:base] &lt;&lt; I18n.t("devise.failure.inactive")
+    elsif recoverable.persisted?
+      recoverable.send_reset_password_instructions
+    end
+    recoverable
+  end
+
+end
+</pre>
+<h4>Test the Implemention of the “Request Invitation” Feature</h4>
+<p>Run the integration test with the following command:</p>
+<pre>
+$ bundle exec cucumber features/visitors/request_invitation.feature --require features
+</pre>
+<p>The test should succeed.</p>
+<p>Evaluating only the functionality, the feature is complete. In the next section, we’ll improve the look and feel of the feature.</p>
+<h4>Git Workflow</h4>
+<p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<pre>
+$ git checkout master
+$ git merge --squash request-invitation
+$ git commit -am "implement 'Request Invitation' feature"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -d request-invitation
+</pre>
+    </div><!-- class="content" -->
+    
+    <div class="comments">
+      <div class="content wikistyle gollum">
+        <h2>Comments</h2>
+      </div>
+      <p>Is this helpful? Please "like" below. Question or suggestion? Please add a comment below. Got a correction or addition? You can edit this page <a href="https://github.com/RailsApps/railsapps.github.com/wiki/_pages">on the wiki</a> or create a <a href="https://github.com/RailsApps/railsapps.github.com/issues">GitHub issue</a> to alert me.</p>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+
+          // The following are highly recommended additional parameters.
+          // var disqus_identifier = 'tutorial-rails-prelaunch-signup.html';
+          // var disqus_url = 'http://railsapps.github.com/tutorial-rails-prelaunch-signup.html';
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div><!-- class="comments" -->
+
+    <div class="footer row">
+      <div class="span4">
+        <h3>Credits</h3>
+        <p><a href="http://danielkehoe.com/">Daniel Kehoe</a> initiated the <a href="http://railsapps.github.com/">RailsApps Project</a>. Thanks to <a href="http://tigrish.com/">Christopher Dell</a> for design contributions.</p> 
+      </div>
+    
+      <div class="span4">
+        <h3>Contributions</h3>
+        <p>Corrections? Additions? You can edit this page <a href="https://github.com/RailsApps/railsapps.github.com/wiki/_pages">on the wiki</a>.</p>
+      </div>
+
+      <div class="span4">
+        <h3>Last edit</h3>
+        <p>by <b>Daniel Kehoe</b>, 2012-02-27 15:55:10</p>
+      </div>
+    </div>
+
+  </div>
+            
+  </body>
+</html>
