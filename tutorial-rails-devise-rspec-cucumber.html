@@ -268,9 +268,23 @@ end
 <p>The email_spec gem provides a collection of RSpec matchers for testing email.</p>
 <p>Modify the file <strong>spec/spec_helper.rb</strong> to enable the email_spec library:</p>
 <pre>
+# This file is copied to spec/ when you run 'rails generate rspec:install'
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'email_spec'
 require 'rspec/autorun'
+.
+.
+.
+RSpec.configure do |config|
+  config.include(EmailSpec::Helpers)
+  config.include(EmailSpec::Matchers)
+  # ## Mock Framework
+.
+.
+.
+end
 </pre>
 <h4>Run RSpec</h4>
 <p>Run <code>rake -T</code> to check that rake tasks for RSpec are available.</p>
@@ -377,7 +391,19 @@ $ curl -o sign_up.feature https://raw.github.com/RailsApps/rails3-devise-rspec-c
 $ curl -o user_edit.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/user_edit.feature
 $ curl -o user_show.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/user_show.feature
 </pre>
-<p>You’ll have to complete the tutorial before the Cucumber features will run successfully.</p>
+<p>If you’ve chosen to create the application with the Devise Confirmable module, you should change one step in the <strong>features/step_definitions/user_steps.rb</strong> file:</p>
+<pre>
+Then /^I should see a successful sign up message$/ do
+  page.should have_content "Welcome! You have signed up successfully."
+end
+</pre>
+<p>should be changed so all Cucumber scenarios pass when the Devise Confirmable module is used:</p>
+<pre>
+Then /^I should see a successful sign up message$/ do
+  page.should have_content "A message with a confirmation link has been sent to your email address."
+end
+</pre>
+<p>You’ll have to complete the tutorial before all Cucumber scenarios will run successfully.</p>
 <h4>Write Cucumber Scenarios</h4>
 <p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
 <p>There are two approaches to writing Cucumber scenarios. The newest (and recommended) approach uses <a href="https://github.com/jnicklas/capybara">Capybara</a> to write the code (“steps”) that turn Cucumber scenarios into executable specifications. Older versions of Cucumber provided a <code>web_steps.rb</code> file that implemented common features. See the <a href="http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off">The Training Wheels Came Off</a> by Aslak Hellesøy to understand why the <code>web_steps.rb</code> approach is no longer recommended.</p>
@@ -419,8 +445,15 @@ config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
+<p>Add the following to the <strong>config/environments/test.rb</strong> file:</p>
+<pre>
+# ActionMailer Config
+config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
+</pre>
 <p>This will set the example application to deliver email in both development and production. It will raise delivery errors in development but not production.</p>
-<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly. You’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain for the production environment.</p>
+<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly.</p>
+<p>For testing, <code>config.action_mailer.default_url_options</code> is set for a host at <code>example.com</code>. Any value allows tests to run.</p>
+<p>For production, you’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain.</p>
 <h4>Use a Gmail account</h4>
 <p>If you want to use a Gmail account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
 <pre>
@@ -515,7 +548,7 @@ rails generate migration AddNameToUsers name:string
 $ bundle exec rake db:migrate
 $ bundle exec rake db:test:prepare
 </pre>
-<p>Next, we’ll modify the user model to validate the presence and uniqueness of the “name” attribute. Modify the file <strong>app/models/user.rb</strong> and add:</p>
+<p>If you wish, you can modify the user model to validate the presence and uniqueness of the “name” attribute. Modify the file <strong>app/models/user.rb</strong> and add:</p>
 <pre>
 validates_presence_of :name
 validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
@@ -744,6 +777,7 @@ resources :users, :only =&gt; :show
 <p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
 <pre>
 &lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
+&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
 </pre>
 <h4>Add Links to Users on the Home Page</h4>
 <p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
@@ -901,7 +935,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-01 14:18:56</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-01 14:50:24</p>
       </div>
     </div>
 
