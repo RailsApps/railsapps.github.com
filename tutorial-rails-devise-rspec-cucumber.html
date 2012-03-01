@@ -340,9 +340,6 @@ end
 <h4>Email Spec</h4>
 <p>The email_spec gem provides a collection of Cucumber steps for testing email.</p>
 <p>Add a file <strong>support/email_spec.rb</strong> to enable the email_spec library:</p>
-<p>
-  <strong>support/email_spec.rb</strong>
-</p>
 <pre>
 require 'email_spec/cucumber'
 </pre>
@@ -356,9 +353,6 @@ $ rails generate email_spec:steps
 $ bundle exec cucumber features/visitors/request_invitation.feature --require features
 </pre>
 <p>To save some typing, you can eliminate the need for <code>--require features</code> by changing the <strong>config/cucumber.yml</strong> file:</p>
-<p>
-  <strong>config/cucumber.yml</strong>
-</p>
 <pre>
 std_opts = "-r features/support/ -r features/step_definitions --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip"
 </pre>
@@ -393,37 +387,25 @@ $ curl -o user_show.feature https://raw.github.com/RailsApps/rails3-devise-rspec
 </p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
-<h2>Configure ActionMailer</h2>
+<h2>Configure Email</h2>
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>In its default configuration, Devise sends email messages to confirm new users and reset passwords. You’ll want to configure ActionMailer to show errors during development and suppress failures when the app is deployed to production.</p>
-<p>Set up action_mailer in your development environment in the file</p>
-<p>
-  <strong>config/environments/development.rb</strong>
-</p>
-<p>by commenting out the line in the file:</p>
-<pre>
-# Don't care if the mailer can't send
-# config.action_mailer.raise_delivery_errors = false
-</pre>
-<p>and adding:</p>
+<p>You must configure the app for your email account if you want your application to send email messages, for example, if you’ve generated the application with the option to install the Devise <code>:confirmable</code> module.</p>
+<h4>Configure ActionMailer</h4>
+<p>Add the following to the <strong>config/environments/development.rb</strong> file:</p>
 <pre>
 # ActionMailer Config
 config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
-# A dummy setup for development - no deliveries, but logged
 config.action_mailer.delivery_method = :smtp
-config.action_mailer.perform_deliveries = false
+# change to false to prevent email from being sent during development
+config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
-<p>Set up action_mailer in your production environment in the file</p>
-<p>
-  <strong>config/environments/production.rb</strong>
-</p>
-<p>by adding:</p>
+<p>Add the following to the <strong>config/environments/production.rb</strong> file:</p>
 <pre>
-config.action_mailer.default_url_options = { :host =&gt; 'yourhost.com' }
+config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
 # ActionMailer Config
 # Setup for production - deliveries, no errors raised
 config.action_mailer.delivery_method = :smtp
@@ -431,18 +413,50 @@ config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
+<p>This will set the example application to deliver email in both development and production. It will raise delivery errors in development but not production.</p>
+<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly. You’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain for the production environment.</p>
+<h4>Use a Gmail account</h4>
+<p>If you want to use a Gmail account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
+<pre>
+config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "example.com",
+  authentication: "plain",
+  enable_starttls_auto: true,
+  user_name: ENV["GMAIL_USERNAME"],
+  password: ENV["GMAIL_PASSWORD"]
+}
+</pre>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
+<p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
+<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add:</p>
+<pre>
+export GMAIL_USERNAME="myname@gmail.com"
+export GMAIL_PASSWORD="secret*"
+</pre>
+<p>Open a new shell or restart your terminal application to continue.</p>
+<h4>Configure Devise for Email</h4>
+<p>Complete your email configuration by modifying</p>
+<p>
+  <strong>config/initializers/devise.rb</strong>
+</p>
+<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up Authentication</h2>
+<p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a>. for user management and authentication.</p>
 <h4>Set Up Configuration for Devise</h4>
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>You should add the following gem to your <strong>Gemfile</strong> file:</p>
+<p>You should have the following gem in your <strong>Gemfile</strong> file:</p>
 <pre>
 gem 'devise'
 </pre>
-<p>and run<br /><code>$ bundle install</code></p>
-<p>This app uses Devise for user management and authentication. Devise is at <a href="http://github.com/plataformatec/devise">http://github.com/plataformatec/devise</a>.</p>
-<p>We’ve already installed the Devise gem with the <code>$ bundle install</code> command. Run the generator:</p>
+<p>If you haven’t already, run:</p>
+<p>
+  <code>$ bundle install</code>
+</p>
+<p>Run the generator to install Devise:</p>
 <p>
   <code>$ rails generate devise:install</code>
 </p>
@@ -457,6 +471,8 @@ gem 'devise'
 <pre>
 $ rails generate devise User
 </pre>
+<p>Devise will create a database migration and a User model.</p>
+<p>It will also try to create a spec file for the User model.</p>
 <p>Devise will modify the <strong>config/routes.rb</strong> file to add:</p>
 <pre>
 devise_for :users
@@ -470,17 +486,10 @@ devise_for :users
 config.sign_out_via = Rails.env.test? ? :get : :delete
 </pre>
 <p>Since you only use Cucumber during testing, switching the default is only needed for testing.</p>
-<p>If you’re not going to use Cucumber, leave Devise’s new default (<span class="caps">DELETE</span>) in place.</p>
+<p>If you’re not going to use Cucumber, leave Devise’s default (<span class="caps">DELETE</span>) in place.</p>
 <h4>Prevent Logging of Passwords</h4>
-<p>We don’t want passwords written to our log file. In Rails 2, we would change the file</p>
-<p>
-  <strong>app/controllers/application_controller.rb</strong>
-</p>
-<p>to include:</p>
-<p>
-  <code>filter_parameter_logging :password, :password_confirmation</code>
-</p>
-<p>In Rails 3, this is deprecated and instead we modify the file <strong>config/application.rb</strong> to include:</p>
+<p>We don’t want passwords written to our log file.</p>
+<p>Modify the file <strong>config/application.rb</strong> to include:</p>
 <p>
   <code>config.filter_parameters += [:password, :password_confirmation]</code>
 </p>
@@ -495,9 +504,10 @@ config.sign_out_via = Rails.env.test? ? :get : :delete
 <pre>
 rails generate migration AddNameToUsers name:string
 </pre>
-<p>Run <code>rake db:migrate</code> again to pick up the “name” field.</p>
+<p>Run the migration and prepare the test database to pick up the “name” field:</p>
 <pre>
-$ rake db:migrate
+$ bundle exec rake db:migrate
+$ bundle exec rake db:test:prepare
 </pre>
 <p>Next, we’ll modify the user model to validate the presence and uniqueness of the “name” attribute. Modify the file <strong>app/models/user.rb</strong> and add:</p>
 <pre>
@@ -885,7 +895,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-01 07:46:07</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-01 09:59:40</p>
       </div>
     </div>
 
