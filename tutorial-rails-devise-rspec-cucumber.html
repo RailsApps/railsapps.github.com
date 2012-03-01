@@ -201,7 +201,7 @@ gem "devise", "&gt;= 2.0.0"
 <p>This tutorial shows how to set up RSpec and provides example specs for use with Devise. To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
 <h4>Install RSpec and Related Gems</h4>
 <p>Use the gem <a href="https://github.com/rspec/rspec-rails">rspec-rails</a> to set up the app for RSpec.</p>
-<p>You should have the following gems in your <strong>Gemfile</strong> file:</p>
+<p>You should have the following gems in your <strong>Gemfile</strong>:</p>
 <pre>
 gem 'rspec-rails', :group =&gt; [:development, :test]
 gem 'database_cleaner', :group =&gt; :test
@@ -245,6 +245,9 @@ end
 <h4>Add Devise Test Helpers</h4>
 <p>Using Devise, your controllers will often include <code>before_filter :authenticate_user!</code> to limit access to signed-in users. Your tests will fail unless a default user is created and logs in before each test runs. Devise provides test helpers to make it simple to create and log in a default user.</p>
 <p>Create a file <strong>spec/support/devise.rb</strong>:</p>
+<p>
+  <strong>spec/support/devise.rb</strong>
+</p>
 <pre>
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type =&gt; :controller
@@ -253,25 +256,32 @@ end
 <p>Now you can write controller specs that set up a signed-in user before tests are run.</p>
 <h4>Run RSpec</h4>
 <p>Run <code>rake -T</code> to check that rake tasks for RSpec are available.</p>
-<p>Run <code>rake db:migrate</code> to create a <strong>db/schema.rb</strong> file so <code>rake spec</code> can run successfully.</p>
+<p>Prepare the database for testing by running the commands:</p>
+<pre>
+$ bundle exec rake db:migrate
+$ bundle exec rake db:test:prepare
+</pre>
+<p>This will create a <strong>db/schema.rb</strong> file so <code>rake spec</code> can run successfully.</p>
 <p>You should be able to run <code>rake spec</code> to run all specs. If you haven’t written any specs, you’ll see the message “No examples matching ./spec/<strong>/</strong>_spec.rb could be found”.</p>
 <p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/tree/master/spec">spec directory</a> to use our ready-made specs.</p>
 <pre>
-cd spec
-curl -o factories.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/factories.rb
-mkdir controllers
-cd controllers
-curl -o home_controller_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/controllers/home_controller_spec.rb
-curl -o users_controller_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/controllers/users_controller_spec.rb
-cd ../
-mkdir models
-cd models
-curl -o user_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/models/user_spec.rb
+$ cd spec
+$ curl -o factories.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/factories.rb
+$ mkdir controllers
+$ cd controllers
+$ curl -o home_controller_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/controllers/home_controller_spec.rb
+$ curl -o users_controller_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/controllers/users_controller_spec.rb
+$ cd ../
+$ mkdir models
+$ cd models
+$ curl -o user_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/models/user_spec.rb
 </pre>
 <p>You’ll have to complete the tutorial before the specs will run successfully.</p>
 <h2>Add Cucumber for Behavior Driven Development</h2>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cucumber.rb">cucumber</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
-<p>It’s not necessary to add Cucumber (the example will run without it). However, it’s a recommended practice to specify use cases (“user stories”) as Cucumber scenarios. It’s a good way to plan development and, using Cucumber, you’ll have specifications for automated acceptance testing.</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cucumber.rb">cucumber</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
+<p>It’s not necessary to add Cucumber (the example will run without it). However, it’s a recommended practice to describe application functionality as “user stories” documented as Cucumber scenarios. It’s a good way to plan development and, using Cucumber, you’ll have specifications for automated acceptance testing. To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a>.</p>
 <p>This tutorial shows how to set up Cucumber with Devise.</p>
 <h4>Cucumber Gems</h4>
 <p>Use the gem <a href="https://github.com/aslakhellesoy/cucumber-rails">cucumber-rails</a> to set up the app for Cucumber.</p>
@@ -315,7 +325,9 @@ end
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Configure ActionMailer</h2>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>In its default configuration, Devise sends email messages to confirm new users and reset passwords. You’ll want to configure ActionMailer to show errors during development and suppress failures when the app is deployed to production.</p>
 <p>Set up action_mailer in your development environment in the file</p>
 <p>
@@ -352,7 +364,9 @@ config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
 <h2>Set Up Authentication</h2>
 <h4>Set Up Configuration for Devise</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>You should add the following gem to your <strong>Gemfile</strong> file:</p>
 <pre>
 gem 'devise'
@@ -404,7 +418,9 @@ config.sign_out_via = Rails.env.test? ? :get : :delete
 <p>Note that filter_parameters is an array.</p>
 <h2>Customize the Application</h2>
 <h4>Enable Users to Have Names</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/add_user.rb">add_user</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/add_user.rb">add_user</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
 <p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
 <pre>
@@ -520,7 +536,9 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 = render :partial =&gt; "devise/shared/links"
 </pre>
 <h2>Create a Home Page</h2>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <h4>Remove the Default Home Page</h4>
 <p>Delete the default home page from your application:</p>
 <p>
@@ -558,7 +576,9 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <p>Stop the server with Control-C.</p>
 <h2>Create a Default User</h2>
 <h4>Display Users on the Home Page</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
 <pre>
 def index
@@ -573,7 +593,9 @@ end
 &lt;% end %&gt;
 </pre>
 <h4>Set Up a Database Seed File</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
@@ -602,7 +624,9 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <h2>Set Up a Demonstration of Devise</h2>
 <p>You’ll want to see how Devise manages authentication.</p>
 <h4>Set Up the Users Controller, Views, and Routes</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page.</p>
 <p>
   <code>$ rails generate controller users show</code>
@@ -647,7 +671,9 @@ end
 </pre>
 <h2>Create an Application Layout</h2>
 <h4>Set Up <span class="caps">CSS</span> Stylesheets</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/css_setup.rb">css_setup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/css_setup.rb">css_setup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>We’ll create a very simple stylesheet with styling for a horizontal menu and flash messages:</p>
 <p>For <strong>Rails 3.0</strong>, you’ll need to create a <strong>public/stylesheets/application.css</strong> file.</p>
 <p>For <strong>Rails 3.1</strong>, you’ll find a <strong>app/assets/stylesheets/application.css</strong> file.</p>
@@ -675,11 +701,15 @@ ul.hmenu li {
 }
 </pre>
 <h4>The Default Application Layout</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> or <strong>app/views/layouts/application.html.haml</strong> as a default for rendering any page.</p>
 <p>You’ll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
 <h4>Add Devise Navigation Links</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/navigation.rb">navigation</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/navigation.rb">navigation</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <p>You will want to add navigation links to the application layout for the Devise sign-up and log-in actions. You’ll find a simple example on the <a href="https://github.com/plataformatec/devise/wiki/How-To:-Add-sign_in,-sign_out,-and-sign_up-links-to-your-layout-template">Devise wiki</a>.</p>
 <p>Create a <strong>shared</strong> directory under <strong>app/views/</strong>. Then create the file <strong>app/views/shared/_navigation.html.erb</strong> and add:</p>
 <pre>
@@ -727,7 +757,9 @@ ul.hmenu li {
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
 <p>See instructions for <a href="http://railsapps.github.com/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
 <h4>Remove Unneeded Files</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cleanup.rb">cleanup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cleanup.rb">cleanup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p>
@@ -784,7 +816,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-02-29 18:31:50</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-02-29 20:02:20</p>
       </div>
     </div>
 
