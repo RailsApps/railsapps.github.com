@@ -51,74 +51,93 @@
       <h1>Rails Tutorial for Devise with RSpec and Cucumber</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 27 February 2012</em>
+  <em>Last updated 29 February 2012</em>
 </p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
 <ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
 	<li><a href="http://rspec.info/">RSpec</a>  is a popular alternative to the Test::Unit testing framework.</li>
 	<li><a href="http://cukes.info/">Cucumber</a> is used for Behaviour Driven Development.</li>
-</ul><p>This tutorial also gives you the option of using Haml.</p>
-<h4>Similar Examples and Tutorials</h4>
-<p>If you’d like to use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead of ActiveRecord and a SQLite database, see the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial. Mongoid makes development quicker without schemas or migrations. The rails3-mongoid-devise example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
-<p>See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+</ul><p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository for the complete application. If you want to use the project as a starter app for your own customized application, see the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber <span class="caps">README</span></a> to use an application template to generate a your own version of the example app. Generating the application gives you many options, such as using Haml for views, additional Devise modules, and various HTML5/<span class="caps">CSS</span> front-end frameworks such as Twitter Bootstrap.</p>
+<h4>RailsApps Examples and Tutorials</h4>
+<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<p>This example application uses ActiveRecord and a SQLite database. You can use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead, for faster development without schemas or migrations. The <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
 <p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h2>Before You Start</h2>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
+<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please edit this wiki page.</p>
+<p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
 <h2>Creating the Application</h2>
 <h4>Option One</h4>
-<blockquote>
-<p><ins>Use the ready-made application template to generate the code.</ins></p>
-</blockquote>
-<p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
-<p>Use the command:</p>
 <p>
-  <code>$ rails new APP_NAME -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T</code>
+  <em>Follow this tutorial.</em>
 </p>
-<p>Use the <code>-T</code> flag to skip Test::Unit files. Add the <code>-J</code> flag to skip Prototype files for Rails 3.0 (not needed for Rails 3.1).</p>
-<p>This creates a new Rails app (with the <code>APP_NAME</code> you provide) on your computer. It includes everything in the example app. You can read through the tutorial with the code already on your computer.</p>
-<blockquote>
-<p><strong>You <span class="caps">MUST</span> be using Rails 3.0.4 or newer. Generating a Rails application from an “HTTPS” <span class="caps">URL</span> does not work in Rails 3.0.3 and earlier versions.</strong></p>
-</blockquote>
+<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
 <h4>Option Two</h4>
-<blockquote>
-<p><ins>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</ins></p>
-</blockquote>
-<p>This is optimal if you are creating a “starter app” based on this example app but wish to customize the code for your own preferences.</p>
-<p>Each step in this tutorial has a corresponding application template recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> recipes repository. You can create your own application template using the template recipes. To do so, download the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> project, customize recipes as needed, and follow the instructions to create a reusable application template file.</p>
+<p>
+  <em>Use the ready-made application template to generate the code.</em>
+</p>
+<p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
+<p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) gives you many options, such as using Haml for views, additional Devise modules, and various HTML5/<span class="caps">CSS</span> front-end frameworks such as Twitter Bootstrap.</p>
+<p>Use the command:</p>
+<pre>
+$ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T
+</pre>
+<p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
+<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
+<p>This creates a new Rails app (named <code>rails3-devise-rspec-cucumber</code>) on your computer. For this tutorial, the name is “rails3-devise-rspec-cucumber.” You can use a different name if you wish.</p>
+<p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
+<ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>No.</strong></li>
+	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>No.</strong></li>
+	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>No.</strong></li>
+	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
+	<li>Would you like to use Devise for authentication? <strong>Devise with Confirmable module</strong></li>
+	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap</strong></li>
+	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
+	<li>Would you like to set a robots.txt file to ban spiders? <strong>Yes.</strong></li>
+</ul><p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
+<p>After you create the application, switch to its folder to continue work directly in the application:</p>
+<pre>
+$ cd rails3-devise-rspec-cucumber
+</pre>
 <h4>Option Three</h4>
-<blockquote>
-<p><ins>Follow this tutorial</ins></p>
-</blockquote>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.  This is also more likely to teach you how to setup future applications with these features, as you’re actually typing out the example code.</p>
+<p>
+  <em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em>
+</p>
+<p>This is optimal if you are creating a “starter app” based on this example app but wish to customize the code for your own preferences.</p>
+<p>Each step in this tutorial has a corresponding application template recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> recipes repository. You can create your own application template using the template recipes. To do so, clone the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> project, customize recipes as needed, and follow the instructions to create a reusable application template file.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
-<ul><li>The Ruby language (version 1.9.2 or newer)</li>
-	<li>Rails 3.1.1</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br /><code>$ ruby -v</code><br /><code>$ rails -v</code></p>
-<p>See <a href="http://railsapps.github.com/installing-rails-3-1.html">Installing Rails 3.1</a> and <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for detailed instructions and advice.</p>
+<ul><li>The Ruby language (version 1.9.3 or newer)</li>
+	<li>Rails 3.2</li>
+</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
+<p>
+  <code>$ ruby -v</code>
+  <br />
+  <code>$ rails -v</code>
+</p>
+<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
 <p>
   <code>$ rails new rails3-devise-rspec-cucumber -T</code>
 </p>
-<p>Use the <code>-T</code> flags to skip Test::Unit files (since you are using RSpec). Add the <code>-J</code> flag to skip Prototype files for Rails 3.0 (not needed for Rails 3.1).</p>
+<p>Use the <code>-T</code> flag to skip Test::Unit files (since you are using RSpec).</p>
 <p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-devise-rspec-cucumber.”</p>
 <p>This will create a Rails application that uses a SQLite database for data storage.</p>
 <p>After you create the application, switch to its folder to continue work directly in that application:</p>
 <p>
   <code>$ cd rails3-devise-rspec-cucumber</code>
 </p>
-<h4>Please Remember: Edit the <span class="caps">README</span></h4>
+<h4>Edit the <span class="caps">README</span></h4>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/git.rb">git</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/git.rb">git</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
 <p>
   <code>$ git init .</code>
@@ -139,32 +158,27 @@
 	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
 	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
 </ul><h4>Set up Your Gemfile</h4>
+<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
 <pre>
-  <code>
 source 'https://rubygems.org'
-
-gem 'rails', '3.2.1'
-gem 'rspec-rails'
-gem 'database_cleaner'
-gem 'factory_girl_rails'
-gem 'cucumber-rails'
-gem 'capybara'
-gem 'devise'
+gem 'rails', '3.2.0'
 gem 'sqlite3'
-gem 'jquery-rails'
-
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
-  gem 'coffee-rails', '~&gt; 3.2.1'
+  gem 'coffee-rails', '~&gt; 3.2.1'  
   gem 'uglifier', '&gt;= 1.0.3'
 end
-
-  </code>
+gem 'jquery-rails'
+gem "rspec-rails", "&gt;= 2.8.1", :group =&gt; [:development, :test]
+gem "factory_girl_rails", "&gt;= 1.6.0", :group =&gt; :test
+gem "cucumber-rails", "&gt;= 1.2.1", :group =&gt; :test
+gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
+gem "database_cleaner", "&gt;= 0.7.1", :group =&gt; :test
+gem "launchy", "&gt;= 2.0.5", :group =&gt; :test
+gem "devise", "&gt;= 2.0.0"
 </pre>
-<p>See additional examples <a href="http://railsapps.github.com/rails-3-1-1-example-gemfile.html">Rails 3.1.1 Gemfile</a>.</p>
-<p>See <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for advice and details. It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>.</p>
+<p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h4>Install the Required Gems</h4>
 <p>Install the required gems on your computer:</p>
 <p>
@@ -175,20 +189,11 @@ end
   <code>$ gem list --local</code>
 </p>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
-<h2>Using jQuery</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/jquery.rb">jquery</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Rails 3.1 uses jQuery by default so no additional effort is required. If you are using Rails 3.0, you can see instructions for <a href="http://railsapps.github.com/rails-3-0-jquery.html">Using jQuery with Rails 3.0</a>.</p>
 <h2>Configuration for Haml</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/haml.rb">haml</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/haml.rb">haml</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
 <h2>Adding RSpec for Unit Testing</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/rspec.rb">rspec</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/rspec.rb">rspec</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>This tutorial shows how to set up RSpec and provides example specs for use with Devise. To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
 <h4>Install RSpec and Related Gems</h4>
 <p>Use the gem <a href="https://github.com/rspec/rspec-rails">rspec-rails</a> to set up the app for RSpec.</p>
@@ -255,9 +260,7 @@ curl -o user_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumb
 </pre>
 <p>You’ll have to complete the tutorial before the specs will run successfully.</p>
 <h2>Add Cucumber for Behavior Driven Development</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cucumber.rb">cucumber</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cucumber.rb">cucumber</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>It’s not necessary to add Cucumber (the example will run without it). However, it’s a recommended practice to specify use cases (“user stories”) as Cucumber scenarios. It’s a good way to plan development and, using Cucumber, you’ll have specifications for automated acceptance testing.</p>
 <p>This tutorial shows how to set up Cucumber with Devise.</p>
 <h4>Cucumber Gems</h4>
@@ -302,9 +305,7 @@ end
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Configure ActionMailer</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>In its default configuration, Devise sends email messages to confirm new users and reset passwords. You’ll want to configure ActionMailer to show errors during development and suppress failures when the app is deployed to production.</p>
 <p>Set up action_mailer in your development environment in the file</p>
 <p>
@@ -341,9 +342,7 @@ config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
 <h2>Set Up Authentication</h2>
 <h4>Set Up Configuration for Devise</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>You should add the following gem to your <strong>Gemfile</strong> file:</p>
 <pre>
 gem 'devise'
@@ -395,9 +394,7 @@ config.sign_out_via = Rails.env.test? ? :get : :delete
 <p>Note that filter_parameters is an array.</p>
 <h2>Customize the Application</h2>
 <h4>Enable Users to Have Names</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/add_user.rb">add_user</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/add_user.rb">add_user</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
 <p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
 <pre>
@@ -513,9 +510,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 = render :partial =&gt; "devise/shared/links"
 </pre>
 <h2>Create a Home Page</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <h4>Remove the Default Home Page</h4>
 <p>Delete the default home page from your application:</p>
 <p>
@@ -553,9 +548,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <p>Stop the server with Control-C.</p>
 <h2>Create a Default User</h2>
 <h4>Display Users on the Home Page</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
 <pre>
 def index
@@ -570,9 +563,7 @@ end
 &lt;% end %&gt;
 </pre>
 <h4>Set Up a Database Seed File</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
@@ -601,9 +592,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <h2>Set Up a Demonstration of Devise</h2>
 <p>You’ll want to see how Devise manages authentication.</p>
 <h4>Set Up the Users Controller, Views, and Routes</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page.</p>
 <p>
   <code>$ rails generate controller users show</code>
@@ -648,9 +637,7 @@ end
 </pre>
 <h2>Create an Application Layout</h2>
 <h4>Set Up <span class="caps">CSS</span> Stylesheets</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/css_setup.rb">css_setup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/css_setup.rb">css_setup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>We’ll create a very simple stylesheet with styling for a horizontal menu and flash messages:</p>
 <p>For <strong>Rails 3.0</strong>, you’ll need to create a <strong>public/stylesheets/application.css</strong> file.</p>
 <p>For <strong>Rails 3.1</strong>, you’ll find a <strong>app/assets/stylesheets/application.css</strong> file.</p>
@@ -678,15 +665,11 @@ ul.hmenu li {
 }
 </pre>
 <h4>The Default Application Layout</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> or <strong>app/views/layouts/application.html.haml</strong> as a default for rendering any page.</p>
 <p>You’ll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
 <h4>Add Devise Navigation Links</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/navigation.rb">navigation</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/navigation.rb">navigation</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <p>You will want to add navigation links to the application layout for the Devise sign-up and log-in actions. You’ll find a simple example on the <a href="https://github.com/plataformatec/devise/wiki/How-To:-Add-sign_in,-sign_out,-and-sign_up-links-to-your-layout-template">Devise wiki</a>.</p>
 <p>Create a <strong>shared</strong> directory under <strong>app/views/</strong>. Then create the file <strong>app/views/shared/_navigation.html.erb</strong> and add:</p>
 <pre>
@@ -734,9 +717,7 @@ ul.hmenu li {
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
 <p>See instructions for <a href="http://railsapps.github.com/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
 <h4>Remove Unneeded Files</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cleanup.rb">cleanup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cleanup.rb">cleanup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps">rails_apps_composer</a></em>composer _</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p>
@@ -793,7 +774,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-02-29 12:17:23</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-02-29 17:39:18</p>
       </div>
     </div>
 
