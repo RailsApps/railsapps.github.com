@@ -49,10 +49,14 @@
 
     <div class="content wikistyle gollum textile">
       <h1>The Rails Default Application Layout</h1>
+<h4>by Daniel Kehoe</h4>
+<p>
+  <em>Last updated 1 March 2012</em>
+</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
+<p>
+  <em>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</em>
+</p>
 <h2>Background</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> or <strong>app/views/layouts/application.html.haml</strong> as a default for rendering any page.</p>
 <p>You’ll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described below.</p>
@@ -79,41 +83,57 @@
 <h2><span class="caps">ERB</span> for Rails 3.1 and newer</h2>
 <p>The modified application layout <strong>app/views/layouts/application.html.erb</strong> will look like this:</p>
 <pre>
-&lt;!DOCTYPE html&gt;
+&lt;!doctype html&gt;
 &lt;html&gt;
-&lt;head&gt;
-  &lt;title&gt;My App&lt;/title&gt;
-  &lt;%= stylesheet_link_tag    "application" %&gt;
-  &lt;%= javascript_include_tag "application" %&gt;
-  &lt;%= csrf_meta_tags %&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;%- flash.each do |name, msg| -%&gt;
-    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
-  &lt;%- end -%&gt;
-&lt;%= yield %&gt;
-
-&lt;/body&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;App_Name&lt;/title&gt;
+    &lt;meta name="description" content=""&gt;
+    &lt;meta name="author" content=""&gt;
+    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;%= javascript_include_tag "application" %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+  &lt;/head&gt;
+  &lt;body class="&lt;%= params[:controller] %&gt;"&gt;
+    &lt;div id="container" class="container"&gt;
+      &lt;header&gt;
+        &lt;%- flash.each do |name, msg| -%&gt;
+          &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
+        &lt;%- end -%&gt;
+      &lt;/header&gt;
+      &lt;div id="main" role="main"&gt;
+        &lt;%= yield %&gt;
+      &lt;/div&gt;
+      &lt;footer&gt;
+      &lt;/footer&gt;
+    &lt;/div&gt; &lt;!--! end of #container --&gt;
+  &lt;/body&gt;
 &lt;/html&gt;
 </pre>
 <h2>Haml for Rails 3.1 and newer</h2>
 <p>If you are using Haml, remove <strong>app/views/layouts/application.html.erb</strong> and replace it with <strong>app/views/layouts/application.html.haml</strong>:</p>
-<p>
-  <code>$ rm public/index.html</code>
-</p>
 <p>For Haml, the modified application layout <strong>app/views/layouts/application.html.haml</strong> will look like this:</p>
 <pre>
 !!!
 %html
   %head
-    %title My App
-    = stylesheet_link_tag :application
+    %title App_Name
+    %meta{:charset =&gt; "utf-8"}
+    %meta{"http-equiv" =&gt; "X-UA-Compatible", :content =&gt; "IE=edge,chrome=1"}
+    %meta{:name =&gt; "viewport", :content =&gt; "width=device-width, initial-scale=1, maximum-scale=1"}
+    = stylesheet_link_tag :application, :media =&gt; "all"
     = javascript_include_tag :application
     = csrf_meta_tags
-  %body
-    - flash.each do |name, msg|
-      = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
-    = yield
+  %body{:class =&gt; params[:controller]}
+    #container.container
+      %header
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
+      #main{:role =&gt; "main"}
+        = yield
+      %footer
 </pre>
     </div><!-- class="content" -->
     
@@ -155,7 +175,7 @@
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-01 09:59:40</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-01 14:18:56</p>
       </div>
     </div>
 

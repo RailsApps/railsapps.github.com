@@ -51,7 +51,7 @@
       <h1>Rails Tutorial for Devise with RSpec and Cucumber</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 29 February 2012</em>
+  <em>Last updated 1 March 2012</em>
 </p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
 <ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
@@ -251,6 +251,7 @@ FactoryGirl.define do
   end
 end
 </pre>
+<p>If you’ve chosen to create the application with the Devise Confirmable module, remove the commenting to enable <code>confirmed_at Time.now</code>.</p>
 <h4>Add Devise Test Helpers</h4>
 <p>Using Devise, your controllers will often include <code>before_filter :authenticate_user!</code> to limit access to signed-in users. Your tests will fail unless a default user is created and logs in before each test runs. Devise provides test helpers to make it simple to create and log in a default user.</p>
 <p>Create a file <strong>spec/support/devise.rb</strong>:</p>
@@ -393,6 +394,11 @@ $ curl -o user_show.feature https://raw.github.com/RailsApps/rails3-devise-rspec
 </p>
 <p>You must configure the app for your email account if you want your application to send email messages, for example, if you’ve generated the application with the option to install the Devise <code>:confirmable</code> module.</p>
 <h4>Configure ActionMailer</h4>
+<p>Remove the following from the <strong>config/environments/development.rb</strong> file:</p>
+<pre>
+# Don't care if the mailer can't send
+config.action_mailer.raise_delivery_errors = false
+</pre>
 <p>Add the following to the <strong>config/environments/development.rb</strong> file:</p>
 <pre>
 # ActionMailer Config
@@ -443,7 +449,7 @@ export GMAIL_PASSWORD="secret*"
 </p>
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up Authentication</h2>
-<p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a>. for user management and authentication.</p>
+<p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
 <h4>Set Up Configuration for Devise</h4>
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
@@ -467,12 +473,12 @@ gem 'devise'
 <p>and a localization file.</p>
 <h4>Generate a Model and Routes for Users</h4>
 <p>Devise can manage users and administrators separately, allowing two (or more) roles to be implemented differently. For this example, we just implement Users.</p>
-<p>Use Devise to generate models and routes for a User:</p>
+<p>Use Devise to generate models and routes for a User.</p>
 <pre>
 $ rails generate devise User
 </pre>
 <p>Devise will create a database migration and a User model.</p>
-<p>It will also try to create a spec file for the User model.</p>
+<p>Devise will try to create a spec file for the User model. If you’ve already downloaded the example app spec files, don’t let the Devise generator overwrite the <strong>spec/models/user_spec.rb</strong> file.</p>
 <p>Devise will modify the <strong>config/routes.rb</strong> file to add:</p>
 <pre>
 devise_for :users
@@ -524,6 +530,10 @@ attr_accessible :email, :password, :password_confirmation, :remember_me
 <pre>
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </pre>
+<p>If you’ve chosen to create the application with the Devise Confirmable module, also add <code>:confirmed_at</code>:</p>
+<pre>
+attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+</pre>
 <h4 id="registration-views">Create Customized Views for User Registration (<span class="caps">ERB</span>)</h4>
 <p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults.</p>
 <p>First, to copy all the default Devise views to your application, run</p>
@@ -550,8 +560,8 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <p>We do not need to add a controller with methods to create a new user or edit or delete a user. We use the existing “registerable” module from Devise which provides a controller with methods to create, edit or delete a user.</p>
 <p>Note that Devise’s default behaviour allows any logged-in user to edit or delete his or her own record (but no one else’s). When you access the edit page you are editing just your info, and not info of other users.</p>
 <h4>Create Customized Views for User Registration (Haml)</h4>
-<p>If you are using Haml, Devise does not generate views for Haml (it did before February 15, 2011; see <a href="https://github.com/plataformatec/devise/issues/878">Devise issue 878</a>).</p>
-<p>You can create the files:</p>
+<p>If you are using Haml, Devise does not generate views for Haml (it did before Devise 1.2; see <a href="https://github.com/plataformatec/devise/issues/878">Devise issue 878</a>). See <a href="https://github.com/plataformatec/devise/wiki/How-To:-Create-Haml-and-Slim-Views">How To Create Haml and Slim Views</a> from the Devise wiki.</p>
+<p>If you are using Haml, you can create the files:</p>
 <p>
   <strong>app/views/devise/registrations/edit.html.haml</strong>
 </p>
@@ -624,19 +634,14 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
   <code>$ rm public/index.html</code>
 </p>
 <h4>Create a Home Controller and View</h4>
-<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page.</p>
+<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
 <p>
-  <code>$ rails generate controller home index</code>
+  <code>$ rails generate controller home index --no-controller-specs</code>
 </p>
 <p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
 <p>
   <strong>app/views/home/index.html.erb</strong>
 </p>
-<p>If you’re using Haml, you’ll find a <strong>haml</strong> file with placeholder content:</p>
-<p>
-  <strong>app/views/home/index.html.haml</strong>
-</p>
-<p>We’ll assume you’re using the default template engine for the remainder of this tutorial.</p>
 <p>Now, you have to set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
 <p>
   <code>get "home/index"</code>
@@ -653,8 +658,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
 <p>Stop the server with Control-C.</p>
-<h2>Create a Default User</h2>
-<h4>Display Users on the Home Page</h4>
+<h2>Display Users on the Home Page</h2>
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
@@ -671,6 +675,7 @@ end
   &lt;p&gt;User: &lt;%= user.name %&gt; &lt;/p&gt;
 &lt;% end %&gt;
 </pre>
+<h2>Create a Default User</h2>
 <h4>Set Up a Database Seed File</h4>
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
@@ -681,13 +686,19 @@ puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user.name
 </pre>
+<p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
+<pre>
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+puts 'New user created: ' &lt;&lt; user.name
+</pre>
 <p>You can change the values for name, email, and password as you wish.</p>
 <h4>Seed the Database</h4>
 <p>Add the default user to the database by running the command:</p>
 <p>
-  <code>$ rake db:seed</code>
+  <code>$ bundle exec rake db:seed</code>
 </p>
-<p>If you need to, you can run <code>$ rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
+<p>If you need to, you can run <code>$ bundle exec rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
 <p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
 <pre>
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me
@@ -706,9 +717,9 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page.</p>
+<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
 <p>
-  <code>$ rails generate controller users show</code>
+  <code>$ rails generate controller users show --no-controller-specs</code>
 </p>
 <p>Note that “users” is plural when you create the controller.</p>
 <p>Modify the file <strong>app/controllers/users_controller.rb</strong> and add:</p>
@@ -753,18 +764,17 @@ end
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/css_setup.rb">css_setup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>We’ll create a very simple stylesheet with styling for a horizontal menu and flash messages:</p>
-<p>For <strong>Rails 3.0</strong>, you’ll need to create a <strong>public/stylesheets/application.css</strong> file.</p>
-<p>For <strong>Rails 3.1</strong>, you’ll find a <strong>app/assets/stylesheets/application.css</strong> file.</p>
-<p>You can add this to the <strong>application.css</strong> file:</p>
+<p>We’ll create a very simple stylesheet with styling for a horizontal menu and flash messages.</p>
+<p>Rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
+<p>Add stylesheet rules to the <strong>application.css.scss</strong> file:</p>
 <pre>
-ul.hmenu {
-  list-style: none;	
+header nav ul {
+  list-style: none;
   margin: 0 0 2em;
   padding: 0;
 }
-ul.hmenu li {
-  display: inline;  
+header nav ul li {
+  display: inline;
 }
 #flash_notice, #flash_alert {
   padding: 5px 8px;
@@ -781,9 +791,9 @@ ul.hmenu li {
 </pre>
 <h4>The Default Application Layout</h4>
 <p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> or <strong>app/views/layouts/application.html.haml</strong> as a default for rendering any page.</p>
+<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
 <p>You’ll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
 <h4>Add Devise Navigation Links</h4>
 <p>
@@ -835,10 +845,6 @@ ul.hmenu li {
 <p>Several unneeded files are generated in the process of creating a new Rails application.</p>
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
 <p>See instructions for <a href="http://railsapps.github.com/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
-<h4>Remove Unneeded Files</h4>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cleanup.rb">cleanup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p>
@@ -847,9 +853,9 @@ ul.hmenu li {
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Deploy to Heroku</h2>
-<p>For your convenience, here are <a href="http://railsapps.github.com/rails-heroku-tutorial.html">instructions for deploying your app to Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
+<p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
 <h2>Conclusion</h2>
-<p>This concludes the tutorial for creating a Ruby on Rails web application that requires Rails 3 and uses Devise for user management and authentication with RSpec and Cucumber.</p>
+<p>This concludes the tutorial for creating a Ruby on Rails web application that requires Rails and uses Devise for user management and authentication with RSpec and Cucumber.</p>
 <h4>Credits</h4>
 <p>Daniel Kehoe (<a href="http://danielkehoe.com/">http://danielkehoe.com/</a>) implemented the application and wrote the tutorial.</p>
 <p>Was this useful to you? Follow me on Twitter:<br /><a href="http://twitter.com/rails_apps">rails_apps</a><br />
@@ -895,7 +901,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-01 09:59:40</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-01 14:18:56</p>
       </div>
     </div>
 
