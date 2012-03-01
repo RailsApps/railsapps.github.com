@@ -87,7 +87,7 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 </pre>
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app (named <code>rails3-devise-rspec-cucumber</code>) on your computer. For this tutorial, the name is “rails3-devise-rspec-cucumber.” You can use a different name if you wish.</p>
+<p>This creates a new Rails app named <code>rails3-devise-rspec-cucumber</code> on your computer. You can use a different name if you wish.</p>
 <p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
 <ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>No.</strong></li>
 	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>Yes.</strong></li>
@@ -96,15 +96,11 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>Yes.</strong></li>
 	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>No.</strong></li>
 	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
-	<li>Would you like to use Devise for authentication? <strong>Devise with Confirmable module</strong></li>
-	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap</strong></li>
+	<li>Would you like to use Devise for authentication? <strong>Devise with default modules</strong></li>
+	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>None</strong></li>
 	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
 	<li>Would you like to set a robots.txt file to ban spiders? <strong>Yes.</strong></li>
 </ul><p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
-<p>After you create the application, switch to its folder to continue work directly in the application:</p>
-<pre>
-$ cd rails3-devise-rspec-cucumber
-</pre>
 <h4>Option Three</h4>
 <p>
   <em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em>
@@ -123,6 +119,7 @@ $ cd rails3-devise-rspec-cucumber
 </p>
 <p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
+<p>Beginning here, we show how to create the application from scratch.</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
 <p>
   <code>$ rails new rails3-devise-rspec-cucumber -T</code>
@@ -156,6 +153,7 @@ $ cd rails3-devise-rspec-cucumber
 	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
 	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
 	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
+	<li><a href="http://rubygems.org/gems/email_spec">email_spec</a></li>
 	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
 	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
 	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
@@ -172,18 +170,20 @@ gem 'rails', '3.2.1'
 gem 'sqlite3'
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
-  gem 'coffee-rails', '~&gt; 3.2.1'  
+  gem 'coffee-rails', '~&gt; 3.2.1'
   gem 'uglifier', '&gt;= 1.0.3'
 end
 gem 'jquery-rails'
 gem "rspec-rails", "&gt;= 2.8.1", :group =&gt; [:development, :test]
-gem "factory_girl_rails", "&gt;= 1.6.0", :group =&gt; :test
-gem "cucumber-rails", "&gt;= 1.2.1", :group =&gt; :test
+gem "factory_girl_rails", "&gt;= 1.7.0", :group =&gt; :test
+gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
+gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test
 gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
 gem "database_cleaner", "&gt;= 0.7.1", :group =&gt; :test
 gem "launchy", "&gt;= 2.0.5", :group =&gt; :test
-gem "devise", "&gt;= 2.0.0"
+gem "devise", "&gt;= 2.0.4"
 </pre>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.1'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h4>Install the Required Gems</h4>
 <p>Install the required gems on your computer:</p>
@@ -210,8 +210,11 @@ gem "devise", "&gt;= 2.0.0"
 <p>You should have the following gems in your <strong>Gemfile</strong>:</p>
 <pre>
 gem 'rspec-rails', :group =&gt; [:development, :test]
-gem 'database_cleaner', :group =&gt; :test
-gem 'factory_girl_rails', :group =&gt; :test
+group :test do
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'email_spec'
+end
 </pre>
 <p>The gem <code>rspec-rails</code> needs to be in the <code>:development</code> group (as well as the <code>:test</code> group) to expose generators and rake tasks during development.</p>
 <p>Install the required gems on your computer:</p>
@@ -260,6 +263,14 @@ RSpec.configure do |config|
 end
 </pre>
 <p>Now you can write controller specs that set up a signed-in user before tests are run.</p>
+<h4>Email Spec</h4>
+<p>The email_spec gem provides a collection of RSpec matchers for testing email.</p>
+<p>Modify the file <strong>spec/spec_helper.rb</strong> to enable the email_spec library:</p>
+<pre>
+require 'rspec/rails'
+require 'email_spec'
+require 'rspec/autorun'
+</pre>
 <h4>Run RSpec</h4>
 <p>Run <code>rake -T</code> to check that rake tasks for RSpec are available.</p>
 <p>Prepare the database for testing by running the commands:</p>
@@ -268,7 +279,7 @@ $ bundle exec rake db:migrate
 $ bundle exec rake db:test:prepare
 </pre>
 <p>This will create a <strong>db/schema.rb</strong> file so <code>rake spec</code> can run successfully.</p>
-<p>You should be able to run <code>rake spec</code> to run all specs. If you haven’t written any specs, you’ll see the message “No examples matching ./spec/<strong>/</strong>_spec.rb could be found”.</p>
+<p>You should be able to run <code>rake spec</code> to run all specs. If you haven’t written any specs, you’ll see the message “No examples matching … could be found”.</p>
 <p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/tree/master/spec">spec directory</a> to use our ready-made specs.</p>
 <pre>
 $ cd spec
@@ -297,6 +308,7 @@ group :test do
   gem 'cucumber-rails'
   gem 'capybara'
   gem 'database_cleaner'
+  gem "email_spec"
 end
 </pre>
 <p>Install the required gems on your computer:</p>
@@ -308,7 +320,15 @@ end
   <code>$ rails generate cucumber:install --capybara --rspec</code>
 </p>
 <p>The <code>-–capybara</code> option specifies Capybara instead of the default Webrat for acceptance testing. The <code>-–rspec</code> option enables RSpec matchers for your step definitions.</p>
-<h4>Database Cleaner for Cucumber</h4>
+<p>The cucumber-rails generator creates the directories:</p>
+<ul><li><strong>features/step_definitions</strong></li>
+	<li><strong>features/support</strong></li>
+</ul><p>The cucumber-rails generator creates the files:</p>
+<ul><li><strong>config/cucumber.yml</strong></li>
+	<li><strong>features/support/env.rb</strong></li>
+	<li><strong>lib/tasks/cucumber.rake</strong></li>
+	<li><strong>script/cucumber</strong></li>
+</ul><h4>Database Cleaner for Cucumber</h4>
 <p>To reset your application database to a pristine state during testing, Cucumber makes use of <a href="http://github.com/bmabey/database_cleaner">Database Cleaner</a>. The file <strong>features/support/env.rb</strong> is already set up to use Database Cleaner:</p>
 <pre>
 begin
@@ -317,13 +337,56 @@ rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
 </pre>
+<h4>Email Spec</h4>
+<p>The email_spec gem provides a collection of Cucumber steps for testing email.</p>
+<p>Add a file <strong>support/email_spec.rb</strong> to enable the email_spec library:</p>
+<p>
+  <strong>support/email_spec.rb</strong>
+</p>
+<pre>
+require 'email_spec/cucumber'
+</pre>
+<p>Create a set of Cucumber step definitions for testing email:</p>
+<pre>
+$ rails generate email_spec:steps
+</pre>
+<h4>Run Single Features Easily</h4>
+<p>You can run a single Cucumber feature with a command such as:</p>
+<pre>
+$ bundle exec cucumber features/visitors/request_invitation.feature --require features
+</pre>
+<p>To save some typing, you can eliminate the need for <code>--require features</code> by changing the <strong>config/cucumber.yml</strong> file:</p>
+<p>
+  <strong>config/cucumber.yml</strong>
+</p>
+<pre>
+std_opts = "-r features/support/ -r features/step_definitions --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip"
+</pre>
 <h4>Run Cucumber</h4>
 <p>Run <code>rake -T</code> to check that rake tasks for Cucumber are available.</p>
 <p>You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run all Cucumber scenarios and steps. If you haven’t written any Cucumber scenarios and steps, you’ll see the message “0 scenarios, 0 steps”.</p>
+<p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/tree/master/features">features directory</a> to use our ready-made Cucumber feature files.</p>
+<pre>
+$ cd features
+$ cd support
+$ curl -o paths.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/support/paths.rb
+$ cd ../
+$ cd step_definitions
+$ curl -o user_steps.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/step_definitions/user_steps.rb
+$ cd ../
+$ mkdir users
+$ cd users
+$ curl -o sign_in.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/sign_in.feature
+$ curl -o sign_out.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/sign_out.feature
+$ curl -o sign_up.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/sign_up.feature
+$ curl -o user_edit.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/user_edit.feature
+$ curl -o user_show.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/user_show.feature
+</pre>
+<p>You’ll have to complete the tutorial before the Cucumber features will run successfully.</p>
 <h4>Write Cucumber Scenarios</h4>
 <p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
 <p>There are two approaches to writing Cucumber scenarios. The newest (and recommended) approach uses <a href="https://github.com/jnicklas/capybara">Capybara</a> to write the code (“steps”) that turn Cucumber scenarios into executable specifications. Older versions of Cucumber provided a <code>web_steps.rb</code> file that implemented common features. See the <a href="http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off">The Training Wheels Came Off</a> by Aslak Hellesøy to understand why the <code>web_steps.rb</code> approach is no longer recommended.</p>
-<h4>Test the App</h4>
+<h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p>
   <code>$ rails server</code>
@@ -822,7 +885,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-02-29 20:08:42</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-01 07:46:07</p>
       </div>
     </div>
 
