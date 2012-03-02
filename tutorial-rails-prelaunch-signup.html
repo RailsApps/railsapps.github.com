@@ -51,71 +51,83 @@
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 27 February 2012</em>
+  <em>Last updated 2 March 2012</em>
 </p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for Rails 3.2 for a startup prelaunch signup site.</p>
 <p>
   <strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong>
 </p>
+<p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
+<h2>Introduction</h2>
 <p><a href="http://github.com/plataformatec/devise">Devise</a> gives us ready-made authentication and user management. It is easy to build <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> for a Rails application. It is even easier to build an application that simply saves email addresses to a database. We’ll use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password. By using Devise for the prelaunch signup application, you can use the same user database for a post-launch site.</p>
 <p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and mark the user account as “inactive.” When you are ready to invite users to try your site (either in beta or post-launch) you can mark the account as “active” and send the user an email invitation.</p>
-<p>This app uses the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  example app as a starter app. You can see a <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">tutorial for the rails3-devise-rspec-cucumber example app</a> to see how the starter app is built.</p>
-<h4>Similar Examples and Tutorials</h4>
-<p>See a list of additional <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<h4>RailsApps Examples and Tutorials</h4>
+<p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  starter app. This tutorial shows how to generate the start app and then modify it to add prelaunch signup features.</p>
+<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
-<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>.</p>
+<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please edit this wiki page.</p>
+<p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
 <h2>Creating the Application</h2>
 <h4>Option One</h4>
-<blockquote>
-<p><ins>Cut and paste the code.</ins></p>
-</blockquote>
+<p>
+  <em>Follow this tutorial.</em>
+</p>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
 <h4>Option Two</h4>
-<blockquote>
-<p><ins>Use the ready-made application template to generate the code.</ins></p>
-</blockquote>
+<p>
+  <em>Use the ready-made application template to generate the code.</em>
+</p>
 <p>We’ll soon offer an application template to generate a new Rails app with code that closely matches the tutorial. It’s not available yet.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
 <ul><li>The Ruby language (version 1.9.3)</li>
 	<li>Rails 3.2</li>
 </ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br /><code>$ ruby -v</code><br /><code>$ rails -v</code></p>
-<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> and <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for detailed instructions and advice.</p>
+<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>You’ll start by generating the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app using an application template.</p>
+<p>If you want to know more about the starter app, read the <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">tutorial for the rails3-devise-rspec-cucumber</a> app.</p>
 <p>Use the command:</p>
 <pre>
 $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T
 </pre>
 <p>Use the <code>-T</code> flags to skip Test::Unit files.</p>
-<p>This creates a new Rails app (named <code>rails-prelaunch-signup</code>) on your computer. For this tutorial, the name is “rails-prelaunch-signup.” You can use a different name if you wish.</p>
+<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
+<p>This creates a new Rails app named <code>rails-prelaunch-signup</code> on your computer. You can use a different name if you wish.</p>
 <p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
-<p>Would you like to use Haml instead of <span class="caps">ERB</span>? <strong>Yes.</strong><br />
-Would you like to use RSpec instead of TestUnit? <strong>Yes.</strong><br />
-Would you like to use factory_girl for test fixtures with RSpec? <strong>Yes.</strong><br />
-Would you like to use machinist for test fixtures with RSpec? <strong>No.</strong><br />
-Would you like to use Cucumber for your <span class="caps">BDD</span>? <strong>Yes.</strong><br />
-Would you like to use Guard to automate your workflow? <strong>No.</strong><br />
-Would you like to enable the LiveReload guard? <strong>No.</strong><br />
-Would you like to use Devise for authentication? <strong>Yes.</strong><br />
-Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap</strong><br />
-Would you like to use ‘rails-footnotes’ during development? <strong>No.</strong><br />
-Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></p>
+<ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>No.</strong></li>
+	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>Yes.</strong></li>
+	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>No.</strong></li>
+	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
+	<li>Would you like to use Devise for authentication? <strong>Devise with Confirmable and Invitable modules</strong></li>
+	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap</strong></li>
+	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
+	<li>Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></li>
+</ul><p>Be sure to choose the <strong>Devise with Confirmable and Invitable modules</strong> option as it is required as a basis for the rails-prelaunch-signup app.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
 <p>
   <code>$ cd rails-prelaunch-signup</code>
 </p>
-<h4>Please Remember: Edit the <span class="caps">README</span></h4>
+<h4>Edit the <span class="caps">README</span></h4>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
-<p>See instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
+<p>
+  <code>$ git init .</code>
+  <br />
+  <code>$ git add .</code>
+  <br />
+  <code>$ git commit -m 'Initial commit'</code>
+</p>
+<p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
 <h2>Set Up Gems</h2>
 <h4>About Required Gems</h4>
 <p>The application uses the following gems:</p>
@@ -123,13 +135,39 @@ Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></p>
 	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
 	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
 	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
+	<li><a href="http://rubygems.org/gems/email_spec">email_spec</a></li>
 	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
 	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
 	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
 </ul><h4>Set up Your Gemfile</h4>
+<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> application template sets up your gemfile.</p>
-<p>See an example <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Rails 3.2 Gemfile</a>.</p>
-<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> for advice and details. It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>.</p>
+<p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
+<p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
+<p>
+  <strong>Gemfile</strong>
+</p>
+<pre>
+source 'https://rubygems.org'
+gem 'rails', '3.2.2'
+gem 'sqlite3'
+group :assets do
+  gem 'sass-rails',   '~&gt; 3.2.3'
+  gem 'coffee-rails', '~&gt; 3.2.1'
+  gem 'uglifier', '&gt;= 1.0.3'
+end
+gem 'jquery-rails'
+gem "rspec-rails", "&gt;= 2.8.1", :group =&gt; [:development, :test]
+gem "factory_girl_rails", "&gt;= 1.7.0", :group =&gt; :test
+gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
+gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test
+gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
+gem "database_cleaner", "&gt;= 0.7.1", :group =&gt; :test
+gem "launchy", "&gt;= 2.0.5", :group =&gt; :test
+gem "devise", "&gt;= 2.0.4"
+</pre>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.2'</code> accordingly.</p>
+<p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h4>Install the Required Gems</h4>
 <p>Install the required gems on your computer:</p>
 <p>
@@ -143,31 +181,94 @@ Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></p>
 <h2>Haml</h2>
 <p>In this example, we’ll use Haml instead of the default “<span class="caps">ERB</span>” Rails template engine. The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up Haml. You can see details about <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
 <h2>RSpec</h2>
-<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app uses RSpec for unit testing. Run <code>rake -T</code> to check that rake tasks for RSpec are available. You should be able to run <code>rake spec</code> to run all specs provided with the example app.</p>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up RSpec for unit testing. Run <code>rake -T</code> to check that rake tasks for RSpec are available. You should be able to run <code>rake spec</code> to run all specs provided with the example app. To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
 <h2>Cucumber</h2>
-<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up Cucumber for specifications and acceptance testing. You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run the Cucumber scenarios and steps provided with the example app.</p>
-<h2>Configure Email for Devise</h2>
-<p>Configure email by modifying</p>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up Cucumber for specifications and acceptance testing. To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
+<p>You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run the Cucumber scenarios and steps provided with the example app. You can run a single Cucumber feature with a command such as:</p>
+<pre>
+$ bundle exec cucumber features/visitors/request_invitation.feature
+</pre>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code> to the command to run a single Cucumber feature.</p>
+<h2>Configure Email</h2>
+<p>You must configure the app for your email account so your application can send email messages, for example, to acknowledge invitation requests or send welcome messages.</p>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up a default email configuration. You must add details about your email account.</p>
+<h4>Configure ActionMailer</h4>
+<p>ActionMailer is configured for development in the <strong>config/environments/development.rb</strong> file:</p>
+<pre>
+# ActionMailer Config
+config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
+config.action_mailer.delivery_method = :smtp
+# change to false to prevent email from being sent during development
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.default :charset =&gt; "utf-8"
+</pre>
+<p>ActionMailer is configured for production in the <strong>config/environments/production.rb</strong> file:</p>
+<pre>
+config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
+# ActionMailer Config
+# Setup for production - deliveries, no errors raised
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = false
+config.action_mailer.default :charset =&gt; "utf-8"
+</pre>
+<p>ActionMailer is configured for testing in  the <strong>config/environments/test.rb</strong> file:</p>
+<pre>
+# ActionMailer Config
+config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
+</pre>
+<p>This will set the example application to deliver email in both development and production. It will raise delivery errors in development but not production.</p>
+<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly during development.</p>
+<p>For testing, <code>config.action_mailer.default_url_options</code> is set for a host at <code>example.com</code>. Any value allows tests to run.</p>
+<p>For production, you’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain.</p>
+<h4>Use a Gmail account</h4>
+<p>If you want to use a Gmail account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
+<pre>
+config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "example.com",
+  authentication: "plain",
+  enable_starttls_auto: true,
+  user_name: ENV["GMAIL_USERNAME"],
+  password: ENV["GMAIL_PASSWORD"]
+}
+</pre>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
+<p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
+<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add:</p>
+<pre>
+export GMAIL_USERNAME="myname@gmail.com"
+export GMAIL_PASSWORD="secret*"
+</pre>
+<p>Open a new shell or restart your terminal application to continue.</p>
+<h4>Configure Devise for Email</h4>
+<p>Complete your email configuration by modifying</p>
 <p>
   <strong>config/initializers/devise.rb</strong>
 </p>
-<p>and setting the return email address for emails sent from the application.</p>
-<p>You may need to set values for your mailhost in</p>
-<p>
-  <strong>config/environments/development.rb</strong>
-  <br />
-  <strong>config/environments/production.rb</strong>
-</p>
+<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up the Database</h2>
+<h4>Create a Default User</h4>
+<p>You’ll want to set up a default user so you can test the app. The file <strong>db/seeds.rb</strong> already contains:</p>
+<pre>
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+puts 'New user created: ' &lt;&lt; user.name
+</pre>
+<p>You can change the values for name, email, and password as you wish.</p>
+<h4>Seed the Database</h4>
 <p>Set up the database and add the default user by running the commands:</p>
 <pre>
-$ rake db:migrate
-$ rake db:seed
+$ bundle exec rake db:migrate
+$ bundle exec rake db:seed
 </pre>
 <p>Set up the database for testing:</p>
 <pre>
 $ bundle exec rake db:test:prepare
 </pre>
+<p>If you need to, you can run <code>$ bundle exec rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
 <h2>Test the Starter App</h2>
 <p>You can check that the example app runs properly by entering the command</p>
 <p>
@@ -176,14 +277,14 @@ $ bundle exec rake db:test:prepare
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Software Development Process</h2>
-<p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You’ll benefit by following a process that works for development of more complex applications.</p>
+<p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You may find it beneficial to use the same process for development of more complex applications.</p>
 <p>Here’s the software development process we’ll use:</p>
 <ul><li>write user stories</li>
 	<li>write a short specification for our feature set using Cucumber scenarios</li>
 	<li>create acceptance tests using Cucumber step definitions</li>
 	<li>code each feature</li>
 	<li>run acceptance tests as each feature is completed</li>
-</ul><p>By practicing the process that leads from concept to code, you’ll be prepared for more complex applications.</p>
+</ul><p>By practicing the process that leads from concept to code, you’ll be prepared to build more complex applications.</p>
 <h2>Write Your User Stories</h2>
 <p><a href="http://en.wikipedia.org/wiki/User_story">User stories</a> are a way to discuss and describe the requirements for a software application. By making a list of user stories, you’ll force yourself to describe what your application will do. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories also will help you organize your work and track progress toward completion.</p>
 <p>User stories are generally expressed in the following format:</p>
@@ -219,7 +320,7 @@ I want to request an invitation
 so I'll be notified when the site is launched
 </pre>
 <p>In many situations, your user story is all you need to guide you in coding the implementation. If you are both the product owner and a hands-on developer, you don’t need a written specification to implement a feature.</p>
-<p>Before you begin coding directly from a user story, consider the benefits of writing a specification:</p>
+<p>However, before you begin coding directly from a user story, consider the benefits of writing a specification:</p>
 <ul><li>If you are part of a team you can use a specification to communicate what needs to be accomplished.</li>
 	<li>Creating a specification can help us discover the functionality we need to implement.</li>
 	<li>A specification will describe the functionality so we can discuss it with our business partners.</li>
@@ -338,7 +439,7 @@ $ bundle exec rake db:test:prepare
 </pre>
 <p>Then we can run our integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/visitors/request_invitation.feature --require features
+$ bundle exec cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should fail indicating that the home page has no button “Request Invitation.”</p>
 <h4>Implement “Request Invitation” Form</h4>
@@ -483,7 +584,7 @@ end
 <h4>Test the Implemention of the “Request Invitation” Feature</h4>
 <p>Run the integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/visitors/request_invitation.feature --require features
+$ bundle exec cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should succeed.</p>
 <p>Evaluating only the functionality, the feature is complete. In the next section, we’ll improve the look and feel of the feature.</p>
@@ -538,7 +639,7 @@ $ git branch -d request-invitation
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-01 18:27:30</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-02 14:25:09</p>
       </div>
     </div>
 
