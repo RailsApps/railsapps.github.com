@@ -454,13 +454,26 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 = render "links"
 </pre>
 <h4>Use Devise Registrations Page for the Home Page</h4>
-<p>Edit the <strong>config/routes.rb</strong> file to use the Devise registrations page as our home page.</p>
-<p>Replace <code>root :to =&gt; "home#index"</code> with:</p>
+<p>Examine the <strong>config/routes.rb</strong> file to learn how to use the Devise registrations page as our home page.</p>
+<p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up the <strong>config/routes.rb</strong> file with a route to the home page for authenticated users (those who have an account and are logged in) and the same route for all other users (those who have no account or are not logged in).</p>
 <pre>
+authenticated :user do
+  root :to =&gt; 'home#index'
+end
+
+root :to =&gt; "home#index"
+</pre>
+<p>To make the Devise registrations page serve as the home page for users who have no account (or are not logged in),  replace the second <code>root :to =&gt; "home#index"</code> so you see this:</p>
+<pre>
+authenticated :user do
+  root :to =&gt; 'home#index'
+end
+  
 devise_scope :user do
   root :to =&gt; "devise/registrations#new"
 end
 </pre>
+<p>With this change, casual visitors will see a “Request Invitation” form on the home page. And users who log in (presumably only an administrator or invited guests) will see the application “home#index” page.</p>
 <h4>Create a “Thank You” Page</h4>
 <p>For a simple “thank you” page, there’s no need to create a dynamic page with a controller and view. Instead, create a file for a static web page:</p>
 <p>
@@ -469,6 +482,7 @@ end
 <pre>
 &lt;h1&gt;Thank You&lt;/h1&gt;
 </pre>
+<p>Obviously, you can embellish this page as needed.</p>
 <h4>Redirect to “Thank You” Page After Successful Sign Up</h4>
 <p>The Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Redirect-to-a-specific-page-on-successful-sign-up-%28registration%29/">How to Redirect to a Specific Page on Successful Sign Up</a>.</p>
 <p>Override the Devise::RegistrationsController with a new controller. Create a file:</p>
@@ -489,6 +503,7 @@ class RegistrationsController &lt; Devise::RegistrationsController
   
 end
 </pre>
+<p>When a visitor creates an account by requesting an invitation, Devise will call the <code>after_inactive_sign_up_path_for</code> method to redirect the visitor to the thank you page. In the future, after you launch the application and allow visitors to become active as soon as they create an account, you may use the <code>after_sign_up_path_for</code> to redirect the new user to the thank you page.</p>
 <p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
 <pre>
 devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations" }
@@ -630,7 +645,7 @@ $ git branch -d request-invitation
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-03 16:52:48</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-03 17:35:11</p>
       </div>
     </div>
 
