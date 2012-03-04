@@ -595,69 +595,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 <p>Note that Devise’s default behaviour allows any logged-in user to edit or delete his or her own record (but no one else’s). When you access the edit page you are editing just your info, and not info of other users.</p>
 <h4>Create Customized Views for User Registration (Haml)</h4>
 <p>If you are using Haml, Devise does not generate views for Haml (it did before Devise 1.2; see <a href="https://github.com/plataformatec/devise/issues/878">Devise issue 878</a>). See <a href="https://github.com/plataformatec/devise/wiki/How-To:-Create-Haml-and-Slim-Views">How To Create Haml and Slim Views</a> from the Devise wiki.</p>
-<p>If you are using Haml, you can create the files:</p>
-<p>
-  <strong>app/views/devise/registrations/edit.html.haml</strong>
-</p>
-<pre>
-%h2
-  Edit #{resource_name.to_s.humanize}
-= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put }) do |f|
-  = devise_error_messages!
-  %p
-    = f.label :name
-    %br/
-    = f.text_field :name
-  %p
-    = f.label :email
-    %br/
-    = f.email_field :email
-  %p
-    = f.label :password
-    %i (leave blank if you don't want to change it)
-    %br/
-    = f.password_field :password
-  %p
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation
-  %p
-    = f.label :current_password
-    %i (we need your current password to confirm your changes)
-    %br/
-    = f.password_field :current_password
-  %p= f.submit "Update"
-%h3 Cancel my account
-%p
-  Unhappy? #{link_to "Cancel my account", registration_path(resource_name), :confirm =&gt; "Are you sure?", :method =&gt; :delete}.
-= link_to "Back", :back
-</pre>
-<p>
-  <strong>app/views/devise/registrations/new.html.haml</strong>
-</p>
-<pre>
-%h2 Sign up
-= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
-  = devise_error_messages!
-  %p
-    = f.label :name
-    %br/
-    = f.text_field :name
-  %p
-    = f.label :email
-    %br/
-    = f.email_field :email
-  %p
-    = f.label :password
-    %br/
-    = f.password_field :password
-  %p
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation
-  %p= f.submit "Sign up"
-= render :partial =&gt; "devise/shared/links"
-</pre>
+<p>If you are using Haml, you can generate the <span class="caps">ERB</span> files using <code>rails generate devise:views</code> and then convert them using the online tool <a href="http://html2haml.heroku.com/">Html2Haml</a>. You’ll need to remove the <strong>.erb</strong> files and replace them with <strong>app/views/devise/registrations/edit.html.haml</strong> and <strong>app/views/devise/registrations/new.html.haml</strong>.</p>
 <h2>Create a Home Page</h2>
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
@@ -676,15 +614,20 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 <p>
   <strong>app/views/home/index.html.erb</strong>
 </p>
-<p>Now, you have to set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
+<p>Next, set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
 <p>
   <code>get "home/index"</code>
 </p>
 <p>with</p>
-<p>
-  <code>root :to =&gt; "home#index"</code>
-</p>
-<p>We’ll add some content to the home page in the next step.</p>
+<pre>
+authenticated :user do
+  root :to =&gt; 'home#index'
+end
+
+root :to =&gt; "home#index"
+</pre>
+<p>If you examine this code, you’ll see that authenticated users (those who have an account and are logged in) will see the home/index page as the application root (or home) page. And all other users (those who don’t have an account or who are not logged in) will see the same home page. The redundancy serves a didactic purpose: If you decide you want  users to see a different page when they log in, you now know exactly where to change it.</p>
+<p>By default, Devise will redirect to the root_path after successful sign in or sign out. It is easy to change the root_path as shown in the <strong>config/routes.rb</strong> file. Alternatively, you can override the Devise methods <code>after_sign_in_path_for</code> and <code>after_sign_out_path_for</code> as described in the Devise wiki article <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-out">How To Redirect to a Specific Page</a>.</p>
 <h4>Test the App</h4>
 <p>You can check that your app runs properly by entering the command</p>
 <p>
@@ -936,7 +879,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-02 16:03:54</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-03 16:52:48</p>
       </div>
     </div>
 
