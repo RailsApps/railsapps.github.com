@@ -51,7 +51,7 @@
       <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 29 February 2012</em>
+  <em>Last updated 10 March 2012</em>
 </p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> for advice and suggestions on setting up the newest version of Rails on your own computer.</p>
@@ -72,7 +72,7 @@
 <h2>Heroku Account</h2>
 <p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
 <h3>Using a Client’s Account</h3>
-<p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. Log in to your client’s account on Heroku and under “My Apps” and “General Info” you’ll find a form where you can add yourself as a collaborator.</p>
+<p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create an app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
 <h3>Deploying for Multiple Accounts</h3>
 <p>David Dollar’s <a href="https://github.com/ddollar/heroku-accounts">heroku-accounts plugin</a> will help if you must use multiple accounts on Heroku. With the heroku-accounts plugin, you can configure each application to deploy to the appropriate account.</p>
 <p>To install the heroku-accounts plugin:</p>
@@ -189,6 +189,7 @@ end
 <p>
   <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p0</code>
 </p>
+<p><em>Note:</em> As of March 10, 2012, Heroku did not yet support the recommended Ruby version 1.9.3-p125.</p>
 <p>Set the Heroku <span class="caps">PATH</span> config variable to include “bin”:</p>
 <p>
   <code>$ heroku config:add PATH=bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin</code>
@@ -222,7 +223,8 @@ production:
 <p>
   <code>$ git push heroku master</code>
 </p>
-<p><em>Note:</em> If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. Read “Using a Client’s Account” above.</p>
+<p><em>Note:</em> If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create the app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
+<h4>Database Migrations</h4>
 <p>You’ll need to run your database migrations if you are using SQLite, MySQL, or PostgreSQL:</p>
 <p>
   <code>$ heroku run rake db:migrate</code>
@@ -365,7 +367,7 @@ $ heroku domains:add mydomain.com
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-08 17:22:41</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-10 14:27:39</p>
       </div>
     </div>
 
