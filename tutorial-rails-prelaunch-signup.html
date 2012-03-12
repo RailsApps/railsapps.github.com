@@ -108,7 +108,7 @@ $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-ap
 	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>No.</strong></li>
 	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
 	<li>Would you like to use Devise for authentication? <strong>Devise with Confirmable and Invitable modules</strong></li>
-	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap</strong></li>
+	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap (sass)</strong></li>
 	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
 	<li>Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></li>
 </ul><p>Be sure to choose the <strong>Devise with Confirmable and Invitable modules</strong> option as it is required as a basis for the rails-prelaunch-signup app.</p>
@@ -453,6 +453,17 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
   %p= f.submit "Request Invitation"
 = render "links"
 </pre>
+<p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
+<p>Replace the <code>sign_up</code> method with the following:</p>
+<pre>
+def sign_up
+  delete_user
+  visit '/users/sign_up'
+  fill_in "Email", :with =&gt; @visitor[:email]
+  click_button "Request Invitation"
+  find_user
+end
+</pre>
 <h4>Use Devise Registrations Page for the Home Page</h4>
 <p>Examine the <strong>config/routes.rb</strong> file to learn how to use the Devise registrations page as our home page.</p>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up the <strong>config/routes.rb</strong> file with a route to the home page for authenticated users (those who have an account and are logged in) and the same route for all other users (those who have no account or are not logged in).</p>
@@ -508,6 +519,13 @@ end
 <pre>
 devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations" }
 </pre>
+<p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
+<p>Replace the “successful sign up message” step definition content with “Thank You” (or anything else you’ve added to the thank you page):</p>
+<pre>
+Then /^I should see a successful sign up message$/ do
+  page.should have_content "Thank You"
+end
+</pre>
 <h4>Make New Accounts “Inactive”</h4>
 <p>Devise supports an “inactive accounts” feature. We’ll use Devise to create a user account when a visitor requests an invitation. By default, any account will be designated as “inactive” when it is created. In the future, when we want the user to try the site, we’ll mark the account as “active” and send the user an email invitation.</p>
 <p>Create a database migration to add an “active” attribute:</p>
@@ -549,6 +567,20 @@ $ bundle exec rake db:reset
 <pre>
 $ bundle exec rake db:test:prepare
 </pre>
+<p>Modify the file <strong>spec/factories.rb</strong> to include <code>active true</code> so an active user can be created during testing:</p>
+<pre>
+FactoryGirl.define do
+  factory :user do
+    name 'Test User'
+    email 'example@example.com'
+    password 'please'
+    password_confirmation 'please'
+    # required if the Devise Confirmable module is used
+    confirmed_at Time.now
+    active true
+  end
+end
+</pre>
 <p>You’ve added the “active” attribute to the database and User model. Now modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -587,6 +619,8 @@ class User &lt; ActiveRecord::Base
 
 end
 </pre>
+<h4>Send a Welcome Email</h4>
+<p>As currently implemented, when a new user requests an invitation, Devise will send an email with instructions to confirm the account. We want to change this behavior, so the user gets a welcome email but is not asked to confirm his or her account until the administrator has activated their account.</p>
 <h4>Test the Implemention of the “Request Invitation” Feature</h4>
 <p>Run the integration test with the following command:</p>
 <pre>
@@ -645,7 +679,7 @@ $ git branch -d request-invitation
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-10 14:27:39</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-12 10:10:37</p>
       </div>
     </div>
 
