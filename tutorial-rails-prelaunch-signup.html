@@ -51,7 +51,7 @@
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 2 March 2012</em>
+  <em>Last updated 16 March 2012</em>
 </p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for Rails 3.2 for a startup prelaunch signup site.</p>
 <p>
@@ -59,10 +59,11 @@
 </p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
 <h2>Introduction</h2>
-<p><a href="http://github.com/plataformatec/devise">Devise</a> gives us ready-made authentication and user management. It is easy to build <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> for a Rails application. It is even easier to build an application that simply saves email addresses to a database. We’ll use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password. By using Devise for the prelaunch signup application, you can use the same user database for a post-launch site.</p>
-<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and mark the user account as “inactive.” When you are ready to invite users to try your site (either in beta or post-launch) you can mark the account as “active” and send the user an email invitation.</p>
+<p>At first sight, this is a trivial application. Any experienced Rails developer could build it. However, the aim of the project is to eliminate individual effort spent building an application that meets a common need. As an open source project, this application provides code that is already implemented and tested. Your individual effort can be better applied to add additional features to this app, customize the design and product offer for your prelaunch site, and get started on a real application for your business. The author and contributors hope you find our work valuable.</p>
+<p>Experienced Rails developers know it is very easy to build an application that simply saves email addresses to a database. It is not much more difficult to add <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> to manage user registration and authentication. Yet we’ve chosen <a href="http://github.com/plataformatec/devise">Devise</a> for our authentication and user management. We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product.</p>
+<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to try your site (either in beta or post-launch) you can select a user and send the user an email invitation that instructs them to confirm their email address and set a password.</p>
 <h4>RailsApps Examples and Tutorials</h4>
-<p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  starter app. This tutorial shows how to generate the start app and then modify it to add prelaunch signup features.</p>
+<p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  starter app. This tutorial shows how to generate the starter app and then modify it to add prelaunch signup features.</p>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
@@ -495,7 +496,7 @@ end
 </pre>
 <p>Obviously, you can embellish this page as needed.</p>
 <h4>Redirect to “Thank You” Page After Successful Sign Up</h4>
-<p>The Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Redirect-to-a-specific-page-on-successful-sign-up-%28registration%29/">How to Redirect to a Specific Page on Successful Sign Up</a>.</p>
+<p>We want the visitor to see the “thank you” page after they request an invitation.</p>
 <p>Override the Devise::RegistrationsController with a new controller. Create a file:</p>
 <p>
   <strong>app/controllers/registrations_controller.rb</strong>
@@ -526,27 +527,11 @@ Then /^I should see a successful sign up message$/ do
   page.should have_content "Thank You"
 end
 </pre>
-<h4>Make New Accounts “Inactive”</h4>
-<p>Devise supports an “inactive accounts” feature. We’ll use Devise to create a user account when a visitor requests an invitation. By default, any account will be designated as “inactive” when it is created. In the future, when we want the user to try the site, we’ll mark the account as “active” and send the user an email invitation.</p>
-<p>Create a database migration to add an “active” attribute:</p>
-<pre>
-$ rails generate migration add_active_to_users active:boolean
-</pre>
-<p>Modify the migration file <strong>db/migrate/[timestamp]_add_active_to_users.rb</strong> to add <code>:default =&gt; false, :null =&gt; false</code>:</p>
-<pre>
-class AddActiveToUsers &lt; ActiveRecord::Migration
-  def change
-    add_column :users, :active, :boolean, :default =&gt; false, :null =&gt; false
-  end
-end
-</pre>
-<p>Change the file <strong>db/seeds.rb</strong> to add the new attribute to the default user with <code>:active =&gt; true</code>:</p>
-<pre>
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now, :active =&gt; true
-puts 'New user created: ' &lt;&lt; user.name
-</pre>
-<p>Change the file <strong>app/models/user.rb</strong> to add the new attribute to the list of accessible attributes so that you can do bulk assignment when creating new users:</p>
+<p>For more information, the Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Redirect-to-a-specific-page-on-successful-sign-up-%28registration%29/">How to Redirect to a Specific Page on Successful Sign Up</a>.</p>
+<h4>Postpone Confirmation of New Accounts</h4>
+<p>We want a visitor to create a new account when they request an invitation but we don’t want to confirm the email address and activate the account until we send an invitation.</p>
+<p>There are several ways to implement this functionality. One approach is to add an “active” attribute to the User model and designate the account as “inactive” when it is created. Another approach is to simply revise the confirmation email to make it a simple “welcome” without the confirmation request but this would require re-implementing the confirmation request process later. The simplest approach is to postpone sending the user a request to confirm their email address, leaving the account unconfirmed until after we send the user an invitation.</p>
+<p>We’ll modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
 <pre>
 class User &lt; ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -555,72 +540,135 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :active
-end
-</pre>
-<p>Run the migration and recreate the database with the new default user:</p>
-<pre>
-$ bundle exec rake db:migrate
-$ bundle exec rake db:reset
-</pre>
-<p>Be sure to reset the database for testing:</p>
-<pre>
-$ bundle exec rake db:test:prepare
-</pre>
-<p>Modify the file <strong>spec/factories.rb</strong> to include <code>active true</code> so an active user can be created during testing:</p>
-<pre>
-FactoryGirl.define do
-  factory :user do
-    name 'Test User'
-    email 'example@example.com'
-    password 'please'
-    password_confirmation 'please'
-    # required if the Devise Confirmable module is used
-    confirmed_at Time.now
-    active true
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+
+  # override Devise method
+  def confirmation_required?
+    false
   end
-end
-</pre>
-<p>You’ve added the “active” attribute to the database and User model. Now modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
-<pre>
-class User &lt; ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :invitable, :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable
-
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :active
-
+  
   # override Devise method
   def active_for_authentication?
-    super &amp;&amp; active?
-  end
-
-  # override Devise method
-  def inactive_message
-    if !active?
-      :inactive
-    else
-      super
-    end
-  end
-
-  # override Devise method
-  def self.send_reset_password_instructions(attributes={})
-    recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
-    if !recoverable.active?
-      recoverable.errors[:base] &lt;&lt; I18n.t("devise.failure.inactive")
-    elsif recoverable.persisted?
-      recoverable.send_reset_password_instructions
-    end
-    recoverable
+    confirmed? || confirmation_period_valid?
   end
 
 end
 </pre>
+<p>Devise uses a conditional “after_create” callback to generate a confirmation token and send the confimation request email. It is only called if <code>confirmation_required?</code> returns true. By indicating that “confirmation is not required,” no confimation email will be sent when the account is created.</p>
+<p>When we tell Devise that “confirmation is not required,” Devise will assume that any new account is “active_for_authentication.” We don’t want that, so we override the <code>active_for_authentication?</code> method so that unconfirmed accounts are not active.</p>
 <h4>Send a Welcome Email</h4>
-<p>As currently implemented, when a new user requests an invitation, Devise will send an email with instructions to confirm the account. We want to change this behavior, so the user gets a welcome email but is not asked to confirm his or her account until the administrator has activated their account.</p>
+<p>Ordinarily, when the Devise Confirmable module is configured and a new user requests an invitation, Devise will send an email with instructions to confirm the account. We’ve changed this behavior so the user doesn’t get a confirmation request. However, we still want to send a welcome email.</p>
+<p>We didn’t revise the confirmation email to make it a welcome message. That might seem simpler but it would require us to re-implement the confirmation request process later. Instead we’ll add send an email welcome message using a new ActionMailer method when the account is created.</p>
+<p>Generate a mailer and its views:</p>
+<pre>
+$ rails generate mailer UserMailer
+</pre>
+<p>Add a <code>welcome_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
+<pre>
+class UserMailer &lt; ActionMailer::Base
+  default :from =&gt; "notifications@example.com"
+
+  def welcome_email(user)
+    mail(:to =&gt; user.email, :subject =&gt; "Invitation Request Received")
+  end
+end
+</pre>
+<p>Create a mailer view by creating a file <strong>app/views/user_mailer/welcome_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Welcome&lt;/h1&gt;
+    &lt;p&gt;
+      We have received your request for an invitation to example.com.
+    &lt;/p&gt;
+    &lt;p&gt;
+      We'll contact you when we launch.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>It is a good idea to make a text-only version for this message. Create a file  <strong>app/views/user_mailer/welcome_email.text.erb</strong>:</p>
+<pre>
+Welcome!
+
+We have received your request for an invitation to example.com.
+ 
+We'll contact you when we launch.
+</pre>
+<p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email.</p>
+<p>Now we’ll wire up the User model to send the welcome message when an account is created.</p>
+<p>Modify the file <strong>app/models/user.rb</strong> to add the <code>send_welcome_email</code> method:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :invitable, :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+
+  after_create :send_welcome_email
+
+  # override Devise method
+  def confirmation_required?
+    false
+  end
+  
+  # override Devise method
+  def active_for_authentication?
+    confirmed? || confirmation_period_valid?
+  end
+  
+  private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver
+  end
+
+end
+</pre>
+<p>Now the visitor will get a welcome email when they request an invitation.</p>
+<h4>Tweak the User Interface</h4>
+<p>The required functionality is largely complete. But there are a few small changes to make.</p>
+<p>If the user visits the sign-in page immediately after requesting an invitation, they may see this flash message:</p>
+<p>“A message with a confirmation link has been sent to your email address. Please open the link to activate your account.”</p>
+<p>In the file <strong>config/locales/devise.en.yml</strong>, find this message:</p>
+<pre>
+signed_up_but_unconfirmed: 'A message with a confirmation link has been sent to your email address. Please open the link to activate your account.'
+</pre>
+<p>Replace it with this:</p>
+<pre>
+signed_up_but_unconfirmed: 'Your invitation request has been received. You will receive an invitation when we launch.'
+</pre>
+<p>Be careful not to use an apostrophe or single quote in the message unless you surround the text with double quotes.</p>
+<p>If the visitor attempts to sign in, they will see this message:</p>
+<p>“You have to confirm your account before continuing.”</p>
+<p>In the file <strong>config/locales/devise.en.yml</strong>, find this message:</p>
+<pre>
+unconfirmed: 'You have to confirm your account before continuing.'
+</pre>
+<p>Replace it with this:</p>
+<pre>
+unconfirmed: 'Your account is not active.'
+</pre>
+<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”.</p>
+<p>Remove these links by removing the following from the file <strong>app/views/devise/_links.erb</strong>:</p>
+<pre>
+&lt;%- if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations' %&gt;
+  &lt;%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %&gt;&lt;br /&gt;
+&lt;% end -%&gt;
+
+&lt;%- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' %&gt;
+  &lt;%= link_to "Forgot your password?", new_password_path(resource_name) %&gt;&lt;br /&gt;
+&lt;% end -%&gt;
+</pre>
+<p>You may want to restore these links when you launch.</p>
+<p><em>Note:</em> Or make the links conditional?</p>
 <h4>Test the Implemention of the “Request Invitation” Feature</h4>
 <p>Run the integration test with the following command:</p>
 <pre>
@@ -679,7 +727,7 @@ $ git branch -d request-invitation
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-14 18:29:16</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-16 21:00:47</p>
       </div>
     </div>
 
