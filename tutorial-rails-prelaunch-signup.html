@@ -355,7 +355,7 @@ Feature: Request Invitation
     When I request an invitation with valid user data
     Then I should see a message "Thank You"
     And my email address should be stored in the database
-    And my account should be designated inactive
+    And my account should be unconfirmed
     And I should receive an email with subject "Request Received"
 
   Scenario: User signs up with invalid email
@@ -409,9 +409,9 @@ Then /^my email address should be stored in the database$/ do
   test_user.should respond_to(:email)
 end
 
-Then /^my account should be designated inactive$/ do
+Then /^my account should be unconfirmed$/ do
   test_user = User.find_by_email("example@example.com")
-  test_user.active.should be_false
+  test_user.confirmed_at.should be_nil
 end
 
 When /^I request an invitation with valid user data$/ do
@@ -464,6 +464,27 @@ def sign_up
   click_button "Request Invitation"
   find_user
 end
+</pre>
+<p>In the <strong>features/users/sign_up.feature</strong> file, remove the following:</p>
+<pre>
+Scenario: User signs up without password
+  When I sign up without a password
+  Then I should see a missing password message
+
+Scenario: User signs up without password confirmation
+  When I sign up without a password confirmation
+  Then I should see a missing password confirmation message
+
+Scenario: User signs up with mismatched password and confirmation
+  When I sign up with a mismatched password confirmation
+  Then I should see a mismatched password message
+</pre>
+<p>Finally, in the <strong>features/users/user_show.feature</strong> file, remove the following:</p>
+<pre>
+Scenario: Viewing users
+  Given I exist as a user
+  When I look at the list of users
+  Then I should see my name
 </pre>
 <h4>Use Devise Registrations Page for the Home Page</h4>
 <p>Examine the <strong>config/routes.rb</strong> file to learn how to use the Devise registrations page as our home page.</p>
@@ -559,9 +580,33 @@ end
 <h4>Send a Welcome Email</h4>
 <p>Ordinarily, when the Devise Confirmable module is configured and a new user requests an invitation, Devise will send an email with instructions to confirm the account. We’ve changed this behavior so the user doesn’t get a confirmation request. However, we still want to send a welcome email.</p>
 <p>We didn’t revise the confirmation email to make it a welcome message. That might seem simpler but it would require us to re-implement the confirmation request process later. Instead we’ll add send an email welcome message using a new ActionMailer method when the account is created.</p>
-<p>Generate a mailer and its views:</p>
+<p>Generate a mailer with views and a spec:</p>
 <pre>
 $ rails generate mailer UserMailer
+</pre>
+<p>Modify the file <strong>spec/mailers/user_mailer_spec.rb</strong> to create a test:</p>
+<pre>
+require "spec_helper"
+
+describe UserMailer do
+  before(:all) do
+    @user = FactoryGirl.create(:user, email: "example@example.com")
+    @email = UserMailer.welcome_email(@user).deliver
+  end
+
+  it "should be delivered to the email address provided" do
+    @email.should deliver_to("example@example.com")
+  end
+
+  it "should contain the correct message in the mail body" do
+    @email.should have_body_text(/Welcome/)
+  end
+
+  it "should have the correct subject" do
+    @email.should have_subject(/Request Received/)
+  end
+
+end
 </pre>
 <p>Add a <code>welcome_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
 <pre>
@@ -656,6 +701,13 @@ unconfirmed: 'You have to confirm your account before continuing.'
 <pre>
 unconfirmed: 'Your account is not active.'
 </pre>
+<p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
+<p>Replace the “unconfirmed account message” step definition:</p>
+<pre>
+Then /^I see an unconfirmed account message$/ do
+  page.should have_content "Your account is not active."
+end
+</pre>
 <p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”.</p>
 <p>Remove these links by removing the following from the file <strong>app/views/devise/_links.erb</strong>:</p>
 <pre>
@@ -727,7 +779,7 @@ $ git branch -d request-invitation
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-16 21:00:47</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-03-17 06:21:19</p>
       </div>
     </div>
 
