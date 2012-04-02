@@ -51,7 +51,7 @@
       <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 13 March 2012</em>
+  <em>Last updated 2 April 2012</em>
 </p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting. See a discussion on Quora <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
 <p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> for advice and suggestions on setting up the newest version of Rails on your own computer.</p>
@@ -177,14 +177,7 @@ end
 <p>Heroku’s newest stack, “Celadon Cedar,” supports Rails 3.2 but installs Ruby 1.9.2 by default. Ruby 1.9.3 is recommended for Rails 3.2.</p>
 <p>You can configure the Heroku environment to use Ruby 1.9.3.</p>
 <p><em>Note:</em> Heroku makes it clear that Ruby 1.9.3 on Heroku is experimental, which means “no support, the ruby_version will change in the future, and this feature may change or be removed without warning.” In response to an inquiry on January 31, 2012, Heroku said, “there is no timeline yet” to fully support Ruby 1.9.3.</p>
-<p>Install the heroku-labs plugin:</p>
-<p>
-  <code>$ heroku plugins:install https://github.com/heroku/heroku-labs.git</code>
-</p>
-<p>Enable the “user_env_compile” feature (see Heroku’s <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">documentation</a>):</p>
-<p>
-  <code>$ heroku labs:enable user_env_compile -a myapp</code>
-</p>
+<p><em>Note:</em> Installing Ruby 1.9.3 on Heroku previously (before March 19, 2012) required installation of the heroku-labs plugin. The heroku-labs plugin is deprecated and its functionality is now incorporated in the heroku client gem.</p>
 <p>Set the RUBY_VERSION variable:</p>
 <p>
   <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p125</code>
@@ -224,7 +217,7 @@ production:
 </p>
 <p><em>Note:</em> If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create the app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
 <h4>Database Migrations</h4>
-<p>You’ll need to run your database migrations if you are using SQLite, MySQL, or PostgreSQL:</p>
+<p>You’ll need to run your database migrations (not applicable if you are using MongoDB):</p>
 <p>
   <code>$ heroku run rake db:migrate</code>
 </p>
@@ -366,7 +359,7 @@ $ heroku domains:add mydomain.com
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-03-31 19:53:58</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-02 05:41:51</p>
       </div>
     </div>
 
