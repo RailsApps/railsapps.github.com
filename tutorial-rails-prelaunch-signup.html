@@ -268,6 +268,19 @@ $ bundle exec rake db:reset
 </p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
+<h2>Modify the Starter App</h2>
+<p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for production.</p>
+<h3>Update the Home Page</h3>
+<p>Replace the contents of the file <strong>app/views/home/index.html.haml</strong>:</p>
+<pre>
+%h3 Welcome
+</pre>
+<p>You can embellish the page as you wish.</p>
+<p>Modify the file <strong>app/controllers/home_controller.rb</strong> to remove the <code>index</code> method:</p>
+<pre>
+class HomeController &lt; ApplicationController
+end
+</pre>
 <h2>Software Development Process</h2>
 <p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You may find it beneficial to use the same process for development of more complex applications.</p>
 <p>Here’s the software development process we’ll use:</p>
@@ -773,6 +786,25 @@ $ git checkout -b work-in-progress
   %a.btn.btn-primary.btn-large{"data-toggle" =&gt; "modal", :href =&gt; "#request-invite"} Request invite
 </pre>
 <p>The revised view code includes <span class="caps">CSS</span> classes from Twitter Bootstrap that implement the modal window and apply style to the buttons. You’ll note that our code includes some simple style rules to position the romance copy and the call-to-action button. These styles could be moved to an external stylesheet; for now, it’s easier to include them in the view file.</p>
+<h3>Display Errors</h3>
+<p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window. We need some jQuery code to  override the “display: none” style rule for the modal window when an error message is present.</p>
+<p>Add the following to the file <strong>app/assets/javascripts/application.js</strong>:</p>
+<pre>
+$('document').ready(function() {
+  if ($('#error_explanation').length &gt; 0) {
+    $("#request_invite").css("display", "block");
+  }
+})
+</pre>
+<p>When the <code>#error_explanation</code> element contains text, the modal window will be displayed.</p>
+<h3>Git Workflow</h3>
+<p>Merge the working branch to “master”:</p>
+<pre>
+$ git checkout master
+$ git merge --squash work-in-progress
+$ git commit -am "improve design for 'Request Invitation' feature"
+$ git branch -d work-in-progress
+</pre>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -813,7 +845,7 @@ $ git checkout -b work-in-progress
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-03 19:25:03</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-04 11:20:34</p>
       </div>
     </div>
 
