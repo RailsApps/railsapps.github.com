@@ -51,7 +51,7 @@
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 16 March 2012</em>
+  <em>Last updated 3 April 2012</em>
 </p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for Rails 3.2 for a startup prelaunch signup site.</p>
 <p>
@@ -62,7 +62,7 @@
 <p>At first sight, this is a trivial application. Any experienced Rails developer could build it. However, the aim of the project is to eliminate individual effort spent building an application that meets a common need. As an open source project, this application provides code that is already implemented and tested. Your individual effort can be better applied to add additional features to this app, customize the design and product offer for your prelaunch site, and get started on a real application for your business. The author and contributors hope you find our work valuable.</p>
 <p>Experienced Rails developers know it is very easy to build an application that simply saves email addresses to a database. It is not much more difficult to add <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> to manage user registration and authentication. Yet we’ve chosen <a href="http://github.com/plataformatec/devise">Devise</a> for our authentication and user management. We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product.</p>
 <p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to try your site (either in beta or post-launch) you can select a user and send the user an email invitation that instructs them to confirm their email address and set a password.</p>
-<h4>RailsApps Examples and Tutorials</h4>
+<h3>RailsApps Examples and Tutorials</h3>
 <p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  starter app. This tutorial shows how to generate the starter app and then modify it to add prelaunch signup features.</p>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
@@ -74,12 +74,12 @@
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
 <h2>Creating the Application</h2>
-<h4>Option One</h4>
+<h3>Option One</h3>
 <p>
   <em>Follow this tutorial.</em>
 </p>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h4>Option Two</h4>
+<h3>Option Two</h3>
 <p>
   <em>Use the ready-made application template to generate the code.</em>
 </p>
@@ -117,14 +117,14 @@ $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-ap
 <p>
   <code>$ cd rails-prelaunch-signup</code>
 </p>
-<h4>Edit the <span class="caps">README</span></h4>
+<h3>Edit the <span class="caps">README</span></h3>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up a source control repository and makes an initial commit of the code.</p>
 <p>At this point, you should create a GitHub repository for your project.</p>
 <p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
 <h2>Set Up Gems</h2>
-<h4>About Required Gems</h4>
+<h3>About Required Gems</h3>
 <p>The application uses the following gems:</p>
 <ul><li><a href="http://rubygems.org/gems/rails">rails</a></li>
 	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
@@ -134,7 +134,7 @@ $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-ap
 	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
 	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
 	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
-</ul><h4>Set up Your Gemfile</h4>
+</ul><h3>Set up Your Gemfile</h3>
 <p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> application template sets up your gemfile.</p>
 <p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
@@ -167,7 +167,7 @@ gem "bootstrap-sass", "~&gt; 2.0.1"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.3'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
-<h4>Install the Required Gems</h4>
+<h3>Install the Required Gems</h3>
 <p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. In this case, the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> application has already run the <code>bundle install</code> command.</p>
 <p>You can check which gems are installed on your computer with:</p>
 <p>
@@ -188,7 +188,7 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 <h2>Configure Email</h2>
 <p>You must configure the app for your email account so your application can send email messages, for example, to acknowledge invitation requests or send welcome messages.</p>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up a default email configuration. You must add details about your email account.</p>
-<h4>Configure ActionMailer</h4>
+<h3>Configure ActionMailer</h3>
 <p>ActionMailer is configured for development in the <strong>config/environments/development.rb</strong> file:</p>
 <pre>
 # ActionMailer Config
@@ -218,7 +218,7 @@ config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
 <p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly during development.</p>
 <p>For testing, <code>config.action_mailer.default_url_options</code> is set for a host at <code>example.com</code>. Any value allows tests to run.</p>
 <p>For production, you’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain.</p>
-<h4>Use a Gmail account</h4>
+<h3>Use a Gmail account</h3>
 <p>If you want to use a Gmail account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
 <pre>
 config.action_mailer.smtp_settings = {
@@ -239,14 +239,14 @@ export GMAIL_USERNAME="myname@gmail.com"
 export GMAIL_PASSWORD="secret*"
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
-<h4>Configure Devise for Email</h4>
+<h3>Configure Devise for Email</h3>
 <p>Complete your email configuration by modifying</p>
 <p>
   <strong>config/initializers/devise.rb</strong>
 </p>
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up the Database</h2>
-<h4>Create a Default User</h4>
+<h3>Create a Default User</h3>
 <p>You’ll want to set up a default user so you can test the app. The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
@@ -254,7 +254,7 @@ user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :
 puts 'New user created: ' &lt;&lt; user.name
 </pre>
 <p>You can change the values for name, email, and password as you wish.</p>
-<h4>Seed the Database</h4>
+<h3>Seed the Database</h3>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app has already set up the database and added the default user.</p>
 <p>If you change the default user’s name, email, or password you’ll need to reset the database:</p>
 <pre>
@@ -303,7 +303,7 @@ so I can send an announcement when I launch the site
 <p>Here’s a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/implemented.textile">user stories that have been implemented</a>. There is also a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/unimplemented.textile">user stories that have not been implemented</a>. If you have ideas for additional features for this application, edit the file and submit a pull request. Or simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <h2>Feature: Request Invitation</h2>
 <p>The next step in our development process is to pick a user story and turn it into a specification that will guide implementation of a feature.</p>
-<h4>User Story</h4>
+<h3>User Story</h3>
 <p>Here’s the user story we’ll specify and implement:</p>
 <pre>
 *Request Invitation*
@@ -320,14 +320,14 @@ so I'll be notified when the site is launched
 </ul><p>For the purposes of this tutorial, acceptance tests and integration tests are synonymous. Acceptance tests demonstrate that developers have succeeded in implementing a specification. Integration tests assure you that your application runs as intended.</p>
 <p>For these reasons, we want to create a detailed specification from this user story. We can use the specification to create an automated acceptance test so we know when the feature has been successfully implemented. Our acceptance tests can also serve as integration tests so we can continue to test the code as we build out or maintain the application.</p>
 <p>We’ll use Cucumber to create our specification and acceptance tests. Not all developers use Cucumber. Some developers create integration tests using <a href="http://inancgumus.com/66712574">Capybara in combination with RSpec</a> as described in Ryan Bates’s <a href="http://railscasts.com/episodes/275-how-i-test">How I Test</a> Railscast. Cucumber is appropriate when a team includes nonprogrammers who are involved in defining product requirements or there is a need for a specification and acceptance tests to be maintained independently of implementation (for example, when implementation is outsourced). For this tutorial, we may all be programmers, but using Cucumber to create a specification helps to describe the features, organize the tutorial, and break the work into discrete tasks.</p>
-<h4>Git Workflow</h4>
+<h3>Git Workflow</h3>
 <p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
 <p>Create a new git branch for this feature:</p>
 <pre>
 $ git checkout -b request-invitation
 </pre>
 <p>The command creates a new branch named “request-invitation” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
-<h4>Cucumber Scenario</h4>
+<h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
 <p>The <strong>features</strong> directory contains our Cucumber feature files. We can organize Cucumber feature files any way we wish by placing them in subdirectories. For this application, we’ll organize features by roles in subdirectories for “visitors” and “owner”. Create a subdirectory <strong>features/visitors</strong> and then create the following file:</p>
 <p>
@@ -364,7 +364,7 @@ Feature: Request Invitation
 </pre>
 <p>This Cucumber feature file contains the specification needed to implement the user story “Request Invitation.”</p>
 <p>It’s important to note that user stories don’t necessarily translate directly into Cucumber features. In this case, our first user story is easily transformed into a set of Cucumber scenarios that describe the user story completely. This is not always the case; don’t be concerned if <a href="http://blog.mattwynne.net/2010/10/22/features-user-stories/">Features != User Stories</a> as explained in Matt Wynne’s blog post.</p>
-<h4>Cucumber Step Definitions</h4>
+<h3>Cucumber Step Definitions</h3>
 <p>Here we turn our specification into an automated acceptance test.</p>
 <p>Cucumber scenarios can be read as plain English text. Alone, they serve as specifications. To create an acceptance test or integration test, we must write test code for each step in a scenario, called “step definitions.”</p>
 <p>We’ll create step definitions for all the scenario steps in our “Feature: Request Invitation” file.</p>
@@ -434,7 +434,7 @@ $ bundle exec rake db:test:prepare
 $ bundle exec cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should fail indicating that the home page has no button “Request Invitation.”</p>
-<h4>Implement “Request Invitation” Form</h4>
+<h3>Implement “Request Invitation” Form</h3>
 <p>We begin implementing the actual application here.</p>
 <p>The application’s home page doesn’t contain a “Request Invitation” form. We could add a sign-up form to the home page but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to use the existing Devise mechanism.</p>
 <p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
@@ -486,7 +486,7 @@ Scenario: Viewing users
   When I look at the list of users
   Then I should see my name
 </pre>
-<h4>Use Devise Registrations Page for the Home Page</h4>
+<h3>Use Devise Registrations Page for the Home Page</h3>
 <p>Examine the <strong>config/routes.rb</strong> file to learn how to use the Devise registrations page as our home page.</p>
 <p>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app sets up the <strong>config/routes.rb</strong> file with a route to the home page for authenticated users (those who have an account and are logged in) and the same route for all other users (those who have no account or are not logged in).</p>
 <pre>
@@ -507,7 +507,7 @@ devise_scope :user do
 end
 </pre>
 <p>With this change, casual visitors will see a “Request Invitation” form on the home page. And users who log in (presumably only an administrator or invited guests) will see the application “home#index” page.</p>
-<h4>Create a “Thank You” Page</h4>
+<h3>Create a “Thank You” Page</h3>
 <p>For a simple “thank you” page, there’s no need to create a dynamic page with a controller and view. Instead, create a file for a static web page:</p>
 <p>
   <strong>public/thankyou.html</strong>
@@ -516,7 +516,7 @@ end
 &lt;h1&gt;Thank You&lt;/h1&gt;
 </pre>
 <p>Obviously, you can embellish this page as needed.</p>
-<h4>Redirect to “Thank You” Page After Successful Sign Up</h4>
+<h3>Redirect to “Thank You” Page After Successful Sign Up</h3>
 <p>We want the visitor to see the “thank you” page after they request an invitation.</p>
 <p>Override the Devise::RegistrationsController with a new controller. Create a file:</p>
 <p>
@@ -549,7 +549,7 @@ Then /^I should see a successful sign up message$/ do
 end
 </pre>
 <p>For more information, the Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To%3a-Redirect-to-a-specific-page-on-successful-sign-up-%28registration%29/">How to Redirect to a Specific Page on Successful Sign Up</a>.</p>
-<h4>Postpone Confirmation of New Accounts</h4>
+<h3>Postpone Confirmation of New Accounts</h3>
 <p>We want a visitor to create a new account when they request an invitation but we don’t want to confirm the email address and activate the account until we send an invitation.</p>
 <p>There are several ways to implement this functionality. One approach is to add an “active” attribute to the User model and designate the account as “inactive” when it is created. Another approach is to simply revise the confirmation email to make it a simple “welcome” without the confirmation request but this would require re-implementing the confirmation request process later. The simplest approach is to postpone sending the user a request to confirm their email address, leaving the account unconfirmed until after we send the user an invitation.</p>
 <p>We’ll modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
@@ -577,7 +577,7 @@ end
 </pre>
 <p>Devise uses a conditional “after_create” callback to generate a confirmation token and send the confimation request email. It is only called if <code>confirmation_required?</code> returns true. By indicating that “confirmation is not required,” no confimation email will be sent when the account is created.</p>
 <p>When we tell Devise that “confirmation is not required,” Devise will assume that any new account is “active_for_authentication.” We don’t want that, so we override the <code>active_for_authentication?</code> method so that unconfirmed accounts are not active.</p>
-<h4>Send a Welcome Email</h4>
+<h3>Send a Welcome Email</h3>
 <p>Ordinarily, when the Devise Confirmable module is configured and a new user requests an invitation, Devise will send an email with instructions to confirm the account. We’ve changed this behavior so the user doesn’t get a confirmation request. However, we still want to send a welcome email.</p>
 <p>We didn’t revise the confirmation email to make it a welcome message. That might seem simpler but it would require us to re-implement the confirmation request process later. Instead we’ll add send an email welcome message using a new ActionMailer method when the account is created.</p>
 <p>Generate a mailer with views and a spec:</p>
@@ -678,7 +678,7 @@ class User &lt; ActiveRecord::Base
 end
 </pre>
 <p>Now the visitor will get a welcome email when they request an invitation.</p>
-<h4>Tweak the User Interface</h4>
+<h3>Tweak the User Interface</h3>
 <p>The required functionality is largely complete. But there are a few small changes to make.</p>
 <p>If the user visits the sign-in page immediately after requesting an invitation, they may see this flash message:</p>
 <p>“A message with a confirmation link has been sent to your email address. Please open the link to activate your account.”</p>
@@ -721,14 +721,14 @@ end
 </pre>
 <p>You may want to restore these links when you launch.</p>
 <p><em>Note:</em> Or make the links conditional?</p>
-<h4>Test the Implemention of the “Request Invitation” Feature</h4>
+<h3>Test the Implemention of the “Request Invitation” Feature</h3>
 <p>Run the integration test with the following command:</p>
 <pre>
 $ bundle exec cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should succeed.</p>
 <p>Evaluating only the functionality, the feature is complete. In the next section, we’ll improve the look and feel of the feature.</p>
-<h4>Git Workflow</h4>
+<h3>Git Workflow</h3>
 <p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
 <pre>
 $ git checkout master
@@ -739,6 +739,40 @@ $ git commit -am "implement 'Request Invitation' feature"
 <pre>
 $ git branch -d request-invitation
 </pre>
+<h2>Improving the Design</h2>
+<p>The functionality of the “Request Invitation” feature is complete. Let’s improve the look and feel of the feature.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for the changes you’ll make to the page design:</p>
+<pre>
+$ git checkout -b work-in-progress
+</pre>
+<p>The command creates a new branch named “work-in-progress” and switches to it.</p>
+<h3>Add a Modal Window</h3>
+<p>It’d be nice for the “request invitation” page to include some “romance copy” to convince the visitor of the value of the site. The “call to action” could be a big button that says, “Request Invitation,” which opens a modal window and invites the visitor to enter an email address and click a submit button.</p>
+<p>Twitter Bootstrap gives us everything we need to implement this in a few lines of code.</p>
+<p>Open the file <strong>app/views/devise/registrations/new.html.haml</strong> and replace the contents with this new code:</p>
+<pre>
+#request-invite.modal{:style =&gt; "display: none;"}
+  = form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
+    .modal-header
+      %a.close{"data-dismiss" =&gt; "modal"} ×
+      %h3 Request Invitation
+    .modal-body
+      = devise_error_messages!
+      %input{:type=&gt;'hidden', :name=&gt;"user[password]", :value=&gt;'please'}
+      %p
+        = f.label :email
+        %br/
+        = f.email_field :email
+    .modal-footer
+      = f.submit "Request Invitation", :class =&gt; "btn.btn-success"
+      %a.btn{"data-dismiss" =&gt; "modal", :href =&gt; "#"} Close
+#romance-copy{:style =&gt; "text-align: center; margin-top: 100px"}
+  %h2 Want in?
+#call-to-action{:style =&gt; "text-align: center; margin-top: 100px"}
+  %a.btn.btn-primary.btn-large{"data-toggle" =&gt; "modal", :href =&gt; "#request-invite"} Request invite
+</pre>
+<p>The revised view code includes <span class="caps">CSS</span> classes from Twitter Bootstrap that implement the modal window and apply style to the buttons. You’ll note that our code includes some simple style rules to position the romance copy and the call-to-action button. These styles could be moved to an external stylesheet; for now, it’s easier to include them in the view file.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -779,7 +813,7 @@ $ git branch -d request-invitation
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-02 12:20:40</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-03 19:25:03</p>
       </div>
     </div>
 
