@@ -791,9 +791,10 @@ $ git checkout -b work-in-progress
 <p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window. We need some jQuery code to  override the “display: none” style rule for the modal window when an error message is present.</p>
 <p>Add the following to the file <strong>app/assets/javascripts/application.js</strong>:</p>
 <pre>
+// display validation errors for the "request invitation" form
 $('document').ready(function() {
   if ($('#error_explanation').length &gt; 0) {
-    $("#request_invite").css("display", "block");
+    $("#request-invite").modal('toggle');
   }
 })
 </pre>
@@ -846,7 +847,7 @@ $ git branch -d work-in-progress
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-04 11:32:43</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-04 15:01:20</p>
       </div>
     </div>
 
