@@ -90,8 +90,41 @@
 	<li>Rails 3.2</li>
 </ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br /><code>$ ruby -v</code><br /><code>$ rails -v</code></p>
 <p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
+<h2>About the Software Development Process</h2>
+<p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You may find it beneficial to use the same process for development of more complex applications.</p>
+<p>Here’s the software development process we’ll use:</p>
+<ul><li>write user stories</li>
+	<li>write a short specification for our feature set using Cucumber scenarios</li>
+	<li>create acceptance tests using Cucumber step definitions</li>
+	<li>code each feature</li>
+	<li>run acceptance tests as each feature is completed</li>
+</ul><p>By practicing the process that leads from concept to code, you’ll be prepared to build more complex applications.</p>
+<h3>Write Your User Stories</h3>
+<p><a href="http://en.wikipedia.org/wiki/User_story">User stories</a> are a way to discuss and describe the requirements for a software application. By making a list of user stories, you’ll force yourself to describe what your application will do. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories also will help you organize your work and track progress toward completion.</p>
+<p>User stories are generally expressed in the following format:</p>
+<pre>
+As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
+</pre>
+<p>As an example, here are three user stories we will implement for this application:</p>
+<pre>
+*Request Invitation*
+As a visitor to the website
+I want to request an invitation 
+so I'll be notified when the site is launched
+
+*See Invitation Requests*
+As the owner of the site
+I want to view a list of visitors who have requested invitations
+so I can know if my offer is gaining traction
+
+*Collect Email Addresses*
+As the owner of the site
+I want to collect email addresses for a mailing list
+so I can send an announcement when I launch the site
+</pre>
+<p>Here’s a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/implemented.textile">user stories that have been implemented</a>. There is also a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/unimplemented.textile">user stories that have not been implemented</a>. If you have ideas for additional features for this application, edit the file and submit a pull request. Or simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <h2>Create the Rails Application</h2>
-<p>You’ll start by generating the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app using an application template.</p>
+<p>Before you write any code, you’ll start by generating the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example app using an application template.</p>
 <p>If you want to know more about the starter app, read the <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">tutorial for the rails3-devise-rspec-cucumber</a> app.</p>
 <p>Use the command:</p>
 <pre>
@@ -281,41 +314,16 @@ $ bundle exec rake db:reset
 class HomeController &lt; ApplicationController
 end
 </pre>
-<h2>Software Development Process</h2>
-<p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You may find it beneficial to use the same process for development of more complex applications.</p>
-<p>Here’s the software development process we’ll use:</p>
-<ul><li>write user stories</li>
-	<li>write a short specification for our feature set using Cucumber scenarios</li>
-	<li>create acceptance tests using Cucumber step definitions</li>
-	<li>code each feature</li>
-	<li>run acceptance tests as each feature is completed</li>
-</ul><p>By practicing the process that leads from concept to code, you’ll be prepared to build more complex applications.</p>
-<h2>Write Your User Stories</h2>
-<p><a href="http://en.wikipedia.org/wiki/User_story">User stories</a> are a way to discuss and describe the requirements for a software application. By making a list of user stories, you’ll force yourself to describe what your application will do. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories also will help you organize your work and track progress toward completion.</p>
-<p>User stories are generally expressed in the following format:</p>
-<pre>
-As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
-</pre>
-<p>As an example, here are three user stories we will implement for this application:</p>
-<pre>
-*Request Invitation*
-As a visitor to the website
-I want to request an invitation 
-so I'll be notified when the site is launched
-
-*See Invitation Requests*
-As the owner of the site
-I want to view a list of visitors who have requested invitations
-so I can know if my offer is gaining traction
-
-*Collect Email Addresses*
-As the owner of the site
-I want to collect email addresses for a mailing list
-so I can send an announcement when I launch the site
-</pre>
-<p>Here’s a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/implemented.textile">user stories that have been implemented</a>. There is also a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/unimplemented.textile">user stories that have not been implemented</a>. If you have ideas for additional features for this application, edit the file and submit a pull request. Or simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <h2>Feature: Request Invitation</h2>
-<p>The next step in our development process is to pick a user story and turn it into a specification that will guide implementation of a feature.</p>
+<p>Now we’ll pick a user story and turn it into a specification that will guide implementation of a feature.</p>
+<p>First we’ll get our git workflow set up for adding a new feature.</p>
+<h3>Git Workflow</h3>
+<p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b request-invitation
+</pre>
+<p>The command creates a new branch named “request-invitation” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
 <h3>User Story</h3>
 <p>Here’s the user story we’ll specify and implement:</p>
 <pre>
@@ -333,13 +341,6 @@ so I'll be notified when the site is launched
 </ul><p>For the purposes of this tutorial, acceptance tests and integration tests are synonymous. Acceptance tests demonstrate that developers have succeeded in implementing a specification. Integration tests assure you that your application runs as intended.</p>
 <p>For these reasons, we want to create a detailed specification from this user story. We can use the specification to create an automated acceptance test so we know when the feature has been successfully implemented. Our acceptance tests can also serve as integration tests so we can continue to test the code as we build out or maintain the application.</p>
 <p>We’ll use Cucumber to create our specification and acceptance tests. Not all developers use Cucumber. Some developers create integration tests using <a href="http://inancgumus.com/66712574">Capybara in combination with RSpec</a> as described in Ryan Bates’s <a href="http://railscasts.com/episodes/275-how-i-test">How I Test</a> Railscast. Cucumber is appropriate when a team includes nonprogrammers who are involved in defining product requirements or there is a need for a specification and acceptance tests to be maintained independently of implementation (for example, when implementation is outsourced). For this tutorial, we may all be programmers, but using Cucumber to create a specification helps to describe the features, organize the tutorial, and break the work into discrete tasks.</p>
-<h3>Git Workflow</h3>
-<p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
-<p>Create a new git branch for this feature:</p>
-<pre>
-$ git checkout -b request-invitation
-</pre>
-<p>The command creates a new branch named “request-invitation” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
 <h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
 <p>The <strong>features</strong> directory contains our Cucumber feature files. We can organize Cucumber feature files any way we wish by placing them in subdirectories. For this application, we’ll organize features by roles in subdirectories for “visitors” and “owner”. Create a subdirectory <strong>features/visitors</strong> and then create the following file:</p>
@@ -845,7 +846,7 @@ $ git branch -d work-in-progress
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-04 11:20:34</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-04 11:32:43</p>
       </div>
     </div>
 
