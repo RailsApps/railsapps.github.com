@@ -112,9 +112,9 @@ As a visitor to the website
 I want to request an invitation 
 so I'll be notified when the site is launched
 
-*See Invitation Requests*
+*View Progress*
 As the owner of the site
-I want to view a list of visitors who have requested invitations
+I want to know how many visitors have requested invitations
 so I can know if my offer is gaining traction
 
 *Collect Email Addresses*
@@ -788,7 +788,7 @@ $ git checkout -b work-in-progress
 </pre>
 <p>The revised view code includes <span class="caps">CSS</span> classes from Twitter Bootstrap that implement the modal window and apply style to the buttons. You’ll note that our code includes some simple style rules to position the romance copy and the call-to-action button. These styles could be moved to an external stylesheet; for now, it’s easier to include them in the view file.</p>
 <h3>Display Errors</h3>
-<p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window. We need some jQuery code to  override the “display: none” style rule for the modal window when an error message is present.</p>
+<p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window. We need some jQuery code to trigger the modal window when an error message is present.</p>
 <p>Add the following to the file <strong>app/assets/javascripts/application.js</strong>:</p>
 <pre>
 // display validation errors for the "request invitation" form
@@ -806,6 +806,69 @@ $ git checkout master
 $ git merge --squash work-in-progress
 $ git commit -am "improve design for 'Request Invitation' feature"
 $ git branch -d work-in-progress
+</pre>
+<h2>Feature: View Progress</h2>
+<p>Now we’ll implement the next user story.</p>
+<p>First we’ll set up our git workflow so we can add a new feature.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b view-progress
+</pre>
+<p>The command creates a new branch named “view-progress.”</p>
+<h3>User Story</h3>
+<p>Here’s the user story we’ll specify and implement:</p>
+<pre>
+*View Progress*
+As the owner of the site
+I want to know how many visitors have requested invitations
+so I can know if my offer is gaining traction
+</pre>
+<h3>Cucumber Scenario</h3>
+<p>Now we begin writing our specification.</p>
+<p>Create a subdirectory <strong>features/admins</strong> and then create the following file:</p>
+<p>
+  <strong>features/admins/view_progress.feature</strong>
+</p>
+<pre>
+Feature: View Progress
+  As the owner of the site
+  I want to know how many visitors have requested invitations
+  so I can know if my offer is gaining traction
+
+  Scenario: Administrator views list of users
+    Given I am logged in as an administrator
+    When I visit the users page
+    Then I should see a list of users
+
+  Scenario: User cannot view list of users
+    Given I am logged in
+    When I visit the users page
+    Then I should see an access denied message
+</pre>
+<p>This Cucumber feature file contains the specification needed to implement the user story “View Progress.”</p>
+<h3>Cucumber Step Definitions</h3>
+<p>Turn the specification into an automated acceptance test. Create step definitions for all the scenario steps in our “Feature: View Progress” file.</p>
+<p>Create the following file:</p>
+<p>
+  <strong>features/step_definitions/admin_steps.rb</strong>
+</p>
+<pre>
+Given /^I am logged in as an administrator$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+When /^I visit the users page$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^I should see a list of users$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^I should see an access denied message$/ do
+  pending # express the regexp above with the code you wish you had
+end
 </pre>
     </div><!-- class="content" -->
     
@@ -847,7 +910,7 @@ $ git branch -d work-in-progress
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-04 15:01:20</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-05 15:54:23</p>
       </div>
     </div>
 
