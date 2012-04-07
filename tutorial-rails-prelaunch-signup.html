@@ -51,22 +51,35 @@
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 3 April 2012</em>
+  <em>Last updated 7 April 2012</em>
 </p>
-<p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for Rails 3.2 for a startup prelaunch signup site.</p>
+<p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
 <p>
   <strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong>
 </p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
-<h2>Introduction</h2>
-<p>At first sight, this is a trivial application. Any experienced Rails developer could build it. However, the aim of the project is to eliminate individual effort spent building an application that meets a common need. As an open source project, this application provides code that is already implemented and tested. Your individual effort can be better applied to add additional features to this app, customize the design and product offer for your prelaunch site, and get started on a real application for your business. The author and contributors hope you find our work valuable.</p>
-<p>Experienced Rails developers know it is very easy to build an application that simply saves email addresses to a database. It is not much more difficult to add <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> to manage user registration and authentication. Yet we’ve chosen <a href="http://github.com/plataformatec/devise">Devise</a> for our authentication and user management. We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product.</p>
-<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to try your site (either in beta or post-launch) you can select a user and send the user an email invitation that instructs them to confirm their email address and set a password.</p>
-<h3>RailsApps Examples and Tutorials</h3>
-<p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a>  starter app. This tutorial shows how to generate the starter app and then modify it to add prelaunch signup features.</p>
-<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
+<h2>Introduction</h2>
+<p>Typically, the first app for many web startups is a simple app that announces the founders’ plans and encourages visitors to enter an email address for future notification of the site’s launch. It’s not difficult to build such an app in Rails. But why build it yourself if others have already done so? That’s the aim of this project:</p>
+<ul><li>eliminate effort spent building an application that meets a common need;</li>
+	<li>offer code that is already implemented and tested by a large community;</li>
+	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
+</ul><p>By deploying this application, you’ll be able to:</p>
+<ul><li>direct more attention to the design and product offer for your prelaunch site;</li>
+	<li>get started faster building the ultimate application for your business.</li>
+</ul><p>The example app and tutorial also help founders who are new to Ruby on Rails to learn how to build a real-world Rails web application.</p>
+<p>If you’re an experienced Rails developer, you know it is easy to build an application that simply saves email addresses to a database. It is not much more difficult to add <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a> to manage user registration and authentication. We hope you’ll see the value in supporting development of an app that eliminates the effort spent by startup founders in building this functionality from scratch.</p>
+<h3>Why We Use Devise</h3>
+<p>We’ve chosen to use the <a href="http://github.com/plataformatec/devise">Devise</a> gem for our authentication and user management. We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product. You’ll also have the benefit of receiving help from a large community of developers using Devise, should you need help in troubleshooting or customizing the implementation.</p>
+<h3>How We Configure Devise</h3>
+<p>Devise offers many configuration options; in fact, exploring its configuration choices can take more time than actually implementing authentication from scratch. We’ve reviewed Devise’s features and selected the configuration that best accommodates a typical web startup signup site.</p>
+<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to try your site (either in beta or post-launch) you can select a user and send the user an email invitation that instructs them to confirm their email address and set a password.</p>
+<p>If you need something a bit different, <a href="https://github.com/plataformatec/devise/wiki">the Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">answers on Stack Overflow</a> can help you alter this functionality.</p>
+<h3>RailsApps Examples and Tutorials</h3>
+<p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> starter app. Using the rails3-devise-rspec-cucumber example gives you a known working application with the basic features most developers need when they build a Rails app. This tutorial shows how to generate the starter app and then modify it to add prelaunch signup features.</p>
+<p>You can use the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> starter app as an alternative if you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database.</p>
+<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
 <p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h2>Before You Start</h2>
@@ -910,7 +923,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-05 15:54:23</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-07 14:29:12</p>
       </div>
     </div>
 
