@@ -61,7 +61,7 @@
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
-<p>Typically, the first app for many web startups is a simple app that announces the founders’ plans and encourages visitors to enter an email address for future notification of the site’s launch. It’s not difficult to build such an app in Rails. But why build it yourself if others have already done so? That’s the aim of this project:</p>
+<p>Typically, the initial app for many web startups announces the founders’ plans and encourages visitors to enter an email address for future notification of the site’s launch. It’s not difficult to build such an app in Rails. But why build it yourself if others have already done so? That’s the aim of this project:</p>
 <ul><li>eliminate effort spent building an application that meets a common need;</li>
 	<li>offer code that is already implemented and tested by a large community;</li>
 	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
@@ -161,9 +161,10 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
 	<li>Would you like to use Devise for authentication? <strong>Devise with Confirmable and Invitable modules</strong></li>
 	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap (sass)</strong></li>
+	<li>Which form gem would you like? <strong>simple form (bootstrap)</strong></li>
 	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
 	<li>Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></li>
-</ul><p>Be sure to choose the <strong>Devise with Confirmable and Invitable modules</strong> option as it is required as a basis for the rails-prelaunch-signup app.</p>
+</ul><p>Be sure to choose the <strong>Devise with Confirmable and Invitable modules</strong> option as it is required as a basis for the rails-prelaunch-signup app. You’ll also need the Bootstrap version of the SimpleForm gem.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
 <p>
   <code>$ cd rails-prelaunch-signup</code>
@@ -197,24 +198,36 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 source 'https://rubygems.org'
 gem 'rails', '3.2.3'
 gem 'sqlite3'
+
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
   gem 'coffee-rails', '~&gt; 3.2.1'
   gem 'uglifier', '&gt;= 1.0.3'
 end
+
 gem 'jquery-rails'
 gem "haml", "&gt;= 3.1.4"
-gem "haml-rails", "&gt;= 0.3.4", :group =&gt; :development
-gem "rspec-rails", "&gt;= 2.8.1", :group =&gt; [:development, :test]
-gem "factory_girl_rails", "&gt;= 1.7.0", :group =&gt; :test
-gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
-gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test
-gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
-gem "database_cleaner", "&gt;= 0.7.1", :group =&gt; :test
-gem "launchy", "&gt;= 2.0.5", :group =&gt; :test
 gem "devise", "&gt;= 2.0.4"
 gem "devise_invitable", "&gt;= 1.0.0"
-gem "bootstrap-sass", "~&gt; 2.0.1"
+gem "bootstrap-sass", "&gt;= 2.0.1"
+gem "simple_form", "~&gt; 2.0"
+
+group :development, :test do
+  gem "rspec-rails", "&gt;= 2.8.1"
+end
+
+group :development do
+  gem "haml-rails", "&gt;= 0.3.4"
+end
+
+group :test do
+  gem "factory_girl_rails", "&gt;= 1.7.0"
+  gem "email_spec", "&gt;= 1.2.1"
+  gem "cucumber-rails", "&gt;= 1.3.0"
+  gem "capybara", "&gt;= 1.1.2"
+  gem "database_cleaner", "&gt;= 0.7.1"
+  gem "launchy", "&gt;= 2.0.5"
+end
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.3'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -469,22 +482,20 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 <h3>Implement “Request Invitation” Form</h3>
 <p>We begin implementing the actual application here.</p>
 <p>The application’s home page doesn’t contain a “Request Invitation” form. We could add a sign-up form to the home page but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to use the existing Devise mechanism.</p>
+<p>We’ll modify the Devise form to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm</a> gem. The SimpleForm gem lets us create forms that include tags that apply attractive Twitter Bootstrap form styles.</p>
 <p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
-<ul><li>We’ll change the heading from “Sign up” to “Request Invitation.”</li>
+<ul><li>We’ll use <a href="https://github.com/plataformatec/simple_form">SimpleForm</a>.</li>
+</ul><ul><li>We’ll change the heading from “Sign up” to “Request Invitation.”</li>
 </ul><ul><li>We’ll remove the password fields and add a hidden input field with a placeholder password. Devise won’t let us create a new user without a password so we’ll trick Devise by providing a placeholder password.</li>
 </ul><ul><li>We’ll remove the user name field (you could keep it if you wish).</li>
 </ul><ul><li>We’ll change the submit button text from “Sign up” to “Request Invitation.”</li>
 </ul><pre>
 %h2 Request Invitation
-= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
+= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
   = devise_error_messages!
-  %input{:type=&gt;'hidden', :name=&gt;"user[password]", :value=&gt;'please'}
-  %p
-    = f.label :email
-    %br/
-    = f.email_field :email
-  %p= f.submit "Request Invitation"
-= render "links"
+  = f.hidden_field :password, :value =&gt; 'please'
+  = f.input :email, :placeholder =&gt; 'user@example.com'
+  = f.submit "Request Invitation"
 </pre>
 <p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
 <p>Replace the <code>sign_up</code> method with the following:</p>
@@ -771,7 +782,7 @@ $ git commit -am "implement 'Request Invitation' feature"
 <pre>
 $ git branch -d request-invitation
 </pre>
-<h2>Improving the Design</h2>
+<h2>Improving the Design: Modal Window</h2>
 <p>The functionality of the “Request Invitation” feature is complete. Let’s improve the look and feel of the feature.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for the changes you’ll make to the page design:</p>
@@ -785,28 +796,30 @@ $ git checkout -b work-in-progress
 <p>Open the file <strong>app/views/devise/registrations/new.html.haml</strong> and replace the contents with this new code:</p>
 <pre>
 #request-invite.modal{:style =&gt; "display: none;"}
-  = form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
+  = simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:class =&gt; 'form-horizontal' } do |f|
     .modal-header
       %a.close{"data-dismiss" =&gt; "modal"} ×
       %h3 Request Invitation
     .modal-body
-      = devise_error_messages!
-      %input{:type=&gt;'hidden', :name=&gt;"user[password]", :value=&gt;'please'}
-      %p
-        = f.label :email
-        %br/
-        = f.email_field :email
+      = f.error_notification
+      = f.hidden_field :password, :value =&gt; 'please'
+      = f.input :email, :placeholder =&gt; 'user@example.com'
     .modal-footer
-      = f.submit "Request Invitation", :class =&gt; "btn.btn-success"
+      = f.submit "Request Invitation", :class =&gt; "btn.btn-success", :id =&gt; 'invitation_button'
       %a.btn{"data-dismiss" =&gt; "modal", :href =&gt; "#"} Close
-#romance-copy{:style =&gt; "text-align: center; margin-top: 100px"}
+#romance-copy{:style =&gt; "text-align: center; margin-top: 80px"}
   %h2 Want in?
-#call-to-action{:style =&gt; "text-align: center; margin-top: 100px"}
+#call-to-action{:style =&gt; "text-align: center; margin-top: 80px"}
   %a.btn.btn-primary.btn-large{"data-toggle" =&gt; "modal", :href =&gt; "#request-invite"} Request invite
 </pre>
 <p>The revised view code includes <span class="caps">CSS</span> classes from Twitter Bootstrap that implement the modal window and apply style to the buttons. You’ll note that our code includes some simple style rules to position the romance copy and the call-to-action button. These styles could be moved to an external stylesheet; for now, it’s easier to include them in the view file.</p>
 <h3>Display Errors</h3>
-<p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window. We need some jQuery code to trigger the modal window when an error message is present.</p>
+<p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window.</p>
+<p>Our first option is to force the form to be displayed when errors are present. We can do this by modifying the first line like this:</p>
+<pre>
+#request-invite.modal{:style =&gt; "display: #{@user.errors.any? ? 'block' : 'none'};"}
+</pre>
+<p>When you test this by submitting a form without an email address, you’ll see the form appears with error messages. However, we don’t see the full effect of the modal window because the page is not opaque as it should be with the modal window. We can keep the modified code, but we really need some jQuery code to trigger the modal window when an error message is present.</p>
 <p>Add the following to the file <strong>app/assets/javascripts/application.js</strong>:</p>
 <pre>
 // display validation errors for the "request invitation" form
@@ -816,7 +829,94 @@ $('document').ready(function() {
   }
 })
 </pre>
-<p>When the <code>#error_explanation</code> element contains text, the modal window will be displayed.</p>
+<p>When the <code>#error_explanation</code> element contains text, the page will refresh and the modal window will be displayed properly.</p>
+<h2>Improving the Design: Adding <span class="caps">AJAX</span></h2>
+<p>
+  <em>Thank you to <a href="http://andreapavoni.com">Andrea Pavoni</a> for the <span class="caps">AJAX</span> implementation (with support and encouragement).</em>
+</p>
+<p>We’ve improved the appearance of the “invitation request” page by adding a modal window using Twitter Bootstrap. We can make further improvements. As implemented, the page refreshes with a roundtrip to the server when we submit the form successfully (or get an an error). Our app will look more sophisticated if we use <span class="caps">AJAX</span> techniques to update the page without a page refresh.</p>
+<p>We don’t need changes to the “invitation request” page. We’ll add a partial to provide a “thank you” message. Add a file <strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
+<pre>
+%h1 Thank you
+#request-invite.modal{:style =&gt; "display: 'block';"}
+  .modal-header
+    %a.close{"data-dismiss" =&gt; "modal"} ×
+    %h3 Thank you!
+  .modal-body
+    %p We have received your request for an invitation to example.com.
+    %p We'll contact you when we launch.
+</pre>
+<p>Next, add some JavaScript to the file <strong>app/assets/javascripts/application.js</strong>. This will trigger an <span class="caps">AJAX</span> submission action when the “request invitation” button is clicked and update the <code>#request-invite</code> div on completion.</p>
+<pre>
+$('document').ready(function() {
+  
+  // display validation errors for the "request invitation" form
+  if ($('#error_explanation').length &gt; 0) {
+    $("#request-invite").modal('toggle');
+  }
+  
+  // use AJAX to submit the "request invitation" form
+  $('#invitation_button').live('click', function() {
+    var email = $('form #user_email').val();
+    var password = $('form #user_password').val();
+    var dataString = 'user[email]='+ email + '&amp;user[password]=' + password;
+    $.ajax({
+      type: "POST",
+      url: "/users",
+      data: dataString,
+      success: function(data) {
+        $('#request-invite').html(data);
+      }
+    });
+    return false;
+  });
+  
+})
+</pre>
+<p>Finally, we need to override the <code>create</code> method in the Devise registration controller to render the “thank you” partial. Modify the file <strong>app/controllers/registrations_controller.rb</strong>:</p>
+<pre>
+class RegistrationsController &lt; Devise::RegistrationsController
+
+  # ovverride #create to respond to AJAX with a partial
+  def create
+    build_resource
+
+    if resource.save
+      if resource.active_for_authentication?
+        sign_in(resource_name, resource)
+        (render(:partial =&gt; 'thankyou', :layout =&gt; false) &amp;&amp; return)  if request.xhr?
+        respond_with resource, :location =&gt; after_sign_up_path_for(resource)
+      else
+        expire_session_data_after_sign_in!
+        (render(:partial =&gt; 'thankyou', :layout =&gt; false) &amp;&amp; return)  if request.xhr?
+        respond_with resource, :location =&gt; after_inactive_sign_up_path_for(resource)
+      end
+    else
+      clean_up_passwords resource
+      render :action =&gt; :new, :layout =&gt; !request.xhr?
+    end
+  end
+
+  protected
+
+  def after_inactive_sign_up_path_for(resource)
+    '/thankyou.html'
+  end
+
+  def after_sign_up_path_for(resource)
+    '/thankyou.html'
+  end
+
+end
+</pre>
+<p>To make sure our acceptance tests continue to pass, we’ll need to make a tweak to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
+<p>Replace the “unconfirmed account message” step definition to accommodate the SimpleForm output:</p>
+<pre>
+Then /^I should see an invalid email message$/ do
+  page.should have_content "Emailis invalid"
+end
+</pre>
+<p>Now we can say we have built a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
 <h3>Git Workflow</h3>
 <p>Merge the working branch to “master”:</p>
 <pre>
@@ -928,7 +1028,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-07 14:57:58</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-08 21:47:24</p>
       </div>
     </div>
 
