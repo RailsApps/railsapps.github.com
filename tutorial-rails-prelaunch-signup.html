@@ -73,7 +73,7 @@
 <p>We’ve chosen to use the <a href="http://github.com/plataformatec/devise">Devise</a> gem for our authentication and user management. We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product. You’ll also have the benefit of receiving help from a large community of developers using Devise, should you need help in troubleshooting or customizing the implementation.</p>
 <h3>How We Configure Devise</h3>
 <p>Devise offers many configuration options; in fact, exploring its configuration choices can take more time than actually implementing <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a>. We’ve reviewed Devise’s features and selected the configuration that best accommodates a typical web startup signup site.</p>
-<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, the app provides an administrative interface so you can select users to recieve an invitation that instructs them to confirm their email address and set a password.</p>
+<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, the app provides an administrative interface so you can select users to receive an invitation that instructs them to confirm their email address and set a password.</p>
 <p>If you need slightly different functionality, <a href="https://github.com/plataformatec/devise/wiki">the Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">answers on Stack Overflow</a> can help you alter this implementation.</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> starter app. Using the rails3-devise-rspec-cucumber example gives you a known working application with the basic features most developers need when they build a Rails app. This tutorial shows how to generate the starter app and then modify it to add prelaunch signup features.</p>
@@ -127,7 +127,7 @@ so I'll be notified when the site is launched
 *View Progress*
 As the owner of the site
 I want to know how many visitors have requested invitations
-so I can know if my offer is gaining traction
+so I can know if my offer is popular
 
 *Collect Email Addresses*
 As the owner of the site
@@ -939,7 +939,7 @@ $ git checkout -b view-progress
 *View Progress*
 As the owner of the site
 I want to know how many visitors have requested invitations
-so I can know if my offer is gaining traction
+so I can know if my offer is popular
 </pre>
 <h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
@@ -951,7 +951,7 @@ so I can know if my offer is gaining traction
 Feature: View Progress
   As the owner of the site
   I want to know how many visitors have requested invitations
-  so I can know if my offer is gaining traction
+  so I can know if my offer is popular
 
   Scenario: Administrator views list of users
     Given I am logged in as an administrator
@@ -987,6 +987,39 @@ Then /^I should see an access denied message$/ do
   pending # express the regexp above with the code you wish you had
 end
 </pre>
+<h3>Add a Users Page</h3>
+<p>We’ll need a page that shows a list of users.</p>
+<p>Create a file <strong>app/views/users/index.html.haml</strong>:</p>
+<pre>
+%h2 Users
+- @users.each do |user|
+  %br/
+  #{link_to user.email, user} signed up #{user.created_at.to_date}
+</pre>
+<p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+
+  end
+end
+</pre>
+<p>Modify <strong>config/routes.rb</strong> to add the new page:</p>
+<pre>
+resources :users, :only =&gt; [:show, :index]
+</pre>
+<p>Now you can visit the page <a href="http://localhost:3000/users">http://localhost:3000/users</a> to see a list of users.</p>
+<p>Of course, as implemented, any authenticated user can visit that page and see a list of all the users.</p>
+<h3>Add Authorization using CanCan</h3>
+<p>To view a list of users, not only should a user be authenticated but he or she should be in a role that is authorized to view the users page. Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. Taking a look at the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site, you’ll see Cancan is by far the most popular gem used to implement authorization. The author, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
+<p>(more to come)</p>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -1027,7 +1060,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-09 13:32:12</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-10 14:46:37</p>
       </div>
     </div>
 
