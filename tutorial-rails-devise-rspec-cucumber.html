@@ -88,19 +88,40 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
 <p>This creates a new Rails app named <code>rails3-devise-rspec-cucumber</code> on your computer. You can use a different name if you wish.</p>
-<p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
-<ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>No.</strong></li>
-	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>No.</strong></li>
-	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>No.</strong></li>
-	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
-	<li>Would you like to use Devise for authentication? <strong>Devise with default modules</strong></li>
-	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>None</strong></li>
-	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
-	<li>Would you like to set a robots.txt file to ban spiders? <strong>Yes.</strong></li>
-</ul><p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
+<p>The application generator template will ask you for your preferences.</p>
+<p>To produce an application exactly like the tutorial, make the following selections:</p>
+<ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>no</strong></li>
+	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>yes</strong></li>
+	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>yes</strong></li>
+	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>no</strong></li>
+	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong></li>
+	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong></li>
+	<li>Would you like the app to use a Gmail account to send email? <strong>yes</strong></li>
+	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication?
+	<ol><li>No</li>
+		<li>Devise with default modules <strong>#2</strong></li>
+		<li>Devise with Confirmable module</li>
+		<li>Devise with Confirmable and Invitable modules</li>
+	</ol></li>
+	<li>Would you like to manage authorization with CanCan &amp; Rolify? <strong>no</strong></li>
+	<li>Which front-end framework would you like for HTML5 and CSS3?
+	<ol><li>None <strong>#1</strong></li>
+		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
+		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
+		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
+		<li><a href="http://www.getskeleton.com/">Skeleton</a></li>
+		<li>Normalize <span class="caps">CSS</span> for consistent styling</li>
+	</ol></li>
+	<li>Which form gem would you like?
+	<ol><li>None <strong>#1</strong></li>
+		<li>simple form</li>
+		<li>simple form (bootstrap)</li>
+	</ol></li>
+	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong></li>
+	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong></li>
+	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong></li>
+</ul><p>You can choose other selections if you don’t care about matching the example application exactly.</p>
+<p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
 <h4>Option Three</h4>
 <p>
   <em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em>
@@ -117,7 +138,7 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
   <br />
   <code>$ rails -v</code>
 </p>
-<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
+<p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>Beginning here, we show how to create the application from scratch.</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
@@ -174,14 +195,14 @@ group :assets do
   gem 'uglifier', '&gt;= 1.0.3'
 end
 gem 'jquery-rails'
-gem "rspec-rails", "&gt;= 2.8.1", :group =&gt; [:development, :test]
-gem "factory_girl_rails", "&gt;= 1.7.0", :group =&gt; :test
+gem "rspec-rails", "&gt;= 2.9.0.rc2", :group =&gt; [:development, :test]
+gem "factory_girl_rails", "&gt;= 3.1.0", :group =&gt; [:development, :test]
 gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
 gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test
 gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
-gem "database_cleaner", "&gt;= 0.7.1", :group =&gt; :test
-gem "launchy", "&gt;= 2.0.5", :group =&gt; :test
-gem "devise", "&gt;= 2.0.4"
+gem "database_cleaner", "&gt;= 0.7.2", :group =&gt; :test
+gem "launchy", "&gt;= 2.1.0", :group =&gt; :test
+gem "devise", "&gt;= 2.1.0.rc"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.3'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -237,7 +258,7 @@ end
 <p>The  <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> gem is used to create default model objects for tests. For example, if a controller action requires finding a User object before displaying a “show” page, Factory Girl will create a user just for a test of the controller. You’ll need <code>gem 'factory_girl_rails', :group =&gt; :test</code> in your Gemfile.</p>
 <p>You’ll need a <strong>spec/factories.rb</strong> file to contain the factory definitions for any default objects used for testing. You can create one like this:</p>
 <p>
-  <strong>spec/factories.rb</strong>
+  <strong>spec/factories/user.rb</strong>
 </p>
 <pre>
 FactoryGirl.define do
@@ -558,7 +579,7 @@ validates_presence_of :name
 validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 </pre>
 
-<p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank.</p>
+<p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank and that the email address is unique.</p>
 <p>You’ll also want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of update_attributes(attrs) and new(attrs). Devise already added this to the <strong>models/user.rb</strong> file:</p>
 <pre>
 attr_accessible :email, :password, :password_confirmation, :remember_me
@@ -655,6 +676,7 @@ end
   &lt;p&gt;User: &lt;%= user.name %&gt; &lt;/p&gt;
 &lt;% end %&gt;
 </pre>
+<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
 <h2>Create a Default User</h2>
 <h4>Set Up a Database Seed File</h4>
 <p>
@@ -665,6 +687,8 @@ end
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'New user created: ' &lt;&lt; user2.name
 </pre>
 <p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
 <pre>
@@ -699,15 +723,22 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </p>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
 <p>
-  <code>$ rails generate controller users show --no-controller-specs</code>
+  <code>$ rails generate controller users index show --no-controller-specs</code>
 </p>
 <p>Note that “users” is plural when you create the controller.</p>
-<p>Modify the file <strong>app/controllers/users_controller.rb</strong> and add:</p>
+<p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
 <pre>
-before_filter :authenticate_user!
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
 
-def show
-  @user = User.find(params[:id])
+  def index
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
 end
 </pre>
 <p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
@@ -718,13 +749,23 @@ end
 <pre>
 root :to =&gt; "home#index"
 devise_for :users
-resources :users, :only =&gt; :show
+resources :users, :only =&gt; [:show, :index]
 </pre>
-<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; :show</code>.</p>
+<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; [:show, :index]</code>.</p>
 <p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
 <pre>
 &lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
 &lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
+</pre>
+<p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
+<pre>
+&lt;ul class="users"&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;li&gt;
+      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
 </pre>
 <h4>Add Links to Users on the Home Page</h4>
 <p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
@@ -745,7 +786,7 @@ end
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>We’ll create a very simple stylesheet with styling for a horizontal menu and flash messages.</p>
+<p>If you’ve generated the app from an application template, you could choose to use Twitter Bootstrap or another <span class="caps">CSS</span> front-end framework to provide styling. For this example, we’ll create a very simple stylesheet with styling for a horizontal menu and flash messages.</p>
 <p>Rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
 <p>Add stylesheet rules to the <strong>application.css.scss</strong> file:</p>
 <pre>
@@ -882,7 +923,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-10 14:46:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-16 10:17:22</p>
       </div>
     </div>
 
