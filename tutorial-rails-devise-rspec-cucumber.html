@@ -786,16 +786,20 @@ end
 <p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
-<p>If you’ve generated the app from an application template, you could choose to use Twitter Bootstrap or another <span class="caps">CSS</span> front-end framework to provide styling. For this example, we’ll create a very simple stylesheet with styling for a horizontal menu and flash messages.</p>
+<p>You can use Twitter Bootstrap or another <span class="caps">CSS</span> front-end framework to provide styling. If you’ve generated the app from an application template, the script will offer you Twitter Bootstrap and other choices. For this example, we’ll create a very simple stylesheet with styling for a horizontal menu and flash messages.</p>
 <p>Rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
 <p>Add stylesheet rules to the <strong>application.css.scss</strong> file:</p>
 <pre>
-header nav ul {
+.brand {
+  float: left;
+  padding-right: 8px;
+}
+ul.nav {
   list-style: none;
   margin: 0 0 2em;
   padding: 0;
 }
-header nav ul li {
+ul.nav li {
   display: inline;
 }
 #flash_notice, #flash_alert {
@@ -812,57 +816,8 @@ header nav ul li {
 }
 </pre>
 <h4>The Default Application Layout</h4>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
-<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
-<p>You’ll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
-<h4>Add Devise Navigation Links</h4>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/navigation.rb">navigation</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
-<p>You will want to add navigation links to the application layout for the Devise sign-up and log-in actions. You’ll find a simple example on the <a href="https://github.com/plataformatec/devise/wiki/How-To:-Add-sign_in,-sign_out,-and-sign_up-links-to-your-layout-template">Devise wiki</a>.</p>
-<p>Create a <strong>shared</strong> directory under <strong>app/views/</strong>. Then create the file <strong>app/views/shared/_navigation.html.erb</strong> and add:</p>
-<pre>
-&lt;% if user_signed_in? %&gt;
-  &lt;li&gt;
-  &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;        
-  &lt;/li&gt;
-&lt;% else %&gt;
-  &lt;li&gt;
-  &lt;%= link_to('Login', new_user_session_path)  %&gt;  
-  &lt;/li&gt;
-&lt;% end %&gt;
-&lt;% if user_signed_in? %&gt;
-  &lt;li&gt;
-  &lt;%= link_to('Edit account', edit_user_registration_path) %&gt;
-  &lt;/li&gt;
-&lt;% else %&gt;
-  &lt;li&gt;
-  &lt;%= link_to('Sign up', new_user_registration_path)  %&gt;
-  &lt;/li&gt;
-&lt;% end %&gt;
-</pre>
-<p>Then use these partials in your <strong>app/views/layouts/application.html.erb</strong> file, like this:</p>
-<pre>
-&lt;body&gt;
-  &lt;ul class="hmenu"&gt;
-    &lt;%= render 'shared/navigation' %&gt;
-  &lt;/ul&gt;
-  &lt;%- flash.each do |name, msg| -%&gt;
-    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
-  &lt;%- end -%&gt;
-&lt;%= yield %&gt;
-</pre>
-<p>For Haml, modify <strong>app/views/layouts/application.html.haml</strong> like this:</p>
-<pre>
-%body
-  %ul.hmenu
-    = render 'shared/navigation'
-  - flash.each do |name, msg|
-    = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
-  = yield
-</pre>
+<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
+<p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
 <h2>Cleanup</h2>
 <p>Several unneeded files are generated in the process of creating a new Rails application.</p>
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
@@ -879,9 +834,8 @@ header nav ul li {
 <h2>Conclusion</h2>
 <p>This concludes the tutorial for creating a Ruby on Rails web application that requires Rails and uses Devise for user management and authentication with RSpec and Cucumber.</p>
 <h4>Credits</h4>
-<p>Daniel Kehoe (<a href="http://danielkehoe.com/">http://danielkehoe.com/</a>) implemented the application and wrote the tutorial.</p>
-<p>Was this useful to you? Follow me on Twitter:<br /><a href="http://twitter.com/rails_apps">rails_apps</a><br />
-and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
+<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
+<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">Issue</a> on GitHub.</p>
     </div><!-- class="content" -->
     
@@ -923,7 +877,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-16 10:17:22</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-16 13:50:22</p>
       </div>
     </div>
 
