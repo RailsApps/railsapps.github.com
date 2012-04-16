@@ -127,64 +127,6 @@
 - flash.each do |name, msg|
   = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
 </pre>
-<h2>Default Application Layout (for Rails 3.1 and newer)</h2>
-<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling.</p>
-<p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
-<h3>
-  <span class="caps">ERB</span>
-</h3>
-<p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
-<pre>
-&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;App_Name&lt;/title&gt;
-    &lt;meta name="description" content=""&gt;
-    &lt;meta name="author" content=""&gt;
-    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
-    &lt;%= javascript_include_tag "application" %&gt;
-    &lt;%= csrf_meta_tags %&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id="container" class="container"&gt;
-      &lt;header&gt;
-        &lt;%= render 'layouts/navigation' %&gt;
-        &lt;%= render 'layouts/messages' %&gt;
-      &lt;/header&gt;
-      &lt;div id="main" role="main"&gt;
-        &lt;%= yield %&gt;
-      &lt;/div&gt;
-      &lt;footer&gt;
-      &lt;/footer&gt;
-    &lt;/div&gt; &lt;!--! end of #container --&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</pre>
-<h3>Haml</h3>
-<p>If you are using Haml, remove <strong>app/views/layouts/application.html.erb</strong> and replace it with <strong>app/views/layouts/application.html.haml</strong> with the following content:</p>
-<pre>
-!!!
-%html
-  %head
-    %title Myapp
-    %meta{:charset =&gt; "utf-8"}
-    %meta{"http-equiv" =&gt; "X-UA-Compatible", :content =&gt; "IE=edge,chrome=1"}
-    %meta{:name =&gt; "viewport", :content =&gt; "width=device-width, initial-scale=1, maximum-scale=1"}
-    = stylesheet_link_tag :application, :media =&gt; "all"
-    = javascript_include_tag :application
-    = csrf_meta_tags
-  %body
-    #container.container
-      %header
-        = render 'layouts/navigation'
-        = render 'layouts/messages'
-      #main{:role =&gt; "main"}
-        = yield
-      %footer
-</pre>
 <h2><span class="caps">CSS</span> Styling</h2>
 <p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app from an application template in the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps Application Templates</a> repository, the script will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
 <h3>Use <span class="caps">SASS</span></h3>
@@ -262,7 +204,65 @@ body { padding-top: 60px; }
   box-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 </pre>
+<h2>Default Application Layout (for Rails 3.1 and newer)</h2>
+<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling.</p>
+<p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
+<p>This application layout accommodates simple <span class="caps">CSS</span> styling. For Twitter Bootstrap, see a more complex application layout following this code.</p>
+<h3>Simple Default Application Layout (<span class="caps">ERB</span>)</h3>
+<p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
+<pre>
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;App_Name&lt;/title&gt;
+    &lt;meta name="description" content=""&gt;
+    &lt;meta name="author" content=""&gt;
+    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;%= javascript_include_tag "application" %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="container" class="container"&gt;
+      &lt;header&gt;
+        &lt;%= render 'layouts/navigation' %&gt;
+        &lt;%= render 'layouts/messages' %&gt;
+      &lt;/header&gt;
+      &lt;div id="main" role="main"&gt;
+        &lt;%= yield %&gt;
+      &lt;/div&gt;
+      &lt;footer&gt;
+      &lt;/footer&gt;
+    &lt;/div&gt; &lt;!--! end of #container --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h3>Simple Default Application Layout (Haml)</h3>
+<p>If you are using Haml, remove <strong>app/views/layouts/application.html.erb</strong> and replace it with <strong>app/views/layouts/application.html.haml</strong> with the following content:</p>
+<pre>
+!!!
+%html
+  %head
+    %title Myapp
+    %meta{:charset =&gt; "utf-8"}
+    %meta{"http-equiv" =&gt; "X-UA-Compatible", :content =&gt; "IE=edge,chrome=1"}
+    %meta{:name =&gt; "viewport", :content =&gt; "width=device-width, initial-scale=1, maximum-scale=1"}
+    = stylesheet_link_tag :application, :media =&gt; "all"
+    = javascript_include_tag :application
+    = csrf_meta_tags
+  %body
+    #container.container
+      %header
+        = render 'layouts/navigation'
+        = render 'layouts/messages'
+      #main{:role =&gt; "main"}
+        = yield
+      %footer
+</pre>
 <h3>Default Application Layout with Twitter Bootstrap (<span class="caps">ERB</span>)</h3>
+<p>Twitter Bootstrap provides additional elements for a more complex page layout.</p>
 <p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
 <pre>
 &lt;!doctype html&gt;
@@ -386,7 +386,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-16 13:55:00</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-16 14:05:03</p>
       </div>
     </div>
 
