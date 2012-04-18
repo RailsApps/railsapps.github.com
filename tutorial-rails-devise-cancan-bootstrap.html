@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Rails Tutorial for Devise with RSpec and Cucumber</title>
+    <title>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
@@ -44,30 +44,32 @@
   <div class="container"> 
     
     <div class="page-header">
-      <h1>Rails Tutorial for Devise with RSpec and Cucumber</h1>
+      <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
     </div>
 
     <div class="content wikistyle gollum textile">
-      <h1>Rails Tutorial for Devise with RSpec and Cucumber</h1>
+      <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 16 April 2012</em>
+  <em>Last updated 17 April 2012</em>
 </p>
-<p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
+<p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
-	<li><a href="http://rspec.info/">RSpec</a>  is a popular alternative to the Test::Unit testing framework.</li>
-	<li><a href="http://cukes.info/">Cucumber</a> is used for Behaviour Driven Development.</li>
-</ul><p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository for the complete application. If you want to use the project as a starter app for your own customized application, see the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber <span class="caps">README</span></a> to use an application template to generate a your own version of the example app. Generating the application gives you many options, such as using Haml for views, additional Devise modules, and various HTML5/<span class="caps">CSS</span> front-end frameworks such as Twitter Bootstrap.</p>
+	<li><a href="https://github.com/ryanb/cancan">CanCan</a> provides authorization for administrator access.</li>
+	<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> is a front-end framework for <span class="caps">CSS</span> styling.</li>
+</ul><p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails3-devise-cancan-bootstrap/">rails3-devise-cancan-bootstrap</a> repository for the complete application. If you want to use the project as a starter app for your own customized application, see the <a href="https://github.com/RailsApps/rails3-devise-cancan-bootstrap">rails3-devise-cancan-bootstrap <span class="caps">README</span></a> to use an application template to generate a your own version of the example app. Generating the application gives you many options, such as using Haml for views, additional Devise modules, and other popular gems such as will-paginate.</p>
 <h4>RailsApps Examples and Tutorials</h4>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<p>This example application is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example and tutorial and adds <a href="https://github.com/ryanb/cancan">CanCan</a> and <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. View the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example and tutorial for the basics of setting up an application with <a href="http://rspec.info/">RSpec</a> and <a href="http://cukes.info/">Cucumber</a>.</p>
 <p>This example application uses ActiveRecord and a SQLite database. You can use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead, for faster development without schemas or migrations. The <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
+<p>To see a more complex application that uses Devise, CanCan, and Twitter Bootstrap, see the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example and tutorial from the RailsApps project.</p>
 <h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
 <p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h2>Before You Start</h2>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">GitHub issue</a>.</p>
+<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-devise-cancan-bootstrap/">rails3-devise-cancan-bootstrap</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
+<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-devise-cancan-bootstrap/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
 <h2>Creating the Application</h2>
 <h4>Option One</h4>
@@ -80,14 +82,14 @@
   <em>Use the ready-made application template to generate the code.</em>
 </p>
 <p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
-<p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) gives you many options, such as using Haml for views, additional Devise modules, and various HTML5/<span class="caps">CSS</span> front-end frameworks such as Twitter Bootstrap.</p>
+<p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) gives you many options, such as using Haml for views, additional Devise modules, and other popular gems such as will-paginate.</p>
 <p>Use the command:</p>
 <pre>
-$ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T
+$ rails new rails3-devise-cancan-bootstrap -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-cancan-bootstrap-template.rb -T
 </pre>
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails3-devise-rspec-cucumber</code> on your computer. You can use a different name if you wish.</p>
+<p>This creates a new Rails app named <code>rails3-devise-cancan-bootstrap</code> on your computer. You can use a different name if you wish.</p>
 <p>The application generator template will ask you for your preferences.</p>
 <p>To produce an application exactly like the tutorial, make the following selections:</p>
 <ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>no</strong></li>
@@ -103,9 +105,9 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 		<li>Devise with Confirmable module</li>
 		<li>Devise with Confirmable and Invitable modules</li>
 	</ol></li>
-	<li>Would you like to manage authorization with CanCan &amp; Rolify? <strong>no</strong></li>
+	<li>Would you like to manage authorization with CanCan &amp; Rolify? <strong>yes</strong></li>
 	<li>Which front-end framework would you like for HTML5 and CSS3?
-	<ol><li>None <strong>#1</strong></li>
+	<ol><li>None <strong>#4</strong></li>
 		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
 		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
 		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
@@ -143,14 +145,14 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 <p>Beginning here, we show how to create the application from scratch.</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
 <p>
-  <code>$ rails new rails3-devise-rspec-cucumber -T</code>
+  <code>$ rails new rails3-devise-cancan-bootstrap -T</code>
 </p>
 <p>Use the <code>-T</code> flag to skip Test::Unit files (since you are using RSpec).</p>
-<p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-devise-rspec-cucumber.”</p>
+<p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-devise-cancan-bootstrap.”</p>
 <p>This will create a Rails application that uses a SQLite database for data storage.</p>
 <p>After you create the application, switch to its folder to continue work directly in that application:</p>
 <p>
-  <code>$ cd rails3-devise-rspec-cucumber</code>
+  <code>$ cd rails3-devise-cancan-bootstrap</code>
 </p>
 <h4>Edit the <span class="caps">README</span></h4>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
@@ -178,6 +180,9 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
 	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
 	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
+	<li><a href="http://rubygems.org/gems/cancan">cancan</a></li>
+	<li><a href="http://rubygems.org/gems/rolify">rolify</a></li>
+	<li><a href="http://rubygems.org/gems/bootstrap-sass">bootstrap-sass</a></li>
 </ul><h4>Set up Your Gemfile</h4>
 <p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
@@ -203,6 +208,9 @@ gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
 gem "database_cleaner", "&gt;= 0.7.2", :group =&gt; :test
 gem "launchy", "&gt;= 2.1.0", :group =&gt; :test
 gem "devise", "&gt;= 2.1.0.rc"
+gem "cancan", "&gt;= 1.6.7"
+gem "rolify", "&gt;= 3.1.0"
+gem "bootstrap-sass", "&gt;= 2.0.1"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.3'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -803,7 +811,7 @@ end
 <h4>Credits</h4>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">Issue</a> on GitHub.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-devise-cancan-bootstrap/issues">Issue</a> on GitHub.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -817,8 +825,8 @@ end
           var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
 
           // The following are highly recommended additional parameters.
-          // var disqus_identifier = 'tutorial-rails-devise-rspec-cucumber.html';
-          // var disqus_url = 'http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html';
+          // var disqus_identifier = 'tutorial-rails-devise-cancan-bootstrap.html';
+          // var disqus_url = 'http://railsapps.github.com/tutorial-rails-devise-cancan-bootstrap.html';
 
           /* * * DON'T EDIT BELOW THIS LINE * * */
           (function() {
