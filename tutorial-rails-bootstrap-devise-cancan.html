@@ -51,10 +51,7 @@
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 18 April 2012</em>
-</p>
-<p>
-  <strong>This tutorial is in development. It is not finished. Follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong>
+  <em>Last updated 19 April 2012</em>
 </p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
@@ -108,7 +105,7 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 		<li>Devise with Confirmable module</li>
 		<li>Devise with Confirmable and Invitable modules</li>
 	</ol></li>
-	<li>Would you like to manage authorization with CanCan &amp; Rolify? <strong>yes</strong></li>
+	<li>Would you like to manage authorization with <a href="https://github.com/ryanb/cancan">CanCan</a> &amp; <a href="https://github.com/EppO/rolify">Rolify</a>? <strong>yes</strong></li>
 	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>#4</strong>
 	<ol><li>None</li>
 		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
@@ -391,7 +388,7 @@ end
 class ApplicationController &lt; ActionController::Base
   protect_from_forgery
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, :error =&gt; exception.message
+    redirect_to root_path, :alert =&gt; exception.message
   end
 end
 </pre>
@@ -582,12 +579,13 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
   <em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
 </p>
 <p>You’ll want to see how Devise manages authentication and CanCan can limit access to only the administrator.</p>
-<h3>Set Up the Users Controller</h3>
-<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
+<h3>Create a Users Controller</h3>
+<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
 <p>
   <code>$ rails generate controller users index show --no-controller-specs</code>
 </p>
 <p>Note that “users” is plural when you create the controller.</p>
+<h3>First Authorization Example: Users Controller with CanCan <code>authorize!</code></h3>
 <p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
 <pre>
 class UsersController &lt; ApplicationController
@@ -615,6 +613,49 @@ if user.has_role? :admin
 end
 </pre>
 <p>No rule is present for other users, so by default, other users are restricted from executing the <code>index</code> method.</p>
+<p>This approach is the most obvious way to implement authorization using CanCan. However, CanCan offers convenience methods that can eliminate superfluous controller code in some applications. The next example shows how to use CanCan convenience methods to reduce the amount of code in your controllers.</p>
+<h3>Second Authorization Example: Users Controller with CanCan <code>load_and_authorize_resource</code></h3>
+<p>CanCan provides a convenience method <code>authorize_resource</code> that applies the <code>authorize!</code> method to every action in the controller. Another convenience method <code>load_resource</code> queries the database and loads the resources required by each action (for example, <code>users = User.all</code> for the <code>index</code> action). A third convenience method combines the two as <code>load_and_authorize_resource</code>.</p>
+<p>Using <code>load_and_authorize_resource</code>, you can set up the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  load_and_authorize_resource :only =&gt; :index
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+end
+</pre>
+<p>The <code>index</code> action does not need to be declared because Rails provides it by default.</p>
+<p>If a non-administrator tries to view the <strong>Users#index</strong> page at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a> he or she will be redirected to the home page (as specified by the <code>rescue_from CanCan::AccessDenied</code> method in the ApplicationController) and will see CanCan’s generic exception message, “You are not authorized to access this page.” You can customize the exception message in the ApplicationController, if you wish.</p>
+<p>Some developers will like approach; others will feel it dries up code at the expense of introducing layers of black magic. If you prefer a more explicit approach, the next example shows how to implement simple role-based authorization without using CanCan at all.</p>
+<h3>Third Authorization Example: Users Controller without CanCan</h3>
+<p>The purported benefit of using CanCan is the advantage of maintaining authorization rules in one location, the <code>Ability</code> class. This may be a matter of taste; you may prefer to confine authorization code to only the controllers that need it.</p>
+<p>Here is an example of limiting access to the <strong>Users#index</strong> page at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a> using only methods provided by the <a href="https://github.com/EppO/rolify">Rolify</a> gem. CanCan is not used.</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  before_filter :only_allow_admin, :only =&gt; [ :index ]
+
+  def index
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+  private
+
+  def only_allow_admin
+    redirect_to root_path, :alert =&gt; 'Not authorized as an administrator.' unless current_user.has_role? :admin
+  end
+
+end
+</pre>
+<p>In contrast to CanCan, all the authorization logic is defined in the controller. Arguably, this approach is simpler and less confusing. If multiple controllers will use the <code>only_allow_admin</code> method, it can be moved to the ApplicationController so all controllers will inherit the method. You may find this approach preferable to using CanCan, especially if your application only requires simple role-based authorization.</p>
 <h3>Set Up the Users Views and Routes</h3>
 <p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
 <p>
@@ -870,7 +911,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-18 21:47:56</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-19 14:11:18</p>
       </div>
     </div>
 
