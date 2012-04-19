@@ -160,9 +160,6 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 <h3>Edit the <span class="caps">README</span></h3>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/git.rb">git</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
 <p>
   <code>$ git init .</code>
@@ -228,19 +225,10 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 </p>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
 <h2>Configuration for Haml</h2>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/haml.rb">haml</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
 <p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
 <h2>Adding RSpec for Unit Testing</h2>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/rspec.rb">rspec</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
 <p>The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise.</p>
 <h2>Add Cucumber for Behavior Driven Development</h2>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/cucumber.rb">cucumber</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
 <p>The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
@@ -252,9 +240,6 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 <h2>Configure Email</h2>
 <p>
   <em>The “Configure Email” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
 <p>You must configure the app for your email account if you want your application to send email messages, for example, if you’ve generated the application with the option to install the Devise <code>:confirmable</code> module.</p>
 <h3>Configure ActionMailer</h3>
@@ -378,11 +363,11 @@ config.filter_parameters += [:password, :password_confirmation]
 <p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. This app uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an administrator. Cancan is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site) . The author of CanCan, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
 <p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a>. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
 <h3>Set Up CanCan</h3>
-<p>CanCan provides Rails generator to create the CanCan <code>Ability</code> class. Run the generator to create the file <strong>app/models/ability.rb</strong>:</p>
+<p>CanCan provides a Rails generator to create the CanCan <code>Ability</code> class. Run the generator to create the file <strong>app/models/ability.rb</strong>:</p>
 <pre>
 $ rails generate cancan:ability
 </pre>
-<p>Edit the file <strong>app/models/ability.rb</strong> to define a simple rule for granting permission an administrator permission to access any page:</p>
+<p>Edit the file <strong>app/models/ability.rb</strong> to define a simple rule for granting permission to an administrator to access any page:</p>
 <pre>
 class Ability
   include CanCan::Ability
@@ -432,7 +417,7 @@ end
 <p>These few steps with CanCan and Rolify implement role-based authorization in our application. We’ll use the authorization options provided by CanCan and Rolify when we add an administrative page with corresponding links.</p>
 <h2>Customize the Application</h2>
 <p>
-  <em>The “Customize the Application” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
+  <em>The “Customize the Application” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
 </p>
 <h3>Enable Users to Have Names</h3>
 <p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
@@ -494,7 +479,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 <p>If you are using Haml, you can generate the <span class="caps">ERB</span> files using <code>rails generate devise:views</code> and then convert them using the online tool <a href="http://html2haml.heroku.com/">Html2Haml</a>. You’ll need to remove the <strong>.erb</strong> files and replace them with <strong>app/views/devise/registrations/edit.html.haml</strong> and <strong>app/views/devise/registrations/new.html.haml</strong>.</p>
 <h2>Create a Home Page</h2>
 <p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+  <em>The “Create a Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
 </p>
 <h3>Remove the Default Home Page</h3>
 <p>Delete the default home page from your application:</p>
@@ -533,7 +518,7 @@ root :to =&gt; "home#index"
 <p>Stop the server with Control-C.</p>
 <h2>Display Users on the Home Page</h2>
 <p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+  <em>The “Display Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
 </p>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
 <pre>
@@ -552,7 +537,7 @@ end
 <h2>Create a Default User</h2>
 <h3>Set Up a Database Seed File</h3>
 <p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+  <em>The “Set Up a Database Seed File” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to make the first user an administrator.</em>
 </p>
 <p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
 <pre>
@@ -561,12 +546,16 @@ user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :
 puts 'New user created: ' &lt;&lt; user.name
 user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user2.name
+user.add_role :admin
 </pre>
 <p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
 puts 'New user created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+puts 'New user created: ' &lt;&lt; user2.name
+user.add_role :admin
 </pre>
 <p>You can change the values for name, email, and password as you wish.</p>
 <h3>Seed the Database</h3>
@@ -587,12 +576,12 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
 <p>Stop the server with Control-C.</p>
-<h2>Set Up a Demonstration of Devise</h2>
-<p>You’ll want to see how Devise manages authentication.</p>
-<h3>Set Up the Users Controller, Views, and Routes</h3>
+<h2>Set Up a Demonstration of Devise and CanCan</h2>
 <p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+  <em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
 </p>
+<p>You’ll want to see how Devise manages authentication and CanCan can limit access to only the administrator.</p>
+<h3>Set Up the Users Controller</h3>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
 <p>
   <code>$ rails generate controller users index show --no-controller-specs</code>
@@ -604,6 +593,7 @@ class UsersController &lt; ApplicationController
   before_filter :authenticate_user!
 
   def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
     @users = User.all
   end
 
@@ -613,6 +603,18 @@ class UsersController &lt; ApplicationController
 
 end
 </pre>
+<p>Only one line of code is needed to limit access to the <strong>Users#index</strong> page at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
+<pre>
+authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+</pre>
+<p>The CanCan <code>authorize!</code> method will check the CanCan <code>Ability</code> class definition to determine if the user has permission to execute the <code>index</code> method. We’ve previously set a rule in the <code>Ability</code> class definition that gives a user in an administrator role the ability to execute all methods:</p>
+<pre>
+if user.has_role? :admin
+  can :manage, :all
+end
+</pre>
+<p>No rule is present for other users, so by default, other users are restricted from executing the <code>index</code> method.</p>
+<h3>Set Up the Users Views and Routes</h3>
 <p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
 <p>
   <code>get "users/show"</code>
@@ -716,7 +718,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-18 17:53:39</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-18 19:17:28</p>
       </div>
     </div>
 
