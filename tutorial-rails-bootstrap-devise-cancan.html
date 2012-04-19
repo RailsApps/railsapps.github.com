@@ -577,17 +577,67 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
 <p>Stop the server with Control-C.</p>
-<h2>Set Up a Demonstration of Devise and CanCan</h2>
-<p>
-  <em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
-</p>
-<p>You’ll want to see how Devise manages authentication and CanCan can limit access to only the administrator.</p>
+<h2>Add Links to Users on the Home Page</h2>
+<p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
+<pre>
+def index
+  @users = User.all
+end
+</pre>
+<p>Now modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
+<pre>
+&lt;h3&gt;Home&lt;/h3&gt;
+&lt;% @users.each do |user| %&gt;
+  &lt;p&gt;User: &lt;%=link_to user.name, user %&gt;&lt;/p&gt;
+&lt;% end %&gt;
+</pre>
+<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
+<p>The links to the user’s profile page will not yet work; in the next section we’ll create a users controller, routes, and views.</p>
+<h2>Set Up the Users Controller, Routes, and Views</h2>
 <h3>Create a Users Controller</h3>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
 <p>
   <code>$ rails generate controller users index show --no-controller-specs</code>
 </p>
 <p>Note that “users” is plural when you create the controller.</p>
+<h3>Set Up the Users Routes</h3>
+<p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
+<pre>
+get "users/index"
+get "users/show"
+</pre>
+<p>Remove that and change the routes to:</p>
+<pre>
+root :to =&gt; "home#index"
+devise_for :users
+resources :users, :only =&gt; [:show, :index]
+</pre>
+<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; [:show, :index]</code>.</p>
+<h3>Set Up the Users#Show Page</h3>
+<p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
+<pre>
+&lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
+&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
+</pre>
+<p>In a typical application, this page might provide additional details about the user’s account.</p>
+<h3>Set Up the Users#Index Page</h3>
+<p>For the purposes of our example, this page will be accessible only to administrators. It will display a list of all users of the application.</p>
+<p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
+<pre>
+&lt;ul class="users"&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;li&gt;
+      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
+</pre>
+<p>We want to restrict access to this page, the <strong>Users#index</strong> page at <a href="http://localhost:3000/users">http://localhost:3000/users</a>. In the next section, we will set up authorization so the page is accessible only to administrators.</p>
+<h2>Set Up a Demonstration of CanCan</h2>
+<p>
+  <em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
+</p>
+<p>You’ll want to see how Devise manages authentication and CanCan can limit access to only the administrator.</p>
 <h3>First Authorization Example: Users Controller with CanCan “@authorize!”</h3>
 <p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
 <pre>
@@ -659,50 +709,6 @@ class UsersController &lt; ApplicationController
 end
 </pre>
 <p>In contrast to CanCan, all the authorization logic is defined in the controller. Arguably, this approach is simpler and less confusing. If multiple controllers will use the <code>only_allow_admin</code> method, it can be moved to the ApplicationController so all controllers will inherit the method. You may find this approach preferable to using CanCan, especially if your application only requires simple role-based authorization.</p>
-<h3>Set Up the Users Views and Routes</h3>
-<p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
-<p>
-  <code>get "users/show"</code>
-</p>
-<p>Remove that and change the routes to:</p>
-<pre>
-root :to =&gt; "home#index"
-devise_for :users
-resources :users, :only =&gt; [:show, :index]
-</pre>
-<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; [:show, :index]</code>.</p>
-<p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
-<pre>
-&lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
-&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
-</pre>
-<p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
-<pre>
-&lt;ul class="users"&gt;
-  &lt;% @users.each do |user| %&gt;
-    &lt;li&gt;
-      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
-    &lt;/li&gt;
-  &lt;% end %&gt;
-&lt;/ul&gt;
-</pre>
-<p>This page, the <strong>Users#index</strong> page at <a href="http://localhost:3000/users">http://localhost:3000/users</a>, will only be accessible to administrators because we’ve set an <code>authorize!</code> condition in the UsersController <code>index</code> method.</p>
-<p>This application does not provide much functionality. If you want to provide more functionality for an administrator, you could add more to this page. Or you can add additional administrative pages (for example, an administrators’ dashboard) using the same access control mechanism.</p>
-<h3>Add Links to Users on the Home Page</h3>
-<p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
-<pre>
-def index
-  @users = User.all
-end
-</pre>
-<p>Now modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
-<pre>
-&lt;h3&gt;Home&lt;/h3&gt;
-&lt;% @users.each do |user| %&gt;
-  &lt;p&gt;User: &lt;%=link_to user.name, user %&gt;&lt;/p&gt;
-&lt;% end %&gt;
-</pre>
-<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
 <h2>Create an Application Layout</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
@@ -914,7 +920,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-19 14:28:20</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-19 14:47:50</p>
       </div>
     </div>
 
