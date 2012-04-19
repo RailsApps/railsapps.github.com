@@ -49,7 +49,7 @@
 
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
-<h3>by Daniel Kehoe</h3>
+<h4>by Daniel Kehoe</h4>
 <p>
   <em>Last updated 18 April 2012</em>
 </p>
@@ -58,7 +58,7 @@
 </p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
-	<li><a href="https://github.com/ryanb/cancan">CanCan</a> provides authorization for administrator access.</li>
+	<li><a href="https://github.com/ryanb/cancan">CanCan</a> provides authorization which restricts what resources a given user is allowed to access.</li>
 	<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> is a front-end framework for <span class="caps">CSS</span> styling.</li>
 </ul><p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> repository for the complete application. If you want to use the project as a starter app for your own customized application, see the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan <span class="caps">README</span></a> to use an application template to generate a your own version of the example app. Generating the application gives you many options, such as using Haml for views, additional Devise modules, and other popular gems such as will-paginate.</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -102,23 +102,23 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong></li>
 	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong></li>
 	<li>Would you like the app to use a Gmail account to send email? <strong>yes</strong></li>
-	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication?
+	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication? <strong>#2</strong>
 	<ol><li>No</li>
-		<li>Devise with default modules <strong>#2</strong></li>
+		<li>Devise with default modules</li>
 		<li>Devise with Confirmable module</li>
 		<li>Devise with Confirmable and Invitable modules</li>
 	</ol></li>
 	<li>Would you like to manage authorization with CanCan &amp; Rolify? <strong>yes</strong></li>
-	<li>Which front-end framework would you like for HTML5 and CSS3?
-	<ol><li>None <strong>#4</strong></li>
+	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>#4</strong>
+	<ol><li>None</li>
 		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
 		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
 		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
 		<li><a href="http://www.getskeleton.com/">Skeleton</a></li>
 		<li>Normalize <span class="caps">CSS</span> for consistent styling</li>
 	</ol></li>
-	<li>Which form gem would you like?
-	<ol><li>None <strong>#1</strong></li>
+	<li>Which form gem would you like? <strong>#1</strong>
+	<ol><li>None</li>
 		<li>simple form</li>
 		<li>simple form (bootstrap)</li>
 	</ol></li>
@@ -251,6 +251,9 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 <p>Stop the server with Control-C.</p>
 <h2>Configure Email</h2>
 <p>
+  <em>The “Configure Email” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
+</p>
+<p>
   <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/action_mailer.rb">action_mailer</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
 </p>
 <p>You must configure the app for your email account if you want your application to send email messages, for example, if you’ve generated the application with the option to install the Devise <code>:confirmable</code> module.</p>
@@ -311,11 +314,11 @@ export GMAIL_PASSWORD="secret*"
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
 <h2>Set Up Authentication</h2>
+<p>
+  <em>The “Set Up Authentication” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
+</p>
 <p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
 <h3>Set Up Configuration for Devise</h3>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/devise.rb">devise</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
-</p>
 <p>You should have the following gem in your <strong>Gemfile</strong> file:</p>
 <pre>
 gem 'devise'
@@ -340,7 +343,6 @@ gem 'devise'
 </p>
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h3>Generate a Model and Routes for Users</h3>
-<p>Devise can manage users and administrators separately, allowing two (or more) roles to be implemented differently. For this example, we just implement Users.</p>
 <p>Use Devise to generate models and routes for a User.</p>
 <pre>
 $ rails generate devise User
@@ -364,15 +366,75 @@ config.sign_out_via = Rails.env.test? ? :get : :delete
 <h3>Prevent Logging of Passwords</h3>
 <p>We don’t want passwords written to our log file.</p>
 <p>Modify the file <strong>config/application.rb</strong> to include:</p>
-<p>
-  <code>config.filter_parameters += [:password, :password_confirmation]</code>
-</p>
+<pre>
+config.filter_parameters += [:password, :password_confirmation]
+</pre>
+
 <p>Note that filter_parameters is an array.</p>
-<h2>Customize the Application</h2>
-<h3>Enable Users to Have Names</h3>
+<h2>Set Up Authorization</h2>
 <p>
-  <em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/add_user.rb">add_user</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em>
+  <em>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial does not include a “Set Up Authorization” step.</em>
 </p>
+<p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. This app uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an administrator. Cancan is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site) . The author of CanCan, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
+<p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a>. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
+<h3>Set Up CanCan</h3>
+<p>CanCan provides Rails generator to create the CanCan <code>Ability</code> class. Run the generator to create the file <strong>app/models/ability.rb</strong>:</p>
+<pre>
+$ rails generate cancan:ability
+</pre>
+<p>Edit the file <strong>app/models/ability.rb</strong> to define a simple rule for granting permission an administrator permission to access any page:</p>
+<pre>
+class Ability
+  include CanCan::Ability
+
+  def initialize(user)
+    user ||= User.new # guest user (not logged in)
+    if user.has_role? :admin
+      can :manage, :all
+    end
+  end
+  
+end
+</pre>
+<p>Rules defined in the <code>Ability</code> class can become quite complex. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/defining-abilities">Defining Abilities</a> for details.</p>
+<p>Note that the <code>user.has_role?</code> method doesn’t yet exist. We’ll add the method when we set up Rolify.</p>
+<h3>Configure CanCan Exception Handling</h3>
+<p>If user authorization fails, a <code>CanCan::AccessDenied</code> exception will be raised. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/exception-handling">Exception Handling</a> for ways to handle authorization exceptions.</p>
+<p>For this example, we’ll handle the <code>CanCan::AccessDenied</code> exception in the ApplicationController. We’ll set an error message and redirect to the home page. Modify the file <strong>app/controllers/application_controller.rb</strong> like this:</p>
+<pre>
+class ApplicationController &lt; ActionController::Base
+  protect_from_forgery
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, :error =&gt; exception.message
+  end
+end
+</pre>
+<h3>Set Up User Roles</h3>
+<p>We’ll use the <a href="https://github.com/EppO/rolify">Rolify</a> gem to implement user roles. Rolify provides a Rails generator to create a Role model, add methods to a User model, and generate a migration for a roles table. Run the command:</p>
+<pre>
+$ rails generate rolify:role
+</pre>
+<p>If you’re using Mongoid with the MongoDB datastore, add parameters to the command:</p>
+<pre>
+$ rails generate rolify:role Role User mongoid
+</pre>
+<p>The generator will insert a <code>rolify</code> method in <strong>app/models/users.rb</strong> and it will create several files:</p>
+<ul><li><strong>app/models/role.rb</strong></li>
+	<li><strong>config/initializers/rolify.rb</strong></li>
+	<li><strong>db/migrate/…rolify_create_roles.rb</strong></li>
+</ul><p>The <strong>app/models/role.rb</strong> looks like this:</p>
+<pre>
+class Role &lt; ActiveRecord::Base
+  has_and_belongs_to_many :users, :join_table =&gt; :users_roles
+  belongs_to :resource, :polymorphic =&gt; true
+end
+</pre>
+<p>These few steps with CanCan and Rolify implement role-based authorization in our application. We’ll use the authorization options provided by CanCan and Rolify when we add an administrative page with corresponding links.</p>
+<h2>Customize the Application</h2>
+<p>
+  <em>The “Customize the Application” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
+</p>
+<h3>Enable Users to Have Names</h3>
 <p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
 <p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
 <pre>
@@ -654,7 +716,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-18 11:21:54</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-18 17:53:39</p>
       </div>
     </div>
 
