@@ -655,6 +655,7 @@ end
   &lt;p&gt;User: &lt;%=link_to user.name, user %&gt;&lt;/p&gt;
 &lt;% end %&gt;
 </pre>
+<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
 <h2>Create an Application Layout</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
@@ -669,6 +670,14 @@ end
   <code>$ rails server</code>
 </p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
+<p>To sign in as the first user (the administrator), (unless you’ve changed it) use</p>
+<ul><li>email: user@example.com</li>
+	<li>password: please</li>
+</ul><p>You’ll see a navigation link for Admin. Clicking the link will display a page with a list of users at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+<p>To sign in as the second user, (unless you’ve changed it) use</p>
+<ul><li>email: user2@example.com</li>
+	<li>password: please</li>
+</ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Deploy to Heroku</h2>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
@@ -718,7 +727,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-18 19:17:28</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-18 19:34:48</p>
       </div>
     </div>
 
