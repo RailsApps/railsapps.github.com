@@ -715,7 +715,8 @@ class UsersController &lt; ApplicationController
 
 end
 </pre>
-<p>In contrast to CanCan, all the authorization logic is defined in the controller. Arguably, this approach is simpler and less confusing. If multiple controllers will use the <code>only_allow_admin</code> method, it can be moved to the ApplicationController so all controllers will inherit the method. You may find this approach preferable to using CanCan, especially if your application only requires simple role-based authorization.</p>
+<p>If multiple controllers will use the <code>only_allow_admin</code> method, it can be moved to the ApplicationController so all controllers will inherit the method.</p>
+<p>In contrast to CanCan, all the authorization logic is defined in the controller. For a small application, this approach is simpler and less confusing. You may find this approach preferable to using CanCan, if your application only requires simple role-based authorization. However, for a large or complex application with multiple roles and many constrained activities, CanCan offers better <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 <h2>Create an Application Layout</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
@@ -927,7 +928,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-19 16:12:52</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-19 16:19:23</p>
       </div>
     </div>
 
