@@ -125,7 +125,8 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong></li>
 	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong></li>
 	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong></li>
-</ul><p>You can choose other selections if you don’t care about matching the example application exactly.</p>
+</ul><p>Be sure to choose the <em>CanCan &amp; Rolify</em> option as well as the <em>Twitter Bootstrap (sass)</em> option to create the example application.</p>
+<p>You can choose other selections if you don’t care about matching the example application exactly.</p>
 <p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
 <h3>Option Three</h3>
 <p>
@@ -660,8 +661,148 @@ end
 <p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
 <h2>Create an Application Layout</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
-<p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails default application layout</a>.</p>
-<p>You can use Twitter Bootstrap or another <span class="caps">CSS</span> front-end framework to provide styling. If you’ve generated the app from an application template, the script will offer you Twitter Bootstrap and other choices.</p>
+<p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
+<p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer to use Haml, see the detailed guide <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout for HTML5</a>.</p>
+<h3>Navigation Links</h3>
+<p>You’ll likely need navigation links on every page of your web application. You’ll want a link for Home. You’ll want links for Login, Logout, and Sign Up. And a user who is an administrator should see a link for Admin.</p>
+<p>You can add navigation links directly to your application layout file but many developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
+<p>Create the file <strong>app/views/layouts/_navigation.html.erb</strong> for the navigation links:</p>
+<pre>
+&lt;%= link_to "Rails3 Bootstrap Devise Cancan", root_path, :class =&gt; 'brand' %&gt;
+&lt;ul class="nav"&gt;
+  &lt;% if user_signed_in? %&gt;
+    &lt;li&gt;
+    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;        
+    &lt;/li&gt;
+  &lt;% else %&gt;
+    &lt;li&gt;
+    &lt;%= link_to('Login', new_user_session_path)  %&gt;  
+    &lt;/li&gt;
+  &lt;% end %&gt;
+  &lt;% if user_signed_in? %&gt;
+    &lt;li&gt;
+    &lt;%= link_to('Edit account', edit_user_registration_path) %&gt;
+    &lt;/li&gt;
+    &lt;% if current_user.has_role? :admin %&gt;
+      &lt;li&gt;
+      &lt;%= link_to('Admin', users_path) %&gt;
+      &lt;/li&gt;
+    &lt;% end %&gt;
+  &lt;% else %&gt;
+    &lt;li&gt;
+    &lt;%= link_to('Sign up', new_user_registration_path)  %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
+</pre>
+<p>Notice the condition <code>&lt;% if current_user.has_role? :admin %&gt;</code> that uses a <code>has_role?</code> method provided by the Rolify gem. The Admin link will display only if the user is an administrator.</p>
+<h3>Flash Messages</h3>
+<p>Rails provides a standard convention to display alerts (including error messages) and other notices, called Rails “flash messages” (as in “flash memory”, not to be confused with the “Adobe Flash” proprietary web development platform).</p>
+<p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
+<p>Create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
+<pre>
+&lt;%- flash.each do |name, msg| -%&gt;
+  &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
+&lt;%- end -%&gt;
+</pre>
+<h3><span class="caps">CSS</span> Styling with <span class="caps">SASS</span></h3>
+<p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
+<p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
+<h3><span class="caps">CSS</span> Styling with Twitter Bootstrap</h3>
+<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app from an application template in the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps Application Templates</a> repository, the script will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
+<p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language that is the default for <span class="caps">CSS</span> files in Rails. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend you install Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
+<p>In your <strong>Gemfile</strong>, you’ve already added:</p>
+<pre>
+gem 'bootstrap-sass'
+</pre>
+<p>and previously run <code>$ bundle install</code>.</p>
+<p>Include the Twitter Bootstrap Javascript files by modifying the file <strong>app/assets/javascripts/application.js</strong>:</p>
+<pre>
+//= require jquery
+//= require jquery_ujs
+//= require bootstrap
+//= require_tree .
+</pre>
+<p>Next, import the Twitter Bootstrap <span class="caps">CSS</span> files. You can modify the  <strong>app/assets/stylesheets/application.css.scss</strong> file to import Bootstrap. However, I recommend adding a new file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> file. You may wish to modify the Twitter Bootstrap <span class="caps">CSS</span> rules; you can do so in the <strong>application.css.scss</strong> file but placing changes to Twitter Bootstrap <span class="caps">CSS</span> rules in the <strong>bootstrap_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
+<p>The file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> is automatically included and compiled into your Rails application.css file by the <code>*= require_tree .</code> statement in the <strong>app/assets/stylesheets/application.css.scss</strong> file.</p>
+<p>Add the file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong>:</p>
+<pre>
+// Set the correct sprite paths
+$iconSpritePath: image-path('glyphicons-halflings.png');
+$iconWhiteSpritePath: image-path('glyphicons-halflings-white.png');
+@import "bootstrap";
+body { padding-top: 60px; }
+@import "bootstrap-responsive";
+</pre>
+<p>The file will import both basic Bootstrap <span class="caps">CSS</span> rules and the Bootstrap rules for responsive design (allowing the layout to resize for various devices and secreen sizes).</p>
+<p>The <span class="caps">CSS</span> rule <code>body { padding-top: 60px; }</code> applies an additional <span class="caps">CSS</span> rule to accommodate the “Bootstrap black bar” heading created by the <code>navbar-fixed-top class</code> in the <code>header</code> tag in the layout below.</p>
+<p>Finally, to provide an example of adding a <span class="caps">CSS</span> rule that will be used on every page of your application, the following code creates a nice gray box as a background to page content.</p>
+<p>Add this to your <strong>app/assets/stylesheets/application.css.scss</strong> file for a gray background:</p>
+<pre>
+.content {
+  background-color: #eee;
+  padding: 20px;
+  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  -webkit-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+</pre>
+<h3>Default Application Layout with Twitter Bootstrap</h3>
+<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling. Twitter Bootstrap provides additional elements for a more complex page layout.</p>
+<p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
+<p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
+<pre>
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Myapp" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content=""&gt;
+    &lt;meta name="author" content=""&gt;
+    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;%= javascript_include_tag "application" %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+    &lt;%= yield(:head) %&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header class="navbar navbar-fixed-top"&gt;
+      &lt;nav class="navbar-inner"&gt;
+        &lt;div class="container"&gt;
+          &lt;%= render 'layouts/navigation' %&gt;
+        &lt;/div&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;div id="main" role="main"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="content"&gt;
+           &lt;div class="row"&gt;
+            &lt;div class="span12"&gt;
+              &lt;% flash.each do |name, msg| %&gt;
+                &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
+                  &lt;a class="close" data-dismiss="alert"&gt;×&lt;/a&gt;
+                  &lt;%= msg %&gt;
+                &lt;/div&gt;
+              &lt;% end %&gt;
+              &lt;%= yield %&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;footer&gt;
+          &lt;/footer&gt;
+        &lt;/div&gt;
+      &lt;/div&gt; &lt;!--! end of .container --&gt;
+    &lt;/div&gt; &lt;!--! end of #main --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h3>Options and Improvements</h3>
+<p>Your default application layout defines the look-and-feel of your application. You now have the basics with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling using Twitter Bootstrap.</p>
+<p>There’s much more you can do. For an advanced example, see the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app. The <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">rails-prelaunch-signup tutorial</a> shows how you can use Twitter Bootstrap to add a modal window and <span class="caps">AJAX</span> for a “sign up” form for a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
 <h2>Cleanup</h2>
 <p>Several unneeded files are generated in the process of creating a new Rails application.</p>
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
@@ -729,7 +870,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-18 19:45:05</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-18 21:47:56</p>
       </div>
     </div>
 
