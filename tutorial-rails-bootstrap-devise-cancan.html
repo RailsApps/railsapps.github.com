@@ -227,7 +227,7 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
 <h2>Configuration for Haml</h2>
 <p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
-<h2>Adding RSpec for Unit Testing</h2>
+<h2>Add RSpec for Unit Testing</h2>
 <p>The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise.</p>
 <h2>Add Cucumber for Behavior Driven Development</h2>
 <p>The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
@@ -362,7 +362,8 @@ config.filter_parameters += [:password, :password_confirmation]
   <em>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial does not include a “Set Up Authorization” step.</em>
 </p>
 <p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. This app uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an administrator. Cancan is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site) . The author of CanCan, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
-<p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a>. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
+<p>There are many ways to implement authorization in a web application. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. For a discussion of the benefits of using a single, consolidated location for the permissions, see the article <a href="http://lostechies.com/derickbailey/2011/05/24/dont-do-role-based-authorization-checks-do-activity-based-checks/">Don’t Do Role-Based Authorization Checks; Do Activity-Based Checks</a>.</p>
+<p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a> for use with CanCan. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
 <h3>Set Up CanCan</h3>
 <p>CanCan provides a Rails generator to create the CanCan <code>Ability</code> class. Run the generator to create the file <strong>app/models/ability.rb</strong>:</p>
 <pre>
@@ -926,7 +927,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-19 14:59:18</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-19 16:06:28</p>
       </div>
     </div>
 
