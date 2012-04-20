@@ -755,14 +755,20 @@ end
 </pre>
 <p>Notice the condition <code>&lt;% if current_user.has_role? :admin %&gt;</code> that uses a <code>has_role?</code> method provided by the Rolify gem. The Admin link will display only if the user is an administrator.</p>
 <h3>Flash Messages</h3>
-<p>Rails provides a standard convention to display alerts (including error messages) and other notices, called Rails “flash messages” (as in “flash memory”, not to be confused with the “Adobe Flash” proprietary web development platform).</p>
+<p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called Rails “flash messages” (as in “flash memory”, not to be confused with the “Adobe Flash” proprietary web development platform).</p>
 <p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
 <p>Create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
-&lt;%- flash.each do |name, msg| -%&gt;
-  &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
-&lt;%- end -%&gt;
+&lt;% flash.each do |name, msg| %&gt;
+  &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
+    &lt;a class="close" data-dismiss="alert"&gt;×&lt;/a&gt;
+    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
+  &lt;/div&gt;
+&lt;% end %&gt;
 </pre>
+<p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
+<p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “×” instead of the keyboard letter “x”.</p>
+<p>By default, Twitter Bootstrap applies a green background to <code>.alert-success</code> and a red background to <code>.alert-error</code>. Twitter Bootstrap provides a third class <code>.alert-info</code> with a blue background. With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>.alert-info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
 <h3><span class="caps">CSS</span> Styling with <span class="caps">SASS</span></h3>
 <p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
 <p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
@@ -841,12 +847,7 @@ body { padding-top: 60px; }
         &lt;div class="content"&gt;
            &lt;div class="row"&gt;
             &lt;div class="span12"&gt;
-              &lt;% flash.each do |name, msg| %&gt;
-                &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
-                  &lt;a class="close" data-dismiss="alert"&gt;×&lt;/a&gt;
-                  &lt;%= msg %&gt;
-                &lt;/div&gt;
-              &lt;% end %&gt;
+              &lt;%= render 'layouts/messages' %&gt;
               &lt;%= yield %&gt;
             &lt;/div&gt;
           &lt;/div&gt;
@@ -928,7 +929,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-19 16:19:23</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-19 17:48:20</p>
       </div>
     </div>
 
