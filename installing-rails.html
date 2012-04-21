@@ -75,14 +75,14 @@
 <h4>Rake</h4>
 <p>Rake is the build tool for Ruby. Rake version 0.9.2 was released on June 5, 2011 and followed by Rake version 0.9.2.2 on October 22, 2011. Rake 0.9.2 installs as part of Ruby 1.9.3.</p>
 <p>Many gems depend on Rake and conflicting dependencies can be a problem, especially since the release of Rake version 0.9.0 (May 20, 2011). For an explanation, see <a href="http://blog.davidchelimsky.net/2011/05/28/rake-09-and-gem-version-constraints/">David Chelimsky’s blog post</a>. If needed, you can specify an earlier version of Rake in your gemfile to force the use of the Rake version specified in your gemfile. It’s good practice to use the command <code>bundle exec rake</code> instead of <code>rake</code> so you’ll use the version of Rake specified in your gemfile (or a dependency specified in the Gemfile.lock file) instead of the default version. For example, instead of <code>rake db:migrate</code>, run <code>bundle exec rake db:migrate</code>.</p>
-<p><em>What You Need to Know:</em> Make sure you are using Rake 0.9.2.2 (or <a href="http://rubygems.org/gems/rake">newer</a>) with <code>gem update rake</code> before installing Rails 3.2. And use <code>bundle exec rake</code> instead of <code>rake</code>. If you don’t like combining <code>bundle exec</code> with <code>rake</code>, see suggestions for <a href="http://www.beginrescueend.com/integration/bundler/">rvm and bundler integration</a>.</p>
+<p><em>What You Need to Know:</em> Make sure you are using Rake 0.9.2.2 (or <a href="http://rubygems.org/gems/rake">newer</a>) with <code>gem update rake</code> before installing Rails 3.2. And use <code>bundle exec rake</code> instead of <code>rake</code>. If you don’t like combining <code>bundle exec</code> with <code>rake</code>, see suggestions for <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>.</p>
 <h4>Bundler</h4>
 <p><a href="http://gembundler.com/">Bundler</a> version 1.1.3 was released March 24, 2012. Version 1.1.0 released March 7, 2012 is significantly faster than previous versions.</p>
 <p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>.</p>
 <h2>Installing Rails 3.2.3</h2>
 <p>Follow these instructions to set up Rails 3.2 as a platform for the <a href="http://railsapps.github.com/">Rails example apps</a> or any other apps you may build.</p>
 <h4>Update or Install?</h4>
-<p><em>Recommended:</em> You should use rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, to create a new gemset and install the new Rails version. Then you can switch between versions if necessary.</p>
+<p><em>Recommended:</em> You should use rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to create a new gemset and install the new Rails version. Then you can switch between versions if necessary.</p>
 <p><em>Not recommended:</em> If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get the newest version of Rails. But it is well worth the effort to install and use rvm to manage Rails versions.</p>
 <h4>C language compiler</h4>
 <p>You need a C language compiler to install Ruby and any gems that require native extensions. Linux operating systems include the necessary <a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection">gcc compiler</a>. Default installations of Windows or Mac OS X don’t include gcc.</p>
@@ -101,12 +101,12 @@
 <p>To prepare Windows for installation of Ruby 1.9.3, start with <a href="http://railsinstaller.org/">RailsInstaller</a> from Engine Yard. RailsInstaller includes a “DevKit” which installs Ruby 1.9.3 and Rails 3.2 as well as gcc and other Unix build tools. See a guide to <a href="http://installfest.railsbridge.org/installfest/windows">Installing Rails on Windows</a> from Railsbridge Installfest for step-by-step instructions. On Windows, use <a href="http://github.com/vertiginous/pik">Pik</a> for services similar to rvm.</p>
 <p>Another option on Windows is to install Ruby under <a href="http://www.cygwin.com/">Cygwin</a>. This gives you a Linux environment on Windows. Make sure you have the following Cygwin packages installed: git, readline, wget, patch, make, gcc, libsqlite3-devel, libxml2-devel, libxslt-devel. Then install <span class="caps">RVM</span> as described in the next section.</p>
 <h4><span class="caps">RVM</span> and Alternatives</h4>
-<p>You should install Ruby 1.9.3 on your computer using Wayne Seguin’s rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>.</p>
+<p>You should install Ruby 1.9.3 on your computer using Wayne Seguin’s rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>.</p>
 <p>You’ll use rvm to manage your Rails versions and create a gemset specifically for each application you build. If you encounter conflicting gem dependencies, you can isolate the errors by creating different gemsets with rvm.</p>
 <p>Sam Stephenson offers an alternative to rvm named <a href="https://github.com/sstephenson/rbenv">rbenv</a>. With rbenv, use Jamis Buck’s <a href="https://github.com/jamis">rbenv-gemset</a> to switch between gemsets. The utilities rbenv and rbenv-gemset are less “magic” than rvm and can be useful if you encounter issues with rvm. If you want to try rbenv, see notes for <a href="https://gist.github.com/1859298">installing Ruby on MacOS X 10.7.3 with XCode 4.3 and rbenv</a>.</p>
 <p>Most Rails developers use and recommend rvm.</p>
 <h4>Install or Update <span class="caps">RVM</span></h4>
-<p>The rvm website explains <a href="https://rvm.beginrescueend.com/rvm/install/">how to install rvm</a>.</p>
+<p>The rvm website explains <a href="https://rvm.io/rvm/install/">how to install rvm</a>.</p>
 <p>If you have an older version of Ruby installed you don’t need to remove it. Any older Ruby and Rails versions will remain on your system and the rvm versions will take precedence. Rvm will leave your system version of Ruby untouched and use your shell to intercept any calls to Ruby.</p>
 <p>If you already have rvm installed, update it to the latest version.</p>
 <pre>
@@ -213,7 +213,7 @@ $ cd testapp
 <pre>
 $ bundle exec rake -T
 </pre>
-<p>Remember, it’s good practice to run <code>bundle exec rake</code> instead of <code>rake</code> in case a gem specified in your gemfile (or a dependency in the Gemfile.lock file) relies on a version of Rake that’s different from the newest one you’ve installed. If you don’t like combining <code>bundle exec</code> with <code>rake</code>, see suggestions for <a href="http://www.beginrescueend.com/integration/bundler/">rvm and bundler integration</a>.</p>
+<p>Remember, it’s good practice to run <code>bundle exec rake</code> instead of <code>rake</code> in case a gem specified in your gemfile (or a dependency in the Gemfile.lock file) relies on a version of Rake that’s different from the newest one you’ve installed. If you don’t like combining <code>bundle exec</code> with <code>rake</code>, see suggestions for <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>.</p>
 <h2>Getting Started</h2>
 <p>See a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a> if you’re just getting started.</p>
 <h2>Helpful Articles</h2>
@@ -340,7 +340,7 @@ Consider using bundle exec.
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-21 14:37:46</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-21 14:46:20</p>
       </div>
     </div>
 
