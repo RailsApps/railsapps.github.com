@@ -51,11 +51,11 @@
       <h1>Read This Before Installing Rails 3.2</h1>
 <h4>by Daniel Kehoe</h4>
 <p>
-  <em>Last updated 9 April 2012</em>
+  <em>Last updated 21 April 2012</em>
 </p>
 <p>Installing Rails 3.2.3: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<p>See a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<p>See a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a> if you are just getting started.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>What’s New</h2>
 <p>You can read more about how the building blocks of the Rails platform work together by reading the article <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a>. It explains the relationships among Ruby, RubyGems, Rails, Rake, Bundler, and gemfiles and offers some advice.</p>
@@ -68,8 +68,9 @@
 <p>Rails 3.1.0 was released August 31, 2011. Eight release candidates were released beginning May 21, 2011. Rails 3.1 introduced the <a href="http://www.youtube.com/watch?v=cGdCI2HhfAU">asset pipeline</a> which enables proper organization of <span class="caps">CSS</span> and JavaScript. Other features include <a href="http://railscasts.com/episodes/266-http-streaming"><span class="caps">HTTP</span> streaming</a>, default jQuery, reversible migrations, mountable engines, identity map, prepared statements, Rack::Cache on by default, forced <span class="caps">SSL</span>, role-based mass-assignment protection, has_secure_password, and custom serializers. See the <a href="http://weblog.rubyonrails.org/2011/5/22/rails-3-1-release-candidate">Rails 3.1 release candidate announcement</a> for details. There’s a <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Rails 3.1 Overview</a> from Ryan Bates and a <a href="https://gist.github.com/958283">changelog</a> for all the details. Yehuda Katz explains <a href="http://yehudakatz.com/2011/06/14/what-the-hell-is-happening-to-rails/">What’s Up With All These Changes in Rails?</a>. The best overview of Rails 3.1 is Michael Hartl’s <a href="http://ruby.railstutorial.org/chapters/rails-3-1#top">chapter on Rails 3.1</a> in his Ruby on Rails Tutorial book.</p>
 <p><em>What You Need to Know:</em> The greatest impact for developers moving from Rails 3.0 to 3.1 is the new location for <span class="caps">CSS</span> and JavaScript files and changes to the application layout file. See the official <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails 3.1 Asset Pipeline guide</a> for details.</p>
 <h4>RubyGems</h4>
-<p>RubyGems is a package management framework for Ruby. RubyGems 1.8.21 was released March 22, 2012. RubyGems installs as part of Ruby 1.9.3.</p>
-<p>With version 1.8.0 (released May 4, 2011), the RubyGems system gem began a series of rapid updates. Releases between 1.8.0 and 1.8.5 generated “noisy” deprecation warnings but most installed gems continued to work. RubyGems 1.8.5 eliminated most of the deprecation warnings. If you think a gem may be failing because of an incompatibility with the newest RubyGems implementation, you can troubleshoot by rolling back to an earlier RubyGems system gem with <code>gem update --system 1.7.2</code> or <code>gem update --system 1.3.7</code>.</p>
+<p>RubyGems is a package management framework for Ruby. RubyGems installs as part of Ruby 1.9.3.</p>
+<p>RubyGems 1.8.23 was released April 20, 2012 and increased the security used when RubyGems is talking to an https server.</p>
+<p>If you think a gem may be failing because of an incompatibility with the newest RubyGems implementation, you can troubleshoot by rolling back to an earlier RubyGems system gem with <code>gem update --system 1.7.2</code> or <code>gem update --system 1.3.7</code>.</p>
 <p><em>What You Need to Know:</em> Use <code>gem update --system</code> to upgrade to the <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems system gem</a>.</p>
 <h4>Rake</h4>
 <p>Rake is the build tool for Ruby. Rake version 0.9.2 was released on June 5, 2011 and followed by Rake version 0.9.2.2 on October 22, 2011. Rake 0.9.2 installs as part of Ruby 1.9.3.</p>
@@ -83,9 +84,7 @@
 <h4>Update or Install?</h4>
 <p><em>Recommended:</em> You should use rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, to create a new gemset and install the new Rails version. Then you can switch between versions if necessary.</p>
 <p><em>Not recommended:</em> If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get the newest version of Rails. But it is well worth the effort to install and use rvm to manage Rails versions.</p>
-<h4>Ruby, gcc, and rvm</h4>
-<p>You’ll need to install Ruby 1.9.3 on your computer using <a href="http://rvm.beginrescueend.com/">rvm</a>. Ruby may already be installed on your computer (Mac OS X 10.7 comes with Ruby 1.8.7 preinstalled). You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm. If you already have Ruby 1.9.3 but are not using rvm, I recommend installing rvm and a fresh version of Ruby 1.9.3 (detailed instructions below).</p>
-<p>Sam Stephenson offers an alternative to rvm named <a href="https://github.com/sstephenson/rbenv">rbenv</a> that lets you switch between multiple versions of Ruby. With Jamis Buck’s <a href="https://github.com/jamis">rbenv-gemset</a> you can switch between gemsets as well. The utilities rbenv and rbenv-gemset are less “magic” than Wayne Seguin’s rvm and can be useful if you encounter issues with rvm. Here are notes for <a href="https://gist.github.com/1859298">installing Ruby on MacOS X 10.7.3 with XCode 4.3 and rbenv</a>.</p>
+<h4>C language compiler</h4>
 <p>You need a C language compiler to install Ruby and any gems that require native extensions. Linux operating systems include the necessary <a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection">gcc compiler</a>. Default installations of Windows or Mac OS X don’t include gcc.</p>
 <h4>Preparing a Mac</h4>
 <p>The best guide is from Moncef Belyamani: <a href="http://moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/">How to Install Xcode, Homebrew, Git, <span class="caps">RVM</span>, &amp; Ruby 1.9.3 on Snow Leopard &amp; Lion</a>.</p>
@@ -100,8 +99,13 @@
 </ul><h4>Preparing Windows</h4>
 <p><em>Note:</em> You can develop with Rails on Windows but be aware that most developers use Mac OS X or Ubuntu to develop Rails applications. Some gems requiring native extensions may be difficult to install on Windows. Developers (including <a href="http://thecodeshop.github.com/projects.html">The Code Shop</a>) are working to improve the speed of Ruby 1.9.3 on Windows (see a <a href="http://itreallymatters.net/post/12897174267/speedup-ruby-1-9-3-on-windows">benchmark</a>) as earlier versions were frustratingly slow.</p>
 <p>To prepare Windows for installation of Ruby 1.9.3, start with <a href="http://railsinstaller.org/">RailsInstaller</a> from Engine Yard. RailsInstaller includes a “DevKit” which installs Ruby 1.9.3 and Rails 3.2 as well as gcc and other Unix build tools. See a guide to <a href="http://installfest.railsbridge.org/installfest/windows">Installing Rails on Windows</a> from Railsbridge Installfest for step-by-step instructions. On Windows, use <a href="http://github.com/vertiginous/pik">Pik</a> for services similar to rvm.</p>
+<p>Another option on Windows is to install Ruby under <a href="http://www.cygwin.com/">Cygwin</a>. This gives you a Linux environment on Windows. Make sure you have the following Cygwin packages installed: git, readline, wget, patch, make, gcc, libsqlite3-devel, libxml2-devel, libxslt-devel. Then install <span class="caps">RVM</span> as described in the next section.</p>
+<h4><span class="caps">RVM</span> and Alternatives</h4>
+<p>You should install Ruby 1.9.3 on your computer using Wayne Seguin’s rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>.</p>
+<p>You’ll use rvm to manage your Rails versions and create a gemset specifically for each application you build. If you encounter conflicting gem dependencies, you can isolate the errors by creating different gemsets with rvm.</p>
+<p>Sam Stephenson offers an alternative to rvm named <a href="https://github.com/sstephenson/rbenv">rbenv</a>. With rbenv, use Jamis Buck’s <a href="https://github.com/jamis">rbenv-gemset</a> to switch between gemsets. The utilities rbenv and rbenv-gemset are less “magic” than rvm and can be useful if you encounter issues with rvm. If you want to try rbenv, see notes for <a href="https://gist.github.com/1859298">installing Ruby on MacOS X 10.7.3 with XCode 4.3 and rbenv</a>.</p>
+<p>Most Rails developers use and recommend rvm.</p>
 <h4>Install or Update <span class="caps">RVM</span></h4>
-<p>Use rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, to manage your Rails versions and create a gemset specifically for each application you build. If you encounter conflicting gem dependencies, you can isolate the errors by creating different gemsets with rvm.</p>
 <p>The rvm website explains <a href="https://rvm.beginrescueend.com/rvm/install/">how to install rvm</a>.</p>
 <p>If you have an older version of Ruby installed you don’t need to remove it. Any older Ruby and Rails versions will remain on your system and the rvm versions will take precedence. Rvm will leave your system version of Ruby untouched and use your shell to intercept any calls to Ruby.</p>
 <p>If you already have rvm installed, update it to the latest version.</p>
@@ -111,25 +115,26 @@ $ rvm reload
 $ rvm -v
 </pre>
 <h4>Install Ruby 1.9.3</h4>
-<p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 125 was current when this was written. There are other Ruby interpreters (<a href="http://www.rubyenterpriseedition.com/"><span class="caps">REE</span></a> from Phusion, <a href="http://jruby.org/">JRuby</a>, <a href="http://rubini.us/">Rubinius</a>, <a href="http://maglev.github.com/">MagLev</a>, and <a href="http://www.macruby.org/">MacRuby</a>) but Ruby 1.9.3 is your best choice for most Rails application development.</p>
+<p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 194  was current when this was written. There are other Ruby interpreters (<a href="http://www.rubyenterpriseedition.com/"><span class="caps">REE</span></a> from Phusion, <a href="http://jruby.org/">JRuby</a>, <a href="http://rubini.us/">Rubinius</a>, <a href="http://maglev.github.com/">MagLev</a>, and <a href="http://www.macruby.org/">MacRuby</a>) but Ruby 1.9.3 is your best choice for most Rails application development.</p>
+<p>Ruby may already be installed on your computer (Mac OS X 10.7 comes with Ruby 1.8.7 preinstalled). You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm.</p>
 <p>Check for rvm installation notes for your operating system version:</p>
 <pre>
 $ rvm requirements
 </pre>
 <p>Use rvm to install the recommended version of Ruby and make it your default:</p>
 <pre>
-$ rvm install ruby-1.9.3-p125
-$ rvm --default use ruby-1.9.3-p125
+$ rvm install ruby-1.9.3-p194 
+$ rvm --default use ruby-1.9.3-p194 
 $ ruby -v
 </pre>
-<p><em>Note:</em> On a Mac with <span class="caps">OSX</span> 10.7.3 and XCode 4.3.1 you should be able to install Ruby 1.9.3-p125 using rvm without any special command line options. Installing Ruby 1.9.3-p125 on Mac OS X 10.7.3 with Xcode 4.2.1 requires the following command line switch to succeed: <code>rvm install 1.9.3-p125 --with-gcc=clang</code> because XCode 4.2 doesn’t use the standard gcc compiler. If you encounter this issue, you can also use Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler.</p>
+<p><em>Note:</em> On a Mac with <span class="caps">OSX</span> 10.7.3 and XCode 4.3.1 you should be able to install Ruby 1.9.3-p194  using rvm without any special command line options. Installing Ruby 1.9.3-p194  on Mac OS X 10.7.3 with Xcode 4.2.1 requires the following command line switch to succeed: <code>rvm install 1.9.3-p194  --with-gcc=clang</code> because XCode 4.2 doesn’t use the standard gcc compiler. If you encounter this issue, you can also use Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler.</p>
 <h4>RubyGems</h4>
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
 <p>
   <code>$ gem -v</code>
 </p>
-<p>Check for the <a href="https://rubygems.org/gems/rubygems-update">newest version of RubyGems</a>. It should be version 1.8.21 or newer.</p>
+<p>Check for the <a href="https://rubygems.org/gems/rubygems-update">newest version of RubyGems</a>. It should be version 1.8.23 or newer.</p>
 <p>Use <code>gem update --system</code> to upgrade the RubyGems system.</p>
 <p>See the article <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> if you have problems with gem incompatibilities.</p>
 <p>Only two gems are installed with Ruby 1.9.3. See what you have with <code>gem list</code>:</p>
@@ -145,7 +150,7 @@ $ rake --version
 <h4>Create a Rails 3.2 Gemset</h4>
 <p>Create a default Rails 3.2 gemset. It’s advisable to create a new gemset for each application you build. But to get started, create just one new Rails 3.2 gemset as your default.</p>
 <pre>
-$ rvm ruby-1.9.3-p125@rails32 --create --default
+$ rvm ruby-1.9.3-p194 @rails32 --create --default
 </pre>
 <p>To see a list of the gemsets you have installed:</p>
 <pre>
@@ -276,9 +281,9 @@ $ bundle exec rake -T
 <p>See the <span class="caps">README</span> or tutorial to learn how to install, configure and run the starter application.</p>
 <h2>Project-Specific Gemsets with .rvmrc</h2>
 <p>After you’ve created an rvm gemset that you’ll use for a project and begun to build the app, you can create an <strong>.rvmrc</strong> file in the application’s root directory. <span class="caps">RVM</span> recgonizes an <strong>.rvmrc</strong> file in a directory and loads the gemset specified inside.</p>
-<p>Here’s how to create an <strong>.rvmrc</strong> file if you’re using a gemset named “ruby-1.9.3-p125@rails32”:</p>
+<p>Here’s how to create an <strong>.rvmrc</strong> file if you’re using a gemset named “ruby-1.9.3-p194 @rails32”:</p>
 <pre>
-$ echo "rvm ruby-1.9.3-p125@rails32" &gt; .rvmrc
+$ echo "rvm ruby-1.9.3-p194 @rails32" &gt; .rvmrc
 </pre>
 <p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you run your application on your local machine. This works best if you create an rvm gemset specifically for your application.</p>
 <h2>Where to Get Help</h2>
@@ -335,7 +340,7 @@ Consider using bundle exec.
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-19 17:54:14</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-21 14:37:46</p>
       </div>
     </div>
 
