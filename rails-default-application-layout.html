@@ -51,7 +51,7 @@
       <h1>Rails Default Application Layout for HTML5</h1>
 <h3>by Daniel Kehoe</h3>
 <p>
-  <em>Last updated 16 April 2012</em>
+  <em>Last updated 23 April 2012</em>
 </p>
 <p>Rails Default Application Layout for HTML5. Shows how to set up a default application layout with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling.</p>
 <p>See the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> for an explanation of what should be included in the default application layout.</p>
@@ -115,7 +115,7 @@
 <h3>
   <span class="caps">ERB</span>
 </h3>
-<p>Create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
+<p>For simple <span class="caps">CSS</span> styling, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
 &lt;%- flash.each do |name, msg| -%&gt;
   &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
@@ -123,6 +123,26 @@
 </pre>
 <h3>Haml</h3>
 <p>For Haml, create a partial for flash messages in <strong>app/views/layouts/_messages.html.haml</strong> like this:</p>
+<pre>
+- flash.each do |name, msg|
+  = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
+</pre>
+<h3>Flash Messages with Twitter Bootstrap</h3>
+<p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
+<p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
+<p>By default, Twitter Bootstrap applies a green background to <code>.alert-success</code> and a red background to <code>.alert-error</code>. Twitter Bootstrap provides a third class <code>.alert-info</code> with a blue background. With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>.alert-info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
+<h3><span class="caps">ERB</span> (Twitter Bootstrap)</h3>
+<p>For <span class="caps">CSS</span> styling with Twitter Bootstrap, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
+<pre>
+&lt;% flash.each do |name, msg| %&gt;
+  &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
+    &lt;a class="close" data-dismiss="alert"&gt;×&lt;/a&gt;
+    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
+  &lt;/div&gt;
+&lt;% end %&gt;
+</pre>
+<h3>Haml (Twitter Bootstrap)</h3>
+<p>For <span class="caps">CSS</span> styling with Twitter Bootstrap using Haml, create a partial for flash messages in <strong>app/views/layouts/_messages.html.haml</strong> like this:</p>
 <pre>
 - flash.each do |name, msg|
   = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
@@ -292,12 +312,7 @@ body { padding-top: 60px; }
         &lt;div class="content"&gt;
            &lt;div class="row"&gt;
             &lt;div class="span12"&gt;
-              &lt;% flash.each do |name, msg| %&gt;
-                &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
-                  &lt;a class="close" data-dismiss="alert"&gt;×&lt;/a&gt;
-                  &lt;%= msg %&gt;
-                &lt;/div&gt;
-              &lt;% end %&gt;
+              &lt;%= render 'layouts/messages' %&gt;
               &lt;%= yield %&gt;
             &lt;/div&gt;
           &lt;/div&gt;
@@ -335,10 +350,7 @@ body { padding-top: 60px; }
         .content
           .row
             .span12
-              - flash.each do |name, msg|
-                %div{:class =&gt; "alert alert-#{name == :notice ? "success" : "error"}"}
-                  %a.close{"data-dismiss" =&gt; "alert"} ×
-                  = msg
+              = render 'layouts/messages'
               = yield
           %footer
 </pre>
@@ -386,7 +398,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-23 14:14:51</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-23 16:12:01</p>
       </div>
     </div>
 
