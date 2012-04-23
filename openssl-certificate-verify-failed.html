@@ -51,13 +51,19 @@
       <h1>Ruby OpenSSL Certificate Verify Failed</h1>
 <h4>by Daniel Kehoe</h4>
 <blockquote>
-<p>Last updated 16 April 2012</p>
+<p>Last updated 23 April 2012</p>
 </blockquote>
-<p>Are you getting an error “OpenSSL certificate verify failed” with Ruby? Here are suggestions.</p>
+<p>Are you getting an error “OpenSSL certificate verify failed” with Ruby?</p>
+<p>Or an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0”?</p>
+<p>Here are suggestions.</p>
 <p>This is a note for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <h2>Error</h2>
-<p>You may have received an error message if you’ve tried to create a new Rails application using an application template hosted on GitHub.</p>
-<p>For example, you may have entered</p>
+<p>You may have received an error message if you’ve tried to create a new Rails application.</p>
+<p>For example, you may have entered:</p>
+<pre>
+$ rails new myapp
+</pre>
+<p>or created a new Rails application using an application template:</p>
 <pre>
 $ rails new myapp -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-mongoid-devise-template.rb -T -O
 </pre>
@@ -65,8 +71,24 @@ $ rails new myapp -m https://github.com/RailsApps/rails3-application-templates/r
 <pre>
 SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)
 </pre>
-<p>The Ruby language interpreter uses OpenSSL to connect to GitHub to request an application template file. GitHub requires all connections to be made using <span class="caps">SSL</span>. The connection failed because OpenSSL was unable to verify the server certificate.</p>
+<p>or</p>
+<pre>
+Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B
+</pre>
+<p>When creating a new Rails application, the Ruby language interpreter uses OpenSSL to connect to <a href="https://rubygems.org/">https://rubygems.org/</a>. The Gemfile installed by the <code>rails new</code> command specifies <a href="https://rubygems.org/">https://rubygems.org/</a> as the source for gems and requires an <span class="caps">SSL</span> connection.</p>
+<p>When creating a new application from an application template hosted on GitHub, the Ruby language interpreter uses OpenSSL to connect to GitHub. GitHub requires all connections to be made using <span class="caps">SSL</span>.</p>
+<p>The error message indicates the connection failed because OpenSSL was unable to verify the server certificate.</p>
 <p>This can happen when the certificate file on your computer is out of date, missing, or can’t be found.</p>
+<h2>Workaround</h2>
+<p>The simplest workaround is to toggle off the requirement to verify the <span class="caps">SSL</span> security certificate.</p>
+<p>Create or modify the file called <strong>.gemrc</strong> in your home path and add the line:</p>
+<pre>
+:ssl_verify_mode: 0.
+</pre>
+<p>For Mac OS and Linux, “home path” means <strong>~/.gemrc</strong>. You can also create <strong>/etc/gemrc</strong> if you prefer. For Windows XP, “home path” means <strong>C:\Documents</strong> and <strong>Settings\All Users\Application Data\gemrc</strong>. For Windows 7, <strong>C:\ProgramData\gemrc</strong>. (Suggested by Andrew Fallows in a <a href="http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error">Stack Overflow discussion</a>).</p>
+<p>This is only a workaround. It opens a possible security vulerability (<a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">discussed here</a>).</p>
+<p>See <a href="https://github.com/rubygems/rubygems/issues/319">RubyGems Issue #319</a> for more information.</p>
+<p>You can try possible solutions suggested below. Please leave a comment if they work (or don’t).</p>
 <h2>Solution for Mac OS 10.6.8</h2>
 <p>Download a certificate file:</p>
 <pre>
@@ -136,7 +158,7 @@ $ ln -s /etc/ssl/certs $rvm_path/usr/ssl
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-21 18:58:52</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-23 14:04:54</p>
       </div>
     </div>
 
