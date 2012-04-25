@@ -50,15 +50,11 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Default Application Layout for HTML5</h1>
 <h4>by Daniel Kehoe</h4>
-<p>
-  <em>Last updated 23 April 2012</em>
-</p>
+<p><em>Last updated 23 April 2012</em></p>
 <p>Rails Default Application Layout for HTML5. Shows how to set up a default application layout with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling.</p>
 <p>See the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> for an explanation of what should be included in the default application layout.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<p>
-  <em>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</em>
-</p>
+<p><em>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</em></p>
 <h2>Background</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
@@ -112,9 +108,7 @@
 <h2>Flash Messages</h2>
 <p>Rails provides a standard convention to display alerts (including error messages) and other notices, called Rails “flash messages” (as in “flash memory”, not to be confused with the “Adobe Flash” proprietary web development platform).</p>
 <p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
-<h3>
-  <span class="caps">ERB</span>
-</h3>
+<h3><span class="caps">ERB</span></h3>
 <p>For simple <span class="caps">CSS</span> styling, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
 &lt;%- flash.each do |name, msg| -%&gt;
@@ -131,7 +125,8 @@
 <p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
 <p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
 <p>By default, Twitter Bootstrap applies a green background to <code>.alert-success</code> and a red background to <code>.alert-error</code>. Twitter Bootstrap provides a third class <code>.alert-info</code> with a blue background. With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>.alert-info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
-<h3><span class="caps">ERB</span> (Twitter Bootstrap)</h3>
+<h3>
+<span class="caps">ERB</span> (Twitter Bootstrap)</h3>
 <p>For <span class="caps">CSS</span> styling with Twitter Bootstrap, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
 &lt;% flash.each do |name, msg| %&gt;
@@ -147,9 +142,11 @@
 - flash.each do |name, msg|
   = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
 </pre>
-<h2><span class="caps">CSS</span> Styling</h2>
+<h2>
+<span class="caps">CSS</span> Styling</h2>
 <p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app from an application template in the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps Application Templates</a> repository, the script will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
-<h3>Use <span class="caps">SASS</span></h3>
+<h3>Use <span class="caps">SASS</span>
+</h3>
 <p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
 <p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
 <h3>Simple <span class="caps">CSS</span> Styling</h3>
@@ -181,7 +178,8 @@ ul.nav li {
   border: solid 1px #C66;
 }
 </pre>
-<h3><span class="caps">CSS</span> Styling with Twitter Bootstrap (Sass)</h3>
+<h3>
+<span class="caps">CSS</span> Styling with Twitter Bootstrap (Sass)</h3>
 <p>It’s easy to use an application template from the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps Application Templates</a> repository to install Twitter Bootstrap and set up your default application layout. If you’re building an app step-by-step without using an application template, here are instructions for setting up Twitter Bootstrap.</p>
 <p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language that is the default for <span class="caps">CSS</span> files in Rails. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend you install Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
 <p>In your <strong>Gemfile</strong>, add:</p>
@@ -398,7 +396,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-23 17:53:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-25 12:24:21</p>
       </div>
     </div>
 

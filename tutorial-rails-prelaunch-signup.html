@@ -50,23 +50,22 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p>
-  <em>Last updated 9 April 2012</em>
-</p>
+<p><em>Last updated 9 April 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
-<p>
-  <strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong>
-</p>
+<p><strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
-<h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
+<h2>
+<a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
 <p>Typically, the initial app for many web startups announces the founders’ plans and encourages visitors to enter an email address for future notification of the site’s launch. It’s not difficult to build such an app in Rails. But why build it yourself if others have already done so? That’s the aim of this project:</p>
-<ul><li>eliminate effort spent building an application that meets a common need;</li>
+<ul>
+<li>eliminate effort spent building an application that meets a common need;</li>
 	<li>offer code that is already implemented and tested by a large community;</li>
 	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
 </ul><p>By deploying this application, you’ll be able to:</p>
-<ul><li>direct more attention to the design and product offer for your prelaunch site;</li>
+<ul>
+<li>direct more attention to the design and product offer for your prelaunch site;</li>
 	<li>get started faster building the ultimate application for your business.</li>
 </ul><p>The example app and tutorial also help founders who are new to Ruby on Rails to learn how to build a real-world Rails web application.</p>
 <h3>Why We Use Devise</h3>
@@ -76,36 +75,40 @@
 <p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, the app provides an administrative interface so you can select users to receive an invitation that instructs them to confirm their email address and set a password.</p>
 <p>If you need slightly different functionality, <a href="https://github.com/plataformatec/devise/wiki">the Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">answers on Stack Overflow</a> can help you alter this implementation.</p>
 <h3>RailsApps Examples and Tutorials</h3>
-<p>This app is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> starter app. Using the rails3-devise-rspec-cucumber example gives you a known working application with the basic features most developers need when they build a Rails app. This tutorial shows how to generate the starter app and then modify it to add prelaunch signup features.</p>
-<p>As an alternative, you can use the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> starter app if you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database.</p>
-<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
-<h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
-<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
+<p>This application is based on two of the RailsApps example apps:</p>
+<ul>
+<li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
+	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
+</ul><p>The first example shows how to set up Devise for user authentication, explaining how to integrate RSpec and Cucumber for testing. The second example shows how to set up Devise and add CanCan to manage access to administrative pages. You can use this tutorial without studying the first two example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
+<p>An alternative approach is shown in the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app. Look at the rails3-mongoid-devise example if you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database.</p>
+<p>See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<h2>
+<img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
+<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, little explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
 <h2>Creating the Application</h2>
 <h3>Option One</h3>
-<p>
-  <em>Follow this tutorial.</em>
-</p>
+<p><em>Follow this tutorial.</em></p>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
 <h3>Option Two</h3>
-<p>
-  <em>Use the ready-made application template to generate the code.</em>
-</p>
+<p><em>Use the ready-made application template to generate the code.</em></p>
 <p>We’ll soon offer an application template to generate a new Rails app with code that closely matches the tutorial. It’s not available yet.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
-<ul><li>The Ruby language (version 1.9.3)</li>
+<ul>
+<li>The Ruby language (version 1.9.3)</li>
 	<li>Rails 3.2</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br /><code>$ ruby -v</code><br /><code>$ rails -v</code></p>
+</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>About the Software Development Process</h2>
 <p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You may find it beneficial to use the same process when you develop more complex applications.</p>
 <p>Here’s the software development process we’ll use:</p>
-<ul><li>write user stories</li>
+<ul>
+<li>write user stories</li>
 	<li>write a short specification for our feature set using Cucumber scenarios</li>
 	<li>create acceptance tests using Cucumber step definitions</li>
 	<li>code each feature</li>
@@ -134,14 +137,13 @@ As the owner of the site
 I want to collect email addresses for a mailing list
 so I can send an announcement when I launch the site
 </pre>
-<p>Here’s a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/implemented.textile">user stories that have been implemented</a>. There is also a list of <a href="https://github.com/RailsApps/rails-prelaunch-signup/blob/master/stories/unimplemented.textile">user stories that have not been implemented</a>. If you have ideas for additional features for this application, edit the file and submit a pull request. Or simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
+<p>If you have ideas for additional features for this application, simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a> describing the feature you’d like to see.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating an example app using an application template script.</p>
-<p>If you want to know more about the starter app, read the <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">tutorial for the rails3-devise-rspec-cucumber</a> app.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
 <p>For a starter app using ActiveRecord and a <span class="caps">SQL</span> database, use the command:</p>
 <pre>
-$ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T
+$ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-bootstrap-devise-cancan-template.rb -T
 </pre>
 <p>Use the <code>-T</code> flags to skip Test::Unit files.</p>
 <p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database use the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> starter app:</p>
@@ -151,24 +153,63 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 <p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
 <p>This creates a new Rails app named <code>rails-prelaunch-signup</code> on your computer. You can use a different name if you wish.</p>
 <p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
-<ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>No.</strong></li>
-	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>Yes.</strong></li>
-	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>No.</strong></li>
-	<li>Would you like the app to use a Gmail account to send email? <strong>Yes.</strong></li>
-	<li>Would you like to use Devise for authentication? <strong>Devise with Confirmable and Invitable modules</strong></li>
-	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>Twitter Bootstrap (sass)</strong></li>
-	<li>Which form gem would you like? <strong>simple form (bootstrap)</strong></li>
-	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>No.</strong></li>
-	<li>Would you like to set a robots.txt file to ban spiders? <strong>No.</strong></li>
-</ul><p>Be sure to choose the <strong>Devise with Confirmable and Invitable modules</strong> option as it is required as a basis for the rails-prelaunch-signup app. You’ll also need the Bootstrap version of the SimpleForm gem.</p>
+<ul>
+<li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>no</strong>
+</li>
+	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong>
+</li>
+	<li>Would you like the app to use a Gmail account to send email? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication? <strong>#4</strong>
+	<ol>
+<li>No</li>
+		<li>Devise with default modules</li>
+		<li>Devise with Confirmable module</li>
+		<li>Devise with Confirmable and Invitable modules</li>
+	</ol>
+</li>
+	<li>Would you like to manage authorization with <a href="https://github.com/ryanb/cancan">CanCan</a> &amp; <a href="https://github.com/EppO/rolify">Rolify</a>? <strong>yes</strong>
+</li>
+	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>#4</strong>
+	<ol>
+<li>None</li>
+		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
+		<li>
+<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
+		<li>
+<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
+		<li><a href="http://www.getskeleton.com/">Skeleton</a></li>
+		<li>Normalize <span class="caps">CSS</span> for consistent styling</li>
+	</ol>
+</li>
+	<li>Which form gem would you like? <strong>#3</strong>
+	<ol>
+<li>None</li>
+		<li>simple form</li>
+		<li>simple form (bootstrap)</li>
+	</ol>
+</li>
+	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong>
+</li>
+	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong>
+</li>
+	<li>Would you like to add ‘will_paginate’ for pagination? <strong>yes</strong>
+</li>
+</ul><p>Be sure to choose the <strong>CanCan &amp; Rolify</strong> option as well as the <strong>Twitter Bootstrap (sass)</strong> option to create the example application.</p>
+<p>Be sure to choose the <strong>Devise with Confirmable and Invitable modules</strong> option as it is required as a basis for the rails-prelaunch-signup app. You’ll also need the Bootstrap version of the SimpleForm gem.</p>
+<p>You can choose other selections if you don’t care about matching the example application exactly.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
-<p>
-  <code>$ cd rails-prelaunch-signup</code>
-</p>
-<h3>Edit the <span class="caps">README</span></h3>
+<p><code>$ cd rails-prelaunch-signup</code></p>
+<h3>Edit the <span class="caps">README</span>
+</h3>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
 <p>When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.</p>
@@ -177,7 +218,8 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 <h2>Set Up Gems</h2>
 <h3>About Required Gems</h3>
 <p>The application uses the following gems:</p>
-<ul><li><a href="http://rubygems.org/gems/rails">rails</a></li>
+<ul>
+<li><a href="http://rubygems.org/gems/rails">rails</a></li>
 	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
 	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
 	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
@@ -190,9 +232,7 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 <p>The starter app script sets up your gemfile.</p>
 <p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
 <p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
-<p>
-  <strong>Gemfile</strong>
-</p>
+<p><strong>Gemfile</strong></p>
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.3'
@@ -233,9 +273,7 @@ end
 <h3>Install the Required Gems</h3>
 <p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. In this case, the starter app script has already run the <code>bundle install</code> command.</p>
 <p>You can check which gems are installed on your computer with:</p>
-<p>
-  <code>$ gem list --local</code>
-</p>
+<p><code>$ gem list --local</code></p>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
 <h2>Haml</h2>
 <p>In this example, we’ll use Haml instead of the default “<span class="caps">ERB</span>” Rails template engine. The starter app script sets up Haml. You can see details about <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a> with a discussion of the benefits and drawbacks in using Haml.</p>
@@ -304,9 +342,7 @@ export GMAIL_PASSWORD="secret*"
 <p>Open a new shell or restart your terminal application to continue.</p>
 <h3>Configure Devise for Email</h3>
 <p>Complete your email configuration by modifying</p>
-<p>
-  <strong>config/initializers/devise.rb</strong>
-</p>
+<p><strong>config/initializers/devise.rb</strong></p>
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up the Database</h2>
 <h3>Create a Default User</h3>
@@ -326,9 +362,7 @@ $ bundle exec rake db:reset
 <p>If you need to, you can run <code>$ bundle exec rake db:reset</code> whenever you need to recreate the database.</p>
 <h2>Test the Starter App</h2>
 <p>You can check that the example app runs properly by entering the command</p>
-<p>
-  <code>$ rails server</code>
-</p>
+<p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Modify the Starter App</h2>
@@ -364,7 +398,8 @@ so I'll be notified when the site is launched
 </pre>
 <p>In many situations, your user story is all you need to guide you in coding the implementation. If you are both the product owner and a hands-on developer, you don’t need a written specification to implement a feature.</p>
 <p>However, before you begin coding directly from a user story, consider the benefits of writing a specification:</p>
-<ul><li>If you are part of a team you can use a specification to communicate what needs to be accomplished.</li>
+<ul>
+<li>If you are part of a team you can use a specification to communicate what needs to be accomplished.</li>
 	<li>Creating a specification can help us discover the functionality we need to implement.</li>
 	<li>A specification will describe the functionality so we can discuss it with our business partners.</li>
 	<li>Specifications can become the basis for acceptance testing or integration testing.</li>
@@ -374,9 +409,7 @@ so I'll be notified when the site is launched
 <h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
 <p>The <strong>features</strong> directory contains our Cucumber feature files. We can organize Cucumber feature files any way we wish by placing them in subdirectories. For this application, we’ll organize features by roles in subdirectories for “visitors” and “owner”. Create a subdirectory <strong>features/visitors</strong> and then create the following file:</p>
-<p>
-  <strong>features/visitors/request_invitation.feature</strong>
-</p>
+<p><strong>features/visitors/request_invitation.feature</strong></p>
 <pre>
 Feature: Request Invitation
   As a visitor to the website
@@ -413,9 +446,7 @@ Feature: Request Invitation
 <p>Cucumber scenarios can be read as plain English text. Alone, they serve as specifications. To create an acceptance test or integration test, we must write test code for each step in a scenario, called “step definitions.”</p>
 <p>We’ll create step definitions for all the scenario steps in our “Feature: Request Invitation” file.</p>
 <p>Create the following file:</p>
-<p>
-  <strong>features/step_definitions/visitor_steps.rb</strong>
-</p>
+<p><strong>features/step_definitions/visitor_steps.rb</strong></p>
 <pre>
 def new_user
   @user ||= { :email =&gt; "example@example.com",
@@ -483,11 +514,16 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 <p>The application’s home page doesn’t contain a “Request Invitation” form. We could add a sign-up form to the home page but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to use the existing Devise mechanism.</p>
 <p>We’ll modify the Devise form to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm</a> gem. The SimpleForm gem lets us create forms that include tags that apply attractive Twitter Bootstrap form styles.</p>
 <p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
-<ul><li>We’ll use <a href="https://github.com/plataformatec/simple_form">SimpleForm</a>.</li>
-</ul><ul><li>We’ll change the heading from “Sign up” to “Request Invitation.”</li>
-</ul><ul><li>We’ll remove the password fields and add a hidden input field with a placeholder password. Devise won’t let us create a new user without a password so we’ll trick Devise by providing a placeholder password.</li>
-</ul><ul><li>We’ll remove the user name field (you could keep it if you wish).</li>
-</ul><ul><li>We’ll change the submit button text from “Sign up” to “Request Invitation.”</li>
+<ul>
+<li>We’ll use <a href="https://github.com/plataformatec/simple_form">SimpleForm</a>.</li>
+</ul><ul>
+<li>We’ll change the heading from “Sign up” to “Request Invitation.”</li>
+</ul><ul>
+<li>We’ll remove the password fields and add a hidden input field with a placeholder password. Devise won’t let us create a new user without a password so we’ll trick Devise by providing a placeholder password.</li>
+</ul><ul>
+<li>We’ll remove the user name field (you could keep it if you wish).</li>
+</ul><ul>
+<li>We’ll change the submit button text from “Sign up” to “Request Invitation.”</li>
 </ul><pre>
 %h2 Request Invitation
 = simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
@@ -551,9 +587,7 @@ end
 <p>With this change, casual visitors will see a “Request Invitation” form on the home page. And users who log in (presumably only an administrator or invited guests) will see the application “home#index” page.</p>
 <h3>Create a “Thank You” Page</h3>
 <p>For a simple “thank you” page, there’s no need to create a dynamic page with a controller and view. Instead, create a file for a static web page:</p>
-<p>
-  <strong>public/thankyou.html</strong>
-</p>
+<p><strong>public/thankyou.html</strong></p>
 <pre>
 &lt;h1&gt;Thank You&lt;/h1&gt;
 </pre>
@@ -561,9 +595,7 @@ end
 <h3>Redirect to “Thank You” Page After Successful Sign Up</h3>
 <p>We want the visitor to see the “thank you” page after they request an invitation.</p>
 <p>Override the Devise::RegistrationsController with a new controller. Create a file:</p>
-<p>
-  <strong>app/controllers/registrations_controller.rb</strong>
-</p>
+<p><strong>app/controllers/registrations_controller.rb</strong></p>
 <pre>
 class RegistrationsController &lt; Devise::RegistrationsController
   protected
@@ -829,10 +861,9 @@ $('document').ready(function() {
 })
 </pre>
 <p>When the <code>#error_explanation</code> element contains text, the page will refresh and the modal window will be displayed properly.</p>
-<h2>Improving the Design: Adding <span class="caps">AJAX</span></h2>
-<p>
-  <em>Thank you to <a href="http://andreapavoni.com">Andrea Pavoni</a> for the <span class="caps">AJAX</span> implementation.</em>
-</p>
+<h2>Improving the Design: Adding <span class="caps">AJAX</span>
+</h2>
+<p><em>Thank you to <a href="http://andreapavoni.com">Andrea Pavoni</a> for the <span class="caps">AJAX</span> implementation.</em></p>
 <p>We’ve improved the appearance of the “invitation request” page by adding a modal window using Twitter Bootstrap. We can make further improvements. As implemented, the page refreshes with a roundtrip to the server when we submit the form successfully (or get an an error). Our app will look more sophisticated if we use <span class="caps">AJAX</span> techniques to update the page without a page refresh.</p>
 <p>We don’t need changes to the “invitation request” page. We’ll add a partial to provide a “thank you” message. Add a file <strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
 <pre>
@@ -944,9 +975,7 @@ so I can know if my offer is popular
 <h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
 <p>Create a subdirectory <strong>features/admins</strong> and then create the following file:</p>
-<p>
-  <strong>features/admins/view_progress.feature</strong>
-</p>
+<p><strong>features/admins/view_progress.feature</strong></p>
 <pre>
 Feature: View Progress
   As the owner of the site
@@ -967,9 +996,7 @@ Feature: View Progress
 <h3>Cucumber Step Definitions</h3>
 <p>Turn the specification into an automated acceptance test. Create step definitions for all the scenario steps in our “Feature: View Progress” file.</p>
 <p>Create the following file:</p>
-<p>
-  <strong>features/step_definitions/admin_steps.rb</strong>
-</p>
+<p><strong>features/step_definitions/admin_steps.rb</strong></p>
 <pre>
 Given /^I am logged in as an administrator$/ do
   pending # express the regexp above with the code you wish you had
@@ -1060,7 +1087,7 @@ resources :users, :only =&gt; [:show, :index]
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-23 17:53:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-25 12:24:21</p>
       </div>
     </div>
 

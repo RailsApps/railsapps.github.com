@@ -50,25 +50,27 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
-<p>
-  <em>Last updated 19 April 2012</em>
-</p>
+<p><em>Last updated 19 April 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
-<ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
-	<li><a href="https://github.com/ryanb/cancan">CanCan</a> provides authorization which restricts what resources a given user is allowed to access.</li>
-	<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> is a front-end framework for <span class="caps">CSS</span> styling.</li>
-</ul><p>
-  <img src="http://railsapps.github.com/images/rails3-bootstrap-devise-cancan.png" title="Rails Application for Devise with CanCan and Twitter Bootstrap" alt="Rails Application for Devise with CanCan and Twitter Bootstrap" />
-</p>
+<ul>
+<li>
+<a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
+	<li>
+<a href="https://github.com/ryanb/cancan">CanCan</a> provides authorization which restricts what resources a given user is allowed to access.</li>
+	<li>
+<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> is a front-end framework for <span class="caps">CSS</span> styling.</li>
+</ul><p><img src="http://railsapps.github.com/images/rails3-bootstrap-devise-cancan.png" title="Rails Application for Devise with CanCan and Twitter Bootstrap" alt="Rails Application for Devise with CanCan and Twitter Bootstrap"></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> repository for the complete application. If you want to use the project as a starter app for your own customized application, see the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan <span class="caps">README</span></a> to use an application template to generate a your own version of the example app. Generating the application gives you many options, such as using Haml for views, additional Devise modules, and other popular gems such as will-paginate.</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <p>This example application is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example and tutorial and adds <a href="https://github.com/ryanb/cancan">CanCan</a> and <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. View the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example and tutorial for the basics of setting up an application with <a href="http://rspec.info/">RSpec</a> and <a href="http://cukes.info/">Cucumber</a>.</p>
 <p>This example application uses ActiveRecord and a SQLite database. You can use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead, for faster development without schemas or migrations. The <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
 <p>To see a more complex application that uses Devise, CanCan, and Twitter Bootstrap, see the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example and tutorial from the RailsApps project.</p>
-<h2><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter" /></a> Follow on Twitter</h2>
+<h2>
+<a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
-<h2><img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial" /> Tutorial</h2>
+<h2>
+<img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
 <p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
@@ -76,14 +78,10 @@
 <p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
 <h2>Creating the Application</h2>
 <h3>Option One</h3>
-<p>
-  <em>Follow this tutorial.</em>
-</p>
+<p><em>Follow this tutorial.</em></p>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
 <h3>Option Two</h3>
-<p>
-  <em>Use the ready-made application template to generate the code.</em>
-</p>
+<p><em>Use the ready-made application template to generate the code.</em></p>
 <p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
 <p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) gives you many options, such as using Haml for views, additional Devise modules, and other popular gems such as will-paginate.</p>
 <p>Use the command:</p>
@@ -95,85 +93,92 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 <p>This creates a new Rails app named <code>rails3-bootstrap-devise-cancan</code> on your computer. You can use a different name if you wish.</p>
 <p>The application generator template will ask you for your preferences.</p>
 <p>To produce an application exactly like the tutorial, make the following selections:</p>
-<ul><li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>no</strong></li>
-	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>yes</strong></li>
-	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>yes</strong></li>
-	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>no</strong></li>
-	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong></li>
-	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong></li>
-	<li>Would you like the app to use a Gmail account to send email? <strong>yes</strong></li>
+<ul>
+<li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>no</strong>
+</li>
+	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>no</strong>
+</li>
+	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong>
+</li>
+	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong>
+</li>
+	<li>Would you like the app to use a Gmail account to send email? <strong>yes</strong>
+</li>
 	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication? <strong>#2</strong>
-	<ol><li>No</li>
+	<ol>
+<li>No</li>
 		<li>Devise with default modules</li>
 		<li>Devise with Confirmable module</li>
 		<li>Devise with Confirmable and Invitable modules</li>
-	</ol></li>
-	<li>Would you like to manage authorization with <a href="https://github.com/ryanb/cancan">CanCan</a> &amp; <a href="https://github.com/EppO/rolify">Rolify</a>? <strong>yes</strong></li>
+	</ol>
+</li>
+	<li>Would you like to manage authorization with <a href="https://github.com/ryanb/cancan">CanCan</a> &amp; <a href="https://github.com/EppO/rolify">Rolify</a>? <strong>yes</strong>
+</li>
 	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>#4</strong>
-	<ol><li>None</li>
+	<ol>
+<li>None</li>
 		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
-		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
-		<li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
+		<li>
+<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
+		<li>
+<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
 		<li><a href="http://www.getskeleton.com/">Skeleton</a></li>
 		<li>Normalize <span class="caps">CSS</span> for consistent styling</li>
-	</ol></li>
+	</ol>
+</li>
 	<li>Which form gem would you like? <strong>#1</strong>
-	<ol><li>None</li>
+	<ol>
+<li>None</li>
 		<li>simple form</li>
 		<li>simple form (bootstrap)</li>
-	</ol></li>
-	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong></li>
-	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong></li>
-	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong></li>
+	</ol>
+</li>
+	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong>
+</li>
+	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong>
+</li>
+	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong>
+</li>
 </ul><p>Be sure to choose the <em>CanCan &amp; Rolify</em> option as well as the <em>Twitter Bootstrap (sass)</em> option to create the example application.</p>
 <p>You can choose other selections if you don’t care about matching the example application exactly.</p>
 <p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
 <h3>Option Three</h3>
-<p>
-  <em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em>
-</p>
+<p><em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em></p>
 <p>This is optimal if you are creating a “starter app” based on this example app but wish to customize the code for your own preferences.</p>
 <p>Each step in this tutorial has a corresponding application template recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> recipes repository. You can create your own application template using the template recipes. To do so, clone the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> project, customize recipes as needed, and follow the instructions to create a reusable application template file.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
-<ul><li>The Ruby language (version 1.9.3 or newer)</li>
+<ul>
+<li>The Ruby language (version 1.9.3 or newer)</li>
 	<li>Rails 3.2</li>
 </ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
-<p>
-  <code>$ ruby -v</code>
-  <br />
-  <code>$ rails -v</code>
-</p>
+<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>Beginning here, we show how to create the application from scratch.</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
-<p>
-  <code>$ rails new rails3-bootstrap-devise-cancan -T</code>
-</p>
+<p><code>$ rails new rails3-bootstrap-devise-cancan -T</code></p>
 <p>Use the <code>-T</code> flag to skip Test::Unit files (since you are using RSpec).</p>
 <p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-bootstrap-devise-cancan.”</p>
 <p>This will create a Rails application that uses a SQLite database for data storage.</p>
 <p>After you create the application, switch to its folder to continue work directly in that application:</p>
-<p>
-  <code>$ cd rails3-bootstrap-devise-cancan</code>
-</p>
-<h3>Edit the <span class="caps">README</span></h3>
+<p><code>$ cd rails3-bootstrap-devise-cancan</code></p>
+<h3>Edit the <span class="caps">README</span>
+</h3>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
-<p>
-  <code>$ git init .</code>
-  <br />
-  <code>$ git add .</code>
-  <br />
-  <code>$ git commit -m 'Initial commit'</code>
-</p>
+<p><code>$ git init .</code><br><code>$ git add .</code><br><code>$ git commit -m 'Initial commit'</code></p>
 <p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
 <h2>Set Up Gems</h2>
 <h3>About Required Gems</h3>
 <p>The application uses the following gems:</p>
-<ul><li><a href="http://rubygems.org/gems/rails">rails</a></li>
+<ul>
+<li><a href="http://rubygems.org/gems/rails">rails</a></li>
 	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
 	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
 	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
@@ -188,9 +193,7 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 <p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
-<p>
-  <strong>Gemfile</strong>
-</p>
+<p><strong>Gemfile</strong></p>
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.3'
@@ -217,13 +220,9 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h3>Install the Required Gems</h3>
 <p>Install the required gems on your computer:</p>
-<p>
-  <code>$ bundle install</code>
-</p>
+<p><code>$ bundle install</code></p>
 <p>You can check which gems are installed on your computer with:</p>
-<p>
-  <code>$ gem list --local</code>
-</p>
+<p><code>$ gem list --local</code></p>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
 <h2>Configuration for Haml</h2>
 <p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
@@ -233,15 +232,11 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 <p>The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
-<p>
-  <code>$ rails server</code>
-</p>
+<p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Configure Email</h2>
-<p>
-  <em>The “Configure Email” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
+<p><em>The “Configure Email” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <p>You must configure the app for your email account if you want your application to send email messages, for example, if you’ve generated the application with the option to install the Devise <code>:confirmable</code> module.</p>
 <h3>Configure ActionMailer</h3>
 <p>Remove the following from the <strong>config/environments/development.rb</strong> file:</p>
@@ -300,9 +295,7 @@ export GMAIL_PASSWORD="secret*"
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
 <h2>Set Up Authentication</h2>
-<p>
-  <em>The “Set Up Authentication” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
+<p><em>The “Set Up Authentication” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
 <h3>Set Up Configuration for Devise</h3>
 <p>You should have the following gem in your <strong>Gemfile</strong> file:</p>
@@ -310,23 +303,15 @@ export GMAIL_PASSWORD="secret*"
 gem 'devise'
 </pre>
 <p>If you haven’t already, run:</p>
-<p>
-  <code>$ bundle install</code>
-</p>
+<p><code>$ bundle install</code></p>
 <p>Run the generator to install Devise:</p>
-<p>
-  <code>$ rails generate devise:install</code>
-</p>
+<p><code>$ rails generate devise:install</code></p>
 <p>which installs a configuration file:</p>
-<p>
-  <strong>config/initializers/devise.rb</strong>
-</p>
+<p><strong>config/initializers/devise.rb</strong></p>
 <p>and a localization file.</p>
 <h3>Configure Devise for Email</h3>
 <p>Complete your email configuration by modifying</p>
-<p>
-  <strong>config/initializers/devise.rb</strong>
-</p>
+<p><strong>config/initializers/devise.rb</strong></p>
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h3>Generate a Model and Routes for Users</h3>
 <p>Use Devise to generate models and routes for a User.</p>
@@ -358,9 +343,7 @@ config.filter_parameters += [:password, :password_confirmation]
 
 <p>Note that filter_parameters is an array.</p>
 <h2>Set Up Authorization</h2>
-<p>
-  <em>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial does not include a “Set Up Authorization” step.</em>
-</p>
+<p><em>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial does not include a “Set Up Authorization” step.</em></p>
 <p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. This app uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an administrator. Cancan is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site) . The author of CanCan, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
 <p>There are many ways to implement authorization in a web application. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. For a discussion of the benefits of using a single, consolidated location for the permissions, see the article <a href="http://lostechies.com/derickbailey/2011/05/24/dont-do-role-based-authorization-checks-do-activity-based-checks/">Don’t Do Role-Based Authorization Checks; Do Activity-Based Checks</a>.</p>
 <p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a> for use with CanCan. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
@@ -406,7 +389,8 @@ $ rails generate rolify:role
 $ rails generate rolify:role Role User mongoid
 </pre>
 <p>The generator will insert a <code>rolify</code> method in <strong>app/models/users.rb</strong> and it will create several files:</p>
-<ul><li><strong>app/models/role.rb</strong></li>
+<ul>
+<li><strong>app/models/role.rb</strong></li>
 	<li><strong>config/initializers/rolify.rb</strong></li>
 	<li><strong>db/migrate/…rolify_create_roles.rb</strong></li>
 </ul><p>The <strong>app/models/role.rb</strong> looks like this:</p>
@@ -418,9 +402,7 @@ end
 </pre>
 <p>These few steps with CanCan and Rolify implement role-based authorization in our application. We’ll use the authorization options provided by CanCan and Rolify when we add an administrative page with corresponding links.</p>
 <h2>Customize the Application</h2>
-<p>
-  <em>The “Customize the Application” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
+<p><em>The “Customize the Application” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <h3>Enable Users to Have Names</h3>
 <p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
 <p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
@@ -454,22 +436,16 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 <h4 id="registration-views">Create Customized Views for User Registration (<span class="caps">ERB</span>)</h4>
 <p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults.</p>
 <p>First, to copy all the default Devise views to your application, run</p>
-<p>
-  <code>rails generate devise:views</code>
-</p>
+<p><code>rails generate devise:views</code></p>
 <p>This will generate a set of views in the directory <strong>app/views/devise/</strong>.</p>
 <p>Next, modify the views to create and edit users.</p>
 <p>Add the following code to each file:</p>
-<p>
-  <strong>app/views/devise/registrations/edit.html.erb</strong>
-</p>
+<p><strong>app/views/devise/registrations/edit.html.erb</strong></p>
 <pre>
   &lt;p&gt;&lt;%= f.label :name %&gt;&lt;br /&gt;
   &lt;%= f.text_field :name %&gt;&lt;/p&gt;
 </pre>
-<p>
-  <strong>app/views/devise/registrations/new.html.erb</strong>
-</p>
+<p><strong>app/views/devise/registrations/new.html.erb</strong></p>
 <pre>
   &lt;p&gt;&lt;%= f.label :name %&gt;&lt;br /&gt;
   &lt;%= f.text_field :name %&gt;&lt;/p&gt;
@@ -480,27 +456,17 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 <p>If you are using Haml, Devise does not generate views for Haml (it did before Devise 1.2; see <a href="https://github.com/plataformatec/devise/issues/878">Devise issue 878</a>). See <a href="https://github.com/plataformatec/devise/wiki/How-To:-Create-Haml-and-Slim-Views">How To Create Haml and Slim Views</a> from the Devise wiki.</p>
 <p>If you are using Haml, you can generate the <span class="caps">ERB</span> files using <code>rails generate devise:views</code> and then convert them using the online tool <a href="http://html2haml.heroku.com/">Html2Haml</a>. You’ll need to remove the <strong>.erb</strong> files and replace them with <strong>app/views/devise/registrations/edit.html.haml</strong> and <strong>app/views/devise/registrations/new.html.haml</strong>.</p>
 <h2>Create a Home Page</h2>
-<p>
-  <em>The “Create a Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
+<p><em>The “Create a Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <h3>Remove the Default Home Page</h3>
 <p>Delete the default home page from your application:</p>
-<p>
-  <code>$ rm public/index.html</code>
-</p>
+<p><code>$ rm public/index.html</code></p>
 <h3>Create a Home Controller and View</h3>
 <p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
-<p>
-  <code>$ rails generate controller home index --no-controller-specs</code>
-</p>
+<p><code>$ rails generate controller home index --no-controller-specs</code></p>
 <p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
-<p>
-  <strong>app/views/home/index.html.erb</strong>
-</p>
+<p><strong>app/views/home/index.html.erb</strong></p>
 <p>Next, set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
-<p>
-  <code>get "home/index"</code>
-</p>
+<p><code>get "home/index"</code></p>
 <p>with</p>
 <pre>
 authenticated :user do
@@ -513,15 +479,11 @@ root :to =&gt; "home#index"
 <p>By default, Devise will redirect to the root_path after successful sign in or sign out. It is easy to change the root_path as shown in the <strong>config/routes.rb</strong> file. Alternatively, you can override the Devise methods <code>after_sign_in_path_for</code> and <code>after_sign_out_path_for</code> as described in the Devise wiki article <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-out">How To Redirect to a Specific Page</a>.</p>
 <h3>Test the App</h3>
 <p>You can check that your app runs properly by entering the command</p>
-<p>
-  <code>$ rails server</code>
-</p>
+<p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Display Users on the Home Page</h2>
-<p>
-  <em>The “Display Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
+<p><em>The “Display Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
 <pre>
 def index
@@ -538,9 +500,7 @@ end
 <p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
 <h2>Create a Default User</h2>
 <h3>Set Up a Database Seed File</h3>
-<p>
-  <em>The “Set Up a Database Seed File” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to make the first user an administrator.</em>
-</p>
+<p><em>The “Set Up a Database Seed File” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to make the first user an administrator.</em></p>
 <p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
@@ -562,9 +522,7 @@ user.add_role :admin
 <p>You can change the values for name, email, and password as you wish.</p>
 <h3>Seed the Database</h3>
 <p>Add the default user to the database by running the command:</p>
-<p>
-  <code>$ bundle exec rake db:seed</code>
-</p>
+<p><code>$ bundle exec rake db:seed</code></p>
 <p>If you need to, you can run <code>$ bundle exec rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
 <p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
 <pre>
@@ -573,15 +531,11 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <h3>Test the App</h3>
 <p>At this point, you may want to know if the default user has been saved to the database.</p>
 <p>You can check that your app runs properly by entering the command</p>
-<p>
-  <code>$ rails server</code>
-</p>
+<p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Add Links to Users on the Home Page</h2>
-<p>
-  <em>The “Add Links to Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em>
-</p>
+<p><em>The “Add Links to Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
 <pre>
 def index
@@ -598,14 +552,10 @@ end
 <p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
 <p>The links to the user’s profile page will not yet work; in the next section we’ll create a users controller, routes, and views.</p>
 <h2>Set Up the Users Controller, Routes, and Views</h2>
-<p>
-  <em>The “Set Up the Users Controller, Views, and Routes” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we set up the UsersController to demonstrate use of authorization in a later step.</em>
-</p>
+<p><em>The “Set Up the Users Controller, Views, and Routes” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we set up the UsersController to demonstrate use of authorization in a later step.</em></p>
 <h3>Create a Users Controller</h3>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
-<p>
-  <code>$ rails generate controller users index show --no-controller-specs</code>
-</p>
+<p><code>$ rails generate controller users index show --no-controller-specs</code></p>
 <p>Note that “users” is plural when you create the controller.</p>
 <h3>Set Up the Users Routes</h3>
 <p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
@@ -641,9 +591,7 @@ resources :users, :only =&gt; [:show, :index]
 </pre>
 <p>We want to restrict access to this page, the <strong>Users#index</strong> page at <a href="http://localhost:3000/users">http://localhost:3000/users</a>. In the next section, we will set up authorization so the page is accessible only to administrators.</p>
 <h2>Set Up a Demonstration of CanCan</h2>
-<p>
-  <em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em>
-</p>
+<p><em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em></p>
 <p>You’ll want to see how CanCan is used to limit access to only the administrator.</p>
 <h3>First Authorization Example: Users Controller with CanCan “@authorize!”</h3>
 <p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
@@ -662,7 +610,7 @@ class UsersController &lt; ApplicationController
 
 end
 </pre>
-<p>Only one line of code is needed to limit access to the <strong>Users#index</strong> page at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
+<p>Only one line of code is needed to limit access to the <strong>Users#index</strong> page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
 <pre>
 authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
 </pre>
@@ -769,10 +717,13 @@ end
 <p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
 <p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
 <p>By default, Twitter Bootstrap applies a green background to <code>.alert-success</code> and a red background to <code>.alert-error</code>. Twitter Bootstrap provides a third class <code>.alert-info</code> with a blue background. With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>.alert-info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
-<h3><span class="caps">CSS</span> Styling with <span class="caps">SASS</span></h3>
+<h3>
+<span class="caps">CSS</span> Styling with <span class="caps">SASS</span>
+</h3>
 <p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
 <p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
-<h3><span class="caps">CSS</span> Styling with Twitter Bootstrap</h3>
+<h3>
+<span class="caps">CSS</span> Styling with Twitter Bootstrap</h3>
 <p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app from an application template in the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps Application Templates</a> repository, the script will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
 <p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language that is the default for <span class="caps">CSS</span> files in Rails. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend you install Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
 <p>In your <strong>Gemfile</strong>, you’ve already added:</p>
@@ -868,18 +819,18 @@ body { padding-top: 60px; }
 <p>See instructions for <a href="http://railsapps.github.com/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
-<p>
-  <code>$ rails server</code>
-</p>
+<p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>To sign in as the first user (the administrator), (unless you’ve changed it) use</p>
-<ul><li>email: user@example.com</li>
+<ul>
+<li>email: user@example.com</li>
 	<li>password: please</li>
-</ul><p>You’ll see a navigation link for Admin. Clicking the link will display a page with a list of users at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+</ul><p>You’ll see a navigation link for Admin. Clicking the link will display a page with a list of users at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
 <p>To sign in as the second user, (unless you’ve changed it) use</p>
-<ul><li>email: user2@example.com</li>
+<ul>
+<li>email: user2@example.com</li>
 	<li>password: please</li>
-</ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br /><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+</ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Deploy to Heroku</h2>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
@@ -929,7 +880,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-23 17:53:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-25 12:24:21</p>
       </div>
     </div>
 
