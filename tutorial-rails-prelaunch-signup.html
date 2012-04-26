@@ -50,7 +50,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 9 April 2012</em></p>
+<p><em>Last updated 25 April 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
 <p><strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
@@ -216,47 +216,36 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 <p>At this point, you should create a GitHub repository for your project.</p>
 <p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
 <h2>Set Up Gems</h2>
-<h3>About Required Gems</h3>
-<p>The application uses the following gems:</p>
-<ul>
-<li><a href="http://rubygems.org/gems/rails">rails</a></li>
-	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
-	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
-	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
-	<li><a href="http://rubygems.org/gems/email_spec">email_spec</a></li>
-	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
-	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
-	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
-</ul><h3>Set up Your Gemfile</h3>
 <p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>The starter app script sets up your gemfile.</p>
-<p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
 <p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
 <p><strong>Gemfile</strong></p>
 <pre>
-source 'https://rubygems.org'
-gem 'rails', '3.2.3'
-gem 'sqlite3'
-group :assets do
-  gem 'sass-rails',   '~&gt; 3.2.3'
-  gem 'coffee-rails', '~&gt; 3.2.1'
-  gem 'uglifier', '&gt;= 1.0.3'
-end
-gem 'jquery-rails'
-gem "rspec-rails", "&gt;= 2.9.0.rc2", :group =&gt; [:development, :test]
-gem "factory_girl_rails", "&gt;= 3.2.0", :group =&gt; [:development, :test]
-gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
-gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test
-gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
-gem "database_cleaner", "&gt;= 0.7.2", :group =&gt; :test
-gem "launchy", "&gt;= 2.1.0", :group =&gt; :test
-gem "devise", "&gt;= 2.1.0.rc"
-gem "devise_invitable", "&gt;= 1.0.1"
-gem "cancan", "&gt;= 1.6.7"
-gem "rolify", "&gt;= 3.1.0"
-gem "bootstrap-sass", "&gt;= 2.0.1"
-gem "simple_form"
-gem "will_paginate", "&gt;= 3.0.3"
+  source 'https://rubygems.org'
+  gem 'rails', '3.2.3'
+  gem 'sqlite3'
+  group :assets do
+    gem 'sass-rails',   '~&gt; 3.2.3'
+    gem 'coffee-rails', '~&gt; 3.2.1'
+    gem 'uglifier', '&gt;= 1.0.3'
+  end
+  gem 'jquery-rails'
+  gem "haml", "&gt;= 3.1.4"
+  gem "haml-rails", "&gt;= 0.3.4", :group =&gt; :development
+  gem "rspec-rails", "&gt;= 2.9.0.rc2", :group =&gt; [:development, :test]
+  gem "factory_girl_rails", "&gt;= 3.2.0", :group =&gt; [:development, :test]
+  gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
+  gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test
+  gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
+  gem "database_cleaner", "&gt;= 0.7.2", :group =&gt; :test
+  gem "launchy", "&gt;= 2.1.0", :group =&gt; :test
+  gem "devise", "&gt;= 2.1.0.rc"
+  gem "devise_invitable", "&gt;= 1.0.1"
+  gem "cancan", "&gt;= 1.6.7"
+  gem "rolify", "&gt;= 3.1.0"
+  gem "bootstrap-sass", "&gt;= 2.0.1"
+  gem "simple_form"
+  gem "will_paginate", "&gt;= 3.0.3"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.3'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -339,8 +328,11 @@ export GMAIL_PASSWORD="secret*"
 <p>You’ll want to set up a default user so you can test the app. The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; Time.now.utc
 puts 'New user created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; Time.now.utc
+puts 'New user created: ' &lt;&lt; user2.name
+user.add_role :admin
 </pre>
 <p>You can change the values for name, email, and password as you wish.</p>
 <h3>Seed the Database</h3>
@@ -386,16 +378,16 @@ As a visitor to the website
 I want to request an invitation 
 so I'll be notified when the site is launched
 </pre>
-<p>In many situations, your user story is all you need to guide you in coding the implementation. If you are both the product owner and a hands-on developer, you don’t need a written specification to implement a feature.</p>
-<p>However, before you begin coding directly from a user story, consider the benefits of writing a specification:</p>
+<p>In many situations, your user story is all you need to guide you in coding the implementation. If you are both the product owner and a hands-on developer, you don’t need a written specification to implement a feature. Many developers code directly from a user story. However, I recommend wriitng a specification before coding.</p>
+<p>Consider the benefits of writing a specification:</p>
 <ul>
-<li>If you are part of a team you can use a specification to communicate what needs to be accomplished.</li>
-	<li>Creating a specification can help us discover the functionality we need to implement.</li>
-	<li>A specification will describe the functionality so we can discuss it with our business partners.</li>
-	<li>Specifications can become the basis for acceptance testing or integration testing.</li>
-</ul><p>For the purposes of this tutorial, acceptance tests and integration tests are synonymous. Acceptance tests demonstrate that developers have succeeded in implementing a specification. Integration tests assure you that your application runs as intended.</p>
-<p>For these reasons, we want to create a detailed specification from this user story. We can use the specification to create an automated acceptance test so we know when the feature has been successfully implemented. Our acceptance tests can also serve as integration tests so we can continue to test the code as we build out or maintain the application.</p>
+<li>It helps us discover the functionality we need to implement.</li>
+	<li>It is a “to-do list” to identify what needs to be accomplished and helps us track progress.</li>
+	<li>It helps us describe and discuss features with our business partners.</li>
+	<li>It is the basis for acceptance testing or integration testing.</li>
+</ul><p>For the purposes of this tutorial, acceptance tests and integration tests are synonymous. Acceptance tests demonstrate that developers have succeeded in implementing a specification. Integration tests assure you that your application runs as intended. We will use the specification to create an automated acceptance test so we know when a feature has been successfully implemented. Our acceptance tests also serve as integration tests so we can continue to test the code as we build out or maintain the application. Automated acceptance tests are the key to managing risk for a software development project.</p>
 <p>We’ll use Cucumber to create our specification and acceptance tests. Not all developers use Cucumber. Some developers create integration tests using <a href="http://inancgumus.com/66712574">Capybara in combination with RSpec</a> as described in Ryan Bates’s <a href="http://railscasts.com/episodes/275-how-i-test">How I Test</a> Railscast. Cucumber is appropriate when a team includes nonprogrammers who are involved in defining product requirements or there is a need for a specification and acceptance tests to be maintained independently of implementation (for example, when implementation is outsourced). For this tutorial, we may all be programmers, but using Cucumber to create a specification helps to describe the features, organize the tutorial, and break the work into discrete tasks.</p>
+<p>Cucumber is a tool for managing software development. It’s up to you to decide if you need to establish management processes at this stage of your business.</p>
 <h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
 <p>The <strong>features</strong> directory contains our Cucumber feature files. We can organize Cucumber feature files any way we wish by placing them in subdirectories. For this application, we’ll organize features by roles in subdirectories for “visitors” and “owner”. Create a subdirectory <strong>features/visitors</strong> and then create the following file:</p>
@@ -433,7 +425,7 @@ Feature: Request Invitation
 <p>It’s important to note that user stories don’t necessarily translate directly into Cucumber features. In this case, our first user story is easily transformed into a set of Cucumber scenarios that describe the user story completely. This is not always the case; don’t be concerned if <a href="http://blog.mattwynne.net/2010/10/22/features-user-stories/">Features != User Stories</a> as explained in Matt Wynne’s blog post.</p>
 <h3>Cucumber Step Definitions</h3>
 <p>Here we turn our specification into an automated acceptance test.</p>
-<p>Cucumber scenarios can be read as plain English text. Alone, they serve as specifications. To create an acceptance test or integration test, we must write test code for each step in a scenario, called “step definitions.”</p>
+<p>Cucumber scenarios can be read as plain English text. Alone, they serve as specifications. To create an acceptance test or integration test, we must write test code for each step in a scenario, called “step definitions.” Our test code interacts directly with our application, as if it was a visitor to the website using the application.</p>
 <p>We’ll create step definitions for all the scenario steps in our “Feature: Request Invitation” file.</p>
 <p>Create the following file:</p>
 <p><strong>features/step_definitions/visitor_steps.rb</strong></p>
@@ -501,7 +493,7 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 <p>The test should fail indicating that the home page has no button “Request Invitation.”</p>
 <h3>Implement “Request Invitation” Form</h3>
 <p>We begin implementing the actual application here.</p>
-<p>The application’s home page doesn’t contain a “Request Invitation” form. We could add a sign-up form to the home page but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to use the existing Devise mechanism.</p>
+<p>The application’s home page doesn’t contain a “Request Invitation” form. Should we add a sign-up form to the home page? We could but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to adapt the existing Devise mechanism.</p>
 <p>We’ll modify the Devise form to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm</a> gem. The SimpleForm gem lets us create forms that include tags that apply attractive Twitter Bootstrap form styles.</p>
 <p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
 <ul>
@@ -582,6 +574,7 @@ end
 &lt;h1&gt;Thank You&lt;/h1&gt;
 </pre>
 <p>Obviously, you can embellish this page as needed.</p>
+<p>Later, this tutorial will show you how to eliminate the “thank you” page and use <span class="caps">AJAX</span> to update the sign up page with a thank you message. For now, it’s helpful to see a simple implementation without <span class="caps">AJAX</span>.</p>
 <h3>Redirect to “Thank You” Page After Successful Sign Up</h3>
 <p>We want the visitor to see the “thank you” page after they request an invitation.</p>
 <p>Override the Devise::RegistrationsController with a new controller. Create a file:</p>
@@ -619,6 +612,7 @@ end
 <p>We’ll modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
 <pre>
 class User &lt; ActiveRecord::Base
+  rolify
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
@@ -713,6 +707,7 @@ We'll contact you when we launch.
 <p>Modify the file <strong>app/models/user.rb</strong> to add the <code>send_welcome_email</code> method:</p>
 <pre>
 class User &lt; ActiveRecord::Base
+  rolify
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
@@ -946,7 +941,7 @@ $ git commit -am "improve design for 'Request Invitation' feature"
 $ git branch -d work-in-progress
 </pre>
 <h2>Feature: View Progress</h2>
-<p>Now we’ll implement the next user story.</p>
+<p>Now we’ll implement the next user story. As the owner of the site, you’ll want to visit and see how many visitors have requested invitations. You likely don’t want anyone else to view that information, so we’ll need some form of authorization to restrict access to yourself or approved administrators.</p>
 <p>First we’ll set up our git workflow so we can add a new feature.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for this feature:</p>
@@ -963,7 +958,7 @@ I want to know how many visitors have requested invitations
 so I can know if my offer is popular
 </pre>
 <h3>Cucumber Scenario</h3>
-<p>Now we begin writing our specification.</p>
+<p>Let’s write our specification.</p>
 <p>Create a subdirectory <strong>features/admins</strong> and then create the following file:</p>
 <p><strong>features/admins/view_progress.feature</strong></p>
 <pre>
@@ -1004,39 +999,85 @@ Then /^I should see an access denied message$/ do
   pending # express the regexp above with the code you wish you had
 end
 </pre>
-<h3>Add a Users Page</h3>
-<p>We’ll need a page that shows a list of users.</p>
-<p>Create a file <strong>app/views/users/index.html.haml</strong>:</p>
+<h3>The Administrative Page</h3>
+<p>We already have a page that shows a list of users.</p>
+<p>Take a look at the file <strong>app/views/users/index.html.haml</strong>:</p>
 <pre>
 %h2 Users
 - @users.each do |user|
   %br/
   #{link_to user.email, user} signed up #{user.created_at.to_date}
+
+= will_paginate
 </pre>
+<p>We can use this page as our “administrative dashboard.” It’s fine for our example application; if you later build a more complex application, you may wish to create an AdminController with corresponding Admin views.</p>
+<h3>Restricting Access to a List of Users</h3>
+<p>Take a look at the controller file <strong>app/controllers/users_controller.rb</strong>. Notice the index method contains a statment which limits access to administrators only.</p>
+<pre>
+authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+</pre>
+<p>When we generated our starter app, we answered “yes” to the question, “Would you like to manage authorization with CanCan &amp; Rolify?” The application template set up everything we need for limiting access to administrative pages. You can take a look at the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">tutorial for the rails3-bootstrap-devise-cancan example app</a> to see how it is done. In a nutshell, Rolify allows us to designate a user as an “admin.” CanCan provides an <code>Ability</code> class and the <code>authorize!</code> method. We add the <code>authorize!</code> method to any controller action that should be restricted to administrators only. The <code>authorize!</code> method makes a call to the <code>Ability</code> class to determine which users are authorized for access.</p>
+<p>If you look at the file <strong>app/models/ability.rb</strong>, you’ll see this:</p>
+<pre>
+class Ability
+  include CanCan::Ability
+
+  def initialize(user)
+    user ||= User.new # guest user (not logged in)
+    if user.has_role? :admin
+      can :manage, :all
+    end
+  end
+  
+end
+</pre>
+<p>Very simply, if we add the <code>authorize!</code> method to any controller action, it will check the <code>Ability</code> class and  allow access for users in the “admin” role. By default, other users will not be allowed. Of course, if the <code>authorize!</code> method is not included in a controller action, any user will have access.</p>
+<h3>Displaying a List of Users</h3>
+<p>Let’s change the order in which the users are listed, so we see the more recent sign-ups first.</p>
 <p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
 <pre>
 class UsersController &lt; ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @users = User.all
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.paginate(:page =&gt; params[:page])
   end
-
+  
   def show
     @user = User.find(params[:id])
-
   end
+
 end
 </pre>
-<p>Modify <strong>config/routes.rb</strong> to add the new page:</p>
-<pre>
-resources :users, :only =&gt; [:show, :index]
-</pre>
-<p>Now you can visit the page <a href="http://localhost:3000/users">http://localhost:3000/users</a> to see a list of users.</p>
-<p>Of course, as implemented, any authenticated user can visit that page and see a list of all the users.</p>
-<h3>Add Authorization using CanCan</h3>
-<p>To view a list of users, not only should a user be authenticated but he or she should be in a role that is authorized to view the users page. Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. Taking a look at the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site, you’ll see Cancan is by far the most popular gem used to implement authorization. The author, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
-<p>(more to come)</p>
+<h2>Test the App</h2>
+<p>You can check that your app runs properly by entering the command</p>
+<p><code>$ rails server</code></p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<p>Sign in as the first user (the administrator) using:</p>
+<ul>
+<li>email: user@example.com</li>
+	<li>password: please</li>
+</ul><p>You’ll see a navigation link for Admin. Clicking the link will display a page with a list of users at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+<p>To sign in as the second user, use</p>
+<ul>
+<li>email: user2@example.com</li>
+	<li>password: please</li>
+</ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+<p>Stop the server with Control-C.</p>
+<h2>More to Come</h2>
+<p>The tutorial is not yet finished.</p>
+<h2>Deploy to Heroku</h2>
+<p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
+<h2>Conclusion</h2>
+<p>This concludes the tutorial for the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app.</p>
+<h3>Liked It? Here’s What You Can Do</h3>
+<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
+<p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
+<p>Blog it! Share your discovery with the startup community. It’s up to you to get the word out and help fellow entrepreneurs. Links are the best way for people to find resources like this.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
+<h3>Credits</h3>
+<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -1077,7 +1118,7 @@ resources :users, :only =&gt; [:show, :index]
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-25 18:31:31</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-26 06:35:00</p>
       </div>
     </div>
 
