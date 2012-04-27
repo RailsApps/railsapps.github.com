@@ -50,9 +50,9 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 25 April 2012</em></p>
+<p><em>Last updated 27 April 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
-<p><strong>This tutorial is in development. It is not finished. Click GitHub “Watch” to follow progress. Or follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
+<p><strong>This tutorial is in development. It is not finished. Follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
@@ -796,7 +796,7 @@ $ git commit -am "implement 'Request Invitation' feature"
 </pre>
 <p>You can delete the working branch when you’re done:</p>
 <pre>
-$ git branch -d request-invitation
+$ git branch -D request-invitation
 </pre>
 <h2>Improving the Design: Modal Window</h2>
 <p>The functionality of the “Request Invitation” feature is complete. Let’s improve the look and feel of the feature.</p>
@@ -938,7 +938,7 @@ end
 $ git checkout master
 $ git merge --squash work-in-progress
 $ git commit -am "improve design for 'Request Invitation' feature"
-$ git branch -d work-in-progress
+$ git branch -D work-in-progress
 </pre>
 <h2>Feature: View Progress</h2>
 <p>Now we’ll implement the next user story. As the owner of the site, you’ll want to visit and see how many visitors have requested invitations. You likely don’t want anyone else to view that information, so we’ll need some form of authorization to restrict access to yourself or approved administrators.</p>
@@ -959,8 +959,8 @@ so I can know if my offer is popular
 </pre>
 <h3>Cucumber Scenario</h3>
 <p>Let’s write our specification.</p>
-<p>Create a subdirectory <strong>features/admins</strong> and then create the following file:</p>
-<p><strong>features/admins/view_progress.feature</strong></p>
+<p>Create a subdirectory <strong>features/admin</strong> and then create the following file:</p>
+<p><strong>features/admin/view_progress.feature</strong></p>
 <pre>
 Feature: View Progress
   As the owner of the site
@@ -984,21 +984,32 @@ Feature: View Progress
 <p><strong>features/step_definitions/admin_steps.rb</strong></p>
 <pre>
 Given /^I am logged in as an administrator$/ do
-  pending # express the regexp above with the code you wish you had
+  create_user
+  @user.add_role :admin
+  sign_in
 end
 
 When /^I visit the users page$/ do
-  pending # express the regexp above with the code you wish you had
+  visit users_path
 end
 
 Then /^I should see a list of users$/ do
-  pending # express the regexp above with the code you wish you had
+  page.should have_content @user[:email]
 end
 
 Then /^I should see an access denied message$/ do
-  pending # express the regexp above with the code you wish you had
+  page.should have_content "Not authorized as an administrator"
 end
 </pre>
+<p>Be sure you’ve set up the database for testing before running Cucumber:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<p>Then we can run our integration test with the following command:</p>
+<pre>
+$ bundle exec cucumber features/admin/view_progress.feature
+</pre>
+<p>The test will succeed. That’s because the application template we used to generate the application already implements the functionality we want. Let’s see how.</p>
 <h3>The Administrative Page</h3>
 <p>We already have a page that shows a list of users.</p>
 <p>Take a look at the file <strong>app/views/users/index.html.haml</strong>:</p>
@@ -1012,7 +1023,7 @@ end
 </pre>
 <p>We can use this page as our “administrative dashboard.” It’s fine for our example application; if you later build a more complex application, you may wish to create an AdminController with corresponding Admin views.</p>
 <h3>Restricting Access to a List of Users</h3>
-<p>Take a look at the controller file <strong>app/controllers/users_controller.rb</strong>. Notice the index method contains a statment which limits access to administrators only.</p>
+<p>Take a look at the controller file <strong>app/controllers/users_controller.rb</strong>. Notice the index method contains a statement which limits access to administrators only.</p>
 <pre>
 authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
 </pre>
@@ -1041,7 +1052,7 @@ class UsersController &lt; ApplicationController
 
   def index
     authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.paginate(:page =&gt; params[:page])
+    @users = User.paginate :page =&gt; params[:page], :order =&gt; "created_at DESC"
   end
   
   def show
@@ -1049,6 +1060,23 @@ class UsersController &lt; ApplicationController
   end
 
 end
+</pre>
+<h3>Test the Implemention of the “View Progress” Feature</h3>
+<p>Run the integration test with the following command:</p>
+<pre>
+$ bundle exec cucumber features/admin/view_progress.feature
+</pre>
+<p>The test should succeed.</p>
+<h3>Git Workflow</h3>
+<p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<pre>
+$ git checkout master
+$ git merge --squash view-progress
+$ git commit -am "implement 'View Progress' feature"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D view-progress
 </pre>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
@@ -1118,7 +1146,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-26 06:35:00</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-27 12:21:52</p>
       </div>
     </div>
 
