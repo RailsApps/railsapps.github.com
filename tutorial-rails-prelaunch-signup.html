@@ -1023,7 +1023,23 @@ $ bundle exec cucumber features/admin/view_progress.feature
 </pre>
 <p>We can use this page as our “administrative dashboard.” It’s fine for our example application; if you later build a more complex application, you may wish to create an AdminController with corresponding Admin views.</p>
 <h3>Restricting Access to a List of Users</h3>
-<p>Take a look at the controller file <strong>app/controllers/users_controller.rb</strong>. Notice the index method contains a statement which limits access to administrators only.</p>
+<p>Take a look at the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.paginate :page =&gt; params[:page]
+  end
+  
+  def show
+    @user = User.find(params[:id])
+  end
+
+end
+</pre>
+<p>Notice the index method contains a statement which limits access to administrators only:</p>
 <pre>
 authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
 </pre>
@@ -1043,24 +1059,6 @@ class Ability
 end
 </pre>
 <p>Very simply, if we add the <code>authorize!</code> method to any controller action, it will check the <code>Ability</code> class and  allow access for users in the “admin” role. By default, other users will not be allowed. Of course, if the <code>authorize!</code> method is not included in a controller action, any user will have access.</p>
-<h3>Displaying a List of Users</h3>
-<p>Let’s change the order in which the users are listed, so we see the more recent sign-ups first.</p>
-<p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
-<pre>
-class UsersController &lt; ApplicationController
-  before_filter :authenticate_user!
-
-  def index
-    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.paginate :page =&gt; params[:page], :order =&gt; "created_at DESC"
-  end
-  
-  def show
-    @user = User.find(params[:id])
-  end
-
-end
-</pre>
 <h3>Test the Implemention of the “View Progress” Feature</h3>
 <p>Run the integration test with the following command:</p>
 <pre>
@@ -1173,7 +1171,7 @@ $ git commit -am "add chart to admin dashboard"
 </pre>
 <p>You can delete the working branch when you’re done:</p>
 <pre>
-$ git branch -D view-progress
+$ git branch -D add-chart
 </pre>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
@@ -1243,7 +1241,7 @@ $ git branch -D view-progress
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-29 15:46:34</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-29 15:54:11</p>
       </div>
     </div>
 
