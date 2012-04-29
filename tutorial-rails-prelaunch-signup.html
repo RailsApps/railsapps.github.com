@@ -50,7 +50,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 April 2012</em></p>
+<p><em>Last updated 29 April 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
 <p><strong>This tutorial is in development. It is not finished. Follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
@@ -1080,7 +1080,7 @@ $ git branch -D view-progress
 </pre>
 <h2>Improving the Design: Adding a Chart</h2>
 <p>Our “administrative dashboard” shows a list of visitors who have requested invitations. It meets our basic requirements but I’m sure we’d prefer to see the trend of sign-ups over time. Let’s add a chart.</p>
-<p>If you look at The Ruby Toolbox site in the <a href="https://www.ruby-toolbox.com/categories/graphing">Graphing category</a>, you’ll see ten gems of varying popularity, age and activity. One requires a commercial Javascript charting library (<a href="http://shop.highsoft.com/highcharts.html">Highcharts</a>); we’ll stick to the open source options. Two use the popular <a href="https://developers.google.com/chart/">Google Chart Tools</a> to generate charts using Javascript in the browser: Matt Aimonetti’s <a href="https://github.com/mattetti/googlecharts">GoogleCharts</a> and Winston Teo’s <a href="https://github.com/winston/google_visualr">GoogleVisualr</a>. We’ll use GoogleVisualr; it includes a useful view helper.</p>
+<p>If you look at The Ruby Toolbox site in the <a href="https://www.ruby-toolbox.com/categories/graphing">Graphing category</a>, you’ll see ten gems of varying popularity, age and activity. Google offers an online service, <a href="https://developers.google.com/chart/">Google Chart Tools</a>, that uses Javascript in the browser to generate charts and graphs. Two of the gems listed use Google Chart Tools to generate charts: Matt Aimonetti’s <a href="https://github.com/mattetti/googlecharts">GoogleCharts</a> and Winston Teo’s <a href="https://github.com/winston/google_visualr">GoogleVisualr</a>. We’ll use the GoogleVisualr gem; it includes a useful view helper.</p>
 <p>First we’ll set up our git workflow so we can add a new feature.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for this feature:</p>
@@ -1088,8 +1088,7 @@ $ git branch -D view-progress
 $ git checkout -b add-chart
 </pre>
 <h3>GoogleVisualr Gem</h3>
-<p>The application template didn’t offer us an option for adding charting or graphing; it set up all the gems we needed so far but we’ll need to add a charting gem.</p>
-<p>Add the GoogleVisualr gem to the <strong>Gemfile</strong>:</p>
+<p>We need to add the GoogleVisualr gem to the <strong>Gemfile</strong>:</p>
 <pre>
 gem "google_visualr", "&gt;= 2.1.2"
 </pre>
@@ -1098,8 +1097,8 @@ gem "google_visualr", "&gt;= 2.1.2"
 $ bundle install
 </pre>
 <h3>Javascript for Google Chart Tools</h3>
-<p>Google offers an online service, Google Chart Tools, that generates charts and graphs. We’ll add the Javascript library that loads the Google Chart Tools <span class="caps">API</span>. We won’t add it to the Javascript files in our asset pipeline. Instead, we’ll add it to the application layout for the administrative page, loading it directly from Google’s content delivery network (<span class="caps">CDN</span>).</p>
-<p>We want to add it to a single page of our application. The default application layout already will accept a page-specific addition to the <code>head</code> section. The <code>= yield(:head)</code> statement in the file <strong>app/views/layouts/application.html.haml</strong> will incorporate anything we add to a page with the <code>content_for :head</code> tag.</p>
+<p>We’ll add the Javascript library that loads the Google Chart Tools <span class="caps">API</span>. We won’t add it to the Javascript files in our asset pipeline. Instead, we’ll add it to the application layout for the administrative page, loading it directly from Google’s content delivery network (<span class="caps">CDN</span>).</p>
+<p>We want to add it to a single page of our application. Our default application layout will accept a page-specific addition to the <code>head</code> section. The <code>= yield(:head)</code> statement in the file <strong>app/views/layouts/application.html.haml</strong> will incorporate anything we add to a page with the <code>content_for :head</code> tag.</p>
 <p>Modify the file <strong>app/views/users/index.html.haml</strong>:</p>
 <pre>
 - content_for :head do
@@ -1114,8 +1113,8 @@ $ bundle install
 </pre>
 <p>The default application layout will pick up the <code>content_for :head</code> code and add it to the <code>head</code> section of the application layout. The page will load the Javascript code for the Google Chart Tools <span class="caps">API</span> from Google’s content delivery network.</p>
 <h3>Generate a Chart with the User Controller</h3>
+<p>We’ll use the GoogleVisualr gem in the user controller to retrieve data and generate a chart.</p>
 <p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
-<p><em>Note:</em> This is just a placeholder chart for now. I’ll update this section later.</p>
 <pre>
 class UsersController &lt; ApplicationController
   before_filter :authenticate_user!
@@ -1123,28 +1122,29 @@ class UsersController &lt; ApplicationController
   def index
     authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
     @users = User.paginate :page =&gt; params[:page], :order =&gt; "created_at DESC"
-    # create a chart
-    data_table = GoogleVisualr::DataTable.new
-    data_table.new_column('string', 'Year' )
-    data_table.new_column('number', 'Sales')
-    data_table.new_column('number', 'Expenses')
-    data_table.add_rows([
-      ['2004', 1000, 400],
-      ['2005', 1170, 460],
-      ['2006', 660, 1120],
-      ['2007', 1030, 540]
-    ])
-    option = { width: 400, height: 240, title: 'Company Performance' }
-    @chart = GoogleVisualr::Interactive::AreaChart.new(data_table, option)
+    @chart = create_chart
   end
   
   def show
     @user = User.find(params[:id])
   end
+  
+  private
+  
+  def create_chart
+    users_by_day = User.group("DATE(created_at)").count
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('date')
+    data_table.new_column('number')
+    users_by_day.each do |day|
+      data_table.add_row([ Date.parse(day[0]), day[1]])
+    end
+    @chart = GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table)
+  end
 
 end
 </pre>
-<p>The UsersController will use the GoogleVisualr gem to interact with the Google Chart Tools <span class="caps">API</span> to generate a chart.</p>
+<p>The UsersController will use the GoogleVisualr gem to interact with the Google Chart Tools <span class="caps">API</span> to generate a chart. Google Chart Tools offers a wide variety of charts (<a href="https://developers.google.com/chart/interactive/docs/gallery">see examples</a>) and the <a href="http://googlevisualr.herokuapp.com/">GoogleVisualr documentation</a> shows how to implement many of the available charts. We use the <a href="http://googlevisualr.herokuapp.com/examples/interactive/annotated_time_line">Annotated Time Line</a> chart.</p>
 <h3>Add a Chart to the Administrative Page</h3>
 <p>Let’s add the chart to the page that shows a list of users.</p>
 <p>Modify the file <strong>app/views/users/index.html.haml</strong>:</p>
@@ -1152,8 +1152,8 @@ end
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
 
-#chart
-= render_chart(@chart, 'chart')
+#chart{:style =&gt; "width: 700px; height: 240px;"}
+= render_chart @chart, 'chart'
   
 %h2 Users
 - @users.each do |user|
@@ -1162,6 +1162,7 @@ end
 
 = will_paginate
 </pre>
+<p>The Annotated Time Line chart must be placed inside a <code>div</code> tag with a fixed width and height because it uses Adobe Flash Player to provide interactive features.</p>
 <p>We now have a simple chart on the administrative page.</p>
 <h3>Git Workflow</h3>
 <p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
@@ -1242,7 +1243,7 @@ $ git branch -D view-progress
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-29 13:12:50</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-29 15:46:34</p>
       </div>
     </div>
 
