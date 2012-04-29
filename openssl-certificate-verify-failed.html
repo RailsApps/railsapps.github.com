@@ -51,7 +51,7 @@
       <h1>OpenSSL Certificate Verify Failed – Gem::RemoteFetcher::FetchError</h1>
 <h4>by Daniel Kehoe</h4>
 <blockquote>
-<p>Last updated 28 April 2012</p>
+<p>Last updated 29 April 2012</p>
 </blockquote>
 <p>Are you getting an error “OpenSSL certificate verify failed” with Ruby?</p>
 <p>Or an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0”?</p>
@@ -126,7 +126,12 @@ HTTP/1.0 200 OK
 $ ruby -rrubygems/remote_fetcher -e 'p Gem::RemoteFetcher.new.fetch_http(URI.parse("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")).bytesize'
 Fetching: rake-0.9.2.2.gem (100%)
 </pre>
-<p>If you see an error, add your report to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. Please supply details: OS version, Ruby version, RubyGems version, OpenSSL version, error message.</p>
+<p>If you’re still getting the error “SSL_connect returned=1 errno=0 state=unknown state: sslv3 alert handshake failure”, run the diagnostic below and add your report to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. Please supply details: OS version, Ruby version, RubyGems version, OpenSSL version, error message.</p>
+<pre>
+% ruby -d -rrubygems/remote_fetcher -e 'p Gem::RemoteFetcher.new.fetch_http(URI.parse("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")).bytesize'
+% ruby -rrbconfig -e 'p Dir.glob(File.join(RbConfig::CONFIG["sitelibdir"], "rubygems/ssl_certs/*"))'
+% ruby -rhttpclient -e 'h = HTTPClient.new; h.ssl_config.verify_callback = proc { |ok, ctx|; p ctx.current_cert; ok }; h.get("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")'
+</pre>
 <p>You can try several workarounds to isolate the error conditions. Please don’t rely on a workaround for anything other than a temporary solution. Attempt the suggested resolutions (below) and file an issue report if they don’t work.</p>
 <h2>Workaround #1</h2>
 <p>Try changing your <strong>Gemfile</strong> to use an http connection for your gem source. Instead of <code>source 'https://rubygems.org'</code> use:</p>
@@ -184,6 +189,7 @@ $ sudo mv cacert.pem cert.pem
 <p>You can also try hacking the open-uri source: <a href="http://blog.dominicsayers.com/2011/08/16/howto-use-a-rails-template-from-github-on-windows/">How to Use an Application Template from Github when You’re Developing in Rails on Windows</a></p>
 <p><em>Any advice to offer? Please add to the comments below.</em></p>
 <h2>Solution for Ubuntu</h2>
+<p>As of 29 April 2012, Hiroshi Nakamura reports that the problem is not due to RubyGems or OpenSSL. Ubuntu’s custom build of OpenSSL seems to fail with the <span class="caps">SSL</span> server configuration used for the Cloudfront service (Amazon Web Services) used for RubyGems file hosting. The RubyGems team has disabled redirecting to Cloudfront until the issue is resolved. For more news, see the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>.</p>
 <p><em>Any advice to offer? Please add to the comments below.</em></p>
     </div><!-- class="content" -->
     
@@ -225,7 +231,7 @@ $ sudo mv cacert.pem cert.pem
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-28 18:03:39</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-29 09:31:27</p>
       </div>
     </div>
 
