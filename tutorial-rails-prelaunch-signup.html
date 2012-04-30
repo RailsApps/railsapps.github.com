@@ -1022,7 +1022,7 @@ $ bundle exec cucumber features/admin/view_progress.feature
 = will_paginate
 </pre>
 <p>We can use this page as our “administrative dashboard.” It’s fine for our example application; if you later build a more complex application, you may wish to create an AdminController with corresponding Admin views.</p>
-<h3>Restricting Access to a List of Users</h3>
+<h3>Restricting Access to the Administrative Page</h3>
 <p>Take a look at the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
 <pre>
 class UsersController &lt; ApplicationController
@@ -1173,6 +1173,24 @@ $ git commit -am "add chart to admin dashboard"
 <pre>
 $ git branch -D add-chart
 </pre>
+<h2>Improving the Design: Sorting a Table</h2>
+<p>First we’ll set up our git workflow so we can add a new feature.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b sort-table
+</pre>
+<h3>Git Workflow</h3>
+<p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<pre>
+$ git checkout master
+$ git merge --squash sort-table
+$ git commit -am "add sortable table on the admin dashboard"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D sort-table
+</pre>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
@@ -1187,7 +1205,15 @@ $ git branch -D add-chart
 <li>email: user2@example.com</li>
 	<li>password: please</li>
 </ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
-<p>Stop the server with Control-C.</p>
+<p>If you want to see what the admininstrative dashboard looks like with many users, you can add a line to the <strong>db/seeds.rb</strong> file to create a hundred bogus users:</p>
+<pre>
+100.times {|i| User.create! :name =&gt; "User #{i+3}", :email =&gt; "user#{i+3}@example.com", :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; (Time.now + i.day).utc, :created_at =&gt; (Time.now + i.day).utc  }
+</pre>
+<p>You’ll have to modify the file <strong>app/models/user.rb</strong> to allow mass assignment of the <code>created_at</code> field:</p>
+<pre>
+attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :created_at
+</pre>
+<p>Then run <code>$ bundle exec rake db:reset</code> to recreate the database and visit the site again.</p>
 <h2>More to Come</h2>
 <p>The tutorial is not yet finished.</p>
 <h2>Deploy to Heroku</h2>
@@ -1241,7 +1267,7 @@ $ git branch -D add-chart
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-29 15:54:11</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-04-29 17:09:09</p>
       </div>
     </div>
 
