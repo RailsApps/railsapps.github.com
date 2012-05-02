@@ -50,7 +50,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 29 April 2012</em></p>
+<p><em>Last updated 1 May 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
 <p><strong>This tutorial is in development. It is not finished. Follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
@@ -360,6 +360,14 @@ $ bundle exec rake db:reset
 class HomeController &lt; ApplicationController
 end
 </pre>
+<h2>Create an Initializer File</h2>
+<p>We will set a configuration constant <code>Rails.configuration.launched</code> in an initializer file. This constant will be set to false (before we launch our site) or true (after we launch our site).</p>
+<p>Create a file <strong>config/initializers/prelaunch-signup.rb</strong>:</p>
+<pre>
+# change to "true" (and restart) when you want visitors to sign up without an invitation
+Rails.configuration.launched = false
+</pre>
+<p>We’ll use the configuration constant anywhere in the application where we want behavior to be dependent on whether we’ve launched the site.</p>
 <h2>Feature: Request Invitation</h2>
 <p>Now we’ll pick a user story and turn it into a specification that will guide implementation of a feature.</p>
 <p>First we’ll get our git workflow set up for adding a new feature.</p>
@@ -767,19 +775,25 @@ Then /^I see an unconfirmed account message$/ do
   page.should have_content "Your account is not active."
 end
 </pre>
-<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”.</p>
-<p>Remove these links by removing the following from the file <strong>app/views/devise/_links.erb</strong>:</p>
+<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. We want visitors to see these links after we launch. Before we launch, we don’t want visitors to see these links. The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll create a new “links” partial.</p>
+<p>In the “links” partial we’ll use a configuration constant: <code>Rails.configuration.launched</code>. This constant is set to false (before we launch our site) or true (after we launch our site). When the constant is false, the links for “Didn’t receive confirmation instructions?” and “Forgot your password?” will not appear.</p>
+<p>Create a file <strong>app/views/devise/shared/_links.html.haml</strong>:</p>
 <pre>
-&lt;%- if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations' %&gt;
-  &lt;%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %&gt;&lt;br /&gt;
-&lt;% end -%&gt;
-
-&lt;%- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' %&gt;
-  &lt;%= link_to "Forgot your password?", new_password_path(resource_name) %&gt;&lt;br /&gt;
-&lt;% end -%&gt;
+- if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks'
+  = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
+  %br/
+- if devise_mapping.omniauthable?
+  - resource_class.omniauth_providers.each do |provider|
+    = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
+    %br/
+- if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations' &amp;&amp; Rails.configuration.launched == true
+  = link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name)
+  %br/
+- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' &amp;&amp; Rails.configuration.launched == true
+  = link_to "Forgot your password?", new_password_path(resource_name)
+  %br/
 </pre>
-<p>You may want to restore these links when you launch.</p>
-<p><em>Note:</em> Or make the links conditional?</p>
+<p>Now our feature is complete.</p>
 <h3>Test the Implemention of the “Request Invitation” Feature</h3>
 <p>Run the integration test with the following command:</p>
 <pre>
@@ -1174,6 +1188,7 @@ $ git commit -am "add chart to admin dashboard"
 $ git branch -D add-chart
 </pre>
 <h2>Improving the Design: Sorting a Table</h2>
+<p>We can make our administrative dashboard more useful by improving the display of the table of users. As implemented so far, it is just a simple list. We can add a jQuery plugin to give us a sortable, searchable table.</p>
 <p>First we’ll set up our git workflow so we can add a new feature.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for this feature:</p>
@@ -1262,7 +1277,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-04-30 17:16:38</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-01 22:03:54</p>
       </div>
     </div>
 
