@@ -87,7 +87,7 @@ Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read 
 </ul><p>This is the commit to RubyGems that implemented the security fixes: <a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">Insecure connection to <span class="caps">SSL</span> repository</a>. Following the release, an issue was reported for an <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>.</p>
 <p>Following the release of RubyGems 1.8.23, the RubyGems team identified a problem with misconfiguration of <span class="caps">SSL</span> certificates on the <a href="https://rubygems.org/">https://rubygems.org/</a> server. The RubyGems team fixed the <span class="caps">SSL</span> certificates on 24 April 2012.</p>
 <p>RubyGems 1.8.23 was supposed to install a <code>.pem</code> file containing current <span class="caps">SSL</span> certificates but didn’t do so, according to this isse: <a href="https://github.com/rubygems/rubygems/issues/320">1.8.23 actually does not install pem file</a>. This commit <a href="https://github.com/rubygems/rubygems/commit/521163b1e4ccbab08d3a9dbfa504c9aa3ef42506">Install the .pem files properly</a> fixed the problem and was released on 27 April 2012 with RubyGems 1.8.24 (<a href="https://github.com/rubygems/rubygems/blob/1.8/History.txt">RubyGems changelog</a>). The 1.8.24 release also eliminated a problematic dependency on OpenSSL for http connections.</p>
-<p>If you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL or certificate files on your computer. Users of older versions of Mac OS X and Ubuntu operating systems are likely to see these errors. Upgrading your OS will resolve the issues. Alternatively, you can update OpenSSL as described below.</p>
+<p>At the current time (after 1 May 2012), if you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL or certificate files on your computer. Users of older versions of Mac OS X and Ubuntu operating systems are likely to see these errors. Upgrading your OS will resolve the issues. Alternatively, you can update OpenSSL as described below.</p>
 <p>Check <a href="https://github.com/rubygems/rubygems/issues?page=1&amp;sort=updated&amp;state=open">RubyGems issues on GitHub</a> and look for recent updates to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. You may find more information on Stack Overflow, especially this discussion: <a href="http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error">Bundle install fails with <span class="caps">SSL</span> certificate verification error</a>. And please read the comments below.</p>
 <h2>Diagnosis</h2>
 <p>What’s your operating system version?</p>
@@ -245,7 +245,7 @@ $ sudo mv cacert.pem cert.pem
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-04 15:23:17</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-04 15:25:46</p>
       </div>
     </div>
 
