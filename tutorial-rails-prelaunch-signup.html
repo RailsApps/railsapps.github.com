@@ -121,22 +121,27 @@
 <pre>
 As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
 </pre>
-<p>As an example, here are three user stories we will implement for this application:</p>
+<p>As an example, here are four user stories we will implement for this application:</p>
 <pre>
 *Request Invitation*
 As a visitor to the website
 I want to request an invitation 
-so I'll be notified when the site is launched
+so I can be notified when the site is launched
 
-*View Progress*
+*See Invitation Requests*
 As the owner of the site
-I want to know how many visitors have requested invitations
+I want to view a list of visitors who have requested invitations
 so I can know if my offer is popular
+
+*Send Invitations*
+As the owner of the site
+I want to send invitations to visitors who have requested invitations
+so users can try the site
 
 *Collect Email Addresses*
 As the owner of the site
 I want to collect email addresses for a mailing list
-so I can send an announcement when I launch the site
+so I can send announcements before I launch the site
 </pre>
 <p>If you have ideas for additional features for this application, simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a> describing the feature you’d like to see.</p>
 <h2>Create the Rails Application</h2>
@@ -1268,6 +1273,145 @@ $ git commit -am "add sortable table on the admin dashboard"
 <pre>
 $ git branch -D sort-table
 </pre>
+<h2>Feature: Send Invitations</h2>
+<p>As implemented, our application collects invitation requests from visitors. We’ve built a simple administrative dashboard displaying a graph of requests over time and a list of visitors’ email addresses. This is all you need while you are promoting and building your application. But when you ready for users to begin trying your site, you’ll want to select users for your beta test, send each an invitation, and ask each to confirm their email address and set an account password. We’ll call this functionality the “Send Invitations” feature and we’ll start implementing it with a user story and acceptance tests.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b invitations
+</pre>
+<h3>User Story</h3>
+<p>Here’s the user story we’ll specify and implement:</p>
+<pre>
+*Send Invitations*
+As the owner of the site
+I want to send invitations to visitors who have requested invitations
+so users can try the site
+</pre>
+<h3>Cucumber Scenario</h3>
+<p>Let’s write our specification.</p>
+<p>Add the following file:</p>
+<p><strong>features/admin/send_invitations.feature</strong></p>
+<pre>
+Feature: Send Invitations
+  As the owner of the site
+  I want to send invitations to visitors who have requested invitations
+  so users can try the site
+
+  Scenario: Administrator sends invitation
+    Given I am logged in as an administrator
+    When I visit the users page
+    *... (to come)*
+</pre>
+<p>This Cucumber feature file contains the specification needed to implement the user story “Send Invitations.”</p>
+<h3>Cucumber Step Definitions</h3>
+<p>Turn the specification into an automated acceptance test. Create step definitions for all the scenario steps in our “Feature: Send Invitations” file.</p>
+<p>Add these steps to the existing file:</p>
+<p><strong>features/step_definitions/admin_steps.rb</strong></p>
+<pre>
+... (to come)
+</pre>
+<p>Be sure you’ve set up the database for testing before running Cucumber:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<p>Then we can run our integration test with the following command:</p>
+<pre>
+$ bundle exec cucumber features/admin/send_invitations.feature
+</pre>
+<p>The test will fail because we haven’t yet implemented the functionality.</p>
+<h3>Implementation</h3>
+<p>Devise already knows how to send an account confirmation email to a user, with its <code>user.send_confirmation_instructions</code> method, which will generate a confirmation token and send an email message to the user. We’ll add a “send invitation” link to each user listed on the administrative dashboard. We’ll need a corresponding <code>invite</code> action in the user controller and a matching route. We also want to make sure only an administrator is authorized to initiate the <code>invite</code> action.</p>
+<h3>Add a User Controller Action</h3>
+<p>So far, our application architecture has been very simple. We’ve used a few RESTful actions supplied by Devise and improved on a simple <code>index</code> method to prepare our administrative dashboard page. Now we’ll need a custom <code>invite</code> action in the user controller.</p>
+<p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.paginate :page =&gt; params[:page]
+    @chart = create_chart
+  end
+  
+  def show
+    @user = User.find(params[:id])
+  end
+  
+  def invite
+    authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
+    @user = User.find(params[:id])
+    @user.send_confirmation_instructions
+    redirect_to :back, :notice =&gt; "Sent invitation to #{@user.email}."
+  end
+  
+  private
+  
+  def create_chart
+    users_by_day = User.group("DATE(created_at)").count
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('date')
+    data_table.new_column('number')
+    users_by_day.each do |day|
+      data_table.add_row([ Date.parse(day[0]), day[1]])
+    end
+    @chart = GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table)
+  end
+
+end
+</pre>
+<p>CanCan’s <code>authorize!</code> method ensures that only an administrator is authorized to initiate the <code>invite</code> action.</p>
+<p>The <code>invite</code> action will use Devise’s supplied <code>send_confirmation_instructions</code> method to generate a confirmation token and send an email to the selected user. Then it will redirect the administrator back to a previous page.</p>
+<h3>Add a Route</h3>
+<p>Modify <strong>config/routes.rb</strong> to add the new action. Replace <code>resources :users, :only =&gt; [:show, :index]</code> with:</p>
+<pre>
+resources :users, :only =&gt; [:show, :index] do
+  get 'invite', :on =&gt; :member
+end
+</pre>
+<p>The Rails Guide, <a href="http://guides.rubyonrails.org/routing.html#adding-more-restful-actions">Routing from the Outside In</a>, shows how we add additional routes to a RESTful resource.</p>
+<h3>Sending Invitations from the Administrative Page</h3>
+<p>We will modify the file <strong>app/views/users/index.html.haml</strong> to add a link to the <code>invite</code> action for each user:</p>
+<pre>
+- content_for :head do
+  = javascript_include_tag 'http://www.google.com/jsapi'
+%h2 Users
+#chart{:style =&gt; "width: 700px; height: 240px;"}
+= render_chart @chart, 'chart'
+%br
+.span9  
+  %table.datatable.table.table-bordered.table-condensed
+    %thead
+      %tr
+        %th Email
+        %th Signed up
+        %th Send Invitation
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td #{link_to user.email, user}
+          %td #{user.created_at.to_date}
+          %td #{link_to "send invitation", invite_user_path(user)}
+</pre>
+<p>Now, as the site administrator, you can invite individual users to complete the account confirmation process and obtain access to the site.</p>
+<h3>Setting the User’s Password</h3>
+<p>We took a shortcut when we decided to use Devise’s existing “new account” mechanism to collect invitation requests. Ordinarily, when a user creates a new account, the user will supply a password at the same time he or she enters an email address. Devise has to be given a password when we create an account so we provided a placeholder password as a hidden field in the “request invitation” form. That might seem to be a security vulnerability but no user can access the site (with or without the placeholder password) until the site administrator sends the user an invitation message with a confirmation token.</p>
+<p>Once the user has been invited and has confirmed the account, we need to provide a way for the user to set a password.</p>
+<p><strong><span class="caps">WORK</span> IN <span class="caps">PROGRESS</span></strong></p>
+<h3>Scalability Issues</h3>
+<p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We haven’t yet implemented a “bulk invitations” feature.</p>
+<h3>Git Workflow</h3>
+<p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<pre>
+$ git checkout master
+$ git merge --squash invitations
+$ git commit -am "enable admin to send invitations"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D invitations
+</pre>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
@@ -1339,7 +1483,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-03 14:44:45</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-03 18:14:52</p>
       </div>
     </div>
 
