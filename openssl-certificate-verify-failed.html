@@ -50,7 +50,7 @@
     <div class="content wikistyle gollum textile">
       <h1>OpenSSL Errors and Rails – Certificate Verify Failed – Gem::RemoteFetcher::FetchError</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 29 April 2012</em></p>
+<p><em>Last updated 4 May 2012</em></p>
 <p>Are you getting an error “OpenSSL certificate verify failed” with Ruby?</p>
 <p>Or an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0”?</p>
 <p>Here are suggestions.</p>
@@ -87,13 +87,14 @@ Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read 
 </ul><p>This is the commit to RubyGems that implemented the security fixes: <a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">Insecure connection to <span class="caps">SSL</span> repository</a>. Following the release, an issue was reported for an <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>.</p>
 <p>Following the release of RubyGems 1.8.23, the RubyGems team identified a problem with misconfiguration of <span class="caps">SSL</span> certificates on the <a href="https://rubygems.org/">https://rubygems.org/</a> server. The RubyGems team fixed the <span class="caps">SSL</span> certificates on 24 April 2012.</p>
 <p>RubyGems 1.8.23 was supposed to install a <code>.pem</code> file containing current <span class="caps">SSL</span> certificates but didn’t do so, according to this isse: <a href="https://github.com/rubygems/rubygems/issues/320">1.8.23 actually does not install pem file</a>. This commit <a href="https://github.com/rubygems/rubygems/commit/521163b1e4ccbab08d3a9dbfa504c9aa3ef42506">Install the .pem files properly</a> fixed the problem and was released on 27 April 2012 with RubyGems 1.8.24 (<a href="https://github.com/rubygems/rubygems/blob/1.8/History.txt">RubyGems changelog</a>). The 1.8.24 release also eliminated a problematic dependency on OpenSSL for http connections.</p>
-<p>If you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL or certificate files on your computer (see recommendations below). At this point, RubyGems should be using OpenSSL properly to connect to the <a href="https://rubygems.org/">https://rubygems.org/</a> server. However, some users (particularly on Ubuntu) continue to report errors. Check <a href="https://github.com/rubygems/rubygems/issues?page=1&amp;sort=updated&amp;state=open">RubyGems issues on GitHub</a> for current conditions.</p>
-<p>You may find more information on Stack Overflow, especially this discussion: <a href="http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error">Bundle install fails with <span class="caps">SSL</span> certificate verification error</a>. And please read the comments below.</p>
+<p>If you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL or certificate files on your computer. Users of older versions of Mac OS X and Ubuntu operating systems are likely to see these errors. Upgrading your OS will resolve the issues. Alternatively, you can update OpenSSL as described below.</p>
+<p>Check <a href="https://github.com/rubygems/rubygems/issues?page=1&amp;sort=updated&amp;state=open">RubyGems issues on GitHub</a> and look for recent updates to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. You may find more information on Stack Overflow, especially this discussion: <a href="http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error">Bundle install fails with <span class="caps">SSL</span> certificate verification error</a>. And please read the comments below.</p>
 <h2>Diagnosis</h2>
 <p>What’s your operating system version?</p>
 <pre>
 $ uname -srv
 </pre>
+<p>You may need to upgrade if older than Mac OS X 10.7.3 (Lion) or Ubuntu 12.04 (Precise Pangolin).</p>
 <p>Be sure you are using Ruby 1.9.3-p194 or newer:</p>
 <pre>
 $ ruby -v
@@ -124,7 +125,7 @@ HTTP/1.0 200 OK
 $ ruby -rrubygems/remote_fetcher -e 'p Gem::RemoteFetcher.new.fetch_http(URI.parse("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")).bytesize'
 Fetching: rake-0.9.2.2.gem (100%)
 </pre>
-<p>If you’re still getting the error “SSL_connect returned=1 errno=0 state=unknown state: sslv3 alert handshake failure”, run the diagnostic below and add your report to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. Please supply details: OS version, Ruby version, RubyGems version, OpenSSL version, error message.</p>
+<p>If you’ve updated OpenSSL or upgraded your OS, and you’re still getting the error “SSL_connect returned=1 errno=0 state=unknown state: sslv3 alert handshake failure”, run the diagnostic below and add your report to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. Please supply details: OS version, Ruby version, RubyGems version, OpenSSL version, error message.</p>
 <pre>
 % ruby -d -rrubygems/remote_fetcher -e 'p Gem::RemoteFetcher.new.fetch_http(URI.parse("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")).bytesize'
 % ruby -rrbconfig -e 'p Dir.glob(File.join(RbConfig::CONFIG["sitelibdir"], "rubygems/ssl_certs/*"))'
@@ -153,11 +154,17 @@ rails new myapp --skip-bundle
 <p>This is only a workaround. It opens a possible security vulerability (<a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">discussed here</a>).</p>
 <p>Be sure to try possible solutions suggested below. Please leave a comment if they work (or don’t).</p>
 <h2>Solutions for rvm</h2>
-<p>If you are using Wayne Seguin’s rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, there is an option to <a href="https://rvm.io/packages/openssl/">install Ruby with an OpenSSL package</a>. Try:</p>
+<p>If you are using Wayne Seguin’s rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, there is an option to <a href="https://rvm.io/packages/openssl/">install Ruby with an OpenSSL package</a>. You may not need to upgrade your OS. Try:</p>
 <pre>
-$ rvm remove 1.9.x (or whatever version of ruby you are using)
+$ rvm remove 1.9.3 (or whatever version of ruby you are using)
 $ rvm pkg install openssl
 $ rvm install 1.9.3 --with-openssl-dir=$rvm_path/usr
+</pre>
+<p>If you are using rvm and <a href="http://mxcl.github.com/homebrew/">Homebrew</a>, try;</p>
+<pre>
+$ rvm remove 1.9.3
+$ brew install openssl
+$ rvm install 1.9.3 --with-openssl-dir=`brew --prefix openssl`
 </pre>
 <p>You may have to link your certs directory with <strong>/etc/ssl/certs</strong>:</p>
 <pre>$ rmdir $rvm_path/usr/ssl/certs
@@ -165,7 +172,7 @@ $ ln -s /etc/ssl/certs $rvm_path/usr/ssl
 </pre>
 <p><em>Doesn’t work for you? Please add to the comments below.</em></p>
 <h2>Solutions for Mac OS</h2>
-<p>Mac OS 10.7 (Lion) has a current version of OpenSSL and certificate files and you are not likely to see an error (please leave a comment if you do).</p>
+<p>Mac OS 10.7 (Lion) has a current version of OpenSSL and certificate files and you are not likely to see an error (please leave a comment if you do). If you can update to Mac OS X 10.7.3, please do so.</p>
 <p>Mac OS 10.6.8 and earlier versions are likely to have outdated versions of OpenSSL or certificate files.</p>
 <p>Try updating your OpenSSL library using MacPorts. You’ll need to <a href="http://www.macports.org/install.php">install MacPorts</a> first.</p>
 <pre>
@@ -174,20 +181,34 @@ $ sudo port sync; sudo port selfupdate; sudo port install openssl
 $ openssl version
 OpenSSL 1.0.1a 19 Apr 2012
 </pre>
+<p>If you don’t want to install MacPorts, you can compile OpenSSL from source:</p>
+<pre>
+curl -L -O http://www.openssl.org/source/openssl-1.0.1b.tar.gz.asc
+curl -L -O http://www.openssl.org/source/openssl-1.0.1b.tar.gz
+gpg --verify openssl-1.0.1b.tar.gz.asc
+tar xvzf openssl-1.0.1b.tar.gz
+cd openssl-1.0.1b
+perl ./Configure shared zlib --prefix=/opt/local darwin64-x86_64-cc
+make
+make test
+sudo make install
+</pre>
 <p>Alternatively, some developers have suggested to download an updated certificate file. This assumes you are using MacPorts and have a directory <strong>/opt/local/etc/openssl</strong>:</p>
 <pre>
 $ cd /opt/local/etc/openssl
 $ sudo curl -O http://curl.haxx.se/ca/cacert.pem
 $ sudo mv cacert.pem cert.pem
 </pre>
-<p>Since RubyGems 1.8.24 should be using self-installed certificates (installing its own <code>.pem</code> file), it’s not expected that you should have to install an updated OpenSSL library. If you find that the problem is resolved by updating OpenSSL even though you have installed RubyGems 1.8.24, please leave a comment below.</p>
+<p>If you find that the problem is not resolved by updating OpenSSL, please leave a comment below.</p>
 <p><em>Doesn’t work for you? Please add to the comments below.</em></p>
 <h2>Solution for Windows</h2>
 <p>Fletcher Nichol shows how to <a href="https://gist.github.com/867550">download a <code>cacert.pem</code> file</a> and set an environment variable to install the certificate authorities needed by the OpenSSL library.</p>
 <p>You can also try hacking the open-uri source: <a href="http://blog.dominicsayers.com/2011/08/16/howto-use-a-rails-template-from-github-on-windows/">How to Use an Application Template from Github when You’re Developing in Rails on Windows</a></p>
 <p><em>Any advice to offer? Please add to the comments below.</em></p>
 <h2>Solution for Ubuntu</h2>
-<p>As of 29 April 2012, Hiroshi Nakamura reports that the problem is not due to RubyGems or OpenSSL. Ubuntu’s custom build of OpenSSL fails with the <span class="caps">SSL</span> server configuration used for the Cloudfront service (Amazon Web Services) used for RubyGems file hosting. The RubyGems team has disabled redirecting to Cloudfront until the issue is resolved. For more news, see the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>.</p>
+<p>Ubuntu’s custom build of OpenSSL failed with the <span class="caps">SSL</span> server configuration used for the Cloudfront service (Amazon Web Services) used for RubyGems file hosting.</p>
+<p>For Ubuntu 12.04, the <a href="https://launchpad.net/ubuntu/+source/openssl/1.0.1-4ubuntu5">openssl 1.0.1-4ubuntu5 package</a> fixes the problem. The problem should be resolved when you install the update.</p>
+<p>Newer versions of Ubuntu should not have the problem.</p>
 <p><em>Any advice to offer? Please add to the comments below.</em></p>
     </div><!-- class="content" -->
     
@@ -224,7 +245,7 @@ $ sudo mv cacert.pem cert.pem
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-03 18:14:52</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-04 15:23:17</p>
       </div>
     </div>
 
