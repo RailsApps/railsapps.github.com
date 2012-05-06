@@ -50,7 +50,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 2 May 2012</em></p>
+<p><em>Last updated 5 May 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page.</p>
 <p><strong>This tutorial is in development. It is not finished. Follow  <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for project announcements.</strong></p>
 <p>You can create the example app from this tutorial or clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete application.</p>
@@ -72,21 +72,21 @@
 <h3>Why We Use Devise</h3>
 <p>We’ve chosen to use the <a href="http://github.com/plataformatec/devise">Devise</a> gem for our authentication and user management. We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product. You’ll also have the benefit of receiving help from a large community of developers using Devise, should you need help in troubleshooting or customizing the implementation.</p>
 <h3>How We Configure Devise</h3>
-<p>Devise offers many configuration options; in fact, exploring its configuration choices can take more time than actually implementing <a href="http://railscasts.com/episodes/250-authentication-from-scratch">authentication from scratch</a>. We’ve reviewed Devise’s features and selected the configuration that best accommodates a typical web startup signup site.</p>
+<p>Devise offers many features and configuration choices; in fact, exploring its options can take more time than actually implementing authentication from scratch. This app will save you time; we’ve selected the configuration that best accommodates a typical web startup signup site.</p>
 <p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, the app provides an administrative interface so you can select users to receive an invitation that instructs them to confirm their email address and set a password.</p>
-<p>If you need slightly different functionality, <a href="https://github.com/plataformatec/devise/wiki">the Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">answers on Stack Overflow</a> can help you alter this implementation.</p>
+<p>The <a href="https://github.com/plataformatec/devise/wiki">Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">answers on Stack Overflow</a> can help you alter this implementation if you need different functionality.</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p>This application is based on two of the RailsApps example apps:</p>
 <ul>
 <li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
 	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
-</ul><p>The first example shows how to set up Devise for user authentication, explaining how to integrate RSpec and Cucumber for testing. The second example shows how to set up Devise and add CanCan to manage access to administrative pages. You can use this tutorial without studying the first two example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
-<p>An alternative approach is shown in the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app. Look at the rails3-mongoid-devise example if you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database.</p>
-<p>See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+</ul><p>The rails3-devise-rspec-cucumber app shows how to set up Devise for user authentication, explaining how to integrate RSpec and Cucumber for testing. The rails3-bootstrap-devise-cancan app shows how to set up Devise and add CanCan to manage access to administrative pages. You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
+<p>Look at <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example if you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database.</p>
 <h2>
 <img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
 <p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, little explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please leave a comment when you are done.)</p>
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
@@ -514,7 +514,7 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 </ul><ul>
 <li>We’ll change the heading from “Sign up” to “Request Invitation.”</li>
 </ul><ul>
-<li>We’ll remove the password fields and add a hidden input field with a placeholder password. Devise won’t let us create a new user without a password so we’ll trick Devise by providing a placeholder password.</li>
+<li>We’ll remove the password fields.</li>
 </ul><ul>
 <li>We’ll remove the user name field (you could keep it if you wish).</li>
 </ul><ul>
@@ -523,10 +523,36 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 %h2 Request Invitation
 = simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
   = devise_error_messages!
-  = f.hidden_field :password, :value =&gt; 'please'
   = f.input :email, :placeholder =&gt; 'user@example.com'
   = f.submit "Request Invitation"
 </pre>
+<h3>Override Password Validation</h3>
+<p>Devise won’t let us create a new user without a password when we use the default <code>:validatable</code> module. We want Devise to validate the email address but ignore the missing password, so we’ll override Devise’s <code>password_required?</code> method.</p>
+<p>Modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :invitable, :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+
+  # override Devise method
+  # no password is required when the account is created; validate password when the user sets one
+  def password_required?
+    if !persisted? 
+      false
+    else
+      !password.nil? || !password_confirmation.nil?
+    end
+  end
+  
+end
+</pre>
+<h3>Adjust Acceptance Tests</h3>
 <p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
 <p>Replace the <code>sign_up</code> method with the following:</p>
 <pre>
@@ -538,6 +564,7 @@ def sign_up
   find_user
 end
 </pre>
+<p>We no longer ask the visitor to set a password when the account is created.</p>
 <p>In the <strong>features/users/sign_up.feature</strong> file, remove the following:</p>
 <pre>
 Scenario: User signs up without password
@@ -552,7 +579,8 @@ Scenario: User signs up with mismatched password and confirmation
   When I sign up with a mismatched password confirmation
   Then I should see a mismatched password message
 </pre>
-<p>Finally, in the <strong>features/users/user_show.feature</strong> file, remove the following:</p>
+<p>We no longer ask the visitor to supply a name when the account is created.</p>
+<p>In the <strong>features/users/user_show.feature</strong> file, remove the following:</p>
 <pre>
 Scenario: Viewing users
   Given I exist as a user
@@ -634,6 +662,16 @@ class User &lt; ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
 
+  # override Devise method
+  # no password is required when the account is created; validate password when the user sets one
+  def password_required?
+    if !persisted? 
+      false
+    else
+      !password.nil? || !password_confirmation.nil?
+    end
+  end
+  
   # override Devise method
   def confirmation_required?
     false
@@ -1395,10 +1433,6 @@ end
           %td #{link_to "send invitation", invite_user_path(user)}
 </pre>
 <p>Now, as the site administrator, you can invite individual users to complete the account confirmation process and obtain access to the site.</p>
-<h3>Setting the User’s Password</h3>
-<p>We took a shortcut when we decided to use Devise’s existing “new account” mechanism to collect invitation requests. Ordinarily, when a user creates a new account, the user will supply a password at the same time he or she enters an email address. Devise has to be given a password when we create an account so we provided a placeholder password as a hidden field in the “request invitation” form. That might seem to be a security vulnerability but no user can access the site (with or without the placeholder password) until the site administrator sends the user an invitation message with a confirmation token.</p>
-<p>Once the user has been invited and has confirmed the account, we need to provide a way for the user to set a password.</p>
-<p><strong><span class="caps">WORK</span> IN <span class="caps">PROGRESS</span></strong></p>
 <h3>Scalability Issues</h3>
 <p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We haven’t yet implemented a “bulk invitations” feature.</p>
 <h3>Git Workflow</h3>
@@ -1411,6 +1445,156 @@ $ git commit -am "enable admin to send invitations"
 <p>You can delete the working branch when you’re done:</p>
 <pre>
 $ git branch -D invitations
+</pre>
+<h2>Fix: Setting the User’s Password</h2>
+<p>We took a shortcut when we decided to use Devise’s existing “new account” mechanism to collect invitation requests. Ordinarily, when a user creates a new account, the user will supply a password at the same time he or she enters an email address. Devise needs a password when we create an account so we provided a placeholder password as a hidden field in the “request invitation” form. That might seem to be a security vulnerability but no user can access the site (with or without the placeholder password) until the site administrator sends the user an invitation message with a confirmation token.</p>
+<p>Once the user has been invited and has confirmed the account, we need to provide a way for the user to set a password.</p>
+<p>The Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To:-Override-confirmations-so-users-can-pick-their-own-passwords-as-part-of-confirmation-activation">How to Override Confirmations So Users Can Pick Their Own Passwords As Part of Confirmation Activation</a>. So far, we’ve made small modifications to customize the behavior of Devise; now we’ll make extensive modifications, overriding the Confirmations controller and view as well as adding methods to the User model.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for this improvement:</p>
+<pre>
+$ git checkout -b fix-password
+</pre>
+<h3>Customize the Confirmations View</h3>
+<p>When an invited user clicks a link in the invitation email to confirm an account, we want to ask them to choose a password for their account. The Devise gem supplies a Confirmations view; we need to replace it with a page that includes fields for password and password confirmation.</p>
+<p>Create a new folder <strong>app/views/devise/confirmations/</strong>.</p>
+<p>Create a file <strong>app/views/devise/confirmations/show.html.haml</strong>:</p>
+<pre>
+%h2 Account Activation
+= form_for resource, :as =&gt; resource_name, :url =&gt; update_user_confirmation_path, :html =&gt; {:method =&gt; 'put'}, :id =&gt; 'activation-form' do |f|
+  = devise_error_messages!
+  %fieldset
+    %legend
+      Account Activation
+      - if resource.email
+        for #{resource.email}
+    - if @requires_password
+      %p
+        = f.label :password,'Choose a Password:'
+        = f.password_field :password
+      %p
+        = f.label :password_confirmation, 'Password Confirmation:'
+        = f.password_field :password_confirmation
+    = hidden_field_tag :confirmation_token, @confirmation_token
+    %p= f.submit "Activate"
+</pre>
+<h3>Customize the Confirmations Controller</h3>
+<p>The Devise gem supplies a Confirmations controller; we need to replace it with one that will accommodate our customized view that asks the user to set a password. We’ll override the Devise Confirmations controller by creating our own Confirmations controller. Often, in overriding a controller, we inherit from the original controller. In this case, we’ll inherit from the Devise Passwords controller that provides methods to set the user’s password.</p>
+<p>Create a file <strong>app/controllers/confirmations_controller.rb</strong>:</p>
+<pre>
+class ConfirmationsController &lt; Devise::PasswordsController
+  # Remove the first skip_before_filter (:require_no_authentication) if you
+  # don't want to enable logged users to access the confirmation page.
+  skip_before_filter :require_no_authentication
+  skip_before_filter :authenticate_user!
+
+  # PUT /resource/confirmation
+  def update
+    with_unconfirmed_confirmable do
+      if @confirmable.has_no_password?
+        @confirmable.attempt_set_password(params[:user])
+        if @confirmable.valid?
+          do_confirm
+        else
+          do_show
+          @confirmable.errors.clear #so that we won't render :new
+        end
+      else
+        self.class.add_error_on(self, :email, :password_allready_set)
+      end
+    end
+
+    if !@confirmable.errors.empty?
+      render 'devise/confirmations/new'
+    end
+  end
+
+  # GET /resource/confirmation?confirmation_token=abcdef
+  def show
+    with_unconfirmed_confirmable do
+      if @confirmable.has_no_password?
+        do_show
+      else
+        do_confirm
+      end
+    end
+    if !@confirmable.errors.empty?
+      render 'devise/confirmations/new'
+    end
+  end
+  
+  protected
+
+  def with_unconfirmed_confirmable
+    @confirmable = User.find_or_initialize_with_error_by(:confirmation_token, params[:confirmation_token])
+    if !@confirmable.new_record?
+      @confirmable.only_if_unconfirmed {yield}
+    end
+  end
+
+  def do_show
+    @confirmation_token = params[:confirmation_token]
+    @requires_password = true
+    self.resource = @confirmable
+    render 'devise/confirmations/show'
+  end
+
+  def do_confirm
+    @confirmable.confirm!
+    set_flash_message :notice, :confirmed
+    sign_in_and_redirect(resource_name, @confirmable)
+  end
+end
+</pre>
+<h3>Add a Route</h3>
+<p>Modify <strong>config/routes.rb</strong> to use the new controller:</p>
+<pre>
+RailsPrelaunchSignup::Application.routes.draw do
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  devise_scope :user do
+    root :to =&gt; "devise/registrations#new"
+    match '/user/confirmation' =&gt; 'confirmations#update', :via =&gt; :put, :as =&gt; :update_user_confirmation
+  end
+  devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations", :confirmations =&gt; "confirmations" }
+  resources :users, :only =&gt; [:show, :index] do
+    get 'invite', :on =&gt; :member
+  end
+end
+</pre>
+<h3>Modify the User Model</h3>
+<p>We need to modify the User model to allow the new user to set a password when they confirm their account.</p>
+<p>Add the following methods to the file <strong>app/models/user.rb</strong></p>
+<pre>
+# new function to set the password
+def attempt_set_password(params)
+  p = {}
+  p[:password] = params[:password]
+  p[:password_confirmation] = params[:password_confirmation]
+  update_attributes(p)
+end
+
+# new function to determine whether a password has been set
+def has_no_password?
+  self.encrypted_password.blank?
+end
+
+# new function to provide access to protected method pending_any_confirmation
+def only_if_unconfirmed
+  pending_any_confirmation {yield}
+end
+</pre>
+<h3>Git Workflow</h3>
+<p>Merge the new code into the master branch and commit it:</p>
+<pre>
+$ git checkout master
+$ git merge --squash fix-password
+$ git commit -am "enable a user to set a password"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D fix-password
 </pre>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
@@ -1483,7 +1667,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-04 18:21:11</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-05 18:38:38</p>
       </div>
     </div>
 
