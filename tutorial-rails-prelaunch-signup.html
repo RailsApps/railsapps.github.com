@@ -1446,8 +1446,7 @@ $ git commit -am "enable admin to send invitations"
 <pre>
 $ git branch -D invitations
 </pre>
-<h2>Fix: Setting the User’s Password</h2>
-<p>We took a shortcut when we decided to use Devise’s existing “new account” mechanism to collect invitation requests. Ordinarily, when a user creates a new account, the user will supply a password at the same time he or she enters an email address. Devise needs a password when we create an account so we provided a placeholder password as a hidden field in the “request invitation” form. That might seem to be a security vulnerability but no user can access the site (with or without the placeholder password) until the site administrator sends the user an invitation message with a confirmation token.</p>
+<h2>Setting the User’s Password</h2>
 <p>Once the user has been invited and has confirmed the account, we need to provide a way for the user to set a password.</p>
 <p>The Devise wiki explains <a href="https://github.com/plataformatec/devise/wiki/How-To:-Override-confirmations-so-users-can-pick-their-own-passwords-as-part-of-confirmation-activation">How to Override Confirmations So Users Can Pick Their Own Passwords As Part of Confirmation Activation</a>. So far, we’ve made small modifications to customize the behavior of Devise; now we’ll make extensive modifications, overriding the Confirmations controller and view as well as adding methods to the User model.</p>
 <h3>Git Workflow</h3>
@@ -1620,15 +1619,16 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 </pre>
 <p>Then run <code>$ bundle exec rake db:reset</code> to recreate the database and visit the site again.</p>
 <h2>More to Come</h2>
-<p>The tutorial is not yet finished.</p>
+<p>The tutorial is not yet finished. There will be more to come. Specifically a feature to allow visitors to post to Facebook, Twitter, or Google+ after they request an invitation.</p>
 <h2>Deploy to Heroku</h2>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
 <h2>Conclusion</h2>
 <p>This concludes the tutorial for the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app.</p>
-<h3>Liked It? Here’s What You Can Do</h3>
+<h3>Did You Like the Tutorial? Here’s What You Can Do</h3>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
 <p>Blog it! Share your discovery with the startup community. It’s up to you to get the word out and help fellow entrepreneurs. Links are the best way for people to find resources like this.</p>
+<p>Please leave a comment to tell me how long it took for you to read the tutorial and complete the app.</p>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
@@ -1667,7 +1667,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-05 18:38:38</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-05 18:51:00</p>
       </div>
     </div>
 
