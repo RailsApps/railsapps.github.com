@@ -1075,8 +1075,6 @@ $ bundle exec cucumber features/admin/view_progress.feature
 - @users.each do |user|
   %br/
   #{link_to user.email, user} signed up #{user.created_at.to_date}
-
-= will_paginate
 </pre>
 <p>We can use this page as our “administrative dashboard.” It’s fine for our example application; if you later build a more complex application, you may wish to create an AdminController with corresponding Admin views.</p>
 <h3>Restricting Access to the Administrative Page</h3>
@@ -1163,8 +1161,6 @@ $ bundle install
 - @users.each do |user|
   %br/
   #{link_to user.email, user} signed up #{user.created_at.to_date}
-
-= will_paginate
 </pre>
 <p>The default application layout will pick up the <code>content_for :head</code> code and add it to the <code>head</code> section of the application layout. The page will load the Javascript code for the Google Chart Tools <span class="caps">API</span> from Google’s content delivery network.</p>
 <h3>Generate a Chart with the User Controller</h3>
@@ -1214,8 +1210,6 @@ end
 - @users.each do |user|
   %br/
   #{link_to user.email, user} signed up #{user.created_at.to_date}
-
-= will_paginate
 </pre>
 <p>The Annotated Time Line chart must be placed inside a <code>div</code> tag with a fixed width and height because it uses Adobe Flash Player to provide interactive features.</p>
 <p>We now have a simple chart on the administrative page.</p>
@@ -1281,10 +1275,11 @@ jQuery -&gt;
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
 %h2 Users
-#chart{:style =&gt; "width: 700px; height: 240px;"}
-= render_chart @chart, 'chart'
-%br
-.span9  
+.span9
+  #chart{:style =&gt; "width: 700px; height: 240px"}
+  = render_chart @chart, 'chart'
+  %br
+.span9
   %table.datatable.table.table-bordered.table-condensed
     %thead
       %tr
@@ -1414,29 +1409,37 @@ end
 </pre>
 <p>The Rails Guide, <a href="http://guides.rubyonrails.org/routing.html#adding-more-restful-actions">Routing from the Outside In</a>, shows how we add additional routes to a RESTful resource.</p>
 <h3>Sending Invitations from the Administrative Page</h3>
-<p>We will modify the file <strong>app/views/users/index.html.haml</strong> to add a link to the <code>invite</code> action for each user:</p>
+<p>We will modify the file <strong>app/views/users/index.html.haml</strong> to add a link to the <code>invite</code> action for each user. While we’re at it, we’ll add columns to show when the visitor joined (that is, confirmed their account), the number of times they’ve logged it, and the date of the most recent login.</p>
 <pre>
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
 %h2 Users
-#chart{:style =&gt; "width: 700px; height: 240px;"}
-= render_chart @chart, 'chart'
-%br
+.span9
+  #chart{:style =&gt; "width: 700px; height: 240px"}
+  = render_chart @chart, 'chart'
+  %br
 .span9  
   %table.datatable.table.table-bordered.table-condensed
     %thead
       %tr
         %th Email
-        %th Signed up
-        %th Send Invitation
+        %th Requested
+        %th Invitation
+        %th Joined
+        %th Visits
+        %th Most Recent
     %tbody
       - @users.each do |user|
         %tr
           %td #{link_to user.email, user}
           %td #{user.created_at.to_date}
-          %td #{link_to "send invitation", invite_user_path(user)}
+          %td #{user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user)) }
+          %td #{user.confirmed_at.to_date if user.confirmed_at}
+          %td #{user.sign_in_count if user.sign_in_count}
+          %td #{user.last_sign_in_at.to_date if user.last_sign_in_at}
 </pre>
 <p>Now, as the site administrator, you can invite individual users to complete the account confirmation process and obtain access to the site.</p>
+<p>We check the user’s <code>confirmation_token</code> attribute to see if we’ve already sent an invitation (in which case, a confirmation token was set by Devise). If no confirmation token was set, we display the link “send invitation”; otherwise, we display “resend”.</p>
 <h3>Scalability Issues</h3>
 <p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We haven’t yet implemented a “bulk invitations” feature.</p>
 <h3>Git Workflow</h3>
@@ -1671,7 +1674,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-07 15:42:10</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-07 17:54:06</p>
       </div>
     </div>
 
