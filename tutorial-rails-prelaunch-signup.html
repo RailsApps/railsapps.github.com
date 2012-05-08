@@ -1418,7 +1418,7 @@ end
   #chart{:style =&gt; "width: 700px; height: 240px"}
   = render_chart @chart, 'chart'
   %br
-.span9  
+.span9
   %table.datatable.table.table-bordered.table-condensed
     %thead
       %tr
@@ -1433,13 +1433,13 @@ end
         %tr
           %td #{link_to user.email, user}
           %td #{user.created_at.to_date}
-          %td #{user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user)) }
+          %td #{(user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at}
           %td #{user.confirmed_at.to_date if user.confirmed_at}
           %td #{user.sign_in_count if user.sign_in_count}
           %td #{user.last_sign_in_at.to_date if user.last_sign_in_at}
 </pre>
 <p>Now, as the site administrator, you can invite individual users to complete the account confirmation process and obtain access to the site.</p>
-<p>We check the user’s <code>confirmation_token</code> attribute to see if we’ve already sent an invitation (in which case, a confirmation token was set by Devise). If no confirmation token was set, we display the link “send invitation”; otherwise, we display “resend”.</p>
+<p>There’s a bit of complex logic in the display of the “send invitation” link. First, with <code>unless user.confirmed_at</code>, we check to see if the user has already confirmed the account. Next, we check the user’s <code>confirmation_token</code> attribute to see if we’ve already sent an invitation (in which case, a confirmation token was set by Devise). If no confirmation token was set, we display the link “send invitation”; otherwise, we display “resend”.</p>
 <h3>Scalability Issues</h3>
 <p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We haven’t yet implemented a “bulk invitations” feature.</p>
 <h3>Git Workflow</h3>
@@ -1674,7 +1674,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-07 17:54:06</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-07 19:43:41</p>
       </div>
     </div>
 
