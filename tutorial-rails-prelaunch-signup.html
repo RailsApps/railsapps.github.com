@@ -50,8 +50,9 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 7 May 2012</em></p>
+<p><em>Last updated 9 May 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
+<p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <p>Read an <a href="http://blog.railsapps.org/post/22543541226/powered-up-by-the-railsapps-project-xplaygrounds-com">interview with Michael Gajda</a> of <a href="http://xplaygrounds.com/">XPlaygrounds.com</a> about how he used the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> example to launch his startup site. If you launch a site using this example, add your link to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>.</p>
 <h2>
@@ -1085,7 +1086,7 @@ class UsersController &lt; ApplicationController
 
   def index
     authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.paginate :page =&gt; params[:page]
+    @users = User.all
   end
   
   def show
@@ -1172,7 +1173,7 @@ class UsersController &lt; ApplicationController
 
   def index
     authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.paginate :page =&gt; params[:page], :order =&gt; "created_at DESC"
+    @users = User.all
     @chart = create_chart
   end
   
@@ -1368,7 +1369,7 @@ class UsersController &lt; ApplicationController
 
   def index
     authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.paginate :page =&gt; params[:page]
+    @users = User.all
     @chart = create_chart
   end
   
@@ -1440,8 +1441,109 @@ end
 </pre>
 <p>Now, as the site administrator, you can invite individual users to complete the account confirmation process and obtain access to the site.</p>
 <p>There’s a bit of complex logic in the display of the “send invitation” link. First, with <code>unless user.confirmed_at</code>, we check to see if the user has already confirmed the account. Next, we check the user’s <code>confirmation_token</code> attribute to see if we’ve already sent an invitation (in which case, a confirmation token was set by Devise). If no confirmation token was set, we display the link “send invitation”; otherwise, we display “resend”.</p>
-<h3>Scalability Issues</h3>
-<p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We haven’t yet implemented a “bulk invitations” feature.</p>
+<h3>Bulk Invitations</h3>
+<p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We need to implement a “bulk invitations” feature.</p>
+<p>We’ll add a <code>bulk_invite</code> action to the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.all
+    @chart = create_chart
+  end
+  
+  def show
+    @user = User.find(params[:id])
+  end
+  
+  def invite
+    authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
+    @user = User.find(params[:id])
+    @user.send_confirmation_instructions
+    redirect_to :back, :notice =&gt; "Sent invitation to #{@user.email}."
+  end
+  
+  def bulk_invite
+    authorize! :bulk_invite, @user, :message =&gt; 'Not authorized as an administrator.'
+    users = User.where(:confirmation_token =&gt; nil).order(:created_at).limit(params[:quantity])
+    users.each do |user|
+      user.send_confirmation_instructions
+    end
+    redirect_to :back, :notice =&gt; "Sent invitation to #{users.count} users."
+  end
+  
+  private
+  
+  def create_chart
+    users_by_day = User.group("DATE(created_at)").count
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('date')
+    data_table.new_column('number')
+    users_by_day.each do |day|
+      data_table.add_row([ Date.parse(day[0]), day[1]])
+    end
+    @chart = GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table)
+  end
+
+end
+</pre>
+<p>The <code>bulk_invite</code> action has a few peculiarities. First, we only select users where the <code>:confirmation_token</code> attribute is null. Devise sets a confirmation token when we send an invitation; with this constraint, we only invite users who have not been previously invited. Second, we make sure we select the oldest records first with the <code>order(:created_at)</code> method. Finally, we limit the number of records that are retrieved to the size of the batch we want; then we loop over each to send an invitation.</p>
+<p>Modify <strong>config/routes.rb</strong> to add the new action:</p>
+<pre>
+RailsPrelaunchSignup::Application.routes.draw do
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  devise_scope :user do
+    root :to =&gt; "devise/registrations#new"
+    match '/user/confirmation' =&gt; 'confirmations#update', :via =&gt; :put, :as =&gt; :update_user_confirmation
+  end
+  devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations", :confirmations =&gt; "confirmations" }
+  match 'users/bulk_invite/:quantity' =&gt; 'users#bulk_invite', :via =&gt; :get, :as =&gt; :bulk_invite
+  resources :users, :only =&gt; [:show, :index] do
+    get 'invite', :on =&gt; :member
+  end
+end
+</pre>
+<p>Finally, we will modify the file <strong>app/views/users/index.html.haml</strong> to add links for the <code>bulk_invite</code> action:</p>
+<pre>
+- content_for :head do
+  = javascript_include_tag 'http://www.google.com/jsapi'
+%h2 Users
+.span9
+  #chart{:style =&gt; "width: 700px; height: 240px"}
+  = render_chart @chart, 'chart'
+  %br
+.span9
+  %p 
+    Send Bulk Invitations: 
+    = link_to "10 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '10')
+    = link_to "50 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '50')
+    = link_to "100 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '100')
+    = link_to "500 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '500')
+    = link_to "1000", bulk_invite_path(:quantity =&gt; '1000')
+  %table.datatable.table.table-bordered.table-condensed
+    %thead
+      %tr
+        %th Email
+        %th Requested
+        %th Invitation
+        %th Joined
+        %th Visits
+        %th Most Recent
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td #{link_to user.email, user}
+          %td #{user.created_at.to_date}
+          %td #{(user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at}
+          %td #{user.confirmed_at.to_date if user.confirmed_at}
+          %td #{user.sign_in_count if user.sign_in_count}
+          %td #{user.last_sign_in_at.to_date if user.last_sign_in_at}
+</pre>
+<p>We now have the option to send 10, 50, 100, 500, or 1000 invitations at once.</p>
 <h3>Git Workflow</h3>
 <p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
 <pre>
@@ -1674,7 +1776,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-07 19:43:41</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-09 22:10:04</p>
       </div>
     </div>
 
