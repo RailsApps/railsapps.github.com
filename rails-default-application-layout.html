@@ -69,20 +69,20 @@
 &lt;ul class="nav"&gt;
   &lt;% if user_signed_in? %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;        
+    &lt;%= link_to 'Logout', destroy_user_session_path, :method=&gt;'delete' %&gt;        
     &lt;/li&gt;
   &lt;% else %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Login', new_user_session_path)  %&gt;  
+    &lt;%= link_to 'Login', new_user_session_path %&gt;  
     &lt;/li&gt;
   &lt;% end %&gt;
   &lt;% if user_signed_in? %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Edit account', edit_user_registration_path) %&gt;
+    &lt;%= link_to 'Edit account', edit_user_registration_path %&gt;
     &lt;/li&gt;
   &lt;% else %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Sign up', new_user_registration_path)  %&gt;
+    &lt;%= link_to 'Sign up', new_user_registration_path %&gt;
     &lt;/li&gt;
   &lt;% end %&gt;
 &lt;/ul&gt;
@@ -94,16 +94,16 @@
 %ul.nav
   - if user_signed_in?
     %li
-      = link_to('Logout', destroy_user_session_path, :method=&gt;'delete')
+      = link_to 'Logout', destroy_user_session_path, :method=&gt;'delete'
   - else
     %li
-      = link_to('Login', new_user_session_path)
+      = link_to 'Login', new_user_session_path
   - if user_signed_in?
     %li
-      = link_to('Edit account', edit_user_registration_path)
+      = link_to 'Edit account', edit_user_registration_path
   - else
     %li
-      = link_to('Sign up', new_user_registration_path)
+      = link_to 'Sign up', new_user_registration_path
 </pre>
 <h2>Flash Messages</h2>
 <p>Rails provides a standard convention to display alerts (including error messages) and other notices, called Rails “flash messages” (as in “flash memory”, not to be confused with the “Adobe Flash” proprietary web development platform).</p>
@@ -199,8 +199,8 @@ gem 'bootstrap-sass'
 <p>Add the file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong>:</p>
 <pre>
 // Set the correct sprite paths
-$iconSpritePath: image-path('glyphicons-halflings.png');
-$iconWhiteSpritePath: image-path('glyphicons-halflings-white.png');
+$iconSpritePath: asset-url('glyphicons-halflings.png', image);
+$iconWhiteSpritePath: asset-url('glyphicons-halflings-white.png', image);
 @import "bootstrap";
 body { padding-top: 60px; }
 @import "bootstrap-responsive";
@@ -391,7 +391,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-12 16:19:09</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-16 14:27:59</p>
       </div>
     </div>
 
