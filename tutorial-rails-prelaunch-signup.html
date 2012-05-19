@@ -96,11 +96,7 @@
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, leave comments below.</p>
 <h2>Accounts You May Need</h2>
-<p>Before you start, you may need to set up accounts for a source control repository, hosting, and email.</p>
-<h3>GitHub</h3>
-<p>You’ll need an account on GitHub. Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
-<h3>Domain Registration</h3>
-<p>You’ll need a domain name when you set up an <span class="caps">SMTP</span> relay service. You’ll need an <span class="caps">SMTP</span> relay service if you’ll be sending more than a few email messages. <a href="http://www.namecheap.com/">NameCheap</a> is a popular alternative to the much-maligned GoDaddy.</p>
+<p>Before you start, you may need to set up accounts for hosting, email, and a source control repository.</p>
 <h3>Hosting</h3>
 <p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
@@ -110,43 +106,43 @@
 </ul><p>Instructions are provided for deployment to Heroku.</p>
 <p>It’s common for technically skilled people to want to set up their own servers. Please, do yourself a favor, and unless system administration is your most dearly loved recreation, let the platform providers do it for you.</p>
 <h3>Company Email</h3>
-<p>For better or worse, most of us are using Gmail for our personal accounts. You can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. You can use <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>.</p>
+<p>For better or worse, most of us are using Gmail for our personal accounts. You can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. For that, you can use <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>.</p>
 <h3>Transactional Email</h3>
-<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations (called “transactional email”), you will need a hosted <span class="caps">SMTP</span> relay service such as:</p>
+<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations (called “transactional email”), you will need a hosted <span class="caps">SMTP</span> relay service.</p>
+<p>Don’t attempt to manage your own <span class="caps">SMTP</span> servers. The required sysadmin is time-consuming. More importantly, considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">SMTP</span> relay service to increase reliability of delivery. The best services offer tracking data to show how well your email is being delivered.</p>
+<p>Many of these services offer a free plan allowing up to 200 emails/day:</p>
 <ul>
-<li><a href="http://sendgrid.com/pricing.html">SendGrid</a></li>
+<li><a href="http://mandrill.com/">Mandrill by MailChimp</a></li>
+	<li><a href="http://sendgrid.com/pricing.html">SendGrid</a></li>
 	<li><a href="http://mailgun.net/pricing">Mailgun</a></li>
 	<li><a href="http://aws.amazon.com/ses/pricing/" title="SES">Amazon Simple Email Service</a></li>
 	<li><a href="http://elasticemail.com/pricing">Elastic Email</a></li>
-	<li><a href="http://mandrill.com/">Mandrill by MailChimp</a></li>
 	<li><a href="http://www.critsend.com/pricing">CritSend</a></li>
 	<li><a href="https://www.mailjet.com/pricing">Mailjet</a></li>
 	<li><a href="http://www.messagegears.com/">MessageGears</a></li>
 	<li><a href="https://secure.postageapp.com/register">PostageApp</a></li>
 	<li><a href="http://postmarkapp.com/pricing">Postmark</a></li>
 	<li><a href="https://www.serversmtp.com/en/cart.php?systpl=turbo-smtp&amp;systpl=turbo-smtp&amp;currency=3">turboSMTP</a></li>
-</ul><p>Many of these services provide a free plan allowing up to 200 emails/day.</p>
-<p>Instructions are provided for SendGrid.</p>
-<p>Don’t attempt to manage your own <span class="caps">SMTP</span> servers. The required sysadmin is time-consuming. More importantly, considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">SMTP</span> relay service to increase reliability of delivery. The best services offer tracking data to show whether your email is being delivered.</p>
-<p>Sign up for a SendGrid account before you get started. Look for the tiny link for a “Free Plan” below the chart of paid plans. SendGrid will allow you to send 200 emails per day with the free plan. To screen out spammers, SendGrid has an account representative review your account request. You may have to wait a few hours before your account is established, so get started now. You will have to provide the domain name for the website from which the email will be sent and you must be able to show you are the administrator for that website by setting a <span class="caps">CNAME</span> record, adding a web page to the site, or using a contact email address that matches the website domain.</p>
-<p>Note that Heroku offers a SendGrid account as an add-on service but it’s easy to establish your own SendGrid account independently of Heroku.</p>
+</ul><p>Instructions are provided for <a href="http://mandrill.com/">Mandrill by MailChimp</a>. The Mandrill transactional email service integrates well with the MailChimp email list manager service. Plus, you can send up to 12,000 emails/month from the service for free.</p>
+<p>Sign up for a MailChimp account to get started. After you’ve created your MailChimp account, see the instructions to <a href="http://help.mandrill.com/customer/portal/articles/464750-use-mandrill-with-mailchimp">Use Mandrill with MailChimp</a> to add the Mandrill service. Make sure you <a href="http://help.mandrill.com/customer/portal/articles/464811-verify-a-sending-domain">Verify a Sending Domain</a> and get the <a href="http://help.mandrill.com/customer/portal/articles/464828-access-information">Access Information</a> (your <span class="caps">SMTP</span> username and password, which is an <span class="caps">API</span> key).</p>
 <h3>Mailing List</h3>
-<p>Though SendGrid is best know as an <span class="caps">SMTP</span> relay service, a SendGrid account will allow you to send broadcast email as well as individual messages. SendGrid’s free plan is limited to 200 emails/day which will be too limited for broadcast email for a successful pre-launch campaign. For newsletters or announcements, upgrade to the $9.95/month SendGrid plan which allows 40,000 messages a month. SendGrid provides a simple interface for creating and sending newsletters or announcements.</p>
+<p>In addition to sending transactional email messages, you may want to send newsletters or announcements to your entire mailing list. <span class="caps">SMTP</span> relay services such as SendGrid often offer rudimentary bulk email services but you may want to consider using a dedicated service for mass emailing.</p>
 <p>For a more full-featured service for broadcast email, consider using a service such as:</p>
 <ul>
-<li><a href="http://mailchimp.com/">MailChimp</a></li>
-	<li>“MadMimi”:</li>
-	<li>“SilverPop”:</li>
-	<li>“CampaignMonitor”:</li>
-	<li>“<span class="caps">YMLP</span>”:</li>
-	<li>“JangoMail”:</li>
-	<li>“TinyLetter”:</li>
-	<li>“icontact”:</li>
-	<li>“bronto”:</li>
-	<li>“icontact”:</li>
-	<li>“icontact”:</li>
-	<li>“icontact”:</li>
-</ul><h2>Creating the Application</h2>
+<li><a href="http://mailchimp.com/pricing/">MailChimp</a></li>
+	<li><a href="https://www.madmimi.com/service_agreements/choose_plan">MadMimi</a></li>
+	<li><a href="http://www.campaignmonitor.com/pricing/">CampaignMonitor</a></li>
+	<li><a href="http://www.constantcontact.com/pricing/email-marketing.jsp">Constant Contact</a></li>
+	<li><a href="http://www.ymlp.com/pricing.html"><span class="caps">YMLP</span></a></li>
+	<li><a href="http://www.jangomail.com/pricing.asp">JangoMail</a></li>
+	<li><a href="http://www.icontact.com/affordable-email-marketing">iContact</a></li>
+	<li><a href="http://www.verticalresponse.com/pricing">VerticalResponse</a></li>
+</ul><p>This tutorial shows how to add visitors who request an invitation to a <a href="http://mailchimp.com/">MailChimp</a> list. MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free.</p>
+<h3>Domain Registration</h3>
+<p>You’ll need a domain name before you set up an <span class="caps">SMTP</span> relay service (which you’ll need if you’ll be sending more than a few email messages). <a href="http://www.namecheap.com/">NameCheap</a> is a popular alternative to the much-maligned GoDaddy.</p>
+<h3>GitHub</h3>
+<p>You’ll need an account on GitHub. Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
+<h2>Creating the Application</h2>
 <h3>Option One</h3>
 <p><em>Follow this tutorial.</em></p>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
@@ -227,13 +223,15 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 </li>
 	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong>
 </li>
-	<li>How will you send email? <strong>#3</strong>
+	<li>How will you send email? <strong>#4</strong>
 	<ol>
 <li>
 <span class="caps">SMTP</span> account</li>
 		<li>Gmail account</li>
 		<li>
 <a href="http://sendgrid.com/">SendGrid</a> account</li>
+		<li>
+<a href="http://mandrill.com/">Mandrill by MailChimp</a> account</li>
 	</ol>
 </li>
 	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication? <strong>#4</strong>
@@ -271,7 +269,7 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
 </li>
 	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong>
 </li>
-</ul><p>Choose the <strong>SendGrid</strong> option for email if you’ve set up a SendGrid account for eventual deployment. If you are just experimenting, you can choose <strong>Gmail</strong> as a temporary solution.</p>
+</ul><p>Choose the <strong>Mandrill by MailChimp</strong> option for email if you’ve set up a Mandrill account for future deployment. If you are just experimenting, you can choose <strong>Gmail</strong> as a temporary solution.</p>
 <p>Be sure to choose:</p>
 <ul>
 <li>the <strong>Devise with Confirmable and Invitable modules</strong> option for authentication</li>
@@ -318,7 +316,7 @@ $ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-applic
   gem "rolify", "&gt;= 3.1.0"
   gem "bootstrap-sass", "&gt;= 2.0.1"
   gem "simple_form"
-  gem "sendgrid"
+  gem "hominid"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.3'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -385,30 +383,29 @@ config.action_mailer.smtp_settings = {
 }
 </pre>
 <p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
-<h3>Use a SendGrid account</h3>
-<p>If you want to use a SendGrid account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
+<h3>Use a Mandrill account</h3>
+<p>If you want to use a Mandrill account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
 <pre>
 config.action_mailer.smtp_settings = {
-  address: "smtp.sendgrid.net",
-  port: 25,
-  domain: "example.com",
-  authentication: "plain",
-  user_name: ENV["SENDGRID_USERNAME"],
-  password: ENV["SENDGRID_PASSWORD"]
+  :address   =&gt; "smtp.mandrillapp.com",
+  :port      =&gt; 25,
+  :user_name =&gt; ENV["MANDRILL_USERNAME"],
+  :password  =&gt; ENV["MANDRILL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["SENDGRID_USERNAME"]</code> and <code>ENV["SENDGRID_PASSWORD"]</code> with your SendGrid username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
+<p>Note that the Mandrill password will be your Mandrill <span class="caps">API</span> key.</p>
+<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_PASSWORD"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key.</p>
 <h3>Set Environment Variables for Email</h3>
 <p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
 <p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add (for Gmail):</p>
 <pre>
 export GMAIL_USERNAME="myname@gmail.com"
-export GMAIL_PASSWORD="secret*"
+export GMAIL_PASSWORD="secret"
 </pre>
-<p>or for SendGrid:</p>
+<p>or for Mandrill:</p>
 <pre>
-export SENDGRID_USERNAME="myname"
-export SENDGRID_PASSWORD="secret*"
+export MANDRILL_USERNAME="myname"
+export MANDRILL_PASSWORD="secret"
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
 <h3>Configure Devise for Email</h3>
@@ -804,26 +801,27 @@ describe UserMailer do
 
 end
 </pre>
-<p>Add a <code>welcome_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>. You’ll also customize the mailer to support advanced features of the SendGrid email platform:</p>
+<p>Add a <code>welcome_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
 <pre>
 class UserMailer &lt; ActionMailer::Base
   default :from =&gt; "notifications@example.com"
-  include SendGrid
-  sendgrid_category :use_subject_lines
-  sendgrid_enable   :ganalytics, :opentrack
   
   def welcome_email(user)
     mail(:to =&gt; user.email, :subject =&gt; "Invitation Request Received")
+    headers[‘X-MC-Track’] = "opens, clicks"
+    headers[‘X-MC-GoogleAnalytics’] = "example.com"
+    headers[‘X-MC-Tags’] = "welcome"
   end
 end
 </pre>
-<p>If you’re not using SendGrid, you can leave out these statements:</p>
+<p>Replace the “notifications@example.com” string with your email address.</p>
+<p>If you’re not using Mandrill for an <span class="caps">SMTP</span> relay service, you can leave out these statements:</p>
 <pre>
-  include SendGrid
-  sendgrid_category :use_subject_lines
-  sendgrid_enable   :ganalytics, :opentrack
+  headers[‘X-MC-Track’] = "opens, clicks"
+  headers[‘X-MC-GoogleAnalytics’] = "example.com"
+  headers[‘X-MC-Tags’] = "welcome"
 </pre>
-<p>The <code>:opentrack</code> option sets up SendGrid to track message delivery by adding an invisible image (a web beacon) to <span class="caps">HTML</span> emails to track emails that have been opened. The <code>:ganalytics</code> option sets up tracking with your Google Analytics account. The <code>sendgrid_category</code> attribute sets up SendGrid to collect information using the message subject lines.</p>
+<p>The <code>X-MC-Track</code> header sets up Mandrill to track message delivery by adding an invisible image (a web beacon) to <span class="caps">HTML</span> emails to track emails that have been opened. It also tracks whether links in the email were clicked. The <code>X-MC-GoogleAnalytics</code> header sets up tracking with your Google Analytics account (set your domain name here). The <code>X-MC-Tags</code> header identifies each email as a welcome message for analyzing delivery success.</p>
 <p>Create a mailer view by creating a file <strong>app/views/user_mailer/welcome_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
 <pre>
 &lt;!DOCTYPE html&gt;
@@ -1539,7 +1537,7 @@ end
 <p>There’s a bit of complex logic in the display of the “send invitation” link. First, with <code>unless user.confirmed_at</code>, we check to see if the user has already confirmed the account. Next, we check the user’s <code>confirmation_token</code> attribute to see if we’ve already sent an invitation (in which case, a confirmation token was set by Devise). If no confirmation token was set, we display the link “send invitation”; otherwise, we display “resend”.</p>
 <h3>Bulk Invitations</h3>
 <p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We need to implement a “bulk invitations” feature.</p>
-<p>You should set up an <span class="caps">SMTP</span> relay service such as <a href="http://sendgrid.tellapal.com/a/clk/2qBMqx">SendGrid</a> before you attempt to send more than a few dozen email messages.</p>
+<p>You should set up an <span class="caps">SMTP</span> relay service such as <a href="http://mandrill.com/">Mandrill</a> or <a href="http://sendgrid.com/">SendGrid</a> before you attempt to send more than a few dozen email messages.</p>
 <p>We’ll add a <code>bulk_invite</code> action to the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
 <pre>
 class UsersController &lt; ApplicationController
@@ -1873,7 +1871,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-19 14:29:06</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-19 16:48:48</p>
       </div>
     </div>
 
