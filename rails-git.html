@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Using Git with Rails</title>
+    <title>GitHub and Rails</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
@@ -44,21 +44,24 @@
   <div class="container"> 
     
     <div class="page-header">
-      <h1>Using Git with Rails</h1>
+      <h1>GitHub and Rails</h1>
     </div>
 
     <div class="content wikistyle gollum textile">
-      <h1>Using Git with Rails</h1>
+      <h1>GitHub and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 1 March 2012</em></p>
-<p>Using Git with Rails. If you’re creating an app for deployment into production, collaborating with others, or simply desire to roll back code changes as needed, git allows you to set up a source control repository. If you are building a throw-away app for your own education, you may decide not to set up git.</p>
+<p><em>Last updated 19 May 2012</em></p>
+<p>Using GitHub with Rails. If you’re creating an app for deployment into production, collaborating with others, or simply desire to roll back code changes as needed, <a href="http://git-scm.com/">git</a> allows you to set up a source control repository. If you are building a throw-away app for your own education, you may decide not to set up git, but sooner or later you’ll need to learn to use it to participate in the open source community.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<p>If you are creating an application template, you can use the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/git.rb">git</a> recipe from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</p>
+<p>If you are creating a Rails application template, you can use the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/git.rb">git</a> recipe from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</p>
 <h2>New to Git?</h2>
-<p>If you haven’t used git, you can read a free online version of the book <a href="http://progit.org/">Pro Git</a> by Scott Chacon.</p>
+<p>If you arew new to git, you can read a free online version of the book <a href="http://git-scm.com/book">Pro Git</a> by Scott Chacon.</p>
 <p>Check that git is installed on your computer:</p>
-<p><code>$ git version</code></p>
-<p>If you need to install git, refer to the section <a href="http://progit.org/book/ch1-4.html">Installing Git</a> from Scott Chacon’s book. Also see <a href="http://progit.org/book/ch1-5.html">First-Time Git Setup</a> from the book. Michael Hartl’s Rails Tutorial book also covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version control with Git</a>.</p>
+<pre>
+$ git version
+</pre>
+<p>If you need to install git, refer to the section <a href="http://git-scm.com/book/en/Getting-Started-Installing-Git">Installing Git</a> from Scott Chacon’s book. Also see <a href="http://git-scm.com/book/en/Getting-Started-First-Time-Git-Setup">First-Time Git Setup</a> from the book.</p>
+<p>Michael Hartl’s Rails Tutorial book also covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version control with Git</a>.</p>
 <h2>Ignore Files</h2>
 <p>When you use the <code>rails new</code> command, Rails creates a <strong>.gitignore</strong> file for you. You may want to modify it:</p>
 <pre>
@@ -72,21 +75,36 @@ tmp/
 <h2>Initialize Git For Your Rails Application</h2>
 <p>Be sure you are in your application’s root directory.</p>
 <p>Initialize git and check in your first commit:</p>
-<p><code>$ git init</code><br><code>$ git add .</code><br><code>$ git commit -m 'initial commit'</code></p>
+<pre>
+$ git init
+$ git add .
+$ git commit -m 'initial commit'
+</pre>
 <p>You can check your commit status at any time with:</p>
-<p><code>$ git status</code></p>
+<pre>
+$ git status
+</pre>
 <h2>Save it to GitHub</h2>
 <p>Use a remote source control repository if you want an offsite copy of your work or you plan to share your work with others.</p>
-<p>We’ll assume you have an account at GitHub (you can get a <a href="https://github.com/signup/free">free GitHub account</a>).</p>
+<p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one.</p>
 <p>Check that your GitHub account is set up properly:</p>
-<p><code>$ ssh git(at)github.com</code></p>
+<pre>
+$ ssh git@github.com
+</pre>
 <p>Go to GitHub and create a new empty repository (<a href="http://github.com/repositories/new">http://github.com/repositories/new</a>) into which you can push your local git repo.</p>
 <p>Add GitHub as a remote repository for your project and push your local project to the remote repository:</p>
-<p><code>$ git remote add origin git(at)github.com:YOUR_GITHUB_ACCOUNT/YOUR_PROJECT_NAME.git</code><br><code>$ git push origin master</code></p>
+<pre>
+$ git remote add origin git@github.com:YOUR_GITHUB_ACCOUNT/YOUR_PROJECT_NAME.git
+$ git push origin master
+</pre>
 <p>At each stage of completion, you should check your code into your local repository:</p>
-<p><code>$ git commit -m "some helpful comment"</code></p>
+<pre>
+$ git commit -m "some helpful comment"
+</pre>
 <p>and then push it to the remote repository:</p>
-<p><code>$ git push origin master</code></p>
+<pre>
+$ git push origin master
+</pre>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -122,7 +140,7 @@ tmp/
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-17 18:26:07</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-19 14:29:06</p>
       </div>
     </div>
 

@@ -50,11 +50,11 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 17 May 2012</em></p>
+<p><em>Last updated 19 May 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
-<p>Read an <a href="http://blog.railsapps.org/post/22543541226/powered-up-by-the-railsapps-project-xplaygrounds-com">interview with Michael Gajda</a> of <a href="http://xplaygrounds.com/">XPlaygrounds.com</a> about how he used the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> example to launch his startup site. If you launch a site using this example, add your link to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a> or leave a comment below.</p>
+<p>Read an <a href="http://blog.railsapps.org/post/22543541226/powered-up-by-the-railsapps-project-xplaygrounds-com">interview with Michael Gajda</a> of <a href="http://xplaygrounds.com/">XPlaygrounds.com</a> about how he used the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> example to launch his startup site. If you build a site using this example, get some link juice by adding your site to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a> or leave a comment below.</p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
@@ -76,15 +76,17 @@
 <h3>How We Configure Devise</h3>
 <p>Devise offers many features and configuration choices; in fact, exploring its options can take more time than actually implementing authentication from scratch. This app will save you time; we’ve selected the configuration that best accommodates a typical web startup signup site.</p>
 <p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, the app provides an administrative interface so you can select users to receive an invitation that instructs them to confirm their email address and set a password.</p>
-<p>The <a href="https://github.com/plataformatec/devise/wiki">Devise wiki</a> and discussion on <a href="http://stackoverflow.com/questions/tagged/devise">Stack Overflow</a> can help you if you need different functionality.</p>
+<p>The <a href="https://github.com/plataformatec/devise/wiki">Devise wiki</a> and discussion on <a href="http://stackoverflow.com/questions/tagged/devise">Stack Overflow</a> can help you if your needs are different.</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p>This application is based on two of the RailsApps example apps:</p>
 <ul>
 <li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
 	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
-</ul><p>The rails3-devise-rspec-cucumber app shows how to set up Devise for user authentication, explaining how to integrate RSpec and Cucumber for testing. The rails3-bootstrap-devise-cancan app shows how to set up Devise and add CanCan to manage access to administrative pages. You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
-<p>Look at <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example if you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database.</p>
+</ul><p>The first example shows how to set up Devise for user authentication and explains how to integrate RSpec and Cucumber for testing.</p>
+<p>The second example shows how to set up Devise and add CanCan to manage access to administrative pages. It also shows how to set up Twitter Bootstrap as a front-end framework for <span class="caps">CSS</span> styling.</p>
+<p>You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
+<p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
 <h2>
 <img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
 <p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, little explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
@@ -94,24 +96,57 @@
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, leave comments below.</p>
 <h2>Accounts You May Need</h2>
-<p>Before you start, you may may want to set up accounts for hosting and email.</p>
+<p>Before you start, you may need to set up accounts for a source control repository, hosting, and email.</p>
+<h3>GitHub</h3>
+<p>You’ll need an account on GitHub. Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
+<h3>Domain Registration</h3>
+<p>You’ll need a domain name when you set up an <span class="caps">SMTP</span> relay service. You’ll need an <span class="caps">SMTP</span> relay service if you’ll be sending more than a few email messages. <a href="http://www.namecheap.com/">NameCheap</a> is a popular alternative to the much-maligned GoDaddy.</p>
 <h3>Hosting</h3>
-<p>The easiest deployment is with a “platform as a service” provider such as:</p>
+<p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
 <li><a href="http://www.heroku.com/">Heroku</a></li>
 	<li><a href="http://www.cloudfoundry.com/">CloudFoundry</a></li>
 	<li><a href="http://www.engineyard.com/">EngineYard</a></li>
 </ul><p>Instructions are provided for deployment to Heroku.</p>
 <p>It’s common for technically skilled people to want to set up their own servers. Please, do yourself a favor, and unless system administration is your most dearly loved recreation, let the platform providers do it for you.</p>
-<h3>Email</h3>
-<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of messages, you will need a hosted <span class="caps">SMTP</span> relay service such as:</p>
+<h3>Company Email</h3>
+<p>For better or worse, most of us are using Gmail for our personal accounts. You can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. You can use <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>.</p>
+<h3>Transactional Email</h3>
+<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations (called “transactional email”), you will need a hosted <span class="caps">SMTP</span> relay service such as:</p>
 <ul>
-<li><a href="http://sendgrid.tellapal.com/a/clk/2qBMqx">SendGrid</a></li>
+<li><a href="http://sendgrid.com/pricing.html">SendGrid</a></li>
 	<li><a href="http://mailgun.net/pricing">Mailgun</a></li>
-</ul><p>Instructions are provided for SendGrid.</p>
+	<li><a href="http://aws.amazon.com/ses/pricing/" title="SES">Amazon Simple Email Service</a></li>
+	<li><a href="http://elasticemail.com/pricing">Elastic Email</a></li>
+	<li><a href="http://mandrill.com/">Mandrill by MailChimp</a></li>
+	<li><a href="http://www.critsend.com/pricing">CritSend</a></li>
+	<li><a href="https://www.mailjet.com/pricing">Mailjet</a></li>
+	<li><a href="http://www.messagegears.com/">MessageGears</a></li>
+	<li><a href="https://secure.postageapp.com/register">PostageApp</a></li>
+	<li><a href="http://postmarkapp.com/pricing">Postmark</a></li>
+	<li><a href="https://www.serversmtp.com/en/cart.php?systpl=turbo-smtp&amp;systpl=turbo-smtp&amp;currency=3">turboSMTP</a></li>
+</ul><p>Many of these services provide a free plan allowing up to 200 emails/day.</p>
+<p>Instructions are provided for SendGrid.</p>
+<p>Don’t attempt to manage your own <span class="caps">SMTP</span> servers. The required sysadmin is time-consuming. More importantly, considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">SMTP</span> relay service to increase reliability of delivery. The best services offer tracking data to show whether your email is being delivered.</p>
 <p>Sign up for a SendGrid account before you get started. Look for the tiny link for a “Free Plan” below the chart of paid plans. SendGrid will allow you to send 200 emails per day with the free plan. To screen out spammers, SendGrid has an account representative review your account request. You may have to wait a few hours before your account is established, so get started now. You will have to provide the domain name for the website from which the email will be sent and you must be able to show you are the administrator for that website by setting a <span class="caps">CNAME</span> record, adding a web page to the site, or using a contact email address that matches the website domain.</p>
 <p>Note that Heroku offers a SendGrid account as an add-on service but it’s easy to establish your own SendGrid account independently of Heroku.</p>
-<h2>Creating the Application</h2>
+<h3>Mailing List</h3>
+<p>Though SendGrid is best know as an <span class="caps">SMTP</span> relay service, a SendGrid account will allow you to send broadcast email as well as individual messages. SendGrid’s free plan is limited to 200 emails/day which will be too limited for broadcast email for a successful pre-launch campaign. For newsletters or announcements, upgrade to the $9.95/month SendGrid plan which allows 40,000 messages a month. SendGrid provides a simple interface for creating and sending newsletters or announcements.</p>
+<p>For a more full-featured service for broadcast email, consider using a service such as:</p>
+<ul>
+<li><a href="http://mailchimp.com/">MailChimp</a></li>
+	<li>“MadMimi”:</li>
+	<li>“SilverPop”:</li>
+	<li>“CampaignMonitor”:</li>
+	<li>“<span class="caps">YMLP</span>”:</li>
+	<li>“JangoMail”:</li>
+	<li>“TinyLetter”:</li>
+	<li>“icontact”:</li>
+	<li>“bronto”:</li>
+	<li>“icontact”:</li>
+	<li>“icontact”:</li>
+	<li>“icontact”:</li>
+</ul><h2>Creating the Application</h2>
 <h3>Option One</h3>
 <p><em>Follow this tutorial.</em></p>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
@@ -1838,7 +1873,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-17 18:26:07</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-19 14:29:06</p>
       </div>
     </div>
 
