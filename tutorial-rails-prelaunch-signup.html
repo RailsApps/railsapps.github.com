@@ -345,7 +345,7 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 # ActionMailer Config
 config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
 config.action_mailer.delivery_method = :smtp
-# change to false to prevent email from being sent during development
+# change to true to allow email to be sent during development
 config.action_mailer.perform_deliveries = false
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.default :charset =&gt; "utf-8"
@@ -440,6 +440,7 @@ $ bundle exec rake db:reset
 </pre>
 <p>If you need to, you can run <code>$ bundle exec rake db:reset</code> whenever you need to recreate the database.</p>
 <h2>Test the Starter App</h2>
+<p>At this point, the app is identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
 <p>You can check that the example app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
@@ -457,7 +458,7 @@ $ bundle exec rake db:reset
 class HomeController &lt; ApplicationController
 end
 </pre>
-<h2>Create an Initializer File</h2>
+<h3>Create an Initializer File</h3>
 <p>We will set a configuration constant <code>Rails.configuration.launched</code> in an initializer file. This constant will be set to false (before we launch our site) or true (after we launch our site).</p>
 <p>Create a file <strong>config/initializers/prelaunch-signup.rb</strong>:</p>
 <pre>
@@ -465,9 +466,15 @@ end
 Rails.configuration.launched = false
 </pre>
 <p>We’ll use the configuration constant anywhere in the application where we want behavior to be dependent on whether we’ve launched the site.</p>
+<h3>Commit to Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -m "home page update and initializer file"
+</pre>
 <h2>Feature: Request Invitation</h2>
 <p>Now we’ll pick a user story and turn it into a specification that will guide implementation of a feature.</p>
-<p>First we’ll get our git workflow set up for adding a new feature.</p>
+<p>First we’ll set up our git workflow for adding a new feature.</p>
 <h3>Git Workflow</h3>
 <p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
 <p>Create a new git branch for this feature:</p>
@@ -492,7 +499,7 @@ so I'll be notified when the site is launched
 	<li>It is the basis for acceptance testing or integration testing.</li>
 </ul><p>For the purposes of this tutorial, acceptance tests and integration tests are synonymous. Acceptance tests demonstrate that developers have succeeded in implementing a specification. Integration tests assure you that your application runs as intended. We will use the specification to create an automated acceptance test so we know when a feature has been successfully implemented. Our acceptance tests also serve as integration tests so we can continue to test the code as we build out or maintain the application. Automated acceptance tests are the key to managing risk for a software development project.</p>
 <p>We’ll use Cucumber to create our specification and acceptance tests. Not all developers use Cucumber. Some developers create integration tests using <a href="http://inancgumus.com/66712574">Capybara in combination with RSpec</a> as described in Ryan Bates’s <a href="http://railscasts.com/episodes/275-how-i-test">How I Test</a> Railscast. Cucumber is appropriate when a team includes nonprogrammers who are involved in defining product requirements or there is a need for a specification and acceptance tests to be maintained independently of implementation (for example, when implementation is outsourced). For this tutorial, we may all be programmers, but using Cucumber to create a specification helps to describe the features, organize the tutorial, and break the work into discrete tasks.</p>
-<p>Cucumber is a tool for managing software development. It’s up to you to decide if you need to establish management processes at this stage of your business.</p>
+<p>Cucumber is a tool for managing software development. It’s up to you to decide if you need tools for managing development processes at this stage of your business.</p>
 <h3>Cucumber Scenario</h3>
 <p>Now we begin writing our specification.</p>
 <p>The <strong>features</strong> directory contains our Cucumber feature files. We can organize Cucumber feature files any way we wish by placing them in subdirectories. For this application, we’ll organize features by roles in subdirectories for “visitors” and “owner”. Create a subdirectory <strong>features/visitors</strong> and then create the following file:</p>
@@ -595,10 +602,10 @@ $ bundle exec rake db:test:prepare
 <pre>
 $ bundle exec cucumber features/visitors/request_invitation.feature
 </pre>
-<p>The test should fail indicating that the home page has no button “Request Invitation.”</p>
+<p>The test should fail because our feature is not yet implemented.</p>
 <h3>Implement “Request Invitation” Form</h3>
-<p>We begin implementing the actual application here.</p>
-<p>The application’s home page doesn’t contain a “Request Invitation” form. Should we add a sign-up form to the home page? We could but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to adapt the existing Devise mechanism.</p>
+<p>We begin implementing the feature here.</p>
+<p>The application’s home page doesn’t contain a “Request Invitation” form. We have some choices. Should we add a sign-up form to the home page? We could but we already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to adapt the existing Devise mechanism.</p>
 <p>We’ll modify the Devise form to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm</a> gem. The SimpleForm gem lets us create forms that include tags that apply attractive Twitter Bootstrap form styles.</p>
 <p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
 <ul>
@@ -646,6 +653,7 @@ end
 </pre>
 <h3>Adjust Acceptance Tests</h3>
 <p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
+<p>We no longer ask the visitor to set a password when the account is created.</p>
 <p>Replace the <code>sign_up</code> method with the following:</p>
 <pre>
 def sign_up
@@ -656,7 +664,7 @@ def sign_up
   find_user
 end
 </pre>
-<p>We no longer ask the visitor to set a password when the account is created.</p>
+<p>We no longer ask the visitor to supply a name when the account is created.</p>
 <p>In the <strong>features/users/sign_up.feature</strong> file, remove the following:</p>
 <pre>
 Scenario: User signs up without password
@@ -671,7 +679,7 @@ Scenario: User signs up with mismatched password and confirmation
   When I sign up with a mismatched password confirmation
   Then I should see a mismatched password message
 </pre>
-<p>We no longer ask the visitor to supply a name when the account is created.</p>
+<p>We’ve also removed the list iof users from the home page.</p>
 <p>In the <strong>features/users/user_show.feature</strong> file, remove the following:</p>
 <pre>
 Scenario: Viewing users
@@ -691,12 +699,15 @@ root :to =&gt; "home#index"
 </pre>
 <p>To make the Devise registrations page serve as the home page for users who have no account (or are not logged in),  replace the second <code>root :to =&gt; "home#index"</code> so you see this:</p>
 <pre>
-authenticated :user do
-  root :to =&gt; 'home#index'
-end
-  
-devise_scope :user do
-  root :to =&gt; "devise/registrations#new"
+RailsPrelaunchSignup::Application.routes.draw do
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  devise_scope :user do
+    root :to =&gt; "devise/registrations#new"
+  end
+  devise_for :users
+  resources :users, :only =&gt; [:show, :index]
 end
 </pre>
 <p>With this change, casual visitors will see a “Request Invitation” form on the home page. And users who log in (presumably only an administrator or invited guests) will see the application “home#index” page.</p>
@@ -717,16 +728,18 @@ class RegistrationsController &lt; Devise::RegistrationsController
   protected
 
   def after_inactive_sign_up_path_for(resource)
+    # the page prelaunch visitors will see after they request an invitation
     '/thankyou.html'
   end
   
   def after_sign_up_path_for(resource)
-    '/thankyou.html'
+    # the page new users will see after sign up (after launch, when no invitation is needed)
+    redirect_to root_path
   end
   
 end
 </pre>
-<p>When a visitor creates an account by requesting an invitation, Devise will call the <code>after_inactive_sign_up_path_for</code> method to redirect the visitor to the thank you page. In the future, after you launch the application and allow visitors to become active as soon as they create an account, you may use the <code>after_sign_up_path_for</code> to redirect the new user to the thank you page.</p>
+<p>When a visitor creates an account by requesting an invitation, Devise will call the <code>after_inactive_sign_up_path_for</code> method to redirect the visitor to the thank you page. In the future, after you launch the application and allow visitors to become active as soon as they create an account, you may use the <code>after_sign_up_path_for</code> to redirect the new user to a welcome page.</p>
 <p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
 <pre>
 devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations" }
@@ -781,6 +794,7 @@ end
 <h3>Send a Welcome Email</h3>
 <p>Ordinarily, when the Devise Confirmable module is configured and a new user requests an invitation, Devise will send an email with instructions to confirm the account. We’ve changed this behavior so the user doesn’t get a confirmation request. However, we still want to send a welcome email.</p>
 <p>We didn’t revise the confirmation email to make it a welcome message. That might seem simpler but it would require us to re-implement the confirmation request process later. Instead we’ll add send an email welcome message using a new ActionMailer method when the account is created.</p>
+<p>You can skip this step if you plan on using MailChimp to manage a mailing list of visitors who have requested invitations. Later in this tutorial, we show how to set up MailChimp to collect email addresses. MailChimp offers an option to send a welcome email when a new user is subscribed to the mailing list. MailChimp makes it easy to design an attractive welcome email so we recommend using MailChimp’s welcome message. For now, we suggest following along so you can see how we send email from Rails.</p>
 <p>Generate a mailer with views and a spec:</p>
 <pre>
 $ rails generate mailer UserMailer
@@ -856,7 +870,7 @@ We have received your request for an invitation to example.com.
  
 We'll contact you when we launch.
 </pre>
-<p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email.</p>
+<p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email. If you use the Mandrill service, you can skip this step if you configure Mandrill to automatically generate a plain-text version of all emails.</p>
 <p>Now we’ll wire up the User model to send the welcome message when an account is created.</p>
 <p>Modify the file <strong>app/models/user.rb</strong> to add the <code>send_welcome_email</code> method:</p>
 <pre>
@@ -921,22 +935,18 @@ Then /^I see an unconfirmed account message$/ do
   page.should have_content "Your account is not active."
 end
 </pre>
-<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. We want visitors to see these links after we launch. Before we launch, we don’t want visitors to see these links. The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll create a new “links” partial.</p>
+<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. We want visitors to see these links after we launch. Before we launch, we don’t want visitors to see these links. The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll modify the Devise “links” partial.</p>
 <p>In the “links” partial we’ll use a configuration constant: <code>Rails.configuration.launched</code>. This constant is set to false (before we launch our site) or true (after we launch our site). When the constant is false, the links for “Didn’t receive confirmation instructions?” and “Forgot your password?” will not appear.</p>
-<p>Create a file <strong>app/views/devise/shared/_links.html.haml</strong>:</p>
+<p>Modify the file <strong>app/views/devise/shared/_links.html.haml</strong>:</p>
 <pre>
-- if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks'
-  = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
+- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' &amp;&amp; Rails.configuration.launched == true
+  = link_to "Forgot your password?", new_password_path(resource_name)
   %br/
-- if devise_mapping.omniauthable?
-  - resource_class.omniauth_providers.each do |provider|
-    = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
-    %br/
 - if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations' &amp;&amp; Rails.configuration.launched == true
   = link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name)
   %br/
-- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' &amp;&amp; Rails.configuration.launched == true
-  = link_to "Forgot your password?", new_password_path(resource_name)
+- if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks'
+  = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
   %br/
 </pre>
 <p>Now our feature is complete.</p>
@@ -1993,7 +2003,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-20 12:40:53</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-20 14:47:11</p>
       </div>
     </div>
 
