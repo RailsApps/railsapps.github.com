@@ -50,10 +50,9 @@
     <div class="content wikistyle gollum textile">
       <h1>GitHub and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 May 2012</em></p>
-<p>Using GitHub with Rails. If you’re creating an app for deployment into production, collaborating with others, or simply desire to roll back code changes as needed, <a href="http://git-scm.com/">git</a> allows you to set up a source control repository. If you are building a throw-away app for your own education, you may decide not to set up git, but sooner or later you’ll need to learn to use it to participate in the open source community.</p>
+<p><em>Last updated 20 May 2012</em></p>
+<p>Using GitHub with Rails. If you are building a throw-away app for your own education, you may decide not to set up <a href="http://git-scm.com/">git</a>, but sooner or later you’ll need to learn to use git to participate in the open source community. When you are creating an app for deployment into production, collaborating with others, or simply need to roll back code changes as needed, git provides a source control repository.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<p>If you are creating a Rails application template, you can use the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/git.rb">git</a> recipe from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</p>
 <h2>New to Git?</h2>
 <p>If you arew new to git, you can read a free online version of the book <a href="http://git-scm.com/book">Pro Git</a> by Scott Chacon.</p>
 <p>Check that git is installed on your computer:</p>
@@ -61,7 +60,7 @@
 $ git version
 </pre>
 <p>If you need to install git, refer to the section <a href="http://git-scm.com/book/en/Getting-Started-Installing-Git">Installing Git</a> from Scott Chacon’s book. Also see <a href="http://git-scm.com/book/en/Getting-Started-First-Time-Git-Setup">First-Time Git Setup</a> from the book.</p>
-<p>Michael Hartl’s Rails Tutorial book also covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version control with Git</a>.</p>
+<p>Michael Hartl’s Rails Tutorial book also covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version Control with Git</a>.</p>
 <h2>Ignore Files</h2>
 <p>When you use the <code>rails new</code> command, Rails creates a <strong>.gitignore</strong> file for you. You may want to modify it:</p>
 <pre>
@@ -73,6 +72,7 @@ tmp/
 </pre>
 <p>The RailsApps project has a more extensive <a href="https://github.com/RailsApps/rails3-application-templates/blob/master/files/gitignore.txt">example <strong>.gitignore</strong> file</a> you might want to examine.</p>
 <h2>Initialize Git For Your Rails Application</h2>
+<p>You’ll need to do this if you have created a new Rails application. If you’ve created a Rails application using an <a href="https://github.com/RailsApps/rails3-application-templates">application template</a> from the Rails Apps project, the application template will have done this for you already.</p>
 <p>Be sure you are in your application’s root directory.</p>
 <p>Initialize git and check in your first commit:</p>
 <pre>
@@ -85,7 +85,7 @@ $ git commit -m 'initial commit'
 $ git status
 </pre>
 <h2>Save it to GitHub</h2>
-<p>Use a remote source control repository if you want an offsite copy of your work or you plan to share your work with others.</p>
+<p>Use a GitHub repository if you want an offsite copy of your work or you plan to share your work with others.</p>
 <p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one.</p>
 <p>Check that your GitHub account is set up properly:</p>
 <pre>
@@ -105,6 +105,24 @@ $ git commit -m "some helpful comment"
 <pre>
 $ git push origin master
 </pre>
+<h2>Git Workflow</h2>
+<p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
+<p>Here’s how to create a new git branch for a feature named “login”:</p>
+<pre>
+$ git checkout -b login
+</pre>
+<p>The command creates a new branch named “login” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
+<p>When the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<pre>
+$ git checkout master
+$ git merge --squash login
+$ git commit -am "implement 'login' feature"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D login
+</pre>
+<p>Experienced git user? Have a recommendation? Leave a comment below.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -140,7 +158,7 @@ $ git push origin master
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-20 12:13:19</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-20 12:40:53</p>
       </div>
     </div>
 
