@@ -1799,6 +1799,98 @@ $ git commit -am "enable a user to set a password"
 <pre>
 $ git branch -D fix-password
 </pre>
+<h2>Feature: Collect Email Addresses</h2>
+<p>You might like to send announcements or newsletters to all your visitors before you launch the site.</p>
+<p>You could implement some code to iterate through each user record and send an email message. That is a bad idea because your web app would have to open a connection to your <span class="caps">SMTP</span> server for each and every message (which are all identical). Some <span class="caps">SMTP</span> relay services such as SendGrid provide an <span class="caps">API</span> call that makes it easy to send an array of email addresses in a single request for processing by the relay service. That’s an option. But the most practical approach is to use a dedicated service such as MailChimp for managing and sending broadcast email.</p>
+<p>When each visitor requests an invitation, you’ll need to subscribe them to a MailChimp mailing list.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b mailchimp
+</pre>
+<h3>Hominid gem</h3>
+<p>If you have set up a <a href="http://mailchimp.com/">MailChimp</a> account and selected the “Mandrill by MailChimp” option when you generated the base application, the <a href="https://github.com/terra-firma/hominid">Hominid gem</a> will already be in your Gemfile. If not, add the Hominid gem to the <strong>Gemfile</strong>:</p>
+<pre>
+gem "hominid"
+</pre>
+<p>and run the <code>bundle install</code> command to install the required gem on your computer.</p>
+<h3>Modify the User Controller</h3>
+<p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  after_create :add_user_to_mailchimp
+  before_destroy :remove_user_from_mailchimp
+  before_save :update_mailchimp_values
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.all
+    @chart = create_chart
+  end
+  
+  def show
+    @user = User.find(params[:id])
+  end
+  
+  def invite
+    authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
+    @user = User.find(params[:id])
+    @user.send_confirmation_instructions
+    redirect_to :back, :notice =&gt; "Sent invitation to #{@user.email}."
+  end
+  
+  def bulk_invite
+    authorize! :bulk_invite, @user, :message =&gt; 'Not authorized as an administrator.'
+    users = User.where(:confirmation_token =&gt; nil).order(:created_at).limit(params[:quantity])
+    users.each do |user|
+      user.send_confirmation_instructions
+    end
+    redirect_to :back, :notice =&gt; "Sent invitation to #{users.count} users."
+  end
+  
+  private
+  
+  def create_chart
+    users_by_day = User.group("DATE(created_at)").count
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('date')
+    data_table.new_column('number')
+    users_by_day.each do |day|
+      data_table.add_row([ Date.parse(day[0]), day[1]])
+    end
+    @chart = GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table)
+  end
+
+  def add_user_to_mailchimp  
+    mailchimp = Hominid::API.new(ENV["MAILCHIMP_API_KEY"])
+    list_id = mailchimp.find_list_id_by_name "visitors"
+    info = { }
+    mailchimp.list_subscribe(list_id, self.email, info, 'html', false, true, false, false))
+  end
+  
+  def remove_user_from_mailchimp
+    # to come
+  end
+  
+  def update_mailchimp_values
+    # to come
+  end
+  
+end
+</pre>
+<p>The <code>add_user_to_mailchimp</code> method will connect with the MailChimp server and issue an <span class="caps">API</span> call to subscribe the user to the “visitors” email list. Be sure to log in to MailChimp and create a “visitors” email list before testing the application. When you want to send a newsletter or announcement, log in to your MailChimp account and use the service to send your broadcast email.</p>
+<h3>Git Workflow</h3>
+<p>Merge the new code into the master branch and commit it:</p>
+<pre>
+$ git checkout master
+$ git merge --squash mailchimp
+$ git commit -am "collect email addresses with mailchimp"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D mailchimp
+</pre>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
@@ -1871,7 +1963,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-19 16:48:48</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-19 17:32:41</p>
       </div>
     </div>
 
