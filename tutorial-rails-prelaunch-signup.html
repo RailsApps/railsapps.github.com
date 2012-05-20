@@ -139,9 +139,9 @@
 	<li><a href="http://www.verticalresponse.com/pricing">VerticalResponse</a></li>
 </ul><p>This tutorial shows how to add visitors who request an invitation to a <a href="http://mailchimp.com/">MailChimp</a> list. MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free.</p>
 <h3>Domain Registration</h3>
-<p>You’ll need a domain name before you set up an <span class="caps">SMTP</span> relay service (which you’ll need if you’ll be sending more than a few email messages). <a href="http://www.namecheap.com/">NameCheap</a> is a popular alternative to the much-maligned GoDaddy.</p>
+<p>You’ve likely already selected and registered a domain name. If not, you’ll need a domain before you start sending email messages from the application. For domain name registration, <a href="http://www.namecheap.com/">NameCheap</a> is a popular alternative to the much-maligned GoDaddy.</p>
 <h3>GitHub</h3>
-<p>You’ll need an account on GitHub. Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
+<p>You’ll need a GitHub account if you plan to deploy to Heroku. If you’re not going to use Heroku, you’ll still need to use git to manage your source code. Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
 <h2>Creating the Application</h2>
 <h3>Option One</h3>
 <p><em>Follow this tutorial.</em></p>
@@ -157,7 +157,7 @@
 </ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>About the Software Development Process</h2>
-<p>Arguably, for a simple application like this, you don’t need a lot of ceremony. There’s no need for a written specification. And no need for tests, right? Just code it up. However, for the purposes of this tutorial, I want to show the practices that establish a good software development process. You may find it beneficial to use the same process when you develop more complex applications.</p>
+<p>Arguably, for a simple application like this, you don’t need a lot of “ceremony.” There’s no need for a written specification. And no need for tests, right? Just write some code. However, for this tutorial, I will show the practices that establish an effective software development process. If you’re a solo operator, they can help; if you plan on growing a company, they are fundamental.</p>
 <p>Here’s the software development process we’ll use:</p>
 <ul>
 <li>write user stories</li>
@@ -166,13 +166,15 @@
 	<li>code each feature</li>
 	<li>run acceptance tests as each feature is completed</li>
 </ul><p>By practicing the process that leads from concept to code, you’ll be prepared to build more complex applications.</p>
+<p>We’ll discuss alternatives to Cucumber (RSpec and Capybara) that may be more appropriate for smaller projects.</p>
 <h3>Write Your User Stories</h3>
-<p><a href="http://en.wikipedia.org/wiki/User_story">User stories</a> are a way to discuss and describe the requirements for a software application. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories will help you organize your work and track progress toward completion.</p>
+<p>User stories (definition: <a href="http://en.wikipedia.org/wiki/User_story">user stories</a>) are a way to discuss and describe the requirements for a software application. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories will help you organize your work and track progress toward completion.</p>
 <p>User stories are generally expressed in the following format:</p>
 <pre>
 As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
 </pre>
-<p>As an example, here are four user stories we will implement for this application:</p>
+<p>As an example, here are four user stories we will implement for this application.</p>
+<p>You may have ideas for additional features for this application. If you’d like to make a suggestion, create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a> describing the feature you’d like to see.</p>
 <pre>
 *Request Invitation*
 As a visitor to the website
@@ -194,20 +196,16 @@ As the owner of the site
 I want to collect email addresses for a mailing list
 so I can send announcements before I launch the site
 </pre>
-<p>If you have ideas for additional features for this application, simply create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a> describing the feature you’d like to see.</p>
+<p>We’ll use this list of user stories as our to-do list in implementing the application. But first we’ll step through the process of creating a basic Rails application.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating an example app using an application template script.</p>
-<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>For a starter app using ActiveRecord and a <span class="caps">SQL</span> database, use the command:</p>
+<p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use an application template to create a more complex “starter” app. The <a href="https://github.com/RailsApps/rails3-application-templates">application templates</a> from the Rails Apps project give you more fully-featured starter apps than you get with the default <code>rails new</code> command. With an application template, you’ll get your choice of various popular gems; Devise will be installed with Cancan for authorization; and Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling.</p>
+<p>For a starter app using ActiveRecord and an <span class="caps">SQL</span> database, use the command:</p>
 <pre>
 $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-bootstrap-devise-cancan-template.rb -T
 </pre>
 <p>Use the <code>-T</code> flags to skip Test::Unit files.</p>
-<p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database use the <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> starter app:</p>
-<pre>
-$ rails new rails-prelaunch-signup -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-mongoid-devise-template.rb -T -O
-</pre>
-<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
+<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
 <p>This creates a new Rails app named <code>rails-prelaunch-signup</code> on your computer. You can use a different name if you wish.</p>
 <p>The application generator template will ask you for your preferences. For this tutorial, choose the following preferences:</p>
 <ul>
@@ -1993,7 +1991,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-19 20:21:06</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-20 12:13:19</p>
       </div>
     </div>
 
