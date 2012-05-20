@@ -887,6 +887,16 @@ class User &lt; ActiveRecord::Base
   after_create :send_welcome_email
 
   # override Devise method
+  # no password is required when the account is created; validate password when the user sets one
+  def password_required?
+    if !persisted? 
+      false
+    else
+      !password.nil? || !password_confirmation.nil?
+    end
+  end
+  
+  # override Devise method
   def confirmation_required?
     false
   end
@@ -951,6 +961,10 @@ end
 </pre>
 <p>Now our feature is complete.</p>
 <h3>Test the Implemention of the “Request Invitation” Feature</h3>
+<p>Be sure you’ve set up the database for testing before running Cucumber:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
 <p>Run the integration test with the following command:</p>
 <pre>
 $ bundle exec cucumber features/visitors/request_invitation.feature
@@ -958,6 +972,11 @@ $ bundle exec cucumber features/visitors/request_invitation.feature
 <p>The test should succeed.</p>
 <p>Evaluating only the functionality, the feature is complete. In the next section, we’ll improve the look and feel of the feature.</p>
 <h3>Git Workflow</h3>
+<p>If you haven’t commited any changes yet, commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "implement 'Request Invitation' feature"
+</pre>
 <p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
 <pre>
 $ git checkout master
@@ -2003,7 +2022,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-20 14:47:11</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-20 15:50:06</p>
       </div>
     </div>
 
