@@ -390,11 +390,11 @@ config.action_mailer.smtp_settings = {
   :address   =&gt; "smtp.mandrillapp.com",
   :port      =&gt; 25,
   :user_name =&gt; ENV["MANDRILL_USERNAME"],
-  :password  =&gt; ENV["MANDRILL_PASSWORD"]
+  :password  =&gt; ENV["MANDRILL_API_KEY"]
 }
 </pre>
-<p>Note that the Mandrill password will be your Mandrill <span class="caps">API</span> key.</p>
-<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_PASSWORD"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key.</p>
+<p>Note that the password will be your Mandrill <span class="caps">API</span> key.</p>
+<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_API_KEY"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key.</p>
 <h3>Set Environment Variables for Email</h3>
 <p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
 <p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add (for Gmail):</p>
@@ -405,7 +405,15 @@ export GMAIL_PASSWORD="secret"
 <p>or for Mandrill:</p>
 <pre>
 export MANDRILL_USERNAME="myname"
-export MANDRILL_PASSWORD="secret"
+export MANDRILL_API_KEY="secret"
+</pre>
+<p>If you deploy to Heroku, you will need to set the username and password as Heroku environment variables:</p>
+<pre>
+$ heroku config:add GMAIL_USERNAME=myname@gmail.com GMAIL_PASSWORD=secret
+</pre>
+<p>or for Mandrill:</p>
+<pre>
+$ heroku config:add MANDRILL_USERNAME=myname MANDRILL_API_KEY=secret
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
 <h3>Configure Devise for Email</h3>
@@ -1768,7 +1776,7 @@ end
 </pre>
 <h3>Modify the User Model</h3>
 <p>We need to modify the User model to allow the new user to set a password when they confirm their account.</p>
-<p>Add the following methods to the file <strong>app/models/user.rb</strong></p>
+<p>Add the following methods to the file <strong>app/models/user.rb</strong>:</p>
 <pre>
 # new function to set the password
 def attempt_set_password(params)
@@ -1814,72 +1822,94 @@ $ git checkout -b mailchimp
 gem "hominid"
 </pre>
 <p>and run the <code>bundle install</code> command to install the required gem on your computer.</p>
-<h3>Modify the User Controller</h3>
-<p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
+<h3>Modify the User Model</h3>
+<p>Modify the file <strong>app/models/user.rb</strong>:</p>
 <pre>
-class UsersController &lt; ApplicationController
-  before_filter :authenticate_user!
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :invitable, :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+
   after_create :add_user_to_mailchimp
   before_destroy :remove_user_from_mailchimp
-  before_save :update_mailchimp_values
 
-  def index
-    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.all
-    @chart = create_chart
-  end
-  
-  def show
-    @user = User.find(params[:id])
-  end
-  
-  def invite
-    authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
-    @user = User.find(params[:id])
-    @user.send_confirmation_instructions
-    redirect_to :back, :notice =&gt; "Sent invitation to #{@user.email}."
-  end
-  
-  def bulk_invite
-    authorize! :bulk_invite, @user, :message =&gt; 'Not authorized as an administrator.'
-    users = User.where(:confirmation_token =&gt; nil).order(:created_at).limit(params[:quantity])
-    users.each do |user|
-      user.send_confirmation_instructions
+  # override Devise method
+  # no password is required when the account is created; validate password when the user sets one
+  def password_required?
+    if !persisted? 
+      false
+    else
+      !password.nil? || !password_confirmation.nil?
     end
-    redirect_to :back, :notice =&gt; "Sent invitation to #{users.count} users."
   end
   
+  # override Devise method
+  def confirmation_required?
+    false
+  end
+  
+  # override Devise method
+  def active_for_authentication?
+    confirmed? || confirmation_period_valid?
+  end
+  
+  # new function to set the password
+  def attempt_set_password(params)
+    p = {}
+    p[:password] = params[:password]
+    p[:password_confirmation] = params[:password_confirmation]
+    update_attributes(p)
+  end
+  
+  # new function to determine whether a password has been set
+  def has_no_password?
+    self.encrypted_password.blank?
+  end
+
+  # new function to provide access to protected method pending_any_confirmation
+  def only_if_unconfirmed
+    pending_any_confirmation {yield}
+  end
+    
   private
-  
-  def create_chart
-    users_by_day = User.group("DATE(created_at)").count
-    data_table = GoogleVisualr::DataTable.new
-    data_table.new_column('date')
-    data_table.new_column('number')
-    users_by_day.each do |day|
-      data_table.add_row([ Date.parse(day[0]), day[1]])
-    end
-    @chart = GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table)
-  end
 
-  def add_user_to_mailchimp  
-    mailchimp = Hominid::API.new(ENV["MAILCHIMP_API_KEY"])
+  def add_user_to_mailchimp
+    mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
     list_id = mailchimp.find_list_id_by_name "visitors"
     info = { }
-    mailchimp.list_subscribe(list_id, self.email, info, 'html', false, true, false, false))
+    result = mailchimp.list_subscribe(list_id, self.email, info, 'html', false, true, false, true)
+    Rails.logger.info("MAILCHIMP SUBSCRIBE: result #{result.inspect} for #{self.email}")
   end
   
   def remove_user_from_mailchimp
-    # to come
+    mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
+    list_id = mailchimp.find_list_id_by_name "visitors"
+    result = mailchimp.list_unsubscribe(list_id, self.email, true, false, true)  
+    Rails.logger.info("MAILCHIMP UNSUBSCRIBE: result #{result.inspect} for #{self.email}")
   end
-  
-  def update_mailchimp_values
-    # to come
-  end
-  
+
 end
 </pre>
+<p>We’ve removed one method, <code>send_welcome_email</code>, and added two methods:</p>
+<ul>
+<li><code>add_user_to_mailchimp</code></li>
+	<li><code>remove_user_from_mailchimp</code></li>
+</ul><p>See the documentation for the <a href="http://apidocs.mailchimp.com/api/rtfm/listsubscribe.func.php">MailChimp <span class="caps">API</span> listSubscribe function</a> for a list of the parameters. Notice the final parameter sends a welcome email when set to “true.”</p>
+<pre>
+listSubscribe(string list_id, string email_address, array merge_vars, string email_type, bool double_optin, bool update_existing, bool replace_interests, bool send_welcome)
+</pre>
 <p>The <code>add_user_to_mailchimp</code> method will connect with the MailChimp server and issue an <span class="caps">API</span> call to subscribe the user to the “visitors” email list. Be sure to log in to MailChimp and create a “visitors” email list before testing the application. When you want to send a newsletter or announcement, log in to your MailChimp account and use the service to send your broadcast email.</p>
+<p>We remove the <code>send_welcome_email</code> method because MailChimp gives us an option to send a welcome email when a visitor subscribes to a mailing list. It’s easier to compose an attractive welcome email using MailChimp’s templates than to create one from scratch. Be sure to log in to MailChimp and create a welcome email message for members of the “visitors” email list before testing the application.</p>
+<p>We add <code>remove_user_from_mailchimp</code> method to delete the user as necessary. The documentation for the <a href="http://apidocs.mailchimp.com/api/rtfm/listUnsubscribe.func.php">MailChimp <span class="caps">API</span> listUnsubscribe function</a> offers a few options:</p>
+<pre>
+listUnsubscribe(string list_id, string email_address, boolean delete_member, boolean send_goodbye, boolean send_notify)
+</pre>
+<p>Our “Collect Email Addresses” feature is complete.</p>
 <h3>Git Workflow</h3>
 <p>Merge the new code into the master branch and commit it:</p>
 <pre>
@@ -1963,7 +1993,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-19 17:32:41</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-19 20:21:06</p>
       </div>
     </div>
 
