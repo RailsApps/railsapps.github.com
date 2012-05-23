@@ -50,7 +50,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 22 May 2012</em></p>
+<p><em>Last updated 23 May 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -76,7 +76,7 @@
 <h3>How We Configure Devise</h3>
 <p>Devise offers many features and configuration choices; in fact, exploring its options can take more time than actually implementing authentication from scratch. This app will save you time; we’ve selected the configuration that best accommodates a typical web startup signup site.</p>
 <p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, go to the app’s administrative interface. Then select users to receive an invitation that instructs them to confirm their email address and set a password.</p>
-<p>The <a href="https://github.com/plataformatec/devise/wiki">Devise wiki</a> and discussion on <a href="http://stackoverflow.com/questions/tagged/devise">Stack Overflow</a> can help you if you want something different.</p>
+<p>If you want something different, look for help on the <a href="https://github.com/plataformatec/devise/wiki">Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">Stack Overflow</a>.</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p>This application is based on two of the RailsApps example apps:</p>
@@ -1040,15 +1040,14 @@ $ git checkout -b modal
 <p>When you test this by submitting a form without an email address, you’ll see the form appears with error messages. However, we don’t see the full effect of the modal window because the page is not opaque as it should be with the modal window. We can keep the modified code, but we really need some jQuery code to trigger the modal window when an error message is present.</p>
 <p>Add the following to the file <strong>app/assets/javascripts/application.js</strong>:</p>
 <pre>
-// display validation errors for the "request invitation" form
 $('document').ready(function() {
-  if ($('#error_explanation').length &gt; 0) {
+  // display validation errors for the "request invitation" form
+  if ($('.alert-error').length &gt; 0) {
     $("#request-invite").modal('toggle');
   }
 })
 </pre>
-<p>When the <code>#error_explanation</code> element contains text, the page will refresh and the modal window will be displayed properly.</p>
-<p><em>Note:</em> Actually, it doesn’t work. With SimpleForm there is no <code>#error_explanation</code> element. I’ll research this and see if there is an alternative approach that works with SimpleForm. It’s okay to skip this step because adding <span class="caps">AJAX</span> (in the next step) removes the need for this trick.</p>
+<p>When an element is present with the <code>alert-error</code> class, and it contains text, the page will refresh and the modal window will be displayed properly. We use jQuery’s selector syntax to determine if an error message is present. We start with the jQuery object <code>$()</code>, find any elements with the <code>alert-error</code> class attribute using the <a href="http://api.jquery.com/class-selector/">jQuery class selector</a>, and then test if the element has a length greater than zero. If our condition is met, we use the <a href="http://api.jquery.com/id-selector/">jQuery ID selector</a> to find the div named <code>request-invite</code> and we toggle the modal window.</p>
 <h2>Improving the Design: Adding <span class="caps">AJAX</span>
 </h2>
 <p><em>Thank you to <a href="http://andreapavoni.com">Andrea Pavoni</a> for the <span class="caps">AJAX</span> implementation.</em></p>
@@ -1069,7 +1068,7 @@ $('document').ready(function() {
 $('document').ready(function() {
   
   // display validation errors for the "request invitation" form
-  if ($('#error_explanation').length &gt; 0) {
+  if ($('.alert-error').length &gt; 0) {
     $("#request-invite").modal('toggle');
   }
   
@@ -1138,8 +1137,10 @@ end
 <p>Now we can say we have built a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
 <h3>Git Workflow</h3>
 <p>If you haven’t commited any changes yet, commit your changes to git:</p>
-<p>$ git add .<br>
-$ git commit -am “improve design for ‘Request Invitation’ feature”</p>
+<pre>
+$ git add .
+$ git commit -am "improve design for 'Request Invitation' feature"
+</pre>
 <p>Merge the working branch to “master”:</p>
 <pre>
 $ git checkout master
@@ -1383,7 +1384,7 @@ $ git commit -am "add chart to admin dashboard"
 $ git branch -D add-chart
 </pre>
 <h2>Improving the Design: Sorting a Table</h2>
-<p>We can make our administrative dashboard more useful by improving the display of the table of users. As implemented so far, it is just a simple list. We can add a jQuery plugin to give us a table that is sortable, searchable, and with pagination. The <a href="http://www.datatables.net/">DataTables jQuery plugin</a> is popular and integrates with Twitter Bootstrap. Ryan Bates offers a <a href="http://railscasts.com/episodes/340-datatables">DataTables RailsCast</a> that shows how to set it up using Robin Wenglewski’s <a href="https://github.com/rweng/jquery-datatables-rails">jquery-datatables-rails</a> gem.</p>
+<p>We can make our administrative dashboard more useful by improving the display of the table of users. As implemented so far, it is just a simple list. We can add a jQuery plugin to give us a table that is sortable, searchable, and adds pagination. The <a href="http://www.datatables.net/">DataTables jQuery plugin</a> is popular and integrates with Twitter Bootstrap. Ryan Bates offers a <a href="http://railscasts.com/episodes/340-datatables">DataTables RailsCast</a> that shows how to set it up using Robin Wenglewski’s <a href="https://github.com/rweng/jquery-datatables-rails">jquery-datatables-rails</a> gem.</p>
 <p>First we’ll set up our git workflow so we can add a new feature.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for this feature:</p>
@@ -1454,7 +1455,12 @@ jQuery -&gt;
 <h3>Scalability Issues</h3>
 <p>As implemented, our administrative page has a scalability constraint. In the Users controller, we query the database for all the users in the database and render a page containing a table of all the users. If we have many thousands of users requesting invitations, the administrative page will be slow to load. Ryan Bates shows how to implement pagination using server-side processing in his <a href="http://railscasts.com/episodes/340-datatables">DataTables RailsCast</a>. For a startup launch with a few thousand users, our implementation should be adequate.</p>
 <h3>Git Workflow</h3>
-<p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<p>If you haven’t commited any changes yet, commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "add sortable table on the admin dashboard"
+</pre>
+
 <pre>
 $ git checkout master
 $ git merge --squash sort-table
@@ -1516,7 +1522,8 @@ $ bundle exec cucumber features/admin/send_invitations.feature
 </pre>
 <p>The test will fail because we haven’t yet implemented the functionality.</p>
 <h3>Implementation</h3>
-<p>Devise already knows how to send an account confirmation email to a user, with its <code>user.send_confirmation_instructions</code> method, which will generate a confirmation token and send an email message to the user. We’ll add a “send invitation” link to each user listed on the administrative dashboard. We’ll need a corresponding <code>invite</code> action in the user controller and a matching route. We also want to make sure only an administrator is authorized to initiate the <code>invite</code> action.</p>
+<p>We’ll add a “send invitation” link to each user listed on the administrative dashboard. We’ll need a corresponding <code>invite</code> action in the user controller and a matching route. We also want to make sure only an administrator is authorized to initiate the <code>invite</code> action.</p>
+<p>Devise already knows how to send an account confirmation email to a user, with its <code>user.send_confirmation_instructions</code> method, which will generate a confirmation token and send an email message to the user. We’ll call the Devise <code>user.send_confirmation_instructions</code> method from the <code>invite</code> action in the user controller.</p>
 <h3>Add a User Controller Action</h3>
 <p>So far, our application architecture has been very simple. We’ve used a few RESTful actions supplied by Devise and improved on a simple <code>index</code> method to prepare our administrative dashboard page. Now we’ll need a custom <code>invite</code> action in the user controller.</p>
 <p>Modify the controller file <strong>app/controllers/users_controller.rb</strong>:</p>
@@ -1598,6 +1605,52 @@ end
 </pre>
 <p>Now, as the site administrator, you can invite individual users to complete the account confirmation process and obtain access to the site.</p>
 <p>There’s a bit of complex logic in the display of the “send invitation” link. First, with <code>unless user.confirmed_at</code>, we check to see if the user has already confirmed the account. Next, we check the user’s <code>confirmation_token</code> attribute to see if we’ve already sent an invitation (in which case, a confirmation token was set by Devise). If no confirmation token was set, we display the link “send invitation”; otherwise, we display “resend”.</p>
+<h3>Customizing the Devise Confirmation Email</h3>
+<p>Here’s the mailer view that Devise uses for the confirmation email:</p>
+<pre>
+&lt;p&gt;Welcome &lt;%= @resource.email %&gt;!&lt;/p&gt;
+
+&lt;p&gt;You can confirm your account email through the link below:&lt;/p&gt;
+
+&lt;p&gt;&lt;%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token =&gt; @resource.confirmation_token) %&gt;&lt;/p&gt;
+</pre>
+<p>You may want to customize the confirmation email to be more attractive or informative.</p>
+<p>Devise hides all its logic and views (including mailer templates) inside the Devise gem package. Devise is like any other Rails engine; we can override its views in our application.</p>
+<p>First, create a folder <strong>app/views/devise/mailer</strong>.</p>
+<p>Create a file <strong>app/views/devise/mailer/confirmation_instructions.html.erb</strong>:</p>
+<pre>
+&lt;p&gt;Welcome &lt;%= @resource.email %&gt;!&lt;/p&gt;
+
+&lt;p&gt;We're pleased to invite you to try &lt;%= link_to 'example.com', root_url %&gt;.&lt;/p&gt;
+
+&lt;p&gt;Please click the link below to confirm your email address and set your password:&lt;/p&gt;
+
+&lt;p&gt;&lt;%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token =&gt; @resource.confirmation_token) %&gt;&lt;/p&gt;
+</pre>
+<p>Here’s a tip. If you’re using MailChimp or another mailing list service, you can use the templates offered by the service as a basis for your confirmation email message. For example, start with one of the templates suggested for a welcome message. Copy the <span class="caps">HTML</span> version of the message and use it for your confirmation email message.</p>
+<h3>Customizing Other Devise Emails</h3>
+<p>When you are ready to launch your website, you may want to customize other Devise email messages. Here are the other messages Devise provides.</p>
+<p>“Reset Password” instructions can be overridden in the file <strong>app/views/devise/mailer/reset_password_instructions.html.erb</strong>:</p>
+<pre>
+&lt;p&gt;Hello &lt;%= @resource.email %&gt;!&lt;/p&gt;
+
+&lt;p&gt;Someone has requested a link to change your password, and you can do this through the link below.&lt;/p&gt;
+
+&lt;p&gt;&lt;%= link_to 'Change my password', edit_password_url(@resource, :reset_password_token =&gt; @resource.reset_password_token) %&gt;&lt;/p&gt;
+
+&lt;p&gt;If you didn't request this, please ignore this email.&lt;/p&gt;
+&lt;p&gt;Your password won't change until you access the link above and create a new one.&lt;/p&gt;
+</pre>
+<p>“Unlock Account” instructions can be overridden in the file <strong>app/views/devise/mailer/unlock_instructions.html.erb</strong>:</p>
+<pre>
+&lt;p&gt;Hello &lt;%= @resource.email %&gt;!&lt;/p&gt;
+
+&lt;p&gt;Your account has been locked due to an excessive amount of unsuccessful sign in attempts.&lt;/p&gt;
+
+&lt;p&gt;Click the link below to unlock your account:&lt;/p&gt;
+
+&lt;p&gt;&lt;%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token =&gt; @resource.unlock_token) %&gt;&lt;/p&gt;
+</pre>
 <h3>Bulk Invitations</h3>
 <p>If you are selecting only a few dozen (or a few hundred) initial users, this process of manual selection will be adequate. If you are ready to launch and want to invite many thousand users, you’ll need a way to invite multiple users with a single action. We need to implement a “bulk invitations” feature.</p>
 <p>You should set up an <span class="caps">SMTP</span> relay service such as <a href="http://mandrill.com/">Mandrill</a> or <a href="http://sendgrid.com/">SendGrid</a> before you attempt to send more than a few dozen email messages.</p>
@@ -1658,13 +1711,14 @@ RailsPrelaunchSignup::Application.routes.draw do
     root :to =&gt; "devise/registrations#new"
     match '/user/confirmation' =&gt; 'confirmations#update', :via =&gt; :put, :as =&gt; :update_user_confirmation
   end
-  devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations", :confirmations =&gt; "confirmations" }
+  devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations" }
   match 'users/bulk_invite/:quantity' =&gt; 'users#bulk_invite', :via =&gt; :get, :as =&gt; :bulk_invite
   resources :users, :only =&gt; [:show, :index] do
     get 'invite', :on =&gt; :member
   end
 end
 </pre>
+<p>Notice that we add two new routes. The route <code>match '/user/confirmation'</code> is there to accommodate the confirmation link in the email message received by invited users. The route <code>match 'users/bulk_invite/:quantity'</code> handles the <code>bulk_invite</code> action we initiate from the administrative dashboard.</p>
 <p>Finally, we will modify the file <strong>app/views/users/index.html.haml</strong> to add links for the <code>bulk_invite</code> action:</p>
 <pre>
 - content_for :head do
@@ -1703,7 +1757,12 @@ end
 </pre>
 <p>We now have the option to send 10, 50, 100, 500, or 1000 invitations at once.</p>
 <h3>Git Workflow</h3>
-<p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+<p>If you haven’t commited any changes yet, commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "enable admin to send invitations"
+</pre>
+
 <pre>
 $ git checkout master
 $ git merge --squash invitations
@@ -1852,6 +1911,11 @@ def only_if_unconfirmed
 end
 </pre>
 <h3>Git Workflow</h3>
+<p>If you haven’t commited any changes yet, commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "enable a user to set a password"
+</pre>
 <p>Merge the new code into the master branch and commit it:</p>
 <pre>
 $ git checkout master
@@ -1864,7 +1928,7 @@ $ git branch -D fix-password
 </pre>
 <h2>Feature: Collect Email Addresses</h2>
 <p>You might like to send announcements or newsletters to all your visitors before you launch the site.</p>
-<p>You could implement some code to iterate through each user record and send an email message. That is a bad idea because your web app would have to open a connection to your <span class="caps">SMTP</span> server for each and every message (which are all identical). Some <span class="caps">SMTP</span> relay services such as SendGrid provide an <span class="caps">API</span> call that makes it easy to send an array of email addresses in a single request for processing by the relay service. That’s an option. But the most practical approach is to use a dedicated service such as MailChimp for managing and sending broadcast email.</p>
+<p>You could implement some code to iterate through each user record and send each an email message. That is a bad idea because your web app would have to open a connection to your <span class="caps">SMTP</span> server for every message (which are all identical). Some <span class="caps">SMTP</span> relay services such as SendGrid provide an <span class="caps">API</span> call that makes it easy to send an array of email addresses in a single request for processing by the relay service. That’s an option. But the most practical approach is to use a dedicated service such as MailChimp for managing and sending broadcast email. You won’t tie up your app sending bulk email and you’ll be able to use services such as delivery tracking and well-designed templates.</p>
 <p>When each visitor requests an invitation, you’ll need to subscribe them to a MailChimp mailing list.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for this feature:</p>
@@ -1966,6 +2030,11 @@ listUnsubscribe(string list_id, string email_address, boolean delete_member, boo
 </pre>
 <p>Our “Collect Email Addresses” feature is complete.</p>
 <h3>Git Workflow</h3>
+<p>If you haven’t commited any changes yet, commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "collect email addresses with mailchimp"
+</pre>
 <p>Merge the new code into the master branch and commit it:</p>
 <pre>
 $ git checkout master
@@ -2048,7 +2117,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-23 12:46:45</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-23 16:29:25</p>
       </div>
     </div>
 
