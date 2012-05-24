@@ -263,7 +263,7 @@ $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-ap
 </li>
 	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong>
 </li>
-	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong>
+	<li>Would you like to set a robots.txt file to ban spiders? <strong>no</strong>
 </li>
 	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong>
 </li>
@@ -922,13 +922,15 @@ class User &lt; ActiveRecord::Base
   private
 
   def send_welcome_email
-    UserMailer.welcome_email(self).deliver
+    unless self.email.include?('@example.com')
+      UserMailer.welcome_email(self).deliver
+    end
   end
 
 end
 </pre>
 <p>Now the visitor will get a welcome email when they request an invitation.</p>
-<p>There’s an unintended side effect of adding the <code>after_create :send_welcome_email</code> method. When you reset the database with <code>bundle exec rake db:reset</code> you’ll send welcome messages to the users listed in the <strong>db/seeds.rb</strong> file. So <em>user@example.com</em> and <em>user2@example.com</em> will get email if you haven’t modified the default file. Your mailhost may send you bounce notices warning that mail could not be delivered to these bogus users.</p>
+<p>There’s an unintended side effect of adding the <code>after_create :send_welcome_email</code> method. When you reset the database with <code>bundle exec rake db:reset</code> you’ll send welcome messages to the users listed in the <strong>db/seeds.rb</strong> file. To avoid bounce notices warning that mail could not be delivered to our bogus users, we don’t send a welcome email to addresses at the “example.com” domain.</p>
 <h3>Tweak the User Interface</h3>
 <p>The required functionality is largely complete. But there are a few small changes to make.</p>
 <p>If the user visits the sign-in page immediately after requesting an invitation, they may see this flash message:</p>
@@ -1954,8 +1956,8 @@ class User &lt; ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
 
-  after_create :add_user_to_mailchimp
-  before_destroy :remove_user_from_mailchimp
+  after_create :add_user_to_mailchimp unless Rails.env.test?
+  before_destroy :remove_user_from_mailchimp unless Rails.env.test?
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
@@ -1998,18 +2000,22 @@ class User &lt; ActiveRecord::Base
   private
 
   def add_user_to_mailchimp
-    mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
-    list_id = mailchimp.find_list_id_by_name "visitors"
-    info = { }
-    result = mailchimp.list_subscribe(list_id, self.email, info, 'html', false, true, false, true)
-    Rails.logger.info("MAILCHIMP SUBSCRIBE: result #{result.inspect} for #{self.email}")
+    unless self.email.include?('@example.com')
+      mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
+      list_id = mailchimp.find_list_id_by_name "visitors"
+      info = { }
+      result = mailchimp.list_subscribe(list_id, self.email, info, 'html', false, true, false, true)
+      Rails.logger.info("MAILCHIMP SUBSCRIBE: result #{result.inspect} for #{self.email}")
+    end
   end
   
   def remove_user_from_mailchimp
-    mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
-    list_id = mailchimp.find_list_id_by_name "visitors"
-    result = mailchimp.list_unsubscribe(list_id, self.email, true, false, true)  
-    Rails.logger.info("MAILCHIMP UNSUBSCRIBE: result #{result.inspect} for #{self.email}")
+    unless self.email.include?('@example.com')
+      mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
+      list_id = mailchimp.find_list_id_by_name "visitors"
+      result = mailchimp.list_unsubscribe(list_id, self.email, true, false, true)  
+      Rails.logger.info("MAILCHIMP UNSUBSCRIBE: result #{result.inspect} for #{self.email}")
+    end
   end
 
 end
@@ -2022,8 +2028,9 @@ end
 <pre>
 listSubscribe(string list_id, string email_address, array merge_vars, string email_type, bool double_optin, bool update_existing, bool replace_interests, bool send_welcome)
 </pre>
-<p>The <code>add_user_to_mailchimp</code> method will connect with the MailChimp server and issue an <span class="caps">API</span> call to subscribe the user to the “visitors” email list. Be sure to log in to MailChimp and create a “visitors” email list before testing the application. When you want to send a newsletter or announcement, log in to your MailChimp account and use the service to send your broadcast email.</p>
 <p>We remove the <code>send_welcome_email</code> method because MailChimp gives us an option to send a welcome email when a visitor subscribes to a mailing list. It’s easier to compose an attractive welcome email using MailChimp’s templates than to create one from scratch. Be sure to log in to MailChimp and create a welcome email message for members of the “visitors” email list before testing the application.</p>
+<p>The <code>add_user_to_mailchimp</code> method will connect with the MailChimp server and issue an <span class="caps">API</span> call to subscribe the user to the “visitors” email list. We don’t call the method if we are creating new users when running tests. And we don’t subscribe users with addresses at <code>example.com</code>.</p>
+<p>Be sure to log in to MailChimp and create a “visitors” email list before deploying the application. When you want to send a newsletter or announcement, log in to your MailChimp account and use the service to send your broadcast email.</p>
 <p>We add <code>remove_user_from_mailchimp</code> method to delete the user as necessary. The documentation for the <a href="http://apidocs.mailchimp.com/api/rtfm/listUnsubscribe.func.php">MailChimp <span class="caps">API</span> listUnsubscribe function</a> offers a few options:</p>
 <pre>
 listUnsubscribe(string list_id, string email_address, boolean delete_member, boolean send_goodbye, boolean send_notify)
@@ -2046,6 +2053,15 @@ $ git commit -am "collect email addresses with mailchimp"
 $ git branch -D mailchimp
 </pre>
 <h2>Test the App</h2>
+<p>Run the integration test suite to see if everything works.</p>
+<p>Be sure you’ve set up the database for testing before running Cucumber:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<p>Then we can run our integration test suite with the following command:</p>
+<pre>
+$ bundle exec cucumber
+</pre>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
@@ -2117,7 +2133,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-23 16:29:25</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-23 17:31:53</p>
       </div>
     </div>
 
