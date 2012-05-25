@@ -137,7 +137,7 @@
 	<li><a href="http://www.jangomail.com/pricing.asp">JangoMail</a></li>
 	<li><a href="http://www.icontact.com/affordable-email-marketing">iContact</a></li>
 	<li><a href="http://www.verticalresponse.com/pricing">VerticalResponse</a></li>
-</ul><p>This tutorial shows how to add visitors who request an invitation to a <a href="http://mailchimp.com/">MailChimp</a> list. MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free.</p>
+</ul><p>This tutorial shows how to add visitors who request an invitation to a <a href="http://mailchimp.com/">MailChimp</a> list. MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free. After you sign up for a MailChimp account, get your <span class="caps">API</span> key. Look under “Account” for “<span class="caps">API</span> Keys and Authorized Apps.” Note that the Mandrill <span class="caps">API</span> key (which you get on the <a href="http://mandrill.com/">mandrill.com</a> site) is different from the MailChimp <span class="caps">API</span> key (which you get on the <a href="http://mailchimp.com/">mailchimp.com</a> site).</p>
 <h3>Domain Registration</h3>
 <p>You’ve likely already selected and registered a domain name. If not, you’ll need a domain before you start sending email messages from the application. If you’re disgusted by GoDaddy, consider <a href="http://www.namecheap.com/">NameCheap</a> and other popular alternatives.</p>
 <h3>GitHub</h3>
@@ -410,6 +410,10 @@ export GMAIL_PASSWORD="secret"
 export MANDRILL_USERNAME="myname"
 export MANDRILL_API_KEY="secret"
 </pre>
+<p>If you are using MailChimp for managing a mailing list, add your MailChimp <span class="caps">API</span> key:</p>
+<pre>
+export MAILCHIMP_API_KEY="secret"
+</pre>
 <p>After you deploy to Heroku, you will need to set the username and password as Heroku environment variables.</p>
 <p>For Gmail:</p>
 <pre>
@@ -418,6 +422,10 @@ $ heroku config:add GMAIL_USERNAME=myname@gmail.com GMAIL_PASSWORD=secret
 <p>or for Mandrill:</p>
 <pre>
 $ heroku config:add MANDRILL_USERNAME=myname MANDRILL_API_KEY=secret
+</pre>
+<p>and MailChimp:</p>
+<pre>
+$ heroku config:add MAILCHIMP_API_KEY=secret
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
 <h3>Configure Devise for Email</h3>
@@ -2002,7 +2010,7 @@ class User &lt; ActiveRecord::Base
 
   def add_user_to_mailchimp
     unless self.email.include?('@example.com')
-      mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
+      mailchimp = Hominid::API.new(ENV["MAILCHIMP_API_KEY"])
       list_id = mailchimp.find_list_id_by_name "visitors"
       info = { }
       result = mailchimp.list_subscribe(list_id, self.email, info, 'html', false, true, false, true)
@@ -2012,7 +2020,7 @@ class User &lt; ActiveRecord::Base
   
   def remove_user_from_mailchimp
     unless self.email.include?('@example.com')
-      mailchimp = Hominid::API.new(ENV["MANDRILL_API_KEY"])
+      mailchimp = Hominid::API.new(ENV["MAILCHIMP_API_KEY"])
       list_id = mailchimp.find_list_id_by_name "visitors"
       result = mailchimp.list_unsubscribe(list_id, self.email, true, false, true)  
       Rails.logger.info("MAILCHIMP UNSUBSCRIBE: result #{result.inspect} for #{self.email}")
@@ -2134,7 +2142,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-23 17:52:26</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-24 17:47:30</p>
       </div>
     </div>
 
