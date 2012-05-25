@@ -2052,6 +2052,13 @@ listSubscribe(string list_id, string email_address, array merge_vars, string ema
 <pre>
 listUnsubscribe(string list_id, string email_address, boolean delete_member, boolean send_goodbye, boolean send_notify)
 </pre>
+<h3>Modify Integration Tests</h3>
+<p>We’ve removed the <code>send_welcome_email</code> method and we’ll rely on MailChimp to send a welcome message.</p>
+<p>We need to modify the file <strong>features/visitors/request_invitation.feature</strong>. Remove the statement:</p>
+<pre>
+And I should receive an email with subject "Request Received"
+</pre>
+<p>Our test suite doesn’t allow us to test for receipt of email from an external service such as MailChimp.</p>
 <p>Our “Collect Email Addresses” feature is complete.</p>
 <h3>Git Workflow</h3>
 <p>If you haven’t commited any changes yet, commit your changes to git:</p>
@@ -2150,7 +2157,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-24 21:24:12</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-24 21:33:41</p>
       </div>
     </div>
 
