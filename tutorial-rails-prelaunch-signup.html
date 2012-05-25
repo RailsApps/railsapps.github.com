@@ -962,13 +962,6 @@ unconfirmed: 'You have to confirm your account before continuing.'
 <pre>
 unconfirmed: 'Your account is not active.'
 </pre>
-<p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber step definition file <strong>features/step_definitions/user_steps.rb</strong>.</p>
-<p>Replace the “unconfirmed account message” step definition:</p>
-<pre>
-Then /^I see an unconfirmed account message$/ do
-  page.should have_content "Your account is not active."
-end
-</pre>
 <p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. We want visitors to see these links after we launch. Before we launch, we don’t want visitors to see these links. The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll modify the Devise “links” partial.</p>
 <p>In the “links” partial we’ll use a configuration constant: <code>Rails.configuration.launched</code>. This constant is set to false (before we launch our site) or true (after we launch our site). When the constant is false, the links for “Didn’t receive confirmation instructions?” and “Forgot your password?” will not appear.</p>
 <p>Modify the file <strong>app/views/devise/shared/_links.html.haml</strong>:</p>
@@ -982,6 +975,17 @@ end
 - if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks'
   = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
   %br/
+</pre>
+<h3>Tweak the Acceptance Tests</h3>
+<p>To make sure our acceptance tests continue to pass, we’ll need to make changes to the Cucumber scenario file <strong>features/users/sign_in.feature</strong>.</p>
+<p>Remove the “Scenario: User has not confirmed account” Cucumber scenario:</p>
+<pre>
+Scenario: User has not confirmed account
+  Given I exist as an unconfirmed user
+  And I am not logged in
+  When I sign in with valid credentials
+  Then I see an unconfirmed account message
+  And I should be signed out
 </pre>
 <p>Now our feature is complete.</p>
 <h3>Test the Implemention of the “Request Invitation” Feature</h3>
@@ -2146,7 +2150,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-24 21:11:35</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-24 21:24:12</p>
       </div>
     </div>
 
