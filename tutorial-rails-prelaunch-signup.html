@@ -1202,8 +1202,10 @@ Feature: View Progress
 <p><strong>features/step_definitions/admin_steps.rb</strong></p>
 <pre>
 Given /^I am logged in as an administrator$/ do
-  create_user
-  @user.add_role :admin
+  @admin = FactoryGirl.create(:user, email: "admin@example.com")
+  @admin.add_role :admin
+  @visitor ||= { :email =&gt; "admin@example.com",
+    :password =&gt; "please", :password_confirmation =&gt; "please" }
   sign_in
 end
 
@@ -1506,11 +1508,12 @@ Feature: Send Invitations
   so users can try the site
 
   Scenario: Administrator sends invitation
-    Given I am logged in as an administrator
+    Given I request an invitation with valid user data
+    And I am logged in as an administrator
     When I visit the users page
     And I click a link "send invitation"
     And I open the email with subject "Confirmation instructions"
-    Then I should see "confirm your account email" in the email body
+    Then I should see "confirm your email address" in the email body
 </pre>
 <p>This Cucumber feature file contains the specification needed to implement the user story “Send Invitations.”</p>
 <h3>Cucumber Step Definitions</h3>
@@ -2142,7 +2145,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-24 17:47:30</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-24 21:07:03</p>
       </div>
     </div>
 
