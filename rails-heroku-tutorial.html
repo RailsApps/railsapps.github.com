@@ -46,43 +46,49 @@
     <div class="content wikistyle gollum textile">
       <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 May 2012</em></p>
+<p><em>Last updated 26 May 2012</em></p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting. See a discussion on Quora <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
-<p><strong>Update! Heroku now officially gives you a choice of Ruby versions, including 1.9.3. See <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">Multiple Ruby Version Support on Heroku</a>.</strong></p>
-<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> for advice and suggestions on setting up the newest version of Rails on your own computer.</p>
+<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice and suggestions on setting up the newest version of Rails on your own computer.</p>
 <p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>See a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
-<h2>Heroku Gem</h2>
+<h2>Before You Start</h2>
+<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account. Or you can use someone else’s account (such as a client’s or employer’s if you have login credentials); see details below.</p>
+<h2>Updating Bundler for Heroku</h2>
+<p>As of 9 May 2012, Heroku officially supports Ruby 1.9.3 (see <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">Multiple Ruby Version Support on Heroku</a>). Heroku allows you to specify a Ruby version in your application’s gemfile. However, this requires use of an unreleased version of the <a href="http://gembundler.com/">Bundler</a> gem. As of 9 May 2012, the current release of Bundler is version 1.1.3. You must install Bundler 1.2.0.pre if you plan to deploy to Heroku. If you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you are likely using the <a href="http://mpapis.github.com/rubygems-bundler/">rubygems-bundler</a> gem (it has been installed by default since rvm version 1.11.0). You will need to update rubygems-bundler before you install Bundler 1.2.0.pre.</p>
+<p>These instructions assume you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>. Bundler and rubygems-bundler are installed in rvm’s “global” gemset.</p>
+<p>Update to the <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>.</p>
+<pre>
+$ rvm gemset use global
+$ gem update rubygems-bundler
+$ gem list
+</pre>
+<p>Install the pre-release version of Bundler 1.2.0. You can’t simply upgrade to the pre-release version; you must uninstall and then install:</p>
+<pre>
+$ rvm gemset use global
+$ gem uninstall -ax bundler -v 1.1.3
+$ gem install bundler --pre
+$ bundle --version
+</pre>
+<p>If you encounter any issues after updating rubygems-bundler and Bundler, review the detailed instructions in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<p>If you are using rvm, switch back to your application-specific gemset to proceed.</p>
+<h2>Preparing a Gemfile for Heroku</h2>
+<p>You’ll add the Heroku gem and specify a Ruby version in your application’s gemfile.</p>
+<h3>Specifying a Ruby Version</h3>
+<p>Specify a Ruby version before specifying any gems:</p>
+<pre>
+source 'http://rubygems.org'
+
+ruby '1.9.3'
+gem  'rails', '3.2.3'
+</pre>
+<h3>Heroku Gem</h3>
 <p>Add the Heroku gem to your application’s Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
 <p><code>gem "heroku"</code></p>
 <p>Install your gems with:</p>
 <p><code>$ bundle install</code></p>
 <p>If you haven’t done so, add your public key after installing the heroku gem so that you can use git to push or clone Heroku app repositories. For more information, see Heroku’s documentation <a href="http://devcenter.heroku.com/articles/keys">Managing Your <span class="caps">SSH</span> Keys</a>.</p>
-<p>As an alternative to installing the Heroku gem, Heroku offers a stand-alone “Heroku Toolbelt” which installs the Heroku command-line client and the Git revision control system. You can use either the Heroku gem or the Heroku Toolbelt. For more information, see Heroku’s documentation <a href="http://devcenter.heroku.com/articles/heroku-command">Installing the Heroku <span class="caps">CLI</span></a>.</p>
-<h2>Heroku Account</h2>
-<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
-<h3>Using a Client’s Account</h3>
-<p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create an app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
-<h3>Deploying for Multiple Accounts</h3>
-<p>David Dollar’s <a href="https://github.com/ddollar/heroku-accounts">heroku-accounts plugin</a> will help if you must use multiple accounts on Heroku. With the heroku-accounts plugin, you can configure each application to deploy to the appropriate account.</p>
-<p>To install the heroku-accounts plugin:</p>
-<pre>
-heroku plugins:install git://github.com/ddollar/heroku-accounts.git
-</pre>
-<p>To add an account locally (which you’ll call “work”):</p>
-<pre>
-$ heroku accounts:add work --auto
-</pre>
-<p>To list accounts that are set up locally:</p>
-<pre>
-$ heroku accounts
-</pre>
-<p>To set an account to use for a project:</p>
-<pre>
-# in project root
-heroku accounts:set work
-</pre>
+<p><em>Note:</em> As an alternative to installing the Heroku gem, Heroku offers a stand-alone “Heroku Toolbelt” which installs the Heroku command-line client and the Git revision control system. You can use either the Heroku gem or the Heroku Toolbelt. For more information, see Heroku’s documentation <a href="http://devcenter.heroku.com/articles/heroku-command">Installing the Heroku <span class="caps">CLI</span></a>. It’s probably easier to simply use the Heroku gem.</p>
 <h2>Database Configuration</h2>
 <p>Heroku uses PostgreSQL as its default database. Heroku does not support SQLite or MySQL, the databases most commonly used for local development.</p>
 <h3>Use SQLite Locally and PostgreSQL on Heroku</h3>
@@ -140,9 +146,32 @@ end
 <p>Heroku recommends adding a Procfile to your app. Procfile is a mechanism for declaring what commands are run when your web app runs on the Heroku platform. A Procfile is not necessary to deploy a Rails app to Heroku, but Heroku recommends it for greater control and flexibility over your app. If you add a Procfile, you can specify Thin as your web process in the Procfile.</p>
 <p>For simplicity, there’s no need to create a Procfile if you use Thin. If you declare the Thin gem in your Gemfile, Heroku sets up an appropriate web process without requiring a Procfile.</p>
 <h2>Commit to Git</h2>
-<p>Your application must be committed to a Git repository before you can use Heroku. See <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a> to learn how to set up Git for your application.</p>
+<p>Your application must be committed to a Git repository before you can use Heroku. See <a href="http://railsapps.github.com/rails-git.html">Git and Rails</a> to learn how to set up Git for your application.</p>
 <p>Store the modified application in the Git repository:</p>
 <p><code>$ git commit -am "Configured for deployment to Heroku"</code></p>
+<h2>Heroku Account</h2>
+<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
+<h3>Using a Client’s Account</h3>
+<p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create an app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
+<h3>Deploying for Multiple Accounts</h3>
+<p>David Dollar’s <a href="https://github.com/ddollar/heroku-accounts">heroku-accounts plugin</a> will help if you must use multiple accounts on Heroku. With the heroku-accounts plugin, you can configure each application to deploy to the appropriate account.</p>
+<p>To install the heroku-accounts plugin:</p>
+<pre>
+heroku plugins:install git://github.com/ddollar/heroku-accounts.git
+</pre>
+<p>To add an account locally (which you’ll call “work”):</p>
+<pre>
+$ heroku accounts:add work --auto
+</pre>
+<p>To list accounts that are set up locally:</p>
+<pre>
+$ heroku accounts
+</pre>
+<p>To set an account to use for a project:</p>
+<pre>
+# in project root
+heroku accounts:set work
+</pre>
 <h2>Create Your Application on Heroku</h2>
 <p>Use the Heroku create command to create and name your new app.</p>
 <p><code>$ heroku create myapp --stack cedar</code></p>
@@ -151,25 +180,18 @@ end
 <p>You can check that everything has been added correctly by running:</p>
 <p><code>$ heroku info --app myapp</code></p>
 <h2>Ruby 1.9.3 and Rails 3.2 on Heroku</h2>
-<p>Heroku’s newest stack, “Celadon Cedar,” supports Rails 3.2 but installs Ruby 1.9.2 by default. Ruby 1.9.3 is recommended for Rails 3.2.</p>
-<p>You can configure the Heroku environment to use Ruby 1.9.3.</p>
-<p><em>Note:</em> Heroku makes it clear that Ruby 1.9.3 on Heroku is experimental, which means “no support, the ruby_version will change in the future, and this feature may change or be removed without warning.” In response to an inquiry on January 31, 2012, Heroku said, “there is no timeline yet” to fully support Ruby 1.9.3.</p>
-<p><em>Note:</em> Installing Ruby 1.9.3 on Heroku previously (before March 19, 2012) required installation of the heroku-labs plugin. The heroku-labs plugin is deprecated and its functionality is now incorporated in the heroku client gem.</p>
-<p>Enable the “user_env_compile” feature (see Heroku’s <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">documentation</a>):</p>
-<p><code>$ heroku labs:enable user_env_compile -a myapp</code></p>
-<p>Set the RUBY_VERSION variable:</p>
-<p><code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p125</code></p>
-<p>Set the Heroku <span class="caps">PATH</span> config variable to include “bin”:</p>
-<p><code>$ heroku config:add PATH=bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin</code></p>
-<p>(Yes, the library path includes “1.9.1”: that’s not a typo.)</p>
+<p>Heroku’s newest stack, “Celadon Cedar,” supports Ruby 1.9.3 and Rails 3.2.</p>
+<p>You configure the Heroku environment to use Ruby 1.9.3 by specifying the Ruby version in your application Gemfile.</p>
+<p>You cannot specify a patch level for a Ruby version. Heroku provides the most secure patch level of whatever minor version number you request.</p>
+<p><em>Note:</em> Installing Ruby 1.9.3 on Heroku previously (before March 19, 2012) required installation of the heroku-labs plugin. The heroku-labs plugin is deprecated and its functionality is now incorporated in the heroku client gem. Before May 9, 2012, installing Ruby 1.9.3 on Heroku required the <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">user_env_compile</a> feature; this is now deprecated. Furthermore, it is no longer necessary to set the RUBY_VERSION variable with <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p125</code> or to set the Heroku <span class="caps">PATH</span> config variable to include “bin” when you specify the default Ruby 1.9.3 for the Cedar stack.</p>
 <p>You can check that everything has been configured correctly by running:</p>
 <p><code>$ heroku config</code></p>
-<h4>Documentation for Rails 3.0 and Rails 3.1</h4>
-<p>Heroku has no specific documentation for Rails 3.2 but the following articles on Rails 3.0 and Rails 3.1 are helpful:</p>
+<h4>Documentation for Rails 3.1</h4>
+<p>The following articles on Rails 3.1 are helpful:</p>
 <ul>
-<li><a href="http://devcenter.heroku.com/articles/rails3">Getting started with Rails 3 on Heroku/Cedar</a></li>
-	<li>
-<a href="http://devcenter.heroku.com/articles/rails31_heroku_cedar">Rails 3.1 on Heroku Cedar</a>.</li>
+<li><a href="https://devcenter.heroku.com/articles/ruby-support">Heroku Ruby Support</a></li>
+	<li><a href="https://devcenter.heroku.com/articles/rails3">Getting Started with Rails 3.x on Heroku/Cedar</a></li>
+	<li><a href="https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar">Rails 3.1+ Asset Pipeline on Heroku Cedar.</a></li>
 </ul><p><em>Note:</em> Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed for Rails 3.2 and should not be used.</p>
 <h2>Using MongoDB</h2>
 <p>If you are using MongoDB, you can use a Heroku add-on to deploy your app using the MongoHQ service. See <a href="http://addons.heroku.com/mongohq">details about the service</a> and <a href="http://devcenter.heroku.com/articles/mongohq">details about installation</a>.</p>
@@ -305,7 +327,7 @@ $ heroku domains:add mydomain.com
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-26 13:06:44</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-26 16:45:31</p>
       </div>
     </div>
 
