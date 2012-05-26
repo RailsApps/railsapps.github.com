@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Read This Before Installing Rails 3.2</title>
+    <title>installing rails</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
@@ -44,13 +44,13 @@
   <div class="container"> 
     
     <div class="page-header">
-      <h1>Read This Before Installing Rails 3.2</h1>
+      <h1>installing rails</h1>
     </div>
 
     <div class="content wikistyle gollum textile">
       <h1>Read This Before Installing Rails 3.2</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 25 May 2012</em></p>
+<p><em>Last updated 26 May 2012</em></p>
 <p>Installing Rails 3.2.3: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>See a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a> if you are just getting started.</p>
@@ -121,7 +121,8 @@ $ rvm -v
 <h4>Which Ruby?</h4>
 <p>There are several Ruby interpreters available:</p>
 <ul>
-<li><a href="http://www.ruby-lang.org/en/"><span class="caps">MRI</span></a></li>
+<li>
+<a href="http://www.ruby-lang.org/en/"><span class="caps">MRI</span></a> (the reference implementation)</li>
 	<li>
 <a href="http://www.rubyenterpriseedition.com/"><span class="caps">REE</span></a> from Phusion</li>
 	<li><a href="http://jruby.org/">JRuby</a></li>
@@ -129,7 +130,7 @@ $ rvm -v
 	<li><a href="http://maglev.github.com/">MagLev</a></li>
 	<li>
 <a href="http://www.macruby.org/">MacRuby</a>)</li>
-</ul><p>Use <span class="caps">MRI</span>,<a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, which is the reference implementation.</p>
+</ul><p>Use <span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, which is the reference implementation.</p>
 <h4>Install Ruby 1.9.3</h4>
 <p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 194  was current when this was written.</p>
 <p>Ruby may already be installed on your computer (Mac OS X 10.7 comes with Ruby 1.8.7 preinstalled). You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm.</p>
@@ -137,13 +138,19 @@ $ rvm -v
 <pre>
 $ rvm requirements
 </pre>
+<p>Check the requirements carefully. On Mac OS X 10.7 (Lion), you may need to install <a href="http://www.gnupg.org/related_software/libksba/index.en.html">libksba</a>. Install it with Homebrew, the package manager for OS X:</p>
+<pre>
+$ brew update
+$ brew install libksba
+</pre>
 <p>Use rvm to install the recommended version of Ruby and make it your default:</p>
 <pre>
 $ rvm install ruby-1.9.3-p194 
 $ rvm --default use ruby-1.9.3-p194 
 $ ruby -v
 </pre>
-<p><em>Note:</em> On a Mac with <span class="caps">OSX</span> 10.7.3 and XCode 4.3.1 you should be able to install Ruby 1.9.3-p194 using rvm without any special command line options. Installing Ruby 1.9.3-p194  on Mac OS X 10.7.3 with Xcode 4.2.1 requires the following command line switch to succeed: <code>rvm install 1.9.3-p194  --with-gcc=clang</code> because XCode 4.2 doesn’t use the standard gcc compiler. If you encounter this issue, you can also use Kenneth Reitz’s <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> to install the gcc compiler.</p>
+<p><em>Mac OS X 10.7.4 with XCode 4.3.2</em> You should be able to install Ruby 1.9.3-p194 using rvm without any special command line options.</p>
+<p><em>Earlier Mac OS X and XCode versions:</em> It’s advisable to upgrade to the newest Mac OS X and XCode versions.</p>
 <h4>RubyGems</h4>
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
@@ -190,6 +197,7 @@ $ bundle --version
 </pre>
 <p>If you plan to deploy to Heroku, install the pre-release version of Bundler 1.2.0. You can’t simply upgrade to the pre-release version; you must uninstall and then install.</p>
 <pre>
+$ rvm gemset use global
 $ gem uninstall -ax bundler -v 1.1.3
 $ gem install bundler --pre
 $ bundle --version
@@ -248,6 +256,8 @@ $ rake -T
 </pre>
 <p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using rvm (see <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>).</p>
 <h2>Troubleshooting</h2>
+<h4>Problems with “Segmentation Fault”</h4>
+<p>If you get a “segfault” when you try <code>rails new</code>, try removing and reinstalling rvm. If you are not using the current version of Mac OS X, you should upgrade before installing rvm.</p>
 <h4>Problems with “Gem::RemoteFetcher::FetchError: SSL_connect”</h4>
 <p>The newest Ruby and RubyGems versions (starting with Ruby 1.9.3p194 and RubyGems 1.8.23) require verification of server <span class="caps">SSL</span> certificates when Ruby makes an Internet connection via https. If you run <code>rails new</code> and get an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate” see this article suggesting solutions: <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <h4>Problems with “Certificate Verify Failed”</h4>
@@ -380,7 +390,7 @@ $ echo "rvm ruby-1.9.3-p194 @rails32" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-25 18:17:06</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-26 12:39:31</p>
       </div>
     </div>
 
