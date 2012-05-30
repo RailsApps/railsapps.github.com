@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site · RailsApps</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 24 May 2012</em></p>
+<p><em>Last updated 29 May 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -102,10 +102,16 @@
 	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
 </ul><p>Instructions are provided for deployment to Heroku.</p>
 <p>It’s common for technically skilled people to want to set up their own servers. Please, do yourself a favor, and unless system administration is your most dearly loved recreation, let the platform providers do it for you.</p>
-<h3>Company Email</h3>
-<p>For better or worse, most of us are using Gmail for our personal accounts. You can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. For that, you can use <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>. You’ll likely use different services for company email, email sent from the app (“transactional email”), and broadcast email for newsletters or announcements.</p>
+<h3>Email Service Providers</h3>
+<p>You’ll need infrastructure for three types of email:</p>
+<ul>
+<li>company email</li>
+	<li>email sent from the app (“transactional email”)</li>
+	<li>broadcast email for newsletters or announcements</li>
+</ul><p>No single vendor is optimal for all three types of email; you likely will use several vendors.</p>
+<p>For “company email,” that is, sending individual email to customers or business associates, you’ll probably use Gmail or <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>. For a single address, you can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. For that, use Google Apps for Business.</p>
 <h3>Transactional Email</h3>
-<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations, you will need a hosted <span class="caps">SMTP</span> relay service (also known as an <span class="caps">ESP</span> or “email service provider”). Considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">ESP</span> to increase reliability of delivery. The best services offer tracking data to show how well your email is being delivered.</p>
+<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations, you will need a hosted <span class="caps">SMTP</span> relay service (also known as an <span class="caps">ESP</span> or “email service provider”). Considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">ESP</span> to increase reliability of delivery. The best services track deleiveries and show how well your email is being delivered.</p>
 <p>Many of these services offer a free plan allowing up to 200 emails/day:</p>
 <ul>
 <li><a href="http://mandrill.com/">Mandrill by MailChimp</a></li>
@@ -119,10 +125,10 @@
 	<li><a href="https://secure.postageapp.com/register">PostageApp</a></li>
 	<li><a href="http://postmarkapp.com/pricing">Postmark</a></li>
 	<li><a href="https://www.serversmtp.com/en/cart.php?systpl=turbo-smtp&amp;systpl=turbo-smtp&amp;currency=3">turboSMTP</a></li>
-</ul><p>Instructions are provided for <a href="http://mandrill.com/">Mandrill by MailChimp</a>. The Mandrill transactional email service integrates well with the MailChimp email list manager service. Plus, you can send up to 12,000 emails/month from the service for free.</p>
+</ul><p>This tutorial provides instructions for <a href="http://mandrill.com/">Mandrill by MailChimp</a>. The Mandrill transactional email service integrates well with the MailChimp email list manager service. Plus, you can send up to 12,000 emails/month from the service for free.</p>
 <p>Sign up for a MailChimp account to get started. After you’ve created your MailChimp account, see the instructions to <a href="http://help.mandrill.com/customer/portal/articles/464750-use-mandrill-with-mailchimp">Use Mandrill with MailChimp</a> to add the Mandrill service. Make sure you <a href="http://help.mandrill.com/customer/portal/articles/464811-verify-a-sending-domain">Verify a Sending Domain</a> and get the <a href="http://help.mandrill.com/customer/portal/articles/464828-access-information">Access Information</a> (your <span class="caps">SMTP</span> username and password, which is an <span class="caps">API</span> key).</p>
 <h3>Mailing List</h3>
-<p>In addition to sending transactional email messages, you may want to send newsletters or announcements to your entire mailing list. <span class="caps">SMTP</span> relay services such as SendGrid often offer rudimentary bulk email services but you may want to consider using a dedicated service for mass emailing. You’ll get features such as management of “unsubscribe” requests and templates to design attractive messages.</p>
+<p>In addition to sending transactional email messages, you likely will want to send newsletters or announcements to your entire mailing list. <span class="caps">SMTP</span> relay services such as SendGrid often offer rudimentary bulk email services but you may want to consider using a dedicated service for mass emailing. You’ll get features such as management of “unsubscribe” requests and templates to design attractive messages.</p>
 <p>For broadcast email, consider using a service such as:</p>
 <ul>
 <li><a href="http://mailchimp.com/pricing/">MailChimp</a></li>
@@ -2072,6 +2078,57 @@ $ git commit -am "collect email addresses with mailchimp"
 <pre>
 $ git branch -D mailchimp
 </pre>
+<h2>Feature: Encourage Visitors to Share on Facebook and Twitter</h2>
+<p>If your visitors are excited about your offer, they may want to share their discovery with friends. You can encourage visitors to share on Facebook and Twitter by providing “social sharing” buttons with your “thank you” message.</p>
+<h3>User Story</h3>
+<p>Here’s the user stories we’ll implement:</p>
+<pre>
+*Post to Twitter After Sign Up*
+As a user
+I want an option to post to Twitter after I sign up
+so my followers will learn about the site
+
+*Post to Facebook After Sign Up*
+As a user
+I want an option to post to Facebook after I sign up
+so my Facebook friends will learn about the site
+</pre>
+<h3>Cucumber Scenario</h3>
+<p>We’ll add two scenarios to the <strong>features/visitors/request_invitation.feature</strong> file:</p>
+<pre>
+Scenario: User sees Facebook "Share" button
+  When I request an invitation with valid user data
+  Then I should a button "Facebook"
+
+Scenario: User sees Twitter "Share" button
+  When I request an invitation with valid user data
+  Then I should a button "Twitter"
+</pre>
+<p>Existing Cucumber step definitions are sufficient; we don’t need to add more.</p>
+<h3>Git Workflow</h3>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b social-share
+</pre>
+<h3>Implementation of Social Sharing</h3>
+<p>Social sharing buttons for Facebook and Twitter are implemented in <span class="caps">HTML</span> and JavaScript. There are several gems that provide Rails view helpers for “Facebook Like” and “Tweet” buttons. And there are numerous jQuery plugins for the same. But it’s easy to add the markup directly, using a partial for the view template for the “Request Invitation” page.</p>
+<p><strong>(code to come)</strong></p>
+<h3>Git Workflow</h3>
+<p>If you haven’t commited any changes yet, commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "add social sharing buttons"
+</pre>
+<p>Merge the new code into the master branch and commit it:</p>
+<pre>
+$ git checkout master
+$ git merge --squash social-share
+$ git commit -am "add social sharing buttons"
+</pre>
+<p>You can delete the working branch when you’re done:</p>
+<pre>
+$ git branch -D social-share
+</pre>
 <h2>Test the App</h2>
 <p>Run the integration test suite to see if everything works.</p>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
@@ -2153,7 +2210,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-26 17:30:26</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-29 17:36:16</p>
       </div>
     </div>
 
