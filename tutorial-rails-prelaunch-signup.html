@@ -2111,8 +2111,83 @@ Scenario: User sees Twitter "Share" button
 $ git checkout -b social-share
 </pre>
 <h3>Implementation of Social Sharing</h3>
-<p>Social sharing buttons for Facebook and Twitter are implemented in <span class="caps">HTML</span> and JavaScript. There are several gems that provide Rails view helpers for “Facebook Like” and “Tweet” buttons. And there are numerous jQuery plugins for the same. But it’s easy to add the markup directly, using a partial for the view template for the “Request Invitation” page.</p>
-<p><strong>(code to come)</strong></p>
+<p>Social sharing buttons for Facebook and Twitter are implemented in <span class="caps">HTML</span> and JavaScript. There are several gems that provide Rails view helpers for “Facebook Like” and “Tweet” buttons. And there are numerous jQuery plugins for the same. But it’s easy to add the markup directly.</p>
+<h3>JavaScript for Social Sharing Buttons</h3>
+<p>Modify the file <strong>app/assets/javascripts/application.js</strong>:</p>
+<pre>
+$('document').ready(function() {
+  
+  // display validation errors for the "request invitation" form
+  if ($('.alert-error').length &gt; 0) {
+    $("#request-invite").modal('toggle');
+  }
+  
+  // use AJAX to submit the "request invitation" form
+  $('#invitation_button').live('click', function() {
+    var email = $('form #user_email').val();
+    var password = $('form #user_password').val();
+    var dataString = 'user[email]='+ email + '&amp;user[password]=' + password;
+    $.ajax({
+      type: "POST",
+      url: "/users",
+      data: dataString,
+      success: function(data) {
+        $('#request-invite').html(data);
+        loadSocial();
+      }
+    });
+    return false;
+  });
+  
+})
+
+// load social sharing scripts if the page includes a Twitter "share" button
+function loadSocial() {
+    if ($(".twitter-share-button").length == 0) return;
+    
+    //Twitter
+    if (typeof (twttr) != 'undefined') {
+      twttr.widgets.load();
+    } else {
+      $.getScript('http://platform.twitter.com/widgets.js');
+    }
+
+    //Facebook
+    if (typeof (FB) != 'undefined') {
+      FB.init({ status: true, cookie: true, xfbml: true });
+    } else {
+      $.getScript("http://connect.facebook.net/en_US/all.js#xfbml=1", function () {
+        FB.init({ status: true, cookie: true, xfbml: true });
+      });
+    }
+
+    //Google+
+    if (typeof (gapi) != 'undefined') {
+      $(".g-plusone").each(function () {
+        gapi.plusone.render($(this).get(0));
+      });
+    } else {
+      $.getScript('https://apis.google.com/js/plusone.js');
+    }
+}
+</pre>
+<h3>Add Social Sharing Buttons to the “Thank You” Message</h3>
+<p>Modify the file file <strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
+<pre>
+%h1 Thank you
+#request-invite.modal{:style =&gt; "display: 'block';"}
+  .modal-header
+    %a.close{"data-dismiss" =&gt; "modal"} ×
+    %h3 Thank you!
+  .modal-body
+    %p We have received your request for an invitation to example.com.
+    %p We'll contact you when we launch.
+    %p Share your discovery with your friends!
+    #tweet{:style =&gt; "display:inline-block"}
+      %a.twitter-share-button{"data-count" =&gt; "horizontal", "data-text" =&gt; "Tweet this!", "data-url" =&gt; "http://railsapps.github.com/", "data-via" =&gt; "rails_apps", :href =&gt; "https://twitter.com/share"}
+    .fb-like{"data-href" =&gt; "http://railsapps.github.com/", "data-layout" =&gt; "button_count", "data-send" =&gt; "false", "data-show-faces" =&gt; "false", "data-width" =&gt; "90"}
+    .g-plusone{"data-annotation" =&gt; "inline", "data-href" =&gt; "http://railsapps.github.com/", "data-size" =&gt; "medium", "data-width" =&gt; "120"}
+</pre>
 <h3>Git Workflow</h3>
 <p>If you haven’t commited any changes yet, commit your changes to git:</p>
 <pre>
@@ -2210,7 +2285,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-29 17:36:16</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-30 12:14:20</p>
       </div>
     </div>
 
