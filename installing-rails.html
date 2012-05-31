@@ -132,7 +132,7 @@ $ rvm -v
 	<li><a href="http://maglev.github.com/">MagLev</a></li>
 	<li>
 <a href="http://www.macruby.org/">MacRuby</a>)</li>
-</ul><p>Use <span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, which is the reference implementation.</p>
+</ul><p>Use <span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, which is the reference implementation. It is the default when you install Ruby 1.9.3 using rvm.</p>
 <h4>Install Ruby 1.9.3</h4>
 <p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 194  was current when this was written.</p>
 <p>Ruby may already be installed on your computer (Mac OS X 10.7 comes with Ruby 1.8.7 preinstalled). You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm.</p>
@@ -163,7 +163,8 @@ $ ruby -v
 <p>Installing Ruby with rvm creates a default “global” gemset.</p>
 <p>See what gems are installed in the “global” gemset:</p>
 <pre>
-gem list
+$ rvm gemset use global
+$ gem list
 </pre>
 <p>Two gems are installed with Ruby 1.9.3:</p>
 <ul>
@@ -200,7 +201,7 @@ $ bundle --version
 <p>If you plan to deploy to Heroku, install the pre-release version of Bundler 1.2.0. You can’t simply upgrade to the pre-release version; you must uninstall and then install.</p>
 <pre>
 $ rvm gemset use global
-$ gem uninstall -ax bundler -v 1.1.4
+$ gem uninstall -ax bundler
 $ gem install bundler --pre
 $ bundle --version
 </pre>
@@ -392,7 +393,7 @@ $ echo "rvm ruby-1.9.3-p194 @rails32" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-31 14:22:58</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-31 14:34:45</p>
       </div>
     </div>
 
