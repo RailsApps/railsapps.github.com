@@ -2079,7 +2079,7 @@ $ git commit -am "collect email addresses with mailchimp"
 $ git branch -D mailchimp
 </pre>
 <h2>Feature: Encourage Visitors to Share on Facebook and Twitter</h2>
-<p>If your visitors are excited about your offer, they may want to share their discovery with friends. You can encourage visitors to share on Facebook and Twitter by providing “social sharing” buttons with your “thank you” message.</p>
+<p>If your visitors are excited about your offer, they may want to share their discovery with friends. You can encourage visitors to share on Facebook and Twitter by providing “social sharing” buttons with your “thank you” message. We’ll also include Google+; if you want to add social sharing buttons for other services you’ll find the code is very similar.</p>
 <h3>User Story</h3>
 <p>Here’s the user stories we’ll implement:</p>
 <pre>
@@ -2098,20 +2098,26 @@ so my Facebook friends will learn about the site
 <pre>
 Scenario: User sees Facebook "Share" button
   When I request an invitation with valid user data
-  Then I should a button "Facebook"
+  Then I should see a button "Like"
 
 Scenario: User sees Twitter "Share" button
   When I request an invitation with valid user data
-  Then I should a button "Twitter"
+  Then I should see a button "Tweet"
 </pre>
-<p>Existing Cucumber step definitions are sufficient; we don’t need to add more.</p>
+<p><em>Note:</em> We need appropriate Cucumber step definitions to test if Facebook and Twitter sharing buttons are present.</p>
 <h3>Git Workflow</h3>
 <p>Create a new git branch for this feature:</p>
 <pre>
 $ git checkout -b social-share
 </pre>
 <h3>Implementation of Social Sharing</h3>
-<p>Social sharing buttons for Facebook and Twitter are implemented in <span class="caps">HTML</span> and JavaScript. There are several gems that provide Rails view helpers for “Facebook Like” and “Tweet” buttons. And there are numerous jQuery plugins for the same. But it’s easy to add the markup directly.</p>
+<p>Social sharing buttons for Twitter, Facebook, and Google+ are implemented in <span class="caps">HTML</span> and JavaScript. There are several gems that provide Rails view helpers for “Facebook Like” and “Tweet” buttons. And there are numerous jQuery plugins for the same. But it’s easy to add the markup directly.</p>
+<p>Twitter, Facebook, and Google+ give you documentation and tools to create social sharing buttons for your website:</p>
+<ul>
+<li><a href="https://dev.twitter.com/docs/tweet-button">Twitter Tweet Button</a></li>
+	<li><a href="https://developers.facebook.com/docs/reference/plugins/like/">Facebook Like Button</a></li>
+	<li><a href="https://developers.google.com/+/plugins/+1button/">Google+ +1 Button</a></li>
+</ul><p>We won’t use the example code that the social networks provide; instead, we’ll set up our page to download JavaScript widgets from each of the social networks. The implementation is similar for each service. A JavaScript widget determines if a link or div is present on the page and applies a set of transformations to create a graphical button.</p>
 <h3>JavaScript for Social Sharing Buttons</h3>
 <p>Modify the file <strong>app/assets/javascripts/application.js</strong>:</p>
 <pre>
@@ -2143,7 +2149,6 @@ $('document').ready(function() {
 
 // load social sharing scripts if the page includes a Twitter "share" button
 function loadSocial() {
-    if ($(".twitter-share-button").length == 0) return;
     
     //Twitter
     if (typeof (twttr) != 'undefined') {
@@ -2171,6 +2176,7 @@ function loadSocial() {
     }
 }
 </pre>
+<p>We call the function <code>loadSocial()</code> after the “request invitation” form is successfully submitted. After the <span class="caps">AJAX</span> call returns “success”, we render the “#request-invite” div with the <strong>_thankyou.html.haml</strong> partial (defined in the RegistrationsController); immediately following, we call the function <code>loadSocial()</code>. The <code>loadSocial()</code> function uses the jQuery <code>.getScript</code> method to load a JavaScript file from each of the social networks. The script won’t attempt to download a Javascript file if the widget is already present.</p>
 <h3>Add Social Sharing Buttons to the “Thank You” Message</h3>
 <p>Modify the file file <strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
 <pre>
@@ -2179,15 +2185,58 @@ function loadSocial() {
   .modal-header
     %a.close{"data-dismiss" =&gt; "modal"} ×
     %h3 Thank you!
-  .modal-body
+  .modal-body{:style =&gt; "margin-bottom: 120px; overflow: visible"}
     %p We have received your request for an invitation to example.com.
     %p We'll contact you when we launch.
     %p Share your discovery with your friends!
-    #tweet{:style =&gt; "display:inline-block"}
-      %a.twitter-share-button{"data-count" =&gt; "horizontal", "data-text" =&gt; "Tweet this!", "data-url" =&gt; "http://railsapps.github.com/", "data-via" =&gt; "rails_apps", :href =&gt; "https://twitter.com/share"}
-    .fb-like{"data-href" =&gt; "http://railsapps.github.com/", "data-layout" =&gt; "button_count", "data-send" =&gt; "false", "data-show-faces" =&gt; "false", "data-width" =&gt; "90"}
+    #tweet{:style =&gt; "display:inline-block;"}
+      %a.twitter-share-button{"data-count" =&gt; "horizontal", "data-text" =&gt; "A new site I've discovered", "data-url" =&gt; "http://railsapps.github.com/", "data-via" =&gt; "rails_apps", :href =&gt; "https://twitter.com/share"}
+    %span{:style =&gt; "display:inline-block; vertical-align:text-bottom;"}
+      .fb-like{"data-href" =&gt; "http://railsapps.github.com/", "data-layout" =&gt; "button_count", "data-send" =&gt; "false", "data-show-faces" =&gt; "false", "data-width" =&gt; "90"}
     .g-plusone{"data-annotation" =&gt; "inline", "data-href" =&gt; "http://railsapps.github.com/", "data-size" =&gt; "medium", "data-width" =&gt; "120"}
 </pre>
+<p>The results are pretty: graphical buttons for Twitter, Facebook, and Google+ sharing aligned nicely in a row. To get that result, we need a mess of elements with tweaked style rules. Twitter expects a link styled with the class <code>twitter-share-button</code>; the Twitter JavaScript widget then transforms it into a dynamic button that displays a count of past tweets. We have to apply a <code>display:inline-block</code> style rule to force it to appear in a row with the other buttons. The Facebook JavaScript widget expects a div with the class <code>fb-like</code>; we wrap it in a span element and apply some style rules to force it to align nicely. The Google+ JavaScript widget expects a div with the class <code>g-plusone</code>; this one plays nicely with others and doesn’t need any tweaking. One last tweak to the class <code>modal-body</code> applies a style rule that increases the height of the modal window so there’s room for the dialog box that appears when the visitor clicks the Facebook “Like” button.</p>
+<p>For demonstration purposes we’ve set up the social sharing buttons to point to the RailsApps home page. You’ll want to replace the placeholders with pointers to your own website:</p>
+<table>
+<tr>
+<th>Item </th>
+		<th>Placeholder </th>
+		<th>Comment </th>
+		<td>_.<br>
+| Twitter data-via </td>
+		<td> rails_apps </td>
+		<td> Your Twitter username </td>
+	</tr>
+<tr>
+<td> Twitter data-text </td>
+		<td> A new site I’ve discovered </td>
+		<td> Default text for the tweet </td>
+	</tr>
+<tr>
+<td> Twitter data-url </td>
+		<td> http://railsapps.github.com/ </td>
+		<td> Web address for your site </td>
+	</tr>
+<tr>
+<td> Facebook data-href </td>
+		<td> http://railsapps.github.com/ </td>
+		<td> Web address for your site </td>
+	</tr>
+<tr>
+<td> Google+ data-href </td>
+		<td> http://railsapps.github.com/ </td>
+		<td> Web address for your site </td>
+	</tr>
+</table><h3>Test the Feature</h3>
+<p>Be sure you’ve set up the database for testing before running Cucumber:</p>
+<pre>
+$ bundle exec rake db:test:prepare
+</pre>
+<p>Run the integration test with the following command:</p>
+<pre>
+$ bundle exec cucumber features/visitors/request_invitation.feature
+</pre>
+<p><em>Note:</em> The test will fail because we don’t have proper step definitions yet.</p>
 <h3>Git Workflow</h3>
 <p>If you haven’t commited any changes yet, commit your changes to git:</p>
 <pre>
@@ -2285,7 +2334,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-05-30 12:14:20</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-05-30 17:40:39</p>
       </div>
     </div>
 
