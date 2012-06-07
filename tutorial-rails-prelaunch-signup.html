@@ -935,7 +935,7 @@ class User &lt; ActiveRecord::Base
   private
 
   def send_welcome_email
-    unless self.email.include?('@example.com')
+    unless self.email.include?('@example.com') &amp;&amp; Rails.env != 'test'
       UserMailer.welcome_email(self).deliver
     end
   end
@@ -943,7 +943,7 @@ class User &lt; ActiveRecord::Base
 end
 </pre>
 <p>Now the visitor will get a welcome email when they request an invitation.</p>
-<p>There’s an unintended side effect of adding the <code>after_create :send_welcome_email</code> method. When you reset the database with <code>rake db:reset</code> you’ll send welcome messages to the users listed in the <strong>db/seeds.rb</strong> file. To avoid bounce notices warning that mail could not be delivered to our bogus users, we don’t send a welcome email to addresses at the “example.com” domain.</p>
+<p>There’s an unintended side effect of adding the <code>after_create :send_welcome_email</code> method. When you reset the database with <code>rake db:reset</code> you’ll send welcome messages to the users listed in the <strong>db/seeds.rb</strong> file. To avoid bounce notices warning that mail could not be delivered to our bogus users, we don’t send a welcome email to addresses at the “example.com” domain (except when we’re running a test).</p>
 <h3>Tweak the User Interface</h3>
 <p>The required functionality is largely complete. But there are a few small changes to make.</p>
 <p>If the user visits the sign-in page immediately after requesting an invitation, they may see this flash message:</p>
@@ -2341,7 +2341,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-07 06:18:08</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-07 11:18:28</p>
       </div>
     </div>
 
