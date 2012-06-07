@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Read This Before Installing Rails 3.2 · RailsApps</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 1 June 2012</em></p>
+<p><em>Last updated 7 June 2012</em></p>
 <p>Installing Rails 3.2.5: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>See a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a> if you are just getting started.</p>
@@ -157,9 +157,40 @@ $ ruby -v
 <h4>RubyGems</h4>
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
-<p><code>$ gem -v</code></p>
+<pre>
+$ gem -v
+</pre>
 <p>Check for the <a href="https://rubygems.org/gems/rubygems-update">newest version of RubyGems</a>. It should be version 1.8.24 or newer.</p>
 <p>Use <code>gem update --system</code> to upgrade the RubyGems system.</p>
+<h4>RubyGems .gemrc File</h4>
+<p>Check that your RubyGems <strong>.gemrc</strong> file is up to date:</p>
+<pre>
+$ cat ~/.gemrc
+---
+:backtrace: false
+:benchmark: false
+:bulk_threshold: 1000
+:sources:
+- https://rubygems.org
+:update_sources: true
+:verbose: true
+install: --no-rdoc --no-ri
+update: --no-rdoc --no-ri
+</pre>
+<p>If the file does not contain the RubyGems source <code>https://rubygems.org</code>, add it:</p>
+<pre>
+$ sudo gem source -a https://rubygems.org
+</pre>
+<p>If the file contains <code>gems.rubyforge.org</code> or <code>gemcutter.org</code>, remove them (they no longer exist):</p>
+<pre>
+$ sudo gem source -r http://gems.rubyforge.org
+$ sudo gem source -r http://gemcutter.org
+</pre>
+<p>Generating the ri and RDoc documentation takes a long time when installing a gem. If you want to skip the documentation every time a gem gets installed, edit the <strong>.gemrc</strong> file to include:</p>
+<pre>
+install: --no-rdoc --no-ri
+update: --no-rdoc --no-ri
+</pre>
 <h4>Update the Global Gemset</h4>
 <p>Installing Ruby with rvm creates a default “global” gemset.</p>
 <p>See what gems are installed in the “global” gemset:</p>
@@ -394,7 +425,7 @@ $ echo "rvm ruby-1.9.3-p194 @rails32" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-03 10:57:43</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-07 06:18:08</p>
       </div>
     </div>
 

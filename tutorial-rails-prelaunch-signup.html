@@ -126,7 +126,7 @@
 	<li><a href="http://postmarkapp.com/pricing">Postmark</a></li>
 	<li><a href="https://www.serversmtp.com/en/cart.php?systpl=turbo-smtp&amp;systpl=turbo-smtp&amp;currency=3">turboSMTP</a></li>
 </ul><p>This tutorial provides instructions for <a href="http://mandrill.com/">Mandrill by MailChimp</a>. The Mandrill transactional email service integrates well with the MailChimp email list manager service. Plus, you can send up to 12,000 emails/month from the service for free.</p>
-<p>Sign up for a MailChimp account to get started. After you’ve created your MailChimp account, see the instructions to <a href="http://help.mandrill.com/customer/portal/articles/464750-use-mandrill-with-mailchimp">Use Mandrill with MailChimp</a> to add the Mandrill service. Make sure you <a href="http://help.mandrill.com/customer/portal/articles/464811-verify-a-sending-domain">Verify a Sending Domain</a> and get the <a href="http://help.mandrill.com/customer/portal/articles/464828-access-information">Access Information</a> (your <span class="caps">SMTP</span> username and password, which is an <span class="caps">API</span> key).</p>
+<p>Sign up for a MailChimp account to get started. After you’ve created your MailChimp account, see the instructions to <a href="http://help.mandrill.com/customer/portal/articles/464750-use-mandrill-with-mailchimp">Use Mandrill with MailChimp</a>. Then get the <a href="http://help.mandrill.com/customer/portal/articles/464828-access-information">Access Information</a> (your <span class="caps">SMTP</span> username and password, which is an <span class="caps">API</span> key).</p>
 <h3>Mailing List</h3>
 <p>In addition to sending transactional email messages, you likely will want to send newsletters or announcements to your entire mailing list. <span class="caps">SMTP</span> relay services such as SendGrid often offer rudimentary bulk email services but you may want to consider using a dedicated service for mass emailing. You’ll get features such as management of “unsubscribe” requests and templates to design attractive messages.</p>
 <p>For broadcast email, consider using a service such as:</p>
@@ -336,7 +336,7 @@ gem "simple_form"
 <p>The starter app script sets up Cucumber for specifications and acceptance testing. To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
 <p>You should be able to run <code>rake cucumber</code>, or more simply, <code>cucumber</code>, to run the Cucumber scenarios and steps provided with the example app. You can run a single Cucumber feature with a command such as:</p>
 <pre>
-$ bundle exec cucumber features/visitors/request_invitation.feature
+$ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
 <h2>Configure Email</h2>
@@ -446,21 +446,24 @@ puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 </pre>
 <p>You can change the values for name, email, and password as you wish.</p>
+<p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
+<p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
-$ bundle exec rake db:migrate
-$ bundle exec rake db:seed
+$ rake db:migrate
+$ rake db:seed
 </pre>
 <p>If you change the default user’s name, email, or password you’ll need to reset the database:</p>
 <pre>
-$ bundle exec rake db:reset
+$ rake db:reset
 </pre>
-<p>You can run <code>$ bundle exec rake db:reset</code> whenever you need to recreate the database.</p>
+<p>You can run <code>$ rake db:reset</code> whenever you need to recreate the database.</p>
 <p>You’ll also need to set up the database for testing:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
+<p>If you’re not using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <h2>Test the Starter App</h2>
 <p>At this point, the app is identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
 <p>You can check that the example app runs properly by entering the command</p>
@@ -619,11 +622,11 @@ end
 <p>Cucumber uses all the step definitions in separate files in the <strong>features/step_definitions/</strong> directory so we can group the step definitions in as many files as we want.</p>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
 <p>Then we can run our integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/visitors/request_invitation.feature
+$ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should fail because our feature is not yet implemented.</p>
 <h3>Implement “Request Invitation” Form</h3>
@@ -853,18 +856,18 @@ class UserMailer &lt; ActionMailer::Base
   
   def welcome_email(user)
     mail(:to =&gt; user.email, :subject =&gt; "Invitation Request Received")
-    headers[‘X-MC-Track’] = "opens, clicks"
-    headers[‘X-MC-GoogleAnalytics’] = "example.com"
-    headers[‘X-MC-Tags’] = "welcome"
+    headers['X-MC-Track'] = "opens, clicks"
+    headers['X-MC-GoogleAnalytics'] = "example.com"
+    headers['X-MC-Tags'] = "welcome"
   end
 end
 </pre>
 <p>Replace the “notifications@example.com” string with your email address.</p>
 <p>If you’re not using Mandrill for an <span class="caps">SMTP</span> relay service, you can leave out these statements:</p>
 <pre>
-  headers[‘X-MC-Track’] = "opens, clicks"
-  headers[‘X-MC-GoogleAnalytics’] = "example.com"
-  headers[‘X-MC-Tags’] = "welcome"
+  headers['X-MC-Track'] = "opens, clicks"
+  headers['X-MC-GoogleAnalytics'] = "example.com"
+  headers['X-MC-Tags'] = "welcome"
 </pre>
 <p>The <code>X-MC-Track</code> header sets up Mandrill to track message delivery by adding an invisible image (a web beacon) to <span class="caps">HTML</span> emails to track emails that have been opened. It also tracks whether links in the email were clicked. The <code>X-MC-GoogleAnalytics</code> header sets up tracking with your Google Analytics account (set your domain name here). The <code>X-MC-Tags</code> header identifies each email as a welcome message for analyzing delivery success.</p>
 <p>Create a mailer view by creating a file <strong>app/views/user_mailer/welcome_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
@@ -940,7 +943,7 @@ class User &lt; ActiveRecord::Base
 end
 </pre>
 <p>Now the visitor will get a welcome email when they request an invitation.</p>
-<p>There’s an unintended side effect of adding the <code>after_create :send_welcome_email</code> method. When you reset the database with <code>bundle exec rake db:reset</code> you’ll send welcome messages to the users listed in the <strong>db/seeds.rb</strong> file. To avoid bounce notices warning that mail could not be delivered to our bogus users, we don’t send a welcome email to addresses at the “example.com” domain.</p>
+<p>There’s an unintended side effect of adding the <code>after_create :send_welcome_email</code> method. When you reset the database with <code>rake db:reset</code> you’ll send welcome messages to the users listed in the <strong>db/seeds.rb</strong> file. To avoid bounce notices warning that mail could not be delivered to our bogus users, we don’t send a welcome email to addresses at the “example.com” domain.</p>
 <h3>Tweak the User Interface</h3>
 <p>The required functionality is largely complete. But there are a few small changes to make.</p>
 <p>If the user visits the sign-in page immediately after requesting an invitation, they may see this flash message:</p>
@@ -993,11 +996,11 @@ Scenario: User has not confirmed account
 <h3>Test the Implemention of the “Request Invitation” Feature</h3>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
 <p>Run the integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/visitors/request_invitation.feature
+$ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should succeed.</p>
 <p>Evaluating only the functionality, the feature is complete. In the next section, we’ll improve the look and feel of the feature.</p>
@@ -1230,11 +1233,11 @@ end
 </pre>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
 <p>Then we can run our integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/admin/view_progress.feature
+$ cucumber features/admin/view_progress.feature
 </pre>
 <p>The test will succeed. That’s because the application template we used to generate the application already implements the functionality we want. Let’s see how.</p>
 <h3>The Administrative Page</h3>
@@ -1287,7 +1290,7 @@ end
 <h3>Test the Implemention of the “View Progress” Feature</h3>
 <p>Run the integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/admin/view_progress.feature
+$ cucumber features/admin/view_progress.feature
 </pre>
 <p>The test should succeed.</p>
 <h3>Git Workflow</h3>
@@ -1534,11 +1537,11 @@ end
 </pre>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
 <p>Then we can run our integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/admin/send_invitations.feature
+$ cucumber features/admin/send_invitations.feature
 </pre>
 <p>The test will fail because we haven’t yet implemented the functionality.</p>
 <h3>Implementation</h3>
@@ -2236,11 +2239,11 @@ function loadSocial() {
 </table><h3>Test the Feature</h3>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
 <p>Run the integration test with the following command:</p>
 <pre>
-$ bundle exec cucumber features/visitors/request_invitation.feature
+$ cucumber features/visitors/request_invitation.feature
 </pre>
 <p><em>Note:</em> The test will fail because we don’t have proper step definitions yet. The tutorial is not finished; we’ll add these soon.</p>
 <h3>Git Workflow</h3>
@@ -2263,11 +2266,11 @@ $ git branch -D social-share
 <p>Run the integration test suite to see if everything works.</p>
 <p>Be sure you’ve set up the database for testing before running Cucumber:</p>
 <pre>
-$ bundle exec rake db:test:prepare
+$ rake db:test:prepare
 </pre>
 <p>Then we can run our integration test suite with the following command:</p>
 <pre>
-$ bundle exec cucumber
+$ cucumber
 </pre>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
@@ -2290,7 +2293,7 @@ $ bundle exec cucumber
 <pre>
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :created_at
 </pre>
-<p>Then run <code>$ bundle exec rake db:reset</code> to recreate the database and visit the site again.</p>
+<p>Then run <code>$ rake db:reset</code> to recreate the database and visit the site again.</p>
 <h2>Deploy to Heroku</h2>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
 <h2>Conclusion</h2>
@@ -2338,7 +2341,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-03 10:57:43</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-07 06:18:08</p>
       </div>
     </div>
 
