@@ -46,15 +46,18 @@
     <div class="content wikistyle gollum textile">
       <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku · RailsApps</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 7 June 2012</em></p>
-<p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting. See a discussion on Quora <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
-<p>See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice and suggestions on setting up the newest version of Rails on your own computer.</p>
-<p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<p>See a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
-<p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
+<p><em>Last updated 8 June 2012</em></p>
+<p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
+<p><a href="http://rdegges.com/heroku-isnt-for-idiots">Heroku Isn’t for Idiots</a> describes why you might want to use Heroku. And a discussion on Quora explains, <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a>.</p>
+<h4>RailsApps Examples and Tutorials</h4>
+<p>This is a guide for developers using the starter apps from the <a href="http://railsapps.github.com/">RailsApps</a> repository. The RailsApps project provides open source apps and detailed tutorials for Rails developers. The following articles may be helpful:</p>
+<ul>
+<li><a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a></li>
+	<li>Recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>
+</li>
+</ul><p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Before You Start</h2>
 <p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account. Or you can use someone else’s account (such as a client’s or employer’s if you have login credentials); see details below.</p>
-<p>Before you deploy to Heroku, you’ll need a Rails app. If you haven’t built one already, start with one of the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> project.</p>
 <h2>Updating Bundler for Heroku</h2>
 <p>As of 9 May 2012, Heroku officially supports Ruby 1.9.3 (see <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">Multiple Ruby Version Support on Heroku</a>). Heroku allows you to specify a Ruby version in your application’s gemfile. However, this requires use of an unreleased version of the <a href="http://gembundler.com/">Bundler</a> gem. As of 28 May 2012, the current release of Bundler is version 1.1.4. You must install Bundler 1.2.0.pre.1 if you plan to deploy to Heroku. If you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you are likely using the <a href="http://mpapis.github.com/rubygems-bundler/">rubygems-bundler</a> gem (it has been installed by default since rvm version 1.11.0). You will need to update rubygems-bundler before you install Bundler 1.2.0.pre.1.</p>
 <p>These instructions assume you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>. Bundler and rubygems-bundler are installed in rvm’s “global” gemset.</p>
@@ -151,7 +154,7 @@ end
 <p>Store the modified application in the Git repository:</p>
 <p><code>$ git commit -am "Configured for deployment to Heroku"</code></p>
 <h2>Heroku Account</h2>
-<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account.</p>
+<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account. Heroku will ask you for your email address; it’s advisable to use the same email address you use for your GitHub account (see the article <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a>).</p>
 <h3>Using a Client’s Account</h3>
 <p>You may want to deploy an app to an account that belongs to someone other than yourself (for example, your employer or a client). If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create an app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
 <h3>Deploying for Multiple Accounts</h3>
@@ -177,6 +180,7 @@ heroku accounts:set work
 <p>Use the Heroku create command to create and name your new app.</p>
 <p><code>$ heroku create myapp --stack cedar</code></p>
 <p>Heroku demands a unique name for every hosted application. Replace “myapp” with something unique. If it is not unique, you’ll see an error, “name is already taken.”</p>
+<p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name.</p>
 <h3>Check Heroku Configuration</h3>
 <p>You can check that everything has been added correctly by running:</p>
 <p><code>$ heroku info --app myapp</code></p>
@@ -227,6 +231,9 @@ production:
 <h2>Enabling Email</h2>
 <p>Unless you enable email on Heroku, you’ll get errors when your application tries to send email from Heroku.</p>
 <p>Heroku offers several options for sending email from your Rails application. See Heroku’s documentation <a href="http://devcenter.heroku.com/articles/smtp">Sending Email from Your App</a>.</p>
+<h3>Email Service Providers</h3>
+<p>For a production application, you’ll need to use an email service provider for your transactional email such as <a href="http://sendgrid.com/pricing.html">SendGrid</a> or <a href="http://mandrill.com/">Mandrill</a>. The tutorial for the <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">Startup Prelaunch Signup</a> app from the RailsApps project provides details.</p>
+<h3>Gmail</h3>
 <p>If you’re sending test emails during development, Gmail is the easiest option.</p>
 <p>To use Gmail from Heroku, add the following to your <em>config/environments/production.rb</em> file:</p>
 <pre>
@@ -251,7 +258,9 @@ config.action_mailer.smtp_settings = {
 $ heroku config:add GMAIL_USERNAME=no-reply@example.com GMAIL_PASSWORD=please
 </pre>
 <h2>Your Own Domain</h2>
-<p>You’ll likely want to use your own domain name for your app. The easiest way to set up your own domain with Heroku is to use the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>. See <a href="http://devcenter.heroku.com/articles/zerigo">Heroku’s article about setting up Zerigo <span class="caps">DNS</span></a> and <a href="http://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for more information.</p>
+<p>You’ll likely want to use your own domain name for your app. The easiest way to set up your own domain with Heroku is to use the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>. See <a href="https://devcenter.heroku.com/articles/zerigo_dns">Heroku’s article about setting up Zerigo <span class="caps">DNS</span></a> and <a href="https://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for more information.</p>
+<h3>Why “www” Matters</h3>
+<p>For simplicity, you might want your web app running on a “bare domain” like <a href="http://example.com/">http://example.com/</a>. You can do it, but Heroku explains <a href="https://devcenter.heroku.com/articles/avoiding-naked-domains-dns-arecords">Why You Should Avoid Naked Domains</a> and always use a <a href="http://en.wikipedia.org/wiki/Fully_qualified_domain_name">fully qualified domain name</a> such as  <a href="http://www.example.com/">http://www.example.com/</a>.</p>
 <h3>Use Zerigo’s Nameservers</h3>
 <p>Visit your domain registrar and set your domain’s nameserver records to point to Zerigo’s <span class="caps">DNS</span> servers:</p>
 <pre>
@@ -273,11 +282,11 @@ $ heroku addons:add zerigo_dns:basic
 </pre>
 <h3>Set Your Domain Name</h3>
 <p>With the Zerigo <span class="caps">DNS</span> add-on enabled, domain names added via the command line will automatically be added to Zerigo’s <span class="caps">DNS</span> servers. Updates happen instantly and Heroku keeps the <span class="caps">DNS</span> records up-to-date should Heroku change the IP addresses of its servers.</p>
-<p>This command tells Heroku that your app should respond to requests to “mydomain.com”:</p>
+<p>This command tells Heroku that your app should respond to requests to “www.mydomain.com”:</p>
 <pre>
-$ heroku domains:add mydomain.com
+$ heroku domains:add www.mydomain.com
 </pre>
-<p>As soon as <span class="caps">DNS</span> records propagate (usually a few minutes but sometimes longer), your app should be running at <a href="http://mydomain.com/">http://mydomain.com/</a>.</p>
+<p>As soon as <span class="caps">DNS</span> records propagate (usually a few minutes but sometimes longer), your app should be running at <a href="http://www.mydomain.com/">http://www.mydomain.com/</a>.</p>
 <h3>Using Subdomains</h3>
 <p>You’ll need to enable “wildcard domains” if you want your application to accommodate arbitrary subdomains (for example, a different subdomain for each user account),</p>
 <p><code>$ heroku addons:add wildcard_domains</code></p>
@@ -325,7 +334,7 @@ $ heroku domains:add mydomain.com
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-07 20:14:09</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-08 12:45:11</p>
       </div>
     </div>
 
