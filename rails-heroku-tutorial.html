@@ -54,7 +54,7 @@
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Before You Start</h2>
 <p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account. Or you can use someone else’s account (such as a client’s or employer’s if you have login credentials); see details below.</p>
-<p>Before you start, you may want to review the advice offered in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<p>Before you start, you may want to review the advice offered in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to be sure your development environment is configured correctly on your local machine.</p>
 <h2>Updating Bundler for Heroku</h2>
 <p>As of 9 May 2012, Heroku officially supports Ruby 1.9.3 (see <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">Multiple Ruby Version Support on Heroku</a>). Heroku allows you to specify a Ruby version in your application’s gemfile. However, this requires use of an unreleased version of the <a href="http://gembundler.com/">Bundler</a> gem. As of 28 May 2012, the current release of Bundler is version 1.1.4. You must install Bundler 1.2.0.pre.1 if you plan to deploy to Heroku. If you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you are likely using the <a href="http://mpapis.github.com/rubygems-bundler/">rubygems-bundler</a> gem (it has been installed by default since rvm version 1.11.0). You will need to update rubygems-bundler before you install Bundler 1.2.0.pre.1.</p>
 <p>These instructions assume you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>. Bundler and rubygems-bundler are installed in rvm’s “global” gemset.</p>
@@ -71,7 +71,7 @@ $ gem uninstall -ax bundler
 $ gem install bundler --pre
 $ bundle --version
 </pre>
-<p>If you encounter any issues when updating rubygems-bundler and Bundler, review the detailed instructions in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> (you may need to modify your <strong>.gemrc</strong> file if the pre-release bundler gem can’t be found).</p>
+<p>If you encounter any issues when updating rubygems-bundler and Bundler, review the detailed instructions in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>. You may need to modify your <strong>.gemrc</strong> file if the pre-release bundler gem can’t be found.</p>
 <p>If you are using rvm, switch back to your application-specific gemset to proceed.</p>
 <h2>Preparing a Gemfile for Heroku</h2>
 <p>You’ll add the Heroku gem and specify a Ruby version in your application’s gemfile.</p>
@@ -177,7 +177,7 @@ heroku accounts:set work
 <p>Use the Heroku create command to create and name your new app.</p>
 <p><code>$ heroku create myapp --stack cedar</code></p>
 <p>Heroku demands a unique name for every hosted application. Replace “myapp” with something unique. If it is not unique, you’ll see an error, “name is already taken.”</p>
-<p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name.</p>
+<p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name. You’ll just use the name for access to the instance of your app running on the Heroku servers; later, you’ll set up <span class="caps">DNS</span> to point your domain name to the app running on Heroku.</p>
 <h3>Check Heroku Configuration</h3>
 <p>You can check that everything has been added correctly by running:</p>
 <p><code>$ heroku info --app myapp</code></p>
@@ -331,7 +331,7 @@ $ heroku domains:add www.mydomain.com
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-08 13:08:23</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-08 13:27:59</p>
       </div>
     </div>
 
