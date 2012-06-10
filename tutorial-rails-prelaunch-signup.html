@@ -111,7 +111,7 @@
 </ul><p>No single vendor is optimal for all three types of email; you likely will use several vendors.</p>
 <p>For “company email,” that is, sending individual email to customers or business associates, you’ll probably use Gmail or <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>. For a single address, you can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. For that, use Google Apps for Business.</p>
 <h3>Transactional Email</h3>
-<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations, you will need a hosted <span class="caps">SMTP</span> relay service (also known as an <span class="caps">ESP</span> or “email service provider”). Considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">ESP</span> to increase reliability of delivery. The best services track deleiveries and show how well your email is being delivered.</p>
+<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations, you will need a hosted <span class="caps">SMTP</span> relay service (also known as an <span class="caps">ESP</span> or “email service provider”). Considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">ESP</span> to increase reliability of delivery. The best services track deliveries and show how well your email is being delivered.</p>
 <p>Many of these services offer a free plan allowing up to 200 emails/day:</p>
 <ul>
 <li><a href="http://mandrill.com/">Mandrill by MailChimp</a></li>
@@ -819,7 +819,7 @@ end
 <p>When we tell Devise that “confirmation is not required,” Devise will assume that any new account is “active_for_authentication.” We don’t want that, so we override the <code>active_for_authentication?</code> method so that unconfirmed accounts are not active.</p>
 <h3>Send a Welcome Email</h3>
 <p>Ordinarily, when the Devise Confirmable module is configured and a new user requests an invitation, Devise will send an email with instructions to confirm the account. We’ve changed this behavior so the user doesn’t get a confirmation request. However, we still want to send a welcome email.</p>
-<p>We didn’t revise the confirmation email to make it a welcome message. That might seem simpler but it would require us to re-implement the confirmation request process later. Instead we’ll add send an email welcome message using a new ActionMailer method when the account is created.</p>
+<p>We didn’t revise the confirmation email to make it a welcome message. That might seem simpler but it would require us to re-implement the confirmation request process later. Instead we’ll send an email welcome message using a new ActionMailer method when the account is created.</p>
 <p>You can skip this step if you plan on using MailChimp to manage a mailing list of visitors who have requested invitations. Later in this tutorial, we show how to set up MailChimp to collect email addresses. MailChimp offers an option to send a welcome email when a new user is subscribed to the mailing list. MailChimp makes it easy to design an attractive welcome email so we recommend using MailChimp’s welcome message. For now, we suggest following along so you can see how we send email from Rails.</p>
 <p>Generate a mailer with views and a spec:</p>
 <pre>
@@ -1036,7 +1036,7 @@ $ git checkout -b modal
 #request-invite.modal{:style =&gt; "display: none;"}
   = simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:class =&gt; 'form-horizontal' } do |f|
     .modal-header
-      %a.close{"data-dismiss" =&gt; "modal"} ×
+      %a.close{"data-dismiss" =&gt; "modal"} &amp;amp;#215;;
       %h3 Request Invitation
     .modal-body
       = f.error_notification
@@ -1076,7 +1076,7 @@ $('document').ready(function() {
 %h1 Thank you
 #request-invite.modal{:style =&gt; "display: 'block';"}
   .modal-header
-    %a.close{"data-dismiss" =&gt; "modal"} ×
+    %a.close{"data-dismiss" =&gt; "modal"} &amp;amp;#215;;
     %h3 Thank you!
   .modal-body
     %p We have received your request for an invitation to example.com.
@@ -2186,7 +2186,7 @@ function loadSocial() {
 %h1 Thank you
 #request-invite.modal{:style =&gt; "display: 'block';"}
   .modal-header
-    %a.close{"data-dismiss" =&gt; "modal"} ×
+    %a.close{"data-dismiss" =&gt; "modal"} &amp;amp;#215;;
     %h3 Thank you!
   .modal-body{:style =&gt; "margin-bottom: 120px; overflow: visible"}
     %p We have received your request for an invitation to example.com.
@@ -2341,7 +2341,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-08 17:25:16</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-10 12:12:24</p>
       </div>
     </div>
 
