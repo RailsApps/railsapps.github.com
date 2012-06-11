@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site · RailsApps</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 29 May 2012</em></p>
+<p><em>Last updated 10 June 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -150,7 +150,32 @@
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
 <h3>Option Two</h3>
 <p><em>Use the ready-made application template to generate the code.</em></p>
-<p>We’ll soon offer an application template to generate a new Rails app with code that closely matches the tutorial. It’s not available yet.</p>
+<p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
+<p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) allows you to choose from several options.</p>
+<p>Use the command:</p>
+<pre>
+$ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails-prelaunch-signup-template.rb -T
+</pre>
+<p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
+<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
+<p>This creates a new Rails app named <code>rails-prelaunch-signup</code> on your computer. You can use a different name if you wish.</p>
+<p>The application generator template will ask you for your preferences.</p>
+<p>To produce an application exactly like the tutorial, make the following selections:</p>
+<ul>
+<li>How will you send email? <strong>#4</strong>
+	<ol>
+<li>
+<span class="caps">SMTP</span> account</li>
+		<li>Gmail account</li>
+		<li>SendGrid account</li>
+		<li>Mandrill by MailChimp account</li>
+	</ol>
+</li>
+	<li>Use MailChimp to send news and welcome messages? <strong>yes</strong>
+</li>
+	<li>Add ‘therubyracer’ JavaScript runtime (for Linux users without node.js)? <strong>no</strong>
+</li>
+</ul><p>You can choose other selections if you don’t care about matching the example application exactly.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
 <ul>
@@ -310,13 +335,15 @@ gem "factory_girl_rails", "&gt;= 3.3.0", :group =&gt; [:development, :test]
 gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
 gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test, :require =&gt; false
 gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
-gem "database_cleaner", "&gt;= 0.7.2", :group =&gt; :test
+gem "database_cleaner", "&gt;= 0.8.0", :group =&gt; :test
 gem "launchy", "&gt;= 2.1.0", :group =&gt; :test
 gem "hominid"
 gem "devise", "&gt;= 2.1.0"
-gem "devise_invitable", "&gt;= 1.0.1"
+gem "devise_invitable", "&gt;= 1.0.2"
 gem "cancan", "&gt;= 1.6.7"
 gem "rolify", "&gt;= 3.1.0"
+gem "google_visualr", "&gt;= 2.1.2"
+gem "jquery-datatables-rails", "&gt;= 1.10.0"
 gem "bootstrap-sass", "&gt;= 2.0.3"
 gem "simple_form"
 </pre>
@@ -1318,7 +1345,7 @@ $ git branch -D view-progress
 $ git checkout -b add-chart
 </pre>
 <h3>GoogleVisualr Gem</h3>
-<p>We need to add the GoogleVisualr gem to the <strong>Gemfile</strong>:</p>
+<p>Be sure the GoogleVisualr gem is in the <strong>Gemfile</strong>:</p>
 <pre>
 gem "google_visualr", "&gt;= 2.1.2"
 </pre>
@@ -1414,7 +1441,7 @@ $ git branch -D add-chart
 $ git checkout -b sort-table
 </pre>
 <h3>jQuery-Datatables-Rails Gem</h3>
-<p>We need to add the jquery-datatables-rails gem to the <strong>Gemfile</strong>:</p>
+<p>Be sure the jquery-datatables-rails gem is in the <strong>Gemfile</strong>:</p>
 <pre>
 gem "jquery-datatables-rails"
 </pre>
@@ -2341,7 +2368,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-10 12:15:54</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-10 21:47:23</p>
       </div>
     </div>
 
