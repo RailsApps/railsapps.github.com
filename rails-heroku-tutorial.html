@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku · RailsApps</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 8 June 2012</em></p>
+<p><em>Last updated 11 June 2012</em></p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p><a href="http://rdegges.com/heroku-isnt-for-idiots">Heroku Isn’t for Idiots</a> describes why you might want to use Heroku. And a discussion on Quora explains, <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -94,7 +94,7 @@ $ rvm gemset use &lt;whatever&gt;
 source 'http://rubygems.org'
 
 ruby '1.9.3'
-gem  'rails', '3.2.5'
+gem  'rails', '3.2.6'
 </pre>
 <h3>Heroku Gem</h3>
 <p>Add the Heroku gem to your application’s Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
@@ -250,7 +250,7 @@ production:
 <p>If you’re sending test emails during development, Gmail is the easiest option.</p>
 <p>To use Gmail from Heroku, add the following to your <em>config/environments/production.rb</em> file:</p>
 <pre>
-config.action_mailer.default_url_options = { :host =&gt; 'myapp.heroku.com' }
+config.action_mailer.default_url_options = { :host =&gt; 'myapp.herokuapp.com' }
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = false
@@ -258,7 +258,7 @@ config.action_mailer.default :charset =&gt; "utf-8"
 config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
   port: 587,
-  domain: "myapp.heroku.com",
+  domain: "myapp.herokuapp.com",
   authentication: "plain",
   enable_starttls_auto: true,
   user_name: ENV["GMAIL_USERNAME"],
@@ -358,7 +358,7 @@ $ heroku logs -t
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-10 21:47:23</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-13 05:44:53</p>
       </div>
     </div>
 
