@@ -211,6 +211,13 @@ heroku accounts:set work
 <p>As of June 20, 2012, Heroku’s <a href="http://blog.heroku.com/archives/2012/5/24/cedar_goes_ga">default stack changed to Cedar</a>. Before, you needed to specify <code>$ heroku create myapp --stack cedar</code>; that’s no longer necessary.</p>
 <p>Heroku’s own documentation shows the command <code>heroku create --stack cedar</code>. If you don’t specify your app name (as shown in the command above), Heroku will supply a placeholder name. You can easily change Heroku’s placeholder name to a name of your choice with the <code>heroku apps:rename command</code> (see <a href="https://devcenter.heroku.com/articles/renaming-apps">Renaming Apps from the <span class="caps">CLI</span></a>).</p>
 <p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name. You’ll just use the name for access to the instance of your app running on the Heroku servers; later, you’ll set up <span class="caps">DNS</span> to point your domain name to the app running on Heroku.</p>
+<h3>Set Heroku Environment Variables</h3>
+<p>Your application may be obtaining usernames, passwords, or <span class="caps">API</span> keys for external services from the Unix shell environment. It’s a recommended practice to avoid recording sensitive information in your application code where it might be exposed publicly on a GitHub repo.</p>
+<p>After create the Heroku app, you may need to set Heroku environment variables to provide the same data your application obtains from your local shell environment.</p>
+<p>For example, for Gmail:</p>
+<pre>
+$ heroku config:add GMAIL_USERNAME=myname@gmail.com GMAIL_PASSWORD=secret
+</pre>
 <h3>Check Heroku Configuration</h3>
 <p>You can check that everything has been added correctly by running:</p>
 <p><code>$ heroku info --app myapp</code></p>
@@ -229,6 +236,11 @@ production:
 <h2>Push Your Application to Heroku</h2>
 <p>Push your application to Heroku:</p>
 <p><code>$ git push heroku master</code></p>
+<p>Review the output carefully. If you precompiled assets before deploying, you should see:</p>
+<pre>
+-&gt; Preparing app for Rails asset pipeline
+   Detected manifest.yml, assuming assets were compiled locally
+</pre>
 <p><em>Note:</em> If you are using a client’s or employer’s Heroku account, you won’t be able to push your application to Heroku until you’ve added yourself as a collaborator. After you create the app on Heroku, log in to your client’s account on Heroku. Under “My Apps” you’ll see the name of the app you’ve created; click “General Info” and you’ll find a form where you can add yourself as a collaborator.</p>
 <h4>Database Migrations</h4>
 <p>You’ll need to run your database migrations (not applicable if you are using MongoDB):</p>
@@ -364,7 +376,7 @@ $ heroku logs -t
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-19 20:17:17</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-19 20:30:42</p>
       </div>
     </div>
 
