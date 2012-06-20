@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Heroku Tutorial</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 11 June 2012</em></p>
+<p><em>Last updated 19 June 2012</em></p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p><a href="http://rdegges.com/heroku-isnt-for-idiots">Heroku Isn’t for Idiots</a> describes why you might want to use Heroku. And a discussion on Quora explains, <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -167,6 +167,11 @@ end
 	<li>do nothing and allow Heroku to attempt to compile assets when the app is generated (runtime compilation)</li>
 	<li>precompile the assets before deployment to Heroku</li>
 </ul><p>While runtime asset compilation will work, it should be used as a last resort. Using runtime compilation will require Rails to compile your assets each time a dyno boots up increasing the wait time for a new dyno to become available. If you do nothing and rely on Heroku to perform slug compilation (when you deploy to Heroku), you may find Heroku is unable to compile the assets and will default to runtime compilation.</p>
+<p>Heroku doesn’t check files in the <strong>config/initializers</strong> folder before attempting to precompile assets. That’s fine if you precompile assets before deploying to Heroku. Or if you don’t use the initializer files to set constants that are used in the assets files. You can avoid these issues by adding this configuration parameter to the <strong>config/application.rb</strong> file:</p>
+<pre>
+# Heroku requires this to be false
+config.assets.initialize_on_precompile=false
+</pre>
 <p>It’s best to precompile the assets before deployment to Heroku:</p>
 <pre>
 rake assets:precompile
@@ -201,8 +206,9 @@ heroku accounts:set work
 </pre>
 <h2>Create Your Application on Heroku</h2>
 <p>Use the Heroku create command to create and name your new app.</p>
-<p><code>$ heroku create myapp --stack cedar</code></p>
+<p><code>$ heroku create myapp</code></p>
 <p>Replace <code>myapp</code> with something unique. Heroku demands a unique name for every hosted application. If it is not unique, you’ll see an error, “name is already taken.”</p>
+<p>As of June 20, 2012, Heroku’s <a href="http://blog.heroku.com/archives/2012/5/24/cedar_goes_ga">default stack changed to Cedar</a>. Before, you needed to specify <code>$ heroku create myapp --stack cedar</code>; that’s no longer necessary.</p>
 <p>Heroku’s own documentation shows the command <code>heroku create --stack cedar</code>. If you don’t specify your app name (as shown in the command above), Heroku will supply a placeholder name. You can easily change Heroku’s placeholder name to a name of your choice with the <code>heroku apps:rename command</code> (see <a href="https://devcenter.heroku.com/articles/renaming-apps">Renaming Apps from the <span class="caps">CLI</span></a>).</p>
 <p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name. You’ll just use the name for access to the instance of your app running on the Heroku servers; later, you’ll set up <span class="caps">DNS</span> to point your domain name to the app running on Heroku.</p>
 <h3>Check Heroku Configuration</h3>
@@ -358,7 +364,7 @@ $ heroku logs -t
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-16 11:19:47</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-19 20:17:17</p>
       </div>
     </div>
 
