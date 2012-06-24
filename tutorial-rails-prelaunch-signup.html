@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 June 2012</em></p>
+<p><em>Last updated 24 June 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -1150,6 +1150,7 @@ class RegistrationsController &lt; Devise::RegistrationsController
         (render(:partial =&gt; 'thankyou', :layout =&gt; false) &amp;&amp; return)  if request.xhr?
         respond_with resource, :location =&gt; after_sign_up_path_for(resource)
       else
+        resource.update_attribute(:encrypted_password, nil) # make sure there is no password
         expire_session_data_after_sign_in!
         (render(:partial =&gt; 'thankyou', :layout =&gt; false) &amp;&amp; return)  if request.xhr?
         respond_with resource, :location =&gt; after_inactive_sign_up_path_for(resource)
@@ -2368,7 +2369,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-23 11:30:03</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-24 12:05:01</p>
       </div>
     </div>
 
