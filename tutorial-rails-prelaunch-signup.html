@@ -656,8 +656,27 @@ $ rake db:test:prepare
 $ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>The test should fail because our feature is not yet implemented.</p>
-<h3>Implement “Request Invitation” Form</h3>
+<h3>Add an “Opt-In” Field to the Database</h3>
 <p>We begin implementing the feature here.</p>
+<p>Devise provides almost all the functionality we need for managing users, including migrations that set up the database. We will need one extra field in the database that is not provided by Devise: an “opt-in” attribute so we can record if a visitor has consented to receiving news and announcements by email.</p>
+<p>Create a database migration with this command:</p>
+<pre>
+$ rails generate migration AddOptinToUsers opt_in:boolean
+</pre>
+<p>Then modify the migration file to set a default value:</p>
+<pre>
+class AddOptinToUsers &lt; ActiveRecord::Migration
+  def change
+    add_column :users, :opt_in, :boolean, :default =&gt; false
+  end
+end
+</pre>
+<p>After you’ve created the migration, update the database:</p>
+<pre>
+$ rake db:migrate
+$ rake db:seed
+</pre>
+<h3>Implement “Request Invitation” Form</h3>
 <p>The application’s home page doesn’t contain a “Request Invitation” form. We have some choices. Should we add a sign-up form to the home page? We already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to adapt the existing Devise mechanism.</p>
 <p>We’ll modify the Devise form to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm</a> gem. The SimpleForm gem lets us create forms that include tags that apply attractive Twitter Bootstrap form styles.</p>
 <p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
@@ -668,6 +687,8 @@ $ cucumber features/visitors/request_invitation.feature
 </ul><ul>
 <li>We’ll remove the password fields.</li>
 </ul><ul>
+<li>We’ll add the “opt-in” field.</li>
+</ul><ul>
 <li>We’ll remove the user name field (you could keep it if you wish).</li>
 </ul><ul>
 <li>We’ll change the submit button text from “Sign up” to “Request Invitation.”</li>
@@ -676,10 +697,12 @@ $ cucumber features/visitors/request_invitation.feature
 = simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
   = devise_error_messages!
   = f.input :email, :placeholder =&gt; 'user@example.com'
+  = f.input :opt_in, :label =&gt; false, :inline_label =&gt; 'Please send announcements.'
   = f.submit "Request Invitation"
 </pre>
-<h3>Override Password Validation</h3>
+<h3>Update the User Model</h3>
 <p>Devise won’t let us create a new user without a password when we use the default <code>:validatable</code> module. We want Devise to validate the email address but ignore the missing password, so we’ll override Devise’s <code>password_required?</code> method.</p>
+<p>We also must add the <code>:opt_in</code> attribute to the list of attributes that can be updated by mass assignment.</p>
 <p>Modify the file <strong>app/models/user.rb</strong> to override methods supplied by Devise:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -690,7 +713,7 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
@@ -818,7 +841,7 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
@@ -935,7 +958,7 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in
 
   after_create :send_welcome_email
 
@@ -1121,14 +1144,18 @@ $('document').ready(function() {
   // use AJAX to submit the "request invitation" form
   $('#invitation_button').live('click', function() {
     var email = $('form #user_email').val();
-    var password = $('form #user_password').val();
-    var dataString = 'user[email]='+ email + '&amp;user[password]=' + password;
+    if($('form #user_opt_in').is(':checked'))
+        var opt_in = true;
+    else
+        var opt_in = false;
+    var dataString = 'user[email]='+ email + '&amp;user[opt_in]=' + opt_in;
     $.ajax({
       type: "POST",
       url: "/users",
       data: dataString,
       success: function(data) {
         $('#request-invite').html(data);
+        loadSocial();
       }
     });
     return false;
@@ -1150,7 +1177,6 @@ class RegistrationsController &lt; Devise::RegistrationsController
         (render(:partial =&gt; 'thankyou', :layout =&gt; false) &amp;&amp; return)  if request.xhr?
         respond_with resource, :location =&gt; after_sign_up_path_for(resource)
       else
-        resource.update_attribute(:encrypted_password, nil) # make sure there is no password
         expire_session_data_after_sign_in!
         (render(:partial =&gt; 'thankyou', :layout =&gt; false) &amp;&amp; return)  if request.xhr?
         respond_with resource, :location =&gt; after_inactive_sign_up_path_for(resource)
@@ -2025,7 +2051,7 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in
 
   after_create :add_user_to_mailchimp unless Rails.env.test?
   before_destroy :remove_user_from_mailchimp unless Rails.env.test?
@@ -2071,7 +2097,7 @@ class User &lt; ActiveRecord::Base
   private
 
   def add_user_to_mailchimp
-    unless self.email.include?('@example.com')
+    unless self.email.include?('@example.com') or !self.opt_in?
       mailchimp = Hominid::API.new(ENV["MAILCHIMP_API_KEY"])
       list_id = mailchimp.find_list_id_by_name "visitors"
       info = { }
@@ -2100,7 +2126,7 @@ end
 listSubscribe(string list_id, string email_address, array merge_vars, string email_type, bool double_optin, bool update_existing, bool replace_interests, bool send_welcome)
 </pre>
 <p>We remove the <code>send_welcome_email</code> method because MailChimp gives us an option to send a welcome email when a visitor subscribes to a mailing list. It’s easier to compose an attractive welcome email using MailChimp’s templates than to create one from scratch. Be sure to log in to MailChimp and create a welcome email message for members of the “visitors” email list before testing the application.</p>
-<p>The <code>add_user_to_mailchimp</code> method will connect with the MailChimp server and issue an <span class="caps">API</span> call to subscribe the user to the “visitors” email list. We don’t call the method if we are creating new users when running tests. And we don’t subscribe users with addresses at <code>example.com</code>.</p>
+<p>The <code>add_user_to_mailchimp</code> method will connect with the MailChimp server and issue an <span class="caps">API</span> call to subscribe the user to the “visitors” email list. We don’t call the method if we are creating new users when running tests or if the user did not select the “opt-in” attribute when he or she requested an invitation. And we don’t subscribe users with addresses at <code>example.com</code>.</p>
 <p>Be sure to log in to MailChimp and create a “visitors” email list before deploying the application. When you want to send a newsletter or announcement, log in to your MailChimp account and use the service to send your broadcast email.</p>
 <p>We add <code>remove_user_from_mailchimp</code> method to delete the user as necessary. The documentation for the <a href="http://apidocs.mailchimp.com/api/rtfm/listUnsubscribe.func.php">MailChimp <span class="caps">API</span> listUnsubscribe function</a> offers a few options:</p>
 <pre>
@@ -2174,17 +2200,20 @@ $ git checkout -b social-share
 <p>Modify the file <strong>app/assets/javascripts/application.js</strong>:</p>
 <pre>
 $('document').ready(function() {
-  
+
   // display validation errors for the "request invitation" form
   if ($('.alert-error').length &gt; 0) {
     $("#request-invite").modal('toggle');
   }
-  
+
   // use AJAX to submit the "request invitation" form
   $('#invitation_button').live('click', function() {
     var email = $('form #user_email').val();
-    var password = $('form #user_password').val();
-    var dataString = 'user[email]='+ email + '&amp;user[password]=' + password;
+    if($('form #user_opt_in').is(':checked'))
+        var opt_in = true;
+    else
+        var opt_in = false;
+    var dataString = 'user[email]='+ email + '&amp;user[opt_in]=' + opt_in;
     $.ajax({
       type: "POST",
       url: "/users",
@@ -2196,7 +2225,7 @@ $('document').ready(function() {
     });
     return false;
   });
-  
+
 })
 
 // load social sharing scripts if the page includes a Twitter "share" button
@@ -2242,13 +2271,13 @@ function loadSocial() {
     %p We'll contact you when we launch.
     %p Share your discovery with your friends!
     #tweet{:style =&gt; "display:inline-block;"}
-      %a.twitter-share-button{"data-count" =&gt; "horizontal", "data-text" =&gt; "A new site I've discovered", "data-url" =&gt; "http://railsapps.github.com/", "data-via" =&gt; "rails_apps", "data-related" =&gt; "rails_apps", :href =&gt; "https://twitter.com/share"}
+      %a.twitter-share-button{"data-count" =&gt; "horizontal", "data-text" =&gt; "A new site I've discovered", "data-url" =&gt; "http://railsapps.github.com/rails-prelaunch-signup/", "data-via" =&gt; "launchrails", "data-related" =&gt; "launchrails", :href =&gt; "https://twitter.com/share"}
     %span{:style =&gt; "display:inline-block; vertical-align:text-bottom;"}
-      .fb-like{"data-href" =&gt; "http://railsapps.github.com/", "data-layout" =&gt; "button_count", "data-send" =&gt; "false", "data-show-faces" =&gt; "false", "data-width" =&gt; "90"}
-    .g-plusone{"data-annotation" =&gt; "inline", "data-href" =&gt; "http://railsapps.github.com/", "data-size" =&gt; "medium", "data-width" =&gt; "120"}
+      .fb-like{"data-href" =&gt; "http://railsapps.github.com/rails-prelaunch-signup/", "data-layout" =&gt; "button_count", "data-send" =&gt; "false", "data-show-faces" =&gt; "false", "data-width" =&gt; "90"}
+    .g-plusone{"data-annotation" =&gt; "inline", "data-href" =&gt; "http://railsapps.github.com/rails-prelaunch-signup/", "data-size" =&gt; "medium", "data-width" =&gt; "120"}
 </pre>
 <p>The results are pretty: graphical buttons for Twitter, Facebook, and Google+ sharing aligned nicely in a row. To get that result, we need a mess of elements with tweaked style rules. Twitter expects a link styled with the class <code>twitter-share-button</code>; the Twitter JavaScript widget then transforms it into a dynamic button that displays a count of past tweets. We have to apply a <code>display:inline-block</code> style rule to force it to appear in a row with the other buttons. The Facebook JavaScript widget expects a div with the class <code>fb-like</code>; we wrap it in a span element and apply some style rules to force it to align nicely. The Google+ JavaScript widget expects a div with the class <code>g-plusone</code>; this one plays nicely with others and doesn’t need any tweaking. One last tweak to the class <code>modal-body</code> applies a style rule that increases the height of the modal window so there’s room for the dialog box that appears when the visitor clicks the Facebook “Like” button.</p>
-<p>For demonstration purposes we’ve set up the social sharing buttons to point to the RailsApps home page. You’ll want to replace the placeholders with pointers to your own website:</p>
+<p>For demonstration purposes we’ve set up the social sharing buttons to point to the project page for the Rails Prelaunch Signup app. You’ll want to replace the placeholders with pointers to your own website:</p>
 <table>
 <tr>
 <th>Item </th>
@@ -2257,12 +2286,12 @@ function loadSocial() {
 	</tr>
 <tr>
 <td> Twitter data-via </td>
-		<td> rails_apps </td>
+		<td> launchrails </td>
 		<td> Your Twitter username </td>
 	</tr>
 <tr>
 <td> Twitter data-related </td>
-		<td> rails_apps </td>
+		<td> launchrails </td>
 		<td> Recommendations of Twitter accounts for the visitor to follow </td>
 	</tr>
 <tr>
@@ -2272,17 +2301,17 @@ function loadSocial() {
 	</tr>
 <tr>
 <td> Twitter data-url </td>
-		<td> http://railsapps.github.com/ </td>
+		<td> http://railsapps.github.com/rails-prelaunch-signup/ </td>
 		<td> Web address for your site </td>
 	</tr>
 <tr>
 <td> Facebook data-href </td>
-		<td> http://railsapps.github.com/ </td>
+		<td> http://railsapps.github.com/rails-prelaunch-signup/ </td>
 		<td> Web address for your site </td>
 	</tr>
 <tr>
 <td> Google+ data-href </td>
-		<td> http://railsapps.github.com/ </td>
+		<td> http://railsapps.github.com/rails-prelaunch-signup/ </td>
 		<td> Web address for your site </td>
 	</tr>
 </table><h3>Test the Feature</h3>
@@ -2340,7 +2369,7 @@ $ cucumber
 </pre>
 <p>You’ll have to modify the file <strong>app/models/user.rb</strong> to allow mass assignment of the <code>created_at</code> field:</p>
 <pre>
-attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :created_at
+attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in, :created_at
 </pre>
 <p>Then run <code>$ rake db:reset</code> to recreate the database and visit the site again.</p>
 <h2>Deploy to Heroku</h2>
@@ -2390,7 +2419,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-24 14:45:32</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-24 22:16:53</p>
       </div>
     </div>
 
