@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Heroku Tutorial</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 June 2012</em></p>
+<p><em>Last updated 25 June 2012</em></p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p><a href="http://rdegges.com/heroku-isnt-for-idiots">Heroku Isn’t for Idiots</a> describes why you might want to use Heroku. And a discussion on Quora explains, <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -289,44 +289,35 @@ config.action_mailer.smtp_settings = {
 $ heroku config:add GMAIL_USERNAME=no-reply@example.com GMAIL_PASSWORD=please
 </pre>
 <h2>Your Own Domain</h2>
-<p>You’ll likely want to use your own domain name for your app. The easiest way to set up your own domain with Heroku is to use the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>. See <a href="https://devcenter.heroku.com/articles/zerigo_dns">Heroku’s article about setting up Zerigo <span class="caps">DNS</span></a> and <a href="https://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for more information.</p>
+<p>You’ll likely want to use your own domain name for your app.</p>
+<p>See <a href="https://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for instructions.</p>
+<p>Heroku’s support for custom domains has been simplified. It’s no longer necessary to enable Heroku to use custom domains for your app.</p>
 <h3>Why “www” Matters</h3>
 <p>For simplicity, you might want your web app running on a “bare domain” like <a href="http://example.com/">http://example.com/</a>. You can do it, but Heroku explains <a href="https://devcenter.heroku.com/articles/avoiding-naked-domains-dns-arecords">Why You Should Avoid Naked Domains</a> and always use a <a href="http://en.wikipedia.org/wiki/Fully_qualified_domain_name">fully qualified domain name</a> such as  <a href="http://www.example.com/">http://www.example.com/</a>.</p>
-<h3>Use Zerigo’s Nameservers</h3>
-<p>Visit your domain registrar and set your domain’s nameserver records to point to Zerigo’s <span class="caps">DNS</span> servers:</p>
-<pre>
-a.ns.zerigo.net
-b.ns.zerigo.net
-c.ns.zerigo.net
-d.ns.zerigo.net
-e.ns.zerigo.net
-</pre>
-<h3>Enable Custom Domains</h3>
-<p>Use the command line to enable Heroku to use a custom domain for your app:</p>
-<pre>
-$ heroku addons:add custom_domains:basic
-</pre>
-<h3>Enable the Zerigo <span class="caps">DNS</span> Add-on</h3>
-<p>Use the command line to enable the <a href="http://addons.heroku.com/zerigo_dns">Zerigo <span class="caps">DNS</span> add-on</a>:</p>
-<pre>
-$ heroku addons:add zerigo_dns:basic
-</pre>
 <h3>Set Your Domain Name</h3>
-<p>With the Zerigo <span class="caps">DNS</span> add-on enabled, domain names added via the command line will automatically be added to Zerigo’s <span class="caps">DNS</span> servers. Updates happen instantly and Heroku keeps the <span class="caps">DNS</span> records up-to-date should Heroku change the IP addresses of its servers.</p>
 <p>This command tells Heroku that your app should respond to requests to “www.mydomain.com”:</p>
 <pre>
 $ heroku domains:add www.mydomain.com
 </pre>
-<p>As soon as <span class="caps">DNS</span> records propagate (usually a few minutes but sometimes longer), your app should be running at <a href="http://www.mydomain.com/">http://www.mydomain.com/</a>.</p>
+<h3>Set a <span class="caps">DNS</span> Record</h3>
+<p>Domain Name Service (<a href="http://en.wikipedia.org/wiki/Domain_Name_System"><span class="caps">DNS</span></a>) routes requests for your domain to the servers that host your application. Your name service may be provided by your domain registrar (for example, GoDaddy) or a managed <span class="caps">DNS</span> provider (for example, <a href="https://dnsimple.com/">DNSimple</a> or <a href="http://www.zerigo.com/managed-dns">Zerigo</a>). You must visit your <span class="caps">DNS</span> provider’s website to set a <span class="caps">CNAME</span> record to route requests for “http://www.mydomain.com/” to your app running on Heroku.</p>
+<p>Each <span class="caps">DNS</span> provider has a different interface for managing <span class="caps">DNS</span> records. This article doesn’t show you how to set a <span class="caps">CNAME</span> record.</p>
+<p>After you have set a <span class="caps">CNAME</span> record, as soon as <span class="caps">DNS</span> records propagate (usually a few minutes but sometimes longer), your app should be running at <a href="http://www.mydomain.com/">http://www.mydomain.com/</a>.</p>
 <h3>Using Subdomains</h3>
 <p>You’ll need to enable “wildcard domains” if you want your application to accommodate arbitrary subdomains (for example, a different subdomain for each user account),</p>
 <pre>
-$ heroku addons:add wildcard_domains@
 $ heroku domains:add *.mydomain.com
 </pre>
+<p>Then, visit your <span class="caps">DNS</span> provider to set a <span class="caps">CNAME</span> record to point “*.example.com” at “myapp.herokuapp.com”.</p>
+<h3>Checking Subdomains</h3>
 <p>You can check that everything has been added correctly by running:</p>
 <pre>
 $ heroku info --app myapp
+</pre>
+<p>As soon as <span class="caps">DNS</span> has propagated, your local computer will show that the domain name resolves properly:</p>
+<pre>
+$ host www.example.com
+www.example.com has address ...
 </pre>
 <h2>Troubleshooting</h2>
 <p>When you get errors, troubleshoot by reviewing the log files:</p>
@@ -376,7 +367,7 @@ $ heroku logs -t
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-24 22:16:53</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-06-25 21:48:50</p>
       </div>
     </div>
 
