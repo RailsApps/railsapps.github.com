@@ -4,16 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Rails with Git and GitHub &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
-    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="/css/screen.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="/css/gollum.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="/css/site.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="/css/syntax.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/site.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/syntax.css" type="text/css" charset="utf-8" />
     <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
-    <script src="/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
-    <script src="/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
-    <script src="/javascript/jquery.tabs.js" type="text/javascript"></script>
-    <script src="/javascript/gollum.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/gollum.js" type="text/javascript"></script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-5109366-14']);
@@ -30,7 +30,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a href="/" class="brand">RailsApps Project</a>
+        <a href="http://railsapps.github.com/" class="brand">RailsApps Project</a>
         <ul class="pull-right nav">
           <li><a href="http://blog.railsapps.org/" class="twitter">Blog</a></li>
           <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
@@ -46,18 +46,25 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails with Git and GitHub</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 8 June 2012</em></p>
-<p>Using GitHub with Rails. <a href="http://git-scm.com/">Git</a> provides a source control repository. Use git to roll back code changes as needed, when you are collaborating with others, and when you create an app for deployment into production with a service such as Heroku.</p>
-<p>If you are building a throw-away app for your own education, you may decide not to use git, but sooner or later you will need to learn to use git to participate in the open source community.</p>
+<p><em>Last updated 5 July 2012</em></p>
+<p>Using GitHub with Rails. <a href="http://git-scm.com/">Git</a> provides a source control repository. Use git to roll back code changes as needed, when you are collaborating with others, and when you must deploy an app for hosting with a service such as Heroku.</p>
+<p>If you are building a throw-away app for your own education, you may decide not to use git, but sooner or later you will need to learn to use git to participate in the open source community. Git is not easy to understand or learn (see a <a href="http://news.ycombinator.com/item?id=4199772">discussion</a>) but it is a worthwhile and essential tool for software development.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
-<h2>New to Git?</h2>
-<p>If you arew new to git, you can read a free online version of the book <a href="http://git-scm.com/book">Pro Git</a> by Scott Chacon.</p>
+<h2>Git Explained</h2>
+<p>You’ll use git to record the changes you make to your project over time. In git, these changes are called “commits.”</p>
+<p>Commits contain a change a user has made to the code and some additional useful metadata. This metadata includes the time the change was made, your name, and a message you add to describe the change. Git itself is a specialized database that stores these commits. Git provides a complex set of commands that allow more than one developer to make changes and stay in sync; maintain and access different versions of a project; and retrieve past versions of a project.</p>
+<h2>Learning Git</h2>
+<p>If you are new to git, you can read a free online version of the book <a href="http://git-scm.com/book">Pro Git</a> by Scott Chacon.</p>
+<p>GitHub offers a quick interactive tutorial at <a href="http://try.github.com/">try.github.com</a>.</p>
+<p>The best git tutorial is <a href="http://gitimmersion.com/">Git Immersion</a> from EdgeCase.</p>
+<p>I recommend reading Charles Duan’s article <a href="http://www.sbf5.com/~cduan/technical/git/">Understanding Git Conceptually</a> with any other tutorial.</p>
+<p>Michael Hartl’s Rails Tutorial book covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version Control with Git</a> for typical Rails projects.</p>
+<h2>Got Git?</h2>
 <p>Check that git is installed on your computer:</p>
 <pre>
 $ git version
 </pre>
 <p>If you need to install git, refer to the section <a href="http://git-scm.com/book/en/Getting-Started-Installing-Git">Installing Git</a> from Scott Chacon’s book. Also see <a href="http://git-scm.com/book/en/Getting-Started-First-Time-Git-Setup">First-Time Git Setup</a> from the book.</p>
-<p>Michael Hartl’s Rails Tutorial book also covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version Control with Git</a>.</p>
 <h2>Git Config</h2>
 <p>Check your git configuration parameters:</p>
 <pre>
@@ -85,6 +92,7 @@ $ git init
 $ git add .
 $ git commit -m 'initial commit'
 </pre>
+<p>The <code>-m 'initial commit'</code> argument attaches a comment (“m” for “message”) to the commit. You should include a comment with every commit.</p>
 <p>You can check your commit status at any time with:</p>
 <pre>
 $ git status
@@ -116,9 +124,10 @@ $ git push origin master
 </pre>
 <p>At each stage of completion, you should check your code into your local repository:</p>
 <pre>
-$ git commit -m "some helpful comment"
+$ git commit -am "some helpful comment"
 </pre>
-<p>and then push it to the remote repository:</p>
+<p>Note the <code>-am</code> argument. Use <code>-m</code> to add a commit message. Use <code>-a</code> to automatically remove any files you may have marked for deletion (otherwise you have to use “git rm,” adding an additional step). You can combine <code>-m</code> and <code>-a</code> as <code>-am</code>.</p>
+<p>Then push your changes to the remote repository:</p>
 <pre>
 $ git push origin master
 </pre>
@@ -144,9 +153,10 @@ $ git branch -D login
     
     <div class="comments">
       <div class="content wikistyle gollum">
-        <h2>Comments</h2>
+        <h2>Comments and Issues</h2>
       </div>
-      <p>Is this helpful? Please "like" below. Question or suggestion? Please add a comment below. Got a correction or addition? You can edit this page <a href="https://github.com/RailsApps/railsapps.github.com/wiki/_pages">on the wiki</a> or create a <a href="https://github.com/RailsApps/railsapps.github.com/issues">GitHub issue</a> to alert me.</p>
+      <p>Is this helpful? Please add a comment below. Your encouragement fuels the project.</p>
+      <p>Did you find an error? Or couldn't get something to work? For the example apps and tutorials, please create a GitHub issue in the repository for the example app. Creating a GitHub issue is the best way to make sure a problem is investigated and fixed.</p>
       <div id="disqus_thread"></div>
       <script type="text/javascript">
           /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -165,17 +175,17 @@ $ git branch -D login
     <div class="footer row">
       <div class="span4">
         <h3>Credits</h3>
-        <p><a href="http://danielkehoe.com/">Daniel Kehoe</a> initiated the <a href="http://railsapps.github.com/">RailsApps Project</a>. Thanks to <a href="http://tigrish.com/">Christopher Dell</a> for design contributions.</p> 
+        <p><a href="http://danielkehoe.com/">Daniel Kehoe</a> initiated the <a href="http://railsapps.github.com/">RailsApps Project</a>. Thanks to all the users and contributors.</p> 
       </div>
     
       <div class="span4">
-        <h3>Contributions</h3>
+        <h3>Wiki</h3>
         <p>Corrections? Additions? You can edit this page <a href="https://github.com/RailsApps/railsapps.github.com/wiki/_pages">on the wiki</a>.</p>
       </div>
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-06-26 04:16:58</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-04 18:01:30</p>
       </div>
     </div>
 
