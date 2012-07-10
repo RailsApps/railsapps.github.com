@@ -279,7 +279,9 @@ $ rails -v
 <h4>JavaScript Runtime for Ubuntu</h4>
 <p>Since Rails 3.1, a JavaScript runtime has been needed for development on Ubuntu Linux. It is not needed for Mac OS X or Windows.</p>
 <p>For development on Linux Ubuntu, it is best to install the <a href="http://nodejs.org/">Node.js</a> server-side JavaScript environment:</p>
-<p><code>sudo apt-get install nodejs</code></p>
+<pre>
+$ sudo apt-get install nodejs
+</pre>
 <p>and set it in your <code>$PATH</code>.</p>
 <p>If you don’t install Node.js, you’ll need to add this to the Gemfile for each Rails application you build:</p>
 <pre>
@@ -300,7 +302,29 @@ $ cd testapp
 $ rake -T
 </pre>
 <p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using rvm (see <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>).</p>
-<h2>Troubleshooting</h2>
+<h2>Databases</h2>
+<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Mac OS X come with SQLite pre-installed and there’s nothing to configure. If you use a pre-assembled package to install Rails on Windows, it will likely have SQLite pre-installed. On Ubuntu Linux, install SQLite with:</p>
+<pre>
+$ sudo apt-get install sqlite3 libsqlite3-dev
+</pre>
+<p>Though SQLite is adequate for development (and even some production applications), many Rails developers prefer to use <a href="http://www.postgresql.org/">PostgreSQL</a>. An article from Russ Brooks explains how to install PostgreSQL on Mac OS X:</p>
+<ul>
+<li><a href="http://russbrooks.com/2010/11/25/install-postgresql-9-on-os-x">Install PostgreSQL 9 on OS X</a></li>
+</ul><h2>Git</h2>
+<p>If you are developing with Rails, git is an essential tool. <a href="http://git-scm.com/">Git</a> provides a source control repository. Use git to roll back code changes as needed, when you are collaborating with others, and when you must deploy an app for hosting with a service such as Heroku. See the article:</p>
+<ul>
+<li><a href="http://railsapps.github.com/rails-git.html">Rails with Git and GitHub</a></li>
+</ul><h2>Deployment</h2>
+<p>For easy deployment, use a “platform as a service” provider such as:</p>
+<ul>
+<li><a href="http://www.heroku.com/">Heroku</a></li>
+	<li><a href="http://www.cloudfoundry.com/">CloudFoundry</a></li>
+	<li><a href="http://www.engineyard.com/">EngineYard</a></li>
+	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
+</ul><p>For deployment on Heroku, see the article:</p>
+<ul>
+<li><a href="http://railsapps.github.com/rails-heroku-tutorial.html">Rails 3.2 on Heroku</a></li>
+</ul><h2>Troubleshooting</h2>
 <h4>Problems with “Segmentation Fault”</h4>
 <p>If you get a “segfault” when you try <code>rails new</code>, try removing and reinstalling rvm. If you are not using the current version of Mac OS X, you should upgrade before installing rvm.</p>
 <h4>Problems with “Gem::RemoteFetcher::FetchError: SSL_connect”</h4>
@@ -436,7 +460,7 @@ $ echo "rvm ruby-1.9.3-p194 @rails32" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-07-10 13:53:04</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-10 14:33:23</p>
       </div>
     </div>
 
