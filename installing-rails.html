@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Read This Before Installing Rails 3.2 &#183; RailsApps</title>
+    <title>Installing Rails &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
@@ -44,9 +44,9 @@
   <div class="container"> 
 
     <div class="content wikistyle gollum textile">
-      <h1>Read This Before Installing Rails 3.2</h1>
+      <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 July 2012</em></p>
+<p><em>Last updated 11 July 2012</em></p>
 <p>Installing Rails 3.2.6: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails with an emphasis on updating the complete development environment.</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -54,7 +54,7 @@
 <p>If you’re new to Rails, see a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Shortcuts</h2>
-<p>If you’ve already installed Ruby 1.9.3 and rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, skip ahead to the section “Updating the Gems.”</p>
+<p>If you’ve already installed Ruby 1.9.3 and rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, skip ahead to the section <a href="#gems">Updating the Gems.</a></p>
 <h4>Is Rails Already Installed?</h4>
 <p><em>Not recommended:</em> If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get the newest version of Rails. But it is well worth the effort to install and use rvm to manage Rails versions.</p>
 <p><em>Recommended:</em> You should use rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to create a new gemset and install the new Rails version. Then you can switch between versions if necessary.</p>
@@ -89,12 +89,12 @@
 <p><a href="http://gembundler.com/">Bundler</a> version 1.1.4 was released May 28, 2012. Version 1.1.0 released March 7, 2012 is significantly faster than previous versions.</p>
 <p>A pre-release version of Bundler, <a href="https://github.com/carlhuda/bundler/blob/master/CHANGELOG.md">version 1.2.0.pre.1</a>, was released May 28, 2012. This forthcoming version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”). You should install Bundler 1.2.0.pre.1 if you plan to deploy to Heroku.</p>
 <p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. See details below to install Bundler 1.2.0.pre.1 if you plan to deploy to Heroku.</p>
-<h2>Installing Rails 1.9.3 and rvm</h2>
+<h2 id="ruby">Installing Ruby 1.9.3 and rvm</h2>
 <p>These instructions prepare your computer for installation of Rails.</p>
 <h4>C language compiler</h4>
 <p>You need a C language compiler to install Ruby and any gems that require native extensions. Linux operating systems include the necessary <a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection">gcc compiler</a>. Default installations of Windows or Mac OS X don’t include gcc.</p>
 <h4>Preparing a Mac</h4>
-<p>The best guide for installation on a Mac is from Moncef Belyamani: <a href="http://moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/">How to Install Xcode, Homebrew, Git, <span class="caps">RVM</span>, &amp; Ruby 1.9.3 on Snow Leopard &amp; Lion</a>. After following his instructions, skip ahead to the section “Updating the Gems.”</p>
+<p>The best guide for installation on a Mac is from Moncef Belyamani: <a href="http://moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/">How to Install Xcode, Homebrew, Git, <span class="caps">RVM</span>, &amp; Ruby 1.9.3 on Snow Leopard &amp; Lion</a>. After following his instructions, skip ahead to the section <a href="#gems">Updating the Gems.</a></p>
 <p>You can also install Ruby with pre-assembled packages:</p>
 <ul>
 <li><a href="http://railsinstaller.org/">RailsInstaller for OS X</a></li>
@@ -131,18 +131,16 @@ $ rvm reload
 $ rvm -v
 </pre>
 <h4>Which Ruby?</h4>
-<p>There are several Ruby interpreters available:</p>
+<p>Use <span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, which is the reference implementation. It is the default when you install Ruby 1.9.3 using rvm.</p>
+<p>There are other Ruby interpreters available:</p>
 <ul>
 <li>
-<a href="http://www.ruby-lang.org/en/"><span class="caps">MRI</span></a> (the reference implementation)</li>
-	<li>
 <a href="http://www.rubyenterpriseedition.com/"><span class="caps">REE</span></a> from Phusion</li>
 	<li><a href="http://jruby.org/">JRuby</a></li>
 	<li><a href="http://rubini.us/">Rubinius</a></li>
 	<li><a href="http://maglev.github.com/">MagLev</a></li>
 	<li><a href="http://www.macruby.org/">MacRuby</a></li>
-</ul><p>Use <span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, which is the reference implementation. It is the default when you install Ruby 1.9.3 using rvm.</p>
-<h4>Install Ruby 1.9.3</h4>
+</ul><h4>Install Ruby 1.9.3</h4>
 <p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 1.9.3 patch level 194  was current when this was written.</p>
 <p>Ruby may already be installed on your computer (Mac OS X 10.7 comes with Ruby 1.8.7 preinstalled). You don’t need to remove an earlier version of Ruby if you install Ruby 1.9.3 using rvm.</p>
 <p>Check for rvm installation notes for your operating system version:</p>
@@ -160,9 +158,9 @@ $ rvm install ruby-1.9.3-p194
 $ rvm --default use ruby-1.9.3-p194 
 $ ruby -v
 </pre>
-<p><em>Mac OS X 10.7.4 with XCode 4.3.2</em> You should be able to install Ruby 1.9.3-p194 using rvm without any special command line options.</p>
+<p><em>Mac OS X 10.7.4 with XCode 4.3.2 or newer</em> You should be able to install Ruby 1.9.3-p194 using rvm without any special command line options.</p>
 <p><em>Earlier Mac OS X and XCode versions:</em> It’s advisable to upgrade to the newest Mac OS X and XCode versions.</p>
-<h2>Updating the Gems</h2>
+<h2 id="gems">Updating the Gems</h2>
 <p>You can read more about how the building blocks of the Rails platform work together by reading the article <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a>. It explains the relationships among Ruby, RubyGems, Rails, Rake, Bundler, and gemfiles and offers some advice.</p>
 <h4>RubyGems</h4>
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
@@ -303,7 +301,8 @@ $ rake -T
 </pre>
 <p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using rvm (see <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>).</p>
 <h2>Databases</h2>
-<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Mac OS X come with SQLite pre-installed and there’s nothing to configure. If you use a pre-assembled package to install Rails on Windows, it will likely have SQLite pre-installed. On Ubuntu Linux, install SQLite with:</p>
+<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Mac OS X come with SQLite pre-installed and there’s nothing to configure. On Windows, if you use a pre-assembled package to install Rails, it will likely have SQLite pre-installed.</p>
+<p>On Ubuntu Linux, install SQLite with:</p>
 <pre>
 $ sudo apt-get install sqlite3 libsqlite3-dev
 </pre>
@@ -460,7 +459,7 @@ $ echo "rvm ruby-1.9.3-p194 @rails32" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-07-10 14:33:23</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-11 09:06:23</p>
       </div>
     </div>
 
