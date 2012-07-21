@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 18 July 2012</em></p>
+<p><em>Last updated 20 July 2012</em></p>
 <p>Installing Rails 3.2.6: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails with an emphasis on updating the complete development environment.</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -291,7 +291,15 @@ $ rails -v
 <pre>
 $ sudo apt-get install sqlite3 libsqlite3-dev
 </pre>
-<p>Though SQLite is adequate for development (and even some production applications), many Rails developers prefer to use <a href="http://www.postgresql.org/">PostgreSQL</a>. An article from Russ Brooks explains how to install PostgreSQL on Mac OS X:</p>
+<p>Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command <code>rails new myapp --database=</code> will show you a list of supported databases.</p>
+<pre>
+Supported for preconfiguration are: mysql, oracle, postgresql, sqlite3, frontbase, ibm_db, sqlserver, jdbcmysql, jdbcsqlite3, jdbcpostgresql, jdbc.
+</pre>
+<p>For example, to create a new Rails application to use <a href="http://www.postgresql.org/">PostgreSQL</a>:</p>
+<pre>
+$ rails new myapp --database=postgresql
+</pre>
+<p>The <code>--database=postgresql</code> parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file. Here’s an article that explains how to install PostgreSQL on Mac OS X:</p>
 <ul>
 <li><a href="http://russbrooks.com/2010/11/25/install-postgresql-9-on-os-x">Install PostgreSQL 9 on OS X</a></li>
 </ul><h2>Create a Test App</h2>
@@ -457,7 +465,7 @@ Consider using bundle exec.
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-07-18 05:21:03</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-20 23:08:42</p>
       </div>
     </div>
 
