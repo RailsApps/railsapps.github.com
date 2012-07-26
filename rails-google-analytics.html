@@ -57,53 +57,7 @@
 <p>To collect usage and traffic data, every web page must contain a snippet of JavaScript code, referred to as the Google Analytics Tracking Code. The tracking code snippet includes a unique website identifier named the Google Analytics Tracking ID, which looks like this: <code>UA-XXXXXXX-XX</code>. You will obtain the JavaScript snippet and Tracking ID from the <a href="http://www.google.com/analytics/">Google Analytics website</a> when you set up an account for your website. You can set up an account for your website at any time. It’s advisable to set up the account before you deploy your app so you can obtain the Tracking ID and set up your app to use it. You’ll check your Google Analytics account later to verify that Google is collecting data.</p>
 <p>The tracking code snippet loads a larger Javascript file (an 18KB file named ga.js) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The ga.js file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
 <p>Before December 2009, Google’s Javascript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the ga.js file downloads in parallel with other page assets. Page rendering can begin before the ga.js file is delivered. In practice, the ga.js file is often already cached.</p>
-<p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final </p><p> close tag because it could delay page loading. Now, Google recommends placing the new (asynchronous JavaScript) snippet immediately before the closing  tag because it has little effect on page loading.</p>
-<h2>Adding Google Analytics Tracking Code to a Rails App</h2>
-<p>There are five approaches to adding the Google Analytics tracking code to a Rails app:</p>
-<ol>
-<li>add the Google tracking code to the application layout</li>
-	<li>add a partial included in the application layout</li>
-	<li>use view helpers such as Benoit Garret’s <a href="https://github.com/bgarret/google-analytics-rails">google-analytics-rails</a> gem</li>
-	<li>use Rack middleware such as Lee Hambley’s <a href="https://github.com/leehambley/rack-google-analytics">rack-google-analytics</a> gem</li>
-	<li>add the Google tracking code to the asset pipeline</li>
-</ol><p>I recommend adding the Google tracking code to the asset pipeline (details below).</p>
-<p>Each approach works and has merit. It doesn’t matter to Google how the script gets injected. I’ll describe each approach and explain why I recommend adding the Google tracking code to the asset pipeline.</p>
-<h3>Add Tracking Code to the Application Layout</h3>
-<p>The most obvious approach, familiar from page-oriented web development (such as <span class="caps">PHP</span>), is to add the Google tracking code to a default application layout template that is used to generate every page.</p>
-<p>Your <strong>app/views/layouts/application.html.erb</strong> file would look like this:</p>
-<pre>
-&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;App_Name&lt;/title&gt;
-    &lt;meta name="description" content=""&gt;
-    &lt;meta name="author" content=""&gt;
-    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
-    &lt;%= javascript_include_tag "application" %&gt;
-    &lt;%= csrf_meta_tags %&gt;
-    &lt;script type="text/javascript"&gt;
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-XXXXXXX-XX']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    &lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    .
-    .
-    .
-  &lt;/body&gt;
-&lt;/html&gt;
-</pre>
-<p>The drawback is a cluttered application layout file. Plus if you have more than one application layout, or a page that doesn’t use an application layout, you’ll have to duplicate the code in each one.</p>
-<h3>Add a Partial to the Application Layout</h3>
+<p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final </p>
     </div><!-- class="content" -->
     
     <div class="comments">
@@ -140,7 +94,7 @@
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-07-24 18:02:13</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-26 10:33:18</p>
       </div>
     </div>
 
