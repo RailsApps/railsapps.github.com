@@ -46,11 +46,11 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 26 July 2012</em></p>
+<p><em>Last updated 31 July 2012</em></p>
 <p>Installing Rails 3.2.7: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails, emphasizing updates to the complete development environment.</p>
 <h3>From the RailsApps Project</h3>
-<p>This is a guide for developers using the example apps from the RailsApps repository. Get open source apps and detailed Rails tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>. Use our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> to build a Rails starter app.</p>
+<p>This is a guide for developers using the example apps from the RailsApps repository. Get open source apps and detailed Rails tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>. And try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
 <p>If you’re new to Rails, see a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Shortcuts</h2>
@@ -86,8 +86,8 @@
 <p>You may have heard that it is good practice to use the command <code>bundle exec rake</code> instead of <code>rake</code> to force use of executables specified in your gemfile (or a dependency specified in the Gemfile.lock file) instead of other versions. For example, instead of <code>rake db:migrate</code>, run <code>bundle exec rake db:migrate</code>. If you’re using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, as recommended below, you don’t need to use <code>bundle exec rake</code> instead of <code>rake</code> (rvm versions 1.11.0 and newer include the rubygems-bundler gem to handle this).</p>
 <p><em>What You Need to Know:</em> Make sure you are using Rake 0.9.2.2 (or <a href="http://rubygems.org/gems/rake">newer</a>) with <code>gem update rake</code> before installing Rails 3.2.</p>
 <h4>Bundler</h4>
-<p><a href="http://gembundler.com/">Bundler</a> version 1.1.5 was released July 17, 2012. This version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. You should install Bundler 1.1.5 if you plan to deploy to Heroku. Version 1.1.0 released March 7, 2012 improved speed significantly. See the <a href="https://github.com/carlhuda/bundler/blob/master/CHANGELOG.md"><span class="caps">CHANGELOG</span></a>.</p>
-<p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. Be sure to install Bundler 1.1.5 if you plan to deploy to Heroku.</p>
+<p><a href="http://gembundler.com/">Bundler</a> version 1.1.5 was released July 17, 2012. However, the newest version is Bundler 1.2.0.rc. This version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. You should install Bundler 1.2.0.rc if you plan to deploy to Heroku. Version 1.1.0 released March 7, 2012 improved speed significantly. See the <a href="https://github.com/carlhuda/bundler/blob/master/CHANGELOG.md"><span class="caps">CHANGELOG</span></a>.</p>
+<p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. Be sure to install Bundler 1.2.0.rc if you plan to deploy to Heroku.</p>
 <h2 id="ruby">Installing Ruby 1.9.3 and rvm</h2>
 <p>These instructions prepare your computer for installation of Rails.</p>
 <p>If you’ve already installed Ruby 1.9.3 and rvm, skip ahead to the section <a href="#gems">Updating the Gems.</a></p>
@@ -243,11 +243,12 @@ $ gem update rubygems-bundler
 $ gem list
 </pre>
 <h4>Update Bundler</h4>
-<p><a href="http://gembundler.com/">Bundler</a> version 1.1.5 was released July 17, 2012. You’ll need this version (or newer) if you plan to deploy to Heroku.</p>
-<p>Update to the <a href="http://rubygems.org/gems/bundler">newest version of Bundler</a>.</p>
+<p><a href="http://gembundler.com/">Bundler</a> version 1.2.0.rc was released July 18, 2012. You’ll need this version (or newer) if you plan to deploy to Heroku.</p>
+<p>You can’t simply upgrade to the pre-release version; you must uninstall and then install:</p>
 <pre>
 $ rvm gemset use global
-$ gem update bundler
+$ gem uninstall -ax bundler
+$ gem install bundler --pre
 $ bundle --version
 </pre>
 <h4>When Updates Don’t Work</h4>
@@ -325,8 +326,8 @@ $ rake -T
 <p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using rvm (see <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>).</p>
 <h2>Create a Starter App</h2>
 <p>The application you created with <code>rails new testapp</code> is very basic.</p>
-<p>Use <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> from the <a href="http://railsapps.github.com/">RailsApps project</a> to build a Rails starter app.</p>
-<p>The Rails Composer application template will help you to install your choice of starter applications with basic features and popular gems.</p>
+<p>Use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to build a Rails starter app.</p>
+<p>You’ll get a choice of starter applications with basic features and popular gems.</p>
 <p>Create a starter app using the Rails Composer application template:</p>
 <pre>
 $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
@@ -417,8 +418,7 @@ $ echo "rvm ruby-1.9.3-p194@rails32 --create" &gt; .rvmrc
       <div class="content wikistyle gollum">
         <h2>Comments and Issues</h2>
       </div>
-      <p>Is this helpful? Please add a comment below. Your encouragement fuels the project.</p>
-      <p>Did you find an error? Or couldn't get something to work? For the example apps and tutorials, please create a GitHub issue in the repository for the example app. Creating a GitHub issue is the best way to make sure a problem is investigated and fixed.</p>
+      <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p> 
       <div id="disqus_thread"></div>
       <script type="text/javascript">
           /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -447,7 +447,7 @@ $ echo "rvm ruby-1.9.3-p194@rails32 --create" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-07-26 17:14:28</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-31 09:35:18</p>
       </div>
     </div>
 

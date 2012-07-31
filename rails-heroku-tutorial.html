@@ -46,21 +46,21 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Heroku Tutorial</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 26 July 2012</em></p>
+<p><em>Last updated 31 July 2012</em></p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p>An article, <a href="http://rdegges.com/heroku-isnt-for-idiots">Heroku Isn’t for Idiots</a>, describes why you might want to use Heroku. And a discussion on Quora explains, <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
 <h3>RailsApps Examples and Tutorials</h3>
-<p>This is a guide for developers using the example apps from the RailsApps repository. The RailsApps project provides open source apps and detailed tutorials for Rails developers. You may already have built an app that’s ready to deploy on Heroku; next time you build an app, check the <a href="http://railsapps.github.com/">RailsApps</a> project to see if we can save you some time with a starter app.</p>
+<p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source apps and detailed tutorials for Rails developers. Next time you build an app, try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Before You Start</h2>
 <p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="http://heroku.com/">http://heroku.com/</a> to set up an account. Or you can use someone else’s account (such as a client’s or employer’s if you have login credentials); see details below.</p>
 <p>Before you start, you should review the advice offered in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to be sure your development environment is set up correctly on your local machine.</p>
 <h2>Ruby 1.9.3 on Heroku</h2>
 <p>Heroku’s newest stack, “Celadon Cedar,” supports Ruby 1.9.3 and Rails 3.2. As of 9 May 2012, Heroku officially supports Ruby 1.9.3 (see <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">Multiple Ruby Version Support on Heroku</a>).</p>
-<p>You configure the Heroku environment to use Ruby 1.9.3 by specifying the Ruby version in your application Gemfile. This requires use of the newest version of the <a href="http://gembundler.com/">Bundler</a> gem. You must install Bundler 1.1.5 or newer if you plan to deploy to Heroku (see instructions below).</p>
-<p>You cannot specify a patch level for a Ruby version (such as ruby-1.9.3-p194). Heroku provides the most secure patch level of whatever minor version number you request.</p>
+<p>You configure the Heroku environment to use Ruby 1.9.3 by specifying the Ruby version in your application Gemfile. This requires use of a pre-release version of the <a href="http://gembundler.com/">Bundler</a> gem. You must install Bundler 1.2.0.rc or newer if you plan to deploy to Heroku (see instructions below).</p>
+<p>Heroku provides the most secure patch level of whatever minor version number you request. So if you specify Ruby 1.9.3, Heroku will provide ruby-1.9.3-p194.</p>
 <p><em>Note:</em> You may have found outdated instructions elsewhere. To clarify: Installing Ruby 1.9.3 on Heroku previously (before March 19, 2012) required installation of the heroku-labs plugin. The heroku-labs plugin is deprecated and its functionality is now incorporated in the heroku client gem. Before May 9, 2012, installing Ruby 1.9.3 on Heroku required the <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">user_env_compile</a> feature; this is now deprecated. Furthermore, it is no longer necessary to set the RUBY_VERSION variable with <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p125</code> or to set the Heroku <span class="caps">PATH</span> config variable to include “bin” when you specify the default Ruby 1.9.3 for the Cedar stack. Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed for Rails 3.2 and should not be used.</p>
-<p>The following Heroku articles on Rails 3.1 are helpful:</p>
+<p>The following Heroku articles are helpful:</p>
 <ul>
 <li><a href="https://devcenter.heroku.com/articles/ruby-support">Heroku Ruby Support</a></li>
 	<li><a href="https://devcenter.heroku.com/articles/rails3">Getting Started with Rails 3.x on Heroku/Cedar</a></li>
@@ -73,10 +73,11 @@ $ rvm gemset use global
 $ gem update rubygems-bundler
 $ gem list
 </pre>
-<p>Then install Bundler version 1.1.5 (or newer).</p>
+<p>Then install the pre-release version of Bundler 1.2.0. You can’t simply upgrade to the pre-release version; you must uninstall and then install:</p>
 <pre>
 $ rvm gemset use global
-$ gem update bundler
+$ gem uninstall -ax bundler
+$ gem install bundler --pre
 $ bundle --version
 </pre>
 <p>If you encounter any issues when updating rubygems-bundler and Bundler, review the detailed instructions in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
@@ -94,6 +95,7 @@ source 'http://rubygems.org'
 ruby '1.9.3'
 gem  'rails', '3.2.7'
 </pre>
+<p>As explained above, specifying <code>ruby '1.9.3'</code> requires Bundler 1.2.0.rc or newer.</p>
 <h3>Heroku Gem</h3>
 <p>Add the Heroku gem to your application’s Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
 <p><code>gem "heroku"</code></p>
@@ -155,7 +157,7 @@ development:
 &lt;% end %&gt;
 </pre>
 <h2>Specifying a Rails Server</h2>
-<p>By default, when you run <code>rails server</code> locally, Rails launches the simple Webrick web server. For production apps Heroku recommends using a more robust webserver such as <a href="http://code.macournoyer.com/thin/">Thin</a>.</p>
+<p>By default, when you run <code>rails server</code> locally, Rails launches the simple Webrick web server. For production apps Heroku recommends using a more robust webserver such as <a href="http://code.macournoyer.com/thin/">Thin</a>. You could also use <a href="http://unicorn.bogomips.org/">Unicorn</a>, <a href="http://rainbows.rubyforge.org/index.html">Rainbows!</a>, or <a href="http://puma.io/">Puma</a>.</p>
 <p>To use Thin, add the gem to your Gemfile:</p>
 <p><code>gem 'thin'</code></p>
 <p>If you want to continue to use Webrick as your local web server, with Thin on Heroku, set up your Gemfile like this:</p>
@@ -340,8 +342,7 @@ $ heroku logs -t
       <div class="content wikistyle gollum">
         <h2>Comments and Issues</h2>
       </div>
-      <p>Is this helpful? Please add a comment below. Your encouragement fuels the project.</p>
-      <p>Did you find an error? Or couldn't get something to work? For the example apps and tutorials, please create a GitHub issue in the repository for the example app. Creating a GitHub issue is the best way to make sure a problem is investigated and fixed.</p>
+      <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p> 
       <div id="disqus_thread"></div>
       <script type="text/javascript">
           /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -370,7 +371,7 @@ $ heroku logs -t
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-07-26 17:14:28</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-07-31 09:35:18</p>
       </div>
     </div>
 
