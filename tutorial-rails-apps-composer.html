@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Guide to the Rails Apps Composer Gem &#183; RailsApps</title>
+    <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/site.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/syntax.css" type="text/css" charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/gollum.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5109366-14']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a href="http://railsapps.github.com/" class="brand">RailsApps Project</a>
+        <ul class="pull-right nav">
+          <li><a href="http://blog.railsapps.org/" class="twitter">Blog</a></li>
+          <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
+          <li><a href="https://plus.google.com/117374718581973393536" class="google">Google +</a></li>
+          <li><a href="https://github.com/RailsApps" class="github">GitHub Repository</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container"> 
+
+    <div class="content wikistyle gollum textile">
+      <h1>Guide to the Rails Apps Composer Gem</h1>
+<h4>by Daniel Kehoe</h4>
+<p><em>Last updated 2 August 2012</em></p>
+<p>The Rails Apps Composer gem (rails_apps_composer) installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
+<p>What you can do with the rails_apps_composer gem:</p>
+<ul>
+<li>create a starter app from the command line</li>
+	<li>make a reusable application template</li>
+</ul><p>Convenient links:</p>
+<ul>
+<li><a href="https://rubygems.org/gems/rails_apps_composer">rails_apps_composer on rubygems.org</a></li>
+	<li><a href="https://github.com/RailsApps/rails_apps_composer">GitHub repository</a></li>
+</ul><p><img src="http://railsapps.github.com/images/rails-apps-composer.png" title="Rails Apps Composer" alt="Rails Apps Composer"></p>
+<h2>
+<a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
+<p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
+<h2>Who This Is For</h2>
+<p>This gem is for experienced Rails developers who need a tool to create and maintain a Rails starter app or Rails application template. If you’re regularly building Rails applications that rely on common functionality such as authentication or use certain popular gems, you can benefit from the rails_apps_composer gem.</p>
+<p>If you are new to Rails or only create Rails applications occasionally, you’ll find the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool is easier to use.</p>
+<h2>Introduction</h2>
+<p>The rails_apps_composer gem was originally developed as a tool for the <a href="http://railsapps.github.com/">RailsApps project</a> which provides Rails example applications and tutorials.</p>
+<p>Over a hundred Rails developers use the tool to create their own starter apps. An active open source community regularly contributes to maintenance and development of the gem with patches and new recipes.</p>
+<p>As you are no doubt aware, Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. Not all gems work together; sometimes new gem versions introduce unexpected incompatibilities. The rails_apps_composer gem serves as a common point of integration. By using the rails_apps_composer gem to build your Rails starter apps, you will benefit from the collaborative problem-solving of Rails developers who face the same challenges as you. Check the GitHub issues if you find problems; share solutions by submitting pull requests.</p>
+<h2>Alternatives</h2>
+<p>The rails_apps_composer gem is derived from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem. Early versions of the rails_apps_composer gem were similar to Michael Bleigh’s gem; rails_apps_composer 2.0 differs substantially. Other notable alternatives are Dr. Nic Williams’s <a href="http://appscrolls.org/">App Scrolls</a> and Daniel Davey’s <a href="http://drone.bz/">app_drone</a>. See a list of <a href="http://railsapps.github.com/rails-application-templates.html">Rails Application Template Projects</a>, particularly a list of “Application template-generating gems” for similar projects.</p>
+<h2>Dependencies</h2>
+<p>Before using the rails_apps_composer gem, you will need:</p>
+<ul>
+<li>The Ruby language (version 1.9.3)</li>
+	<li>Rails 3.1 or newer</li>
+</ul><p>See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice about updating Rails and your development environment.</p>
+<h2>Installation</h2>
+<p>I recommend installing and using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to create a new gemset for rails_apps_composer. Using an rvm gemset will make it easier to identify and isolate incompatibilities among gems.</p>
+<p>Installation is simple:</p>
+<p><code>$ gem install rails_apps_composer</code></p>
+<h2>Overview</h2>
+<p>This guide covers use of the rails_apps_composer gem as:</p>
+<ul>
+<li>a production tool to build a starter app from recipes</li>
+	<li>a production tool to generate a reusuable application template</li>
+</ul><p>This guide also shows how to modify and create recipes to accommodate your specific development needs.</p>
+<p>There are two ways to use rails_apps_composer as a production tool:</p>
+<ul>
+<li>interactively, driven from prompts on the command line</li>
+	<li>“automatically,” from a defaults file that specifies parameters</li>
+</ul><h3>Use Case: One-Off Applications for a Solo User</h3>
+<p>If you build Rails applications on your own, for example, as a hobbyist or solo consultant, you’ll likely use rails_apps_composer interactively, creating a new Rails application each time you start a new development project. For this use case, you may be better served by using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool which is based on a generic application template generated by rails_apps_composer gem. You’ll only need to use the rails_apps_composer gem if the Rails Composer tool doesn’t provide the options you need for your own projects. You’ll find the rails_apps_composer gem is particularly useful if you are an infrequent Rails developer (for example, if you oscillate between Rails development and other consulting services) because the open source community will keep your starter app updated while you are engaged elsewhere.</p>
+<h3>Use Case: Application Templates for Consulting Firms</h3>
+<p>If you are part of a team that creates new Rails applications frequently, you’ll likely use the rails_apps_composer gem to generate an application template. This is a common scenario in a consulting firm or development shop where the same starter app is used for many client projects. Your team may already have an application template or a code repository for a starter app; you might want to base your starter app on the rails_apps_composer gem so you can benefit from the shared problem-solving of the open source community. You’ll generate an application template using the rails_apps_composer gem so everyone on your team can get the same starter app with a single command such as <code>rails new -m team_starter_app.rb</code>.</p>
+<h3>Use Case: Example Applications for Open Source Projects</h3>
+<p>If you maintain an open source project such as a Rails gem, your users may ask for an example application that shows how your gem is used in an application. An example application is a powerful aid in encouraging adoption of your gem and providing documentation and support. It can be difficult to keep an example application updated as Rails (and its dependencies) evolves. Consider using the rails_apps_composer gem to create an example application that uses your gem. And make it easy for users to install the example application by providing an application template on your website.</p>
+<h3>Using a Defaults File</h3>
+<p>If you intend to use the rails_apps_composer gem frequently, I recommend creating a defaults file that drives the assembly of your starter apps. The defaults file will eliminate the need to respond to prompts when you build a starter app interactively or generate an application template. Note that you can both set defaults and allow prompts for options which vary with each build.</p>
+<h2>Terminology</h2>
+<p>A Ruby <em>gem</em> is a Ruby program or library distributed in self-contained format that can be installed using the RubyGems package manager. Ruby gems extend the functionality of your Rails application. Most developers begin development of any Rails application by specifying all the gems they need in the Gemfile. Some gems are ready to use as soon as they are added to the Gemfile (and the developer runs <code>bundle install</code>); other gems require the developer to run a <em>generator</em> to create configuration files or prepare the application. The rails_apps_composer gem is not added to the application Gemfile; it is a standalone gem that adds to the funtionality of your system Ruby installation.</p>
+<p><em>Application template</em> has a specific meaning among Rails developers. It is a Ruby program that uses methods provided by the <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a> module that powers the <code>rails new</code> command. An application template offers a mechanism to customize a Rails application immediately after a new Rails application is created with the <code>rails new</code> command. The term “template” should not be confused with the Rails “view templating” system that embeds Ruby into a text document for rendering as <span class="caps">HTML</span> by an ActionView::TemplateHandler such as <span class="caps">ERB</span> or Haml. Also, unlike an <br>
+“<span class="caps">HTML</span> template” or a “Word document template” which are simply sample files, a Rails application template is a script which programmatically creates a new Rails application.</p>
+<p>The rails_apps_composer gem assembles an application template from <em>recipes_. The term originated with Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem (the inspiration for the rails_apps_composer gem). A recipe is snippet of Ruby code that manipulates files to set up a Rails application.  A recipe is largely procedural code (a series of steps with some conditional execution). A recipe is not a self-contained program; recipes must be assembled into a script by the rails_apps</em>composer program. The recipes have a special format that makes it possible to set configuration prompts and run-time parameters within the recipe file. Internally, recipes are saved as objects in the <code>recipes[]</code> array.</p>
+<p>Recipe <em>configuration parameters</em> are used to express your preferences for choices offered by a recipe. For example, a recipe might ask you for your choice between SQLite and PostgreSQL for your database. Internally, configuration parameters are saved as key/value pairs in the <code>prefs{}</code> hash.</p>
+<p>Configuration parameters can be set at an interactive prompt (the rails_apps_composer program will “quiz” you for your preferences) or they can be specified in a <em>defaults file</em> so the program will run automatically with prior knowledge of your preferences. You can have more than one defaults file; for example, if have different starter apps for different types of web applications. Internally, parameters in the defaults file are saved to the <code>recipes[]</code> array, the <code>prefs{}</code> hash, and a <code>gems[]</code> array.</p>
+<p>Your <em>starter app</em> is the “template” (there’s that term again!) you’ll use as the foundation for the custom application you build for yourself or your clients. Rails gives you a simple application in a standard configuration when you use the <code>rails new</code> command; it’s seldom everything you need to get started. That’s why we build starter apps.</p>
+<p>So now you understand: When you use the rails_apps_composer gem, you’ll save <em>configuration parameters</em> in a <em>defaults file</em> which set up <em>recipes</em> that are assembled by the rails_apps_composer gem to generate an <em>application template</em> which is used by the <code>rails new</code> command to build a Rails <em>starter app</em> which you’ll customize to deploy as a Rails application.</p>
+<h2>First Encounter</h2>
+<p>Here’s what you can try on a first encounter with the rails_apps_composer gem.</p>
+<p>First, examine the recipes by looking at the files in the recipes folder. Get a sense of how the recipes work and identify which recipes are useful or interesting for your work.</p>
+<p>Install the rails_apps_composer gem and try it from the command line. Try <code>rails_apps_composer list</code> to see a list of recipes. Try <code>rails_apps_composer new myapp</code> to see how the gem prompts for recipes and extra gems and then generates an application.</p>
+<p>Make a list of recipes and try generating an application by providing your list of recipes on the command line. Here’s a simple example: <code>rails_apps_composer new myapp -r setup readme gems extras</code>.</p>
+<p>Try generating an application template using the same recipes: <code>rails_apps_composer template ~/Desktop/template.rb -r setup readme gems extras</code>. Create an application from the application template using the command <code>rails new myapp -m ~/Desktop/template.rb</code>.</p>
+<p>Learn how to use a defaults file. Read the documentation and examine the <code>setup</code> recipe to ascertain keys and values for configuration parameters. Create a defaults file and try building an application using the command <code>rails_apps_composer new myapp --defaults=mydefaults.txt</code>. Try generating an application template using defaults: <code>rails_apps_composer template ~/Desktop/template.rb --defaults=mydefaults.txt</code>.</p>
+<h2>Recipes</h2>
+<p>You must examine the source code for the recipes to make full use of the rails_apps_composer gem. The recipes are regularly updated and contributors add new recipes frequently. Not all recipes are described here.</p>
+<h3>Core Recipes</h3>
+<p>The following recipes were released with rails_apps_composer 2.0. These recipes are assembled to create the example applications released by the <a href="http://railsapps.github.com/">RailsApps project</a>. The core recipes are known to work together without incompatibilities.</p>
+<h4>Setup</h4>
+<p>The <em>setup</em> recipe is used to set configuration parameters which will be used by other recipes. Any individual recipe can prompt for configuration parameters that will be consumed only by that recipe. You’ll use the <em>setup</em> recipe to set configuration parameters that need to be known by more than one recipe (for example, whether you prefer <span class="caps">ERB</span> or Haml for your templating engine). Use the <em>setup</em> recipe to set configuration parameters for all the recipes; these configuration parameters are be saved as key/value pairs in the <code>prefs{}</code> hash.</p>
+<h4>Readme</h4>
+<p>Often a <span class="caps">README</span> file is neglected when a developer creates an application. The <em>readme</em> recipe generates a <span class="caps">README</span> file that shows the Ruby and Rails version and choices made by a developer in creating the application. These details are often helpful when other developers look at the application. You can customize the <em>readme</em> recipe if you want your own information included in the <span class="caps">README</span> files.</p>
+<h4>Gems</h4>
+<p>The <em>gems</em> recipe adds required gems to the Gemfile and runs any generators required by the gems. If you add a custom recipe, you have a choice of adding the gem in your custom recipe or adding it to the <em>gems</em> recipe. As a rule of thumb, if the gem you want to use is popular and a common requirement that any developer will want, add it to the <em>gems</em> recipe. If the gem is of limited usefulness, add it to your own custom recipe and let other developers add your custom recipe optionally.</p>
+<p>It’s important to recognize that you should write custom recipes or modify the <em>gems</em> recipe only if you are adding a gem that requires use of a generator or manipulation of your starter app’s files. If you only need to add gems to the Gemfile, the rails_apps_composer program will prompt you to add gems when you run it interactively. You can also specify gems that you wish to add to the Gemfile in a rails_apps_composer defaults file. This eliminates the need to write custom recipes or modify the <em>gems</em> recipe if all you need to do is add gems to a Gemfile.</p>
+<h4>Testing</h4>
+<p>The <em>testing</em> recipe allows you to specify your testing framework. The core recipe offers a choice of popular frameworks for unit testing (Test::Unit or RSpec) and integration testinng (Cucumber) as well as fixture replacements (Factory Girl or Machinist). If you prefer a testing framework that is not offered in the core recipe, please add it to the <em>testing</em> recipe and submit a pull request so we can make your choice available to others.</p>
+<p>The <em>testing</em> recipe is one of the more complex recipes as setting up a testing framework often requires running generators and modifying configuration files based on other choices you’ve made (such as a choice of database or authentication).</p>
+<h4>Auth</h4>
+<p>The <em>auth</em> recipe sets up both authentication and authorization for your starter app. The core recipe offers a choice of Devise or OmniAuth for authentication and CanCan for authorization. If you like another framework for authentication and authorization, please add it to the <em>auth</em> recipe and submit a pull request.</p>
+<p>Authentication and authorization require complex changes to the basic Rails application so this recipe is more complex than others.</p>
+<h4>Email</h4>
+<p>Many applications must send email, especially “transactional email” when an authentication system such as Devise requires confirmation of an email address. The <em>email</em> recipe configures ActionMailer for various email accounts, including Gmail, <span class="caps">SMTP</span>, SendGrid, and Mandrill. If you prefer a different email provider, add it to the <em>email</em> recipe and submit a pull request.</p>
+<h4>Models, Controllers, Views, Routes</h4>
+<p>The <em>models</em>, <em>controllers</em>, <em>views</em>, and <em>routes</em> recipes primarily serve to build the example applications for the <a href="http://railsapps.github.com/">RailsApps project</a>. Rather than installing gems or setting configuration parameters, these recipes install the “internal organs” of entire (simple) applications.</p>
+<p>If you’re contributing improvements to the RailsApps example applications, you’ll customize the <em>models</em>, <em>controllers</em>, <em>views</em>, and <em>routes</em> recipes. If you’re creating your own custom starter app, you can examine these recipes for implementation ideas; you may create your own custom recipes that are similar to these recipes.</p>
+<p>The simplest use of these four recipes is to create a User model and create a home page.</p>
+<p>These four recipes are closely related and could have been combined into one “mvc” recipe except the resulting file would have been large and cumbersome. Of these, the <em>models</em> recipe is the most complex because it creates a User model that is transformed in various ways depending on the choice of database or authentication framework.</p>
+<p>The <em>controllers</em> recipe is relatively simple. Instead of generating controllers using the <code>rails generate</code> command, we download and install controller files from the <a href="http://railsapps.github.com/">RailsApps</a> example application GitHub repositories. Where conditions require it (for example, injecting methods for managing authorization), we manipulate the files using the rails_apps_composer <code>gsub_file</code> method (for regex search and replace).</p>
+<p>The <em>views</em> recipe also downloads files from the RailsApps repos. The rails_apps_composer program supplies a special <code>copy_from_repo</code> method that automatically translates <span class="caps">ERB</span> view templates into Haml or Slim code if you’ve stated you prefer Haml or Slim.</p>
+<p>The <em>routes</em> recipe adds the routes needed for the RailsApps example applications. For a simple home page, the standard <strong>config/routes.rb</strong> file is manipulated with the <code>gsub_file</code> method. For more complex applications, routes files are downloaded from the RailsApps repos. Note that downloaded files must be tweaked with <code>gsub_file</code> to set the correct application name.</p>
+<h4>Frontend</h4>
+<p>The <em>frontend</em> recipe installs a default application layout file, complete with partials for navigation links and Rails flash messages. The files are downloaded from the RailsApps repos. The rails_apps_composer <code>copy_from_repo</code> method automatically translates <span class="caps">ERB</span> view templates into Haml or Slim code as needed. The <em>frontend</em> recipe also installs <span class="caps">CSS</span> and Javascript files, adding Twitter Bootstrap or other front-end frameworks as required.</p>
+<p>You can modify the <em>frontend</em> recipe (and submit a pull request) if you have a favorite front-end configuration that other developers might like. For example, rails_apps_composer 2.0 didn’t include Thoughtbot’s popular Bourbon Sass mixin library; you could modify the <em>frontend</em> recipe to offer it as an option.</p>
+<h4>Database</h4>
+<p>The <em>database</em> recipe is not a place to set up SQLite or PostgreSQL; you’ll add the necessary gems and download a <strong>database.yml</strong> file in the <em>gems</em> recipe. Instead, use the <em>database</em> recipe to initialize a database using a <strong>db/seeds.rb</strong> file and run any migrations needed by your <span class="caps">SQL</span> database.</p>
+<p>The <em>database</em> recipe is important for the RailsApps example applications. You can examine the recipe for implementation ideas; you might add similar code to your own custom recipes.</p>
+<h4>Extras</h4>
+<p>The <em>extras</em> recipe is a grab bag of ingredients. In rails_apps_composer 2.0, the <em>extras</em> recipe offers:</p>
+<ul>
+<li>a “ban_spiders” option to control search-engine spidering by modifying the <strong>public/robots.txt</strong> file</li>
+	<li>a “jsruntime” option to add ‘therubyracer’ JavaScript runtime for Linux users without node.js</li>
+	<li>an “rvmrc” option to create a project-specific rvm gemset and .rvmrc file</li>
+	<li>a housekeeping procedure to remove unnecessary files and whitespace</li>
+</ul><p>Each of these procedures could be moved into its own recipe. However, since the procedures only require a few lines of code and will be useful to a large number of developers, we’ve consolidated them in the <em>extras</em> recipe.</p>
+<p>If you have a favorite option that you think many other developers would like, feel free to customize the <em>extras</em> recipe and submit a pull request. Keep in mind that every developer who builds a starter app with the rails_apps_composer gem will have to respond to prompts introduced by the <em>extras</em> recipe. If you’re not certain that everyone will want to consider your favorite option, create a custom recipe instead and allow developers a choice of including it in their recipe list.</p>
+<h3>Additional Recipes</h3>
+<p>The rails_apps_composer gem does not offer every option that a Rails developer will want in creating a starter app. That’s why it’s built using recipes. It’s an open source project so it’s up to you to contribute recipes that add functionality you need and other developers may want. Look at the rails_apps_composer source code in the recipes folder. Maybe someone has already contributed a recipe you can use. Otherwise, write a recipe and submit a pull request so we can add it to the project.</p>
+<h2>Usage</h2>
+<p>These commands are summarized in the project <span class="caps">README</span> file for your reference.</p>
+<h3>List Recipes</h3>
+<p>List recipes with a short description:</p>
+<pre>
+$ rails_apps_composer list
+
+auth           # Add authentication and authorization.
+controllers    # Add controllers needed for starter apps.
+database       # Set up and initialize database.
+email          # Configure email accounts.
+extras         # Various extras.
+frontend       # Install a front-end framework for HTML5 and CSS.
+gems           # Add the gems your application needs.
+models         # Add models needed for starter apps.
+prelaunch      # Generates a Prelaunch Signup App
+readme         # Build a README file for your application.
+routes         # Add routes needed for starter apps.
+setup          # Make choices for your application.
+testing        # Add testing framework.
+views          # Add views needed for starter apps.
+</pre>
+<p>The above list is current for rails_apps_composer 2.0; later releases will list more recipes.</p>
+<p>You can learn more about the available recipes by examing the source code in the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>.</p>
+<h3>Generate an Application Interactively</h3>
+<p>You’ll be prompted for recipes and gems:</p>
+<pre>
+$ rails_apps_composer new myapp
+
+Available Recipes:
+authentication: auth
+other: controllers, database, email, extras, frontend, gems, models, prelaunch, readme, routes, setup, views
+testing: testing
+
+Which recipe would you like to add? (blank to finish) 
+What gem would you like to add? (blank to finish) 
+
+Generating and Running Template...
+</pre>
+<p>You can only specify recipes that are contained in the rails_apps_composer gem.</p>
+<p>You can specify any gem. Any string you enter will be added to the starter app Gemfile.</p>
+<h3>Generate an Application from a List of Recipes</h3>
+<p>Provide a list of recipes:</p>
+<pre>
+$ rails_apps_composer new myapp -r setup readme gems testing auth email models controllers views routes frontend database extras
+
+What gem would you like to add? (blank to finish) 
+
+Generating and Running Template...
+</pre>
+<h3>Generate an Application from Defaults</h3>
+<p>Set defaults for recipes, preferences, and extra gems so you don’t have to provide them interactively. Then generate an application.</p>
+<pre>
+$ rails_apps_composer new myapp --defaults=my_defaults.yaml
+</pre>
+<p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See details below concerning the format of the defaults file.</p>
+<h3>Generate an Application Template Interactively</h3>
+<p>You may want an application template to share with others. For an example of an application template, see the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool or various <a href="https://github.com/RailsApps/rails3-application-templates">application templates</a> from the RailsApps project.</p>
+<p>Specify a filename for the template:</p>
+<pre>
+$ rails_apps_composer template ~/Desktop/template.rb
+
+Available Recipes:
+authentication: auth
+other: controllers, database, email, extras, frontend, gems, models, prelaunch, readme, routes, setup, views
+testing: testing
+
+Which recipe would you like to add? (blank to finish) 
+What gem would you like to add? (blank to finish)
+</pre>
+<p>The command with the <code>template</code> argument followed by a filename generates an application template.</p>
+<h3>Generate an Application Template from a List of Recipes</h3>
+<p>Specify a filename for the template and provide a list of recipes:</p>
+<pre>
+$ rails_apps_composer template ~/Desktop/template.rb -r setup readme gems testing auth email models controllers views routes frontend database extras
+
+What gem would you like to add? (blank to finish)
+</pre>
+<p>The command with the <code>template</code> argument followed by a filename and a list of recipes generates an application template.</p>
+<h3>Generate an Application Template from Defaults</h3>
+<p>Set defaults for recipes, preferences, and extra gems so you don’t have to provide them interactively. Then generate an application template.</p>
+<pre>
+$ rails_apps_composer template ~/Desktop/template.rb --defaults=my_defaults.yaml
+</pre>
+<p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See details below concerning the format of the defaults file.</p>
+<h3>Generate an Application from a Template</h3>
+<p>After you’ve created a template file, you can generate an application from a template at any time using the <code>rails new</code> command with the <code>-m</code> option:</p>
+<pre>
+$ rails new myapp -m ~/Desktop/template.rb
+</pre>
+<p>The application template will prompt you for any configuration preferences requested by the recipes.</p>
+<p>The <code>rails new</code> command allows you to specify the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
+<pre>
+$ rails new myapp -m ~/Desktop/template.rb -T -O
+</pre>
+<p>The <code>rails new</code> command with the <code>-m</code> option also allows you to specify an application template that can be downloaded via <span class="caps">HTTP</span>. This makes it possible to host a template on GitHub (for example) and allow anyone to generate an application from the hosted template. For example:</p>
+<pre>
+$ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
+</pre>
+<h2>Forking rails_apps_composer</h2>
+<p>If you wish, you can copy the source code from the GitHub repo, make changes to the gem, and install it locally.</p>
+<p>Instead, please consider forking the repository on GitHub. Your changes may be useful to others.</p>
+<p>GitHub provides simple, clear <a href="https://help.github.com/articles/fork-a-repo">instructions about forking a repo</a> and contributing changes to a project.</p>
+<p>Here’s a summary.</p>
+<p>Visit the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer repository</a> and click “Fork”.</p>
+<p>Clone your fork:</p>
+<pre>
+$ git clone https://github.com/username/rails_apps_composer.git
+</pre>
+<p>Track the upstream repository:</p>
+<pre>
+$ cd rails_apps_composer
+$ git remote add upstream https://github.com/RailsApps/rails_apps_composer.git
+</pre>
+<p>Make your changes and submit a pull request so I can incorporate your changes in the next public release of the gem. To submit a pull request, visit the GitHub repo for your version of the rails_apps_composer gem. Click “Pull Request” and complete the form with a title and description of your changes. In general, I try to respond to pull requests within a few days. Releasing a new version of the gem with your changes may take longer. When the new version of the gem is published, everyone can use your changes. Then you can uninstall the local version of the gem and install the published gem with <code>$ gem install rails_apps_composer</code>.</p>
+    </div><!-- class="content" -->
+    
+    <div class="comments">
+      <div class="content wikistyle gollum">
+        <h2>Comments and Issues</h2>
+      </div>
+      <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p> 
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div><!-- class="comments" -->
+
+    <div class="footer row">
+      <div class="span4">
+        <h3>Credits</h3>
+        <p><a href="http://danielkehoe.com/">Daniel Kehoe</a> initiated the <a href="http://railsapps.github.com/">RailsApps Project</a>. Thanks to all the users and contributors.</p> 
+      </div>
+    
+      <div class="span4">
+        <h3>Wiki</h3>
+        <p>Corrections? Additions? You can edit this page <a href="https://github.com/RailsApps/railsapps.github.com/wiki/_pages">on the wiki</a>.</p>
+      </div>
+
+      <div class="span4">
+        <h3>Last edit</h3>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-02 18:16:52</p>
+      </div>
+    </div>
+
+  </div>
+            
+  </body>
+</html>
