@@ -273,6 +273,16 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <h2 id="hacking">Hacking the Gem</h2>
 <p>This guide explains how to customize the gem either for your own use or to share with others.</p>
 <p>You’ll need to fork the gem, learn more about the anatomy of the recipes, make changes, build and install the gem locally, and submit a pull request if you’ve made changes you wish to share.</p>
+<h3>Gem Development Dependencies</h3>
+<p>Here’s where it is advisable to use rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to create a project-specific gemset for rails_apps_composer. Using an rvm gemset will make it easier to isolate the gems used in developing rails_apps_composer from other gems on your system.</p>
+<pre>
+$ rvm use ruby-1.9.3@rails_apps_composer --create
+</pre>
+<p>Install the gems needed for development:</p>
+<pre>
+$ gem install rails activesupport i18n thor mg
+</pre>
+<p>Now you can download the source code and begin hacking.</p>
 <h3 id="forking">Forking the Gem</h3>
 <p>If you wish to add or customize rails_apps_composer recipes, please consider forking the repository on GitHub. Your changes may be useful to others.</p>
 <p>GitHub provides simple, clear <a href="https://help.github.com/articles/fork-a-repo">instructions about forking a repo</a> and contributing changes to a project.</p>
@@ -308,7 +318,6 @@ rake spec                                 # run specs
 <h3 id="building">Building the Gem</h3>
 <p>After you’ve forked the gem and cloned it locally, see the section below, <a href="#anatomy">Anatomy of the Gem</a>, to learn about the internals of the gem and its recipes.</p>
 <p>After you’ve made changes, you’ll build and install the gem locally.</p>
-<p>Here’s where it is advisable to use rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, for a project-specific gemset for rails_apps_composer. Using an rvm gemset will make it easier to isolate the gems used in developing rails_apps_composer from other gems on your system.</p>
 <p>Each time you build and install the gem, you’ll have a distribution version saved locally in the gem’s <strong>dist/</strong> directory. Remove old versions:</p>
 <pre>
 $ rm dist/rails_apps_composer-*.gem
@@ -351,6 +360,120 @@ $ gem install rails_apps_composer
 </pre>
 <p>Now the newest public release of the gem is available for your use.</p>
 <h2 id="anatomy">Anatomy of the Gem</h2>
+<p>This section describes the structure of the rails_apps_composer recipes and the gem’s architecture.</p>
+<p>If you wish to modify or create recipes, you can learn how by examining any recipe. Learning about methods provided by the rails_apps_composer program will help you read the recipes.</p>
+<p>This section also describes the architecture of the rails_apps_composer program. This information isn’t really needed to modify or create recipes.</p>
+<h3>Thor Methods</h3>
+<p><a href="http://yehudakatz.com/2008/05/12/by-thors-hammer/">Thor</a> is a scripting framework for Ruby written by Yehuda Katz. Thor provides utility methods that are useful in manipulating files. Rails generators are built on top of Thor.</p>
+<p>You’ll see Thor methods used often in the recipes:</p>
+<ul>
+<li><code>gem</code></li>
+	<li><code>generate</code></li>
+	<li><code>get</code></li>
+	<li><code>remove_file</code></li>
+	<li><code>gsub_file</code></li>
+	<li><code>git</code></li>
+</ul><p>To learn about the Thor methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://rdoc.info/github/wycats/thor/master/Thor/Actions">Thor::Actions</a> and <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a>.</p>
+<h3>Rails Wizard Methods</h3>
+<p>The rails_apps_composer gem inherits several methods from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem. These utility methods encapsulate one or more Thor methods.</p>
+<ul>
+<li><code>say_custom(tag, text)</code></li>
+	<li><code>say_recipe(name)</code></li>
+	<li><code>say_wizard(text)</code></li>
+	<li><code>ask_wizard(question)</code></li>
+	<li><code>multiple_choice(question, choices)</code></li>
+</ul><p>These methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
+<h3>rails_apps_composer Methods</h3>
+<p>The following methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
+<p>The rails_apps_composer 2.0 version provides a utility method:</p>
+<ul>
+<li><code>prefer(key, value)</code></li>
+</ul><p>Its implementation is very simple:</p>
+<pre>
+def prefer(key, value); @prefs[key].eql? value end
+</pre>
+<p>This method makes it easy to test if the <code>prefs{}</code> hash contains a key/value pair. Here’s an example:</p>
+<pre>
+if prefer :authentication, 'devise'
+</pre>
+<p>The rails_apps_composer 2.0 version provides an important method that encapsulates several Thor and Rails Wizard methods:</p>
+<ul>
+<li><code>copy_from_repo(filename, opts = {})</code></li>
+</ul><p>The method can be used with defaults and with options. Here are several examples:</p>
+<pre>
+copy_from_repo 'public/humans.txt'
+</pre>
+<p>In its simplest form, it opens a connection to a GitHub repo and copies a file given a path and filename. This form wraps Thor methods <code>remove_file</code>, <code>get</code>, and <code>create_file</code> and uses a default repository.</p>
+<p>Another form takes a repository location as an option:</p>
+<pre>
+copy_from_repo 'app/models/user.rb', 
+  :repo =&gt; 'https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/'
+</pre>
+<p>This version attempts to copy a file from the given repository and save it with the given filename.</p>
+<p>Another form takes a preference key as an option:</p>
+<pre>
+copy_from_repo 'config/database-mysql.yml', :prefs =&gt; 'mysql'
+</pre>
+<p>In this example, the default repository may contain one or more files with similar names:</p>
+<ul>
+<li>config/database.yml</li>
+	<li>config/database-mysql.yml</li>
+	<li>config/database-postgresql.yml</li>
+</ul><p>If the specified preference is present in the <code>prefs{}</code> hash as a value, the designated file is copied from the default repository. Before the file is saved locally, the preference value is stripped from the filename. In this example, if the user has selected “mysql” as a preference, the method will get a file named <strong>config/database-mysql.yml</strong> from the repository and save it locally as <strong>config/database.yml</strong>. This method makes it possible to store similar files as templates and copy only the one that best matches the selected preferences.</p>
+<p>Finally, the <code>copy_from_repo</code> method performs tricks to convert <span class="caps">ERB</span> files to Haml or Slim if preferences require it.</p>
+<pre>
+copy_from_repo 'app/views/layouts/application.html.erb'
+</pre>
+<p>No options are required. The <code>copy_from_repo</code> method checks if the user has expressed a preference for Haml or Slim and translates the file accordingly. Only files in the <strong>views/</strong> directory will be converted.</p>
+<p>It’s worth examining the source code to understand how the <code>copy_from_repo</code> method works.</p>
+<pre>
+def copy_from_repo(filename, opts = {})
+  repo = 'https://raw.github.com/RailsApps/rails3-application-templates/master/files-v2/'
+  repo = opts[:repo] unless opts[:repo].nil?
+  if (!opts[:prefs].nil?) &amp;&amp; (!prefs.has_value? opts[:prefs])
+    return
+  end
+  source_filename = filename
+  destination_filename = filename
+  unless opts[:prefs].nil?
+    if filename.include? opts[:prefs]
+      destination_filename = filename.gsub(/\-#{opts[:prefs]}/, '')
+    end
+  end
+  if (prefer :templates, 'haml') &amp;&amp; (filename.include? 'views')
+    remove_file destination_filename
+    destination_filename = destination_filename.gsub(/.erb/, '.haml')
+  end
+  if (prefer :templates, 'slim') &amp;&amp; (filename.include? 'views')
+    remove_file destination_filename
+    destination_filename = destination_filename.gsub(/.erb/, '.slim')
+  end
+  begin
+    remove_file destination_filename
+    if (prefer :templates, 'haml') &amp;&amp; (filename.include? 'views')
+      create_file destination_filename, html_to_haml(repo + source_filename)
+    elsif (prefer :templates, 'slim') &amp;&amp; (filename.include? 'views')
+      create_file destination_filename, html_to_slim(repo + source_filename)
+    else
+      get repo + source_filename, destination_filename
+    end
+  rescue OpenURI::HTTPError
+    say_wizard "Unable to obtain #{source_filename} from the repo #{repo}"
+  end
+end
+
+def html_to_haml(source)
+  html = open(source) {|input| input.binmode.read }
+  Haml::HTML.new(html, :erb =&gt; true, :xhtml =&gt; true).render
+end
+
+def html_to_slim(source)
+  html = open(source) {|input| input.binmode.read }
+  haml = Haml::HTML.new(html, :erb =&gt; true, :xhtml =&gt; true).render
+  Haml2Slim.convert!(haml)
+end
+</pre>
+<p>With an understamding of the methods used in the recipes, you’ll be well prepared to modify and create recipes.</p>
 <h2 id="defaults">Defaults File</h2>
     </div><!-- class="content" -->
     
@@ -387,7 +510,7 @@ $ gem install rails_apps_composer
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-03 15:36:35</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-03 17:41:09</p>
       </div>
     </div>
 
