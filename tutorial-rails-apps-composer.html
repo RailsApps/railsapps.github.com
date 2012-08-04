@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 3 August 2012</em></p>
+<p><em>Last updated 4 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -105,7 +105,7 @@
 <p>If you intend to use the rails_apps_composer gem frequently, I recommend creating a defaults file that drives the assembly of your starter apps. The defaults file will eliminate the need to respond to prompts when you build a starter app interactively or generate an application template. Note that you can both set defaults and allow prompts for options which vary with each build.</p>
 <h2>Terminology</h2>
 <p>A Ruby <strong>gem</strong> is a Ruby program or library distributed in self-contained format that can be installed using the RubyGems package manager. Ruby gems extend the functionality of your Rails application. Most developers begin development of any Rails application by specifying all the gems they need in the Gemfile. Some gems are ready to use as soon as they are added to the Gemfile (and the developer runs <code>bundle install</code>); other gems require the developer to run a <strong>generator</strong> to create configuration files or prepare the application. The rails_apps_composer gem is not added to the application Gemfile; it is a standalone gem that adds to the funtionality of your system Ruby installation.</p>
-<p><strong>Application template</strong> has a specific meaning among Rails developers. It is a Ruby program that uses methods provided by the <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a> module that powers the <code>rails new</code> command. An application template offers a mechanism to customize a Rails application immediately after a new Rails application is created with the <code>rails new</code> command. The term “template” should not be confused with the Rails “view templating” system that embeds Ruby into a text document for rendering as <span class="caps">HTML</span> by an ActionView::TemplateHandler such as <span class="caps">ERB</span> or Haml. A Rails application template is a script which programmatically creates a new Rails application. In this respect, a Rails application template is very different from an “<span class="caps">HTML</span> template” or a “Word document template” which are simply sample files,</p>
+<p><strong>Application template</strong> has a specific meaning among Rails developers. It is a Ruby program that uses methods provided by the <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a> module that powers the <code>rails new</code> command. An application template offers a mechanism to customize a Rails application immediately after a new Rails application is created with the <code>rails new</code> command. The term “template” should not be confused with the Rails “view templating” system that embeds Ruby into a text document for rendering as <span class="caps">HTML</span> by an ActionView::TemplateHandler such as <span class="caps">ERB</span> or Haml. A Rails application template is a script which programmatically modifies a new Rails application. In this respect, a Rails application template is very different from an “<span class="caps">HTML</span> template” or a “Word document template” which are simply sample files,</p>
 <p>The rails_apps_composer gem assembles an application template from <strong>recipes</strong> (the term originated with Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem). A recipe is snippet of Ruby code that manipulates files to set up a Rails application. A recipe is largely procedural code (a series of steps with some conditional execution). A recipe is not a self-contained program; recipes must be assembled into a script by the rails_apps_composer program. The recipes have a special format that makes it possible to set configuration prompts and run-time parameters within the recipe file. Internally, recipes are saved as objects in the <code>recipes[]</code> array.</p>
 <p>Recipe <strong>configuration parameters</strong> are used to express your preferences for choices offered by a recipe. For example, a recipe might ask you to choose between SQLite and PostgreSQL for your database. Internally, configuration parameters are saved as key/value pairs in the <code>prefs{}</code> hash.</p>
 <p>Configuration parameters can be set at an interactive prompt (the rails_apps_composer program will “quiz” you for your preferences) or they can be specified in a <strong>defaults file</strong> so the program will run automatically with prior knowledge of your preferences. You can have more than one defaults file; for example, if you want different starter apps for different types of web applications. Parameters in the defaults file are saved internally as:</p>
@@ -347,59 +347,68 @@ $ rake reinstall
 <h3 id="pull">Pull Requests and Public Releases</h3>
 <p>After you make your changes and test your gem, submit a pull request so I can incorporate your changes in the next public release of the gem. To submit a pull request, visit the GitHub repo for your version of the rails_apps_composer gem. Click “Pull Request” and provide a description of your changes. In general, I try to respond to pull requests within a few days.</p>
 <p>I seldom publish a new public release of the gem immediately after responding to a pull request. Typically I wait a few weeks to collect several contributions before making a new release.</p>
-<p>This is the rake task that pushes a new release to the RubyGems server:</p>
+<p>This is the rake task that I use to push a new release to the RubyGems server:</p>
 <pre>
 $ rake gem:publish
 </pre>
-<p>The RubyGems server will only respond when a project maintainer publishes a new release.</p>
+<p>It won’t work for you. The RubyGems server will only respond when an authorized project maintainer pushes a new release.</p>
 <p>When the new version of the gem is published, everyone can use the new changes.</p>
-<p>Uninstall the local version of the gem and install the published gem:</p>
+<p>To be notified of new releases, you can visit the <a href="https://rubygems.org/gems/rails_apps_composer">RubyGems</a> page for rails_apps_composer and subscribe to the gem to be notified via an <span class="caps">RSS</span> feed. Alternatively, you can watch the project on GitHub or follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter.</p>
+<p>When a new version is released, uninstall the local version of the gem and install the published gem:</p>
 <pre>
 $ gem uninstall rails_apps_composer -x
 $ gem install rails_apps_composer
 </pre>
 <p>Now the newest public release of the gem is available for your use.</p>
 <h2 id="anatomy">Anatomy of the Gem</h2>
-<p>This section describes the structure of the rails_apps_composer recipes and the gem’s architecture.</p>
-<p>If you wish to modify or create recipes, you can learn how by examining any recipe. Learning about methods provided by the rails_apps_composer program will help you read the recipes.</p>
-<p>This section also describes the architecture of the rails_apps_composer program. This information isn’t really needed to modify or create recipes.</p>
-<h3>Thor Methods</h3>
-<p><a href="http://yehudakatz.com/2008/05/12/by-thors-hammer/">Thor</a> is a scripting framework for Ruby written by Yehuda Katz. Thor provides utility methods that are useful in manipulating files. Rails generators are built on top of Thor.</p>
-<p>You’ll see Thor methods used often in the recipes:</p>
+<p>If you wish to modify or create recipes, you should examine the existing recipes.</p>
+<p>This section describes the methods provided by the rails_apps_composer program. Learn about methods provided by the rails_apps_composer program to better understand the recipes.</p>
+<p>This section also describes the architecture of the rails_apps_composer program. Learn about the architecture to understand how the rails_apps_composer program works.</p>
+<h3>Thor and Rails Generator Methods</h3>
+<p><a href="http://yehudakatz.com/2008/05/12/by-thors-hammer/">Thor</a> is a scripting framework for Ruby written by Yehuda Katz. Thor provides utility methods that are useful in manipulating files. Rails generators (used by the <code>rails new</code> command) use Thor methods.</p>
+<p>You’ll see Thor methods used in the recipes. To learn about the Thor methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://rdoc.info/github/wycats/thor/master/Thor/Actions">Thor::Actions</a>.</p>
+<ul>
+<li><code>get</code></li>
+	<li><code>remove_file</code></li>
+	<li><code>create_file</code></li>
+	<li><code>append_to_file</code></li>
+	<li><code>inject_into_file</code></li>
+	<li><code>inject_into_class</code></li>
+	<li><code>gsub_file</code></li>
+	<li><code>comment_lines</code></li>
+	<li><code>uncomment_lines</code></li>
+</ul><p>You’ll also see Rails Generators methods. To learn about the Rails Generators methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a>.</p>
 <ul>
 <li><code>gem</code></li>
 	<li><code>generate</code></li>
-	<li><code>get</code></li>
-	<li><code>remove_file</code></li>
-	<li><code>gsub_file</code></li>
 	<li><code>git</code></li>
-</ul><p>To learn about the Thor methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://rdoc.info/github/wycats/thor/master/Thor/Actions">Thor::Actions</a> and <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a>.</p>
-<h3>Rails Wizard Methods</h3>
-<p>The rails_apps_composer gem inherits several methods from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem. These utility methods encapsulate one or more Thor methods.</p>
+	<li><code>route</code></li>
+</ul><h3>Rails Wizard Methods</h3>
+<p>The rails_apps_composer gem inherits several methods from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem:</p>
 <ul>
-<li><code>say_custom(tag, text)</code></li>
-	<li><code>say_recipe(name)</code></li>
+<li><code>say_recipe(name)</code></li>
+	<li><code>say_custom(tag, text)</code></li>
 	<li><code>say_wizard(text)</code></li>
 	<li><code>ask_wizard(question)</code></li>
 	<li><code>multiple_choice(question, choices)</code></li>
-</ul><p>These methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
-<h3>rails_apps_composer Methods</h3>
-<p>The following methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
-<p>The rails_apps_composer 2.0 version provides a utility method:</p>
+</ul><p>These methods are used to display the prompts that the user sees during the “quiz.”</p>
+<p>These methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
+<h3>Rails_apps_composer Methods</h3>
+<p>The following methods were introduced in rails_apps_composer 2.0 version and are defined in the file <strong>templates/helpers.erb</strong>:</p>
 <ul>
 <li><code>prefer(key, value)</code></li>
-</ul><p>Its implementation is very simple:</p>
-<pre>
-def prefer(key, value); @prefs[key].eql? value end
-</pre>
-<p>This method makes it easy to test if the <code>prefs{}</code> hash contains a key/value pair. Here’s an example:</p>
+	<li><code>copy_from_repo(filename, opts = {})</code></li>
+</ul><p>The first method is used to test if a prefernce has been selected. Here’s an example:</p>
 <pre>
 if prefer :authentication, 'devise'
 </pre>
-<p>The rails_apps_composer 2.0 version provides an important method that encapsulates several Thor and Rails Wizard methods:</p>
-<ul>
-<li><code>copy_from_repo(filename, opts = {})</code></li>
-</ul><p>The method can be used with defaults and with options. Here are several examples:</p>
+<p>The implementation is very simple. It checks if the <code>prefs{}</code> hash contains a key/value pair:</p>
+<pre>
+def prefer(key, value)
+  @prefs[key].eql? value
+end
+</pre>
+<p>The <code>copy_from_repo</code> method is widely used in the recipes. The method can be used with defaults and with options. It takes several forms. Here is the simplest example:</p>
 <pre>
 copy_from_repo 'public/humans.txt'
 </pre>
@@ -410,7 +419,7 @@ copy_from_repo 'app/models/user.rb',
   :repo =&gt; 'https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/'
 </pre>
 <p>This version attempts to copy a file from the given repository and save it with the given filename.</p>
-<p>Another form takes a preference key as an option:</p>
+<p>Another form takes a preference value as an option:</p>
 <pre>
 copy_from_repo 'config/database-mysql.yml', :prefs =&gt; 'mysql'
 </pre>
@@ -420,11 +429,11 @@ copy_from_repo 'config/database-mysql.yml', :prefs =&gt; 'mysql'
 	<li>config/database-mysql.yml</li>
 	<li>config/database-postgresql.yml</li>
 </ul><p>If the specified preference is present in the <code>prefs{}</code> hash as a value, the designated file is copied from the default repository. Before the file is saved locally, the preference value is stripped from the filename. In this example, if the user has selected “mysql” as a preference, the method will get a file named <strong>config/database-mysql.yml</strong> from the repository and save it locally as <strong>config/database.yml</strong>. This method makes it possible to store similar files as templates and copy only the one that best matches the selected preferences.</p>
-<p>Finally, the <code>copy_from_repo</code> method performs tricks to convert <span class="caps">ERB</span> files to Haml or Slim if preferences require it.</p>
+<p>Finally, the <code>copy_from_repo</code> method performs tricks to convert <span class="caps">ERB</span> files to Haml or Slim if preferences require it. Here it retrieves an <span class="caps">ERB</span> file:</p>
 <pre>
 copy_from_repo 'app/views/layouts/application.html.erb'
 </pre>
-<p>No options are required. The <code>copy_from_repo</code> method checks if the user has expressed a preference for Haml or Slim and translates the file accordingly. Only files in the <strong>views/</strong> directory will be converted.</p>
+<p>No options are required. The <code>copy_from_repo</code> method checks if the user has expressed a preference for Haml or Slim and translates the <span class="caps">ERB</span> file accordingly. Only files in the <strong>views/</strong> directory will be converted from <span class="caps">ERB</span> to Haml or Slim.</p>
 <p>It’s worth examining the source code to understand how the <code>copy_from_repo</code> method works.</p>
 <pre>
 def copy_from_repo(filename, opts = {})
@@ -473,7 +482,24 @@ def html_to_slim(source)
   Haml2Slim.convert!(haml)
 end
 </pre>
-<p>With an understamding of the methods used in the recipes, you’ll be well prepared to modify and create recipes.</p>
+<p>With an understanding of the methods used in the recipes, you’ll be prepared to modify and create recipes.</p>
+<h3>Stages of Execution</h3>
+<p>A Rails application is created in stages and the rails_apps_composer program provides methods to manipulate files at any stage of the creation process.</p>
+<p>Here are the stages of the creation process:</p>
+<ul>
+<li>
+<code>rails new</code> creates an application</li>
+	<li>Gemfile is modified and <code>bundle install</code> runs</li>
+	<li>
+<code>after_bundler</code> stage</li>
+	<li>
+<code>after_everything</code> stage</li>
+</ul><h3>Recipe Order</h3>
+<h3>Configuring Recipes</h3>
+<h3>Architecture</h3>
+<p>The rails_apps_composer gem exploits the application template functionality that was introduced with Rails 2.3. The RailsCast <a href="http://railscasts.com/episodes/148-app-templates-in-rails-2-3">App Templates in Rails 2.3</a> from February 2009 offers an introduction to Rails application templates.</p>
+<p>Application templates do not create a new Rails application. That job is the prerogative of the <code>rails new</code> command. Application templates modify a simple Rails application that is created by the <code>rails new</code> command.</p>
+<p>The rails_apps_composer program assembles an application template programmatically from “recipes” which are files of Ruby code. When you ask the rails_apps_composer gem to generate an application, the program prompts for recipe names and preferences, assembles a temporary application template, and then runs the <code>rails new</code> command supplying the application template file. When you ask the rails_apps_composer gem to generate and save a template, it assembles the template, saves the file, and halts before generating an application.</p>
 <h2 id="defaults">Defaults File</h2>
     </div><!-- class="content" -->
     
@@ -510,7 +536,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-03 17:41:09</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-04 06:12:33</p>
       </div>
     </div>
 
