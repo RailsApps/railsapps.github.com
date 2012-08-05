@@ -675,34 +675,11 @@ config:
 <p>Finally, the <code>config</code> data array accepts a list of hashes that prompt the user for preferences.</p>
 <h2 id="architecture">Architecture</h2>
 <p>This section describes the architecture of the rails_apps_composer program. Learn about the architecture to understand how the rails_apps_composer program works.</p>
-<p>The rails_apps_composer gem exploits the application template functionality introduced in Rails 2.3. The RailsCast <a href="http://railscasts.com/episodes/148-app-templates-in-rails-2-3">App Templates in Rails 2.3</a> from February 2009 offers an introduction to Rails application templates.</p>
 <p>Application templates do not create a new Rails application. That job is the prerogative of the <code>rails new</code> command. Application templates modify a simple Rails application that is created by the <code>rails new</code> command.</p>
+<p>The rails_apps_composer gem exploits the application template functionality introduced in Rails 2.3. The RailsCast <a href="http://railscasts.com/episodes/148-app-templates-in-rails-2-3">App Templates in Rails 2.3</a> from February 2009 offers an introduction to Rails application templates.</p>
 <p>The rails_apps_composer program assembles an application template programmatically from “recipes” which are files of Ruby code. When you ask the rails_apps_composer gem to generate an application, the program prompts for recipe names and preferences, assembles a temporary application template, and then runs the <code>rails new</code> command supplying the application template file. When you ask the rails_apps_composer gem to generate and save a template, it assembles the template, saves the file, and halts before generating an application.</p>
-<h3>Global Variables</h3>
-<p>Three data structures are available to all the recipes:</p>
-<ul>
-<li>
-<code>recipes[]</code> array</li>
-	<li>
-<code>gems[]</code> array</li>
-	<li>
-<code>prefs{}</code> hash</li>
-</ul><p>The <code>recipes[]</code> array is a list of recipes to include in the application template. It can be set from a defaults file, from the command line (with the <code>-r</code> flag), or from an interactive prompt.</p>
-<p>Test for the presence of a recipe with:</p>
-<pre>
-if recipes.include? 'email'
-  ...
-end
-</pre>
-<p>A convenience method is also available:</p>
-<pre>
-def recipe?(name)
-  @recipes.include?(name)
-end
-</pre>
-<p>The <code>gems[]</code> array is a list of gems to add to the Gemfile. It can be set from a defaults file or from an interactive prompt. The <em>gems</em> recipe adds each gem named in the array to the Gemfile. The array is available to other recipes.</p>
-<p>The <code>prefs{}</code> hash makes the user’s preferences available to all recipes. It can be set from a defaults file or programmatically by any recipe. Primarily, you’ll set a key/value pair in the <code>prefs{}</code> hash after reading a local <code>config</code> value solicited by a recipe.</p>
 <h3>Recipe Local Variables</h3>
+<p>Local recipe configuration parameters and global preferences are used to set state for the application template.</p>
 <p>Each recipe has a <code>config{}</code> hash that stores preferences entered from prompts parsed from the recipe’s <span class="caps">YAML</span> matter. If the recipe has a <span class="caps">YAML</span> section that includes:</p>
 <pre>
 config:
@@ -729,7 +706,41 @@ if config['qux']
   copy_from_repo 'lib/qux.rb'
 end
 </pre>
-<p>Local recipe configuration parameters and global preferences are used to set state for the application template.</p>
+<h3>Global Variables</h3>
+<p>Three data structures are available to all the recipes:</p>
+<ul>
+<li>
+<code>recipes[]</code> array</li>
+	<li>
+<code>gems[]</code> array</li>
+	<li>
+<code>prefs{}</code> hash</li>
+</ul><h4>Recipes</h4>
+<p>The <code>recipes[]</code> array is a list of recipes to include in the application template. It can be set from a defaults file, from the command line (with the <code>-r</code> flag), or from an interactive prompt.</p>
+<p>Test for the presence of a recipe with:</p>
+<pre>
+if recipes.include? 'email'
+  ...
+end
+</pre>
+<p>A convenience method is also available, which does the same thing as the code above:</p>
+<pre>
+recipe?(name)
+  ...
+end
+</pre>
+<p>Every recipe is optional, so it is wise to test for the presence of a recipe before executing any code that requires the recipe.</p>
+<h4>Prefs</h4>
+<p>The <code>prefs{}</code> hash makes the user’s preferences available to all recipes. It can be set from a defaults file or programmatically by any recipe. You’ll often set a key/value pair in the <code>prefs{}</code> hash after reading a local <code>config</code> value solicited by a recipe.</p>
+<p>The <code>prefer(key, value)</code> method lets you test for a preference:</p>
+<pre>
+if prefer :authentication, 'devise'
+  ...
+end
+</pre>
+<p>Note that the hash keys are symbols (preceded by a colon).</p>
+<h4>Gems</h4>
+<p>The <code>gems[]</code> array is a list of gems to add to the Gemfile. It can be set from a defaults file or from an interactive prompt. The <em>gems</em> recipe adds each gem named in the array to the Gemfile. The array is available to other recipes bjt seldom used outside of the <em>gems</em> recipe.</p>
 <h3>Templates</h3>
 <p>Three template files are the basis for generating an application template:</p>
 <ul>
@@ -868,7 +879,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-05 11:14:55</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-05 11:33:10</p>
       </div>
     </div>
 
