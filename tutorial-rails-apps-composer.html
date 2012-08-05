@@ -641,7 +641,7 @@ $ rails_apps_composer new myapp -r setup readme gems extras
 <p>The example will execute all recipes in sequence to prompt the use for preferences, then execute each <code>after_bundler</code> block, then run each <code>after_everything</code> block in the sequence you’ve listed the recipes.</p>
 <p>You can also constrain execution order by setting the <code>run_after</code> configuration parameter in the <span class="caps">YAML</span> matter appended to a recipe. See the section below, <a href="#yaml">Configuring Recipes with <span class="caps">YAML</span></a>, to learn how to constrain execution order using the <span class="caps">YAML</span> format.</p>
 <h3>The <span class="caps">YAML</span> Matter</h3>
-<p>At a minimum, every recipe must contain <span class="caps">YAML</span> matter that specifies the recipe name, decription and author:</p>
+<p>At a minimum, every recipe must contain <span class="caps">YAML</span> matter that specifies the recipe name, description and author:</p>
 <pre>
 __END__
 
@@ -674,6 +674,80 @@ config:
 </pre>
 <p>Order of execution can be constrained with the <code>run_after</code> key by passing an array of recipe names that must be executed before this recipe will be allowed to run.</p>
 <p>Finally, the <code>config</code> data array accepts a list of hashes that prompt the user for preferences.</p>
+<h3>Complex <span class="caps">YAML</span> Example</h3>
+<p>The <span class="caps">YAML</span> matter can be a powerful tool for configuring recipes.</p>
+<p>Here is an example of a complex configuration schema:</p>
+<pre>
+__END__
+
+name: flight_test
+description: "Test your application in space"
+author: githubname
+
+run_after: [testing]
+category: testing
+
+config:
+  - space_test:
+      type: boolean
+      prompt: Do you want to test your application in space?
+  - mars_test:
+      type: boolean
+      prompt: Do you also want to test your application on Mars?
+      if: space_test
+      if_recipe: mars_lander      
+  - test_count:
+      type: string
+      prompt: How many times would you like to repeat the test?
+      if: space_test
+  - orbit:
+      type: multiple_choice
+      prompt: "What orbit do you want?"
+      choices: [ [Low Earth orbit, leo], [Sun-synchronous, spy], [Geostationary, gps] ]
+      if: space_test
+</pre>
+<p>In this example, the recipe is forced to run after a <em>testing</em> recipe.</p>
+<p>The keys in the list of hashes will become keys in the <code>config{}</code> hash available to the recipe.</p>
+<p>For example, the boolean <code>config['space_test']</code> will be true or false:</p>
+<pre>
+if config['space_test']
+  say_wizard "running a space test"
+end
+</pre>
+<p>The <code>if: space_test</code> condition will insure that other prompts only appear if the user has answered “yes” to the first prompt.</p>
+<p>The <code>if_recipe: mars_lander</code> condition will only prompt the user for a reply if a “mars_lander” recipe has been included in the list of recipes.</p>
+<p>The “test_count” prompt takes a string as a response. The string is available as:</p>
+<pre>
+if config['space_test']
+  say_wizard "will run the test #{config['test_count']} times"
+end
+</pre>
+<p>The “orbit” prompt will appear as a multiple choice question:</p>
+<pre>
+question  What orbit do you want?
+          1)  Low Earth orbit
+          2)  Sun-synchronous
+          3)  Geostationary
+  flight_test  Enter your selection:
+</pre>
+<p>The response is shown in this example:</p>
+<pre>
+if config['space_test']
+  say_wizard "will run the test in #{config['orbit']} orbit"
+end
+</pre>
+<p>You might use a case statement to read recipe configuration parameters and set global preferences:</p>
+<pre>
+case config['orbit']
+  when 'leo'
+    prefs[:test_orbit] = 'leo'
+  when 'spy'
+    prefs[:test_orbit] = 'spy'
+  when 'gps'
+    prefs[:test_orbit] = 'gps'
+end
+</pre>
+<p>Keep in mind that the <code>config</code> hash is only locally available to the recipe. The <code>prefs{}</code> hash is available to all the recipes.</p>
 <h2 id="architecture">Architecture</h2>
 <p>This section describes the architecture of the rails_apps_composer program. Learn about the architecture to understand how the rails_apps_composer program works.</p>
 <p>Application templates do not create a new Rails application. That job is the prerogative of the <code>rails new</code> command. Application templates modify a simple Rails application that is created by the <code>rails new</code> command.</p>
@@ -889,7 +963,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-05 12:21:25</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-05 14:30:51</p>
       </div>
     </div>
 
