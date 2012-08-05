@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 4 August 2012</em></p>
+<p><em>Last updated 5 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -67,7 +67,7 @@
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Who This Is For</h2>
 <p>This gem is for experienced Rails developers who need a tool to create and maintain a Rails starter app or Rails application template. If you’re regularly building Rails applications that use certain popular gems or rely on common functionality such as authentication, you can benefit from the rails_apps_composer gem.</p>
-<p>If you are new to Rails and don’t need to customize recipes, try the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool. It provides an application template that is generated from the rails_apps_composer gem’s core recipes. It is easier to use.</p>
+<p>If you are new to Rails, try the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool. It provides an application template that is generated from the rails_apps_composer gem’s core recipes. It is easier to use.</p>
 <h2>Introduction</h2>
 <p>The rails_apps_composer gem was originally developed as a tool for the RailsApps project. The <a href="http://railsapps.github.com/">RailsApps</a> project provides Rails example applications and tutorials.</p>
 <p>Over a hundred Rails developers now use the tool to create their own starter apps. An active open source community contributes to maintenance and development of the gem with patches and new recipes.</p>
@@ -126,11 +126,9 @@
 <p>Make a list of recipes and try generating an application by providing your list of recipes on the command line. Here’s a simple example: <code>rails_apps_composer new myapp -r setup readme gems extras</code>.</p>
 <p>Try generating an application template using recipes: <code>rails_apps_composer template ~/Desktop/template.rb -r setup readme gems extras</code>.</p>
 <p>Create an application from the application template using the command <code>rails new myapp -m ~/Desktop/template.rb</code>.</p>
-<p>Learn how to use a defaults file. Read the documentation and examine the <code>setup</code> recipe to ascertain keys and values for configuration parameters. Create a defaults file and try building an application using the command <code>rails_apps_composer new myapp --defaults=mydefaults.txt</code>.</p>
-<p>Try generating an application template using defaults: <code>rails_apps_composer template ~/Desktop/template.rb --defaults=mydefaults.txt</code>.</p>
 <p>Each command is explained below in the <a href="#usage">Usage</a> section.</p>
 <h2>Recipes</h2>
-<p>You must examine the source code for the recipes to make full use of the rails_apps_composer gem. See the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>. The recipes are regularly updated and contributors add new recipes frequently. Not all recipes are described here.</p>
+<p>You must examine the source code for the recipes to make full use of the rails_apps_composer gem. See the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>. The recipes are regularly updated and contributors add new recipes frequently. Not all recipes are described here. Here is an overview.</p>
 <h3>Core Recipes</h3>
 <p>The following recipes were released with rails_apps_composer 2.0. These recipes are assembled to create the example applications released by the RailsApps project The core recipes are known to work together without incompatibilities.</p>
 <h4>Setup</h4>
@@ -479,7 +477,7 @@ end
 <pre>
 copy_from_repo 'public/humans.txt'
 </pre>
-<p>In its simplest form, it opens a connection to a GitHub repo and copies a file given a path and filename. This form wraps Thor methods <code>remove_file</code>, <code>get</code>, and <code>create_file</code> and uses a default repository.</p>
+<p>In its simplest form, it opens a connection to a GitHub repo and copies a file given a path and filename. It uses a default repository.</p>
 <p>Another form takes a repository location as an option:</p>
 <pre>
 copy_from_repo 'app/models/user.rb', 
@@ -608,10 +606,10 @@ gem 'foobar'
 <pre>
 gem 'factory_girl_rails', '&gt;= 3.5.0', :group =&gt; [:development, :test] if prefer :fixtures, 'factory_girl'
 </pre>
-<p>In this example, the factory_girl_rails gem is added to the Gemfile if the user has specified ‘factory_girl’ as a preference for ‘fixtures’. Extra arugments specify that the gem will only be used in development and test environments. You are not required to specify a gem version. However, for the RailsApps example applications, we use <a href="http://docs.rubygems.org/read/chapter/16">optimistic version constraint</a> (using the “&gt;=” operator) to prevent use of older versions of gems that may already be installed but not compatible. We allow any newer version of the gem. If any newer version of the gem is not compatible, we want to know about it.</p>
+<p>In this example, the factory_girl_rails gem is added to the Gemfile if the user has specified ‘factory_girl’ as a preference for ‘fixtures’. Extra arugments specify that the gem will only be used in development and test environments. You are not required to specify a gem version. However, for the RailsApps example applications, we use <a href="http://docs.rubygems.org/read/chapter/16">optimistic version constraint</a> (using the “&gt;=” operator) to prevent use of older versions of gems that may already be installed but not compatible. We allow any newer version of the gem.</p>
 <h4>The After_bundler Stage</h4>
 <p>After the Gemfile is prepared, the application template runs <code>bundle install</code>.</p>
-<p>The rails_apps_composer program uses an <code>after_bundler</code> method to postpone execution of commands until after <code>bundle install</code> runs.</p>
+<p>The rails_apps_composer program uses the <code>after_bundler</code> method to postpone execution of commands until after <code>bundle install</code> runs.</p>
 <p>Most recipes will supply commands (as a block) to the <code>after_bundler</code> method. The application template executes all code in <code>after_bundler</code> blocks immediately after running <code>bundle install</code>.</p>
 <p>Here are examples of procedures to be executed during the <code>after_bundler</code> stage:</p>
 <ul>
@@ -631,28 +629,33 @@ gem 'factory_girl_rails', '&gt;= 3.5.0', :group =&gt; [:development, :test] if p
 	<li>final commit to a git repository</li>
 </ul><p>The <code>after_everything</code> stage is the place to clean up and finalize your application.</p>
 <h3 id="order">Recipe Order</h3>
-<p>Recipe order is critical to successful execution of an application template.</p>
-<p>For example, if a recipe attempts to manipulate a User model and the User model has not yet been created, the application template will fail. Often you must examine recipes to understand the state of the application after each recipe is executed. You must give careful thought to order of execution when assembling recipes.</p>
-<p>Within a recipe, you can specify order of execution by placing code in blocks supplied to the <code>before_config</code>, <code>after_bundler</code>, and <code>after_everything</code> methods.</p>
-<p>Recipes are combined by the rails_apps_composer program. Then the methods <code>before_config</code>, <code>after_bundler</code>, and <code>after_everything</code> execute in sequence. Code that is not placed in one of these blocks executes between the <code>before_config</code> and <code>after_bundler</code> method calls.</p>
+<p>Recipe order is critical to successful execution of an application template. You must give careful thought to order of execution when assembling recipes.</p>
+<p>For example, if a recipe attempts to manipulate a User model but the User model has not yet been created, the application template will fail.</p>
+<p>Just to review: Within a recipe, you specify order of execution by placing code in blocks supplied to the <code>before_config</code>, <code>after_bundler</code>, and <code>after_everything</code> methods. The methods <code>before_config</code>, <code>after_bundler</code>, and <code>after_everything</code> execute in sequence. Code that is not placed in one of these blocks executes between the <code>before_config</code> and <code>after_bundler</code> method calls.</p>
+<p>But among recipes, what determines the order in which recipes execute?</p>
 <p>The sequence in which you list the recipes determines the order in which the recipes execute. If you specify recipes at the interactive prompt, the order in which you enter recipes determines precedence. If you provide a list of recipes (using the <code>-r</code> flag) when you build an application or an application template, the precedence is determined by the list order.</p>
-<p>In general, the easiest way to assure that recipes are executed in the order you expect is to order the list of recipes and use the the <code>-r</code> flag when you run the rails_apps_composer program. For example:</p>
+<p>In general, the easiest way to assure that recipes are executed in the order you desire is to order the list of recipes and use the the <code>-r</code> flag when you run the rails_apps_composer program. For example:</p>
 <pre>
 $ rails_apps_composer new myapp -r setup readme gems extras
 </pre>
-<p>The example will execute all recipes in sequence to prompt the use for preferences, then execute each <code>after_bundler</code> block, then run each <code>after_everything</code> block in the sequence that you list the recipes.</p>
+<p>The example will execute all recipes in sequence to prompt the use for preferences, then execute each <code>after_bundler</code> block, then run each <code>after_everything</code> block in the sequence you’ve listed the recipes.</p>
 <p>You can also constrain execution order by setting the <code>run_after</code> configuration parameter in the <span class="caps">YAML</span> matter appended to a recipe. See the section below, <a href="#yaml">Configuring Recipes with <span class="caps">YAML</span></a>, to learn how to constrain execution order using the <span class="caps">YAML</span> format.</p>
+<h3>The <span class="caps">YAML</span> Matter</h3>
+<p>At a minimum, every recipe must contain <span class="caps">YAML</span> matter that specifies the recipe name, decription and author:</p>
+<pre>
+__END__
+
+name: mojo
+description: "Adding mojo to your application"
+author: githubname
+</pre>
+<p>The <code>__END__</code> keyword marks the transition from Ruby code to data. Everything that follows is input as data and parsed by a <span class="caps">YAML</span> interpreter.</p>
+<p>Descriptive data is entered as key/value pairs including name, description, and author.</p>
 <h3 id="yaml">Configuring Recipes with <span class="caps">YAML</span>
 </h3>
 <p>Any recipe can ask the user for preferences and execute commands conditionally.</p>
-<p>The prompt can be driven by inline code. Here’s an example:</p>
-<pre>
-if recipes.include? 'foo'
-  prefs[:foo] = multiple_choice "What kind of foo do you prefer?", [ ["Foobar", "foobar"], ["Foobaz", "foobaz"] ]
-end
-</pre>
-<p>The rails_apps_composer program also provides a facility to set up configuration prompts in the form of a <span class="caps">YAML</span> file appended to the recipe.</p>
-<p>A recipe might contain <span class="caps">YAML</span> matter that looks like this:</p>
+<p>The rails_apps_composer program provides a facility to set up configuration prompts in the form of a <span class="caps">YAML</span> file appended to the recipe.</p>
+<p>A recipe that sets up configuration prompts looks like this:</p>
 <pre>
 __END__
 
@@ -669,8 +672,6 @@ config:
       prompt: What kind of foo do you prefer?
       choices: [ ["Foobar", "foobar"], ["Foobaz", "foobaz"] ]
 </pre>
-<p>The <code>__END__</code> keyword marks the transition from Ruby code to data. Everything that follows is input as data and parsed by a <span class="caps">YAML</span> interpreter.</p>
-<p>Descriptive data is entered as key/value pairs such as name, description, and author.</p>
 <p>Order of execution can be constrained with the <code>run_after</code> key by passing an array of recipe names that must be executed before this recipe will be allowed to run.</p>
 <p>Finally, the <code>config</code> data array accepts a list of hashes that prompt the user for preferences.</p>
 <h2 id="architecture">Architecture</h2>
@@ -781,6 +782,15 @@ end
 <ul>
 <li><code>copy_from_repo(filename, opts = {})</code></li>
 </ul><p>These methods are described in more detail above in the sections <a href="#wizard_methods">Rails Wizard Methods</a> and <a href="#rac_methods">Rails_apps_composer Methods</a>.</p>
+<h3>Gem Internals</h3>
+<p>The <strong>lib/</strong> directory contains the code that drives the rails_apps_composer program.</p>
+<p>Much of the code is duplicated from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a>.</p>
+<p>RailsWizard::Command interprets commands entered on the command line.</p>
+<p>RailsWizard::Config creates the prompts defined by a recipe’s <span class="caps">YAML</span> matter.</p>
+<p>RailsWizard::Recipe is an object populated by a recipe’s <span class="caps">YAML</span> matter that is used to define variables in the <strong>templates/recipe.erb</strong> file.</p>
+<p>RailsWizard::Recipes is an object that contains all the recipes.</p>
+<p>RailsWizard::Template defines variables in the <strong>templates/layout.erb</strong> file.</p>
+<p>If you are interested only in creating or modifying recipes, you won’t need to examine the gem internals.</p>
 <h2 id="defaults">Defaults File</h2>
 <p>If you frequently use the same recipes and preferences, create a defaults file and produce the same application every time. A big thank you to <a href="http://twitter.com/bryanstearns">Bryan Stearns</a> for contributing this feature!</p>
 <p>Generate an application from defaults:</p>
@@ -879,7 +889,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-05 11:33:10</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-05 12:21:25</p>
       </div>
     </div>
 
