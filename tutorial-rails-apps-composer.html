@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 5 August 2012</em></p>
+<p><em>Last updated 6 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -196,6 +196,11 @@ views          # Add views needed for starter apps.
 </pre>
 <p>The above list is current for rails_apps_composer 2.0; later releases will contain more recipes.</p>
 <p>You can learn more about the available recipes by examing the source code in the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>.</p>
+<h3>Recipe Order and Interdependency</h3>
+<p>The order in which you input a list or recipes determines the order of execution unless a recipe contains a <code>requires</code> or <code>run_after</code> directive.</p>
+<p>A recipe may contain a <code>requires</code> list which specifies other recipes which must be present before a recipe can run. The <code>requires</code> constraint will force the rails_apps_composer program to load any required recipes, even if you don’t add them explicitly.</p>
+<p>Recipes may also contain a <code>run_after</code> list. The rails_apps_composer program will organize the order of execution so that any recipes in the <code>run_after</code> list will execute earlier.</p>
+<p>In general, it’s best to add (or list) recipes in the order they should execute as some recipes may not contain a necessary <code>requires</code> or <code>run_after</code> directive.</p>
 <h3>Generate an Application Interactively</h3>
 <p>You’ll be prompted for recipes and gems:</p>
 <pre>
@@ -411,6 +416,7 @@ description: "Adding mojo to your application"
 author: githubname
 
 category: other
+requires: [setup]
 run_after: [setup, extras]
 
 config:
@@ -421,6 +427,7 @@ config:
 </pre>
 <p>The recipe’s <span class="caps">YAML</span> matter must contain keys to set a recipe name (“mojo”), an author (use your GitHub username), and a description (displayed by the <code>rails_apps_composer list</code> command).</p>
 <p>The “category” key is used to display an assortment of recipes in groups by the <code>rails_apps_composer new</code> command. Use any you like.</p>
+<p>The “requires” key forces the rails_apps_composer program to load any recipes that this recipe depends on.</p>
 <p>The “run_after” key can be given a list of recipes to constrain order of execution. See the section below, <a href="#order">Recipe Order</a>, to learn how to set order of execution of recipes.</p>
 <p>See the section below, <a href="#yaml">Configuring Recipes with <span class="caps">YAML</span></a>, to learn how to set configuration prompts using the <span class="caps">YAML</span> format.</p>
 <h3>Thor and Rails Generator Methods</h3>
@@ -639,7 +646,8 @@ gem 'factory_girl_rails', '&gt;= 3.5.0', :group =&gt; [:development, :test] if p
 $ rails_apps_composer new myapp -r setup readme gems extras
 </pre>
 <p>The example will execute all recipes in sequence to prompt the use for preferences, then execute each <code>after_bundler</code> block, then run each <code>after_everything</code> block in the sequence you’ve listed the recipes.</p>
-<p>You can also constrain execution order by setting the <code>run_after</code> configuration parameter in the <span class="caps">YAML</span> matter appended to a recipe. See the section below, <a href="#yaml">Configuring Recipes with <span class="caps">YAML</span></a>, to learn how to constrain execution order using the <span class="caps">YAML</span> format.</p>
+<p>You can also constrain execution order by setting the <code>run_after</code> directive in the <span class="caps">YAML</span> matter appended to a recipe. See the section below, <a href="#yaml">Configuring Recipes with <span class="caps">YAML</span></a>, to learn how to constrain execution order using the <span class="caps">YAML</span> format.</p>
+<p>You can force recipes to be loaded by setting the <code>requires</code> directive in the <span class="caps">YAML</span> matter.</p>
 <h3>The <span class="caps">YAML</span> Matter</h3>
 <p>At a minimum, every recipe must contain <span class="caps">YAML</span> matter that specifies the recipe name, description and author:</p>
 <pre>
@@ -663,8 +671,9 @@ name: mojo
 description: "Adding mojo to your application"
 author: githubname
 
-run_after: [setup, extras]
 category: other
+requires: [setup]
+run_after: [setup, extras]
 
 config:
   - foo:
@@ -672,6 +681,7 @@ config:
       prompt: What kind of foo do you prefer?
       choices: [ ["Foobar", "foobar"], ["Foobaz", "foobaz"] ]
 </pre>
+<p>The <code>requires</code> key forces the rails_apps_composer program to load any other recipes that are required by the recipe.</p>
 <p>Order of execution can be constrained with the <code>run_after</code> key by passing an array of recipe names that must be executed before this recipe will be allowed to run.</p>
 <p>Finally, the <code>config</code> data array accepts a list of hashes that prompt the user for preferences.</p>
 <h3>Complex <span class="caps">YAML</span> Example</h3>
@@ -684,8 +694,9 @@ name: flight_test
 description: "Test your application in space"
 author: githubname
 
-run_after: [testing]
 category: testing
+requires: [testing]
+run_after: [testing]
 
 config:
   - space_test:
@@ -706,7 +717,7 @@ config:
       choices: [ [Low Earth orbit, leo], [Sun-synchronous, spy], [Geostationary, gps] ]
       if: space_test
 </pre>
-<p>In this example, the recipe is forced to run after a <em>testing</em> recipe.</p>
+<p>In this example, a <em>testing</em> recipe is required and the recipe is forced to run after the <em>testing</em> recipe.</p>
 <p>The keys in the list of hashes will become keys in the <code>config{}</code> hash available to the recipe.</p>
 <p>For example, the boolean <code>config['space_test']</code> will be true or false:</p>
 <pre>
@@ -963,7 +974,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-05 14:30:51</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-06 05:32:41</p>
       </div>
     </div>
 
