@@ -199,30 +199,41 @@ views          # Add views needed for starter apps.
 <h3>Recipe Order and Interdependency</h3>
 <p>The order in which you input a list or recipes determines the order of execution unless a recipe contains a <code>requires</code> or <code>run_after</code> directive.</p>
 <p>A recipe may contain a <code>requires</code> list which specifies other recipes which must be present before a recipe can run. The <code>requires</code> constraint will force the rails_apps_composer program to load any required recipes, even if you don’t add them explicitly.</p>
-<p>Recipes may also contain a <code>run_after</code> list. The rails_apps_composer program will organize the order of execution so that any recipes in the <code>run_after</code> list will execute earlier.</p>
+<p>Recipes may also contain a <code>run_after</code> list. The rails_apps_composer program will organize the order of execution so that any recipes in the <code>run_after</code> list will execute earlier. That is, the recipe will run after everything else in the list.</p>
 <p>In general, it’s best to add (or list) recipes in the order they should execute as some recipes may not contain a necessary <code>requires</code> or <code>run_after</code> directive.</p>
+<h3>Skipping Test::Unit or Active Record</h3>
+<p>If you plan to use RSpec instead of Test::Unit, or use an <span class="caps">ORM</span> such as Mongoid instead of Active Record, you can pass the <code>-T</code> or <code>-O</code> flags to the <code>rails new</code> command so it will skip Test::Unit or Active Record.</p>
+<p>When you generate an application interactively using the rails_apps_composer gem, the program will ask if you want to skip Test::Unit or Active Record.</p>
+<p>When you generate an application template, you will not be asked if you want to skip Test::Unit or Active Record. An application template runs after the <code>rails new</code> command so it cannot set the <code>-T</code> or <code>-O</code> arguments.</p>
+<p>Any recipe can set the <code>-T</code> or <code>-O</code> arguments using the <code>args</code> directive. However, this has no affect on application templates and is only useful when an application is generated interactively.</p>
 <h3>Generate an Application Interactively</h3>
 <p>You’ll be prompted for recipes and gems:</p>
 <pre>
 $ rails_apps_composer new myapp
+
+Would you like to skip Test::Unit? (yes for RSpec) (y/n)
+Would you like to skip Active Record? (yes for NoSQL) (y/n)
 
 Available Recipes:
 authentication: auth
 other: controllers, database, email, extras, frontend, gems, models, prelaunch, readme, routes, setup, views
 testing: testing
 
-Which recipe would you like to add? (blank to finish) 
-What gem would you like to add? (blank to finish) 
+Which recipe would you like to add? (blank to finish)
+What gem would you like to add? (blank to finish)
 
-Generating and Running Template...
+Generating basic application, using:
+"rails new myapp -m &lt;temp_file&gt; "
 </pre>
 <p>You will only be able to choose recipes that are contained in the rails_apps_composer gem.</p>
-<p>You can specify any gem. Any string you enter will be added to the starter app Gemfile.</p>
+<p>You can specify any gem. Any string you enter will be added as a gem in the starter app Gemfile.</p>
 <h3>Generate an Application from a List of Recipes</h3>
 <p>Provide a list of recipes:</p>
 <pre>
 $ rails_apps_composer new myapp -r setup readme gems testing auth email models controllers views routes frontend database extras
 
+Would you like to skip Test::Unit? (yes for RSpec) (y/n)
+Would you like to skip Active Record? (yes for NoSQL) (y/n)
 What gem would you like to add? (blank to finish) 
 
 Generating and Running Template...
@@ -269,7 +280,7 @@ $ rails_apps_composer template ~/Desktop/template.rb --defaults=my_defaults.yaml
 $ rails new myapp -m ~/Desktop/template.rb
 </pre>
 <p>The application template will prompt you for any configuration preferences requested by the recipes.</p>
-<p>The <code>rails new</code> command allows you to specify the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
+<p>The <code>rails new</code> command allows you to specify the <code>-T -O</code> flags to skip Test::Unit files and Active Record files when you use an application template.</p>
 <pre>
 $ rails new myapp -m ~/Desktop/template.rb -T -O
 </pre>
@@ -418,6 +429,7 @@ author: githubname
 category: other
 requires: [setup]
 run_after: [setup, extras]
+args: -T
 
 config:
   - foo:
@@ -426,9 +438,10 @@ config:
       choices: [ ["Foobar", "foobar"], ["Foobaz", "foobaz"] ]
 </pre>
 <p>The recipe’s <span class="caps">YAML</span> matter must contain keys to set a recipe name (“mojo”), an author (use your GitHub username), and a description (displayed by the <code>rails_apps_composer list</code> command).</p>
-<p>The “category” key is used to display an assortment of recipes in groups by the <code>rails_apps_composer new</code> command. Use any you like.</p>
-<p>The “requires” key forces the rails_apps_composer program to load any recipes that this recipe depends on.</p>
-<p>The “run_after” key can be given a list of recipes to constrain order of execution. See the section below, <a href="#order">Recipe Order</a>, to learn how to set order of execution of recipes.</p>
+<p>The “category” directive is used to display an assortment of recipes in groups by the <code>rails_apps_composer new</code> command. Use any you like.</p>
+<p>The “requires” directive forces the rails_apps_composer program to load any recipes that this recipe depends on.</p>
+<p>The “run_after” directive can be given a list of recipes to constrain order of execution. See the section below, <a href="#order">Recipe Order</a>, to learn how to set order of execution of recipes.</p>
+<p>The “args” directive passes the <code>-T</code> or <code>-O</code> flags to the <code>rails new</code> command to force it to skip Test::Unit or Active Record. This has no affect on application templates and is only useful when an application is generated interactively.</p>
 <p>See the section below, <a href="#yaml">Configuring Recipes with <span class="caps">YAML</span></a>, to learn how to set configuration prompts using the <span class="caps">YAML</span> format.</p>
 <h3>Thor and Rails Generator Methods</h3>
 <p><a href="http://yehudakatz.com/2008/05/12/by-thors-hammer/">Thor</a> is a scripting framework for Ruby written by Yehuda Katz. Thor provides utility methods that are useful in manipulating files. Rails generators (used by the <code>rails new</code> command) use Thor methods.</p>
@@ -681,9 +694,9 @@ config:
       prompt: What kind of foo do you prefer?
       choices: [ ["Foobar", "foobar"], ["Foobaz", "foobaz"] ]
 </pre>
-<p>The <code>requires</code> key forces the rails_apps_composer program to load any other recipes that are required by the recipe.</p>
-<p>Order of execution can be constrained with the <code>run_after</code> key by passing an array of recipe names that must be executed before this recipe will be allowed to run.</p>
-<p>Finally, the <code>config</code> data array accepts a list of hashes that prompt the user for preferences.</p>
+<p>The <code>requires</code> directive forces the rails_apps_composer program to load any other recipes that are required by the recipe.</p>
+<p>Order of execution can be constrained with the <code>run_after</code> directive by passing an array of recipe names that must be executed before this recipe will be allowed to run.</p>
+<p>Finally, the <code>config</code> schema accepts a list of hashes that prompt the user for preferences.</p>
 <h3>Complex <span class="caps">YAML</span> Example</h3>
 <p>The <span class="caps">YAML</span> matter can be a powerful tool for configuring recipes.</p>
 <p>Here is an example of a complex configuration schema:</p>
@@ -974,7 +987,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-06 05:32:41</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-06 14:08:18</p>
       </div>
     </div>
 
