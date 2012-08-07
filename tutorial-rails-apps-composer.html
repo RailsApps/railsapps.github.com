@@ -883,7 +883,7 @@ end
 </pre>
 <p>Note that the hash keys are symbols (preceded by a colon).</p>
 <h4>Gems</h4>
-<p>The <code>gems[]</code> array is a list of gems to add to the Gemfile. It can be set from a defaults file or from an interactive prompt. The <em>gems</em> recipe adds each gem named in the array to the Gemfile. The array is available to other recipes bjt seldom used outside of the <em>gems</em> recipe.</p>
+<p>The <code>gems[]</code> array is a list of gems to add to the Gemfile. It can be set from a defaults file or from an interactive prompt. The <em>gems</em> recipe adds each gem named in the array to the Gemfile. The array is available to other recipes but seldom used outside of the <em>gems</em> recipe.</p>
 <h3>Templates</h3>
 <p>Three template files are the basis for generating an application template:</p>
 <ul>
@@ -926,12 +926,13 @@ end
 </ul><p>These methods are described in more detail above in the sections <a href="#wizard_methods">Rails Wizard Methods</a> and <a href="#rac_methods">Rails_apps_composer Methods</a>.</p>
 <h3>Gem Internals</h3>
 <p>The <strong>lib/</strong> directory contains the code that drives the rails_apps_composer program.</p>
-<p>Much of the code is duplicated from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a>.</p>
+<p>Much of the code that drives the program is duplicated from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a>.</p>
 <p>RailsWizard::Command interprets commands entered on the command line.</p>
 <p>RailsWizard::Config creates the prompts defined by a recipe’s <span class="caps">YAML</span> matter.</p>
 <p>RailsWizard::Recipe is an object populated by a recipe’s <span class="caps">YAML</span> matter that is used to define variables in the <strong>templates/recipe.erb</strong> file.</p>
 <p>RailsWizard::Recipes is an object that contains all the recipes.</p>
 <p>RailsWizard::Template defines variables in the <strong>templates/layout.erb</strong> file.</p>
+<p>RailsWizard::Diagnostics was introduced in rails_apps_composer 2.0 to provide an internal database of combinations of recipes and preferences that work together.</p>
 <p>If you are interested only in creating or modifying recipes, you won’t need to examine the gem internals.</p>
 <h2 id="defaults">Defaults File</h2>
 <p>If you frequently use the same recipes and preferences, create a defaults file and produce the same application every time. A big thank you to <a href="http://twitter.com/bryanstearns">Bryan Stearns</a> for contributing this feature!</p>
@@ -988,7 +989,7 @@ gems:
 <h4>About Rails Application Templates</h4>
 <p><a href="http://blog.madebydna.com/all/code/2010/10/11/cooking-up-a-custom-rails3-template.html">Cooking Up A Custom Rails 3 Template (11 Oct 2010) by Andrea Singh</a><br><a href="http://quickleft.com/blog/rails-application-templates">Rails Application Templates (16 Sept 2010) by Collin Schaafsma</a><br><a href="http://benscofield.com/2009/09/application-templates-in-rails-3/">Application templates in Rails 3 (18 Sept 2009) by Ben Scofield</a><br><a href="http://railscasts.com/episodes/148-app-templates-in-rails-2-3">Railscasts: App Templates in Rails 2.3 (9 Feb 2009) by Ryan Bates</a><br><a href="http://m.onkey.org/rails-templates">Rails templates (4 Dec 2008) by Pratik Naik</a></p>
 <h2>Issues</h2>
-<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails_apps_composer/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails_apps_composer/issues">issue</a> on GitHub. Reporting issues (and patching!) helps everyone.</p>
 <p>When you generate an application, the application’s <strong><span class="caps">README</span>.textile</strong> file will contain a diagnostics report. Please include the diagnostics report when you create an issue on GitHub.</p>
 <h2>Credits</h2>
 <p>Daniel Kehoe maintains this gem as part of the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
@@ -997,7 +998,7 @@ gems:
 <p>Is the gem useful to you? Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. I’d love to know you were helped out by the gem.</p>
 <h2>
 <span class="caps">MIT</span> License (with restriction)</h2>
-<p>The rails_apps_composer program is licensed under the terms of the <a href="http://www.opensource.org/licenses/mit-license"><span class="caps">MIT</span> License</a>, except portions of the program authored by Daniel Kehoe may not be used to build a website that generates an application template that can be downloaded or used to generate a web application online (for such use, inquire for license terms).</p>
+<p>The rails_apps_composer program is licensed under the terms of the <a href="http://www.opensource.org/licenses/mit-license"><span class="caps">MIT</span> License</a>, except portions of the program authored by Daniel Kehoe may not be used to build a website that generates an application template that can be downloaded or used to generate a web application online (for such use, ask for permission).</p>
 <p>Copyright © 2012 Daniel Kehoe</p>
     </div><!-- class="content" -->
     
@@ -1034,7 +1035,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-07 12:39:53</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-07 12:54:36</p>
       </div>
     </div>
 
