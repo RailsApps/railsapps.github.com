@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 8 August 2012</em></p>
+<p><em>Last updated 10 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -105,7 +105,9 @@
 <ul>
 <li>interactively, driven from prompts on the command line</li>
 	<li>“automatically,” from a defaults file that specifies parameters</li>
-</ul><p>This guide also shows how to <strong>modify and create recipes</strong> to accommodate your specific development needs.</p>
+</ul><p>This guide shows how to use the recipes that come with the gem.</p>
+<p>You can also use <strong>local recipes</strong> you’ve created for yourself.</p>
+<p>This guide shows how to <strong>modify and create recipes</strong> to accommodate your specific development needs. I encourage you to contribute your recipes to be included in the gem for others to use.</p>
 <p>If you intend to use the rails_apps_composer gem frequently, I recommend creating a <strong>defaults file</strong> that drives the assembly of your starter apps. The defaults file will eliminate the need to respond to prompts when you build a starter app interactively or generate an application template. Note that you can both set defaults and allow prompts for options which vary with each build.</p>
 <p>Here are some of the ways you might use the rails_apps_composer gem.</p>
 <h4>Use Case: One-Off Applications for a Solo User</h4>
@@ -131,7 +133,7 @@
 <p>So now you understand: When you use the rails_apps_composer gem, you’ll save <em>configuration parameters</em> in a <em>defaults file</em> which set up <em>recipes</em> that are assembled by the rails_apps_composer gem to generate an <em>application template</em> which is used by the <code>rails new</code> command to build a Rails <em>starter app</em> which you’ll customize to deploy as a Rails application.</p>
 <h2 id="FirstEncounter">First Encounter</h2>
 <p>Here’s what you can try on a first encounter with the rails_apps_composer gem.</p>
-<p>First, examine the recipes by looking at the files in the recipes folder. Get a sense of how the recipes work and identify which recipes are useful or interesting for your work.</p>
+<p>First, examine the recipes by looking at the files in the recipes folder. Get a sense of how the recipes work and identify which recipes are useful or might be adapted for your own needs.</p>
 <p>Install the rails_apps_composer gem and try it from the command line.</p>
 <p>Try <code>rails_apps_composer list</code> to see a list of recipes. Try <code>rails_apps_composer new myapp</code> to see how the gem prompts for recipes and extra gems and then generates an application.</p>
 <p>Make a list of recipes and try generating an application by providing your list of recipes on the command line. Here’s a simple example: <code>rails_apps_composer new myapp -r setup readme gems extras</code>.</p>
@@ -139,7 +141,9 @@
 <p>Create an application from the application template using the command <code>rails new myapp -m ~/Desktop/template.rb</code>.</p>
 <p>Each command is explained below in the <a href="#Usage">Usage</a> section.</p>
 <h2 id="Recipes">Recipes</h2>
-<p>You must examine the source code for the recipes to make full use of the rails_apps_composer gem. See the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>. The recipes are regularly updated and contributors add new recipes frequently. Not all recipes are described here. Here is an overview.</p>
+<p>You must examine the source code for the recipes to make full use of the rails_apps_composer gem. See the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>. The recipes are regularly updated and contributors add new recipes frequently. Not all recipes are described here.</p>
+<h3>Local Recipes</h3>
+<p>If you need recipes that are only useful for your own projects, create recipes (see <a href="#Anatomy">Anatomy of a Recipe</a>) and the rails_apps_composer program can use them as well as the recipes that are built in to the gem.</p>
 <h3>Core Recipes</h3>
 <p>The following recipes were released with rails_apps_composer 2.0. These recipes are assembled to create the example applications released by the RailsApps project The core recipes are known to work together without incompatibilities.</p>
 <h4>Setup</h4>
@@ -217,6 +221,13 @@ views          # Add views needed for starter apps.
 <p>When you generate an application interactively using the rails_apps_composer gem, the program will ask if you want to skip Test::Unit or Active Record.</p>
 <p>When you generate an application template, you will not be asked if you want to skip Test::Unit or Active Record. An application template runs after the <code>rails new</code> command so it cannot set the <code>-T</code> or <code>-O</code> arguments.</p>
 <p>Any recipe can set the <code>-T</code> or <code>-O</code> arguments using the <code>args</code> directive. However, this has no affect on application templates and is only useful when an application is generated interactively.</p>
+<h3>Using Local Recipes</h3>
+<p>You can use local recipes you’ve created yourself by using the <code>-l</code> flag and supplying the name of a directory that contains local recipes. The <code>-l</code> flag can be combined with any other command so you can create applications or application templates, interactively or from a defaults file.</p>
+<p>For example, generate an application interactively using local recipes:</p>
+<pre>
+$ rails_apps_composer new myapp -l ~/recipes/
+</pre>
+<p>If you create local recipes, please consider contributing them to the project.</p>
 <h3>Generate an Application Interactively</h3>
 <p>You’ll be prompted for recipes and gems:</p>
 <pre>
@@ -245,7 +256,7 @@ Generating basic application, using:
 <p>You will only be able to choose recipes that are contained in the rails_apps_composer gem.</p>
 <p>You can specify any gem. Any string you enter will be added as a gem in the starter app Gemfile.</p>
 <h3>Generate an Application from a List of Recipes</h3>
-<p>Provide a list of recipes:</p>
+<p>Provide a list of recipes using the <code>-r</code> flag:</p>
 <pre>
 $ rails_apps_composer new myapp -r setup readme gems testing auth email models controllers views routes frontend database extras
 
@@ -258,9 +269,9 @@ Generating basic application, using:
 </pre>
 <p>The program will prompt you for your preferences before generating an application.</p>
 <h3>Generate an Application from Defaults</h3>
-<p>Use a defaults file for recipes, preferences, and extra gems so you don’t have to provide them interactively. Then generate an application with:</p>
+<p>Use a defaults file for recipes, preferences, and extra gems so you don’t have to provide them interactively. Then generate an application using the <code>-d</code> flag:</p>
 <pre>
-$ rails_apps_composer new myapp --defaults=my_defaults.yaml
+$ rails_apps_composer new myapp -d my_defaults.yaml
 </pre>
 <p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="#Defaults">Defaults File</a> section below concerning the format of the defaults file.</p>
 <h3>Generate an Application Template Interactively</h3>
@@ -297,9 +308,9 @@ Done.
 </pre>
 <p>The command with the <code>template</code> argument followed by a filename and a list of recipes generates an application template.</p>
 <h3>Generate an Application Template from Defaults</h3>
-<p>Generate an application template using a defaults file:</p>
+<p>Generate an application template using a defaults file and the <code>-d</code> flag:</p>
 <pre>
-$ rails_apps_composer template ~/Desktop/template.rb --defaults=my_defaults.yaml
+$ rails_apps_composer template ~/Desktop/template.rb -d my_defaults.yaml
 </pre>
 <p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="#Defaults">Defaults File</a> section below concerning the format of the defaults file.</p>
 <h3>Generate an Application from a Template</h3>
@@ -946,7 +957,7 @@ end
 <p>RailsWizard::Diagnostics was introduced in rails_apps_composer 2.0 to provide an internal database of combinations of recipes and preferences that work together.</p>
 <p>If you are interested only in creating or modifying recipes, you won’t need to examine the gem internals.</p>
 <h2 id="Defaults">Defaults File</h2>
-<p>If you frequently use the same recipes and preferences, create a defaults file and produce the same application every time. A big thank you to <a href="http://twitter.com/bryanstearns">Bryan Stearns</a> for contributing this feature!</p>
+<p>If you frequently use the same recipes and preferences, create a defaults file and produce the same application every time.</p>
 <p>Generate an application from defaults:</p>
 <pre>
 $ rails_apps_composer new myapp --defaults=my_defaults.yaml
@@ -992,9 +1003,15 @@ gems:
 - nokogiri
 - kaminari
 </pre>
+<h3>Recipes</h3>
 <p>The “recipes” schema is used to initialize the <code>recipes[]</code> array. When you run the command with the <code>--defaults</code> option and no recipes specified on the command line, you’ll see the prompt, “Which recipe would you like to add? (blank to finish)”. If you want to use only your default recipes, just hit return. If you want to add a recipe for the app you are generating, just type the recipe name at the prompt.</p>
+<h3>Prefs</h3>
 <p>The “prefs” schema is used to initialize the <code>prefs{}</code> hash. Add key/value pairs for each preference you wish to set. Note the key is a Ruby symbol, not a string (it begins with a colon). You’ll have to examine the recipe files to determine what keys (such as <code>dev_webserver</code>) are used to specify preferences. If there is no preference specified in the defaults file, the rails_apps_composer program will ask you to respond with a preference. That way, you can give yourself flexibility if you don’t always have the same preference.</p>
+<h3>Gems</h3>
 <p>The “gems” schema is used to initialize the <code>gems[]</code> array. This is a list of strings. You must select the <em>gems</em> recipe for this list to function. The <em>gems</em> recipe iterates through this list and adds each gem to the Gemfile. The rails_apps_composer program doesn’t check if the gem exists; it assumes you’ve entered the name of an available gem. Whether or not you’ve listed gems in the defaults file, the rails_apps_composer program will prompt you to enter any additional gems you would like.</p>
+<h3 id="hidden">Hidden Preferences</h3>
+<p>Any recipe can respond to preferences that are not set from an interactive prompt if the preference setting is included in the defaults file. In general, if it is likely that any developer would like to make a preference choice, you should provide a prompt. However, there may be some preference settings that are not needed by most developers. These “obscure” preferences can be set in the defaults file. You’ll know about the preferences, as will any developer who examines the recipe closely. But you’ll eliminate the need to query every developer for a preference that may be seldomly used.</p>
+<p>At this time, there is one hidden preference that changes the behavior of the rails_apps_composer program. Some developers like to install gems to an alternate location (by default, bundler installs your gems to a system location such as <strong>.bundle/gems</strong>). If your defaults file contains the preference <code>:bundle_path: some_directory</code>, the rails_apps_composer program will supply the alternative bundle_path when running <code>bundle install</code>.</p>
 <h2 id="AdditionalDocumentation">Additional Documentation</h2>
 <p>This is the primary documentation for the rails_apps_composer gem.</p>
 <h4>About Rails Application Templates</h4>
@@ -1046,7 +1063,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-09 20:19:39</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-10 16:42:52</p>
       </div>
     </div>
 
