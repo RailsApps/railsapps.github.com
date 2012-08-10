@@ -46,8 +46,8 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 6 August 2012</em></p>
-<p>Installing Rails 3.2.7: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
+<p><em>Last updated 9 August 2012</em></p>
+<p>Installing Rails 3.2.8: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails, emphasizing updates to the complete development environment.</p>
 <h3>From the RailsApps Project</h3>
 <p>This is a guide for developers using the example apps from the RailsApps repository. Get open source apps and detailed Rails tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>. And try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
@@ -59,9 +59,10 @@
 <p>If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get a newer version of Rails. <em>This is not recommended.</em> Instead, install rvm (the Ruby Version Manager) to create a new gemset and install the newest Rails version. Then you can switch between versions if necessary.</p>
 <h2>What’s New</h2>
 <p>If you have not been closely following the evolution of the Rails platform, here’s a summary of recent developments.</p>
-<h4>Rails 3.2.7</h4>
+<h4>Rails 3.2.8</h4>
 <ul>
-<li>Rails 3.2.7 was released July 26, 2012 with a security fix for digest authentication plus various minor fixes. See <a href="http://weblog.rubyonrails.org/2012/7/26/ann-rails-3-2-7-has-been-released/">Rails version 3.2.7 has been released</a>.</li>
+<li>Rails 3.2.8 was released August 9, 2012 with a security fix that potentially impacts all users. See <a href="http://weblog.rubyonrails.org/2012/8/9/ann-rails-3-2-8-has-been-released/">Rails version 3.2.8 has been released</a>.</li>
+	<li>Rails 3.2.7 was released July 26, 2012 with a security fix for digest authentication plus various minor fixes. See <a href="http://weblog.rubyonrails.org/2012/7/26/ann-rails-3-2-7-has-been-released/">Rails version 3.2.7 has been released</a>.</li>
 	<li>Rails 3.2.6 was released June 12, 2012 with two important security fixes. See <a href="http://weblog.rubyonrails.org/2012/6/12/ann-rails-3-2-6-has-been-released/">Rails version 3.2.6 has been released</a>.</li>
 	<li>Rails 3.2.5 was released June 1, 2012 to correct a regression in Rails 3.2.4. See <a href="http://weblog.rubyonrails.org/2012/5/31/ann-rails-3-2-5-has-been-released/">Rails version 3.2.5 has been released</a>.</li>
 	<li>Rails 3.2.4 was released May 31, 2012 with minor bug fixes plus two important security fixes. See <a href="http://weblog.rubyonrails.org/2012/5/31/ann-rails-3-2-4-has-been-released/">Rails version 3.2.4 has been released</a>.</li>
@@ -86,8 +87,8 @@
 <p>You may have heard that it is good practice to use the command <code>bundle exec rake</code> instead of <code>rake</code> to force use of executables specified in your gemfile (or a dependency specified in the Gemfile.lock file) instead of other versions. For example, instead of <code>rake db:migrate</code>, run <code>bundle exec rake db:migrate</code>. If you’re using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, as recommended below, you don’t need to use <code>bundle exec rake</code> instead of <code>rake</code> (rvm versions 1.11.0 and newer include the rubygems-bundler gem to handle this).</p>
 <p><em>What You Need to Know:</em> Make sure you are using Rake 0.9.2.2 (or <a href="http://rubygems.org/gems/rake">newer</a>) with <code>gem update rake</code> before installing Rails 3.2.</p>
 <h4>Bundler</h4>
-<p><a href="http://gembundler.com/">Bundler</a> version 1.1.5 was released July 17, 2012. However, the newest version is Bundler 1.2.0.rc. This version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. You should install Bundler 1.2.0.rc if you plan to deploy to Heroku. Version 1.1.0 released March 7, 2012 improved speed significantly. See the <a href="https://github.com/carlhuda/bundler/blob/master/CHANGELOG.md"><span class="caps">CHANGELOG</span></a>.</p>
-<p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. Be sure to install Bundler 1.2.0.rc if you plan to deploy to Heroku.</p>
+<p><a href="http://gembundler.com/">Bundler</a> version 1.1.5 was released July 17, 2012. However, the newest version is Bundler 1.2.0.rc.2. This version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. You should install Bundler 1.2.0.rc.2 if you plan to deploy to Heroku. Version 1.1.0 released March 7, 2012 improved speed significantly. See the <a href="https://github.com/carlhuda/bundler/blob/master/CHANGELOG.md"><span class="caps">CHANGELOG</span></a>.</p>
+<p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. Be sure to install Bundler 1.2.0.rc.2 if you plan to deploy to Heroku.</p>
 <h2 id="ruby">Installing Ruby 1.9.3 and rvm</h2>
 <p>These instructions prepare your computer for installation of Rails.</p>
 <p>If you’ve already installed Ruby 1.9.3 and rvm, skip ahead to the section <a href="#gems">Updating the Gems.</a></p>
@@ -232,7 +233,7 @@ $ gem update rake
 $ rake --version
 </pre>
 <h4>Update Rubygems-Bundler</h4>
-<p>The newest version is needed if you intend to use the newest version of Bundler. Rubygems-Bundler version 1.0.3 was current when this was written.</p>
+<p>The newest version is needed if you intend to use the newest version of Bundler. Rubygems-Bundler version 1.0.5 was current when this was written.</p>
 <p>Update to the <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>.</p>
 <pre>
 $ rvm gemset use global
@@ -240,7 +241,7 @@ $ gem update rubygems-bundler
 $ gem list
 </pre>
 <h4>Update Bundler</h4>
-<p><a href="http://gembundler.com/">Bundler</a> version 1.2.0.rc was released July 18, 2012. You’ll need this version (or newer) if you plan to deploy to Heroku.</p>
+<p><a href="http://gembundler.com/">Bundler</a> version 1.2.0.rc.2 was released August 9, 2012. You’ll need this version (or newer) if you plan to deploy to Heroku.</p>
 <p>You can’t simply upgrade to the pre-release version; you must uninstall and then install:</p>
 <pre>
 $ rvm gemset use global
@@ -257,16 +258,16 @@ $ gem install bundler --pre
 $ bundle --version
 </pre>
 <h4>Create a Rails 3.2 Gemset</h4>
-<p>Create a default Rails 3.2.7 gemset. It’s advisable to create a new gemset for each application you build. But to get started, create a single new Rails 3.2.7 gemset as your default.</p>
+<p>Create a default Rails 3.2.8 gemset. It’s advisable to create a new gemset for each application you build. But to get started, create a single new Rails 3.2.8 gemset as your default.</p>
 <pre>
-$ rvm ruby-1.9.3-p194@rails327 --create --default
+$ rvm ruby-1.9.3-p194@rails328 --create --default
 </pre>
 <p>To see a list of the gemsets you have installed:</p>
 <pre>
 $ rvm gemset list
 </pre>
-<h2>Install Rails 3.2.7</h2>
-<p>Now you can install Rails 3.2.7.</p>
+<h2>Install Rails 3.2.8</h2>
+<p>Now you can install Rails 3.2.8.</p>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>.</p>
 <p>If you want the most recent stable release:</p>
 <pre>
@@ -280,7 +281,7 @@ $ rails -v
 </pre>
 <p>Or, as an alternative to <code>--pre</code>, for the newest version:</p>
 <pre>
-$ gem install rails -v "&gt;=3.2.7"
+$ gem install rails -v "&gt;=3.2.8"
 $ rails -v
 </pre>
 <p>Or you can get a specific version (just in case the newest version is broken).</p>
@@ -444,7 +445,7 @@ $ echo "rvm ruby-1.9.3-p194@rails32 --create" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-08 04:55:56</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-09 20:19:39</p>
       </div>
     </div>
 

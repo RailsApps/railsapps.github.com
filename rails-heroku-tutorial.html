@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Heroku Tutorial</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 31 July 2012</em></p>
+<p><em>Last updated 9 August 2012</em></p>
 <p>Here’s how to set up an app with Rails 3.2 and Ruby 1.9.3 on Heroku. Heroku provides low cost, easily configured Rails 3.2 application hosting.</p>
 <p>An article, <a href="http://rdegges.com/heroku-isnt-for-idiots">Heroku Isn’t for Idiots</a>, describes why you might want to use Heroku. And a discussion on Quora explains, <a href="http://www.quora.com/What-are-the-potential-downsides-of-using-Heroku">What are the potential downsides of using Heroku?</a> (not many).</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -57,7 +57,7 @@
 <p>Before you start, you should review the advice offered in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to be sure your development environment is set up correctly on your local machine.</p>
 <h2>Ruby 1.9.3 on Heroku</h2>
 <p>Heroku’s newest stack, “Celadon Cedar,” supports Ruby 1.9.3 and Rails 3.2. As of 9 May 2012, Heroku officially supports Ruby 1.9.3 (see <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">Multiple Ruby Version Support on Heroku</a>).</p>
-<p>You configure the Heroku environment to use Ruby 1.9.3 by specifying the Ruby version in your application Gemfile. This requires use of a pre-release version of the <a href="http://gembundler.com/">Bundler</a> gem. You must install Bundler 1.2.0.rc or newer if you plan to deploy to Heroku (see instructions below).</p>
+<p>You configure the Heroku environment to use Ruby 1.9.3 by specifying the Ruby version in your application Gemfile. This requires use of a pre-release version of the <a href="http://gembundler.com/">Bundler</a> gem. You must install Bundler 1.2.0.rc.2 or newer if you plan to deploy to Heroku (see instructions below).</p>
 <p>Heroku provides the most secure patch level of whatever minor version number you request. So if you specify Ruby 1.9.3, Heroku will provide ruby-1.9.3-p194.</p>
 <p><em>Note:</em> You may have found outdated instructions elsewhere. To clarify: Installing Ruby 1.9.3 on Heroku previously (before March 19, 2012) required installation of the heroku-labs plugin. The heroku-labs plugin is deprecated and its functionality is now incorporated in the heroku client gem. Before May 9, 2012, installing Ruby 1.9.3 on Heroku required the <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">user_env_compile</a> feature; this is now deprecated. Furthermore, it is no longer necessary to set the RUBY_VERSION variable with <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p125</code> or to set the Heroku <span class="caps">PATH</span> config variable to include “bin” when you specify the default Ruby 1.9.3 for the Cedar stack. Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed for Rails 3.2 and should not be used.</p>
 <p>The following Heroku articles are helpful:</p>
@@ -93,9 +93,9 @@ $ rvm gemset use &lt;whatever&gt;
 source 'http://rubygems.org'
 
 ruby '1.9.3'
-gem  'rails', '3.2.7'
+gem  'rails', '3.2.8'
 </pre>
-<p>As explained above, specifying <code>ruby '1.9.3'</code> requires Bundler 1.2.0.rc or newer.</p>
+<p>As explained above, specifying <code>ruby '1.9.3'</code> requires Bundler 1.2.0.rc.2 or newer.</p>
 <h3>Heroku Gem</h3>
 <p>Add the Heroku gem to your application’s Gemfile <a href="http://rubygems.org/gems/heroku">(check rubygems.org for the latest heroku gem)</a>:</p>
 <p><code>gem "heroku"</code></p>
@@ -371,7 +371,7 @@ $ heroku logs -t
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-08 04:55:56</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-09 20:19:39</p>
       </div>
     </div>
 
