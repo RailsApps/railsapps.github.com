@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 August 2012</em></p>
+<p><em>Last updated 13 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -144,8 +144,15 @@
 <p>You must examine the source code for the recipes to make full use of the rails_apps_composer gem. See the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>. The recipes are regularly updated and contributors add new recipes frequently. Not all recipes are described here.</p>
 <h3>Local Recipes</h3>
 <p>If you need recipes that are only useful for your own projects, create recipes (see <a href="#Anatomy">Anatomy of a Recipe</a>) and the rails_apps_composer program can use them as well as the recipes that are built in to the gem.</p>
+<h3>Collections</h3>
+<p>A recipe can require other recipes, so it’s possible to create a recipe that loads a collection of other recipes.</p>
+<p>The <em>core</em> recipe simply loads all the core recipes.</p>
 <h3>Core Recipes</h3>
 <p>The following recipes were released with rails_apps_composer 2.0. These recipes are assembled to create the example applications released by the RailsApps project The core recipes are known to work together without incompatibilities.</p>
+<h4>Git</h4>
+<p>The <em>git</em> recipe initializes a git repository for your application and makes a first commit. This recipe should precede all others (put it first in any list). If the <em>git</em> recipe is included, all other recipes will make incremental commits to a git repository as the program runs.</p>
+<h4>RailsApps</h4>
+<p>The <em>railsapps</em> recipe installs any of the RailsApps example applications. Selecting an example application sets preferences that create an application identical to the selected example application. There is a tutorial available for each of the example applications; see the <a href="http://railsapps.github.com/">RailsApps project page</a>.</p>
 <h4>Setup</h4>
 <p>The <em>setup</em> recipe is used to set configuration parameters which will be used by other recipes. Any individual recipe can prompt for configuration parameters that will be consumed only by that recipe. You’ll use the <em>setup</em> recipe to set configuration parameters that need to be known by more than one recipe (for example, whether you prefer <span class="caps">ERB</span> or Haml for your templating engine). Use the <em>setup</em> recipe to set configuration parameters for all the recipes; these configuration parameters are be saved as key/value pairs in the <code>prefs{}</code> hash.</p>
 <h4>Readme</h4>
@@ -172,9 +179,8 @@
 <h4>Frontend</h4>
 <p>The <em>frontend</em> recipe installs a default application layout file, complete with partials for navigation links and Rails flash messages. The files are downloaded from the RailsApps repos. The rails_apps_composer <code>copy_from_repo</code> method automatically translates <span class="caps">ERB</span> view templates into Haml or Slim code as needed. The <em>frontend</em> recipe also installs <span class="caps">CSS</span> and Javascript files, adding Twitter Bootstrap or other front-end frameworks as required.</p>
 <p>You can modify the <em>frontend</em> recipe (and submit a pull request) if you have a favorite front-end configuration that other developers might like. For example, rails_apps_composer 2.0 didn’t include Thoughtbot’s popular Bourbon Sass mixin library; you could modify the <em>frontend</em> recipe to offer it as an option.</p>
-<h4>Database</h4>
-<p>The <em>database</em> recipe is not a place to set up SQLite or PostgreSQL; you’ll add the necessary gems and download a <strong>database.yml</strong> file in the <em>gems</em> recipe. Instead, use the <em>database</em> recipe to initialize a database using a <strong>db/seeds.rb</strong> file and run any migrations needed by your <span class="caps">SQL</span> database.</p>
-<p>The <em>database</em> recipe is important for the RailsApps example applications as it makes the example apps ready to run with sample data. You can examine the recipe for implementation ideas; you might add similar code to your own custom recipes.</p>
+<h4>Init</h4>
+<p>Use the <em>init</em> recipe to initialize a database using a <strong>db/seeds.rb</strong> file and run any migrations needed by your <span class="caps">SQL</span> database. The <em>init</em> recipe is important for the RailsApps example applications as it makes the example apps ready to run with sample data. You can examine the recipe for implementation ideas; you might add similar code to your own custom recipes.</p>
 <h4>Extras</h4>
 <p>The <em>extras</em> recipe is a grab bag of ingredients. In rails_apps_composer 2.0, the <em>extras</em> recipe offers:</p>
 <ul>
@@ -196,13 +202,16 @@ $ rails_apps_composer list
 
 auth           # Add authentication and authorization.
 controllers    # Add controllers needed for starter apps.
-database       # Set up and initialize database.
+core           # Select all core recipes.
 email          # Configure email accounts.
+example        # Example of a recipe.
 extras         # Various extras.
 frontend       # Install a front-end framework for HTML5 and CSS.
 gems           # Add the gems your application needs.
+git            # Initialize git for your application.
+init           # Set up and initialize database.
 models         # Add models needed for starter apps.
-prelaunch      # Generates a Prelaunch Signup App
+railsapps      # Install RailsApps example applications.
 readme         # Build a README file for your application.
 routes         # Add routes needed for starter apps.
 setup          # Make choices for your application.
@@ -216,6 +225,7 @@ views          # Add views needed for starter apps.
 <p>A recipe may contain a <code>requires</code> directive which specifies other recipes which must be present before a recipe can run. The <code>requires</code> constraint will force the rails_apps_composer program to load any required recipes, even if you don’t add them explicitly.</p>
 <p>Recipes may also contain a <code>run_after</code> directive. The rails_apps_composer program will organize the order of execution so that any recipes in the <code>run_after</code> list will execute earlier. That is, the recipe will run after everything else in the list.</p>
 <p>In general, it’s best to add (or list) recipes in the order they should execute as some recipes may not contain a necessary <code>requires</code> or <code>run_after</code> directive.</p>
+<p>See the <a href="http://railsapps.github.com/tutorial-rails-apps-composer.html#Anatomy">Anatomy of a Recipe</a> section in the Guide to learn about the format of a recipe.</p>
 <h3>Skipping Test::Unit or Active Record</h3>
 <p>If you plan to use RSpec instead of Test::Unit, or use an <span class="caps">ORM</span> such as Mongoid instead of Active Record, you can pass the <code>-T</code> or <code>-O</code> flags to the <code>rails new</code> command so it will skip Test::Unit or Active Record.</p>
 <p>When you generate an application interactively using the rails_apps_composer gem, the program will ask if you want to skip Test::Unit or Active Record.</p>
@@ -234,15 +244,15 @@ $ rails_apps_composer new myapp -l ~/recipes/
 $ rails_apps_composer new myapp
 
 Would you like to skip Test::Unit? (yes for RSpec) (y/n)
-Would you like to skip Active Record? (yes for NoSQL) (y/n)
+Would you like to skip Active Record? (yes for MongoDB) (y/n)
 
 Available Recipes:
-apps: prelaunch
 auth: auth
-configuration: email, gems, readme, setup
+collections: core
+configuration: email, gems, git, railsapps, readme, setup
 example: example
 frontend: frontend
-initialize: database
+initialize: init
 mvc: controllers, models, routes, views
 other: extras
 testing: testing
@@ -256,12 +266,12 @@ Generating basic application, using:
 <p>You will only be able to choose recipes that are contained in the rails_apps_composer gem.</p>
 <p>You can specify any gem. Any string you enter will be added as a gem in the starter app Gemfile.</p>
 <h3>Generate an Application from a List of Recipes</h3>
-<p>Provide a list of recipes using the <code>-r</code> flag:</p>
+<p>Provide a list of recipes using the <code>-r</code> flag. The “core” recipe selects all available core recipes:</p>
 <pre>
-$ rails_apps_composer new myapp -r setup readme gems testing auth email models controllers views routes frontend database extras
+$ rails_apps_composer new myapp -r core
 
 Would you like to skip Test::Unit? (yes for RSpec) (y/n)
-Would you like to skip Active Record? (yes for NoSQL) (y/n)
+Would you like to skip Active Record? (yes for MongoDB) (y/n)
 What gem would you like to add? (blank to finish) 
 
 Generating basic application, using:
@@ -273,20 +283,20 @@ Generating basic application, using:
 <pre>
 $ rails_apps_composer new myapp -d my_defaults.yaml
 </pre>
-<p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="#Defaults">Defaults File</a> section below concerning the format of the defaults file.</p>
+<p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="http://railsapps.github.com/tutorial-rails-apps-composer.html#Defaults">Defaults File</a> section in the Guide concerning the format of the defaults file.</p>
 <h3>Generate an Application Template Interactively</h3>
-<p>You may want an application template to share with others. For an example of an application template, see the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool or various <a href="https://github.com/RailsApps/rails3-application-templates">application templates</a> from the RailsApps project.</p>
+<p>You may want an application template to share with others. For an example of an application template, see the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> project.</p>
 <p>Specify a filename for the template:</p>
 <pre>
 $ rails_apps_composer template ~/Desktop/template.rb
 
 Available Recipes:
-apps: prelaunch
 auth: auth
-configuration: email, gems, readme, setup
+collections: core
+configuration: email, gems, git, railsapps, readme, setup
 example: example
 frontend: frontend
-initialize: database
+initialize: init
 mvc: controllers, models, routes, views
 other: extras
 testing: testing
@@ -300,7 +310,7 @@ Done.
 <h3>Generate an Application Template from a List of Recipes</h3>
 <p>Specify a filename for the template and provide a list of recipes:</p>
 <pre>
-$ rails_apps_composer template ~/Desktop/template.rb -r setup readme gems testing auth email models controllers views routes frontend database extras
+$ rails_apps_composer template ~/Desktop/template.rb -r core
 
 What gem would you like to add? (blank to finish)
 Generating and saving application template...
@@ -312,7 +322,7 @@ Done.
 <pre>
 $ rails_apps_composer template ~/Desktop/template.rb -d my_defaults.yaml
 </pre>
-<p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="#Defaults">Defaults File</a> section below concerning the format of the defaults file.</p>
+<p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="http://railsapps.github.com/tutorial-rails-apps-composer.html#Defaults">Defaults File</a> in the Guide concerning the format of the defaults file.</p>
 <h3>Generate an Application from a Template</h3>
 <p>After you’ve created a template file, you can generate an application from a template at any time using the <code>rails new</code> command with the <code>-m</code> option:</p>
 <pre>
@@ -345,7 +355,7 @@ WARNING! The preferences you've selected might not work together.
 Help us out by reporting whether this combination works or fails.
 </pre>
 <p>Go to the GitHub repository to create an <a href="http://github.com/RailsApps/rails_apps_composer/issues">issue</a> and let us know if you’ve found a combination of recipes or preferences that work together. If you’ve found a combination that works together, we’ll update the gem’s internal database for the next public release.</p>
-<p>When you generate an application, the application’s <strong><span class="caps">README</span>.textile</strong> file will contain a diagnostics report. Here’s an example of the diagnostics report:</p>
+<p>It’s a good idea to include the “readme” recipe when you run rails_apps_composer. If you do, the application’s <strong><span class="caps">README</span></strong> file will contain a diagnostics report. Here’s an example of the diagnostics report:</p>
 <pre>
 Recipes:
 ["gems", "readme", "setup"]
@@ -364,7 +374,7 @@ $ rvm use ruby-1.9.3@rails_apps_composer --create
 </pre>
 <p>Install the gems needed for development:</p>
 <pre>
-$ gem install rails activesupport i18n thor mg
+$ gem install rails i18n thor mg
 </pre>
 <p>Now you can download the source code and begin hacking.</p>
 <h3 id="Forking">Forking the Gem</h3>
@@ -588,7 +598,7 @@ copy_from_repo 'app/views/layouts/application.html.erb'
 <p>It’s worth examining the source code to understand how the <code>copy_from_repo</code> method works.</p>
 <pre>
 def copy_from_repo(filename, opts = {})
-  repo = 'https://raw.github.com/RailsApps/rails3-application-templates/master/files-v2/'
+  repo = 'https://raw.github.com/RailsApps/rails-composer/master/files-v2/'
   repo = opts[:repo] unless opts[:repo].nil?
   if (!opts[:prefs].nil?) &amp;&amp; (!prefs.has_value? opts[:prefs])
     return
@@ -1063,7 +1073,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-10 16:42:52</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-13 12:32:35</p>
       </div>
     </div>
 
