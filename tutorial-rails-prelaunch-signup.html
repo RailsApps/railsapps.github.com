@@ -248,8 +248,8 @@ question  Install an example application?
 <p>The application generator template will ask you for additional preferences.</p>
 <p>For this tutorial, choose “WEBrick” for your development webserver.</p>
 <p>You can choose to set a robots.txt file to ban spiders. Choosing “no” makes sense if you want your prelaunch site to show up in Google search results.</p>
-<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answr “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
-<p>Finally, if you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?”. See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
+<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
+<p>Finally, if you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
 <p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails-prelaunch-signup folder and running the command again.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
 <p><code>$ cd rails-prelaunch-signup</code></p>
@@ -448,7 +448,12 @@ $ rake db:test:prepare
 <h2>Modify the Starter App</h2>
 <p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for production.</p>
 <h3>Update the Home Page</h3>
-<p>Replace the contents of the file <strong>app/views/home/index.html.haml</strong>:</p>
+<p>The starter app displays a list of users on the home page. That’s not suitable for a prelaunch signup app.</p>
+<p>Replace the contents of the file <strong>app/views/home/index.html.erb</strong>:</p>
+<pre>
+&lt;h3&gt;Home&lt;/h3&gt;
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
 <pre>
 %h3 Welcome
 </pre>
@@ -458,19 +463,11 @@ $ rake db:test:prepare
 class HomeController &lt; ApplicationController
 end
 </pre>
-<h3>Create an Initializer File</h3>
-<p>We will set a configuration constant <code>Rails.configuration.launched</code> in an initializer file. This constant will be set to false (before we launch our site) or true (after we launch our site).</p>
-<p>Create a file <strong>config/initializers/prelaunch-signup.rb</strong>:</p>
-<pre>
-# change to "true" (and restart) when you want visitors to sign up without an invitation
-Rails.configuration.launched = false
-</pre>
-<p>We’ll use the configuration constant anywhere in the application where we want behavior to be dependent on whether we’ve launched the site.</p>
 <h3>Commit to Git</h3>
 <p>Commit your changes to git:</p>
 <pre>
 $ git add .
-$ git commit -m "home page update and initializer file"
+$ git commit -m "home page update"
 </pre>
 <h2>Feature: Request Invitation</h2>
 <p>Now we’ll pick a user story and turn it into a specification that will guide implementation of a feature.</p>
@@ -618,7 +615,7 @@ $ rake db:seed
 <h3>Implement “Request Invitation” Form</h3>
 <p>The application’s home page doesn’t contain a “Request Invitation” form. We have some choices. Should we add a sign-up form to the home page? We already have a sign-up form provided by Devise, our authentication gem. It’ll be easier to adapt the existing Devise mechanism.</p>
 <p>We’ll modify the Devise form to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm</a> gem. The SimpleForm gem lets us create forms that include tags that apply attractive Twitter Bootstrap form styles.</p>
-<p>Take a look at the file <strong>app/views/devise/registrations/new.html.haml</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
+<p>Take a look at the file <strong>app/views/devise/registrations/new.html.erb</strong>. We’ll modify it to make it a “Request Invitation” form.</p>
 <ul>
 <li>We’ll use <a href="https://github.com/plataformatec/simple_form">SimpleForm</a>.</li>
 </ul><ul>
@@ -631,7 +628,20 @@ $ rake db:seed
 <li>We’ll remove the user name field (you could keep it if you wish).</li>
 </ul><ul>
 <li>We’ll change the submit button text from “Sign up” to “Request Invitation.”</li>
+</ul><ul>
+<li>We’ll remove the Devise navigation links.</li>
 </ul><pre>
+&lt;h2&gt;Request Invitation&lt;/h2&gt;
+
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
+  &lt;%= devise_error_messages! %&gt;
+  &lt;%= f.input :email, :placeholder =&gt; 'user@example.com' %&gt;
+  &lt;%= f.input :opt_in, :label =&gt; false, :inline_label =&gt; 'Please send announcements.' %&gt;
+  &lt;%= f.submit "Request Invitation" %&gt;
+&lt;% end %&gt;
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<pre>
 %h2 Request Invitation
 = simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f|
   = devise_error_messages!
@@ -956,14 +966,14 @@ unconfirmed: 'You have to confirm your account before continuing.'
 <pre>
 unconfirmed: 'Your account is not active.'
 </pre>
-<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. We want visitors to see these links after we launch. Before we launch, we don’t want visitors to see these links. The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll modify the Devise “links” partial.</p>
-<p>In the “links” partial we’ll use a configuration constant: <code>Rails.configuration.launched</code>. This constant is set to false (before we launch our site) or true (after we launch our site). When the constant is false, the links for “Didn’t receive confirmation instructions?” and “Forgot your password?” will not appear.</p>
+<p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. Before we launch, we don’t want visitors to see these links.</p>
+<p>The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll modify the Devise “links” partial.</p>
 <p>Modify the file <strong>app/views/devise/shared/_links.html.haml</strong>:</p>
 <pre>
-- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' &amp;&amp; Rails.configuration.launched == true
+- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords'
   = link_to "Forgot your password?", new_password_path(resource_name)
   %br/
-- if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations' &amp;&amp; Rails.configuration.launched == true
+- if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations'
   = link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name)
   %br/
 - if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks'
@@ -2358,7 +2368,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-18 14:45:45</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-18 16:09:37</p>
       </div>
     </div>
 

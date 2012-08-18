@@ -46,17 +46,17 @@
     <div class="content wikistyle gollum textile">
       <h1>Haml and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 16 May 2012</em></p>
+<p><em>Last updated 18 August 2012</em></p>
 <p>Using Haml with Rails. A guide for developers using the example apps from the <a href="http://railsapps.github.com/">RailsApps</a> project. Others may find it helpful as well.</p>
 <h2>About Haml</h2>
 <p><a href="http://haml-lang.com/">Haml</a> is a popular alternative to the default Rails templating language (“<span class="caps">ERB</span>”).</p>
-<p><a href="http://en.wikipedia.org/wiki/ERuby"><span class="caps">ERB</span></a> is a templating system that embeds Ruby into an <span class="caps">HTML</span> document, similar to <span class="caps">ASP</span>, <span class="caps">JSP</span> and <span class="caps">PHP</span>. It preserves the syntax of <span class="caps">HTML</span> and allows Ruby code to be embedded within a pair of <code>&lt;%</code> and <code>%&gt;</code> delimiters. Haml eliminates the <code>&lt;%</code> and <code>%&gt;</code> delimiters and uses identation to mark the beginning and end of markup so that closing tags are not required.</p>
+<p><a href="http://en.wikipedia.org/wiki/ERuby"><span class="caps">ERB</span></a> is a templating system that embeds Ruby into an <span class="caps">HTML</span> document, similar to <span class="caps">ASP</span>, <span class="caps">JSP</span> and <span class="caps">PHP</span>. It preserves the syntax of <span class="caps">HTML</span> and allows Ruby code to be embedded within a pair of <code>&lt;%</code> and <code>%&gt;</code> delimiters. Haml eliminates the <code>&lt;%</code> and <code>%&gt;</code> delimiters and uses indentation to mark the beginning and end of markup so that closing tags are not required.</p>
 <h2>Haml Advantages and Drawbacks</h2>
 <p>Haml is intended for “elegant” markup, eliminating the repetitive tags of <span class="caps">HTML</span> and integrating conditional logic succinctly. It’s easier to read.</p>
 <p>Indentation is significant in Haml, which makes for well-structured code, but failures resulting from indentation errors are annoying when using Haml. An <span class="caps">IDE</span> that provides auto-indenting can make Haml easier to use (see <a href="http://blog.jetbrains.com/ruby/tag/haml/"><span class="caps">HAML</span> in RubyMine</a>).</p>
 <p>If you’re working on a team, you may find designers are more comfortable with <span class="caps">ERB</span> as it more closely resembles familiar <span class="caps">HTML</span>. And Haml will break if everyone on the team is not using tabs or spaces for indentation consistently.</p>
 <p>Finally, for someone new to Rails, Haml is one more new thing to learn, which may not be welcome when there’s so much to learn already.</p>
-<p>Despite these drawbacks, we use Haml for many of the RailsApps examples because it eliminates superfluous markup and makes view code much easier to read.</p>
+<p>Despite these drawbacks, I like to use Haml because it eliminates superfluous markup and makes view code much easier to read.</p>
 <p>Before you start a project with Haml, read <a href="http://chriseppstein.github.com/blog/2010/02/08/haml-sucks-for-content/">advice from Chris Eppstein</a> about how to use Haml.</p>
 <h2>Setting Up Haml</h2>
 <p>Here are instructions for adding Haml to an existing Rails project. You’ll need extra gems in the <strong>Gemfile</strong> for Haml:</p>
@@ -75,21 +75,18 @@ $ bundle install
 <ul>
 <li><a href="http://html2haml.heroku.com/">Html2Haml</a></li>
 </ul><p>Paste your <span class="caps">HTML</span> or <span class="caps">ERB</span> code into a text field, click convert, and you’ll have clean Haml code, ready to paste in your app views.</p>
-<h2>Rails Example Application Using Haml</h2>
-<p>If you’d like to start a new project with Haml, you can generate a Rails application set up for Haml. Use this command to create a new Rails application:</p>
+<h2>Rails Starter Apps Using Haml</h2>
+<p>If you’d like to start a new project with Haml, you can generate a Rails application set up for Haml. Use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to create a new Rails application:</p>
 <pre>
-rails new myapp -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-haml-html5-template.rb
+$ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
-<p>The application template will offer you a choice of Haml or <span class="caps">ERB</span>, give you options for a <span class="caps">CSS</span> front-end framework such as Twitter Bootstrap, and create a default application layout using HTML5 (see the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>). It creates a simple starter app.</p>
-<p>The <a href="https://github.com/RailsApps/rails3-application-templates">Rails application templates</a> from the RailsApps project offer a variety of other starter applications with Haml as an option.</p>
+<p>You’ll have a choice of Haml or <span class="caps">ERB</span>. Plus the program will give you options for a <span class="caps">CSS</span> front-end framework such as Twitter Bootstrap and create a default application layout using HTML5 (see the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>).</p>
 <h2>Creating Haml Applications by Default</h2>
 <p>The <code>rails new</code> command creates a new Rails application with a default application layout using <span class="caps">ERB</span>. If you want to use Haml for every Rails application you build, you can set options for the <code>rails new</code> command in a <strong>.railsrc</strong> file in your home directory. Here’s how to set up a <strong>.railsrc</strong> file to use the rails3-haml-html5 template when you create a new Rails application:</p>
 <pre>
 # ~/.railsrc
 -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-haml-html5-template.rb
 </pre>
-<h2>Using Haml in an Application Template</h2>
-<p>If you’d like to create an application template for a starter app, you can take a look at the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/haml.rb">haml recipe</a> from the  <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</p>
 <h2>Credits</h2>
 <p>Brook Riggio wrote a helpful blog post on <a href="http://decielo.com/articles/377/haml-by-default-in-a-new-rails-3-2-app">Haml by Default in a New Rails 3.2 App</a> and initiated work on the rails3-haml-html5 template.</p>
 <p>Daniel Kehoe wrote this article for the RailsApps project.</p>
@@ -130,7 +127,7 @@ and tweet some praise. I’d love to know you were helped out by the article.</p
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-18 14:45:45</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-18 16:09:37</p>
       </div>
     </div>
 
