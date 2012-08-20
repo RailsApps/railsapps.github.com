@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 13 August 2012</em></p>
+<p><em>Last updated 20 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -89,8 +89,8 @@
 <p>Before using the rails_apps_composer gem, you will need:</p>
 <ul>
 <li>The Ruby language (version 1.9.3)</li>
-	<li>Rails 3.1 or newer</li>
-</ul><p>See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice about updating Rails and your development environment.</p>
+	<li>Rails 3.2 or newer</li>
+</ul><p>See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice about updating Rails and your development environment. You’ll avoid many potential headaches if you review the article step by step before beginning development.</p>
 <h2 id="Installation">Installation</h2>
 <p>I recommend installing and using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to create a new gemset for rails_apps_composer. Using an rvm gemset will make it easier to identify and isolate incompatibilities among gems.</p>
 <p>Installation is simple:</p>
@@ -98,10 +98,10 @@
 <h2 id="Overview">Overview</h2>
 <p>This guide covers use of the rails_apps_composer gem as:</p>
 <ul>
-<li>a production tool to build a <strong>starter app</strong> from recipes</li>
-	<li>a production tool to generate a reusuable <strong>application template</strong>
+<li>a tool to build a <strong>starter app</strong> from recipes</li>
+	<li>a tool to generate a reusuable <strong>application template</strong>
 </li>
-</ul><p>There are two ways to use rails_apps_composer as a production tool:</p>
+</ul><p>There are two ways to use rails_apps_composer as a tool:</p>
 <ul>
 <li>interactively, driven from prompts on the command line</li>
 	<li>“automatically,” from a defaults file that specifies parameters</li>
@@ -135,7 +135,7 @@
 <p>Here’s what you can try on a first encounter with the rails_apps_composer gem.</p>
 <p>First, examine the recipes by looking at the files in the recipes folder. Get a sense of how the recipes work and identify which recipes are useful or might be adapted for your own needs.</p>
 <p>Install the rails_apps_composer gem and try it from the command line.</p>
-<p>Try <code>rails_apps_composer list</code> to see a list of recipes. Try <code>rails_apps_composer new myapp</code> to see how the gem prompts for recipes and extra gems and then generates an application.</p>
+<p>Try <code>rails_apps_composer list</code> to see a list of recipes. Try <code>rails_apps_composer new myapp</code> to see how the gem prompts for recipes and extra gems and then generates an application. Select the <em>core</em> recipe for a sampling of the program’s options.</p>
 <p>Make a list of recipes and try generating an application by providing your list of recipes on the command line. Here’s a simple example: <code>rails_apps_composer new myapp -r setup readme gems extras</code>.</p>
 <p>Try generating an application template using recipes: <code>rails_apps_composer template ~/Desktop/template.rb -r setup readme gems extras</code>.</p>
 <p>Create an application from the application template using the command <code>rails new myapp -m ~/Desktop/template.rb</code>.</p>
@@ -146,17 +146,18 @@
 <p>If you need recipes that are only useful for your own projects, create recipes (see <a href="#Anatomy">Anatomy of a Recipe</a>) and the rails_apps_composer program can use them as well as the recipes that are built in to the gem.</p>
 <h3>Collections</h3>
 <p>A recipe can require other recipes, so it’s possible to create a recipe that loads a collection of other recipes.</p>
-<p>The <em>core</em> recipe simply loads all the core recipes.</p>
+<p>The <em>core</em> recipe simply loads all the core recipes. I recommend selecting the <em>core</em> recipe to become familiar with the program’s capabilities.</p>
 <h3>Core Recipes</h3>
 <p>The following recipes were released with rails_apps_composer 2.0. These recipes are assembled to create the example applications released by the RailsApps project The core recipes are known to work together without incompatibilities.</p>
 <h4>Git</h4>
 <p>The <em>git</em> recipe initializes a git repository for your application and makes a first commit. This recipe should precede all others (put it first in any list). If the <em>git</em> recipe is included, all other recipes will make incremental commits to a git repository as the program runs.</p>
 <h4>RailsApps</h4>
-<p>The <em>railsapps</em> recipe installs any of the RailsApps example applications. Selecting an example application sets preferences that create an application identical to the selected example application. There is a tutorial available for each of the example applications; see the <a href="http://railsapps.github.com/">RailsApps project page</a>.</p>
+<p>The <em>railsapps</em> recipe installs any of the RailsApps example applications. Selecting an example application sets preferences that create an application identical to the selected example application. There is a tutorial available for each of the example applications; see the <a href="http://railsapps.github.com/">RailsApps project</a> page.</p>
 <h4>Setup</h4>
 <p>The <em>setup</em> recipe is used to set configuration parameters which will be used by other recipes. Any individual recipe can prompt for configuration parameters that will be consumed only by that recipe. You’ll use the <em>setup</em> recipe to set configuration parameters that need to be known by more than one recipe (for example, whether you prefer <span class="caps">ERB</span> or Haml for your templating engine). Use the <em>setup</em> recipe to set configuration parameters for all the recipes; these configuration parameters are be saved as key/value pairs in the <code>prefs{}</code> hash.</p>
 <h4>Readme</h4>
 <p>It’s important to create a <span class="caps">README</span> file; often it is neglected when a developer creates an application. The <em>readme</em> recipe generates a <span class="caps">README</span> file that shows the Ruby and Rails versions and other choices made by a developer in creating the application. These details are very helpful when other developers look at the application. You can customize the <em>readme</em> recipe if you want your own information included in the <span class="caps">README</span> files.</p>
+<p>If you include the <em>readme</em> recipe when you generate an application, the generated <span class="caps">README</span> file will contain a diagnostics report (unless the program aborts before the readme recipe runs). Please include the diagnostics report when you create an issue on GitHub.</p>
 <h4>Gems</h4>
 <p>The <em>gems</em> recipe adds required gems to the Gemfile and runs any generators required by the gems. If you add a custom recipe, you have a choice of adding the gem in your custom recipe or adding it to the <em>gems</em> recipe. As a rule of thumb, if the gem you want to use is popular and a common requirement that any developer will want, add it to the <em>gems</em> recipe. If the gem is of limited usefulness, add it to your own custom recipe and let other developers add your custom recipe optionally.</p>
 <p>You don’t have to write a recipe to add a gem. Write custom recipes or modify the <em>gems</em> recipe only if you are adding a gem that requires use of a generator or manipulation of your starter app’s files. If you only need to add gems to the Gemfile, the rails_apps_composer program will prompt you to add gems when you run it interactively. You can also specify gems that you wish to add to the Gemfile in a rails_apps_composer defaults file. This eliminates the need to write custom recipes or modify the <em>gems</em> recipe if all you need to do is add gems to a Gemfile.</p>
@@ -169,9 +170,17 @@
 <h4>Email</h4>
 <p>Many applications must send email, especially “transactional email” (for example, when an authentication system such as Devise requires confirmation of an email address). The <em>email</em> recipe configures ActionMailer for various email accounts, including Gmail, <span class="caps">SMTP</span>, SendGrid, and Mandrill. If you prefer a different email provider, add it to the <em>email</em> recipe and submit a pull request.</p>
 <h4>Models, Controllers, Views, Routes</h4>
-<p>The <em>models</em>, <em>controllers</em>, <em>views</em>, and <em>routes</em> recipes primarily serve to build the example applications for the RailsApps project. Rather than installing gems or setting configuration parameters, these recipes install the “internal organs” of entire simple applications.</p>
-<p>If you’re contributing improvements to the RailsApps example applications, you’ll customize the <em>models</em>, <em>controllers</em>, <em>views</em>, and <em>routes</em> recipes. If you’re creating your own custom starter app, you can examine these recipes for implementation ideas; you may create your own custom recipes that are similar to these recipes.</p>
-<p>The simplest use of these four recipes is to create a User model and create a home page.</p>
+<p>Seelct the <em>models</em>, <em>controllers</em>, <em>views</em>, and <em>routes</em> recipes to create simple starter apps for your own project. Depending on other preferences you’ve selected, you can choose:</p>
+<pre>
+question  Install a starter app?
+      1)  None
+      2)  Home Page
+      3)  Home Page, User Accounts
+      4)  Home Page, User Accounts, Admin Dashboard
+</pre>
+<p>Rather than installing gems or setting configuration parameters, these recipes install the “internal organs” of entire simple applications.</p>
+<p>The simplest use of these four recipes is to create a home page.</p>
+<p>If you’re creating your own custom starter app, you can examine these recipes for implementation ideas; you may create your own custom recipes that are similar to these recipes.</p>
 <p>These four recipes are closely related and could have been combined into one “mvc” recipe except the resulting file would have been large and cumbersome. Of these, the <em>models</em> recipe is the most complex because it creates a User model that is transformed in various ways depending on the choice of database or authentication framework.</p>
 <p>The <em>controllers</em> recipe is relatively simple. Instead of generating controllers using the <code>rails generate</code> command, we download and install controller files from the RailsApps example application GitHub repositories. Where conditions require it (for example, injecting methods for managing authorization), we manipulate the files using the rails_apps_composer <code>gsub_file</code> method (for regex search and replace).</p>
 <p>The <em>views</em> recipe also downloads files from the RailsApps repos. The rails_apps_composer program supplies a special <code>copy_from_repo</code> method that automatically translates <span class="caps">ERB</span> view templates into Haml or Slim code if you’ve stated you prefer Haml or Slim.</p>
@@ -182,12 +191,14 @@
 <h4>Init</h4>
 <p>Use the <em>init</em> recipe to initialize a database using a <strong>db/seeds.rb</strong> file and run any migrations needed by your <span class="caps">SQL</span> database. The <em>init</em> recipe is important for the RailsApps example applications as it makes the example apps ready to run with sample data. You can examine the recipe for implementation ideas; you might add similar code to your own custom recipes.</p>
 <h4>Extras</h4>
-<p>The <em>extras</em> recipe is a grab bag of ingredients. In rails_apps_composer 2.0, the <em>extras</em> recipe offers:</p>
+<p>The <em>extras</em> recipe is a grab bag of ingredients. In rails_apps_composer 2.1, the <em>extras</em> recipe offers:</p>
 <ul>
-<li>a “ban_spiders” option to control search-engine spidering by modifying the <strong>public/robots.txt</strong> file</li>
+<li>an option to install a form builder gem</li>
+	<li>a “ban_spiders” option to control search-engine spidering by modifying the <strong>public/robots.txt</strong> file</li>
 	<li>a “jsruntime” option to add ‘therubyracer’ JavaScript runtime for Linux users without node.js</li>
 	<li>an “rvmrc” option to create a project-specific rvm gemset and .rvmrc file</li>
 	<li>a housekeeping procedure to remove unnecessary files and whitespace</li>
+	<li>an option to create a GitHub repository</li>
 </ul><p>Each of these procedures could be moved into its own recipe. However, since the procedures only require a few lines of code and will be useful to a large number of developers, we’ve consolidated them in the <em>extras</em> recipe.</p>
 <p>If you have a favorite option that you think many other developers would like, feel free to customize the <em>extras</em> recipe and submit a pull request. Keep in mind that every developer who builds a starter app with the rails_apps_composer gem will have to respond to prompts introduced by the <em>extras</em> recipe. If you’re not certain that everyone will want to consider your favorite option, create a custom recipe instead and allow developers a choice of including it in their recipe list.</p>
 <h3>Additional Recipes</h3>
@@ -218,8 +229,10 @@ setup          # Make choices for your application.
 testing        # Add testing framework.
 views          # Add views needed for starter apps.
 </pre>
-<p>The above list is current for rails_apps_composer 2.0; later releases will contain more recipes.</p>
-<p>You can learn more about the available recipes by examing the source code in the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>.</p>
+<p>The above list is current for rails_apps_composer 2.1; later releases will contain more recipes.</p>
+<p>You can find all available recipes in the repository <a href="https://github.com/RailsApps/rails_apps_composer/tree/master/recipes">recipes directory</a>. Examining the recipe source code is the very best way to learn what a recipe will do.</p>
+<h3>Recommended Recipes</h3>
+<p>I recommend selecting the <em>core</em> recipe if you are just getting started. The <em>core</em> recipe installs a collection of the most useful recipes.</p>
 <h3>Recipe Order and Interdependency</h3>
 <p>The order in which you input a list or recipes determines the order of execution unless a recipe contains a <code>requires</code> or <code>run_after</code> directive.</p>
 <p>A recipe may contain a <code>requires</code> directive which specifies other recipes which must be present before a recipe can run. The <code>requires</code> constraint will force the rails_apps_composer program to load any required recipes, even if you don’t add them explicitly.</p>
@@ -227,10 +240,11 @@ views          # Add views needed for starter apps.
 <p>In general, it’s best to add (or list) recipes in the order they should execute as some recipes may not contain a necessary <code>requires</code> or <code>run_after</code> directive.</p>
 <p>See the <a href="http://railsapps.github.com/tutorial-rails-apps-composer.html#Anatomy">Anatomy of a Recipe</a> section in the Guide to learn about the format of a recipe.</p>
 <h3>Skipping Test::Unit or Active Record</h3>
-<p>If you plan to use RSpec instead of Test::Unit, or use an <span class="caps">ORM</span> such as Mongoid instead of Active Record, you can pass the <code>-T</code> or <code>-O</code> flags to the <code>rails new</code> command so it will skip Test::Unit or Active Record.</p>
-<p>When you generate an application interactively using the rails_apps_composer gem, the program will ask if you want to skip Test::Unit or Active Record.</p>
-<p>When you generate an application template, you will not be asked if you want to skip Test::Unit or Active Record. An application template runs after the <code>rails new</code> command so it cannot set the <code>-T</code> or <code>-O</code> arguments.</p>
-<p>Any recipe can set the <code>-T</code> or <code>-O</code> arguments using the <code>args</code> directive. However, this has no affect on application templates and is only useful when an application is generated interactively.</p>
+<p>If you plan to use RSpec instead of Test::Unit, or use an <span class="caps">ORM</span> such as Mongoid instead of Active Record, you must pass the <code>-T</code> or <code>-O</code> flags to the program so it will skip Test::Unit or Active Record.</p>
+<p>The rails_apps_composer program will ask if you want to skip Test::Unit or Active Record when you generate an application interactively.</p>
+<p>Any recipe can set the <code>-T</code> or <code>-O</code> arguments using the <code>args</code> directive.</p>
+<p>Also, you can set <code>-T</code> or <code>-O</code> arguments in the defaults file.</p>
+<p>Setting <code>-T</code> or <code>-O</code> arguments has no affect on application templates. An application template runs after the <code>rails new</code> command so it cannot set the <code>-T</code> or <code>-O</code> arguments. When you generate an application template, the program will not ask if you want to skip Test::Unit or Active Record.</p>
 <h3>Using Local Recipes</h3>
 <p>You can use local recipes you’ve created yourself by using the <code>-l</code> flag and supplying the name of a directory that contains local recipes. The <code>-l</code> flag can be combined with any other command so you can create applications or application templates, interactively or from a defaults file.</p>
 <p>For example, generate an application interactively using local recipes:</p>
@@ -263,10 +277,12 @@ What gem would you like to add? (blank to finish)
 Generating basic application, using:
 "rails new myapp -m &lt;temp_file&gt;"
 </pre>
-<p>You will only be able to choose recipes that are contained in the rails_apps_composer gem.</p>
+<p>If you want to skip the prompts asking about Test::Unit and Active Record, you can set these arguments in a defaults file.</p>
+<p>You will be able to choose recipes that are contained in the rails_apps_composer gem plus any local recipes you’ve added with the <code>-l</code> argument.</p>
+<p>Choose the <em>core</em> recipe if you are not sure which recipes to select.</p>
 <p>You can specify any gem. Any string you enter will be added as a gem in the starter app Gemfile.</p>
 <h3>Generate an Application from a List of Recipes</h3>
-<p>Provide a list of recipes using the <code>-r</code> flag. The “core” recipe selects all available core recipes:</p>
+<p>Provide a list of recipes using the <code>-r</code> flag. In this example, the <em>core</em> recipe selects all available core recipes:</p>
 <pre>
 $ rails_apps_composer new myapp -r core
 
@@ -285,7 +301,7 @@ $ rails_apps_composer new myapp -d my_defaults.yaml
 </pre>
 <p>Use the <code>my_defaults.yaml</code> file to specify a list of recipes, preferences, and extra gems. You can use any name (and file extension) for the file. See the <a href="http://railsapps.github.com/tutorial-rails-apps-composer.html#Defaults">Defaults File</a> section in the Guide concerning the format of the defaults file.</p>
 <h3>Generate an Application Template Interactively</h3>
-<p>You may want an application template to share with others. For an example of an application template, see the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> project.</p>
+<p>You may want an application template to share with others. For an example, see the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> project which is an application template generated from the rails_apps_composer core recipes.</p>
 <p>Specify a filename for the template:</p>
 <pre>
 $ rails_apps_composer template ~/Desktop/template.rb
@@ -1012,6 +1028,10 @@ gems:
 - heroku
 - nokogiri
 - kaminari
+
+args:
+  :skip_test_unit: yes 
+  :skip_active_record: false
 </pre>
 <h3>Recipes</h3>
 <p>The “recipes” schema is used to initialize the <code>recipes[]</code> array. When you run the command with the <code>--defaults</code> option and no recipes specified on the command line, you’ll see the prompt, “Which recipe would you like to add? (blank to finish)”. If you want to use only your default recipes, just hit return. If you want to add a recipe for the app you are generating, just type the recipe name at the prompt.</p>
@@ -1019,6 +1039,8 @@ gems:
 <p>The “prefs” schema is used to initialize the <code>prefs{}</code> hash. Add key/value pairs for each preference you wish to set. Note the key is a Ruby symbol, not a string (it begins with a colon). You’ll have to examine the recipe files to determine what keys (such as <code>dev_webserver</code>) are used to specify preferences. If there is no preference specified in the defaults file, the rails_apps_composer program will ask you to respond with a preference. That way, you can give yourself flexibility if you don’t always have the same preference.</p>
 <h3>Gems</h3>
 <p>The “gems” schema is used to initialize the <code>gems[]</code> array. This is a list of strings. You must select the <em>gems</em> recipe for this list to function. The <em>gems</em> recipe iterates through this list and adds each gem to the Gemfile. The rails_apps_composer program doesn’t check if the gem exists; it assumes you’ve entered the name of an available gem. Whether or not you’ve listed gems in the defaults file, the rails_apps_composer program will prompt you to enter any additional gems you would like.</p>
+<h3>Args</h3>
+<p>The “args” schema sets <code>-T</code> or <code>-O</code> arguments to skip Test::Unit or Active Record when you generate an application interactively. Setting <code>-T</code> or <code>-O</code>  arguments has no affect on application templates.</p>
 <h3 id="hidden">Hidden Preferences</h3>
 <p>Any recipe can respond to preferences that are not set from an interactive prompt if the preference setting is included in the defaults file. In general, if it is likely that any developer would like to make a preference choice, you should provide a prompt. However, there may be some preference settings that are not needed by most developers. These “obscure” preferences can be set in the defaults file. You’ll know about the preferences, as will any developer who examines the recipe closely. But you’ll eliminate the need to query every developer for a preference that may be seldomly used.</p>
 <p>At this time, there is one hidden preference that changes the behavior of the rails_apps_composer program. Some developers like to install gems to an alternate location (by default, bundler installs your gems to a system location such as <strong>.bundle/gems</strong>). If your defaults file contains the preference <code>:bundle_path: some_directory</code>, the rails_apps_composer program will supply the alternative bundle_path when running <code>bundle install</code>.</p>
@@ -1073,7 +1095,7 @@ gems:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-19 17:35:04</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-20 15:48:47</p>
       </div>
     </div>
 
