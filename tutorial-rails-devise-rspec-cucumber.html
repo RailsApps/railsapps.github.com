@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with RSpec and Cucumber</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 9 August 2012</em></p>
+<p><em>Last updated 19 August 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
 <ul>
 <li>
@@ -59,8 +59,7 @@
 <ul>
 <li>learn as-you-go by following the steps in this tutorial to build a starter app</li>
 	<li>clone the <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/">example code from the GitHub repo</a> for a ready-to-use starter app</li>
-	<li>generate a customized starter app with an <a href="https://github.com/RailsApps/rails3-application-templates">application template</a>
-</li>
+	<li>generate a customized starter app with the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool</li>
 </ul><p>Generating the application gives you many options, such as using Haml for views, additional Devise modules, and various HTML5/<span class="caps">CSS</span> front-end frameworks such as Twitter Bootstrap.</p>
 <h4>RailsApps Examples and Tutorials</h4>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
@@ -74,91 +73,42 @@
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
+<p>To improve this tutorial, please leave comments below.</p>
 <h2>Creating the Application</h2>
-<h4>Option One</h4>
-<p><em>Follow this tutorial.</em></p>
+<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
+<h3>Copy from the Tutorial</h3>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h4>Option Two</h4>
-<p><em>Use the ready-made application template to generate the code.</em></p>
-<p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
-<p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) gives you many options, such as using Haml for views, additional Devise modules, and various HTML5/<span class="caps">CSS</span> front-end frameworks such as Twitter Bootstrap.</p>
-<p>Use the command:</p>
+<h3>Fork</h3>
+<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
+<h3>Clone</h3>
+<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
+<h3>Generate</h3>
+<p>You can use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a new version of the example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
+<p>To build the example application, run the command:</p>
 <pre>
-$ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-devise-rspec-cucumber-template.rb -T
+$ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
 </pre>
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
 <p>This creates a new Rails app named <code>rails3-devise-rspec-cucumber</code> on your computer. You can use a different name if you wish.</p>
-<p>The application generator template will ask you for your preferences.</p>
-<p>To produce an application exactly like the tutorial, make the following selections:</p>
-<ul>
-<li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>no</strong>
-</li>
-	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>yes</strong>
-</li>
-	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>yes</strong>
-</li>
-	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>no</strong>
-</li>
-	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong>
-</li>
-	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong>
-</li>
-	<li>How will you send email? <strong>#2</strong>
-	<ol>
-<li>
-<span class="caps">SMTP</span> account</li>
-		<li>Gmail account</li>
-		<li>SendGrid account</li>
-	</ol>
-</li>
-	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication?
-	<ol>
-<li>No</li>
-		<li>Devise with default modules <strong>#2</strong>
-</li>
-		<li>Devise with Confirmable module</li>
-		<li>Devise with Confirmable and Invitable modules</li>
-	</ol>
-</li>
-	<li>Would you like to manage authorization with CanCan &amp; Rolify? <strong>no</strong>
-</li>
-	<li>Which front-end framework would you like for HTML5 and CSS3?
-	<ol>
-<li>None <strong>#1</strong>
-</li>
-		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
-		<li>
-<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
-		<li>
-<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
-		<li><a href="http://www.getskeleton.com/">Skeleton</a></li>
-		<li>Normalize <span class="caps">CSS</span> for consistent styling</li>
-	</ol>
-</li>
-	<li>Which form gem would you like?
-	<ol>
-<li>None <strong>#1</strong>
-</li>
-		<li>simple form</li>
-		<li>simple form (bootstrap)</li>
-	</ol>
-</li>
-	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong>
-</li>
-	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong>
-</li>
-	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong>
-</li>
-	<li>Add ‘therubyracer’ JavaScript runtime (for Linux users without node.js)? <strong>no</strong>
-</li>
-</ul><p>You can choose other selections if you don’t care about matching the example application exactly.</p>
-<p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
-<h4>Option Three</h4>
-<p><em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em></p>
-<p>This is optimal if you are creating a “starter app” based on this example app but wish to customize the code for your own preferences.</p>
-<p>Each step in this tutorial has a corresponding application template recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> recipes repository. You can create your own application template using the template recipes. To do so, clone the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> project, customize recipes as needed, and follow the instructions to create a reusable application template file.</p>
+<p>You’ll see a prompt:</p>
+<pre>
+question  Install an example application?
+      1)  I want to build my own application
+      2)  rails3-bootstrap-devise-cancan
+      3)  rails3-devise-rspec-cucumber
+      4)  rails3-mongoid-devise
+      5)  rails3-mongoid-omniauth
+      6)  rails3-subdomains
+</pre>
+<p>Choose <strong>3) rails3-devise-rspec-cucumber</strong>.</p>
+<p>The application generator template will ask you for additional preferences.</p>
+<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
+<p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
+<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
+<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
+<p>Finally, the program will ask if you want to create a GitHub repository.</p>
+<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-devise-rspec-cucumber folder and running the command again.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
 <ul>
@@ -169,6 +119,7 @@ $ rails new rails3-devise-rspec-cucumber -m https://raw.github.com/RailsApps/rai
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>Beginning here, we show how to create the application from scratch.</p>
+<p>(This has already been done for you if you use the the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool.)</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
 <p><code>$ rails new rails3-devise-rspec-cucumber -T</code></p>
 <p>Use the <code>-T</code> flag to skip Test::Unit files (since you are using RSpec).</p>
@@ -807,7 +758,7 @@ end
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-18 16:09:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-19 17:35:04</p>
       </div>
     </div>
 

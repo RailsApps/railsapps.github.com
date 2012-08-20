@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for OmniAuth with Mongoid</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 February 2012</em></p>
+<p><em>Last updated 19 August 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>OmniAuth</strong> with <strong>Mongoid</strong>.</p>
 <p><a href="https://github.com/intridea/omniauth">OmniAuth</a> gives you ready-made authentication using a service provider such as Twitter or Facebook. <a href="http://mongoid.org/">Mongoid</a> gives access to a MongoDB datastore for quick development without schemas or migrations.  This tutorial also gives you the option of using Haml, RSpec and Cucumber, showing how to integrate each option.</p>
 <ul>
@@ -114,7 +114,7 @@
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-mongoid-omniauth/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please edit this wiki page.</p>
+<p>To improve this tutorial, please leave comments below.</p>
 <h2>Obtaining <span class="caps">API</span> Keys</h2>
 <p>Before beginning the tutorial, you may wish to contact the service provider you’ll use to obtain any required <span class="caps">API</span> keys. The tutorial assumes you will be using Twitter.</p>
 <h4>Twitter</h4>
@@ -136,45 +136,58 @@
 <p>Visit <a href="https://github.com/account/applications/new">https://github.com/account/applications/new</a> to register your application.</p>
 <h4>Other Service Providers</h4>
 <p><a href="https://github.com/intridea/omniauth">OmniAuth</a> supports many other service providers. See the OmniAuth wiki for a <a href="https://github.com/intridea/omniauth/wiki/List-of-Strategies">List of Provider Strategies</a>.</p>
-<h2>Creating the Application</h2>
-<h4>Option One</h4>
-<blockquote>
-<p><ins>Cut and paste the code.</ins></p>
-</blockquote>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h4>Option Two</h4>
-<blockquote>
-<p><ins>Use the ready-made application template to generate the code.</ins></p>
-</blockquote>
-<p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps/rails3-application-templates</a> repository.</p>
-<p>Use the command:</p>
-<p><code>$ rails new APP_NAME -m https://github.com/RailsApps/rails3-application-templates/raw/master/rails3-mongoid-omniauth-template.rb -T -O</code></p>
-<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files. Add the <code>-J</code> flag to skip Prototype files for Rails 3.0 (not needed for Rails 3.1).</p>
-<p>This creates a new Rails app (with the <code>APP_NAME</code> you provide) on your computer. It includes everything in the example app. You can read through the tutorial with the code already on your computer.</p>
-<blockquote>
-<p><strong>You <span class="caps">MUST</span> be using Rails 3.0.4 or newer. Generating a Rails application from an “HTTPS” <span class="caps">URL</span> does not work in Rails 3.0.3 and earlier versions.</strong></p>
-</blockquote>
-<h4>Option Three</h4>
-<blockquote>
-<p><ins>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</ins></p>
-</blockquote>
-<p>This is optimal if you are creating a “starter app” based on this example app but wish to customize the code for your own preferences.</p>
-<p>Each step in this tutorial has a corresponding application template recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> recipes repository. You can create your own application template using the template recipes. To do so, download the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> project, customize recipes as needed, and follow the instructions to create a reusable application template file.</p>
-<h2>Assumptions</h2>
-<p>Before beginning this tutorial, you need to install</p>
-<ul>
-<li>The Ruby language (version 1.9.2)</li>
-	<li>Rails 3.1.1</li>
-	<li>A working installation of <a href="http://www.mongodb.org/">MongoDB</a> (version 1.6.0 or newer)</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
-<p>See <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for detailed instructions and advice.</p>
-<h4>Installing MongoDB</h4>
+<h2>Installing MongoDB</h2>
 <p>If you don’t have MongoDB installed on your computer, you’ll need to install it and set it up to be always running on your computer (run at launch). On Mac OS X, the easiest way to install MongoDB is to install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then run the following:</p>
 <pre>
 brew install mongodb
 </pre>
 <p>Homebrew will provide post-installation instructions to get MongoDB running. The last line of the installation output shows you the MongoDB install location (for example, <strong>/usr/local/Cellar/mongodb/1.8.0-x86_64</strong>). You’ll find the MongoDB configuration file there. After an installation using Homebrew, the default data directory will be <strong>/usr/local/var/mongodb</strong>.</p>
+<h2>Creating the Application</h2>
+<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
+<h3>Copy from the Tutorial</h3>
+<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
+<h3>Fork</h3>
+<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
+<h3>Clone</h3>
+<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
+<h3>Generate</h3>
+<p>You can use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a new version of the example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
+<p>To build the example application, run the command:</p>
+<pre>
+$ rails new rails3-mongoid-omniauth -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T -O
+</pre>
+<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
+<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
+<p>This creates a new Rails app named <code>rails3-mongoid-omniauth</code> on your computer. You can use a different name if you wish.</p>
+<p>You’ll see a prompt:</p>
+<pre>
+question  Install an example application?
+      1)  I want to build my own application
+      2)  rails3-bootstrap-devise-cancan
+      3)  rails3-devise-rspec-cucumber
+      4)  rails3-mongoid-devise
+      5)  rails3-mongoid-omniauth
+      6)  rails3-subdomains
+</pre>
+<p>Choose <strong>5) rails3-mongoid-omniauth</strong>.</p>
+<p>The application generator template will ask you for additional preferences.</p>
+<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
+<p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
+<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
+<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
+<p>Finally, the program will ask if you want to create a GitHub repository.</p>
+<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-mongoid-omniauth folder and running the command again.</p>
+<h2>Assumptions</h2>
+<p>Before beginning this tutorial, you need to install</p>
+<ul>
+<li>The Ruby language (version 1.9.3 or newer)</li>
+	<li>Rails 3.2</li>
+</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
+<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
+<p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
+<p>Beginning here, we show how to create the application from scratch.</p>
+<p>(This has already been done for you if you use the the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool.)</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
 <p><code>$ rails new rails3-mongoid-omniauth -T -O</code></p>
 <p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files. Add the <code>-J</code> flag to skip Prototype files for Rails 3.0 (not needed for Rails 3.1).</p>
@@ -186,11 +199,9 @@ brew install mongodb
 </h4>
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/git.rb">git</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
-<p>See instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
+<p><code>$ git init .</code><br><code>$ git add .</code><br><code>$ git commit -m 'Initial commit'</code></p>
+<p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
 <h2>Set Up Gems</h2>
 <h4>About Required Gems</h4>
 <p>The application uses the following gems:</p>
@@ -209,25 +220,41 @@ brew install mongodb
 <p>This tutorial assumes you will be using Twitter so add the <code>omniauth-twitter</code> gem to your Gemfile.</p>
 <ul>
 <li><a href="http://rubygems.org/gems/omniauth-twitter">omniauth-twitter</a></li>
-</ul><h4>Set up Your Gemfile</h4>
-<p>See an example <a href="http://railsapps.github.com/rails-3-1-1-example-gemfile.html">Rails 3.1.1 Gemfile</a>.</p>
-<p>See <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a> for advice and details. It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>.</p>
-<h4>Install the Required Gems</h4>
+</ul><h3>Set up Your Gemfile</h3>
+<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
+<p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
+<p><strong>Gemfile</strong></p>
+<pre>
+source 'https://rubygems.org'
+gem 'rails', '3.2.8'
+group :assets do
+  gem 'sass-rails',   '~&gt; 3.2.3'
+  gem 'coffee-rails', '~&gt; 3.2.1'
+  gem 'uglifier', '&gt;= 1.0.3'
+end
+gem 'jquery-rails'
+gem "mongoid", "&gt;= 3.0.3"
+gem "rspec-rails", "&gt;= 2.11.0", :group =&gt; [:development, :test]
+gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
+gem "database_cleaner", "&gt;= 0.8.0", :group =&gt; :test
+gem "mongoid-rspec", "&gt;= 1.4.6", :group =&gt; :test
+gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test, :require =&gt; false
+gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
+gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
+gem "omniauth", "&gt;= 1.1.0"
+gem "omniauth-twitter"
+</pre>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.8'</code> accordingly.</p>
+<p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
+<h3>Install the Required Gems</h3>
 <p>Install the required gems on your computer:</p>
 <p><code>$ bundle install</code></p>
 <p>You can check which gems are installed on your computer with:</p>
-<p><code>$ gem list --local</code></p>
+<p><code>$ gem list</code></p>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
-<h2>Using jQuery</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/jquery.rb">jquery</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Rails 3.1 uses jQuery by default so no additional effort is required. If you are using Rails 3.0, you can see instructions for <a href="http://railsapps.github.com/rails-3-0-jquery.html">Using jQuery with Rails 3.0</a>.</p>
 <h2>Configuration for Haml</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/haml.rb">haml</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>In this example, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
+<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <h2>Adding RSpec for Unit Testing</h2>
 <blockquote>
 <p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/rspec.rb">rspec</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
@@ -878,7 +905,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-18 16:09:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-19 17:35:04</p>
       </div>
     </div>
 

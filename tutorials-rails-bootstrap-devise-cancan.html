@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 9 August 2012</em></p>
+<p><em>Last updated 19 August 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul>
 <li>
@@ -71,87 +71,42 @@
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please edit this wiki page or leave comments below.</p>
+<p>To improve this tutorial, please leave comments below.</p>
 <h2>Creating the Application</h2>
-<h3>Option One</h3>
-<p><em>Follow this tutorial.</em></p>
+<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
+<h3>Copy from the Tutorial</h3>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h3>Option Two</h3>
-<p><em>Use the ready-made application template to generate the code.</em></p>
-<p>You can use an application template to generate a new Rails app with code that closely matches the tutorial. You’ll find an application template for this tutorial in the <a href="https://github.com/RailsApps/rails3-application-templates">Rails Application Templates</a> repository.</p>
-<p>You’ll be able to give it your own project name when you generate the app. Generating the application (described below) gives you many options, such as using Haml for views, additional Devise modules, and other popular gems such as will-paginate.</p>
-<p>Use the command:</p>
+<h3>Fork</h3>
+<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
+<h3>Clone</h3>
+<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
+<h3>Generate</h3>
+<p>You can use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a new version of the example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
+<p>To build the example application, run the command:</p>
 <pre>
-$ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/rails3-application-templates/master/rails3-bootstrap-devise-cancan-template.rb -T
+$ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
 </pre>
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
 <p>This creates a new Rails app named <code>rails3-bootstrap-devise-cancan</code> on your computer. You can use a different name if you wish.</p>
-<p>The application generator template will ask you for your preferences.</p>
-<p>To produce an application exactly like the tutorial, make the following selections:</p>
-<ul>
-<li>Would you like to use <a href="http://en.wikipedia.org/wiki/Haml">Haml</a> instead of <span class="caps">ERB</span>? <strong>no</strong>
-</li>
-	<li>Would you like to use <a href="http://rspec.info/">RSpec</a> instead of TestUnit? <strong>yes</strong>
-</li>
-	<li>Would you like to use <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> for test fixtures with RSpec? <strong>yes</strong>
-</li>
-	<li>Would you like to use <a href="https://github.com/notahat/machinist">machinist</a> for test fixtures with RSpec? <strong>no</strong>
-</li>
-	<li>Would you like to use <a href="http://cukes.info/">Cucumber</a> for your <span class="caps">BDD</span>? <strong>yes</strong>
-</li>
-	<li>Would you like to use <a href="http://intridea.com/posts/hire-a-guard-for-your-project">Guard</a> to automate your workflow? <strong>no</strong>
-</li>
-	<li>How will you send email? <strong>#2</strong>
-	<ol>
-<li>
-<span class="caps">SMTP</span> account</li>
-		<li>Gmail account</li>
-		<li>SendGrid account</li>
-	</ol>
-</li>
-	<li>Would you like to use <a href="http://github.com/plataformatec/devise">Devise</a> for authentication? <strong>#2</strong>
-	<ol>
-<li>No</li>
-		<li>Devise with default modules</li>
-		<li>Devise with Confirmable module</li>
-		<li>Devise with Confirmable and Invitable modules</li>
-	</ol>
-</li>
-	<li>Would you like to manage authorization with <a href="https://github.com/ryanb/cancan">CanCan</a> &amp; <a href="https://github.com/EppO/rolify">Rolify</a>? <strong>yes</strong>
-</li>
-	<li>Which front-end framework would you like for HTML5 and CSS3? <strong>#4</strong>
-	<ol>
-<li>None</li>
-		<li><a href="http://foundation.zurb.com/">Zurb Foundation</a></li>
-		<li>
-<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (less)</li>
-		<li>
-<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> (sass)</li>
-		<li><a href="http://www.getskeleton.com/">Skeleton</a></li>
-		<li>Normalize <span class="caps">CSS</span> for consistent styling</li>
-	</ol>
-</li>
-	<li>Which form gem would you like? <strong>#1</strong>
-	<ol>
-<li>None</li>
-		<li>simple form</li>
-		<li>simple form (bootstrap)</li>
-	</ol>
-</li>
-	<li>Would you like to use <a href="https://github.com/josevalim/rails-footnotes">rails-footnotes</a> during development? <strong>no</strong>
-</li>
-	<li>Would you like to set a robots.txt file to ban spiders? <strong>yes</strong>
-</li>
-	<li>Would you like to add ‘will_paginate’ for pagination? <strong>no</strong>
-</li>
-</ul><p>Be sure to choose the <em>CanCan &amp; Rolify</em> option as well as the <em>Twitter Bootstrap (sass)</em> option to create the example application.</p>
-<p>You can choose other selections if you don’t care about matching the example application exactly.</p>
-<p>You can choose the <strong>Devise with Confirmable module</strong> option if you want new users to confirm their email address before gaining access to your site. If you don’t wish to require email confirmation, choose the option <strong>Devise with default modules</strong>.</p>
-<h3>Option Three</h3>
-<p><em>Use the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> gem to create a reusuable application template.</em></p>
-<p>This is optimal if you are creating a “starter app” based on this example app but wish to customize the code for your own preferences.</p>
-<p>Each step in this tutorial has a corresponding application template recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> recipes repository. You can create your own application template using the template recipes. To do so, clone the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer</a> project, customize recipes as needed, and follow the instructions to create a reusable application template file.</p>
+<p>You’ll see a prompt:</p>
+<pre>
+question  Install an example application?
+      1)  I want to build my own application
+      2)  rails3-bootstrap-devise-cancan
+      3)  rails3-devise-rspec-cucumber
+      4)  rails3-mongoid-devise
+      5)  rails3-mongoid-omniauth
+      6)  rails3-subdomains
+</pre>
+<p>Choose <strong>2) rails3-bootstrap-devise-cancan</strong>.</p>
+<p>The application generator template will ask you for additional preferences.</p>
+<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
+<p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
+<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
+<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
+<p>Finally, the program will ask if you want to create a GitHub repository.</p>
+<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-bootstrap-devise-cancan folder and running the command again.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
 <ul>
@@ -162,6 +117,7 @@ $ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/r
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>Beginning here, we show how to create the application from scratch.</p>
+<p>(This has already been done for you if you use the the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool.)</p>
 <p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
 <p><code>$ rails new rails3-bootstrap-devise-cancan -T</code></p>
 <p>Use the <code>-T</code> flag to skip Test::Unit files (since you are using RSpec).</p>
@@ -224,10 +180,10 @@ gem "bootstrap-sass", "&gt;= 2.0.1"
 <p>Install the required gems on your computer:</p>
 <p><code>$ bundle install</code></p>
 <p>You can check which gems are installed on your computer with:</p>
-<p><code>$ gem list --local</code></p>
+<p><code>$ gem list</code></p>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
 <h2>Configuration for Haml</h2>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">adding Haml to Rails</a>.</p>
+<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <h2>Add RSpec for Unit Testing</h2>
 <p>The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise.</p>
 <h2>Add Cucumber for Behavior Driven Development</h2>
@@ -726,7 +682,7 @@ end
 <p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
 <h3>
 <span class="caps">CSS</span> Styling with Twitter Bootstrap</h3>
-<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app from an application template in the <a href="https://github.com/RailsApps/rails3-application-templates">RailsApps Application Templates</a> repository, the script will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
+<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, the program will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
 <p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language that is the default for <span class="caps">CSS</span> files in Rails. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend you install Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
 <p>In your <strong>Gemfile</strong>, you’ve already added:</p>
 <pre>
@@ -874,7 +830,7 @@ body { padding-top: 60px; }
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-18 16:09:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-19 17:35:04</p>
       </div>
     </div>
 
