@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Subdomains with Devise</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 August 2012</em></p>
+<p><em>Last updated 20 August 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application with subdomains and authentication using Devise.</p>
 <h4>What Is Implemented</h4>
 <p>The example app implements a common use of subdomains, often called “Basecamp-style subdomains in Rails.” Visitors to the main site create a user account which is hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain.</p>
@@ -99,7 +99,7 @@ question  Install an example application?
       5)  rails3-mongoid-omniauth
       6)  rails3-subdomains
 </pre>
-<p>Choose <strong>4) rails3-subdomains</strong>.</p>
+<p>Choose <strong>6) rails3-subdomains</strong>.</p>
 <p>The application generator template will ask you for additional preferences.</p>
 <p>For this tutorial, choose “WEBrick” for your development webserver.</p>
 <p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
@@ -136,6 +136,7 @@ question  Install an example application?
       6)  rails3-subdomains
 </pre>
 <p>Choose <strong>4) rails3-mongoid-devise</strong>.</p>
+<p>Wait! Why are we choosing “rails3-mongoid-devise” when we want to build a “rails3-subdomains” app? We could select the “rails3-subdomains” app and get a complete application. If you want to work through each step in the tutorial, select the “rails3-mongoid-devise” app and we’ll modify it.</p>
 <p>The application generator template will ask you for additional preferences.</p>
 <p>For this tutorial, choose “WEBrick” for your development webserver.</p>
 <p>You can choose to set a robots.txt file to ban spiders. Choosing “no” makes sense if you want your prelaunch site to show up in Google search results.</p>
@@ -250,6 +251,13 @@ class ProfilesController &lt; ApplicationController
 end
 </pre>
 <p>Next, modify the view to display a user’s profile. Add the following code:</p>
+<p><strong>app/views/profile/show.html.erb</strong></p>
+<pre>
+&lt;h1&gt;Profile&lt;/h1&gt;
+&lt;h3&gt;&lt;%= @user.name %&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;%= @user.email %&gt;&lt;/h3&gt;
+</pre>
+<p>If you prefer Haml, it looks likes this:</p>
 <p><strong>app/views/profile/show.html.haml</strong></p>
 <pre>
 %h1 Profile
@@ -328,15 +336,31 @@ root :to =&gt; "home#index"
 <p>It should be possible to use <code>root_url(:subdomain =&gt; false)</code> but it seems there is an unresolved issue in Rails 3.1 (see <a href="https://github.com/rails/rails/issues/2025">https://github.com/rails/rails/issues/2025</a>).</p>
 <h4>Home Page</h4>
 <p>The rails3-mongoid-devise example app provides a home page that lists all registered users. We’ll modify the home page to add a link to each user’s profile page, using a <span class="caps">URL</span> with a custom subdomain.</p>
+<p><strong>app/views/home/index.html.erb</strong></p>
+<pre>
+&lt;h3&gt;Home&lt;/h3&gt;
+&lt;% @users.each do |user| %&gt;
+  &lt;p&gt;&lt;%= user.name %&gt; &lt;%= link_to root_url(:subdomain =&gt; user.name), root_url(:subdomain =&gt; user.name) %&gt;&lt;/p&gt;
+&lt;% end %&gt;  
+</pre>
+<p>If you prefer Haml, it looks likes this:</p>
 <p><strong>app/views/home/index.html.haml</strong></p>
 <pre>
 %h3 Home
 - @users.each do |user|
-  %br/ 
-  #{user.name} profile: #{link_to root_url(:subdomain =&gt; user.name), root_url(:subdomain =&gt; user.name)}
+  %p
+    = user.name
+    = link_to root_url(:subdomain =&gt; user.name), root_url(:subdomain =&gt; user.name)
 </pre>
 <h4>Modify the Users Page</h4>
 <p>We’ll add a link to the user’s profile page on the page that displays a list of all registered users.</p>
+<p><strong>app/views/users/show.html.erb</strong></p>
+<pre>
+&lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
+&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
+&lt;p&gt;Profile: &lt;%= link_to root_url(:subdomain =&gt; @user.name), root_url(:subdomain =&gt; @user.name) %&gt;&lt;/p&gt;  
+</pre>
+<p>If you prefer Haml, it looks likes this:</p>
 <p><strong>app/views/users/show.html.haml</strong></p>
 <pre>
 %p
@@ -349,7 +373,40 @@ root :to =&gt; "home#index"
 <h4>Navigation Links</h4>
 <p>We want a visitor to sign up on the main site but only log in on their subdomain-hosted site.</p>
 <p>We’ll change the navigation links to show “Sign up” on the main site and “Login” on the subdomain sites.</p>
-<p><strong>app/views/shared/_navigation.html.haml</strong></p>
+<p><strong>app/views/layouts/_navigation.html.erb</strong></p>
+<pre>
+&lt;%= link_to "Rails3 Subdomains", root_path, :class =&gt; 'brand' %&gt;
+&lt;ul class="nav"&gt;
+  &lt;li&gt;
+    &lt;%= link_to 'Main', root_url(:host =&gt; request.domain) %&gt;
+  &lt;/li&gt;
+  &lt;% if request.subdomain.present? &amp;&amp; request.subdomain != "www" %&gt;
+    &lt;% if user_signed_in? %&gt;
+      &lt;li&gt;
+        &lt;%= link_to 'Edit account', edit_user_registration_url %&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;%= link_to 'Logout', destroy_user_session_url, :method=&gt;'delete' %&gt;
+      &lt;/li&gt;
+    &lt;% else %&gt;
+      &lt;li&gt;
+        &lt;%= link_to 'Login', new_user_session_url %&gt;
+      &lt;/li&gt;
+    &lt;% end %&gt;
+  &lt;% else %&gt;
+    &lt;li&gt;
+      &lt;%= link_to 'Sign up', new_user_registration_url(:host =&gt; request.domain) %&gt;
+    &lt;/li&gt;
+    &lt;% if user_signed_in? %&gt;
+      &lt;li&gt;
+        &lt;%= link_to 'Logout', destroy_user_session_url, :method=&gt;'delete' %&gt;
+      &lt;/li&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;  
+</pre>
+<p>If you prefer Haml, it looks likes this:</p>
+<p><strong>app/views/layouts/_navigation.html.haml</strong></p>
 <pre>
 %li
   = link_to 'Main', root_url(:host =&gt; request.domain)
@@ -439,7 +496,7 @@ and tweet some praise. I’d love to know you were helped out by the tutorial.</
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-20 15:48:47</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-21 15:25:52</p>
       </div>
     </div>
 
