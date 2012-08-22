@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 18 August 2012</em></p>
+<p><em>Last updated 21 August 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -971,7 +971,22 @@ unconfirmed: 'Your account is not active.'
 </pre>
 <p>The user will also see links on the sign-in page: “Didn’t receive confirmation instructions?” and “Forgot your password?”. Before we launch, we don’t want visitors to see these links.</p>
 <p>The sign-in page is provided from a view template in the Devise gem. We don’t have to modify the sign-in page. Instead we’ll modify the Devise “links” partial.</p>
-<p>Modify the file <strong>app/views/devise/shared/_links.html.haml</strong>:</p>
+<p>Modify the file <strong>app/views/devise/shared/_links.html.erb</strong>:</p>
+<pre>
+&lt;%- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' %&gt;
+  &lt;%= link_to "Forgot your password?", new_password_path(resource_name) %&gt;&lt;br /&gt;
+&lt;% end -%&gt;
+
+&lt;%- if devise_mapping.confirmable? &amp;&amp; controller_name != 'confirmations' %&gt;
+  &lt;%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %&gt;&lt;br /&gt;
+&lt;% end -%&gt;
+
+&lt;%- if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks' %&gt;
+  &lt;%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %&gt;&lt;br /&gt;
+&lt;% end -%&gt;  
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/devise/shared/_links.html.haml</strong></p>
 <pre>
 - if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords'
   = link_to "Forgot your password?", new_password_path(resource_name)
@@ -1033,7 +1048,32 @@ $ git checkout -b modal
 <h3>Add a Modal Window</h3>
 <p>It’d be nice for the “request invitation” page to include some “romance copy” to convince the visitor of the value of the site. The “call to action” could be a big button that says, “Request Invitation,” which opens a modal window and invites the visitor to enter an email address and click a submit button.</p>
 <p>Twitter Bootstrap gives us everything we need to implement this in a few lines of code.</p>
-<p>Open the file <strong>app/views/devise/registrations/new.html.haml</strong> and replace the contents with this new code:</p>
+<p>Open the file <strong>app/views/devise/registrations/new.html.erb</strong> and replace the contents with this new code:</p>
+<pre>
+&lt;div id="request-invite" class="modal" :style =&gt; "display: none;"&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:class =&gt; 'form-horizontal' } do |f| %&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+      &lt;h3&gt;Request Invitation&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+      &lt;%= f.error_notification %&gt;
+      &lt;%= f.input :email, :placeholder =&gt; 'user@example.com' %&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;%= f.submit "Request Invitation", :class =&gt; "btn.btn-success", :id =&gt; 'invitation_button' %&gt;
+      &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="romance-copy" :style =&gt; "text-align: center; margin-top: 80px"&gt;
+  &lt;h2&gt;Want in?&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div id="call-to-action" :style =&gt; "text-align: center; margin-top: 80px"&gt;
+  &lt;a class="btn btn-primary btn-large" data-toggle="modal" href="#request-invite"&gt;Request invite&lt;/a&gt;
+&lt;/div&gt;  
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/devise/registrations/new.html.haml</strong></p>
 <pre>
 #request-invite.modal{:style =&gt; "display: none;"}
   = simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:class =&gt; 'form-horizontal' } do |f|
@@ -1073,7 +1113,22 @@ $('document').ready(function() {
 </h2>
 <p><em>Thank you to <a href="http://andreapavoni.com">Andrea Pavoni</a> for the <span class="caps">AJAX</span> implementation.</em></p>
 <p>We’ve improved the appearance of the “invitation request” page by adding a modal window using Twitter Bootstrap. We can make further improvements. As implemented, the page refreshes with a roundtrip to the server when we submit the form successfully (or get an an error). Our app will look more sophisticated if we use <span class="caps">AJAX</span> techniques to update the page without a page refresh.</p>
-<p>We don’t need changes to the “invitation request” page. We’ll add a partial to provide a “thank you” message. Add a file <strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
+<p>We don’t need changes to the “invitation request” page. We’ll add a partial to provide a “thank you” message. Add a file <strong>app/views/devise/registrations/_thankyou.html.erb</strong>:</p>
+<pre>
+&lt;h1&gt;Thank you&lt;/h1&gt;
+&lt;div id="request-invite" class="modal" :style =&gt; "display: 'block';"&gt;
+  &lt;div class="modal-header"&gt;
+    &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+    &lt;h3&gt;Thank you!&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="modal-body" :style =&gt; "margin-bottom: 120px; overflow: visible"&gt;
+    &lt;p&gt;We have received your request for an invitation to example.com.&lt;/p&gt;
+    &lt;p&gt;We'll contact you when we launch.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;  
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
 <pre>
 %h1 Thank you
 #request-invite.modal{:style =&gt; "display: 'block';"}
@@ -1248,12 +1303,16 @@ $ cucumber features/admin/view_progress.feature
 <p>The test will succeed. That’s because the application template we used to generate the application already implements the functionality we want. Let’s see how.</p>
 <h3>The Administrative Page</h3>
 <p>We already have a page that shows a list of users.</p>
-<p>Take a look at the file <strong>app/views/users/index.html.haml</strong>:</p>
+<p>Take a look at the file <strong>app/views/users/index.html.erb</strong>:</p>
 <pre>
-%h2 Users
-- @users.each do |user|
-  %br/
-  #{link_to user.email, user} signed up #{user.created_at.to_date}
+&lt;h3&gt;Users&lt;/h3&gt;
+&lt;ul class="users"&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;li&gt;
+      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
 </pre>
 <p>We can use this page as our “administrative dashboard.” It’s fine for our example application; if you later build a more complex application, you may wish to create an AdminController with corresponding Admin views.</p>
 <h3>Restricting Access to the Administrative Page</h3>
@@ -1336,7 +1395,23 @@ $ bundle install
 <h3>Javascript for Google Chart Tools</h3>
 <p>We’ll add the Javascript library that loads the Google Chart Tools <span class="caps">API</span>. We won’t add it to the Javascript files in our asset pipeline. Instead, we’ll add it to the application layout for the administrative page, loading it directly from Google’s content delivery network (<span class="caps">CDN</span>).</p>
 <p>We want to add it to a single page of our application. Our default application layout will accept a page-specific addition to the <code>head</code> section. The <code>= yield(:head)</code> statement in the file <strong>app/views/layouts/application.html.haml</strong> will incorporate anything we add to a page with the <code>content_for :head</code> tag.</p>
-<p>Modify the file <strong>app/views/users/index.html.haml</strong>:</p>
+<p>Modify the file <strong>app/views/users/index.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'http://www.google.com/jsapi' %&gt;
+&lt;% end %&gt;
+
+&lt;h3&gt;Users&lt;/h3&gt;
+&lt;ul class="users"&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;li&gt;
+      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;  
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/users/index.html.haml</strong></p>
 <pre>
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
@@ -1382,7 +1457,12 @@ end
 <p>The UsersController will use the GoogleVisualr gem to interact with the Google Chart Tools <span class="caps">API</span> to generate a chart. Google Chart Tools offers a wide variety of charts (<a href="https://developers.google.com/chart/interactive/docs/gallery">see examples</a>) and the <a href="http://googlevisualr.herokuapp.com/">GoogleVisualr documentation</a> shows how to implement many of the available charts. We use the <a href="http://googlevisualr.herokuapp.com/examples/interactive/annotated_time_line">Annotated Time Line</a> chart.</p>
 <h3>Add a Chart to the Administrative Page</h3>
 <p>Let’s add the chart to the page that shows a list of users.</p>
-<p>Modify the file <strong>app/views/users/index.html.haml</strong>:</p>
+<p>Modify the file <strong>app/views/users/index.html.erb</strong>:</p>
+<pre>
+(to come)
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/users/index.html.haml</strong></p>
 <pre>
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
@@ -1457,7 +1537,12 @@ jQuery -&gt;
 </pre>
 <h3>Add a Table to the Administrative Page</h3>
 <p>Let’s add a table of users to the administrative page.</p>
-<p>Modify the file <strong>app/views/users/index.html.haml</strong>:</p>
+<p>Modify the file <strong>app/views/users/index.html.erb</strong>:</p>
+<pre>
+(to come)
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/users/index.html.haml</strong></p>
 <pre>
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
@@ -1603,7 +1688,12 @@ end
 </pre>
 <p>The Rails Guide, <a href="http://guides.rubyonrails.org/routing.html#adding-more-restful-actions">Routing from the Outside In</a>, shows how we add additional routes to a RESTful resource.</p>
 <h3>Sending Invitations from the Administrative Page</h3>
-<p>We will modify the file <strong>app/views/users/index.html.haml</strong> to add a link to the <code>invite</code> action for each user. While we’re at it, we’ll add columns to show when the visitor joined (that is, confirmed their account), the number of times they’ve logged it, and the date of the most recent login.</p>
+<p>We will modify the file <strong>app/views/users/index.html.erb</strong> to add a link to the <code>invite</code> action for each user. While we’re at it, we’ll add columns to show when the visitor joined (that is, confirmed their account), the number of times they’ve logged it, and the date of the most recent login.</p>
+<pre>
+(to come)
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/users/index.html.haml</strong></p>
 <pre>
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
@@ -1748,7 +1838,12 @@ RailsPrelaunchSignup::Application.routes.draw do
 end
 </pre>
 <p>Notice that we add two new routes. The route <code>match '/user/confirmation'</code> is there to accommodate the confirmation link in the email message received by invited users. The route <code>match 'users/bulk_invite/:quantity'</code> handles the <code>bulk_invite</code> action we initiate from the administrative dashboard.</p>
-<p>Finally, we will modify the file <strong>app/views/users/index.html.haml</strong> to add links for the <code>bulk_invite</code> action:</p>
+<p>Finally, we will modify the file <strong>app/views/users/index.html.erb</strong> to add links for the <code>bulk_invite</code> action:</p>
+<pre>
+(to come)
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/users/index.html.haml</strong></p>
 <pre>
 - content_for :head do
   = javascript_include_tag 'http://www.google.com/jsapi'
@@ -1812,7 +1907,12 @@ $ git checkout -b fix-password
 <h3>Customize the Confirmations View</h3>
 <p>When an invited user clicks a link in the invitation email to confirm an account, we want to ask them to choose a password for their account. The Devise gem supplies a Confirmations view; we need to replace it with a page that includes fields for password and password confirmation.</p>
 <p>Create a new folder <strong>app/views/devise/confirmations/</strong>.</p>
-<p>Create a file <strong>app/views/devise/confirmations/show.html.haml</strong>:</p>
+<p>Create a file <strong>app/views/devise/confirmations/show.html.erb</strong>:</p>
+<pre>
+(to come)
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/devise/confirmations/show.html.haml</strong></p>
 <pre>
 %h2 Account Activation
 = form_for resource, :as =&gt; resource_name, :url =&gt; update_user_confirmation_path, :html =&gt; {:method =&gt; 'put'}, :id =&gt; 'activation-form' do |f|
@@ -2209,9 +2309,14 @@ function loadSocial() {
     }
 }
 </pre>
-<p>We call the function <code>loadSocial()</code> after the “request invitation” form is successfully submitted. After the <span class="caps">AJAX</span> call returns “success”, we render the “#request-invite” div with the <strong>_thankyou.html.haml</strong> partial (defined in the RegistrationsController); immediately following, we call the function <code>loadSocial()</code>. The <code>loadSocial()</code> function uses the jQuery <code>.getScript</code> method to load a JavaScript file from each of the social networks. The script won’t attempt to download a Javascript file if the widget is already present.</p>
+<p>We call the function <code>loadSocial()</code> after the “request invitation” form is successfully submitted. After the <span class="caps">AJAX</span> call returns “success”, we render the “#request-invite” div with the <strong>_thankyou.html.erb</strong> partial (defined in the RegistrationsController); immediately following, we call the function <code>loadSocial()</code>. The <code>loadSocial()</code> function uses the jQuery <code>.getScript</code> method to load a JavaScript file from each of the social networks. The script won’t attempt to download a Javascript file if the widget is already present.</p>
 <h3>Add Social Sharing Buttons to the “Thank You” Message</h3>
-<p>Modify the file file <strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
+<p>Modify the file file <strong>app/views/devise/registrations/_thankyou.html.erb</strong>:</p>
+<pre>
+(to come)
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/devise/registrations/_thankyou.html.haml</strong></p>
 <pre>
 %h1 Thank you
 #request-invite.modal{:style =&gt; "display: 'block';"}
@@ -2371,7 +2476,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-21 15:37:10</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-21 17:56:37</p>
       </div>
     </div>
 
