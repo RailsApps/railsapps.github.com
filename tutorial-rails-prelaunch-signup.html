@@ -1574,8 +1574,8 @@ jQuery -&gt;
     &lt;tbody&gt;
       &lt;% @users.each do |user| %&gt;
         &lt;tr&gt;
-          &lt;td&gt;#{link_to user.email, user}&lt;/td&gt;
-          &lt;td&gt;#{user.created_at.to_date}&lt;/td&gt;
+          &lt;td&gt;&lt;%= link_to user.email, user %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
         &lt;/tr&gt;
       &lt;% end %&gt;
     &lt;/tbody&gt;
@@ -1756,12 +1756,12 @@ end
     &lt;tbody&gt;
       &lt;% @users.each do |user| %&gt;
         &lt;tr&gt;
-          &lt;td&gt;#{link_to user.email, user}&lt;/td&gt;
-          &lt;td&gt;#{user.created_at.to_date}&lt;/td&gt;
-          &lt;td&gt;#{(user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at}&lt;/td&gt;
-          &lt;td&gt;#{user.confirmed_at.to_date if user.confirmed_at}&lt;/td&gt;
-          &lt;td&gt;#{user.sign_in_count if user.sign_in_count}&lt;/td&gt;
-          &lt;td&gt;#{user.last_sign_in_at.to_date if user.last_sign_in_at}&lt;/td&gt;
+          &lt;td&gt;&lt;%= link_to user.email, user %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= (user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.confirmed_at.to_date if user.confirmed_at %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.sign_in_count if user.sign_in_count %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.last_sign_in_at.to_date if user.last_sign_in_at %&gt;&lt;/td&gt;
         &lt;/tr&gt;
       &lt;% end %&gt;
     &lt;/tbody&gt;
@@ -1949,12 +1949,12 @@ end
     &lt;tbody&gt;
       &lt;% @users.each do |user| %&gt;
         &lt;tr&gt;
-          &lt;td&gt;#{link_to user.email, user}&lt;/td&gt;
-          &lt;td&gt;#{user.created_at.to_date}&lt;/td&gt;
-          &lt;td&gt;#{(user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at}&lt;/td&gt;
-          &lt;td&gt;#{user.confirmed_at.to_date if user.confirmed_at}&lt;/td&gt;
-          &lt;td&gt;#{user.sign_in_count if user.sign_in_count}&lt;/td&gt;
-          &lt;td&gt;#{user.last_sign_in_at.to_date if user.last_sign_in_at}&lt;/td&gt;
+          &lt;td&gt;&lt;%= link_to user.email, user %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= (user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.confirmed_at.to_date if user.confirmed_at %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.sign_in_count if user.sign_in_count %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= user.last_sign_in_at.to_date if user.last_sign_in_at %&gt;&lt;/td&gt;
         &lt;/tr&gt;
       &lt;% end %&gt;
     &lt;/tbody&gt;
@@ -2035,7 +2035,7 @@ $ git checkout -b fix-password
     &lt;legend&gt;
       Account Activation
       &lt;% if resource.email %&gt;
-        for #{resource.email}
+        for &lt;%= resource.email %&gt;
       &lt;% end %&gt;
     &lt;/legend&gt;
     &lt;% if @requires_password %&gt;
@@ -2638,7 +2638,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-24 21:48:01</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-25 12:03:50</p>
       </div>
     </div>
 
