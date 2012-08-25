@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 21 August 2012</em></p>
+<p><em>Last updated 24 August 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -858,7 +858,6 @@ class UserMailer &lt; ActionMailer::Base
   
   def welcome_email(user)
     mail(:to =&gt; user.email, :subject =&gt; "Invitation Request Received")
-    headers['X-MC-Track'] = "opens, clicks"
     headers['X-MC-GoogleAnalytics'] = "example.com"
     headers['X-MC-Tags'] = "welcome"
   end
@@ -867,11 +866,10 @@ end
 <p>Replace the “notifications@example.com” string with your email address.</p>
 <p>If you’re not using Mandrill for an <span class="caps">SMTP</span> relay service, you can leave out these statements:</p>
 <pre>
-  headers['X-MC-Track'] = "opens, clicks"
   headers['X-MC-GoogleAnalytics'] = "example.com"
   headers['X-MC-Tags'] = "welcome"
 </pre>
-<p>The <code>X-MC-Track</code> header sets up Mandrill to track message delivery by adding an invisible image (a web beacon) to <span class="caps">HTML</span> emails to track emails that have been opened. It also tracks whether links in the email were clicked. The <code>X-MC-GoogleAnalytics</code> header sets up tracking with your Google Analytics account (set your domain name here). The <code>X-MC-Tags</code> header identifies each email as a welcome message for analyzing delivery success.</p>
+<p>The <code>X-MC-GoogleAnalytics</code> header sets up tracking with your Google Analytics account (set your domain name here). The <code>X-MC-Tags</code> header identifies each email as a welcome message for analyzing delivery success.</p>
 <p>Create a mailer view by creating a file <strong>app/views/user_mailer/welcome_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
 <pre>
 &lt;!DOCTYPE html&gt;
@@ -1064,6 +1062,7 @@ $ git checkout -b modal
       &lt;%= f.submit "Request Invitation", :class =&gt; "btn.btn-success", :id =&gt; 'invitation_button' %&gt;
       &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
     &lt;/div&gt;
+  &lt;% end %&gt;
 &lt;/div&gt;
 &lt;div id="romance-copy" :style =&gt; "text-align: center; margin-top: 80px"&gt;
   &lt;h2&gt;Want in?&lt;/h2&gt;
@@ -1459,7 +1458,22 @@ end
 <p>Let’s add the chart to the page that shows a list of users.</p>
 <p>Modify the file <strong>app/views/users/index.html.erb</strong>:</p>
 <pre>
-(to come)
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'http://www.google.com/jsapi' %&gt;
+&lt;% end %&gt;
+
+&lt;div id="chart" :style =&gt; "width: 700px; height: 240px;"&gt;
+  &lt;%= render_chart @chart, 'chart' %&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;Users&lt;/h3&gt;
+&lt;ul class="users"&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;li&gt;
+      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/users/index.html.haml</strong></p>
@@ -1468,7 +1482,7 @@ end
   = javascript_include_tag 'http://www.google.com/jsapi'
 
 #chart{:style =&gt; "width: 700px; height: 240px;"}
-= render_chart @chart, 'chart'
+  = render_chart @chart, 'chart'
   
 %h2 Users
 - @users.each do |user|
@@ -1539,7 +1553,34 @@ jQuery -&gt;
 <p>Let’s add a table of users to the administrative page.</p>
 <p>Modify the file <strong>app/views/users/index.html.erb</strong>:</p>
 <pre>
-(to come)
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'http://www.google.com/jsapi' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Users&lt;/h2&gt;
+&lt;div class="span9"&gt;
+  &lt;div id="chart" :style =&gt; "width: 700px; height: 240px"&gt;
+    &lt;%= render_chart @chart, 'chart' %&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+&lt;/div&gt;
+&lt;div class="span9"&gt;
+  &lt;table class="datatable table table-bordered table-condensed"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Email&lt;/th&gt;
+        &lt;th&gt;Signed up&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;% @users.each do |user| %&gt;
+        &lt;tr&gt;
+          &lt;td&gt;#{link_to user.email, user}&lt;/td&gt;
+          &lt;td&gt;#{user.created_at.to_date}&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;% end %&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/users/index.html.haml</strong></p>
@@ -1549,7 +1590,7 @@ jQuery -&gt;
 %h2 Users
 .span9
   #chart{:style =&gt; "width: 700px; height: 240px"}
-  = render_chart @chart, 'chart'
+    = render_chart @chart, 'chart'
   %br
 .span9
   %table.datatable.table.table-bordered.table-condensed
@@ -1690,7 +1731,42 @@ end
 <h3>Sending Invitations from the Administrative Page</h3>
 <p>We will modify the file <strong>app/views/users/index.html.erb</strong> to add a link to the <code>invite</code> action for each user. While we’re at it, we’ll add columns to show when the visitor joined (that is, confirmed their account), the number of times they’ve logged it, and the date of the most recent login.</p>
 <pre>
-(to come)
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'http://www.google.com/jsapi' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Users&lt;/h2&gt;
+&lt;div class="span9"&gt;
+  &lt;div id="chart" :style =&gt; "width: 700px; height: 240px"&gt;
+    &lt;%= render_chart @chart, 'chart' %&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+&lt;/div&gt;
+&lt;div class="span9"&gt;
+  &lt;table class="datatable table table-bordered table-condensed"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Email&lt;/th&gt;
+        &lt;th&gt;Requested&lt;/th&gt;
+        &lt;th&gt;Invitation&lt;/th&gt;
+        &lt;th&gt;Joined&lt;/th&gt;
+        &lt;th&gt;Visits&lt;/th&gt;
+        &lt;th&gt;Most Recent&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;% @users.each do |user| %&gt;
+        &lt;tr&gt;
+          &lt;td&gt;#{link_to user.email, user}&lt;/td&gt;
+          &lt;td&gt;#{user.created_at.to_date}&lt;/td&gt;
+          &lt;td&gt;#{(user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at}&lt;/td&gt;
+          &lt;td&gt;#{user.confirmed_at.to_date if user.confirmed_at}&lt;/td&gt;
+          &lt;td&gt;#{user.sign_in_count if user.sign_in_count}&lt;/td&gt;
+          &lt;td&gt;#{user.last_sign_in_at.to_date if user.last_sign_in_at}&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;% end %&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/users/index.html.haml</strong></p>
@@ -1840,7 +1916,50 @@ end
 <p>Notice that we add two new routes. The route <code>match '/user/confirmation'</code> is there to accommodate the confirmation link in the email message received by invited users. The route <code>match 'users/bulk_invite/:quantity'</code> handles the <code>bulk_invite</code> action we initiate from the administrative dashboard.</p>
 <p>Finally, we will modify the file <strong>app/views/users/index.html.erb</strong> to add links for the <code>bulk_invite</code> action:</p>
 <pre>
-(to come)
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'http://www.google.com/jsapi' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Users&lt;/h2&gt;
+&lt;div class="span9"&gt;
+  &lt;div id="chart" :style =&gt; "width: 700px; height: 240px"&gt;
+    &lt;%= render_chart @chart, 'chart' %&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+&lt;/div&gt;
+&lt;div class="span9"&gt;
+  &lt;p&gt;
+    Send Bulk Invitations:
+    &lt;%= link_to "10 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '10') %&gt;
+    &lt;%= link_to "50 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '50') %&gt;
+    &lt;%= link_to "100 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '100') %&gt;
+    &lt;%= link_to "500 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '500') %&gt;
+    &lt;%= link_to "1000", bulk_invite_path(:quantity =&gt; '1000') %&gt;
+  &lt;/p&gt;
+  &lt;table class="datatable table table-bordered table-condensed"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Email&lt;/th&gt;
+        &lt;th&gt;Requested&lt;/th&gt;
+        &lt;th&gt;Invitation&lt;/th&gt;
+        &lt;th&gt;Joined&lt;/th&gt;
+        &lt;th&gt;Visits&lt;/th&gt;
+        &lt;th&gt;Most Recent&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;% @users.each do |user| %&gt;
+        &lt;tr&gt;
+          &lt;td&gt;#{link_to user.email, user}&lt;/td&gt;
+          &lt;td&gt;#{user.created_at.to_date}&lt;/td&gt;
+          &lt;td&gt;#{(user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user)) : (link_to "resend", invite_user_path(user))) unless user.confirmed_at}&lt;/td&gt;
+          &lt;td&gt;#{user.confirmed_at.to_date if user.confirmed_at}&lt;/td&gt;
+          &lt;td&gt;#{user.sign_in_count if user.sign_in_count}&lt;/td&gt;
+          &lt;td&gt;#{user.last_sign_in_at.to_date if user.last_sign_in_at}&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;% end %&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/users/index.html.haml</strong></p>
@@ -1909,13 +2028,36 @@ $ git checkout -b fix-password
 <p>Create a new folder <strong>app/views/devise/confirmations/</strong>.</p>
 <p>Create a file <strong>app/views/devise/confirmations/show.html.erb</strong>:</p>
 <pre>
-(to come)
+&lt;h2&gt;Account Activation&lt;/h2&gt;
+&lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_user_confirmation_path, :html =&gt; {:class =&gt; 'form-horizontal', :method =&gt; 'put'}, :id =&gt; 'activation-form' do |f| %&gt;
+  &lt;%= devise_error_messages! %&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;
+      Account Activation
+      &lt;% if resource.email %&gt;
+        for #{resource.email}
+      &lt;% end %&gt;
+    &lt;/legend&gt;
+    &lt;% if @requires_password %&gt;
+      &lt;p&gt;
+        &lt;%= f.label :password,'Choose a Password:' %&gt;
+        &lt;%= f.password_field :password %&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;%= f.label :password_confirmation, 'Password Confirmation:' %&gt;
+        &lt;%= f.password_field :password_confirmation %&gt;
+      &lt;/p&gt;
+    &lt;% end %&gt;
+    &lt;%= hidden_field_tag :confirmation_token, @confirmation_token %&gt;
+    &lt;p&gt;&lt;%= f.submit "Activate" %&gt;&lt;/p&gt;
+  &lt;/fieldset&gt;
+&lt;% end %&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/devise/confirmations/show.html.haml</strong></p>
 <pre>
 %h2 Account Activation
-= form_for resource, :as =&gt; resource_name, :url =&gt; update_user_confirmation_path, :html =&gt; {:method =&gt; 'put'}, :id =&gt; 'activation-form' do |f|
+= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_user_confirmation_path, :html =&gt; {:class =&gt; 'form-horizontal', :method =&gt; 'put'}, :id =&gt; 'activation-form' do |f|
   = devise_error_messages!
   %fieldset
     %legend
@@ -2313,7 +2455,27 @@ function loadSocial() {
 <h3>Add Social Sharing Buttons to the “Thank You” Message</h3>
 <p>Modify the file file <strong>app/views/devise/registrations/_thankyou.html.erb</strong>:</p>
 <pre>
-(to come)
+&lt;h1&gt;Thank you&lt;/h1&gt;
+&lt;div id="request-invite" class="modal" :style =&gt; "display: 'block';"&gt;
+  &lt;div class="modal-header"&gt;
+    &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+    &lt;h3&gt;Thank you!&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="modal-body" :style =&gt; "margin-bottom: 120px; overflow: visible"&gt;
+    &lt;p&gt;We have received your request for an invitation to example.com.&lt;/p&gt;
+    &lt;p&gt;We'll contact you when we launch.&lt;/p&gt;
+    &lt;p&gt;Share your discovery with your friends!&lt;/p&gt;
+    &lt;div id="tweet" style="display:inline-block;"&gt;
+      &lt;a class="twitter-share-button" data-count="horizontal" data-text="A new site I've discovered" data-url="http://railsapps.github.com/rails-prelaunch-signup/" data-via="launchrails" data-related="launchrails" href="https://twitter.com/share"&gt;&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;span style="display:inline-block; vertical-align:text-bottom;"&gt;
+      &lt;div class="fb-like" data-href="http://railsapps.github.com/rails-prelaunch-signup/" data-layout="button_count" data-send="false" data-show-faces="false" data-width="90"&gt;
+      &lt;/div&gt;
+    &lt;/span&gt;
+    &lt;div class="g-plusone" data-annotation="inline" data-href="http://railsapps.github.com/rails-prelaunch-signup/" data-size="medium" data-width="120"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/devise/registrations/_thankyou.html.haml</strong></p>
@@ -2476,7 +2638,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-21 17:56:37</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-24 21:05:23</p>
       </div>
     </div>
 
