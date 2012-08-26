@@ -159,23 +159,47 @@ $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-ap
 <p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
 <p>This creates a new Rails app named <code>rails-prelaunch-signup</code> on your computer. You can use a different name if you wish.</p>
-<p>The application generator template will ask you for your preferences.</p>
-<p>To produce an application exactly like the tutorial, make the following selections:</p>
-<ul>
-<li>How will you send email? <strong>#4</strong>
-	<ol>
-<li>
-<span class="caps">SMTP</span> account</li>
-		<li>Gmail account</li>
-		<li>SendGrid account</li>
-		<li>Mandrill by MailChimp account</li>
-	</ol>
-</li>
-	<li>Use MailChimp to send news and welcome messages? <strong>yes</strong>
-</li>
-	<li>Add ‘therubyracer’ JavaScript runtime (for Linux users without node.js)? <strong>no</strong>
-</li>
-</ul><p>You can choose other selections if you don’t care about matching the example application exactly.</p>
+<p>The application template will ask you for your preferences.</p>
+<pre>
+ question  Git branch for the prelaunch app?
+       1)  wip (work-in-progress)
+       2)  master
+       3)  prelaunch
+       4)  staging
+ question  Git branch for the main app?
+       1)  None
+       2)  wip (work-in-progress)
+       3)  edge
+ question  Web server for development?
+       1)  WEBrick (default)
+       2)  Thin
+       3)  Unicorn
+       4)  Puma
+ question  Web server for production?
+       1)  Same as development
+       2)  Thin
+       3)  Unicorn
+       4)  Puma
+ question  Template engine?
+       1)  ERB
+       2)  Haml
+       3)  Slim
+   extras  Set a robots.txt file to ban spiders? (y/n)
+   extras  Add 'therubyracer' JavaScript runtime (for Linux users without node.js)? (y/n)
+   extras  Create a project-specific rvm gemset and .rvmrc? (y/n)
+   extras  Create a GitHub repository? (y/n)
+</pre>
+<h4>Git Branches</h4>
+<p>The application template will create Git branches for you. This allows you to maintain two versions of the application: one for immdediate deployment as a prelaunch app; and another version that you can use for ongoing development. I recommend deploying the prelaunch app in the “master” branch. Work on your ultimate application in a “wip” branch.</p>
+<h4>Web Servers</h4>
+<p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
+<h4>Template Engine</h4>
+<p>Choose “<span class="caps">ERB</span>” if you wish to duplicate the tutorial exactly.</p>
+<h4>Other Choices</h4>
+<p>Don’t set a robots.txt file to ban spiders if you want your new site to appear in Google search results.</p>
+<p>The ‘therubyracer’ JavaScript runtime is for Linux users without node.js (see <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>).</p>
+<p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager (see <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>).</p>
+<p>If you choose to create a GitHub repository, the application template will prompt you for a username and password.</p>
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
 <ul>
@@ -2640,7 +2664,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-25 15:01:04</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-26 06:34:43</p>
       </div>
     </div>
 
