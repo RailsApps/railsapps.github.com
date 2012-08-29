@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Guide to the Rails Apps Composer Gem</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 20 August 2012</em></p>
+<p><em>Last updated 29 August 2012</em></p>
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
@@ -164,9 +164,6 @@
 <h4>Testing</h4>
 <p>The <em>testing</em> recipe allows you to specify your testing framework. The core recipe offers a choice of popular frameworks for unit testing (Test::Unit or RSpec) and integration testinng (Cucumber) as well as fixture replacements (Factory Girl or Machinist). If you prefer a testing framework that is not offered in the core recipe, please add it to the <em>testing</em> recipe and submit a pull request so we can make your choice available to others.</p>
 <p>The <em>testing</em> recipe is one of the more complex recipes because setting up a testing framework often requires running generators and modifying configuration files based on other choices you’ve made (such as a choice of database or authentication).</p>
-<h4>Auth</h4>
-<p>The <em>auth</em> recipe sets up both authentication and authorization for your starter app. The core recipe offers a choice of Devise or OmniAuth for authentication and CanCan for authorization. If you like another framework for authentication and authorization, please add it to the <em>auth</em> recipe and submit a pull request.</p>
-<p>Authentication and authorization require complex changes to the basic Rails application so this recipe is more complex than others.</p>
 <h4>Email</h4>
 <p>Many applications must send email, especially “transactional email” (for example, when an authentication system such as Devise requires confirmation of an email address). The <em>email</em> recipe configures ActionMailer for various email accounts, including Gmail, <span class="caps">SMTP</span>, SendGrid, and Mandrill. If you prefer a different email provider, add it to the <em>email</em> recipe and submit a pull request.</p>
 <h4>Models, Controllers, Views, Routes</h4>
@@ -177,14 +174,15 @@ question  Install a starter app?
       2)  Home Page
       3)  Home Page, User Accounts
       4)  Home Page, User Accounts, Admin Dashboard
+      5)  Home Page, User Accounts, Subdomains
 </pre>
 <p>Rather than installing gems or setting configuration parameters, these recipes install the “internal organs” of entire simple applications.</p>
 <p>The simplest use of these four recipes is to create a home page.</p>
-<p>If you’re creating your own custom starter app, you can examine these recipes for implementation ideas; you may create your own custom recipes that are similar to these recipes.</p>
-<p>These four recipes are closely related and could have been combined into one “mvc” recipe except the resulting file would have been large and cumbersome. Of these, the <em>models</em> recipe is the most complex because it creates a User model that is transformed in various ways depending on the choice of database or authentication framework.</p>
+<p>If you’re creating your own custom starter app, you can examine these recipes for implementation ideas; you may create your own custom recipes that are similar to these recipes. These four recipes are closely related and could have been combined into one “mvc” recipe except the resulting file would have been large and cumbersome.</p>
+<p>The <em>models</em> recipe creates a User model. The <em>models</em> recipe sets up both authentication and authorization for your starter app. The core recipe accommodates a choice of Devise or OmniAuth for authentication and CanCan for authorization. Authentication and authorization require complex changes to the basic Rails application so this recipe is more complex than others.</p>
 <p>The <em>controllers</em> recipe is relatively simple. Instead of generating controllers using the <code>rails generate</code> command, we download and install controller files from the RailsApps example application GitHub repositories. Where conditions require it (for example, injecting methods for managing authorization), we manipulate the files using the rails_apps_composer <code>gsub_file</code> method (for regex search and replace).</p>
 <p>The <em>views</em> recipe also downloads files from the RailsApps repos. The rails_apps_composer program supplies a special <code>copy_from_repo</code> method that automatically translates <span class="caps">ERB</span> view templates into Haml or Slim code if you’ve stated you prefer Haml or Slim.</p>
-<p>The <em>routes</em> recipe adds the routes needed for the RailsApps example applications. For a simple home page, the standard <strong>config/routes.rb</strong> file is manipulated with the <code>gsub_file</code> method. For more complex applications, routes files are downloaded from the RailsApps repos. Note that downloaded files must be tweaked with <code>gsub_file</code> to set the correct application name.</p>
+<p>The <em>routes</em> recipe adds the routes needed for the RailsApps example applications. For a simple home page, the standard <strong>config/routes.rb</strong> file is manipulated with the <code>gsub_file</code> method. For more complex applications, routes files are downloaded from the RailsApps example apps. Note that downloaded files must be tweaked with <code>gsub_file</code> to set the correct application name.</p>
 <h4>Frontend</h4>
 <p>The <em>frontend</em> recipe installs a default application layout file, complete with partials for navigation links and Rails flash messages. The files are downloaded from the RailsApps repos. The rails_apps_composer <code>copy_from_repo</code> method automatically translates <span class="caps">ERB</span> view templates into Haml or Slim code as needed. The <em>frontend</em> recipe also installs <span class="caps">CSS</span> and Javascript files, adding Twitter Bootstrap or other front-end frameworks as required.</p>
 <p>You can modify the <em>frontend</em> recipe (and submit a pull request) if you have a favorite front-end configuration that other developers might like. For example, rails_apps_composer 2.0 didn’t include Thoughtbot’s popular Bourbon Sass mixin library; you could modify the <em>frontend</em> recipe to offer it as an option.</p>
@@ -211,7 +209,6 @@ question  Install a starter app?
 <pre>
 $ rails_apps_composer list
 
-auth           # Add authentication and authorization.
 controllers    # Add controllers needed for starter apps.
 core           # Select all core recipes.
 email          # Configure email accounts.
@@ -261,7 +258,6 @@ Would you like to skip Test::Unit? (yes for RSpec) (y/n)
 Would you like to skip Active Record? (yes for MongoDB) (y/n)
 
 Available Recipes:
-auth: auth
 collections: core
 configuration: email, gems, git, railsapps, readme, setup
 example: example
@@ -307,7 +303,6 @@ $ rails_apps_composer new myapp -d my_defaults.yaml
 $ rails_apps_composer template ~/Desktop/template.rb
 
 Available Recipes:
-auth: auth
 collections: core
 configuration: email, gems, git, railsapps, readme, setup
 example: example
@@ -999,7 +994,6 @@ recipes:
 - readme
 - gems
 - testing
-- auth
 - email
 - models
 - controllers
@@ -1095,7 +1089,7 @@ args:
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-26 06:34:43</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-29 16:42:58</p>
       </div>
     </div>
 
