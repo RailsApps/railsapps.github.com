@@ -46,11 +46,11 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 August 2012</em></p>
+<p><em>Last updated 30 August 2012</em></p>
 <p>Installing Rails 3.2.8: Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails, emphasizing updates to the complete development environment.</p>
 <h3>From the RailsApps Project</h3>
-<p>This is a guide for developers using the example apps from the RailsApps repository. Get open source apps and detailed Rails tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>. And try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
+<p>This is a guide for developers using the example apps from the RailsApps repository. Get open source apps and detailed Rails tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>. Try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool for a better way to build a starter app.</p>
 <p>If you’re new to Rails, see a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Shortcuts</h2>
@@ -87,8 +87,8 @@
 <p>You may have heard that it is good practice to use the command <code>bundle exec rake</code> instead of <code>rake</code> to force use of executables specified in your gemfile (or a dependency specified in the Gemfile.lock file) instead of other versions. For example, instead of <code>rake db:migrate</code>, run <code>bundle exec rake db:migrate</code>. If you’re using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, as recommended below, you don’t need to use <code>bundle exec rake</code> instead of <code>rake</code> (rvm versions 1.11.0 and newer include the rubygems-bundler gem to handle this).</p>
 <p><em>What You Need to Know:</em> Make sure you are using Rake 0.9.2.2 (or <a href="http://rubygems.org/gems/rake">newer</a>) with <code>gem update rake</code> before installing Rails 3.2.</p>
 <h4>Bundler</h4>
-<p><a href="http://gembundler.com/">Bundler</a> version 1.1.5 was released July 17, 2012. However, the newest version is Bundler 1.2.0.rc.2. This version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. You should install Bundler 1.2.0.rc.2 if you plan to deploy to Heroku. Version 1.1.0 released March 7, 2012 improved speed significantly. See the <a href="https://github.com/carlhuda/bundler/blob/master/CHANGELOG.md"><span class="caps">CHANGELOG</span></a>.</p>
-<p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. Be sure to install Bundler 1.2.0.rc.2 if you plan to deploy to Heroku.</p>
+<p><a href="http://gembundler.com/">Bundler</a> version 1.2.0 was released August 30, 2012. This version lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. See <a href="http://gembundler.com/v1.2/whats_new.html">What’s New in Bundler 1.2</a>. Specifying a Ruby version is required if you plan to deploy to Heroku. It also helps rvm switch to the right Ruby version. And it prevents people from running your code with the wrong version of Ruby.</p>
+<p><em>What You Need to Know:</em> Use <code>gem update bundler</code> to upgrade to the <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>. You’ll need Bundler 1.2.0 or newer if you plan to deploy to Heroku.</p>
 <h2 id="ruby">Installing Ruby 1.9.3 and rvm</h2>
 <p>These instructions prepare your computer for installation of Rails.</p>
 <p>If you’ve already installed Ruby 1.9.3 and rvm, skip ahead to the section <a href="#gems">Updating the Gems.</a></p>
@@ -234,20 +234,18 @@ $ rake --version
 </pre>
 <h4>Update Rubygems-Bundler</h4>
 <p>The newest version is needed if you intend to use the newest version of Bundler. Rubygems-Bundler version 1.0.7 was current when this was written.</p>
-<p>Update to the <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>.</p>
+<p>Update to the <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>:</p>
 <pre>
 $ rvm gemset use global
 $ gem update rubygems-bundler
 $ gem list
 </pre>
 <h4>Update Bundler</h4>
-<p><a href="http://gembundler.com/">Bundler</a> version 1.2.0.rc.2 was released August 9, 2012. You’ll need this version (or newer) if you plan to deploy to Heroku.</p>
-<p>You can’t simply upgrade to the pre-release version; you must uninstall and then install:</p>
+<p><a href="http://gembundler.com/">Bundler</a> version 1.2.0 was released August 30, 2012. You’ll need this version (or newer) if you plan to deploy to Heroku:</p>
 <pre>
 $ rvm gemset use global
-$ gem uninstall -ax bundler
-$ gem install bundler --pre
-$ bundle --version
+$ gem update bundler
+$ gem list
 </pre>
 <h4>When Updates Don’t Work</h4>
 <p>The command <code>gem update</code> is usually all you need. But if you need to upgrade to the pre-release version of a gem you may need to uninstall and then install. For example, to install a pre-release version of Bundler:</p>
@@ -445,7 +443,7 @@ $ echo "rvm ruby-1.9.3-p194@rails32 --create" &gt; .rvmrc
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-29 16:42:58</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-30 18:29:25</p>
       </div>
     </div>
 
