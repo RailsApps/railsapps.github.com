@@ -47,31 +47,51 @@
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
 <p><em>Last updated 31 August 2012</em></p>
-<p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available in the <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> GitHub repository from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
-<p>Screenshot:</p>
+<p>Ruby on Rails tutorial for a web application. Recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
-<p>The initial app for a typical web startup announces the founders’ plans and encourages visitors to enter an email address for future notification of the site’s launch. It’s not difficult to build such an app in Rails.</p>
-<p>But why build it yourself if others have already done so? This project aims to:</p>
+<p>SaaS (software-as-a-service) applications are the most common applications that startups build. SaaS applications share much in common with other membership sites that restrict access to users with paid subscriptions. By definition, SaaS sites restrict use of web-based software to paid subscribers; other forms of membership sites restrict access to content such as articles, videos, or user forums. Whether you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
-<li>eliminate effort spent building an application that meets a common need;</li>
+<li>user management to register or remove users</li>
+	<li>access control to limit site-wide access to authenticated users</li>
+	<li>authorization management to restrict access to content or services based on role or other characteristics</li>
+	<li>account management to maintain records of subscription status</li>
+	<li>a recurring billing system for periodic payment transactions</li>
+	<li>valuable content or web functionality to drive purchases</li>
+	<li>landing pages to convert visitors to paying customers</li>
+</ul><p>Developers have been building this type of application since the soon after the web was born. Why build it yourself if others have already done so?</p>
+<p>The <a href="http://railsapps.github.com/">RailsApps Project</a> aims to:</p>
+<ul>
+<li>eliminate effort spent building applications that meet a common need;</li>
 	<li>offer code that is already implemented and tested by a large community;</li>
-	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
+	<li>provide well-thought-out apps containing most of the features you’ll need.</li>
 </ul><p>By using code from this project, you’ll be able to:</p>
 <ul>
-<li>direct your attention to the design and product offer for your prelaunch site;</li>
-	<li>get started faster building the ultimate application for your business.</li>
-</ul><p>The tutorial can help founders who are new to Rails to learn how to build a real-world Ruby on Rails web application.</p>
-<h3>Why We Use Devise</h3>
-<p>We’ve chosen to use the <a href="http://github.com/plataformatec/devise">Devise</a> gem for our authentication and user management.</p>
-<p>We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. By using Devise for the prelaunch signup application, you can use the same user database for your post-launch product. You’ll also have the benefit of receiving help from a large community of developers using Devise, should you need help in troubleshooting or customizing the implementation.</p>
-<h3>How We Configure Devise</h3>
-<p>Devise offers many features and configuration choices; in fact, exploring its options can take more time than actually implementing authentication from scratch. This app will save you time; we’ve selected the configuration that best accommodates a typical web startup signup site.</p>
-<p>Devise handles signing up users through a registration feature. We use the Devise registration process to collect email addresses and create user accounts. Instead of confirming an email address immediately, we email a “thank you for your request” acknowledgment and postpone the email confirmation step. When you are ready to invite users to the site, go to the app’s administrative interface. Then select users to receive an invitation that instructs them to confirm their email address and set a password.</p>
-<p>If you want something different, look for help on the <a href="https://github.com/plataformatec/devise/wiki">Devise wiki</a> and <a href="http://stackoverflow.com/questions/tagged/devise">Stack Overflow</a>.</p>
+<li>direct your attention to the design and features that make your business unique;</li>
+	<li>get a fast start building and launching the application you need for your business.</li>
+</ul><p>This tutorial is useful to experienced developers who want to skip trail-and-error coding or researching of implementation approaches. The complete application is available on GitHub; this tutorial provides the detail and background to understand the implementation in depth.</p>
+<p>The tutorial can also help startup founders or hobbyist coders who are new to Rails. This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<h3>Building Blocks</h3>
+<p>One of the strengths of Rails as a web platform is the diverse and robust ecosystem of RubyGems, open source code libraries that can be integrated into any Rails project. Any Rails application is a combination of gems. The RailsApps project aims to provide example applications that show how to integrate the most popular gems.</p>
+<p>This application uses:</p>
+<ul>
+<li>
+<a href="http://github.com/plataformatec/devise">Devise</a> gem for user management and authentication</li>
+	<li>
+<a href="https://github.com/ryanb/cancan">CanCan</a> with <a href="https://github.com/EppO/rolify">Rolify</a> for authorization</li>
+	<li>
+<a href="https://stripe.com/">Stripe</a> for recurring billing</li>
+</ul><h3>Devise</h3>
+<p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be.</p>
+<p>We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. You’ll have the benefit of receiving help from a large community of developers using Devise, should you need help in troubleshooting or customizing the implementation.</p>
+<h3>CanCan with Rolify</h3>
+<p>CanCan provides a system for authorization to determine if an authenticated user should have access to secured resources. The most basic use case is to restrict access to administrative pages to administrators. This application will also demonstrate how to provide restrict content based on the price a user has paid for a subscription.</p>
+<p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to implement role-based authorization for use with CanCan. For this example, we use Florent Monbillard’s Rolify gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
+<h3>Stripe</h3>
+<p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low volume startups.</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p>This application is based on two of the RailsApps example apps:</p>
@@ -81,14 +101,14 @@
 </ul><p>The first example shows how to set up Devise for user authentication. It also shows how to set up the app to use RSpec and Cucumber for testing.</p>
 <p>The second example shows how to set up Devise and add CanCan to manage access to administrative pages. It also shows how to set up Twitter Bootstrap as a front-end framework for <span class="caps">CSS</span> styling.</p>
 <p>You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
-<p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
+<p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at the  <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
+<p>Finally, be sure to look at the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example. It is useful if you want to quickly create a site to announce your plans and encourage visitors to enter an email address for future notification of the site’s launch.</p>
 <h2>
 <img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
-<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, little explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please leave a comment when you are done.)</p>
 <h2>Before You Start</h2>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a>.</p>
+<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in the GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
+<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, leave comments below.</p>
 <h2>Accounts You May Need</h2>
 <p>Before you start, you may need to set up accounts for hosting, email, and a source control repository.</p>
@@ -224,7 +244,7 @@ $ rails new rails-prelaunch-signup -m https://raw.github.com/RailsApps/rails3-ap
 As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
 </pre>
 <p>As an example, here are four user stories we will implement for this application.</p>
-<p>You may have ideas for additional features for this application. If you’d like to make a suggestion, create a <a href="http://github.com/RailsApps/rails-prelaunch-signup/issues">GitHub issue</a> describing the feature you’d like to see.</p>
+<p>You may have ideas for additional features for this application. If you’d like to make a suggestion, create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a> describing the feature you’d like to see.</p>
 <pre>
 *Request Invitation*
 As a visitor to the website
@@ -2663,7 +2683,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
 
       <div class="span4">
         <h3>Last edit</h3>
-        <p>by <b>Daniel Kehoe</b>, 2012-08-31 13:20:03</p>
+        <p>by <b>Daniel Kehoe</b>, 2012-08-31 17:16:14</p>
       </div>
     </div>
 
