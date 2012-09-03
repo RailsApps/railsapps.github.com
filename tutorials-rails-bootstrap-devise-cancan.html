@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>tutorial rails bootstrap devise cancan &#183; RailsApps</title>
+    <title>Rails Tutorial &#183; Devise with CanCan and Twitter Bootstrap &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
@@ -72,6 +72,14 @@
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, please leave comments below.</p>
+<h2>Assumptions</h2>
+<p>Before beginning this tutorial, you need to install</p>
+<ul>
+<li>The Ruby language (version 1.9.3 or newer)</li>
+	<li>Rails 3.2</li>
+</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
+<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
+<p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Creating the Application</h2>
 <p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
 <h3>Copy from the Tutorial</h3>
@@ -99,22 +107,38 @@ question  Install an example application?
       5)  rails3-mongoid-omniauth
       6)  rails3-subdomains
 </pre>
-<p>Choose <strong>2) rails3-bootstrap-devise-cancan</strong>.</p>
-<p>The application generator template will ask you for additional preferences.</p>
-<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
-<p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
-<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
-<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
-<p>Finally, the program will ask if you want to create a GitHub repository.</p>
-<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-bootstrap-devise-cancan folder and running the command again.</p>
-<h2>Assumptions</h2>
-<p>Before beginning this tutorial, you need to install</p>
-<ul>
-<li>The Ruby language (version 1.9.3 or newer)</li>
-	<li>Rails 3.2</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
-<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
-<p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
+<p>Choose <strong>rails3-bootstrap-devise-cancan</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written).</p>
+<p>The application generator template will ask you for additional preferences:</p>
+<pre>
+ question  Web server for development?
+       1)  WEBrick (default)
+       2)  Thin
+       3)  Unicorn
+       4)  Puma
+ question  Web server for production?
+       1)  Same as development
+       2)  Thin
+       3)  Unicorn
+       4)  Puma
+ question  Template engine?
+       1)  ERB
+       2)  Haml
+       3)  Slim
+   extras  Set a robots.txt file to ban spiders? (y/n)
+   extras  Create a project-specific rvm gemset and .rvmrc? (y/n)
+   extras  Create a GitHub repository? (y/n)
+</pre>
+<h4>Web Servers</h4>
+<p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
+<h4>Template Engine</h4>
+<p>Choose “<span class="caps">ERB</span>” if you wish to duplicate the tutorial exactly.</p>
+<h4>Other Choices</h4>
+<p>Don’t set a robots.txt file to ban spiders if you want your new site to appear in Google search results.</p>
+<p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file. See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
+<h4>Troubleshooting</h4>
+<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the application folder and running the command again. You may need to create a new rvm gemset to avoid activating outdated gems.</p>
+<p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <h2>Create the Rails Application</h2>
 <p>Beginning here, we show how to create the application from scratch.</p>
 <p>(This has already been done for you if you use the the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool.)</p>
