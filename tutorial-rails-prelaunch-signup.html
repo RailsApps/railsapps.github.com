@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Startup Prelaunch Signup Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 25 August 2012</em></p>
+<p><em>Last updated 2 September 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a “beta launching soon” application for a startup prelaunch site with a signup page. You can clone the <a href="http://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> repository for the complete example application.</p>
 <p>Screenshot:</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
@@ -695,9 +695,10 @@ class User &lt; ActiveRecord::Base
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
+  validates_confirmation_of :password
   def password_required?
     if !persisted? 
-      false
+      !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
@@ -823,9 +824,10 @@ class User &lt; ActiveRecord::Base
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
+  validates_confirmation_of :password
   def password_required?
     if !persisted? 
-      false
+      !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
@@ -940,9 +942,10 @@ class User &lt; ActiveRecord::Base
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
+  validates_confirmation_of :password
   def password_required?
     if !persisted? 
-      false
+      !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
@@ -1119,21 +1122,16 @@ $ git checkout -b modal
 <p>The revised view code includes <span class="caps">CSS</span> classes from Twitter Bootstrap that implement the modal window and apply style to the buttons. You’ll note that our code includes some simple style rules to position the romance copy and the call-to-action button. These styles could be moved to an external stylesheet; for now, it’s easier to include them in the view file.</p>
 <h3>Display Errors</h3>
 <p>Displaying the “request invitation” form inside a modal window is a nice touch but it creates a problem: Form validation error messages are hidden. See for yourself by running the application. Open the modal window, leave the email field blank and click the submit button. You’ll see the home page without any indication that there was a problem. Click the home page “Request Invite” button again and you’ll see there is an error message in the modal window.</p>
-<p>Our first option is to force the form to be displayed when errors are present. We can do this by modifying the first line like this:</p>
+<p>We want to force the form to be displayed when errors are present. We can do this by modifying the first line of the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;div id="request-invite" class="modal" style="display: &lt;%= @user.errors.any? ? 'block' : 'none';%&gt;"&gt;
+</pre>
+<p>If you prefer Haml, it looks like this:</p>
+<p><strong>app/views/devise/registrations/new.html.haml</strong></p>
 <pre>
 #request-invite.modal{:style =&gt; "display: #{@user.errors.any? ? 'block' : 'none'};"}
 </pre>
-<p>When you test this by submitting a form without an email address, you’ll see the form appears with error messages. However, we don’t see the full effect of the modal window because the page is not opaque as it should be with the modal window. We can keep the modified code, but we really need some jQuery code to trigger the modal window when an error message is present.</p>
-<p>Add the following to the file <strong>app/assets/javascripts/application.js</strong>:</p>
-<pre>
-$('document').ready(function() {
-  // display validation errors for the "request invitation" form
-  if ($('.alert-error').length &gt; 0) {
-    $("#request-invite").modal('toggle');
-  }
-})
-</pre>
-<p>When an element is present with the <code>alert-error</code> class, and it contains text, the page will refresh and the modal window will be displayed properly. We use jQuery’s selector syntax to determine if an error message is present. We start with the jQuery object <code>$()</code>, find any elements with the <code>alert-error</code> class attribute using the <a href="http://api.jquery.com/class-selector/">jQuery class selector</a>, and then test if the element has a length greater than zero. If our condition is met, we use the <a href="http://api.jquery.com/id-selector/">jQuery ID selector</a> to find the div named <code>request-invite</code> and we toggle the modal window.</p>
+<p>When you test this by submitting a form without an email address, you’ll see the form appears with error messages.</p>
 <h2>Improving the Design: Adding <span class="caps">AJAX</span>
 </h2>
 <p><em>Thank you to <a href="http://andreapavoni.com">Andrea Pavoni</a> for the <span class="caps">AJAX</span> implementation.</em></p>
@@ -1176,10 +1174,11 @@ $('document').ready(function() {
   // use AJAX to submit the "request invitation" form
   $('#invitation_button').live('click', function() {
     var email = $('form #user_email').val();
+    var opt_in;
     if($('form #user_opt_in').is(':checked'))
-        var opt_in = true;
+        opt_in = true;
     else
-        var opt_in = false;
+        opt_in = false;
     var dataString = 'user[email]='+ email + '&amp;user[opt_in]=' + opt_in;
     $.ajax({
       type: "POST",
@@ -1199,7 +1198,7 @@ $('document').ready(function() {
 <pre>
 class RegistrationsController &lt; Devise::RegistrationsController
 
-  # ovverride #create to respond to AJAX with a partial
+  # override #create to respond to AJAX with a partial
   def create
     build_resource
 
@@ -1726,7 +1725,7 @@ class UsersController &lt; ApplicationController
     authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
     @user.send_confirmation_instructions
-    redirect_to :back, :notice =&gt; "Sent invitation to #{@user.email}."
+    redirect_to :back, :only_path =&gt; true, :notice =&gt; "Sent invitation to #{@user.email}."
   end
   
   private
@@ -1745,7 +1744,7 @@ class UsersController &lt; ApplicationController
 end
 </pre>
 <p>CanCan’s <code>authorize!</code> method ensures that only an administrator is authorized to initiate the <code>invite</code> action.</p>
-<p>The <code>invite</code> action will use Devise’s supplied <code>send_confirmation_instructions</code> method to generate a confirmation token and send an email to the selected user. Then it will redirect the administrator back to a previous page.</p>
+<p>The <code>invite</code> action will use Devise’s supplied <code>send_confirmation_instructions</code> method to generate a confirmation token and send an email to the selected user. Then it will redirect the administrator back to a previous page. The redirect method takes an extra argument <code>:only_path =&gt; true</code> to avoid a potential security vulnerability. Without this precaution, the <a href="http://brakemanscanner.org/">Brakeman</a> security scanner warns of <a href="http://brakemanscanner.org/docs/warning_types/redirect/">unvalidated redirects</a>.</p>
 <h3>Add a Route</h3>
 <p>Modify <strong>config/routes.rb</strong> to add the new action. Replace <code>resources :users, :only =&gt; [:show, :index]</code> with:</p>
 <pre>
@@ -1894,7 +1893,7 @@ class UsersController &lt; ApplicationController
     authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
     @user.send_confirmation_instructions
-    redirect_to :back, :notice =&gt; "Sent invitation to #{@user.email}."
+    redirect_to :back, :only_path =&gt; true, :notice =&gt; "Sent invitation to #{@user.email}."
   end
   
   def bulk_invite
@@ -1903,7 +1902,7 @@ class UsersController &lt; ApplicationController
     users.each do |user|
       user.send_confirmation_instructions
     end
-    redirect_to :back, :notice =&gt; "Sent invitation to #{users.count} users."
+    redirect_to :back, :only_path =&gt; true, :notice =&gt; "Sent invitation to #{users.count} users."
   end
   
   private
@@ -1921,7 +1920,7 @@ class UsersController &lt; ApplicationController
 
 end
 </pre>
-<p>The <code>bulk_invite</code> action has a few peculiarities. First, we only select users where the <code>:confirmation_token</code> attribute is null. Devise sets a confirmation token when we send an invitation; with this constraint, we only invite users who have not been previously invited. Second, we make sure we select the oldest records first with the <code>order(:created_at)</code> method. Finally, we limit the number of records that are retrieved to the size of the batch we want; then we loop over each to send an invitation.</p>
+<p>The <code>bulk_invite</code> action has a few peculiarities. First, we only select users where the <code>:confirmation_token</code> attribute is null. Devise sets a confirmation token when we send an invitation; with this constraint, we only invite users who have not been previously invited. Second, we make sure we select the oldest records first with the <code>order(:created_at)</code> method. We limit the number of records that are retrieved to the size of the batch we want; then we loop over each to send an invitation. Finally we set a notice and return to the admin page (we use the extra argument <code>:only_path =&gt; true</code> to avoid a potential security vulnerability).</p>
 <p>Modify <strong>config/routes.rb</strong> to add the new action:</p>
 <pre>
 RailsPrelaunchSignup::Application.routes.draw do
@@ -2278,9 +2277,10 @@ class User &lt; ActiveRecord::Base
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
+  validates_confirmation_of :password
   def password_required?
     if !persisted? 
-      false
+      !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end

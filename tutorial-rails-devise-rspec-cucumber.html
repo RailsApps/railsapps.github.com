@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with RSpec and Cucumber</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 August 2012</em></p>
+<p><em>Last updated 1 September 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
 <ul>
 <li>
@@ -208,6 +208,29 @@ end
 	<li><strong>spec/spec_helper.rb</strong></li>
 </ul><p>In you did not include the -T option when you ran rails new, you can remove the <strong>test</strong> folder (it is not needed for RSpec):</p>
 <p><code>$ rm -rf test/</code></p>
+<h4>Database Cleaner for RSpec</h4>
+<p>To reset your application database to a pristine state during testing, you can use <a href="http://github.com/bmabey/database_cleaner">Database Cleaner</a> with RSpec.</p>
+<p>Modify the file <strong>spec/spec_helper.rb</strong> to add Database Cleaner before the final <code>end</code>:</p>
+<pre>
+.
+.
+.
+RSpec.configure do |config|
+.
+.
+.
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+end
+</pre>
+<p>Don’t copy the dots. Leave the file intact and just add the Database Cleaner lines.</p>
 <h4>Add Factory Girl for Test Objects</h4>
 <p>The  <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> gem is used to create default model objects for tests. For example, if a controller action requires finding a User object before displaying a “show” page, Factory Girl will create a user just for a test of the controller. You’ll need <code>gem 'factory_girl_rails', :group =&gt; :test</code> in your Gemfile.</p>
 <p>You’ll need a <strong>spec/factories/users.rb</strong> file to contain the factory definitions for any default objects used for testing. You can create one like this:</p>
