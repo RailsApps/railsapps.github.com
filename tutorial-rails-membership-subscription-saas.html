@@ -61,8 +61,8 @@
 	<li>authorization management to restrict access to content or services based on role or other characteristics</li>
 	<li>account management to maintain records of subscription status</li>
 	<li>a recurring billing system for periodic payment transactions</li>
-	<li>valuable content or web functionality to drive purchases</li>
 	<li>landing pages to convert visitors to paying customers</li>
+	<li>content or web functionality to deliver value</li>
 </ul><p>Developers have been building this type of application since soon after the web was born. Why build it yourself if others have already done so? This example application from the <a href="http://railsapps.github.com/">RailsApps Project</a> aims to:</p>
 <ul>
 <li>eliminate effort spent building an application that meets a common need;</li>
@@ -142,9 +142,11 @@
 </ul><p>The list shows the year each service was founded. In general, since the market is highly competetive, the newer services are less expensive and offer better integration, interfaces, and features.</p>
 <p>Several blog posts compare services and pricing:</p>
 <ul>
-<li><a href="http://blog.subscrea.com/recurring-billing/peeling-the-onion-called-recurring-billing-part-ii/" title="July 2012">Peeling the onion called recurring billing</a></li>
-	<li><a href="http://expletiveinserted.com/2011/03/18/comparing-recurring-payment-solutions/" title="March 2011">Comparing Recurring Payment Solutions</a></li>
-</ul><p>See a web-based calculator to compare pricing:</p>
+<li>
+<a href="http://blog.subscrea.com/recurring-billing/peeling-the-onion-called-recurring-billing-part-ii/">Peeling the onion called recurring billing</a> (July 2012)</li>
+	<li>
+<a href="http://expletiveinserted.com/2011/03/18/comparing-recurring-payment-solutions/">Comparing Recurring Payment Solutions</a> (March 2011)</li>
+</ul><p>You can use a web-based calculator to compare pricing of some services:</p>
 <ul>
 <li><a href="http://www.billingsavvy.com/">BillingSavvy</a></li>
 </ul><p>BillingSavvy shows Stripe is cheaper than Recurly for less than 600 subscribers. Over 600 subscribers, Recurly becomes cheaper. Stripe and Recurly are always cheaper than Chargify, CheddarGetter and Spreedly for $12/month subscriptions.</p>
@@ -260,7 +262,7 @@ question  Install an example application?
 </pre>
 <h4>Prelaunch App</h4>
 <p>If you’re planning a prelaunch promotion campaign, or if you need a placeholder page while you build your website, you can a install a prelaunch app.</p>
-<p>If you install a prelaunch app, the generator will ask if you want to create Git branches. This allows you to maintain two versions of the application: one for immdediate deployment as a prelaunch app; and another version that you can use for ongoing development. I recommend deploying the prelaunch app in the “master” branch. Work on your ultimate application in a work-in-progress or “wip” branch.</p>
+<p>If you install a prelaunch app, the generator will ask if you want to create Git branches. This allows you to maintain two versions of the application: one for immediate deployment as a prelaunch app; and another version that you can use for ongoing development. I recommend deploying the prelaunch app in the “master” branch. Work on your ultimate application in a work-in-progress or “wip” branch.</p>
 <h4>Web Servers</h4>
 <p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
 <h4>Template Engine</h4>
@@ -272,47 +274,28 @@ question  Install an example application?
 <h4>Troubleshooting</h4>
 <p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the application folder and running the command again. You may need to create a new rvm gemset to avoid activating outdated gems.</p>
 <p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
-<h2>About the Software Development Process</h2>
-<p>Arguably, for a simple application like this, you don’t need a lot of “ceremony.” There’s no need for a written specification. And no need for tests, right? Just write some code. However, for this tutorial, I will show practices that establish an effective software development process. If you’re a solo operator, these practices can help; if you plan on growing a company, they are fundamental.</p>
-<p>Here’s the software development process we’ll use:</p>
+<h2>Testing and the Software Development Process</h2>
+<p>Testing is at the core of any robust software development process. Integration tests determine whether the application’s features work as expected. Unit tests confirm that the smallest testable portions of the application continue to work as written throughout the process of adding and modifying features and refactoring code. If you customize or extend this application, you should include testing as part of your software development process.</p>
+<p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). Hence there is no time spent showing you how to write tests.</p>
+<h2>Architecture and Implementation</h2>
+<p>Here is a high-level abstraction of the application, as a list of systems:</p>
 <ul>
-<li>write user stories</li>
-	<li>write a short specification for our feature set using Cucumber scenarios</li>
-	<li>create acceptance tests using Cucumber step definitions</li>
-	<li>code each feature</li>
-	<li>run acceptance tests as each feature is completed</li>
-</ul><p>By practicing the process that leads from concept to code, you’ll learn how <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">behavior-driven development</a> (<span class="caps">BDD</span>) can be used to manage software development. And you’ll be better prepared to build more complex applications.</p>
-<p>We’ll also (briefly) discuss alternatives to Cucumber (RSpec and Capybara) that may be more appropriate for smaller projects.</p>
-<h3>Write Your User Stories</h3>
-<p>User stories (definition: <a href="http://en.wikipedia.org/wiki/User_story">user stories</a>) are a way to discuss and describe the requirements for a software application. The process of writing user stories will help you identify all the features that are needed for your application. Breaking down the application’s functionality into discrete user stories will help you organize your work and track progress toward completion.</p>
-<p>User stories are generally expressed in the following format:</p>
-<pre>
-As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
-</pre>
-<p>As an example, here are four user stories we will implement for this application.</p>
-<p>You may have ideas for additional features for this application. If you’d like to make a suggestion, create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a> describing the feature you’d like to see.</p>
-<pre>
-*Request Invitation*
-As a visitor to the website
-I want to request an invitation 
-so I can be notified when the site is launched
-
-*See Invitation Requests*
-As the owner of the site
-I want to view a list of visitors who have requested invitations
-so I can know if my offer is popular
-
-*Send Invitations*
-As the owner of the site
-I want to send invitations to visitors who have requested invitations
-so users can try the site
-
-*Collect Email Addresses*
-As the owner of the site
-I want to collect email addresses for a mailing list
-so I can send announcements before I launch the site
-</pre>
-<p>We’ll use this list of user stories as our to-do list in implementing the application. But first we’ll step through the process of creating a basic Rails application.</p>
+<li>user management using Devise (to register or remove users)</li>
+	<li>authentication using Devise (log in and log out)</li>
+	<li>authorization management using CanCan and Rolify (access limited by subscription plan)</li>
+	<li>account management to maintain records of subscription status</li>
+	<li>recurring billing using Stripe</li>
+	<li>landing pages</li>
+	<li>content pages</li>
+</ul><p>The tutorial for the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application shows how to set up user management and authentication using Devise, as well as authorization management using CanCan and Rolify.</p>
+<p>There are several systems. Content is the information or service that is valuable to the user. Access control limits access to the content or application functionality. A recurring billing system stores the users’ credit card data and initiates payment transactions. A subscription management system keeps account records so the access control system will know which users are current subscribers.</p>
+<p>Content. For the example app, members gain access to text on web pages. The content could be photo galleries, videos, or downloadable ebooks. For a SaaS site, members could gain access to a web application.</p>
+<p>Access control. The example app uses Devise for authentication and user management. With CanCan and Rolify for authorization.</p>
+<p>Recurring billing system. The example app uses Stripe.</p>
+<p>Subscription management. The subscription management system must keep the access control system and the billing system in sync. Two approaches are possible: manage all subscriptions within the membership application or use Stripe to manage subscriptions. If Stripe is used to manage subscriptions, we must use webhooks to update account records when a trial subscription expires or a credit card authorization fails. Alternatively, we can build all the functionality of Stripe into our application and simply use Stripe to store the credit card info, using a daily cron job to initiate billing through Stripe when a user’s account comes due.</p>
+<p>Models. The User model. Each user can have a Subscription (one to one association). The subscription model has a status attribute which can be active, past_due, cancelled or unpaid. Use Stripe webhooks to set the status of the subscription.</p>
+<p>If you don’t use the Stripe webhooks, you would have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration.</p>
+<p>You will be notified immediately by stripe so there is no need incur the overhead of checking constantly. If stripe for some reason cannot make the callback, it will retry several times with exponential backoff so it is very robust.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
 <p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a more complex “starter” app. The starter app simplifies the tutorial. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps to build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
