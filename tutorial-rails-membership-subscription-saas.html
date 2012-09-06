@@ -46,8 +46,8 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 4 September 2012</em></p>
-<p>Ruby on Rails tutorial for a web application. Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
+<p><em>Last updated 6 September 2012</em></p>
+<p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
@@ -73,7 +73,7 @@
 <li>direct your attention to the design and features that make your business unique;</li>
 	<li>get a fast start building and launching the application you need for your business.</li>
 </ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
-<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. Rails beginners will find this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h3>Building Blocks</h3>
 <p>One of the strengths of Rails as a web platform are RubyGems, open source code libraries that can be integrated into any Rails project. The RailsApps project aims to provide example applications that integrate the most popular gems.</p>
 <p>This application puts together these gems:</p>
@@ -106,12 +106,12 @@
 <h2>
 <img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> The Tutorial</h2>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please leave a comment when you are done.)</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
+<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
 <p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in the GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>. Please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a> if the repository version of the application doesn’t work as expected.</p>
 <h2>Accounts You May Need</h2>
-<p>Before you start, you will need accounts for recurring billing, hosting, email, and a source control repository.</p>
+<p>Before you start, you will need accounts for <em>recurring billing</em>, <em>hosting</em>, <em>email</em>, and a <em>source control repository</em>.</p>
 <h3>Billing</h3>
 <p>Many providers of billing services want your business:</p>
 <ul>
@@ -209,6 +209,7 @@
 	<li>Rails 3.2</li>
 </ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
+<p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
 <h2>Creating the Application</h2>
 <p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
 <h3>Copy from the Tutorial</h3>
@@ -275,31 +276,31 @@ question  Install an example application?
 <p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the application folder and running the command again. You may need to create a new rvm gemset to avoid activating outdated gems.</p>
 <p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <h2>Testing and the Software Development Process</h2>
-<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected. Unit tests confirm that the smallest testable portions of the application continue to work as written throughout the process of adding and modifying features and refactoring code.</p>
-<p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests.</p>
+<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that the smallest testable portions of the application continue working as developoers add features and refactor code.</p>
+<p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
 <h2>Architecture and Implementation</h2>
 <p>Here is a high-level abstraction of the application, as a list of systems:</p>
 <ul>
-<li>user management using Devise (to register or remove users)</li>
-	<li>authentication using Devise (log in and log out)</li>
-	<li>authorization management using CanCan and Rolify (access determined by the subscription plan)</li>
+<li>user management with Devise (to register or remove users)</li>
+	<li>authentication with Devise (log in and log out)</li>
+	<li>authorization management with CanCan and Rolify (access determined by the subscription plan)</li>
 	<li>account management to maintain records of subscription status</li>
-	<li>recurring billing using Stripe</li>
+	<li>recurring billing with Stripe</li>
 	<li>landing pages</li>
 	<li>content or service pages</li>
 </ul><h3>User Management, Authentication, Authorization</h3>
 <p>The tutorial for the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application shows how to set up user management and authentication using Devise, as well as authorization management using CanCan and Rolify. The first step in the tutorial will be to generate the rails3-bootstrap-devise-cancan application as a starter app.</p>
 <p>Users are managed with the User model, which has attributes for name, email, and password, as well as some fields provided by Devise such as sign_in_count. The Devise gem provides its own controllers for managing sessions, registration, email confirmation and similar functions. You won’t see these controllers as they are hidden in the gem itself.</p>
-<p>CanCan uses an Ability model to set access control rules. We’ll modify the Ability model to set access rules based on subscription plans. We’ll use the Role model provided by Rolify to define roles based on subscription plans.</p>
+<p>CanCan uses an Ability model to set access control rules. We’ll modify the Ability model to set access rules based on subscription plans. We’ll use the Role model required by Rolify to define roles based on subscription plans.</p>
 <h3>Account Management</h3>
-<p>The account management system keeps subscription records so the access control system can determine which users are current subscribers. We’ll create a Subscription model. Each user can have a Subscription (a one-to-one association). The Subscription model has a status attribute which can be active, past_due, cancelled or unpaid.</p>
+<p>The account management system keeps subscription records so the access control system can determine which users are current subscribers. We’ll create a Subscription model. Each user can have a Subscription (a one-to-one association with a User). The Subscription model has a status attribute which can be active, past_due, cancelled or unpaid.</p>
 <h3>Recurring Billing</h3>
 <p>The recurring billing system stores the users’ credit card data and initiates payment transactions.</p>
-<p>Subscription management. The subscription management system must keep the access control system and the billing system in sync. Two approaches are possible: manage all subscriptions within the membership application or use Stripe to manage subscriptions. If Stripe is used to manage subscriptions, we must use webhooks to update account records when a trial subscription expires or a credit card authorization fails. Alternatively, we can build all the functionality of Stripe into our application and simply use Stripe to store the credit card info, using a daily cron job to initiate billing through Stripe when a user’s account comes due.</p>
-<p>We use Stripe webhooks to set the status of the subscription. If you don’t use the Stripe webhooks, you would have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration.</p>
-<p>You will be notified immediately by stripe so there is no need incur the overhead of checking constantly. If stripe for some reason cannot make the callback, it will retry several times with exponential backoff so it is very robust.</p>
+<p>Two approaches are possible in building a recurring billing system. You could implement a complete billing management system as part of the application. This would require building a mechanism to check for expiring subscriptions (typically a daily cron job) and initiate payment requests through Stripe when a user’s account comes due. With this approach, you would use Stripe only for processing credit card transactions. But there’s no good reason to implement recurring billing yourself. Stripe provides a complete, well-tested, and hosted mechanism for recurring billing. We’ll use Stripe’s <span class="caps">API</span> to supply the recurring billing services we need.</p>
+<p>A key requirement for the application is to keep the recurring billing and account management systems in sync. We face a problem if we establish a new subscription, hand off recurring billing to Stripe, and then months later find that the subscriber’s credit card has expired and can no longer be billed. We need a mechanism to update our subscription status when Stripe encounters a declined transaction. Stripe provides “webhooks” to set the status of a subscription. When Stripe encounters a declined transaction it will initiate an <span class="caps">HTTP</span> request to our application which we can decode to change a subscription status.</p>
+<p>If we didn’t use the Stripe webhooks, we’d have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration. The application will be notified immediately by Stripe so there is no need for the overhead of checking on each login. The Stripe webhook mechanism is very robuts: If for some reason cannot make an <span class="caps">HTTP</span> request to our application, it will retry several times with exponential backoff.</p>
 <h3>Landing Pages</h3>
-<p>The landing pages will be static pages that load quickly and can be cached for fast response.</p>
+<p>Ideally, landing pages should be static pages that load quickly and can be cached for fast response.</p>
 <p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. The home page of the application is a landing page. We’ll show you how to add alternative landing pages that can be customized to match specific search terms for better <span class="caps">SEO</span> and an improved conversion rate.</p>
 <h3>Content or Service</h3>
 <p>We’ll show how to create “semi-static” pages for content.</p>
