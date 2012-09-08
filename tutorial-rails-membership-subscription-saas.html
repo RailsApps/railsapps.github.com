@@ -295,8 +295,16 @@ question  Install an example application?
 <p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file. See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
 <h4>Troubleshooting</h4>
-<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the application folder and running the command again. You may need to create a new rvm gemset to avoid activating outdated gems.</p>
 <p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
+<p>If you get an error like this:</p>
+<pre>
+Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
+    composer  Running 'after bundler' callbacks.
+The template [...] could not be loaded.
+Error: You have already activated ..., but your Gemfile requires .... 
+Using bundle exec may solve this.
+</pre>
+<p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
 <h2>Testing and the Software Development Process</h2>
 <p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that the smallest testable portions of the application continue working as developers add features and refactor code.</p>
 <p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
@@ -380,17 +388,26 @@ question  Install an example application?
 <p>You can choose to set a robots.txt file to ban spiders. Choosing “no” makes sense if you want your prelaunch site to show up in Google search results.</p>
 <p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
 <p>Finally, the program will ask if you want to create a GitHub repository. This is optional and not necessary for the tutorial.</p>
-<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the application folder and running the command again. You may need to remove an outdated gem or create a new rvm gemset to avoid activating outdated gems.</p>
-<p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
 <p><code>$ cd rails-membership-subscription-saas</code></p>
+<h4>Troubleshooting</h4>
+<p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
+<p>If you get an error like this:</p>
+<pre>
+Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
+    composer  Running 'after bundler' callbacks.
+The template [...] could not be loaded.
+Error: You have already activated ..., but your Gemfile requires .... 
+Using bundle exec may solve this.
+</pre>
+<p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
 <h4>Replace the READMEs</h4>
 <p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.com/">RailsApps project</a>.</p>
 <h2>Set Up Source Control (Git)</h2>
 <p>When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.</p>
 <p>At your request, the template will also create a GitHub repository for your project.</p>
 <p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Git and Rails</a>.</p>
-<p>Git has already been initialized by the application template script. And the template also checks your code into your new GitHub repository, if you’ve selected the GitHub option.</p>
+<p>Git has already been initialized by the application template script. If you’ve selected the GitHub option, the template commits your code to your GitHub repository.</p>
 <h2>Set Up Gems</h2>
 <p>The Rails Composer program sets up your Gemfile and (if you are using rvm) creates a project-specific gemset.</p>
 <p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
