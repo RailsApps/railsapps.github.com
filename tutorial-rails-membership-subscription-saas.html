@@ -54,7 +54,7 @@
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
 <p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. Whether the site provides high-value content or software as a service, the revenue model is the same: A visitor purchases a subscription and is given access to restricted areas of the site. Typically, the subscription is repurchased monthly through a system that provides recurring billing.</p>
-<p>Whether you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
+<p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
 <li>user management to register or remove users</li>
 	<li>access control to limit site-wide access to authenticated users</li>
@@ -284,12 +284,12 @@ question  Install an example application?
    extras  Create a GitHub repository? (y/n)
 </pre>
 <h4>Prelaunch App</h4>
-<p>If you’re planning a prelaunch promotion campaign, or if you need a placeholder page while you build your website, you can a install a prelaunch app.</p>
+<p>If you’re planning a prelaunch promotion campaign, or if you need a placeholder page while you build your website, you can a install a prelaunch app. See the <a href="http://railsapps.github.com/rails-prelaunch-signup/">rails-prelaunch-signup</a> example application for details.</p>
 <p>If you install a prelaunch app, the generator will ask if you want to create Git branches. This allows you to maintain two versions of the application: one for immediate deployment as a prelaunch app; and another version that you can use for ongoing development. I recommend deploying the prelaunch app in the “master” branch. Work on your ultimate application in a work-in-progress or “wip” branch.</p>
 <h4>Web Servers</h4>
 <p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
 <h4>Template Engine</h4>
-<p>Choose “<span class="caps">ERB</span>” if you wish to duplicate the tutorial exactly.</p>
+<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <h4>Other Choices</h4>
 <p>Don’t set a robots.txt file to ban spiders if you want your new site to appear in Google search results.</p>
 <p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file. See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
@@ -384,7 +384,7 @@ question  Install an example application?
    extras  Create a GitHub repository? (y/n)
 </pre>
 <p>For this tutorial, choose “WEBrick” for your development and production webserver.</p>
-<p>Choose “<span class="caps">ERB</span>” as your template engine if you wish to duplicate the tutorial exactly.</p>
+<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <p>You can choose to set a robots.txt file to ban spiders. Choosing “no” makes sense if you want your prelaunch site to show up in Google search results.</p>
 <p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
 <p>Finally, the program will ask if you want to create a GitHub repository. This is optional and not necessary for the tutorial.</p>
@@ -428,16 +428,13 @@ gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test, :require =&gt; false
 gem "database_cleaner", "&gt;= 0.8.0", :group =&gt; :test
 gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
 gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
-gem "bootstrap-sass", "&gt;= 2.0.4.0"
+gem "bootstrap-sass", "&gt;= 2.1.0.0"
 gem "devise", "&gt;= 2.1.2"
 gem "cancan", "&gt;= 1.6.8"
 gem "rolify", "&gt;= 3.2.0"
 </pre>
 <p>Add the following gems which will be needed for the rails-membership-subscription-saas application:</p>
 <pre>
-gem "hominid"
-gem "google_visualr", "&gt;= 2.1.2"
-gem "jquery-datatables-rails", "&gt;= 1.10.0"
 gem "simple_form"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.8'</code> accordingly.</p>
@@ -452,8 +449,6 @@ bundle install
 $ gem list
 </pre>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
-<h2>Haml</h2>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <h2>RSpec</h2>
 <p>The starter app script sets up RSpec for unit testing. Run <code>rake -T</code> to check that rake tasks for RSpec are available. You should be able to run <code>rake spec</code> to run all specs provided with the example app. To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
 <h2>Cucumber</h2>
@@ -536,24 +531,11 @@ export GMAIL_PASSWORD="secret"
 export MANDRILL_USERNAME="myname"
 export MANDRILL_API_KEY="secret"
 </pre>
-<p>If you are using MailChimp for managing a mailing list, add your MailChimp <span class="caps">API</span> key:</p>
+<p>If you intend to use MailChimp for managing a mailing list, add your MailChimp <span class="caps">API</span> key:</p>
 <pre>
 export MAILCHIMP_API_KEY="secret"
 </pre>
-<p>After you deploy to Heroku, you will need to set the username and password as Heroku environment variables.</p>
-<p>For Gmail:</p>
-<pre>
-$ heroku config:add GMAIL_USERNAME=myname@gmail.com GMAIL_PASSWORD=secret
-</pre>
-<p>or for Mandrill:</p>
-<pre>
-$ heroku config:add MANDRILL_USERNAME=myname MANDRILL_API_KEY=secret
-</pre>
-<p>and MailChimp:</p>
-<pre>
-$ heroku config:add MAILCHIMP_API_KEY=secret
-</pre>
-<p>Open a new shell or restart your terminal application to continue.</p>
+<p>If you’ve set Unix environment variables, open a new shell or restart your terminal application to continue.</p>
 <h3>Configure Devise for Email</h3>
 <p>Complete your email configuration by modifying</p>
 <p><strong>config/initializers/devise.rb</strong></p>
@@ -564,10 +546,8 @@ $ heroku config:add MAILCHIMP_API_KEY=secret
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-user.confirm!
 puts 'New user created: ' &lt;&lt; user.name
 user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-user2.confirm!
 puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 </pre>
@@ -597,19 +577,84 @@ $ rake db:test:prepare
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
 <p>If you test the app by starting the web server and then leave the server running while you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the <strong>config</strong> folder. This can be confusing to new Rails developers because you can change files in the <strong>app</strong> folders without restarting the server. Stop the server each time after testing and you will avoid this issue.</p>
-<h2>Modify the Starter App</h2>
-<p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for production.</p>
-<h3>Update the Home Page</h3>
-<p>The starter app displays a list of users on the home page. That’s not suitable for a prelaunch signup app.</p>
+<h2>Replace the Home Page</h2>
+<p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for a subscription site.</p>
+<h3>A New Home Page</h3>
+<p>We’ll put our subscription offer and pricing plan on the home page. You might want to modify the application to describe your offer on the home page with pricing on a separate page. For this tutorial, it’s simplest to show the offer and prices right on the home page.</p>
 <p>Replace the contents of the file <strong>app/views/home/index.html.erb</strong>:</p>
 <pre>
-&lt;h3&gt;Home&lt;/h3&gt;
+&lt;div id="welcome" class="hero-unit span8"&gt;
+  &lt;h1&gt;Membership Site Secrets&lt;/h1&gt;
+  &lt;h3&gt;Learn to build a successful subscription site.&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="row span8 plans"&gt;
+  &lt;div class="span2 well"&gt;
+    &lt;div class="plan"&gt;&lt;h2&gt;Silver&lt;/h2&gt;&lt;/div&gt;
+    &lt;ul class="unstyled"&gt;
+        &lt;li&gt;One secret a month&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;h3&gt;$9/month&lt;/h3&gt;
+    &lt;button class="btn btn-primary" href="#"&gt;Subscribe&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="span2 well featured"&gt;
+    &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
+    &lt;ul class="unstyled"&gt;
+        &lt;li&gt;Ten secrets a month&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;h3&gt;$19/month&lt;/h3&gt;
+    &lt;button class="btn btn-primary" href="#"&gt;Subscribe&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="span2 well"&gt;
+    &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
+    &lt;ul class="unstyled"&gt;
+        &lt;li&gt;Thirty secrets a month&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;h3&gt;$29/month&lt;/h3&gt;
+    &lt;button class="btn btn-primary" href="#"&gt;Subscribe&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 </pre>
-<p>If you prefer Haml, it looks like this:</p>
+<h3>
+<span class="caps">CSS</span> for Subscription Plans</h3>
+<p>First, modify the <strong>app/assets/stylesheets/application.css.scss</strong> file to remove the following <span class="caps">CSS</span> rules. These rules were useful for the starter app but will not be used in our application:</p>
 <pre>
-%h3 Welcome
+.content {
+  background-color: #eee;
+  padding: 20px;
+  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  -webkit-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
 </pre>
-<p>You can embellish the page as you wish.</p>
+<p>Next we’ll add <span class="caps">CSS</span> assets to style the home page.</p>
+<p>Create a file <strong>app/assets/stylesheets/pricing.scss</strong>:</p>
+<pre>
+.plans{
+  text-align: center;
+}
+.featured{
+  -webkit-transform:scale(1.15); 
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.67);
+}
+.plan{
+  background-color: #111575;
+}
+.plan.featured-plan{
+  background-color: #CCAB00;
+}
+.plan h2{
+  line-height: 100px;
+  color: #fff;
+}
+</pre>
+<p>This stylesheet will be automatically added to the asset pipeline because any files in the same folder as the <strong>app/assets/stylesheets/application.css.scss</strong> file are added by the <code>*= require_tree .</code> statement.</p>
+<p>This <span class="caps">CSS</span> will provide the design elements that are commonly seen on a pricing page: boxes for each plan with an enlarged box for a “featured plan.”</p>
+<p>The design is adequate for our tutorial but you may want to improve it to be more effective. If you’re not a designer, you may want to look at the Twitter Bootstrap themes available in the <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace. The theme for <a href="https://wrapbootstrap.com/theme/css3-pricing-tables-WB00H9006">CSS3 Pricing Tables</a> is particularly interesting. It only costs $6 and you can easily integrate it into our application by copying the contents of the designer’s <strong>css/custom.css</strong> file into our <strong>app/assets/stylesheets/pricing.scss</strong> file and replacing styles in our <strong>app/views/home/index.html.erb</strong> file.</p>
+<h3>Modify the Home Controller</h3>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> to remove the <code>index</code> method:</p>
 <pre>
 class HomeController &lt; ApplicationController
