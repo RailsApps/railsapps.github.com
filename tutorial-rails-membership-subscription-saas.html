@@ -46,14 +46,14 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 9 September 2012</em></p>
+<p><em>Last updated 10 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
-<p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and is given access to restricted areas of the site. Typically, the subscription is repurchased monthly through a system that provides recurring billing.</p>
+<p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a system that provides recurring billing.</p>
 <p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
 <li>content or web functionality to deliver value</li>
@@ -73,7 +73,7 @@
 <li>direct your attention to the design and features that make your business unique;</li>
 	<li>get a fast start building and launching the application you need for your business.</li>
 </ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
-<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h3>Features</h3>
 <p>The example application provides a complete and fully functional membership site.</p>
 <ul>
@@ -96,9 +96,10 @@
 <li>Basecamp-style subdomains (each user gets their own subdomain)</li>
 	<li>
 <a href="http://en.wikipedia.org/wiki/Multitenancy">multitenancy</a> database segmentation</li>
-</ul><h3>Building Blocks</h3>
-<p>One of the strengths of Rails as a web platform are RubyGems, open source code libraries that can be integrated into any Rails project. The RailsApps project aims to provide example applications that integrate the most popular gems.</p>
-<p>This application puts together these gems:</p>
+</ul><p>These features are not included in this application. See the <a href="https://github.com/RailsApps/rails3-subdomains">rails3-subdomains</a> example application for help with subdomains.</p>
+<h3>Gems</h3>
+<p>RubyGems is a package manager for the Ruby programming language that provides a standard format for distributing Ruby programs and libraries (in a self-contained format called a “gem”). Gems add functionality to a Rails app.</p>
+<p>We use these gems:</p>
 <ul>
 <li>
 <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication</li>
@@ -106,13 +107,13 @@
 <a href="https://github.com/ryanb/cancan">CanCan</a> with <a href="https://github.com/EppO/rolify">Rolify</a> for authorization</li>
 	<li>
 <a href="https://stripe.com/">Stripe</a> for recurring billing</li>
-</ul><h3>Devise</h3>
+</ul><h4>Devise</h4>
 <p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be.</p>
 <p>We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. Should you need help in troubleshooting or customizing the implementation, you’ll be able to get help from a large community of developers using Devise.</p>
-<h3>CanCan with Rolify</h3>
+<h4>CanCan with Rolify</h4>
 <p>CanCan provides a system for authorization to determine if an authenticated user should have access to secured resources. CanCan is often used to restrict access to administrative pages. This application will use CanCan to restrict access to content based on the price a user has paid for a subscription.</p>
 <p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles based on subscription price; you must implement this outside of CanCan. There are many ways to implement role-based authorization for use with CanCan. For this example, we use Florent Monbillard’s Rolify gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
-<h3>Stripe</h3>
+<h4>Stripe</h4>
 <p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low-volume startups. Stripe costs 2.9% + 30¢ per successful charge, with no monthly or setup fees (see <a href="https://stripe.com/help/pricing">Stripe pricing</a>).</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
@@ -124,9 +125,8 @@
 <p>The second example shows how to set up Devise and add CanCan and Rolify to manage access to administrative pages. It also shows how to set up Twitter Bootstrap as a front-end framework for <span class="caps">CSS</span> styling.</p>
 <p>You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
 <p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at the  <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
-<p>Finally, be sure to look at the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example. It is useful if you are planning prelaunch promotion. You can quickly create a site to announce your plans and encourage visitors to enter an email address for future notification of the site’s launch.</p>
-<h2>
-<img src="http://railsapps.github.com/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> The Tutorial</h2>
+<p>You might also be interested in the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example if you are planning prelaunch promotion. Use it to announce your plans and collect email addresses from visitors for future notification of the site’s launch.</p>
+<h2>About the Tutorial</h2>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please leave a comment when you are done.)</p>
 <p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
 <p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
@@ -235,14 +235,14 @@
 <h2>Creating the Application</h2>
 <p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
 <h3>Copy from the Tutorial</h3>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely. The tutorial will ask you to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a starter app to save some steps. Then you can follow the tutorial step-by-step to build the complete application.</p>
+<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely. Before you start, the tutorial will ask you to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a starter app to save some steps. Then you can follow the tutorial step-by-step to build the complete application.</p>
 <h3>Fork</h3>
 <p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
 <h3>Clone</h3>
 <p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
-<h3>Generate</h3>
+<h3 id="Generate">Generate</h3>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the example application immediately, run the command:</p>
+<p>To build the complete example application immediately, run the command:</p>
 <pre>
 $ rails new rails-membership-subscription-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
 </pre>
@@ -283,6 +283,7 @@ question  Install an example application?
    extras  Create a project-specific rvm gemset and .rvmrc? (y/n)
    extras  Create a GitHub repository? (y/n)
 </pre>
+<p>Here’s more information about your options:</p>
 <h4>Prelaunch App</h4>
 <p>If you’re planning a prelaunch promotion campaign, or if you need a placeholder page while you build your website, you can a install a prelaunch app. See the <a href="http://railsapps.github.com/rails-prelaunch-signup/">rails-prelaunch-signup</a> example application for details.</p>
 <p>If you install a prelaunch app, the generator will ask if you want to create Git branches. This allows you to maintain two versions of the application: one for immediate deployment as a prelaunch app; and another version that you can use for ongoing development. I recommend deploying the prelaunch app in the “master” branch. Work on your ultimate application in a work-in-progress or “wip” branch.</p>
@@ -306,7 +307,7 @@ Using bundle exec may solve this.
 </pre>
 <p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
 <h2>Testing and the Software Development Process</h2>
-<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that the smallest testable portions of the application continue working as developers add features and refactor code.</p>
+<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code.</p>
 <p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
 <h2>Architecture and Implementation</h2>
 <p>Here is a high-level abstraction of the application, as a list of systems:</p>
@@ -337,12 +338,12 @@ Using bundle exec may solve this.
 <p>Ideally, landing pages should be static pages that load quickly and can be cached for fast response.</p>
 <p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. The home page of the application is a landing page. We’ll show you how to add alternative landing pages that can be customized to match specific search terms for better <span class="caps">SEO</span> and an improved conversion rate.</p>
 <h3>Content or Service</h3>
-<p>We’ll show how to create “semi-static” pages for content.</p>
-<p>For this application, we’ll create some placeholder content. For your application, the content can be anything you like: photo galleries, videos, downloadable ebooks. For a SaaS site, subscribers wuld gain access to a web application.</p>
+<p>We’ll create placeholder pages for content.</p>
+<p>For your application, the content can be anything you like: photo galleries, videos, downloadable ebooks. For a SaaS site, subscribers would gain access to a web application.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
-<p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps to build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
-<p>Juat to be clear, if you chose to skip the tutorial and used the Rails Composer tool to generate the complete application, you may already have the complete application on your computer. To build the application step by step, we suggest you delete the application (or move it elsewhere), and follow the tutorial to build the application, starting with the rails3-bootstrap-devise-cancan starter app.</p>
+<p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps that build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
+<p>In the <a href="#Generate">Generate</a> section above, we saw how to create the complete example application with one command. If you tried that, you may already have the complete application on your computer. To build the application step by step, we suggest you delete the application (or move it elsewhere), and follow the tutorial, starting with the rails3-bootstrap-devise-cancan starter app.</p>
 <p>For the starter app we want, use the command:</p>
 <pre>
 $ rails new rails-membership-subscription-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
@@ -459,7 +460,7 @@ $ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
 <h2>Configure Email</h2>
-<p>You must configure the app for your email account so your application can send email messages, for example, to acknowledge invitation requests or send welcome messages.</p>
+<p>You can configure the app for your email account so your application can send email messages.</p>
 <p>The starter app script sets up a default email configuration. You must add details about your email account.</p>
 <h3>Configure ActionMailer</h3>
 <p>ActionMailer is configured for development in the <strong>config/environments/development.rb</strong> file:</p>
@@ -569,18 +570,19 @@ $ rake db:reset
 <pre>
 $ rake db:test:prepare
 </pre>
-<p>If you’re not using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
+<p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <h2>Test the Starter App</h2>
 <p>At this point, the app is identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
 <p>You can check that the example app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
-<p>If you test the app by starting the web server and then leave the server running while you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the <strong>config</strong> folder. This can be confusing to new Rails developers because you can change files in the <strong>app</strong> folders without restarting the server. Stop the server each time after testing and you will avoid this issue.</p>
+<h4>When to Restart</h4>
+<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server.</p>
 <h2>Replace the Home Page</h2>
 <p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for a subscription site.</p>
-<h3>A New Home Page</h3>
-<p>We’ll put our subscription offer and pricing plan on the home page. You might want to modify the application to describe your offer on the home page with pricing on a separate page. For this tutorial, it’s simplest to show the offer and prices right on the home page.</p>
+<h3>Home Page with Subscription Plans</h3>
+<p>We’ll put our subscription offer and pricing plan on the home page. For this tutorial, it’s simplest to show the offer and prices right on the home page. For a real application, you might describe your offer on the home page and show pricing on a separate page.</p>
 <p>Replace the contents of the file <strong>app/views/home/index.html.erb</strong>:</p>
 <pre>
 &lt;div id="welcome" class="hero-unit span7"&gt;
@@ -614,8 +616,11 @@ $ rake db:test:prepare
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
+<p>The page will contain a “hero unit” for your key marketing message plus three boxes describing subscription plans. We apply <span class="caps">CSS</span> classes from Twitter Bootstrap to style the page. We’ll create a few additional <span class="caps">CSS</span> classes in the next step.</p>
+<p>Each box contains a link to a content page. We’ll need to create a Content controller, routes, and views to implement the content pages. Later, we’ll change to buttons to open a subsciption purchase page instead of a content page. Note that the <code>button_to</code> helper requires a <code>:method =&gt; :get</code> parameter. A <code>link_to</code> helper defaults to <code>:method =&gt; :get</code>. A <code>button_to</code> helper defaults to <code>:method =&gt; :put</code> because its common use is to post a form submission. In this case, we want a button to serve as a link so we specify the <code>:method =&gt; :get</code> parameter.</p>
 <h3>
 <span class="caps">CSS</span> for Subscription Plans</h3>
+<p>We’ll provide some rudimentary <span class="caps">CSS</span> rules to style the home page. We’re using Twitter Bootstrap so we can get an attractive design with only a few <span class="caps">CSS</span> rules.</p>
 <p>First, modify the <strong>app/assets/stylesheets/application.css.scss</strong> file to remove the following <span class="caps">CSS</span> rules. These rules were useful for the starter app but will not be used in our application:</p>
 <pre>
 .content {
@@ -651,7 +656,7 @@ $ rake db:test:prepare
   color: #fff;
 }
 </pre>
-<p>This stylesheet will be automatically added to the asset pipeline because any files in the same folder as the <strong>app/assets/stylesheets/application.css.scss</strong> file are added by the <code>*= require_tree .</code> statement.</p>
+<p>This stylesheet gets added automatically to the asset pipeline because any files in the same folder as the <strong>app/assets/stylesheets/application.css.scss</strong> file are added by the <code>*= require_tree .</code> statement.</p>
 <p>This <span class="caps">CSS</span> will provide the design elements that are commonly seen on a pricing page: boxes for each plan with an enlarged box for a “featured plan.”</p>
 <p>The design is adequate for our tutorial but you may want to improve it to be more effective. If you’re not a designer, you may want to look at the Twitter Bootstrap themes available in the <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace. The theme for <a href="https://wrapbootstrap.com/theme/css3-pricing-tables-WB00H9006">CSS3 Pricing Tables</a> is particularly interesting. It only costs $6 and you can easily integrate it into our application by copying the contents of the designer’s <strong>css/custom.css</strong> file into our <strong>app/assets/stylesheets/pricing.scss</strong> file and replacing styles in our <strong>app/views/home/index.html.erb</strong> file.</p>
 <h3>Modify the Home Controller</h3>
@@ -668,7 +673,7 @@ $ git commit -m "home page update"
 </pre>
 <h2>Add Content Pages</h2>
 <p>We’ll add placeholder pages for our valuable content.</p>
-<p>First we’ll set up our git workflow for adding a new feature.</p>
+<p>First let’s consider a git workflow for adding a new feature.</p>
 <h3>Git Workflow</h3>
 <p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
 <p>Create a new git branch for this feature:</p>
@@ -681,8 +686,8 @@ $ git checkout -b content-pages
 <pre>
 $ rails generate controller content silver gold platinum --skip-stylesheets --skip-javascripts
 </pre>
-<p>We’ve named the controller the “ContentController.” We’ve asked for three views, corresponding to the three subscription plans we’ll offer. We’ll ask the generator not to create stylesheet and Javascript files.</p>
-<p>The Rails generator will create several files for you:</p>
+<p>We’ve named the controller the “ContentController.” We’ve asked for three views, corresponding to the three subscription plans we’ll offer. We’ll also avoid cluttering our application with stylesheet and Javascript files we don’t need.</p>
+<p>The Rails generator will create these files for you:</p>
 <pre>
 app/controllers/content_controller.rb
 app/helpers/content_helper.rb
