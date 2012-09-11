@@ -46,14 +46,14 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 September 2012</em></p>
+<p><em>Last updated 11 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
-<p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a system that provides recurring billing.</p>
+<p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a service that provides recurring billing.</p>
 <p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
 <li>content or web functionality to deliver value</li>
@@ -63,21 +63,17 @@
 	<li>authorization management to restrict access to content or services based on role or other characteristics</li>
 	<li>account management to maintain records of subscription status</li>
 	<li>a recurring billing system for periodic payment transactions</li>
-</ul><p>Developers have been building this type of application since soon after the web was born. This example application exists so you don’t have to build it yourself. It aims to:</p>
+</ul><p>This example application exists so you don’t have to build it yourself. It aims to:</p>
 <ul>
 <li>eliminate effort spent building an application that meets a common need;</li>
 	<li>offer code that is already implemented and tested by a large community;</li>
 	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
-</ul><p>By using code from this project, you’ll be able to:</p>
-<ul>
-<li>direct your attention to the design and features that make your business unique;</li>
-	<li>get a fast start building and launching the application you need for your business.</li>
 </ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
 <p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h3>Features</h3>
 <p>The example application provides a complete and fully functional membership site.</p>
 <ul>
-<li>offer tiered pricing for multiple subscription plans</li>
+<li>site offers tiered pricing for multiple subscription plans</li>
 	<li>site can offer a “free trial” subscription as well as free accounts</li>
 	<li>no local credit card storage</li>
 	<li>Stripe accepts credit card payments from customers in any country or currency</li>
@@ -543,7 +539,7 @@ export MAILCHIMP_API_KEY="secret"
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up the Database</h2>
 <h3>Create a Default User</h3>
-<p>You’ll want to set up a default user so you can test the app. The file <strong>db/seeds.rb</strong> already contains:</p>
+<p>You’ll want to set up default users so you can test the application. The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
@@ -552,6 +548,22 @@ user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com'
 puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 </pre>
+<p>Replace <strong>db/seeds.rb</strong> with:</p>
+<pre>
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user.add_role :admin
+puts 'admin created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Silver User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user2.add_role :silver
+user3 = User.create! :name =&gt; 'Gold User', :email =&gt; 'user3@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user3.add_role :gold
+user4 = User.create! :name =&gt; 'Platinum User', :email =&gt; 'user4@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user4.add_role :platinum
+puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
+</pre>
+<p>The first user will be given an administrator role. You can log in with this account for access as an administrator.</p>
+<p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
 <p>You can change the values for name, email, and password as you wish.</p>
 <p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in.</p>
@@ -561,7 +573,7 @@ user.add_role :admin
 $ rake db:migrate
 $ rake db:seed
 </pre>
-<p>If you change the default user’s name, email, or password you’ll need to reset the database:</p>
+<p>We’ll need to reset the database because we’ve added new users:</p>
 <pre>
 $ rake db:reset
 </pre>
@@ -716,7 +728,7 @@ class ContentController &lt; ApplicationController
   end
 end
 </pre>
-<p>It may be odd to see a controller that doesn’t contain the familar <code>index</code>, <code>show</code>, etc. methods of a RESTful controller. This is a case where a RESTful controller is not needed or appropriate. By default, the controller will render a view corresponding to each action. In fact, we don’t even need to define each method. For clarity, we’ll leave the methods in place to provide clues to the developers.</p>
+<p>It may be odd to see a controller that doesn’t contain the familar <code>index</code>, <code>show</code>, etc. methods of a RESTful controller. This is a case where a RESTful controller is not needed or appropriate. By default, the controller will render a view corresponding to each action.</p>
 <h3>Modify the Content Views</h3>
 <p>Open each of the view files to see the placeholder content.</p>
 <p><strong>app/views/content/silver.html.erb</strong></p>
@@ -756,6 +768,45 @@ $ git commit -am "add content pages"
 <p>You can delete the working branch when you’re done:</p>
 <pre>
 $ git branch -D content-pages
+</pre>
+<h2>Implement Authorization</h2>
+<p>We’ve got a home page with links to content pages for Silver, Gold, and Platinum subscribers. And we have created three users: Silver User, Gold User, and Platinum User. Now we’ll set limits on access to the content.</p>
+<h3>Set CanCan Ability</h3>
+<p>Modify the <strong>app/models/ability.rb</strong> class to set access limits:</p>
+<pre>
+class Ability
+  include CanCan::Ability
+
+  def initialize(user)
+    user ||= User.new # guest user (not logged in)
+    if user.has_role? :admin
+      can :manage, :all
+    else
+      can :view, :silver if user.has_role? :silver
+      can :view, :gold if user.has_role? :gold
+      can :view, :platinum if user.has_role? :platinum
+    end
+  end
+end
+</pre>
+<p>CanCan takes advantage of the Ruby language’s facility to create a <span class="caps">DSL</span> (Domain Specific Language). Though a bit cryptic, it’s possible to read the <span class="caps">DSL</span> as if it was English. The statement <code>can :view, :silver if user.has_role? :silver</code> does what it says: If the user has a role of “silver” he or she can view “silver” content. Actually, a good portion of this is arbitrary. CanCan allows us to pass arbitrary parameters to the authprization method. I’ve chosen “view” and “silver” simply to be descriptive. All that is important is to use the same symbols in the Ability class as in the <code>authorize!</code> call in the controller. In the next step, we’ll add the <code>authorize!</code> call to the controller.</p>
+<h3>Set Access Limits in the Content Controller</h3>
+<p>We’ll modify the <strong>app/controllers/content_controller</strong> file to set access limits:</p>
+<pre>
+class ContentController &lt; ApplicationController
+  
+  def silver
+    authorize! :view, :silver, :message =&gt; 'Access limited to Silver Plan subscribers.'
+  end
+  
+  def gold
+    authorize! :view, :gold, :message =&gt; 'Access limited to Gold Plan subscribers.'
+  end
+
+  def platinum
+    authorize! :view, :platinum, :message =&gt; 'Access limited to Platinum Plan subscribers.'
+  end
+end
 </pre>
 <h2>More to Come</h2>
 <p>Work in progress.</p>
