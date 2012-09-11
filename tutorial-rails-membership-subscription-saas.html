@@ -539,7 +539,8 @@ export MAILCHIMP_API_KEY="secret"
 <p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h2>Set Up the Database</h2>
 <h3>Create a Default User</h3>
-<p>You’ll want to set up default users so you can test the application. The file <strong>db/seeds.rb</strong> already contains:</p>
+<p>You’ll want to set up default users so you can test the application.</p>
+<p>The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
@@ -548,6 +549,7 @@ user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com'
 puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 </pre>
+<p>We’ll add three users with different subscription plans.</p>
 <p>Replace <strong>db/seeds.rb</strong> with:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
@@ -566,7 +568,7 @@ puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
 <p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
 <p>You can change the values for name, email, and password as you wish.</p>
 <p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
-<p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in.</p>
+<p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -632,7 +634,7 @@ $ rake db:test:prepare
 <p>Each box contains a link to a content page. We’ll need to create a Content controller, routes, and views to implement the content pages. Later, we’ll change to buttons to open a subsciption purchase page instead of a content page. Note that the <code>button_to</code> helper requires a <code>:method =&gt; :get</code> parameter. A <code>link_to</code> helper defaults to <code>:method =&gt; :get</code>. A <code>button_to</code> helper defaults to <code>:method =&gt; :put</code> because its common use is to post a form submission. In this case, we want a button to serve as a link so we specify the <code>:method =&gt; :get</code> parameter.</p>
 <h3>
 <span class="caps">CSS</span> for Subscription Plans</h3>
-<p>We’ll provide some rudimentary <span class="caps">CSS</span> rules to style the home page. We’re using Twitter Bootstrap so we can get an attractive design with only a few <span class="caps">CSS</span> rules.</p>
+<p>We’ll provide some rudimentary <span class="caps">CSS</span> rules to style the home page. We’re using Twitter Bootstrap so we’ll get an attractive design with only a few <span class="caps">CSS</span> rules.</p>
 <p>First, modify the <strong>app/assets/stylesheets/application.css.scss</strong> file to remove the following <span class="caps">CSS</span> rules. These rules were useful for the starter app but will not be used in our application:</p>
 <pre>
 .content {
@@ -670,7 +672,7 @@ $ rake db:test:prepare
 </pre>
 <p>This stylesheet gets added automatically to the asset pipeline because any files in the same folder as the <strong>app/assets/stylesheets/application.css.scss</strong> file are added by the <code>*= require_tree .</code> statement.</p>
 <p>This <span class="caps">CSS</span> will provide the design elements that are commonly seen on a pricing page: boxes for each plan with an enlarged box for a “featured plan.”</p>
-<p>The design is adequate for our tutorial but you may want to improve it to be more effective. If you’re not a designer, you may want to look at the Twitter Bootstrap themes available in the <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace. The theme for <a href="https://wrapbootstrap.com/theme/css3-pricing-tables-WB00H9006">CSS3 Pricing Tables</a> is particularly interesting. It only costs $6 and you can easily integrate it into our application by copying the contents of the designer’s <strong>css/custom.css</strong> file into our <strong>app/assets/stylesheets/pricing.scss</strong> file and replacing styles in our <strong>app/views/home/index.html.erb</strong> file.</p>
+<p>The design is adequate for our tutorial but you may want to improve it to be more effective. If you’re not a designer, you may want to look at the Twitter Bootstrap themes available in the <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace. The theme for <a href="https://wrapbootstrap.com/theme/css3-pricing-tables-WB00H9006">CSS3 Pricing Tables</a> is particularly interesting. It is similar to our home page but adds animated effects. The theme only costs $6 and you can easily integrate it into our application by copying the contents of the designer’s <strong>css/custom.css</strong> file into our <strong>app/assets/stylesheets/pricing.scss</strong> file and replacing styles in our <strong>app/views/home/index.html.erb</strong> file.</p>
 <h3>Modify the Home Controller</h3>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> to remove the <code>index</code> method:</p>
 <pre>
@@ -729,7 +731,7 @@ class ContentController &lt; ApplicationController
 end
 </pre>
 <p>It may be odd to see a controller that doesn’t contain the familar <code>index</code>, <code>show</code>, etc. methods of a RESTful controller. This is a case where a RESTful controller is not needed or appropriate. By default, the controller will render a view corresponding to each action.</p>
-<h3>Modify the Content Views</h3>
+<h3>Check the Content Views</h3>
 <p>Open each of the view files to see the placeholder content.</p>
 <p><strong>app/views/content/silver.html.erb</strong></p>
 <pre>
@@ -746,7 +748,7 @@ end
 &lt;h1&gt;Content#platinum&lt;/h1&gt;
 &lt;p&gt;Find me in app/views/content/platinum.html.erb&lt;/p&gt;
 </pre>
-<p>If you’re building a real application, you’ll want to provide content that has greater value than our placeholders. For a membership site that delivers content such as ebooks or videos, you could use a structure such as this, where we’ll restrict access to pages in a <strong>content</strong> directory based on the user’s subscription plan. For a site that delivers sotware as a service, the structure of your application will necessarily be more complex.</p>
+<p>If you’re building a real application, you’ll want to provide content that is more useful than our placeholders. For a membership site that delivers content such as ebooks or videos, you could use a structure such as this, where we’ll restrict access to pages in a <strong>content</strong> directory based on the user’s subscription plan. For a site that delivers sotware as a service, the structure of your application will necessarily be more complex.</p>
 <h3>Test the Content Pages</h3>
 <p>You can check that the example app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
@@ -771,6 +773,10 @@ $ git branch -D content-pages
 </pre>
 <h2>Implement Authorization</h2>
 <p>We’ve got a home page with links to content pages for Silver, Gold, and Platinum subscribers. And we have created three users: Silver User, Gold User, and Platinum User. Now we’ll set limits on access to the content.</p>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b authorization
+</pre>
 <h3>Set CanCan Ability</h3>
 <p>Modify the <strong>app/models/ability.rb</strong> class to set access limits:</p>
 <pre>
@@ -789,11 +795,12 @@ class Ability
   end
 end
 </pre>
-<p>CanCan takes advantage of the Ruby language’s facility to create a <span class="caps">DSL</span> (Domain Specific Language). Though a bit cryptic, it’s possible to read the <span class="caps">DSL</span> as if it was English. The statement <code>can :view, :silver if user.has_role? :silver</code> does what it says: If the user has a role of “silver” he or she can view “silver” content. Actually, a good portion of this is arbitrary. CanCan allows us to pass arbitrary parameters to the authprization method. I’ve chosen “view” and “silver” simply to be descriptive. All that is important is to use the same symbols in the Ability class as in the <code>authorize!</code> call in the controller. In the next step, we’ll add the <code>authorize!</code> call to the controller.</p>
+<p>CanCan takes advantage of the Ruby language’s facility to create a <span class="caps">DSL</span> (Domain Specific Language). If you ignore the cryptic punctuation, it’s possible to read the <span class="caps">DSL</span> as if it was English. The statement <code>can :view, :silver if user.has_role? :silver</code> does what it says: If the user has a role of “silver” he or she can view “silver” content. Actually, a good portion of this is arbitrary. CanCan allows us to pass arbitrary parameters to the authorization method and I’ve simply chosen “view” and “silver” to be descriptive. All that matters is to use the same symbols in the Ability class as in the <code>authorize!</code> call in the controller. In the next step, you’ll see how we add the <code>authorize!</code> call to the controller.</p>
 <h3>Set Access Limits in the Content Controller</h3>
 <p>We’ll modify the <strong>app/controllers/content_controller</strong> file to set access limits:</p>
 <pre>
 class ContentController &lt; ApplicationController
+  before_filter :authenticate_user!
   
   def silver
     authorize! :view, :silver, :message =&gt; 'Access limited to Silver Plan subscribers.'
@@ -807,6 +814,53 @@ class ContentController &lt; ApplicationController
     authorize! :view, :platinum, :message =&gt; 'Access limited to Platinum Plan subscribers.'
   end
 end
+</pre>
+<p>We add <code>before_filter :authenticate_user!</code> (provided by Devise) to force a visitor to log in before any action.</p>
+<p>We use the CanCan <code>authorize!</code> method to check the user’s role (corresponding to their subscription plan) on the actions that render the content pages. We pass two symbols to both <code>authorize!</code> (in the controller) and <code>can</code> (in the Ability class). The symbols can represent anything. By convention, the first symbol is the “action” one is trying to perform and the second symbol is the subject or target the action is being performed on. Our action is to “view” content but we could also say “see”, “access”, or “unlock.” We’ve defined one target as “silver” but it could be “silver_content”, “tier1”, or “plan-A” as long as we are consistent between the controller and Ability class. The CanCan documentation describes <a href="https://github.com/ryanb/cancan/wiki/Non-RESTful-Controllers">CanCan with Non-RESTful Controllers</a>.</p>
+<h3>Alternative Implementation</h3>
+<p>Keep in mind that we use CanCan only for convenience. You might not agree that CanCan provides benefit, especially when you consider that the CanCan <span class="caps">DSL</span> obscures the authorization mechanism. Cancan offers the advantage of collecting all authorization rules in the Ability class so the rules are easy to find and change. And it provides a familiar idiom for authorization so it is easy for other Rails developers (those who use CanCan) to understand your code.</p>
+<p>If CanCan seems mysterious, it might help to see an alternative implementation without CanCan.</p>
+<p>Here’s the <strong>app/controllers/content_controller</strong> file without CanCan:</p>
+<pre>
+class ContentController &lt; ApplicationController
+  before_filter :authenticate_user!
+  
+  def silver
+    if (current_user.has_role? :silver) || (current_user.has_role? :admin)
+      render :silver
+    else
+      redirect_to :back, :notice =&gt; 'Access limited to Silver Plan subscribers.'
+    end
+  end
+ 
+  def gold
+   if (current_user.has_role? :gold) || (current_user.has_role? :admin)
+      render :gold
+    else
+      redirect_to :back, :notice =&gt; 'Access limited to Gold Plan subscribers.'
+    end
+  end
+  
+  def platinum
+    if (current_user.has_role? :platinum) || (current_user.has_role? :admin)
+      render :platinum
+    else
+      redirect_to :back, :notice =&gt; 'Access limited to Platinum Plan subscribers.'
+    end
+  end
+end
+</pre>
+<p>By using the <code>:authenticate_user!</code> before_filter, Devise makes available the <code>current_user</code> instance of the User model. We still use the <code>has_role?</code> method provided by Rolify. If the current_user has an appropriate role, we render the appropriate page. If not, we redirect to the previous page and display a notice. The code is much easier to understand without CanCan but it is lengthy and repetitive.</p>
+<p><em>Note:</em> Please don’t blindly paste the alternative implementation into the <strong>app/controllers/content_controller</strong> file if you want to follow the tutorial. We’ll continue to use CanCan.</p>
+<h3>Git Workflow</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "add authorization"
+$ git checkout master
+$ git merge --squash authorization
+$ git commit -am "add authorization"
+$ git branch -D authorization
 </pre>
 <h2>More to Come</h2>
 <p>Work in progress.</p>
