@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 September 2012</em></p>
+<p><em>Last updated 13 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -86,7 +86,7 @@
 	<li>subscribers can cancel subscription plans</li>
 	<li>subscribers can use coupons for discounted subscriptions</li>
 	<li>configurable subscription renewal period (defaults to one month)</li>
-</ul><h3>What’s Not Implemented</h3>
+</ul><h3>What is Not Implemented</h3>
 <p>There are additional features you may want for a SaaS application, such as:</p>
 <ul>
 <li>Basecamp-style subdomains (each user gets their own subdomain)</li>
@@ -587,7 +587,7 @@ $ rake db:test:prepare
 <p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <h2>Test the Starter App</h2>
 <p>At this point, the app is identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
-<p>You can check that the example app runs properly by entering the command</p>
+<p>You can check that the example app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
@@ -610,7 +610,7 @@ $ rake db:test:prepare
       &lt;li&gt;One secret a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$9/month&lt;/h3&gt;
-    &lt;%= button_to 'Subscribe', content_silver_path, :method =&gt; :get, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_silver_path, :class =&gt; 'btn btn-primary' %&gt; 
   &lt;/div&gt;
   &lt;div class="span2 well featured"&gt;
     &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
@@ -618,7 +618,7 @@ $ rake db:test:prepare
       &lt;li&gt;Ten secrets a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$19/month&lt;/h3&gt;
-    &lt;%= button_to 'Subscribe', content_gold_path, :method =&gt; :get, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_gold_path, :class =&gt; 'btn btn-primary' %&gt; 
   &lt;/div&gt;
   &lt;div class="span2 well"&gt;
     &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
@@ -626,12 +626,13 @@ $ rake db:test:prepare
       &lt;li&gt;Thirty secrets a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$29/month&lt;/h3&gt;
-    &lt;%= button_to 'Subscribe', content_platinum_path, :method =&gt; :get, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_platinum_path, :class =&gt; 'btn btn-primary' %&gt; 
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
-<p>The page will contain a “hero unit” for your key marketing message plus three boxes describing subscription plans. We apply <span class="caps">CSS</span> classes from Twitter Bootstrap to style the page. We’ll create a few additional <span class="caps">CSS</span> classes in the next step.</p>
-<p>Each box contains a link to a content page. We’ll need to create a Content controller, routes, and views to implement the content pages. Later, we’ll change to buttons to open a subsciption purchase page instead of a content page. Note that the <code>button_to</code> helper requires a <code>:method =&gt; :get</code> parameter. A <code>link_to</code> helper defaults to <code>:method =&gt; :get</code>. A <code>button_to</code> helper defaults to <code>:method =&gt; :put</code> because its common use is to post a form submission. In this case, we want a button to serve as a link so we specify the <code>:method =&gt; :get</code> parameter.</p>
+<p>We apply <span class="caps">CSS</span> classes from Twitter Bootstrap to style the page. We’ll create a few additional <span class="caps">CSS</span> classes in the next step.</p>
+<p>The page will contain a “hero unit” for your key marketing message plus three boxes describing subscription plans.</p>
+<p>Each box contains a link to a content page. The content pages don’t yet exist; we’ll need to create a Content controller, routes, and views to implement the content pages. Later, we’ll change the links to open a subsciption purchase page instead of a content page.</p>
 <h3>
 <span class="caps">CSS</span> for Subscription Plans</h3>
 <p>We’ll provide some rudimentary <span class="caps">CSS</span> rules to style the home page. We’re using Twitter Bootstrap so we’ll get an attractive design with only a few <span class="caps">CSS</span> rules.</p>
@@ -750,7 +751,7 @@ end
 </pre>
 <p>If you’re building a real application, you’ll want to provide content that is more useful than our placeholders. For a membership site that delivers content such as ebooks or videos, you could use a structure such as this, where we’ll restrict access to pages in a <strong>content</strong> directory based on the user’s subscription plan. For a site that delivers sotware as a service, the structure of your application will necessarily be more complex.</p>
 <h3>Test the Content Pages</h3>
-<p>You can check that the example app runs properly by entering the command</p>
+<p>You can check that the example app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your subscription offer.</p>
 <p>Visit <a href="http://localhost:3000/content/silver">http://localhost:3000/content/silver.html</a> to see one of the content pages.</p>
@@ -852,6 +853,13 @@ end
 </pre>
 <p>By using the <code>:authenticate_user!</code> before_filter, Devise makes available the <code>current_user</code> instance of the User model. We still use the <code>has_role?</code> method provided by Rolify. If the current_user has an appropriate role, we render the appropriate page. If not, we redirect to the previous page and display a notice. The code is much easier to understand without CanCan but it is lengthy and repetitive.</p>
 <p><em>Note:</em> Please don’t blindly paste the alternative implementation into the <strong>app/controllers/content_controller</strong> file if you want to follow the tutorial. We’ll continue to use CanCan.</p>
+<h3>Test Authorization</h3>
+<p>You can check that the authorization limits work by entering the command:</p>
+<p><code>$ rails server</code></p>
+<p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
+<p>Log in as the first user (the administrator) with “user@example.com@” (password “please”). Click on the “Subscribe” buttom for any subscription plan. CanCan grants you access as an administrator to any page. Log out.</p>
+<p>Log in as the second user (assigned a “silver plan”) with “user2@example.com@” (password “please”). Click on the “Subscribe” buttom for any subscription plan. CanCan only grants access to the “silver” content page.</p>
+<p>Next we’ll set up a page where a visitor can register to use the site after choosing a subscription plan.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
@@ -865,18 +873,13 @@ $ git branch -D authorization
 <h2>Registration Page</h2>
 <p>Now that we have a home page with links to our placeholder content pages, plus authorization limits to  restrict access based on subscription plan, let’s create a page where a visitor can register for the site and sign up for a subscription.</p>
 <p>For the initial version of our registration page, we’ll let the visitor sign up for any subscription for free. Later, we’ll integrate Stripe payment for purchase of a subscription plan.</p>
+<p>The Devise authentication gem provides user management, including signing up users on a registration page. Our starter app already has a User model and uses a Devise controller and views to sign up visitors, asking for a name and email address and creating a user account. We could add a new “subscription purchase” page. Instead, since we already have a sign-up form provided by Devise, it’ll be easier to adapt the existing Devise registration page.</p>
 <p>Create a new git branch for this feature:</p>
 <pre>
 $ git checkout -b registration
 </pre>
-<h3>Modify the Devise Registration Page</h3>
-<p>The Devise authentication gem provides user management, including signing up users on a registration page. Our starter app already has a User model and uses a Devise controller and views to sign up visitors, asking for a name and email address and creating a user account. We could add a new “subscription purchase” page. Instead, since we already have a sign-up form provided by Devise, it’ll be easier to adapt the existing Devise registration page.</p>
-<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
-<pre>
-
-</pre>
 <h3>Modify the Home Page</h3>
-<p>We’ll change the links on the home page to direct the visitors to the registration page.</p>
+<p>We’ll change the links on the home page to direct the visitors to the Devise registration page.</p>
 <p>Update the contents of the file <strong>app/views/home/index.html.erb</strong>:</p>
 <pre>
 &lt;div id="welcome" class="hero-unit span7"&gt;
@@ -890,7 +893,7 @@ $ git checkout -b registration
       &lt;li&gt;One secret a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$9/month&lt;/h3&gt;
-    &lt;%= button_to 'Subscribe', new_user_registration_path, :method =&gt; :get, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'silver'), :class =&gt; 'btn btn-primary' %&gt; 
   &lt;/div&gt;
   &lt;div class="span2 well featured"&gt;
     &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
@@ -898,7 +901,7 @@ $ git checkout -b registration
       &lt;li&gt;Ten secrets a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$19/month&lt;/h3&gt;
-    &lt;%= button_to 'Subscribe', new_user_registration_path, :method =&gt; :get, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'gold'), :class =&gt; 'btn btn-primary' %&gt; 
   &lt;/div&gt;
   &lt;div class="span2 well"&gt;
     &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
@@ -906,11 +909,23 @@ $ git checkout -b registration
       &lt;li&gt;Thirty secrets a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$29/month&lt;/h3&gt;
-    &lt;%= button_to 'Subscribe', new_user_registration_path, :method =&gt; :get, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'platinum'), :class =&gt; 'btn btn-primary' %&gt; 
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
-<h3>Modify the Navigation LInks</h3>
+<p>We’ve replaced the <span class="caps">URL</span> helper for each of the links:</p>
+<ul>
+<li>
+<code>content_silver_path</code> becomes <code>new_user_registration_path(:plan =&gt; 'silver')</code>
+</li>
+	<li>
+<code>content_gold_path</code> becomes <code>new_user_registration_path(:plan =&gt; 'gold')</code>
+</li>
+	<li>
+<code>content_platinum_path</code> becomes <code>new_user_registration_path(:plan =&gt; 'platinum')</code>
+</li>
+</ul><p>Notice that we append a parameter to each link to indicate the subscription plan selected by the visitor. We are initiating an <span class="caps">HTTP</span> <span class="caps">GET</span> request; you’ll see a <span class="caps">URL</span> like this: <code>http://lvh.me:3000/users/sign_up?plan=silver</code>.</p>
+<h3>Modify the Navigation Links</h3>
 <p>Visitors will see a “Sign up” link on the home page if they are not logged in. We want them to sign up by selecting a subscription plan, so we’ll remove the “Sign up” link in the navigation bar.</p>
 <p>Modify the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
 <pre>
@@ -937,7 +952,41 @@ $ git checkout -b registration
   &lt;% end %&gt;
 &lt;/ul&gt;
 </pre>
-<p>Now we have registration page that assigns a subscription plan when a visitor signs up for the site. In the next step, we’ll integrate Stripe payment for subscription plans.</p>
+<p>We’ve removed the “Sign up” link.</p>
+<h3>Modify the Devise Registration Page</h3>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+
+</pre>
+<h3>Override the Devise Registrations Controller</h3>
+<p>Create a file <strong>app/controllers/registrations_controller.rb</strong>:</p>
+<pre>
+class RegistrationsController &lt; Devise::RegistrationsController
+  
+  def new
+    @plan = params[:plan]
+    super
+  end
+
+  def after_sign_up_path_for(resource)
+    # the page new users will see after sign up
+    redirect_to root_path
+  end
+end
+</pre>
+<h3>Override the Devise Routes</h3>
+<p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
+<pre>
+devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
+</pre>
+<p>You’ve modified the routes file, so you must restart the server for any changes to take effect.</p>
+<h3>Test Registration</h3>
+<p>You can check that registration works by entering the command:</p>
+<p><code>$ rails server</code></p>
+<p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
+<p>Click on the “Subscribe” buttom for any subscription plan. You’ll see the registration page. Fill in and submit the form. You’ll see a message “Welcome! You have signed up successfully.” Note that we’re not using the Devise Confirmable module so the application doesn’t send a confirmation email.</p>
+<p>Log in as the new user.</p>
+<p>Now we have a registration page that assigns a subscription plan when a visitor signs up for the site. In the next step, we’ll integrate Stripe payment for subscription plans.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
