@@ -592,7 +592,7 @@ $ rake db:test:prepare
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>Stop the server with Control-C.</p>
 <h4>When to Restart</h4>
-<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server.</p>
+<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. As a rule, remember to restart the server when you add gems, change routes, or change anything in the config folder; leave the server running whn you change models, controllers, views or anything else in app folder.</p>
 <h2>Replace the Home Page</h2>
 <p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for a subscription site.</p>
 <h3>Home Page with Subscription Plans</h3>
@@ -631,7 +631,7 @@ $ rake db:test:prepare
 &lt;/div&gt;
 </pre>
 <p>We apply <span class="caps">CSS</span> classes from Twitter Bootstrap to style the page. We’ll create a few additional <span class="caps">CSS</span> classes in the next step.</p>
-<p>The page will contain a “hero unit” for your key marketing message plus three boxes describing subscription plans.</p>
+<p>The page contains a “hero unit” for your key marketing message plus three boxes describing subscription plans.</p>
 <p>Each box contains a link to a content page. The content pages don’t yet exist; we’ll need to create a Content controller, routes, and views to implement the content pages. Later, we’ll change the links to open a subsciption purchase page instead of a content page.</p>
 <h3>
 <span class="caps">CSS</span> for Subscription Plans</h3>
@@ -701,7 +701,8 @@ $ git checkout -b content-pages
 <pre>
 $ rails generate controller content silver gold platinum --skip-stylesheets --skip-javascripts
 </pre>
-<p>We’ve named the controller the “ContentController.” We’ve asked for three views, corresponding to the three subscription plans we’ll offer. We’ll also avoid cluttering our application with stylesheet and Javascript files we don’t need.</p>
+<p>We’ve named the controller the “ContentController.” The default route will put our content pages in an apparent “content” directory with the <span class="caps">URL</span> path <a href="http://localhost:3000/content/">http://localhost:3000/content/</a>. You could give the controller another name if you want a different <span class="caps">URL</span> path but it’s easier to keep the same controller name and change the path in the <strong>config/routes.rb</strong> file (described below).</p>
+<p>We’ve asked for three views, corresponding to the three subscription plans we’ll offer. We’ll use <code>--skip-stylesheets --skip-javascripts</code> to avoid cluttering our application with stylesheet and Javascript files we don’t need.</p>
 <p>The Rails generator will create these files for you:</p>
 <pre>
 app/controllers/content_controller.rb
@@ -717,6 +718,7 @@ get "content/silver"
 get "content/gold"
 get "content/platinum"
 </pre>
+<p>If you want a different <span class="caps">URL</span> path, you could specify a different path like this: <code>get "articles/silver" =&gt; "content#silver", :as =&gt; :content_silver</code>. Visitors will see a <span class="caps">URL</span> path <a href="http://localhost:3000/articles/silver">http://localhost:3000/articles/silver</a> but you won’t need to make any other changes to the application.</p>
 <p>The controller is very simple:</p>
 <pre>
 class ContentController &lt; ApplicationController
@@ -924,7 +926,7 @@ $ git checkout -b registration
 	<li>
 <code>content_platinum_path</code> becomes <code>new_user_registration_path(:plan =&gt; 'platinum')</code>
 </li>
-</ul><p>Notice that we append a parameter to each link to indicate the subscription plan selected by the visitor. We are initiating an <span class="caps">HTTP</span> <span class="caps">GET</span> request; you’ll see a <span class="caps">URL</span> like this: <code>http://lvh.me:3000/users/sign_up?plan=silver</code>.</p>
+</ul><p>Notice that we append a parameter to each link to indicate the subscription plan selected by the visitor. We are initiating an <span class="caps">HTTP</span> <span class="caps">GET</span> request so you’ll see a <span class="caps">URL</span> like this: <code>http://lvh.me:3000/users/sign_up?plan=silver</code>.</p>
 <h3>Modify the Navigation Links</h3>
 <p>Visitors will see a “Sign up” link on the home page if they are not logged in. We want them to sign up by selecting a subscription plan, so we’ll remove the “Sign up” link in the navigation bar.</p>
 <p>Modify the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
@@ -953,39 +955,78 @@ $ git checkout -b registration
 &lt;/ul&gt;
 </pre>
 <p>We’ve removed the “Sign up” link.</p>
-<h3>Modify the Devise Registration Page</h3>
-<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
-<pre>
-
-</pre>
 <h3>Override the Devise Registrations Controller</h3>
 <p>Create a file <strong>app/controllers/registrations_controller.rb</strong>:</p>
 <pre>
 class RegistrationsController &lt; Devise::RegistrationsController
   
+  before_filter :set_plan, :only =&gt; :new
+
+  def set_plan
+    @plan = params[:plan]
+  end
+
+  private  
+  def build_resource(*args)
+    super
+    if params[:plan]
+      resource.add_role(params[:plan])
+    end
+  end
+end
+</pre>
+<p>Devise provides a Registrations controller inside the Devise gem. It contains all the standard RESTful controller actions, including <code>new</code> and <code>create</code>. The Devise Registrations controller sets up a new User with a private method named <code>build_resource</code>. But the default <code>build_resource</code> method won’t assign a role to our user. We’ll improve the <code>build_resource</code> method by overriding the Devise Registrations controller with our own customized version. The <code>super</code> method calls the parent <code>build_resource</code> method. Then we check if we’ve got the <em>plan</em> parameter passed from the home page. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as a role for authorization. If you’re wondering where the User model is hidden in all this, Devise has aliased it as the <em>resource</em> instance variable (in other implementations, this allows Devise to accommodate models with names other than User, such as Account or Person).</p>
+<p>We also use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. This allows us to display the name of the selected subscription plan on the registration page. There’s more than one way to implement this. For example, we could do this:</p>
+<pre>
   def new
     @plan = params[:plan]
     super
   end
-
-  def after_sign_up_path_for(resource)
-    # the page new users will see after sign up
-    redirect_to root_path
-  end
-end
 </pre>
+<p>Either implementation is effective; we’ve chosen to use a <code>before_filter</code> rather than overriding the <code>new</code> method.</p>
 <h3>Override the Devise Routes</h3>
 <p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
 <pre>
 devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 </pre>
 <p>You’ve modified the routes file, so you must restart the server for any changes to take effect.</p>
+<h3>Modify the Devise Registration Page</h3>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;h2&gt;Sign up&lt;/h2&gt;
+
+&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
+
+&lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
+&lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
+
+  &lt;%= devise_error_messages! %&gt;
+&lt;p&gt;&lt;%= f.label :name %&gt;&lt;br /&gt;
+&lt;%= f.text_field :name %&gt;&lt;/p&gt;
+
+  &lt;div&gt;&lt;%= f.label :email %&gt;&lt;br /&gt;
+  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.label :password %&gt;&lt;br /&gt;
+  &lt;%= f.password_field :password %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;&lt;br /&gt;
+  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
+&lt;% end %&gt;
+
+&lt;%= render "devise/shared/links" %&gt;
+</pre>
+<p>We display the name of the selected subscription plan. The <code>humanize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
+<p>We use a hidden input field to include a role ID corresponding to the selected subscription plan. The field ID <code>user[role_ids][]</code> is a bit of Rails convention that will be interpreted as a named parameter. We obtain a role ID from the User model which was preset by the <code>build_resource</code> method in our Registrations controller.</p>
+<p>When we submit the form, Rails does its form processing magic, including validation of the model attributes, and saves the new User record to the database.</p>
 <h3>Test Registration</h3>
 <p>You can check that registration works by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
-<p>Click on the “Subscribe” buttom for any subscription plan. You’ll see the registration page. Fill in and submit the form. You’ll see a message “Welcome! You have signed up successfully.” Note that we’re not using the Devise Confirmable module so the application doesn’t send a confirmation email.</p>
-<p>Log in as the new user.</p>
+<p>Click on the “Subscribe” buttom for any subscription plan. You’ll see the registration page. Fill in and submit the form. You’ll see a message “Welcome! You have signed up successfully.” Note that we’re not using the Devise Confirmable module so the application doesn’t send a confirmation email. You’ll be logged in as the new user as soon as you submit the form.</p>
+<p>If you’ve selected the Silver Plan for the new user, try visiting <a href="http://localhost:3000/content/silver">http://localhost:3000/content/silver.html</a>. You should be able to view the page. You should see an error message if you attempt to visit  <a href="http://localhost:3000/content/gold">http://localhost:3000/content/gold.html</a>.</p>
 <p>Now we have a registration page that assigns a subscription plan when a visitor signs up for the site. In the next step, we’ll integrate Stripe payment for subscription plans.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
