@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 13 September 2012</em></p>
+<p><em>Last updated 14 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -92,7 +92,7 @@
 <li>Basecamp-style subdomains (each user gets their own subdomain)</li>
 	<li>
 <a href="http://en.wikipedia.org/wiki/Multitenancy">multitenancy</a> database segmentation</li>
-</ul><p>These features are not included in this application. See the <a href="https://github.com/RailsApps/rails3-subdomains">rails3-subdomains</a> example application for help with subdomains.</p>
+</ul><p>These features are not included in this application. See the <a href="https://github.com/RailsApps/rails3-subdomains">rails3-subdomains</a> example application for help with subdomains. For multitenancy, try Brad Robertson’s <a href="https://github.com/bradrobertson/apartment">Apartment</a> gem.</p>
 <h3>Gems</h3>
 <p>RubyGems is a package manager for the Ruby programming language that provides a standard format for distributing Ruby programs and libraries (in a self-contained format called a “gem”). Gems add functionality to a Rails app.</p>
 <p>We use these gems:</p>
@@ -104,13 +104,13 @@
 	<li>
 <a href="https://stripe.com/">Stripe</a> for recurring billing</li>
 </ul><h4>Devise</h4>
-<p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be.</p>
+<p>Devise provides authentication, a system to securely identify users, making sure the user is who he represents himself to be.</p>
 <p>We use Devise because it offers a full set of features used in more complex applications, such as recovering a user’s forgotten password or allowing users to invite friends. Should you need help in troubleshooting or customizing the implementation, you’ll be able to get help from a large community of developers using Devise.</p>
 <h4>CanCan with Rolify</h4>
 <p>CanCan provides a system for authorization to determine if an authenticated user should have access to secured resources. CanCan is often used to restrict access to administrative pages. This application will use CanCan to restrict access to content based on the price a user has paid for a subscription.</p>
 <p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles based on subscription price; you must implement this outside of CanCan. There are many ways to implement role-based authorization for use with CanCan. For this example, we use Florent Monbillard’s Rolify gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
 <h4>Stripe</h4>
-<p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low-volume startups. Stripe costs 2.9% + 30¢ per successful charge, with no monthly or setup fees (see <a href="https://stripe.com/help/pricing">Stripe pricing</a>).</p>
+<p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low-volume startups. Stripe costs 2.9% + 30¢ per successful charge, with no monthly or setup fees (see <a href="https://stripe.com/help/pricing">Stripe pricing</a>). Unfortunately, Stripe is only available to developers who have bank accounts in the US or Canada, though you can receive payments from customers internationally (<a href="#comment">leave a comment</a> if you want to suggest a billing service for non-US developers for a future tutorial).</p>
 <h3>RailsApps Examples and Tutorials</h3>
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p>This application is based on two simpler example apps:</p>
@@ -123,7 +123,7 @@
 <p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at the  <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
 <p>You might also be interested in the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example if you are planning prelaunch promotion. Use it to announce your plans and collect email addresses from visitors for future notification of the site’s launch.</p>
 <h2>About the Tutorial</h2>
-<p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please leave a comment when you are done.)</p>
+<p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please <a href="#comment">leave a comment</a> when you are done.)</p>
 <p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
 <p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
 <h2>Before You Start</h2>
@@ -433,6 +433,7 @@ gem "rolify", "&gt;= 3.2.0"
 <p>Add the following gems which will be needed for the rails-membership-subscription-saas application:</p>
 <pre>
 gem "simple_form"
+gem "stripe"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.8'</code> accordingly.</p>
 <p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -928,7 +929,7 @@ $ git checkout -b registration
 </li>
 </ul><p>Notice that we append a parameter to each link to indicate the subscription plan selected by the visitor. We are initiating an <span class="caps">HTTP</span> <span class="caps">GET</span> request so you’ll see a <span class="caps">URL</span> like this: <code>http://lvh.me:3000/users/sign_up?plan=silver</code>.</p>
 <h3>Modify the Navigation Links</h3>
-<p>Visitors will see a “Sign up” link on the home page if they are not logged in. We want them to sign up by selecting a subscription plan, so we’ll remove the “Sign up” link in the navigation bar.</p>
+<p>Currently visitors see a “Sign up” link on the home page if they are not logged in. We’ll remove the “Sign up” link in the navigation bar because we want them to sign up by selecting a subscription plan.</p>
 <p>Modify the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
 <pre>
 &lt;%= link_to "Rails Membership Subscription Saas", root_path, :class =&gt; 'brand' %&gt;
@@ -975,8 +976,8 @@ class RegistrationsController &lt; Devise::RegistrationsController
   end
 end
 </pre>
-<p>Devise provides a Registrations controller inside the Devise gem. It contains all the standard RESTful controller actions, including <code>new</code> and <code>create</code>. The Devise Registrations controller sets up a new User with a private method named <code>build_resource</code>. But the default <code>build_resource</code> method won’t assign a role to our user. We’ll improve the <code>build_resource</code> method by overriding the Devise Registrations controller with our own customized version. The <code>super</code> method calls the parent <code>build_resource</code> method. Then we check if we’ve got the <em>plan</em> parameter passed from the home page. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as a role for authorization. If you’re wondering where the User model is hidden in all this, Devise has aliased it as the <em>resource</em> instance variable (in other implementations, this allows Devise to accommodate models with names other than User, such as Account or Person).</p>
-<p>We also use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. This allows us to display the name of the selected subscription plan on the registration page. There’s more than one way to implement this. For example, we could do this:</p>
+<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub). Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. Of course the default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role. If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
+<p>We use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. This allows us to display the name of the selected subscription plan on the registration page. There’s more than one way to implement this. For example, we could do this:</p>
 <pre>
   def new
     @plan = params[:plan]
@@ -1019,13 +1020,13 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 &lt;%= render "devise/shared/links" %&gt;
 </pre>
 <p>We display the name of the selected subscription plan. The <code>humanize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
-<p>We use a hidden input field to include a role ID corresponding to the selected subscription plan. The field ID <code>user[role_ids][]</code> is a bit of Rails convention that will be interpreted as a named parameter. We obtain a role ID from the User model which was preset by the <code>build_resource</code> method in our Registrations controller.</p>
+<p>We use a hidden input field to include a role ID corresponding to the selected subscription plan. The field ID <code>user[role_ids][]</code> follows Rails convention to create an <span class="caps">HTML</span> tag ID that will be interpreted as a named parameter. We obtain a role ID from the User model which is preset by the <code>build_resource</code> method in our Registrations controller.</p>
 <p>When we submit the form, Rails does its form processing magic, including validation of the model attributes, and saves the new User record to the database.</p>
 <h3>Test Registration</h3>
 <p>You can check that registration works by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
-<p>Click on the “Subscribe” buttom for any subscription plan. You’ll see the registration page. Fill in and submit the form. You’ll see a message “Welcome! You have signed up successfully.” Note that we’re not using the Devise Confirmable module so the application doesn’t send a confirmation email. You’ll be logged in as the new user as soon as you submit the form.</p>
+<p>Click on the “Subscribe” button for any subscription plan. You’ll see the registration page. Fill in and submit the form. You’ll see a message “Welcome! You have signed up successfully.” Note that we’re not using the Devise Confirmable module so the application doesn’t send a confirmation email. You’ll be logged in as the new user as soon as you submit the form.</p>
 <p>If you’ve selected the Silver Plan for the new user, try visiting <a href="http://localhost:3000/content/silver">http://localhost:3000/content/silver.html</a>. You should be able to view the page. You should see an error message if you attempt to visit  <a href="http://localhost:3000/content/gold">http://localhost:3000/content/gold.html</a>.</p>
 <p>Now we have a registration page that assigns a subscription plan when a visitor signs up for the site. In the next step, we’ll integrate Stripe payment for subscription plans.</p>
 <h3>Git Workflow</h3>
@@ -1037,6 +1038,48 @@ $ git checkout master
 $ git merge --squash registration
 $ git commit -am "add registration"
 $ git branch -D registration
+</pre>
+<h2>Stripe Integration</h2>
+<p>We’ve got a fully functional web application that serves up placeholder content to registered users and restricts access based on the subscription plan the user has selected. Now we’ll integrate Stripe billing so we can charge users for subscriptions.</p>
+<p>The most obvious way to implement billing would be to save credit card data to a user’s account, submit the credit card data to the payment processor, and receive an acknowledgment of a completed or declined transaction. There’s a big drawback to this approach: Credit card data is stored on your server. Your server becomes a target for thieves and you must secure the server and maintain <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> (the credit card industry security standard).</p>
+<p>Instead, Stripe offers an architecture that cuts risk and makes it much easier to meet <span class="caps">PCI</span> compliance requirements. Stripe provides a JavaScript file that we add to our payment page. We set a public key in the JavaScript code to identify our Stripe account. We trigger the JavaScript code when the user submits the payment form. The JavaScript code obtains the credit card data from our form, transmits the data to Stripe’s servers, and returns a unique token that serves as a substitute for the credit card data. Stripe takes responsibility for the security of the credit card data and it never touches our server. We can safely save and use the Stripe token when we make a request to Stripe to bill the user.</p>
+<p>The multi-step Javascript-based architecture makes implementation more complex but the result is robust and secure.</p>
+<p>Create a new git branch for this feature:</p>
+<pre>
+$ git checkout -b stripe
+</pre>
+<h3>Stripe Initializer</h3>
+<p>We’ve already installed the Stripe gem in our Gemfile.</p>
+<p>The Stripe gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a public key when we initiate a transaction. You can find both keys on the Stripe website when you visit your account page. We’ll use an initializer file to store the <span class="caps">API</span> and public key.</p>
+<p>Create a file <strong>config/initializers/stripe.rb</strong>:</p>
+<pre>
+Stripe.api_key = ENV["STRIPE_API_KEY"]
+STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
+</pre>
+<p>The <code>STRIPE_PUBLIC_KEY</code> is a constant we’ll use in the Javascript code that initiates the Stripe transaction.</p>
+<p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. Instead, set Unix environment variables in the file that is read when starting an interactive shell (the *~/.bashrc *file for the bash shell). This will keep the password out of your repository.</p>
+<p>Add this to your *~/.bashrc *file (or the equivalent file for your preferred Unix shell):</p>
+<pre>
+export STRIPE_API_KEY="secret"
+export STRIPE_PUBLIC_KEY="secret"
+</pre>
+<p>Replace “secret” with your keys. You can find both keys on your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. Two sets of keys are available: one for testing, one for live transactions. Use the tesing keys on your development machine. When you deploy, use the live keys. If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment.</p>
+<p>Here’s how to set Heroku environment variables to provide the same data your application obtains from your local shell environment:</p>
+<pre>
+$ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
+</pre>
+<p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
+<h3>Stripe’s Javascript Library</h3>
+<p>To use Stripe on our payment page we need to include a JavaScript file from Stripe’s server. It’d be easy to add the file to the application layout but then it would be included on every page.</p>
+<h3>Git Workflow</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "add stripe"
+$ git checkout master
+$ git merge --squash stripe
+$ git commit -am "add stripe"
+$ git branch -D stripe
 </pre>
 <h2>More to Come</h2>
 <p>Work in progress.</p>
@@ -1058,7 +1101,7 @@ $ git branch -D registration
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
 <h2>Conclusion</h2>
 <p>This concludes the tutorial for the RailsApp <a href="https://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> example app.</p>
-<h3>Did You Like the Tutorial? Here’s What You Can Do</h3>
+<h3 id="comment">Did You Like the Tutorial? Here’s What You Can Do</h3>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
