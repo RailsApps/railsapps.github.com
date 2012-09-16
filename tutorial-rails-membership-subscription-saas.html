@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 14 September 2012</em></p>
+<p><em>Last updated 15 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -78,7 +78,7 @@
 	<li>no local credit card storage</li>
 	<li>Stripe accepts credit card payments from customers in any country or currency</li>
 	<li>
-<span class="caps">PCI</span> compliance using the Stripe Javascript library</li>
+<span class="caps">PCI</span> compliance using the Stripe JavaScript library</li>
 	<li>site served over <span class="caps">SSL</span> for security</li>
 	<li>Stripe handles recurring billing, retries if payment fails, and cancels if retries fail</li>
 	<li>paid subscriptions are created only after a successful credit card transaction</li>
@@ -329,7 +329,7 @@ Using bundle exec may solve this.
 <p>Two approaches are possible in building a recurring billing system. You could implement a complete billing management system as part of the application. This would require building a mechanism to check for expiring subscriptions (typically a daily cron job) and initiate payment requests through Stripe when a user’s account comes due. With this approach, you would use Stripe only for processing credit card transactions. But there’s no reason to implement recurring billing yourself. Stripe provides a complete, well-tested, and hosted mechanism for recurring billing. We’ll use Stripe’s <span class="caps">API</span> to supply the recurring billing services we need.</p>
 <p>A key requirement for the application is to keep the recurring billing and account management systems in sync. We face a problem if we establish a new subscription, hand off recurring billing to Stripe, and then months later find that the subscriber’s credit card has expired and can no longer be billed. We need a mechanism to update our subscription status when Stripe encounters a declined transaction. Stripe provides “webhooks” to set the status of a subscription. When Stripe encounters a declined transaction it will initiate an <span class="caps">HTTP</span> request to our application which we can decode to change a subscription status.</p>
 <p>If we didn’t use the Stripe webhooks, we’d have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration. The application will be notified immediately by Stripe so there is no need for the overhead of checking on each login. The Stripe webhook mechanism is very robust: If for some reason it cannot make an <span class="caps">HTTP</span> request to our application, it will retry several times with exponential backoff.</p>
-<p>A key requirement for any ecommerce site that takes credit cards is <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> to minimize risk of customer credit card exposure. Using Stripe, your server will never receive sensitive credit card details. Instead you’ll use a the Stripe Javascript library on your subscription payment form which sends the credit card details directly to the Stripe servers. Your site will meet <span class="caps">PCI</span> compliance requirememts if you solely accept payment information through the Stripe Javascript library and serve your payment page over <span class="caps">SSL</span>.</p>
+<p>A key requirement for any ecommerce site that takes credit cards is <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> to minimize risk of customer credit card exposure. Using Stripe, your server will never receive sensitive credit card details. Instead you’ll use a the Stripe JavaScript library on your subscription payment form which sends the credit card details directly to the Stripe servers. Your site will meet <span class="caps">PCI</span> compliance requirememts if you solely accept payment information through the Stripe JavaScript library and serve your payment page over <span class="caps">SSL</span>.</p>
 <h3>Landing Pages</h3>
 <p>Ideally, landing pages should be static pages that load quickly and can be cached for fast response.</p>
 <p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. The home page of the application is a landing page. We’ll show you how to add alternative landing pages that can be customized to match specific search terms for better <span class="caps">SEO</span> and an improved conversion rate.</p>
@@ -703,7 +703,7 @@ $ git checkout -b content-pages
 $ rails generate controller content silver gold platinum --skip-stylesheets --skip-javascripts
 </pre>
 <p>We’ve named the controller the “ContentController.” The default route will put our content pages in an apparent “content” directory with the <span class="caps">URL</span> path <a href="http://localhost:3000/content/">http://localhost:3000/content/</a>. You could give the controller another name if you want a different <span class="caps">URL</span> path but it’s easier to keep the same controller name and change the path in the <strong>config/routes.rb</strong> file (described below).</p>
-<p>We’ve asked for three views, corresponding to the three subscription plans we’ll offer. We’ll use <code>--skip-stylesheets --skip-javascripts</code> to avoid cluttering our application with stylesheet and Javascript files we don’t need.</p>
+<p>We’ve asked for three views, corresponding to the three subscription plans we’ll offer. We’ll use <code>--skip-stylesheets --skip-javascripts</code> to avoid cluttering our application with stylesheet and JavaScript files we don’t need.</p>
 <p>The Rails generator will create these files for you:</p>
 <pre>
 app/controllers/content_controller.rb
@@ -992,6 +992,7 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 </pre>
 <p>You’ve modified the routes file, so you must restart the server for any changes to take effect.</p>
 <h3>Modify the Devise Registration Page</h3>
+<p>We’ll use the Devise registration page as our subscription sign-up form.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
 &lt;h2&gt;Sign up&lt;/h2&gt;
@@ -1002,25 +1003,24 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 &lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
 
   &lt;%= devise_error_messages! %&gt;
-&lt;p&gt;&lt;%= f.label :name %&gt;&lt;br /&gt;
+&lt;p&gt;&lt;%= f.label :name %&gt;
 &lt;%= f.text_field :name %&gt;&lt;/p&gt;
 
-  &lt;div&gt;&lt;%= f.label :email %&gt;&lt;br /&gt;
+  &lt;div&gt;&lt;%= f.label :email %&gt;
   &lt;%= f.email_field :email %&gt;&lt;/div&gt;
 
-  &lt;div&gt;&lt;%= f.label :password %&gt;&lt;br /&gt;
+  &lt;div&gt;&lt;%= f.label :password %&gt;
   &lt;%= f.password_field :password %&gt;&lt;/div&gt;
 
-  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;&lt;br /&gt;
+  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
   &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
 
   &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
 &lt;% end %&gt;
-
-&lt;%= render "devise/shared/links" %&gt;
 </pre>
 <p>We display the name of the selected subscription plan. The <code>humanize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
 <p>We use a hidden input field to include a role ID corresponding to the selected subscription plan. The field ID <code>user[role_ids][]</code> follows Rails convention to create an <span class="caps">HTML</span> tag ID that will be interpreted as a named parameter. We obtain a role ID from the User model which is preset by the <code>build_resource</code> method in our Registrations controller.</p>
+<p>We remove the <code>&lt;%= render "devise/shared/links" %&gt;</code> navigation links because we already have a login link in the page navigation bar.</p>
 <p>When we submit the form, Rails does its form processing magic, including validation of the model attributes, and saves the new User record to the database.</p>
 <h3>Test Registration</h3>
 <p>You can check that registration works by entering the command:</p>
@@ -1041,24 +1041,26 @@ $ git branch -D registration
 </pre>
 <h2>Stripe Integration</h2>
 <p>We’ve got a fully functional web application that serves up placeholder content to registered users and restricts access based on the subscription plan the user has selected. Now we’ll integrate Stripe billing so we can charge users for subscriptions.</p>
+<p>Remember we’re using our Devise registration page for subscription sign up. We’ll make this our payment page. We’ll ask the visitor to enter credit card data on this page.</p>
 <p>The most obvious way to implement billing would be to save credit card data to a user’s account, submit the credit card data to the payment processor, and receive an acknowledgment of a completed or declined transaction. There’s a big drawback to this approach: Credit card data is stored on your server. Your server becomes a target for thieves and you must secure the server and maintain <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> (the credit card industry security standard).</p>
-<p>Instead, Stripe offers an architecture that cuts risk and makes it much easier to meet <span class="caps">PCI</span> compliance requirements. Stripe provides a JavaScript file that we add to our payment page. We set a public key in the JavaScript code to identify our Stripe account. We trigger the JavaScript code when the user submits the payment form. The JavaScript code obtains the credit card data from our form, transmits the data to Stripe’s servers, and returns a unique token that serves as a substitute for the credit card data. Stripe takes responsibility for the security of the credit card data and it never touches our server. We can safely save and use the Stripe token when we make a request to Stripe to bill the user.</p>
-<p>The multi-step Javascript-based architecture makes implementation more complex but the result is robust and secure.</p>
+<p>Instead, Stripe offers an architecture that cuts risk and makes it much easier to meet <span class="caps">PCI</span> compliance requirements. Stripe provides a JavaScript file that we add to our payment page. We set a public key in the JavaScript code to identify our Stripe account. We trigger the JavaScript code when the user submits the payment form. The JavaScript code obtains the credit card data from our form, transmits the data to Stripe’s servers, and returns a unique token that serves as a substitute for the credit card data. Stripe takes responsibility for the security of the credit card data and it never touches our server. We can safely use  the Stripe token as a substitute for credit card data when we make a request to Stripe to bill the user.</p>
+<p>Stripe’s multi-step JavaScript-based approach makes implementation more complex but the result is robust and secure.</p>
 <p>Create a new git branch for this feature:</p>
 <pre>
 $ git checkout -b stripe
 </pre>
 <h3>Stripe Initializer</h3>
 <p>We’ve already installed the Stripe gem in our Gemfile.</p>
-<p>The Stripe gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a public key when we initiate a transaction. You can find both keys on the Stripe website when you visit your account page. We’ll use an initializer file to store the <span class="caps">API</span> and public key.</p>
+<p>The Stripe gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a public key when we initiate a transaction. You can find both keys on the Stripe website when you visit your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. We’ll use an initializer file to store the <span class="caps">API</span> and public key.</p>
 <p>Create a file <strong>config/initializers/stripe.rb</strong>:</p>
 <pre>
 Stripe.api_key = ENV["STRIPE_API_KEY"]
 STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 </pre>
-<p>The <code>STRIPE_PUBLIC_KEY</code> is a constant we’ll use in the Javascript code that initiates the Stripe transaction.</p>
-<p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. Instead, set Unix environment variables in the file that is read when starting an interactive shell (the *~/.bashrc *file for the bash shell). This will keep the password out of your repository.</p>
-<p>Add this to your *~/.bashrc *file (or the equivalent file for your preferred Unix shell):</p>
+<p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
+<p>The <code>STRIPE_PUBLIC_KEY</code> is a constant we’ll use in the JavaScript code that initiates the Stripe transaction.</p>
+<p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. Instead, set Unix environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
+<p>Add this to your <strong>~/.bashrc</strong> file (or the equivalent file for your preferred Unix shell):</p>
 <pre>
 export STRIPE_API_KEY="secret"
 export STRIPE_PUBLIC_KEY="secret"
@@ -1069,8 +1071,163 @@ export STRIPE_PUBLIC_KEY="secret"
 $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
-<h3>Stripe’s Javascript Library</h3>
-<p>To use Stripe on our payment page we need to include a JavaScript file from Stripe’s server. It’d be easy to add the file to the application layout but then it would be included on every page.</p>
+<h3>Add Stripe’s JavaScript Library</h3>
+<p>To use Stripe on our payment page we need to include a JavaScript file from Stripe’s server.</p>
+<p>If you look at the application layout file <strong>app/views/layouts/application.html.erb</strong> you’ll see <code>&lt;%= yield(:head_pre) %&gt;</code> and <code>&lt;%= yield(:head_post) %&gt;</code> elements make it easy to add JavaScript files to our payment page. The first loads before our application-wide <strong>application.js</strong> file and the second loads after.</p>
+<p>It’s important that the Stripe JavaScript file loads before any JavaScript we use on the payment page. Otherwise, we’ll get a JavaScript error when we attempt to process the registration form. We’ll use <code>&lt;%= yield(:head_pre) %&gt;</code> to load it.</p>
+<p>We have page-specific JavaScript code we want to run only on the payment page after the Stripe JavaScript file loads. It requires jQuery so we will load it after our application-wide <strong>application.js</strong> file. We’ll use <code>&lt;%= yield(:head_post) %&gt;</code> to load it.</p>
+<p>Make sure the <strong>application.js</strong> file does not include <code>//= require_tree .</code> or else our page-specific JavaScript code in a <strong>app/assets/javascripts/registrations.js.erb</strong> file (which we’ll soon create) will be included on every page.</p>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head_pre do %&gt;
+  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
+&lt;% end %&gt;
+&lt;% content_for :head_post do %&gt;
+  &lt;%= javascript_include_tag 'registrations' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Sign up&lt;/h2&gt;
+
+&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
+
+  &lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
+
+  &lt;%= devise_error_messages! %&gt;
+  &lt;p&gt;&lt;%= f.label :name %&gt;
+  &lt;%= f.text_field :name %&gt;&lt;/p&gt;
+
+  &lt;div&gt;&lt;%= f.label :email %&gt;
+  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.label :password %&gt;
+  &lt;%= f.password_field :password %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
+  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
+&lt;% end %&gt;
+</pre>
+<p>The <code>content_for :head_pre</code> block will pass <code>&lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;</code> to the <code>&lt;head&gt;</code> section of the application layout. This will load Stripe’s JavaScript file when the payment page is rendered in the browser. You can verify it by starting the server and viewing the page source. You should see something similar to this:</p>
+<pre>
+&lt;head&gt;
+&lt;meta charset="utf-8"/&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
+&lt;title&gt;Rails Membership Subscription Saas&lt;/title&gt;
+&lt;meta name="description" content=""/&gt;
+&lt;meta name="author" content=""/&gt;
+&lt;script src="https://js.stripe.com/v1/" type="text/javascript"&gt;&lt;/script&gt;
+&lt;link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" /&gt;
+&lt;script src="/assets/application.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/assets/registrations.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;meta content="authenticity_token" name="csrf-param" /&gt;
+&lt;meta content="..." name="csrf-token" /&gt;
+&lt;/head&gt;
+</pre>
+<p>With the Stripe JavaScript file in place, we will add fields for credit card data to the form.</p>
+<h3>Add Credit Card Data to the Registration Form</h3>
+<p>We’ll need fields for a credit card number, security code, and expiration date.</p>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head_pre do %&gt;
+  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
+&lt;% end %&gt;
+&lt;% content_for :head_post do %&gt;
+  &lt;%= javascript_include_tag 'registrations' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Sign up&lt;/h2&gt;
+
+&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
+
+  &lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
+
+  &lt;%= devise_error_messages! %&gt;
+  &lt;p&gt;&lt;%= f.label :name %&gt;
+  &lt;%= f.text_field :name %&gt;&lt;/p&gt;
+
+  &lt;div&gt;&lt;%= f.label :email %&gt;
+  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.label :password %&gt;
+  &lt;%= f.password_field :password %&gt;&lt;/div&gt;
+
+  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
+  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
+
+  &lt;div class="field"&gt;
+    &lt;%= label_tag :card_number, "Credit Card Number" %&gt;
+    &lt;%= text_field_tag :card_number, nil, name: nil %&gt;
+  &lt;/div&gt;
+  &lt;div class="field"&gt;
+    &lt;%= label_tag :card_code, "Card Security Code (CVV)" %&gt;
+    &lt;%= text_field_tag :card_code, nil, name: nil %&gt;
+  &lt;/div&gt;
+  &lt;div class="field"&gt;
+    &lt;%= label_tag :card_month, "Card Expiration" %&gt;
+    &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
+    &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
+  &lt;/div&gt;
+  
+  &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
+&lt;% end %&gt;
+</pre>
+<p>Notice the differences between the credit card data fields and the previous data fields.</p>
+<p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
+<p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
+<h3>Add JavaScript for Form Processing</h3>
+<p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
+<p>Create a file <strong>app/assets/javascripts/registrations.js.erb</strong>:</p>
+<pre>
+if (typeof Stripe != 'undefined') {
+  alert('Okay. Stripe JavaScript file loaded.');
+}
+else
+{
+  alert('Problem. Stripe JavaScript file not loaded.');
+}
+</pre>
+<p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
+<p>Now replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<pre>
+var subscription;
+
+jQuery(function() {
+  Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+  alert('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+  return subscription.setupForm();
+});
+
+subscription = {
+  setupForm: function() {
+    alert('setupForm');
+    return $('#new_subscription').submit(function() {
+      $('input[type=submit]').attr('disabled', true);
+      return subscription.processCard();
+    });
+  },
+  processCard: function() {
+    alert('processCard');
+    var card;
+    card = {
+      number: $('#card_number').val(),
+      cvc: $('#card_code').val(),
+      expMonth: $('#card_month').val(),
+      expYear: $('#card_year').val()
+    };
+    return Stripe.createToken(card, subscription.handleStripeResponse);
+  },
+  handleStripeResponse: function(status, response) {
+    alert('handleStripeResponse');
+    if (status === 200) {
+      return alert(response.id);
+    } else {
+      return alert(response.error.message);
+    }
+  }
+};
+</pre>
+<p>With the file extension <strong>.erb</strong> we can set the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
