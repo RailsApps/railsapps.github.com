@@ -46,16 +46,21 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Application Layout for HTML5</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 August 2012</em></p>
+<p><em>Last updated 17 September 2012</em></p>
 <p>Rails Default Application Layout for HTML5. Shows how to set up a default application layout with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling.</p>
 <p>See the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> for an explanation of what should be included in the default application layout.</p>
 <h3>RailsApps Examples and Tutorials</h3>
-<p>This is a guide for developers using the example apps from the RailsApps repository. The RailsApps project provides open source apps and detailed tutorials for Rails developers. Next time you build an app, check the <a href="http://railsapps.github.com/">RailsApps</a> project to see if we can save you some time with a starter app.</p>
+<p>This is a guide for developers using the example apps from the RailsApps repository. The RailsApps project provides open source apps and detailed tutorials for Rails developers. Next time you build an app, try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
 <p>If you’re new to Rails, see a list of recommended resources for <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
-<h2>Background</h2>
-<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
-<p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
+<h3>Shortcuts</h3>
+<p>You can skip suggestions about navigation links, <span class="caps">CSS</span>, and flash messages and see a:</p>
+<ul>
+<li><a href="#layout-simple">Simple Default Application Layout</a></li>
+	<li><a href="#layout-bootstrap">Application Layout with Twitter Bootstrap</a></li>
+</ul><h2>Background</h2>
+<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>. See the RailsGuide <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-render">Layouts and Rendering in Rails</a> for details about how Rails applies layouts to views.</p>
+<p>Rails provides a default application layout but you’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
 <h2>Navigation Links</h2>
 <p>You’ll likely need navigation links on every page of your web application. You’ll want a link for Home. If you’ve implemented authentication using <a href="http://github.com/plataformatec/devise">Devise</a> you’ll want links for Login, Logout, and Sign Up. If you’re using <a href="https://github.com/intridea/omniauth">OmniAuth</a> for authentication, you’ll want links for Login and Logout. If you’ve got pages for an administrator, you may want a link for Admin.</p>
 <p>You can add navigation links directly to your application layout file but many developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
@@ -142,7 +147,7 @@
 </pre>
 <h2>
 <span class="caps">CSS</span> Styling</h2>
-<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”), the program will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
+<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention for the front end that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. If you’ve generated your app using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”), the program will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly.</p>
 <h3>Use <span class="caps">SASS</span>
 </h3>
 <p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
@@ -178,7 +183,7 @@ ul.nav li {
 </pre>
 <h3>
 <span class="caps">CSS</span> Styling with Twitter Bootstrap (Sass)</h3>
-<p>It’s easy to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to install Twitter Bootstrap and set up your default application layout. If you’re building an app step-by-step without using the program, here are instructions for setting up Twitter Bootstrap.</p>
+<p>It’s easy to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to install Twitter Bootstrap and set up your default application layout. If you’re building an app step-by-step without using the program, here are instructions for setting up Twitter Bootstrap.</p>
 <p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language that is the default for <span class="caps">CSS</span> files in Rails. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend you install Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
 <p>In your <strong>Gemfile</strong>, add:</p>
 <pre>
@@ -218,24 +223,58 @@ body { padding-top: 60px; }
   box-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 </pre>
+<p>Using mixins from the bootstrap-sass gem, you can simplify this:</p>
+<pre>
+.content {
+  background-color: #eee;
+  padding: 20px;
+  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  @include border-radius(0 0 6px 6px);
+  @include box-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+</pre>
+<h2>Head Additions</h2>
+<p>Rails provides a skeletal <code>head</code> section for an application layout:</p>
+<pre>
+&lt;head&gt;
+  &lt;title&gt;App_Name&lt;/title&gt;
+  &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
+  &lt;%= javascript_include_tag "application" %&gt;
+  &lt;%= csrf_meta_tags %&gt;
+&lt;/head&gt;
+</pre>
+<p>Here are other elements you may wish to add:</p>
+<pre>
+&lt;head&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "App_Name" %&gt;&lt;/title&gt;
+  &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "App_Name" %&gt;"&gt;
+  &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
+  &lt;%= javascript_include_tag "application" %&gt;
+  &lt;%= csrf_meta_tags %&gt;
+  &lt;%= yield(:head) %&gt;
+&lt;/head&gt;
+</pre>
+<p>Apple introduced the <code>viewport</code> metatag to help web developers improve the presentation of web pages on mobile devices. Setting a viewport tells the browser how content should fit on the device’s screen. See Apple’s developer documentation on <a href="http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html">Configuring the Viewport</a> for all the details. You’ll need to set the viewport to make full use of responsive front-end frameworks such as Twitter Bootstrap or Zurb Foundation.</p>
+<p>Google uses contents of the <code>title</code> tag to display titles in search results. And it will sometimes use content of a <code>description</code> meta tag in search results snippets. See Google’s explanation of how it uses <a href="http://support.google.com/webmasters/bin/answer.py?hl=en&amp;answer=35624">Site Title and Description</a>. Good titles and descriptions improve clickthrough from Google searches. Use a <code>content_for</code> statement in a specific view to set a title and description for a page. Google likes distinct titles and unique descriptions for each page on your site.</p>
+<p>The statement <code>&lt;%= yield(:head) %&gt;</code> makes it easy to add more head elements if needed for a specific page. For example, you may wish to add page-specific JavaScript (see the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a>).</p>
 <h2>Default Application Layout (for Rails 3.1 and newer)</h2>
 <p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling.</p>
 <p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
 <p>This application layout accommodates simple <span class="caps">CSS</span> styling. For Twitter Bootstrap, see a more complex application layout following this code.</p>
-<h3>Simple Default Application Layout (<span class="caps">ERB</span>)</h3>
+<h3 id="layout-simple">Simple Default Application Layout (<span class="caps">ERB</span>)</h3>
 <p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
 <pre>
-&lt;!doctype html&gt;
+&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;App_Name&lt;/title&gt;
-    &lt;meta name="description" content=""&gt;
-    &lt;meta name="author" content=""&gt;
-    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "App_Name" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "App_Name" %&gt;"&gt;
+    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
     &lt;%= javascript_include_tag "application" %&gt;
     &lt;%= csrf_meta_tags %&gt;
+    &lt;%= yield(:head) %&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id="container" class="container"&gt;
@@ -258,12 +297,13 @@ body { padding-top: 60px; }
 !!!
 %html
   %head
-    %title Myapp
-    %meta{:charset =&gt; "utf-8"}
     %meta{:name =&gt; "viewport", :content =&gt; "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= content_for?(:title) ? yield(:title) : "App_Name"
+    %meta{:content =&gt; content_for?(:description) ? yield(:description) : "App_Name", :name =&gt; "description"}
     = stylesheet_link_tag :application, :media =&gt; "all"
     = javascript_include_tag :application
     = csrf_meta_tags
+    = yield(:head)
   %body
     #container.container
       %header
@@ -273,19 +313,17 @@ body { padding-top: 60px; }
         = yield
       %footer
 </pre>
-<h3>Default Application Layout with Twitter Bootstrap (<span class="caps">ERB</span>)</h3>
+<h3 id="layout-bootstrap">Default Application Layout with Twitter Bootstrap (<span class="caps">ERB</span>)</h3>
 <p>Twitter Bootstrap provides additional elements for a more complex page layout.</p>
 <p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
 <pre>
-&lt;!doctype html&gt;
+&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Myapp" %&gt;&lt;/title&gt;
-    &lt;meta name="description" content=""&gt;
-    &lt;meta name="author" content=""&gt;
-    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "App_Name" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "App_Name" %&gt;"&gt;
+    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
     &lt;%= javascript_include_tag "application" %&gt;
     &lt;%= csrf_meta_tags %&gt;
     &lt;%= yield(:head) %&gt;
@@ -321,13 +359,11 @@ body { padding-top: 60px; }
 !!!
 %html
   %head
-    %meta{:charset =&gt; "utf-8"}
     %meta{:name =&gt; "viewport", :content =&gt; "width=device-width, initial-scale=1, maximum-scale=1"}
-    %title= content_for?(:title) ? yield(:title) : "Myapp"
-    %meta{:content =&gt; "", :name =&gt; "description"}
-    %meta{:content =&gt; "", :name =&gt; "author"}
-    = stylesheet_link_tag    "application", :media =&gt; "all"
-    = javascript_include_tag "application"
+    %title= content_for?(:title) ? yield(:title) : "App_Name"
+    %meta{:content =&gt; content_for?(:description) ? yield(:description) : "App_Name", :name =&gt; "description"}
+    = stylesheet_link_tag :application, :media =&gt; "all"
+    = javascript_include_tag :application
     = csrf_meta_tags
     = yield(:head)
   %body

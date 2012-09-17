@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 15 September 2012</em></p>
+<p><em>Last updated 16 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1042,9 +1042,27 @@ $ git branch -D registration
 <h2>Stripe Integration</h2>
 <p>We’ve got a fully functional web application that serves up placeholder content to registered users and restricts access based on the subscription plan the user has selected. Now we’ll integrate Stripe billing so we can charge users for subscriptions.</p>
 <p>Remember we’re using our Devise registration page for subscription sign up. We’ll make this our payment page. We’ll ask the visitor to enter credit card data on this page.</p>
-<p>The most obvious way to implement billing would be to save credit card data to a user’s account, submit the credit card data to the payment processor, and receive an acknowledgment of a completed or declined transaction. There’s a big drawback to this approach: Credit card data is stored on your server. Your server becomes a target for thieves and you must secure the server and maintain <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> (the credit card industry security standard).</p>
+<p>Here’s the most obvious way to implement billing:</p>
+<ul>
+<li>the visitor enters credit card data on a form</li>
+	<li>the visitor submits the form</li>
+	<li>data is received by your application on your server</li>
+	<li>an application controller <code>create</code> action initiates a request to the payment processor</li>
+	<li>the <code>create</code> method receives an acknowledgment of a completed or declined transaction</li>
+	<li>the <code>create</code> method saves the user data (and creates an account) or shows an error message</li>
+</ul><p>There’s a big drawback to this approach: Credit card data is sent to your server. Your server becomes a target for thieves and you must secure the server and maintain <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> (the credit card industry security standard).</p>
 <p>Instead, Stripe offers an architecture that cuts risk and makes it much easier to meet <span class="caps">PCI</span> compliance requirements. Stripe provides a JavaScript file that we add to our payment page. We set a public key in the JavaScript code to identify our Stripe account. We trigger the JavaScript code when the user submits the payment form. The JavaScript code obtains the credit card data from our form, transmits the data to Stripe’s servers, and returns a unique token that serves as a substitute for the credit card data. Stripe takes responsibility for the security of the credit card data and it never touches our server. We can safely use  the Stripe token as a substitute for credit card data when we make a request to Stripe to bill the user.</p>
-<p>Stripe’s multi-step JavaScript-based approach makes implementation more complex but the result is robust and secure.</p>
+<p>Here is our preferred program flow:</p>
+<ul>
+<li>the visitor enters credit card data on a form</li>
+	<li>the visitor submits the form</li>
+	<li>a JavaScript function sends the card data to Stripe’s servers</li>
+	<li>a JavaScript callback receives a Stripe token or an error message</li>
+	<li>the JavaScript function submits the form to your server, substituting the token for credit card data</li>
+	<li>an application controller <code>create</code> action sends a request (with the token) to Stripe to create a customer account</li>
+	<li>the <code>create</code> method receives an acknowledgment of a completed or declined transaction</li>
+	<li>the <code>create</code> method saves the user data (and creates an account) or shows an error message</li>
+</ul><p>Stripe’s multi-step JavaScript-based approach makes implementation more complex but the result is robust and secure.</p>
 <p>Create a new git branch for this feature:</p>
 <pre>
 $ git checkout -b stripe
@@ -1073,10 +1091,35 @@ $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Add Stripe’s JavaScript Library</h3>
 <p>To use Stripe on our payment page we need to include a JavaScript file from Stripe’s server.</p>
-<p>If you look at the application layout file <strong>app/views/layouts/application.html.erb</strong> you’ll see <code>&lt;%= yield(:head_pre) %&gt;</code> and <code>&lt;%= yield(:head_post) %&gt;</code> elements make it easy to add JavaScript files to our payment page. The first loads before our application-wide <strong>application.js</strong> file and the second loads after.</p>
-<p>It’s important that the Stripe JavaScript file loads before any JavaScript we use on the payment page. Otherwise, we’ll get a JavaScript error when we attempt to process the registration form. We’ll use <code>&lt;%= yield(:head_pre) %&gt;</code> to load it.</p>
-<p>We have page-specific JavaScript code we want to run only on the payment page after the Stripe JavaScript file loads. It requires jQuery so we will load it after our application-wide <strong>application.js</strong> file. We’ll use <code>&lt;%= yield(:head_post) %&gt;</code> to load it.</p>
-<p>Make sure the <strong>application.js</strong> file does not include <code>//= require_tree .</code> or else our page-specific JavaScript code in a <strong>app/assets/javascripts/registrations.js.erb</strong> file (which we’ll soon create) will be included on every page.</p>
+<p>If you look at the application layout file <strong>app/views/layouts/application.html.erb</strong> you’ll see a <code>&lt;%= yield(:head) %&gt;</code> element that makes it easy to add JavaScript files to our payment page. The element is positioned to load after our <strong>application.js</strong> file which loads jQuery and any application-wide JavaScript code. We can use <code>content_for :head</code> in our <strong>app/views/devise/registrations/new.html.erb</strong> view file to load our page-specific JavaScript code.</p>
+<p>Make sure the <strong>application.js</strong> file does not include <code>//= require_tree .</code> or else our page-specific JavaScript code in a <strong>app/assets/javascripts/registrations.js.erb</strong> file will be included on every page.</p>
+<p>Create a file <strong>app/assets/javascripts/registrations.js.erb</strong>:</p>
+<pre>
+$.getScript('https://js.stripe.com/v1/', function(){
+  if (typeof Stripe != 'undefined') {
+    alert('Okay. Stripe JavaScript file loaded.');
+  }
+  else
+  {
+    alert('Problem. Stripe JavaScript file not loaded.');
+  }
+});
+</pre>
+<p>We use a <a href="http://api.jquery.com/jQuery.getScript/">jQuery <code>getScript</code> method</a> to load the external JavaScript library from the Stripe servers.</p>
+<p>There are other approaches to loading an external JavaScript file. Often, a file is loaded using the <code>javascript_include_tag</code> in the application layout. Here is an example:</p>
+<p>In the file <strong>app/views/layouts/application.html.erb</strong>:</p>
+<pre>
+&lt;head&gt;
+  &lt;meta charset="utf-8"/&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
+  &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Rails Membership Subscription Saas" %&gt;&lt;/title&gt;
+  &lt;%= javascript_include_tag "application" %&gt;
+  &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+  &lt;%= javascript_include_tag "application" %&gt;
+  &lt;%= yield(:head) %&gt;
+  &lt;%= csrf_meta_tags %&gt;
+&lt;/head&gt;
+</pre>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
 &lt;% content_for :head_pre do %&gt;
@@ -1124,6 +1167,7 @@ $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 &lt;meta content="..." name="csrf-token" /&gt;
 &lt;/head&gt;
 </pre>
+<p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
 <p>With the Stripe JavaScript file in place, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
