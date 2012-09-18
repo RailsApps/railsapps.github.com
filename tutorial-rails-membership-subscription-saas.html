@@ -1089,43 +1089,65 @@ export STRIPE_PUBLIC_KEY="secret"
 $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
-<h3>Add Stripe’s JavaScript Library</h3>
-<p>To use Stripe on our payment page we need to include a JavaScript file from Stripe’s server.</p>
-<p>If you look at the application layout file <strong>app/views/layouts/application.html.erb</strong> you’ll see a <code>&lt;%= yield(:head) %&gt;</code> element that makes it easy to add JavaScript files to our payment page. The element is positioned to load after our <strong>application.js</strong> file which loads jQuery and any application-wide JavaScript code. We can use <code>content_for :head</code> in our <strong>app/views/devise/registrations/new.html.erb</strong> view file to load our page-specific JavaScript code.</p>
-<p>Make sure the <strong>application.js</strong> file does not include <code>//= require_tree .</code> or else our page-specific JavaScript code in a <strong>app/assets/javascripts/registrations.js.erb</strong> file will be included on every page.</p>
+<h3>Use Page-Specific JavaScript</h3>
+<p>In most projects, we copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. Only a small portion of our site’s visitors will use it (only those visiting the payment page). And we don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It’s best to manage it as page-specific JavaScript, loaded only on the payment page.</p>
+<p>For a detailed explanation about external JavaScript libraries and page-specific JavaScript, see the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a>.</p>
+<p>To use page-specific JavaScript, modify the <strong>app/assets/javascripts/application.js</strong> file to remove the <code>//= require_tree .</code> so your page-specific JavaScript code will not be included on every page:</p>
+<pre>
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// the compiled file.
+//
+// WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
+// GO AFTER THE REQUIRES BELOW.
+//
+//= require jquery
+//= require jquery_ujs
+//= require bootstrap
+</pre>
+<p>We include Twitter Bootstrap from the <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem and remove the the <code>//= require_tree .</code> so the Rails asset pipeline will not automatically include files from the <strong>app/assets/javascripts/</strong> folder.</p>
+<h3>Create a Registrations JavaScript File</h3>
+<p>By convention, we’ll add page-specific JavaScript code to a file that has the same name as the controller. For now, we’ll just create some test code.</p>
 <p>Create a file <strong>app/assets/javascripts/registrations.js.erb</strong>:</p>
 <pre>
-$.getScript('https://js.stripe.com/v1/', function(){
+$(function() {
   if (typeof Stripe != 'undefined') {
-    alert('Okay. Stripe JavaScript file loaded.');
+    alert('Stripe JavaScript file loaded.');
   }
   else
   {
-    alert('Problem. Stripe JavaScript file not loaded.');
+    alert('Problem: Stripe JavaScript file not loaded.');
   }
 });
 </pre>
-<p>We use a <a href="http://api.jquery.com/jQuery.getScript/">jQuery <code>getScript</code> method</a> to load the external JavaScript library from the Stripe servers.</p>
-<p>There are other approaches to loading an external JavaScript file. Often, a file is loaded using the <code>javascript_include_tag</code> in the application layout. Here is an example:</p>
-<p>In the file <strong>app/views/layouts/application.html.erb</strong>:</p>
+<p>This code will test if the Stripe JavaScript library has been successfully downloaded.</p>
+<p>Later we will add the code that collects the credit card data from the subscription form, submits it to the Stripe server, and obtains the Stripe token.</p>
+<p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
+<h3>Add Page-Specific JavaScript</h3>
+<p>To use Stripe on our payment page we need to obtain a JavaScript file from Stripe’s server.</p>
+<p>Take a look at the application layout file <strong>app/views/layouts/application.html.erb</strong>:</p>
 <pre>
 &lt;head&gt;
-  &lt;meta charset="utf-8"/&gt;
   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
   &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Rails Membership Subscription Saas" %&gt;&lt;/title&gt;
+  &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "..." %&gt;"&gt;
+  &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
   &lt;%= javascript_include_tag "application" %&gt;
-  &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
-  &lt;%= javascript_include_tag "application" %&gt;
-  &lt;%= yield(:head) %&gt;
   &lt;%= csrf_meta_tags %&gt;
+  &lt;%= yield(:head) %&gt;
 &lt;/head&gt;
 </pre>
+<p>The <code>&lt;%= yield(:head) %&gt;</code> statement makes it easy to add page-specific JavaScript files. The element is positioned to load scripts following our <strong>app/assets/javascripts/application.js</strong> script which loads jQuery and any application-wide JavaScript code.</p>
+<p>We can use <code>content_for :head</code> in our view file to load our page-specific JavaScript code.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
-&lt;% content_for :head_pre do %&gt;
+&lt;% content_for :head do %&gt;
   &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
-&lt;% end %&gt;
-&lt;% content_for :head_post do %&gt;
   &lt;%= javascript_include_tag 'registrations' %&gt;
 &lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
@@ -1151,20 +1173,19 @@ $.getScript('https://js.stripe.com/v1/', function(){
   &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
 &lt;% end %&gt;
 </pre>
-<p>The <code>content_for :head_pre</code> block will pass <code>&lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;</code> to the <code>&lt;head&gt;</code> section of the application layout. This will load Stripe’s JavaScript file when the payment page is rendered in the browser. You can verify it by starting the server and viewing the page source. You should see something similar to this:</p>
+<p>The <code>content_for :head</code> block will pass <code>&lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;</code> to the <code>&lt;head&gt;</code> section of the application layout. This will load Stripe’s JavaScript file via a secure connection when the payment page is rendered in the browser. After that, our <strong>registrations.js</strong> script will load.</p>
+<p>You can verify it by starting the server and viewing the page source. You should see something similar to this:</p>
 <pre>
 &lt;head&gt;
-&lt;meta charset="utf-8"/&gt;
-&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
-&lt;title&gt;Rails Membership Subscription Saas&lt;/title&gt;
-&lt;meta name="description" content=""/&gt;
-&lt;meta name="author" content=""/&gt;
-&lt;script src="https://js.stripe.com/v1/" type="text/javascript"&gt;&lt;/script&gt;
-&lt;link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" /&gt;
-&lt;script src="/assets/application.js" type="text/javascript"&gt;&lt;/script&gt;
-&lt;script src="/assets/registrations.js" type="text/javascript"&gt;&lt;/script&gt;
-&lt;meta content="authenticity_token" name="csrf-param" /&gt;
-&lt;meta content="..." name="csrf-token" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
+  &lt;title&gt;Rails Membership Subscription Saas&lt;/title&gt;
+  &lt;meta name="description" content="..."&gt;
+  &lt;link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" /&gt;
+  &lt;script src="/assets/application.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;meta content="authenticity_token" name="csrf-param" /&gt;
+  &lt;meta content="..." name="csrf-token" /&gt;
+  &lt;script src="https://js.stripe.com/v1/" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;script src="/assets/registrations.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;/head&gt;
 </pre>
 <p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
@@ -1173,10 +1194,8 @@ $.getScript('https://js.stripe.com/v1/', function(){
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
-&lt;% content_for :head_pre do %&gt;
+&lt;% content_for :head do %&gt;
   &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
-&lt;% end %&gt;
-&lt;% content_for :head_post do %&gt;
   &lt;%= javascript_include_tag 'registrations' %&gt;
 &lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
@@ -1219,59 +1238,110 @@ $.getScript('https://js.stripe.com/v1/', function(){
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
 <p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
 <p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
+<p>It’s not obvious from the code, but the Rails form builder will create a form with the element ID <code>new_user</code>. The name is generated from the controller and action names “user” and “new”. If you examine the <span class="caps">HTML</span> source, you will see:</p>
+<pre>
+&lt;form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post"&gt;
+</pre>
+<p>It’s important to know this when we write the JavaScript code that parses the for to obtain the credit card data.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
-<p>Create a file <strong>app/assets/javascripts/registrations.js.erb</strong>:</p>
+<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
-if (typeof Stripe != 'undefined') {
-  alert('Okay. Stripe JavaScript file loaded.');
-}
-else
-{
-  alert('Problem. Stripe JavaScript file not loaded.');
-}
-</pre>
-<p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
-<p>Now replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
-<pre>
-var subscription;
-
-jQuery(function() {
+$(function() {
+  if (typeof Stripe != 'undefined') {
+    console.log('Stripe JavaScript file loaded.');
+  }
+  else
+  {
+    console.log('Problem: Stripe JavaScript file not loaded.');
+  }
   Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
-  alert('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+  console.log('set Stripe public key: &lt;%= STRIPE_PUBLIC_KEY %&gt;');
+  var subscription = {
+    setupForm: function() {
+      console.log('function: setupForm')
+      return $('#new_user').submit(function() {
+        console.log('setupForm: form submitted')
+        $('input[type=submit]').attr('disabled', true);
+        subscription.processCard();
+        return false;
+      });
+    },
+    processCard: function() {
+      console.log('function: processCard');
+      var card;
+      card = {
+        number: $('#card_number').val(),
+        cvc: $('#card_code').val(),
+        expMonth: $('#card_month').val(),
+        expYear: $('#card_year').val()
+      };
+      return Stripe.createToken(card, subscription.handleStripeResponse);
+    },
+    handleStripeResponse: function(status, response) {
+      console.log('function: handleStripeResponse');
+      if (status === 200) {
+        return alert('Stripe response: ' + response.id);
+      } else {
+        return alert('Stripe response: ' + response.error.message);
+      }
+    }
+  };
   return subscription.setupForm();
 });
-
-subscription = {
-  setupForm: function() {
-    alert('setupForm');
-    return $('#new_subscription').submit(function() {
-      $('input[type=submit]').attr('disabled', true);
-      return subscription.processCard();
-    });
-  },
-  processCard: function() {
-    alert('processCard');
-    var card;
-    card = {
-      number: $('#card_number').val(),
-      cvc: $('#card_code').val(),
-      expMonth: $('#card_month').val(),
-      expYear: $('#card_year').val()
-    };
-    return Stripe.createToken(card, subscription.handleStripeResponse);
-  },
-  handleStripeResponse: function(status, response) {
-    alert('handleStripeResponse');
-    if (status === 200) {
-      return alert(response.id);
-    } else {
-      return alert(response.error.message);
-    }
-  }
-};
 </pre>
-<p>With the file extension <strong>.erb</strong> we can set the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript.</p>
+<p>Instead of using a JavaScript alert to confirm that Stripe JavaScript file loaded properly, we write a message to the JavaScript console.</p>
+<p>Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <strong>View/Developer/Developer Tools</strong> and select the “Network” tab. Reload the page and you will the console messages. Notice the console messages that let us trace program flow as each function is executed. You can use the console messages for debugging if you have problems.</p>
+<p>You can see we read the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript (that’s why we used the <strong>.erb</strong> file extension when we created the file).</p>
+<p>Finally, we raise an alert displaying the response we get from the Stripe server.</p>
+<p>Start the server and visit the page. Check the JavaScript console to observe the debugging messages. Fill out the form, using a fake credit card number. You should see an alert displaying the response from the Stripe server.</p>
+<p>Stripe provides a set of fake credit card numbers which will force various responses. See the <a href="https://stripe.com/docs/testing">Stripe Testing</a> documentation. Here are some of the useful numbers:</p>
+<ul>
+<li>a fake Visa card: <em>4242424242424242</em>
+</li>
+	<li>incorrect number: use a number that fails the checksum, e.g. <em>4242424242424241</em>
+</li>
+	<li>invalid expiry month: use an invalid month, e.g. <em>13</em>
+</li>
+	<li>invalid expiry year: use a year in the past, e.g. <em>1970</em>
+</li>
+	<li>invalid cvc: use a two digit number, e.g. <em>99</em>
+</li>
+</ul><p>It’s fun (for a few minutes) to enter various numbers and observe the response from the Stripe server.</p>
+<p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script.</p>
+<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<pre>
+$(function() {
+  Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+  var subscription = {
+    setupForm: function() {
+      return $('#new_user').submit(function() {
+        $('input[type=submit]').attr('disabled', true);
+        subscription.processCard();
+        return false;
+      });
+    },
+    processCard: function() {
+      var card;
+      card = {
+        number: $('#card_number').val(),
+        cvc: $('#card_code').val(),
+        expMonth: $('#card_month').val(),
+        expYear: $('#card_year').val()
+      };
+      return Stripe.createToken(card, subscription.handleStripeResponse);
+    },
+    handleStripeResponse: function(status, response) {
+      if (status === 200) {
+        return alert('Stripe response: ' + response.id);
+      } else {
+        return alert('Stripe response: ' + response.error.message);
+      }
+    }
+  };
+  return subscription.setupForm();
+});
+</pre>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
