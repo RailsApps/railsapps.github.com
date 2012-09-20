@@ -80,12 +80,13 @@
 <h3 id="none">No Dependencies</h3>
 <p>Some external scripts work independently of your project-specific JavaScript code. For example, you might add the HTML5Shiv <code>&lt;%= javascript_include_tag 'http://html5shiv.googlecode.com/svn/trunk/html5.js' %&gt;</code> to your application layout to support HTML5 tags in old versions of Internet Explorer. Your own JavaScript would not be dependent on the file. You could load it either before or after your application.js script (though in the case of HTML5Shiv you’d want to load it before any <span class="caps">CSS</span> files).</p>
 <h3 id="simple">Simple Dependencies</h3>
-<p>Some external scripts have simple dependency chains. In your <strong>app/assets/javascripts/application.js</strong> file, your manifest might specify project-specific JavaScript files that use methods from the Google Maps <span class="caps">API</span>. You’d have to load the Google Maps <span class="caps">API</span> before your <strong>application.js</strong> script with a tag such as <code>&lt;%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?sensor=false' %&gt;</code>.</p>
-<p>Here’s what you’d need in your application layout file:</p>
+<p>Some external scripts have simple dependency chains. In your <strong>app/assets/javascripts/application.js</strong> file, your manifest might specify project-specific JavaScript files that use methods from the Google Maps <span class="caps">API</span>.</p>
+<p>If you were going to use the Google Maps <span class="caps">API</span> throughout your application, here’s what you might have in your application layout file:</p>
 <pre>
 &lt;%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?sensor=false' %&gt;
 &lt;%= javascript_include_tag 'application' %&gt;
 </pre>
+<p>You would load the Google Maps <span class="caps">API</span> before your <strong>application.js</strong> script with the <code>&lt;%= javascript_include_tag %&gt;</code>.</p>
 <h3 id="complex">Complex Dependencies</h3>
 <p>Now consider the problem of external scripts that are dependent on jQuery, which is loaded by the Rails asset pipeline. For example, you might wish to use a jQuery plugin. You could load it with a <code>javascript_include_tag</code> following the <code>&lt;%= javascript_include_tag "application" %&gt;</code> statement. But what if you wanted to use the jQuery plugin methods in your own project-specific JavaScript code which is managed by the Rails asset pipeline? You’re faced with the problem of inserting the external script in the middle of the asset pipeline which apparently can’t be done.</p>
 <p>You could do something like this:</p>
