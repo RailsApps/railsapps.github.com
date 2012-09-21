@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Rails: How to Include External JavaScript Files &#183; RailsApps &#183; RailsApps</title>
+    <title>RailsApps &#183; How to Include External JavaScript Files &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Including External JavaScript Files in Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 20 September 2012</em></p>
+<p><em>Last updated 21 September 2012</em></p>
 <p>How to include external JavaScript files in Rails 3.1 or newer. There is no import, include, or require in JavaScript, so what is the best way to add an external JavaScript library to the Rails asset pipeline? A summary of your options, including using the <a href="http://api.jquery.com/jQuery.getScript/">jQuery <code>getScript</code> method</a> to load a JavaScript file from within a JavaScript file.</p>
 <p><em>This is a draft of a work in progress. Is the article accurate? Does it reflect recommended practices? Please <a href="#comment">leave a comment</a> below.</em></p>
 <p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source apps and detailed tutorials for Rails developers.</p>
@@ -66,10 +66,11 @@
 	<li>Copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder.</li>
 	<li>List site-wide scripts in the <strong>app/assets/javascripts/application.js</strong> manifest.</li>
 	<li>Let the Rails asset pipeline combine them all in one minimized <strong>application.js</strong> file.</li>
-	<li>For scripts that are used on a few pages that have few visits, load as page-specific JavaScript.</li>
-	<li>Put page-specific JavaScript in the <strong>lib/assets/javascripts</strong> folder.</li>
+</ul><p>In most applications, there is no need to add external JavaScript libraries as page-specific JavaScript. Use the Rails asset pipeline, even for JavaScript used on just one page. If you do use page-specific JavaScript, for example on pages that have few visits relative to the rest of the application:</p>
+<ul>
+<li>Put page-specific JavaScript in the <strong>lib/assets/javascripts</strong> folder.</li>
 	<li>Use <code>&lt;%= yield(:head) %&gt;</code> in the application layout and <code>&lt;% content_for :head ... %&gt;</code> in the view for page-specific JavaScript.</li>
-</ul><p>Read the article to learn how it works.</p>
+</ul><p>Read the article to learn more.</p>
 <h2 id="missing">JavaScript’s Missing Directive</h2>
 <p>The C language has <code>#include</code>, Java has <code>import</code>, Perl has <code>use</code> or <code>require</code>, <span class="caps">PHP</span> has <code>include</code> or <code>require</code>, and Ruby has <code>require</code>. These directives add the contents of one file into another. Often these directives are used to incorporate code libraries provided by other developers. Some languages also have a package manager that provides a standard format for distributing programs and libraries (Ruby has RubyGems). What’s the equivalent in JavaScript? Nothing. JavaScript doesn’t have a native package manager or import directive.</p>
 <p>Instead, you’re expected to include all the JavaScript files you require for a web page in a series of <span class="caps">HTML</span>  <code>&lt;script&gt;</code> tags typically placed between the <code>&lt;head&gt;</code> tags at the top of an <span class="caps">HTML</span> file. The order of placement is important. The web browser compiles the JavaScript code sequentially. If your code requires an external library, the external script must be listed first.</p>
@@ -96,6 +97,12 @@
 	<li>Use <strong>lib/assets/javascripts</strong> for page-specific JavaScript (not obvious but see an explanation below).</li>
 	<li>Use <strong>vendor/assets/javascripts</strong> for copies of jQuery plugins, etc., from other developers.</li>
 </ul><p>If you add a script to the vendor folder and you wish to have it combined with your project code in the <em>applicaton.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below).</p>
+<p>This article focuses on the mechanics of including external JavaScript libraries and does not delve into recommended practices for organizing your own JavaScript files. Here’s advice about organizing your scripts:</p>
+<ul>
+<li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
+</li>
+</ul><p>Leave a <a href="#comment">comment</a> below if you’d like to recommend other articles or screencasts.</p>
+<h3>Create Your Own Gems When You Can</h3>
 <p>You might want to use <strong>lib/assets/javascripts</strong> for scripts used on more than one project. It’s better to put these in a gem and gain the benefits of RubyGems as a package manager. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
 <p>The Rails asset pipeline will handle scripts from any gem that contains files in these locations. Again, if you wish to have a script from a gem combined with your project code in the <em>applicaton.js</em> script for use throughout your application, you must specify it with a directive in the manifest.</p>
 <p>Here’s where to place scripts in gems:</p>
@@ -110,7 +117,9 @@
 <ul>
 <li>Jesse House’s <a href="http://house9.blogspot.com/2011/06/rails-31-asset-gem.html">Package up Assets Into a Gem for Use in Rails 3.1 Applications</a>
 </li>
-</ul><p>It would be ideal to use gemified versions of JavaScript code from open source projects such as jQuery because this gives you the advantage of RubyGems as a package manager. However, few of these projects are intended solely for Rails so there often is no gemified version of the JavaScript. Instead, the files are offered for downloading or from a content delivery network as external scripts.</p>
+</ul><h3>Use Open Source Gems</h3>
+<p>It is ideal to use gemified versions of JavaScript code from open source projects such as jQuery because this gives you the advantage of RubyGems as a package manager. The <a href="https://github.com/joliss/jquery-ui-rails">jquery-ui-rails</a> gem from Jo Liss is an excellent example.</p>
+<p>Unfortunately, few JavaScript projects are intended solely for Rails so there seldom is a gemified version of the JavaScript. Instead, the files are offered for downloading or from a content delivery network as external scripts.</p>
 <p>External scripts are where JavaScript in Rails gets complicated.</p>
 <h2 id="external">External Scripts</h2>
 <p>The Rails asset pipeline is a powerful tool for managing project-specific JavaScript code; however, it doesn’t offer a facility for managing JavaScript files that are obtained outside of your own application. External scripts, those that are downloaded by a web browser from a remote web server, must be specified as they were before Rails 3.1; that is, with a helper such as <code>&lt;%= javascript_include_tag "http://example.com/example.js" %&gt;</code> included in an application layout or view file.</p>
@@ -257,9 +266,9 @@ $(function() {
 </pre>
 <p>This works without any changes to the Rails default configuration.</p>
 <p>With these three steps, using <code>&lt;%= yield(:head) %&gt;</code> in the application layout, <code>&lt;% content_for :head ... %&gt;</code> in the view, and a script in the <strong>lib/assets/javascripts</strong> folder, you’ll be able to easily use page-specific JavaScript code.</p>
-<h3 id="adjusting">A Messy Alternative</h3>
-<p>Skip this section if you want to avoid a world of hurt. I’m going to include it because you may see other developers using this approach.</p>
-<p>You can place your page-specific scripts in the <strong>app/assets/javascripts</strong> folder with this approach. But it is messy.</p>
+<h3 id="adjusting">The Alternative</h3>
+<p>Here’s another way to handle page-specific JavaScript. It allows you to place your page-specific scripts in the <strong>app/assets/javascripts</strong> folder. It requires you to remove the <code>//= require_tree .</code> directive from the manifest and specify each script individually (or specify other manifest files).</p>
+<p>You may see other developers using this approach. They may be using it to enforce logical organization on their application-wide JavaScript. That’s a good reason to adopt this approach. However, this approach is not necessary if you simply want to accommodate page-specific scripts. Use the approach described above, instead.</p>
 <p>First you must modify the <strong>app/assets/javascripts/application.js</strong> file to remove the <code>//= require_tree .</code> directive or else your page-specific JavaScript code will be included on every page. After removing the <code>//= require_tree .</code> directive, add a directive for each specific file you want compiled and concatenated into the <em>application.js</em> script. For example, if you want Twitter Bootstrap from the <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem:</p>
 <pre>
 //= require jquery
@@ -272,6 +281,7 @@ $(function() {
 # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
 config.assets.precompile += %w( payment.js )
 </pre>
+<p>Typically, the <code>config.assets.precompile</code> variable is used to include additional manifest files. It can be used to include individual scripts that are not referenced in a manifest file.</p>
 <p>Try it to see if it works. Modify the <strong>config/environments/production.rb</strong> file:</p>
 <pre>
 # Disable Rails's static asset server (Apache or nginx will already do this)
@@ -290,6 +300,7 @@ $ rails server -e production
 <p>Daniel Kehoe wrote this article for the RailsApps project.</p>
 <p>Was this useful to you? Follow me on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a> <br>
 and tweet some praise. I’d love to know you were helped out by the article.</p>
+<p>Thank you to Peter Cooper (<a href="http://twitter.com/peterc">@peterc</a>), Pat Shaughnessy (<a href="http://twitter.com/pat_shaughnessy">@pat_shaughnessy</a>), and Ken Collins (<a href="http://twitter.com/metaskills">@metaskills</a>) for technical review and advice.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
