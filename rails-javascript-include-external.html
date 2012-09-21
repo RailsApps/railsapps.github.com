@@ -95,8 +95,10 @@
 <li>Use <strong>app/assets/javascripts</strong> for JavaScript you will use on all (or most) pages of your application.</li>
 	<li>Use <strong>lib/assets/javascripts</strong> for page-specific JavaScript (not obvious but see an explanation below).</li>
 	<li>Use <strong>vendor/assets/javascripts</strong> for copies of jQuery plugins, etc., from other developers.</li>
-</ul><p>You might want to use <strong>lib/assets/javascripts</strong> for scripts used on more than one project. It’s better to put these in a gem and gain the benefits of RubyGems as a package manager. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
-<p>The Rails asset pipeline will add scripts from any gem that contains files in these locations. Here’s where to place scripts in gems:</p>
+</ul><p>If you add a script to the vendor folder and you wish to have it combined with your project code in the <em>applicaton.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below).</p>
+<p>You might want to use <strong>lib/assets/javascripts</strong> for scripts used on more than one project. It’s better to put these in a gem and gain the benefits of RubyGems as a package manager. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
+<p>The Rails asset pipeline will handle scripts from any gem that contains files in these locations. Again, if you wish to have a script from a gem combined with your project code in the <em>applicaton.js</em> script for use throughout your application, you must specify it with a directive in the manifest.</p>
+<p>Here’s where to place scripts in gems:</p>
 <ul>
 <li>
 <strong>app/assets/javascripts</strong> will probably not be used for scripts in a gem</li>
@@ -185,8 +187,8 @@ $.getScript('https://js.stripe.com/v1/', function(){
 	<li>the <strong>vendor/assets/javascripts</strong> folder</li>
 </ul><p>In a default Rails configuration, Sprockets will precompile every file in each of these folders.</p>
 <p>The best location for a page-specific JavaScript file is the <strong>lib/assets/javascripts</strong> folder. No additional configuration is needed if you place the script in this folder.</p>
-<p>Consider the alternatives. If you place a page-specific JavaScript file in the <strong>app/assets/javascripts</strong> folder, Sprockets will combine it with all the other scripts in the folder and make it available throughout the application as part of a single large <em>application.js</em> script. You can change the Rails default configuration to prevent this, but it is not necessary if you place the script in the <strong>lib/assets/javascripts</strong> folder.</p>
-<p>You can also place a page-specific JavaScript file in the <strong>vendor/assets/javascripts</strong> folder. That works but, by convention, that folder is for third-party assets. The <strong>vendor/assets/javascripts</strong> folder is an appropriate place for jQuery plugins that you use only on one (or a few) specific pages.</p>
+<p>Consider the alternatives. If you place a page-specific JavaScript file in the <strong>app/assets/javascripts</strong> folder, Sprockets will combine it with all the other scripts in the folder and make it available throughout the application as part of a single large <em>application.js</em> script. You can change the Rails default configuration to prevent this (see below), but it is not necessary if you place the script in the <strong>lib/assets/javascripts</strong> folder.</p>
+<p>You can also place a page-specific JavaScript file in the <strong>vendor/assets/javascripts</strong> folder. That works but, by convention, that folder is for third-party assets such as jQuery plugins.</p>
 <p>Here is our example <strong>lib/assets/javascripts/payment.js</strong> file:</p>
 <pre>
 $(function() {
