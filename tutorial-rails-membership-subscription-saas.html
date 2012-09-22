@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 16 September 2012</em></p>
+<p><em>Last updated 21 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1091,29 +1091,10 @@ $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Use Page-Specific JavaScript</h3>
 <p>In most projects, we copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. Only a small portion of our site’s visitors will use it (only those visiting the payment page). And we don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It’s best to manage it as page-specific JavaScript, loaded only on the payment page.</p>
-<p>For a detailed explanation about external JavaScript libraries and page-specific JavaScript, see the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a>.</p>
-<p>To use page-specific JavaScript, modify the <strong>app/assets/javascripts/application.js</strong> file to remove the <code>//= require_tree .</code> so your page-specific JavaScript code will not be included on every page:</p>
-<pre>
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// the compiled file.
-//
-// WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
-// GO AFTER THE REQUIRES BELOW.
-//
-//= require jquery
-//= require jquery_ujs
-//= require bootstrap
-</pre>
-<p>We include Twitter Bootstrap from the <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem and remove the the <code>//= require_tree .</code> so the Rails asset pipeline will not automatically include files from the <strong>app/assets/javascripts/</strong> folder.</p>
+<p>For a detailed article about external JavaScript libraries and page-specific JavaScript, see <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a>.</p>
 <h3>Create a Registrations JavaScript File</h3>
-<p>By convention, we’ll add page-specific JavaScript code to a file that has the same name as the controller. For now, we’ll just create some test code.</p>
-<p>Create a file <strong>app/assets/javascripts/registrations.js.erb</strong>:</p>
+<p>We’ll create a new file for our page-specific JavaScript and give the file the same name as the controller. For now, we’ll only create some test code.</p>
+<p>Create a file <strong>app/lib/javascripts/registrations.js.erb</strong>:</p>
 <pre>
 $(function() {
   if (typeof Stripe != 'undefined') {
@@ -1125,6 +1106,7 @@ $(function() {
   }
 });
 </pre>
+<p>Notice that we don’t add the file to the <em><strong>app</strong>/assets/javascripts/</em> folder. We add it to the <em><strong>lib</strong>/assets/javascripts/</em> folder. Our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a> explains that selecting <em>lib/assets/javascripts/</em> folder means we don’t have to change our default Rails configuration.</p>
 <p>This code will test if the Stripe JavaScript library has been successfully downloaded.</p>
 <p>Later we will add the code that collects the credit card data from the subscription form, submits it to the Stripe server, and obtains the Stripe token.</p>
 <p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
@@ -1245,7 +1227,7 @@ $(function() {
 <p>It’s important to know this when we write the JavaScript code that parses the for to obtain the credit card data.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
-<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
 $(function() {
   if (typeof Stripe != 'undefined') {
@@ -1291,8 +1273,8 @@ $(function() {
 });
 </pre>
 <p>Instead of using a JavaScript alert to confirm that Stripe JavaScript file loaded properly, we write a message to the JavaScript console.</p>
-<p>Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <strong>View/Developer/Developer Tools</strong> and select the “Network” tab. Reload the page and you will the console messages. Notice the console messages that let us trace program flow as each function is executed. You can use the console messages for debugging if you have problems.</p>
-<p>You can see we read the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript (that’s why we used the <strong>.erb</strong> file extension when we created the file).</p>
+<p>Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <strong>View/Developer/Developer Tools</strong> and select the “Console” tab. Reload the page and you will the console messages. We’ve added console messages to trace the program flow as each function is executed. You can use the console messages for debugging if you have problems.</p>
+<p>We read the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript (that’s why we used the <strong>.erb</strong> file extension when we created the file).</p>
 <p>Finally, we raise an alert displaying the response we get from the Stripe server.</p>
 <p>Start the server and visit the page. Check the JavaScript console to observe the debugging messages. Fill out the form, using a fake credit card number. You should see an alert displaying the response from the Stripe server.</p>
 <p>Stripe provides a set of fake credit card numbers which will force various responses. See the <a href="https://stripe.com/docs/testing">Stripe Testing</a> documentation. Here are some of the useful numbers:</p>
@@ -1309,7 +1291,7 @@ $(function() {
 </li>
 </ul><p>It’s fun (for a few minutes) to enter various numbers and observe the response from the Stripe server.</p>
 <p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script.</p>
-<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
 $(function() {
   Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
