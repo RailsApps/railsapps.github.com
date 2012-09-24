@@ -652,7 +652,7 @@ $ rake db:test:prepare
 }
 </pre>
 <p>Next we’ll add <span class="caps">CSS</span> assets to style the home page.</p>
-<p>Create a file <strong>app/assets/stylesheets/pricing.scss</strong>:</p>
+<p>Create a file <strong>app/assets/stylesheets/pricing.css.scss</strong>:</p>
 <pre>
 .plans{
   text-align: center;
@@ -674,7 +674,7 @@ $ rake db:test:prepare
 </pre>
 <p>This stylesheet gets added automatically to the asset pipeline because any files in the same folder as the <strong>app/assets/stylesheets/application.css.scss</strong> file are added by the <code>*= require_tree .</code> statement.</p>
 <p>This <span class="caps">CSS</span> will provide the design elements that are commonly seen on a pricing page: boxes for each plan with an enlarged box for a “featured plan.”</p>
-<p>The design is adequate for our tutorial but you may want to improve it to be more effective. If you’re not a designer, you may want to look at the Twitter Bootstrap themes available in the <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace. The theme for <a href="https://wrapbootstrap.com/theme/css3-pricing-tables-WB00H9006">CSS3 Pricing Tables</a> is particularly interesting. It is similar to our home page but adds animated effects. The theme only costs $6 and you can easily integrate it into our application by copying the contents of the designer’s <strong>css/custom.css</strong> file into our <strong>app/assets/stylesheets/pricing.scss</strong> file and replacing styles in our <strong>app/views/home/index.html.erb</strong> file.</p>
+<p>The design is adequate for our tutorial but you may want to improve it to be more effective. If you’re not a designer, you may want to look at the Twitter Bootstrap themes available in the <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace. The theme for <a href="https://wrapbootstrap.com/theme/css3-pricing-tables-WB00H9006">CSS3 Pricing Tables</a> is particularly interesting. It is similar to our home page but adds animated effects. The theme only costs $6 and you can easily integrate it into our application by copying the contents of the designer’s <strong>css/custom.css</strong> file into our <strong>app/assets/stylesheets/pricing.css.scss</strong> file and replacing styles in our <strong>app/views/home/index.html.erb</strong> file.</p>
 <h3>Modify the Home Controller</h3>
 <p>Modify the file <strong>app/controllers/home_controller.rb</strong> to remove the <code>index</code> method:</p>
 <pre>
@@ -1185,6 +1185,7 @@ config.assets.precompile += %w( registrations.js )
 <p>With the Stripe JavaScript file in place, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
+<p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Stripe server.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
 &lt;% content_for :head do %&gt;
@@ -1192,6 +1193,9 @@ config.assets.precompile += %w( registrations.js )
   &lt;%= javascript_include_tag 'registrations' %&gt;
 &lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
+
+&lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;
+&lt;/div&gt;
 
 &lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
 
@@ -1228,6 +1232,7 @@ config.assets.precompile += %w( registrations.js )
   &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
 &lt;% end %&gt;
 </pre>
+<p>Take a look at <code>div id="stripe_error"</code>. We give it the “alert alert-error” style from Twitter Bootstrap. It remains hidden with a <code>style="display:none"</code> unless we use JavaScript to show it when we receive an error message from the Stripe server. We’ll add the necessary JavaScript soon.</p>
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
 <p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
 <p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
@@ -1329,7 +1334,8 @@ $(function() {
       if (status === 200) {
         return alert('Stripe response: ' + response.id);
       } else {
-        return alert('Stripe response: ' + response.error.message);
+        $('#stripe_error').text(response.error.message).show();
+        return $('input[type=submit]').attr('disabled', false);
       }
     }
   };
