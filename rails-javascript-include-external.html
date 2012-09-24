@@ -46,9 +46,9 @@
     <div class="content wikistyle gollum textile">
       <h1>Including External JavaScript Files in Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 23 September 2012</em></p>
-<p>How to include external JavaScript files in Rails 3.1 or newer. There is no import, include, or require in JavaScript, so what is the best way to add an external JavaScript library to the Rails asset pipeline? This article explains your options.</p>
-<p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source apps and detailed tutorials for Rails developers. Next time you build an app, try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
+<p><em>Last updated 24 September 2012</em></p>
+<p>How to include external JavaScript files in Rails 3.1 or newer. There is no import, include, or require in JavaScript, so what is the best way to add an external JavaScript library to a Rails application? Use the Rails asset pipeline? Or include directly in a view? This article explains your options.</p>
+<p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source apps and detailed tutorials for Rails developers. Next time you build an app, try using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
 <h2 id="contents">Contents</h2>
 <ul>
 <li><a href="#summary">Rules of Thumb</a></li>
@@ -65,8 +65,8 @@
 	<li>Copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder.</li>
 	<li>List site-wide scripts in the <strong>app/assets/javascripts/application.js</strong> manifest.</li>
 	<li>Let the Rails asset pipeline combine them all in one minimized <strong>application.js</strong> file.</li>
-</ul><p>In most applications, there is no need to add external JavaScript libraries as page-specific JavaScript. Use the Rails asset pipeline, even for JavaScript used on just one page. Copy external scripts to your application and you’ll gain the performance benefits of the Rails asset pipeline and avoid complexity.</p>
-<p>If you do use page-specific JavaScript:</p>
+</ul><p>In most applications, there is no need to add external JavaScript libraries directly in a view. Use the Rails asset pipeline, even for JavaScript used on just one page. Copy external scripts to your application and you’ll gain the performance benefits of the Rails asset pipeline and avoid complexity.</p>
+<p>If you do use JavaScript directly in a view:</p>
 <ul>
 <li>Put page-specific JavaScript in the <strong>lib/assets/javascripts</strong> folder.</li>
 	<li>Use <code>&lt;%= yield(:head) %&gt;</code> in the application layout.</li>
@@ -78,8 +78,8 @@
 <p>Instead, you’re expected to include all the JavaScript files you require for a web page in a series of <span class="caps">HTML</span>  <code>&lt;script&gt;</code> tags typically placed between the <code>&lt;head&gt;</code> tags at the top of an <span class="caps">HTML</span> file. The order of placement is important. The web browser compiles the JavaScript code sequentially. If your code requires an external library, the external script must be listed first.</p>
 <h2 id="pipeline">Rails and the Asset Pipeline</h2>
 <p>Rails 3.1 introduced the asset pipeline in August 2011.</p>
-<p>Before 3.1, Rails did little to manage JavaScript. You could use the <code>javascript_include_tag</code> helper to construct a <code>&lt;script&gt;</code> tag. You would use the helper in application layouts or page-specific view files to add every script required for your web pages.</p>
-<p>The Rails asset pipeline adds some of the functionality of a package manager for your project-specific JavaScript code. You can organize multiple JavaScript files in the <strong>app/assets/javascripts</strong> folder. The default <strong>app/assets/javascripts/application.js</strong> file serves as a manifest file, specifying which files you require. By default, the file’s <code>//= require_tree .</code> recursively includes all JavaScript files in the <strong>app/assets/javascripts</strong> directory. Sprockets, the mechanism that powers the Rails asset pipeline, will concatenate and minify all the specified JavaScript files into a single <em>application.js</em> script which you can include in your application layout with the <code>&lt;%= javascript_include_tag "application" %&gt;</code> statement. Sprockets also performs preprocessing so you can write JavaScript as CoffeeScript or include Ruby code as an <span class="caps">ERB</span> file. Order of execution is still important; a manifest file must list each JavaScript file in dependent order.</p>
+<p>Before 3.1, Rails did little to manage JavaScript. Developers used the <code>javascript_include_tag</code> helper to construct a <code>&lt;script&gt;</code> tag and add scripts directly to a view or application layout. Developers used the helper to add every script required for an application.</p>
+<p>The Rails asset pipeline adds some of the functionality of a package manager for project-specific JavaScript code. You can organize multiple JavaScript files in the <strong>app/assets/javascripts</strong> folder. The default <strong>app/assets/javascripts/application.js</strong> file serves as a manifest file, specifying which files you require. By default, the file’s <code>//= require_tree .</code> recursively includes all JavaScript files in the <strong>app/assets/javascripts</strong> directory. Sprockets, the mechanism that powers the Rails asset pipeline, will concatenate and minify all the specified JavaScript files into a single <em>application.js</em> script which you can include in your application layout with the <code>&lt;%= javascript_include_tag "application" %&gt;</code> statement. Sprockets also performs preprocessing so you can write JavaScript as CoffeeScript or include Ruby code as an <span class="caps">ERB</span> file. Order of execution is still important; a manifest file must list each JavaScript file in dependent order.</p>
 <p>For more about the Rails asset pipeline, see:</p>
 <ul>
 <li>Rails Guide <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a>
@@ -89,25 +89,26 @@
 	<li>Eric Berry’s <a href="http://coderberry.me/blog/2012/04/24/asset-pipeline-for-dummies/">Asset Pipeline for Dummies</a>
 </li>
 </ul><h2 id="locations">JavaScript File Locations</h2>
+<p>Whether you use the Rails asset pipeline or add JavaScript directly to a view, you have to make a choice about where to put any local JavaScript file.</p>
 <p>We have a choice of three locations for a local JavaScript file:</p>
 <ul>
 <li>the <strong>app/assets/javascripts</strong> folder</li>
 	<li>the <strong>lib/assets/javascripts</strong> folder</li>
 	<li>the <strong>vendor/assets/javascripts</strong> folder</li>
-</ul><p>In development mode, Sprockets will precompile every file in each of these folders.</p>
-<p>Here are guidelines for selecting a location for your scripts:</p>
+</ul><p>Here are guidelines for selecting a location for your scripts:</p>
 <ul>
-<li>Use <strong>app/assets/javascripts</strong> for JavaScript you use on all (or most) pages of your application.</li>
-	<li>Use <strong>lib/assets/javascripts</strong> for page-specific JavaScript (not obvious but see an explanation below).</li>
+<li>Use <strong>app/assets/javascripts</strong> for JavaScript you use throughout your application.</li>
+	<li>Use <strong>lib/assets/javascripts</strong> for scripts you don’t want to manage with the asset pipeline (see an explanation below).</li>
 	<li>Use <strong>vendor/assets/javascripts</strong> for copies of jQuery plugins, etc., from other developers.</li>
-</ul><p>If you add a script to the <strong>lib</strong> or <strong>vendor</strong> folder and you wish to have it combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below).</p>
+</ul><p>All scripts in the <em>app/…</em> folder are automatically added to the default <em>application.js</em> script (when the manifest file includes the default <code>//= require_tree .</code> directive).</p>
+<p>If you add a script to the <em>vendor/…</em> folder and you wish to have it combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below). The same is true for the <em>lib/…</em> folder; because scripts in this folder are not automatically included in the <em>application.js</em> script, you can use it for scripts you wish to only include directly in a view.</p>
 <p>This article focuses on the mechanics of including external JavaScript libraries and does not delve into recommended practices for organizing your own JavaScript files. Here’s advice about organizing your scripts:</p>
 <ul>
 <li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
 </li>
 </ul><p>Leave a <a href="#comment">comment</a> below if you’d like to recommend other articles or screencasts that show how to organize your JavaScript files.</p>
 <h3>Create Your Own Gems When You Can</h3>
-<p>By convention, <strong>lib/assets/javascripts</strong> is intended for scripts used on more than one project. It’s better to put these in a gem and gain the benefits of RubyGems as a package manager. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
+<p>By convention, <strong>lib/assets/javascripts</strong> is intended for scripts used on more than one project. Consider putting these in a gem to gain the benefits of RubyGems as a package manager if you use these scripts across different applications. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
 <p>The Rails asset pipeline will recognize scripts from any gem that contains files in these locations. If you wish to have a script from a gem combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest.</p>
 <p>Here’s where to place scripts in gems:</p>
 <ul>
@@ -126,9 +127,12 @@
 <p>Unfortunately, few JavaScript projects are intended solely for Rails so there seldom is a gemified version of the JavaScript. Instead, the files are offered for downloading or from a content delivery network as external scripts.</p>
 <p>External scripts are where JavaScript in Rails gets complicated.</p>
 <h2 id="external">External Scripts</h2>
-<p>The Rails asset pipeline is a powerful tool for managing project-specific JavaScript code; however, it doesn’t offer a facility for managing JavaScript files that are obtained outside of your own application. External scripts, those that are downloaded by a web browser from a remote web server, must be specified as they were before Rails 3.1; that is, with a helper such as <code>&lt;%= javascript_include_tag "http://example.com/example.js" %&gt;</code> included in an application layout or view file.</p>
+<p>The Rails asset pipeline is a powerful tool for managing project-specific JavaScript code; however, it doesn’t offer a facility for managing JavaScript files that are obtained outside of your own application. External scripts, those that are downloaded by a web browser from a remote web server, must be specified as they were before Rails 3.1; that is, using the <code>javascript_include_tag</code> helper to add a script directly to an application layout or view.</p>
+<p>The organizational and performance benefits of the Rails asset pipeline eliminate almost all reasons to use external scripts. In most cases, you should make a copy of the external script and manage it locally with the asset pipeline.</p>
+<p>That said, we’ll look closely at how to use external scripts and consider the uncommon cases where page-specific JavaScript makes sense.</p>
 <h3 id="none">No Dependencies</h3>
-<p>Some external scripts work independently of your project-specific JavaScript code. For example, you might add the HTML5Shiv <code>&lt;%= javascript_include_tag 'http://html5shiv.googlecode.com/svn/trunk/html5.js' %&gt;</code> to your application layout to support HTML5 tags in old versions of Internet Explorer. Your own JavaScript would not be dependent on the file. You could load it either before or after your application.js script (though in the case of HTML5Shiv you’d want to load it before any <span class="caps">CSS</span> files).</p>
+<p>Some external scripts work independently of your project-specific JavaScript code. For example, you might add the HTML5Shiv <code>&lt;%= javascript_include_tag 'http://html5shiv.googlecode.com/svn/trunk/html5.js' %&gt;</code> to your application layout to support HTML5 tags in old versions of Internet Explorer. Your own JavaScript would not be dependent on the file. You could load it either before or after your <em>application.js</em> script (though in the case of HTML5Shiv you’d want to load it before any <span class="caps">CSS</span> files).</p>
+<p>In most cases, you’ll want to copy the external script and manage it with the asset pipeline. If a script is delivered by a content delivery network, likely to be cached in a web browser by visits to other sites, and used throughout your application, you might include the external script directly in your application layout. The Google Analytics tracking script is an example (though see below for an alternative approach that uses the asset pipeline).</p>
 <h3 id="simple">Simple Dependencies</h3>
 <p>Some external scripts have simple dependency chains.</p>
 <p>If you were going to use the Google Maps <span class="caps">API</span> throughout your application, here’s what you would add to your application layout file:</p>
@@ -136,7 +140,7 @@
 &lt;%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?sensor=false' %&gt;
 &lt;%= javascript_include_tag 'application' %&gt;
 </pre>
-<p>You would load the Google Maps <span class="caps">API</span> before your <em>application.js</em> script with the <code>&lt;%= javascript_include_tag %&gt;</code>. In your <strong>app/assets/javascripts/application.js</strong> file, your manifest could specify project-specific JavaScript files that use methods from the Google Maps <span class="caps">API</span>.</p>
+<p>You would load the Google Maps <span class="caps">API</span> before your <em>application.js</em> script with the <code>&lt;%= javascript_include_tag %&gt;</code>. Then you could write JavaScript code that uses methods from the Google Maps <span class="caps">API</span>.</p>
 <h3 id="complex">Complex Dependencies</h3>
 <p>Now consider the problem of external scripts that are dependent on jQuery. For example, you might wish to use a jQuery plugin. It has to be loaded after the <em>application.js</em> script which loads jQuery.</p>
 <p>You could set up your application layout like this:</p>
