@@ -68,7 +68,7 @@
 </ul><p>In most applications, there is no need to add external JavaScript libraries directly in a view. Use the Rails asset pipeline, even for JavaScript used on just one page. Copy external scripts to your application and you’ll gain the performance benefits of the Rails asset pipeline and avoid complexity.</p>
 <p>If you do use JavaScript directly in a view:</p>
 <ul>
-<li>Put page-specific JavaScript in the <strong>lib/assets/javascripts</strong> folder.</li>
+<li>Put page-specific JavaScript in the <strong>app/assets/javascripts</strong> or <strong>lib/assets/javascripts</strong> folder.</li>
 	<li>Use <code>&lt;%= yield(:head) %&gt;</code> in the application layout.</li>
 	<li>Use <code>&lt;% content_for :head ... %&gt;</code> in the view.</li>
 	<li>Modify <strong>config/environments/production.rb</strong> to add <code>config.assets.precompile</code> for any page-specific scripts.</li>
@@ -149,10 +149,10 @@
 &lt;%= javascript_include_tag 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js' %&gt;
 &lt;%= javascript_include_tag 'code_that_uses_the_validation_plugin' %&gt;
 </pre>
-<p>This is the kind of complexity that the asset pipeline is intended to eliminate. Instead of segregating your code and loading it as a separate file, use the asset pipeline and find a way to load the jQuery plugin in the middle of the <em>application.js</em> script. There are two ways to do this. You can copy the external library to your own application. Or you can include an external JavaScript file from within a local JavaScript file, which apparently cannot be done.</p>
+<p>This is the kind of complexity that the asset pipeline is intended to eliminate. Instead of segregating your code and loading it as a separate file, use the asset pipeline. There are two ways to load the jQuery plugin in the middle of the <em>application.js</em> script. You can copy the external library to your own application. Or you can include an external JavaScript file from within a local JavaScript file, which apparently cannot be done.</p>
 <h3 id="copy">Copy External Files Locally</h3>
-<p>It’s easiest to simply copy the plugin script to your own application. By convention, the preferred location is in the <strong>vendor/assets/javascripts</strong> folder (it will work in the <strong>app/assets/javascripts</strong> folder but that’s not where it belongs).</p>
-<p>To make it available as a site-wide <em>application.js</em> script, you must specify it in your <strong>app/assets/javascripts/application.js</strong> manifest, like this:</p>
+<p>It’s easiest to simply copy the plugin script to your own application. By convention, the preferred location is in the <strong>vendor/assets/javascripts</strong> folder. It will work in the <strong>app/assets/javascripts</strong> folder but that’s not where it belongs.</p>
+<p>To make it available through the site-wide <em>application.js</em> script, you must specify it in your <strong>app/assets/javascripts/application.js</strong> manifest, like this:</p>
 <pre>
 //= require jquery
 //= require jquery_ujs
@@ -174,7 +174,10 @@ _gaq.push(['_trackPageview']);
 })();
 </pre>
 <p>Does that look familar? It’s the Google Analytics tracking code. It creates a tiny script using <code>document.createElement</code> and inserts it into the page where it dynamically and asynchronously downloads the full Google Analytics script.</p>
-<p>JQuery offers something similar: the <a href="http://api.jquery.com/jQuery.getScript/">jQuery <code>getScript</code> method</a>. It will load any JavaScript file from within a JavaScript file. This can be useful in cases when you don’t want to store a copy of an external file locally.</p>
+<p>The Google Analytics tracking code is delivered by a content delivery network, likely to be cached in a web browser by visits to other sites, and used throughout an application. In this case, the Rails asset pipeline doesn’t offer any performance advantages so you might include the Google Analytics tracking code as an external script.</p>
+<p>You could add it directly to the application layout. Instead, you can use the asset pipeline and include it from within another JavaScript file. Using the asset pipeline gives you a benefit: Your application layout is less cluttered when all your JavaScript is consolidated in the <em>application.js</em> script.</p>
+<p>You can use the <code>document.createElement</code> method or let jQuery help you.</p>
+<p>JQuery offers the <a href="http://api.jquery.com/jQuery.getScript/">jQuery <code>getScript</code> method</a>. It will load any JavaScript file from within a JavaScript file. This can be useful in cases when you don’t want to store a copy of an external file locally.</p>
 <p>Consider this contrived example. I want to use the Stripe JavaScript library to initiate transactions for credit card payment. I don’t want to store the Stripe code on my server because of the risk that someone could gain access to my server and change the code to intercept credit card data. Suppose I wanted to insert the library in the middle of my <em>application.js</em> script.</p>
 <p>I could use the jQuery <code>getScript</code> method:</p>
 <p>Create a file <strong>app/assets/javascripts/stripe.js.erb</strong>:</p>
