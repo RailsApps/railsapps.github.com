@@ -149,8 +149,7 @@
 &lt;%= javascript_include_tag 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js' %&gt;
 &lt;%= javascript_include_tag 'code_that_uses_the_validation_plugin' %&gt;
 </pre>
-<p>But you’re no longer using the asset pipeline to manage your JavaScript files. You have to segregate your code that uses the jQuery plugin and load it from a separate file after everything else.</p>
-<p>Instead, find a way to load the jQuery plugin in the middle of the <em>application.js</em> script. There are two ways to do this. You can copy the external library to your own application. Or you can include an external JavaScript file from within a local JavaScript file, which apparently cannot be done.</p>
+<p>This is the kind of complexity that the asset pipeline is intended to eliminate. Instead of segregating your code and loading it as a separate file, use the asset pipeline and find a way to load the jQuery plugin in the middle of the <em>application.js</em> script. There are two ways to do this. You can copy the external library to your own application. Or you can include an external JavaScript file from within a local JavaScript file, which apparently cannot be done.</p>
 <h3 id="copy">Copy External Files Locally</h3>
 <p>It’s easiest to simply copy the plugin script to your own application. By convention, the preferred location is in the <strong>vendor/assets/javascripts</strong> folder (it will work in the <strong>app/assets/javascripts</strong> folder but that’s not where it belongs).</p>
 <p>To make it available as a site-wide <em>application.js</em> script, you must specify it in your <strong>app/assets/javascripts/application.js</strong> manifest, like this:</p>
@@ -159,8 +158,8 @@
 //= require jquery_ujs
 //= require jquery.validate.min
 </pre>
-<p>In general, it is best to copy the code to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine it with your own project code. You’ll avoid complexity, gain the benefit of managing all your JavaScript in one place, and (in most cases) gain performance benefits.</p>
-<p>If you copy the code to your application, there’s not much else to read here.</p>
+<p>In most cases, it is best to copy the code to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine it with your own project code. You’ll avoid complexity, gain the benefit of managing all your JavaScript in one place, and (in most cases) gain performance benefits.</p>
+<p>There are some situations where you might not want to copy an external script locally. Let’s look at these alternatives.</p>
 <h3 id="including">Including a JavaScript File From Within a JavaScript File</h3>
 <p>I said that <em>apparently</em> one cannot insert an external script in the middle of the asset pipeline. In fact it can be done, despite JavaScript’s lack of an import directive.</p>
 <p>The technique is used on millions of web pages and you may have used it without realizing it:</p>
