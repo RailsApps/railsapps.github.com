@@ -44,11 +44,11 @@
   <div class="container"> 
 
     <div class="content wikistyle gollum textile">
-      <h1>Including External JavaScript Files in Rails</h1>
+      <h1>Rails and JavaScript: Including External Scripts, jQuery Plugins, and Page-Specific JavaScript</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 24 September 2012</em></p>
-<p>How to include external JavaScript files in Rails 3.1 or newer. There is no import, include, or require in JavaScript, so what is the best way to add an external JavaScript library to a Rails application? Use the Rails asset pipeline? Or include directly in a view? This article explains your options.</p>
-<p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source apps and detailed tutorials for Rails developers. Next time you build an app, try using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
+<p><em>Last updated 25 September 2012</em></p>
+<p>Rails and JavaScript topics. How to include external JavaScript files and jQuery plugins in Rails 3.1 or newer. Using page-Specific JavaScript. What is the best way to add a JavaScript library to a Rails application? Use the Rails asset pipeline? Or include directly in a view? This article explains your options.</p>
+<p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source applications and detailed tutorials for Rails. Next time you build an app, try using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
 <h2 id="contents">Contents</h2>
 <ul>
 <li><a href="#summary">Rules of Thumb</a></li>
@@ -102,6 +102,23 @@
 	<li>Use <strong>vendor/assets/javascripts</strong> for copies of jQuery plugins, etc., from other developers.</li>
 </ul><p>All scripts in the <em>app/…</em> folder are automatically added to the default <em>application.js</em> script (when the manifest file includes the default <code>//= require_tree .</code> directive).</p>
 <p>If you add a script to the <em>vendor/…</em> folder and you wish to have it combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below). The same is true for the <em>lib/…</em> folder; because scripts in this folder are not automatically included in the <em>application.js</em> script, you can use it for scripts you wish to only include directly in a view.</p>
+<h2 id="manifest">Mysterious Manifests</h2>
+<p>There are two kinds of files in a JavaScript assets folder:</p>
+<ul>
+<li>ordinary JavaScript files</li>
+	<li>manifest files</li>
+</ul><p>(You can also have CoffeeScript files and <span class="caps">ERB</span> files which are variations on ordinary JavaScript files.)</p>
+<p>Manifest files have the same <em>.js</em> file extension as ordinary JavaScript files. Manifest files and ordinary JavaScript files can be combined in a single file. This makes a manifest file rather mysterious, or at least non-obvious.</p>
+<p>The default <strong>app/assets/javascripts/application.js</strong> file is a manifest file. It’s a manifest file because it contains directives:</p>
+<pre>
+//= require jquery
+//= require jquery_ujs
+//= require_tree .
+</pre>
+<p>Directives tell Sprockets which files should be combined to build a single JavaScript script. Each file that contains manifest directives becomes single JavaScript script with the same name as the original manifest file. Thus the <strong>app/assets/javascripts/application.js</strong> manifest file becomes the <em>application.js</em> script.</p>
+<h2 id="organizing">Organizing Your Scripts</h2>
+<p>In a simple application, collect all your JavaScript files in the <strong>app/assets/javascripts</strong> folder and rely on the default <code>//= require_tree .</code> directive to combine the scripts into a single <em>application.js</em> script. There’s nothing more to configure and this works as long as you don’t have any requirements to load the scripts in a particular order.</p>
+<p>In a complex application, remove the <code>//= require_tree .</code> directive and add subfolders to organize your scripts.</p>
 <p>This article focuses on the mechanics of including external JavaScript libraries and does not delve into recommended practices for organizing your own JavaScript files. Here’s advice about organizing your scripts:</p>
 <ul>
 <li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
@@ -118,9 +135,9 @@
 <strong>lib/assets/javascripts</strong> for scripts you share across your own projects</li>
 	<li>
 <strong>vendor/assets/javascripts</strong> for gemified jQuery plugins, etc., from open source projects</li>
-</ul><p>Here’s a screencast that shows how to create a gem containing JavaScript code:</p>
+</ul><p>Here’s an article that shows how to create a gem containing JavaScript code:</p>
 <ul>
-<li>Jesse House’s <a href="http://house9.blogspot.com/2011/06/rails-31-asset-gem.html">Package up Assets Into a Gem for Use in Rails 3.1 Applications</a>
+<li>Stephen Ball’s <a href="http://rakeroutes.com/blog/write-a-gem-for-the-rails-asset-pipeline/">How to Write (and Test) a Gem to Serve Static Files on the Rails Asset Pipeline</a>
 </li>
 </ul><h3>Use Open Source Gems</h3>
 <p>It is ideal to use gemified versions of JavaScript code from open source projects such as jQuery because this gives you the advantage of RubyGems as a package manager. The <a href="https://github.com/joliss/jquery-ui-rails">jquery-ui-rails</a> gem from Jo Liss is an excellent example.</p>
@@ -225,7 +242,6 @@ jQuery.externalScript = function(url, options) {
 <h2 id="specific">Page-Specific JavaScript</h2>
 <p>Often JavaScript is written to interact with specific elements on a page; if so, the browser will evaluate the JavaScript for each page but only activate it if the appropriate page element is present. The JavaScript you need for that page can be part of the site-wide <em>application.js</em> script or it can be included on the page with a <code>javascript_include_tag</code> statement in the view or application layout.</p>
 <h3 id="folder">Using the <em>lib/assets</em> Folder for Page-Specific JavaScript</h3>
-<p>Assume we’ve created a <em>payment.js</em> script that uses the Stripe JavaScript library to process credit card data.</p>
 <p>We have a choice of three locations for a local JavaScript file:</p>
 <ul>
 <li>the <strong>app/assets/javascripts</strong> folder</li>
@@ -235,19 +251,6 @@ jQuery.externalScript = function(url, options) {
 <p>The best location for a page-specific JavaScript file is the <strong>lib/assets/javascripts</strong> folder if you want to leave the <strong>app/assets/javascripts/application.js</strong> file intact.</p>
 <p>Consider the alternatives. If you place a page-specific JavaScript file in the <strong>app/assets/javascripts</strong> folder, Sprockets will combine it with all the other scripts in the folder and make it available throughout the application as part of a single large <em>application.js</em> script. You can change the Rails default configuration to prevent this by removing the <code>//= require_tree .</code> directive, but the change is not necessary if you place the script in the <strong>lib/assets/javascripts</strong> folder.</p>
 <p>You can also place a page-specific JavaScript file in the <strong>vendor/assets/javascripts</strong> folder. That works but, by convention, that folder is for third-party assets such as jQuery plugins.</p>
-<p>Here is our example <strong>lib/assets/javascripts/payment.js</strong> file:</p>
-<pre>
-$(function() {
-  if (typeof Stripe != 'undefined') {
-    console.log('Stripe JavaScript file loaded.');
-  }
-  else
-  {
-    console.log('Problem: Stripe JavaScript file not loaded.');
-  }
-});
-</pre>
-<p>In our Stripe example, we can use it to test if the external JavaScript file is loaded.</p>
 <h3 id="adjusting">The Alternative to Using <strong>lib/assets/javascripts</strong>
 </h3>
 <p>Here’s another way to handle page-specific JavaScript. It allows you to place your page-specific scripts in the <strong>app/assets/javascripts</strong> folder. It requires you to remove the <code>//= require_tree .</code> directive from the manifest and specify each script individually (or specify other manifest files).</p>
@@ -265,7 +268,20 @@ $(function() {
 <p>Also, page-specific JavaScript for external scripts may have value when a script is used on a single page that is not visited by most users.</p>
 <p>Consider this example. I want to use the Stripe JavaScript library to initiate transactions for credit card payment. I don’t want to store the Stripe code on my server because of the risk that someone could gain access to my server and change the code to intercept credit card data.</p>
 <p>We use the Stripe script only on a single page where the visitor makes a credit card payment. There will be a performance cost to download and cache the Stripe JavaScript file. We know that only a small number of visitors to the site will be visiting the payment page so by using page-specific JavaScript we reduce the performance hit for other users.</p>
-<p>We could use the jQuery <code>externalScript</code> method we explored above. We’d apply techniques to limit execution to a single page. It would like this:</p>
+<p>First, let’s write a local script that uses the the Stripe JavaScript library. Here is our example <strong>lib/assets/javascripts/payment.js</strong> file:</p>
+<pre>
+$(function() {
+  if (typeof Stripe != 'undefined') {
+    console.log('Stripe JavaScript file loaded.');
+  }
+  else
+  {
+    console.log('Problem: Stripe JavaScript file not loaded.');
+  }
+});
+</pre>
+<p>We can use it to test if the external JavaScript file is loaded.</p>
+<p>How do we load the external file that contains the Stripe JavaScript library? We could use the jQuery <code>externalScript</code> method we explored above. We’d apply techniques to limit execution to a single page. It would like this:</p>
 <pre>
 $.getScript('https://js.stripe.com/v1/', function(){
   if (typeof Stripe != 'undefined') {
