@@ -128,9 +128,26 @@
 <p>External scripts are where JavaScript in Rails gets complicated.</p>
 <h2 id="external">External Scripts</h2>
 <p>The Rails asset pipeline is a powerful tool for managing project-specific JavaScript code; however, it doesn’t offer a facility for managing JavaScript files that are obtained outside of your own application. External scripts, those that are downloaded by a web browser from a remote web server, must be specified as they were before Rails 3.1; that is, using the <code>javascript_include_tag</code> helper to add a script directly to an application layout or view.</p>
-<p>The organizational and performance benefits of the Rails asset pipeline eliminate almost all reasons to use external scripts. In most cases, you’ll want to copy the external script and manage it with the asset pipeline.</p>
-<p>Let’s consider the uncommon cases where the use of external scripts makes sense. If a script is delivered by a content delivery network, likely to be cached in a web browser by visits to other sites, and used throughout your application, you might include the external script directly. The Google Analytics tracking script is an example.</p>
-<p>Now we’ll look closely at how to use external scripts. First, we’ll consider how an external script interacts wih local scripts (dependencies). Then we’ll look at options for including external scripts in the asset pipeline. Finally we’ll look at the how to include an external script directly in a view as page-specific JavaScript.</p>
+<h3>You Probably Should Use Not Use External Scripts</h3>
+<p>The organizational and performance benefits of the Rails asset pipeline eliminate almost all reasons to use external scripts. In most cases, you’ll want to copy the external script locally and manage it with the asset pipeline. I’ll show you how to do that below.</p>
+<p>Consider the benefits of the Rails asset pipeline. When there is a only a single <em>application.js</em> script to download, the browser will cache it on first encounter and after that will load it from the browser cache. Each script you add directly to a view using the <code>javascript_include_tag</code> will require an additional server hit.</p>
+<p>For small applications with only a few pages, place the JavaScript code in its own file (for organizational efficiency) and give it a name that corresponds to the controller or view. Then let Sprockets concatenate and minify all your JavaScript files into a single <strong>application.js</strong> file. The default directive <code>//= require_tree .</code> in the  <strong>app/assets/javascripts/application.js</strong> manifest file will recursively include all JavaScript files in the <strong>app/assets/javascripts</strong> directory. Or remove the <code>//= require_tree .</code> directive and list each file individually. The script will be available throughout the application but you’ll only use it on a few pages. I’ll show you how to limit execution to a single page below.</p>
+<p>For large applications, it may seem the browser will be more efficient if each page only gets the script it needs. In fact, the Rails asset pipeline will be faster delivering a single <em>application.js</em> file in almost all cases.</p>
+<p>You’ll only know if there’s a performance benefit to using page-specific JavaScript if you actually profile performance. For rudimentary analysis, use the <em>Network</em> tab in the WebKit developer tool (in Chrome or Safari) or Firebug (in Firefox). You can use the <a href="http://developer.yahoo.com/yslow/">Yslow</a> tool for a detailed analysis of web page performance factors (see an article from New Relic on <a href="http://blog.newrelic.com/2012/09/04/improving-site-performance-with-yslow/">Improving Site Performance with YSlow</a>). The best tool for analysis of web page performance is the free <a href="http://www.webpagetest.org/">WebPagetest.org</a>.</p>
+<h3 id="copy">Copy External Files Locally</h3>
+<p>It’s easiest to simply copy the plugin script to your own application. By convention, the preferred location is in the <strong>vendor/assets/javascripts</strong> folder. It will work in the <strong>app/assets/javascripts</strong> folder but that’s not where it belongs.</p>
+<p>To make it available through the site-wide <em>application.js</em> script, you must specify it in your <strong>app/assets/javascripts/application.js</strong> manifest, like this:</p>
+<pre>
+//= require jquery
+//= require jquery_ujs
+//= require jquery.validate.min
+</pre>
+<p>In most cases, it is best to copy the code to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine it with your own project code. You’ll avoid complexity, gain the benefit of managing all your JavaScript in one place, and (in most cases) gain performance benefits.</p>
+<p>Now let’s consider the edge cases where the use of external scripts makes sense.</p>
+<h3>Using External Scripts</h3>
+<p>If a script is delivered by a content delivery network, likely to be cached in a web browser by visits to other sites, and used throughout your application, you might include the external script directly. The Google Analytics tracking script is an example.</p>
+<p>You’d want to use an external script directly in a view when copying the script locally would introduce a security vulnerability. Scripts that process credit card data are an example.</p>
+<p>Here we’ll look closely at how to use external scripts. First, we’ll consider how an external script interacts wih local scripts (dependencies). Then we’ll look at options for including external scripts in the asset pipeline. Finally we’ll look at the how to include an external script directly in a view as page-specific JavaScript.</p>
 <h3 id="none">No Dependencies</h3>
 <p>Some external scripts work independently of your project-specific JavaScript code. For example, you might add the HTML5Shiv <code>&lt;%= javascript_include_tag 'http://html5shiv.googlecode.com/svn/trunk/html5.js' %&gt;</code> to your application layout to support HTML5 tags in old versions of Internet Explorer. Your own JavaScript would not be dependent on the file. You could load it either before or after your <em>application.js</em> script (though in the case of HTML5Shiv you’d want to load it before any <span class="caps">CSS</span> files).</p>
 <h3 id="simple">Simple Dependencies</h3>
@@ -150,15 +167,6 @@
 &lt;%= javascript_include_tag 'code_that_uses_the_validation_plugin' %&gt;
 </pre>
 <p>This is the kind of complexity that the asset pipeline is intended to eliminate. Instead of segregating your code and loading it as a separate file, use the asset pipeline. There are two ways to load the jQuery plugin in the middle of the <em>application.js</em> script. You can copy the external library to your own application. Or you can include an external JavaScript file from within a local JavaScript file, which apparently cannot be done.</p>
-<h3 id="copy">Copy External Files Locally</h3>
-<p>It’s easiest to simply copy the plugin script to your own application. By convention, the preferred location is in the <strong>vendor/assets/javascripts</strong> folder. It will work in the <strong>app/assets/javascripts</strong> folder but that’s not where it belongs.</p>
-<p>To make it available through the site-wide <em>application.js</em> script, you must specify it in your <strong>app/assets/javascripts/application.js</strong> manifest, like this:</p>
-<pre>
-//= require jquery
-//= require jquery_ujs
-//= require jquery.validate.min
-</pre>
-<p>In most cases, it is best to copy the code to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine it with your own project code. You’ll avoid complexity, gain the benefit of managing all your JavaScript in one place, and (in most cases) gain performance benefits.</p>
 <h3 id="including">Including a JavaScript File From Within a JavaScript File</h3>
 <p>I said that <em>apparently</em> one cannot insert an external script in the middle of the asset pipeline. In fact it can be done, despite JavaScript’s lack of an import directive.</p>
 <p>The technique is used on millions of web pages and you may have used it without realizing it:</p>
@@ -210,26 +218,19 @@ jQuery.externalScript = function(url, options) {
   });
 &lt;% end %&gt;
 </pre>
-<p>Notice that we only load the Google Analytics script for tracking traffic in production mode.</p>
+<p>Notice that we only load the Google Analytics script for tracking traffic in production mode. To do so, we use the <em>.erb</em> file extension so it will be preprocessed by Tilt.</p>
 <p>If you want to use the <code>externalScript</code> method in other JavaScript files, move it to <strong>app/assets/javascripts/application.js</strong> and add <code>//= require_self</code> to the manifest.</p>
 <p>With this technique, you’ve added an external script to the site-wide <em>application.js</em> script without copying it locally.</p>
 <p>Now let’s consider cases where you want to use JavaScript on a specific page, not throughout the entire application. If external scripts are complicated, page-specific JavaScript in Rails gets even more complex.</p>
 <h2 id="specific">Page-Specific JavaScript</h2>
-<p>Often JavaScript is written to interact with specific elements on a page; if so, the browser will evaluate the JavaScript for each page but only activate it if the appropriate page element is present. The JavaScript you need for that page can be part of the site-wide <em>application.js</em> script or it can be included on the page with a <code>javascript_include_tag</code> statement in the application layout.</p>
-<h3>You Probably Should Use Not Use External Scripts</h3>
-<p>Before you think about adding page-specific JavaScript with a <code>javascript_include_tag</code> statement, consider the benefits of the Rails asset pipeline. When there is a only a single <em>application.js</em> script to download, the browser will cache it on first encounter and after that will load it from the browser cache. Each script you add using the <code>javascript_include_tag</code> will require an additional server hit. For this reason, page-specific JavaScript has limited value. Let’s consider cases where it is not worth the effort.</p>
-<p>For small applications with only a few pages, don’t set up your application for page-specific JavaScript. Place the JavaScript code in its own file (for organizational efficiency) and give it a name that corresponds to the controller or view. Then let Sprockets concatenate and minify all your JavaScript files into a single <strong>application.js</strong> file. The default directive <code>//= require_tree .</code> in the  <strong>app/assets/javascripts/application.js</strong> manifest file will recursively include all JavaScript files in the <strong>app/assets/javascripts</strong> directory. Or remove the <code>//= require_tree .</code> directive and list each file individually. The script will be available throughout the application but you’ll only use it on a few pages.</p>
-<p>For large applications, it may seem the browser will be more efficient if it only processes code for a specific page. In fact, the Rails asset pipeline will be faster delivering a single <em>application.js</em> file in almost all cases.</p>
-<p>You’ll only know if there’s a performance benefit to using page-specific JavaScript if you actually profile performance. For rudimentary analysis, use the <em>Network</em> tab in the WebKit developer tool (in Chrome or Safari) or Firebug (in Firefox). You can use the <a href="http://developer.yahoo.com/yslow/">Yslow</a> tool for a detailed analysis of web page performance factors (see an article from New Relic on <a href="http://blog.newrelic.com/2012/09/04/improving-site-performance-with-yslow/">Improving Site Performance with YSlow</a>). The best tool for analysis of web page performance is the free <a href="http://www.webpagetest.org/">WebPagetest.org</a>.</p>
+<p>Often JavaScript is written to interact with specific elements on a page; if so, the browser will evaluate the JavaScript for each page but only activate it if the appropriate page element is present. The JavaScript you need for that page can be part of the site-wide <em>application.js</em> script or it can be included on the page with a <code>javascript_include_tag</code> statement in the view or application layout.</p>
 <h3>Where External Scripts and Page-Specific JavaScript are Appropriate</h3>
 <p>Now let’s consider cases where external scripts and page-specific JavaScript can be useful.</p>
-<p>Page-specific JavaScript has value when copying an external file to your server increases vulnerability. The Stripe JavaScript library for credit cards is an example.</p>
+<p>An external script and page-specific JavaScript has value when copying an external file to your server increases vulnerability.</p>
 <p>Also, page-specific JavaScript for external scripts may have value when a script is used on a single page that is not visited by most users.</p>
-<p>Our example uses the Stripe script only on a single page where the visitor makes a credit card payment. There will be a performance cost to download and cache the Stripe JavaScript file. We know that only a small number of visitors to the site will be visiting the payment page so by using page-specific JavaScript we reduce the performance hit for other users. Plus we want to leave the script on Stripe’s servers to avoid increasing our security risk. In this case, it makes sense to load the script as page-specific JavaScript.</p>
-<p>We can add page-specific JavaScript by adding a <code>&lt;%= yield(:head) %&gt;</code> statement to the application layout and using <code>content_for</code> in the view that renders the page.</p>
-<p>Consider this contrived example. I want to use the Stripe JavaScript library to initiate transactions for credit card payment. I don’t want to store the Stripe code on my server because of the risk that someone could gain access to my server and change the code to intercept credit card data. Suppose I wanted to insert the library in the middle of my <em>application.js</em> script.</p>
-<p>I could use the jQuery <code>getScript</code> method:</p>
-<p>Create a file <strong>app/assets/javascripts/stripe.js.erb</strong>:</p>
+<p>Consider this example. I want to use the Stripe JavaScript library to initiate transactions for credit card payment. I don’t want to store the Stripe code on my server because of the risk that someone could gain access to my server and change the code to intercept credit card data.</p>
+<p>We use the Stripe script only on a single page where the visitor makes a credit card payment. There will be a performance cost to download and cache the Stripe JavaScript file. We know that only a small number of visitors to the site will be visiting the payment page so by using page-specific JavaScript we reduce the performance hit for other users.</p>
+<p>We could use the jQuery <code>externalScript</code> method we explored above. We’d apply techniques to limit execution to a single page. It would like this:</p>
 <pre>
 $.getScript('https://js.stripe.com/v1/', function(){
   if (typeof Stripe != 'undefined') {
@@ -241,9 +242,8 @@ $.getScript('https://js.stripe.com/v1/', function(){
   }
 });
 </pre>
-<p>If I want to use the Stripe library on any page of my application, it is now available with nothing more than the default <code>&lt;%= javascript_include_tag "application" %&gt;</code> in the application layout, provided the <strong>app/assets/javascripts/application.js</strong> manifest includes the default <code>//= require_tree .</code> directive.</p>
-<p>Is there any advantage to this? For a simple dependency like the Stripe example, it avoids cluttering your application layout. For a complex dependency like a jQuery plugin, it lets you add an external file in the middle of your <em>application.js</em> script. Then again, unless there’s a security vulnerability, it’s easier to simply copy the jQuery plugin to your <strong>vendor/assets/javascripts</strong> folder.</p>
-<p>In a real application, it’s unlikely you would want to process credit card data on every page. That’s why the above example is contrived. We are likely to want to process credit card data only on a payment page. In this case, it’s more appropriate to use page-specific JavaScript.</p>
+<p>Using the jQuery <code>externalScript</code> method, we can consolidate all our JavaScript code into the <em>application.js</em> script and reduce the clutter in the application layout file. But in this case we might want to segregate our code for clarity and separation of concerns since we are using an external script on a single page.</p>
+<p>We can add page-specific JavaScript by adding a <code>&lt;%= yield(:head) %&gt;</code> statement to the application layout and using <code>content_for</code> in the view that renders the page.</p>
 <h3 id="folder">Using the <em>lib/assets</em> Folder for Page-Specific JavaScript</h3>
 <p>Assume we’ve created a <em>payment.js</em> script that uses the Stripe JavaScript library to process credit card data.</p>
 <p>We have a choice of three locations for a local JavaScript file:</p>
