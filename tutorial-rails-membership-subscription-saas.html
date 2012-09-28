@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 23 September 2012</em></p>
+<p><em>Last updated 27 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1063,7 +1063,15 @@ $ git branch -D registration
 	<li>the <code>create</code> method receives an acknowledgment of a completed or declined transaction</li>
 	<li>the <code>create</code> method saves the user data (and creates an account) or shows an error message</li>
 </ul><p>Stripe’s multi-step JavaScript-based approach makes implementation more complex but the result is robust and secure.</p>
-<p>Create a new git branch for this feature:</p>
+<p>Here are useful resources for understanding the implementation:</p>
+<ul>
+<li>RailsCast <a href="http://railscasts.com/episodes/288-billing-with-stripe">Billing with Stripe</a>
+</li>
+	<li><a href="https://stripe.com/docs">Stripe documentation</a></li>
+	<li>Stripe’s <a href="https://github.com/stripe/monospace-rails">monospace-rails</a> sample Rails application</li>
+	<li><a href="http://net.tutsplus.com/tutorials/other/so-you-want-to-accept-credit-cards-online/">Nettuts: Stripe Tutorial</a></li>
+</ul><p>We’ve followed Ryan Bates’s implementation from his RailsCast on Stripe in several key areas.</p>
+<p>Get started by creating a new git branch for this feature:</p>
 <pre>
 $ git checkout -b stripe
 </pre>
@@ -1091,7 +1099,7 @@ $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Use Page-Specific JavaScript</h3>
 <p>In most projects, we copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. Only a small portion of our site’s visitors will use it (only those visiting the payment page). And we don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It’s best to manage it as page-specific JavaScript, loaded only on the payment page.</p>
-<p>For details about using external JavaScript libraries and page-specific JavaScript, see our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a>.</p>
+<p>For details about using external JavaScript libraries and page-specific JavaScript, see our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Unholy Rails: External Scripts, jQuery Plugins, and Page-Specific JavaScript</a>.</p>
 <h3>Create a Registrations JavaScript File</h3>
 <p>We’ll create a new file for our page-specific JavaScript and give the file the same name as the controller. For now, we’ll only create some test code.</p>
 <p>Create a file <strong>app/lib/javascripts/registrations.js.erb</strong>:</p>
@@ -1110,7 +1118,7 @@ $(function() {
 <p>Later we will add the code that collects the credit card data from the subscription form, submits it to the Stripe server, and obtains the Stripe token.</p>
 <p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
 <h3>Configuration for Precompiling in Production</h3>
-<p>Notice that we don’t add the file to the <em><strong>app</strong>/assets/javascripts/</em> folder. We add it to the <em><strong>lib</strong>/assets/javascripts/</em> folder. Our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Including External JavaScript Files in Rails</a> explains that selecting the  <em>lib/assets/javascripts/</em> folder means we can continue to use our <em>app/assets/javascripts/</em> folder for site-wide scripts without configuration changes.</p>
+<p>Notice that we don’t add the file to the <em><strong>app</strong>/assets/javascripts/</em> folder. We add it to the <em><strong>lib</strong>/assets/javascripts/</em> folder. Our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Unholy Rails: External Scripts, jQuery Plugins, and Page-Specific JavaScript</a> explains that selecting the  <em>lib/assets/javascripts/</em> folder means we can continue to use our <em>app/assets/javascripts/</em> folder for site-wide scripts without configuration changes.</p>
 <p>In development mode, nothing more is required to use our new <em>registrations.js</em> script on any page where it is needed. The asset pipeline “live compiles” all the JavaScript files it finds and makes them available for use.</p>
 <p>For production, we must make an important configuration change so our new script is precompiled and available on deployment. Change the configuration now; don’t wait until it’s time to deploy.</p>
 <p>Add this to the file <strong>config/environments/production.rb</strong>:</p>
@@ -1182,7 +1190,28 @@ config.assets.precompile += %w( registrations.js )
 &lt;/head&gt;
 </pre>
 <p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
-<p>With the Stripe JavaScript file in place, we will add fields for credit card data to the form.</p>
+<p>With the Stripe JavaScript file in place, we will add a virtual attribute to the User model.</p>
+<h3>Modify the User Model</h3>
+<p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will included as a hidden field when the user submits the registration form.</p>
+<p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is submitted and processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
+<p>Modify the file <strong>app/models/user.rb</strong>:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessor :stripe_token
+
+end
+</pre>
+<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the value in an instance variable. Also we add the new <code>:stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass-assignment.</p>
+<p>With the virtual attribute in place, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
 <p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Stripe server.</p>
@@ -1229,6 +1258,8 @@ config.assets.precompile += %w( registrations.js )
     &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
   &lt;/div&gt;
   
+  &lt;%= f.hidden_field :stripe_token %&gt;
+  
   &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
 &lt;% end %&gt;
 </pre>
@@ -1236,11 +1267,12 @@ config.assets.precompile += %w( registrations.js )
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
 <p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
 <p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
+<p>We add a hidden field to the form named <code>stripe_token</code>. We’ll soon add JavaScript to submit credit card data from the form and obtain a Stripe token from the Stripe server. The JavaScript code will add the Stripe token to the hidden field before submitting the form to our server.</p>
 <p>It’s not obvious from the code, but the Rails form builder will create a form with the element ID <code>new_user</code>. The name is generated from the controller and action names “user” and “new”. If you examine the <span class="caps">HTML</span> source, you will see:</p>
 <pre>
 &lt;form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post"&gt;
 </pre>
-<p>It’s important to know this when we write the JavaScript code that parses the for to obtain the credit card data.</p>
+<p>It’s important to know this when we write the JavaScript code that parses the form to obtain the credit card data.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
 <p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
@@ -1307,7 +1339,7 @@ $(function() {
 	<li>invalid cvc: use a two digit number, e.g. <em>99</em>
 </li>
 </ul><p>It’s fun (for a few minutes) to enter various numbers and observe the response from the Stripe server.</p>
-<p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script.</p>
+<p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script. While we’re at it, we’ll add the code to handle the response from the Stripe server.</p>
 <p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
 $(function() {
@@ -1332,7 +1364,8 @@ $(function() {
     },
     handleStripeResponse: function(status, response) {
       if (status === 200) {
-        return alert('Stripe response: ' + response.id);
+        $('#user_stripe_token').val(response.id)
+        $('#new_user')[0].submit()
       } else {
         $('#stripe_error').text(response.error.message).show();
         return $('input[type=submit]').attr('disabled', false);
@@ -1342,6 +1375,18 @@ $(function() {
   return subscription.setupForm();
 });
 </pre>
+<p>Here’s an explanation of the JavaScript.</p>
+<p>The <code>$(function()</code> function is an alias for the <a href="http://api.jquery.com/jQuery/#jQuery3">jQuery object</a> and wraps other functions that depend on the <span class="caps">DOM</span> being ready.</p>
+<p>We set the <code>STRIPE_PUBLIC_KEY</code> which is defined in the Stripe initializer file <strong>config/initializers/stripe.rb</strong>.</p>
+<p>We create a <code>subscription</code> object with several functions: <code>setupForm</code>, <code>processCard</code>, and <code>handleStripeResponse</code>.</p>
+<p>We call the <code>setupForm</code> function which listens for the form submission event. When the visitor submits the form, the submit button is disabled (so the user can’t press it repeatedly) and the <code>processCard</code> function is called. Returning <code>false</code> makes sure the form is not submitted to our server at this stage.</p>
+<p>The <code>processCard</code> function parses the form and obtains the credit card data. Then it calls a function from the Stripe library named <code>createToken</code> which submits the card data to the Stripe server. When the Stripe server returns a response, we call the <code>handleStripeResponse</code> function.</p>
+<p>The <code>handleStripeResponse</code> function checks the <span class="caps">HTTP</span> status code. If it is okay (status code 200), the function sets the <code>:stripe_token</code> hidden field in the form (it has the <span class="caps">HTML</span> element ID “user_stripe_token”) and calls <code>submit</code> on the “new_user” element (which is the <span class="caps">HTML</span> element ID of the form). If the <span class="caps">HTTP</span> status code is not okay, the function sets the error message from the Stripe server in the <code>stripe_error</code> div and re-enables the submit button.</p>
+<p>In effect, we modify the form’s submit button so that the credit card data is first sent to the Striper server, the Stripe token is obtained and set in a hidden field, and then the form is submitted to our application for processing by our Registrations controller.</p>
+<p>You can start the server and create a subscription. Use the fake credit card number <em>4242424242424242</em>. You’ll see an error message on the page if the credit card data is incomplete. If the credit card data is accepted, a new User account will be created and you’ll be redirected to the application home page where you’ll see a message “Welcome! You have signed up successfully.”</p>
+<p>But wait. We’ve created a new User account but we haven’t charged the user for the subscription. To do so, we’ll modify the Registrations controller to create a new Stripe customer and initiate a credit card transaction.</p>
+<h3>Prepare Your Stripe Account</h3>
+<p>Before we can modify the Registrations controller to initiate a transaction with Stripe, we have to prepare our Stripe account to recognize the parameters we’ll be sending.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
