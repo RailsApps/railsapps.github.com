@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 September 2012</em></p>
+<p><em>Last updated 28 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1193,7 +1193,7 @@ config.assets.precompile += %w( registrations.js )
 <p>With the Stripe JavaScript file in place, we will add a virtual attribute to the User model.</p>
 <h3>Modify the User Model</h3>
 <p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will included as a hidden field when the user submits the registration form.</p>
-<p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is submitted and processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
+<p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -1322,7 +1322,7 @@ $(function() {
 </pre>
 <p>If you prefer CoffeeScript, you can convert JavaScript to CoffeeScript <a href="http://js2coffee.org/">here</a> or <a href="http://js2cs.nodejitsu.com/">here</a>.</p>
 <p>Instead of using a JavaScript alert to confirm that Stripe JavaScript file loaded properly, we write a message to the JavaScript console.</p>
-<p>Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <strong>View/Developer/Developer Tools</strong> and select the “Console” tab. Reload the page and you will the console messages. We’ve added console messages to trace the program flow as each function is executed. You can use the console messages for debugging if you have problems.</p>
+<p>Here’s how to use the JavaScript console. Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <strong>View/Developer/Developer Tools</strong> and select the “Console” tab. Reload the page and you will the console messages. We’ve added console messages to trace the program flow as each function is executed. You can use the console messages for debugging if you have problems.</p>
 <p>We read the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript (that’s why we used the <strong>.erb</strong> file extension when we created the file).</p>
 <p>Finally, we raise an alert displaying the response we get from the Stripe server.</p>
 <p>Start the server and visit the page. Check the JavaScript console to observe the debugging messages. Fill out the form, using a fake credit card number. You should see an alert displaying the response from the Stripe server.</p>
@@ -1384,9 +1384,48 @@ $(function() {
 <p>The <code>handleStripeResponse</code> function checks the <span class="caps">HTTP</span> status code. If it is okay (status code 200), the function sets the <code>:stripe_token</code> hidden field in the form (it has the <span class="caps">HTML</span> element ID “user_stripe_token”) and calls <code>submit</code> on the “new_user” element (which is the <span class="caps">HTML</span> element ID of the form). If the <span class="caps">HTTP</span> status code is not okay, the function sets the error message from the Stripe server in the <code>stripe_error</code> div and re-enables the submit button.</p>
 <p>In effect, we modify the form’s submit button so that the credit card data is first sent to the Striper server, the Stripe token is obtained and set in a hidden field, and then the form is submitted to our application for processing by our Registrations controller.</p>
 <p>You can start the server and create a subscription. Use the fake credit card number <em>4242424242424242</em>. You’ll see an error message on the page if the credit card data is incomplete. If the credit card data is accepted, a new User account will be created and you’ll be redirected to the application home page where you’ll see a message “Welcome! You have signed up successfully.”</p>
-<p>But wait. We’ve created a new User account but we haven’t charged the user for the subscription. To do so, we’ll modify the Registrations controller to create a new Stripe customer and initiate a credit card transaction.</p>
+<p>But wait. We’ve created a new User account but we haven’t charged the user for the subscription. To do so, we’ll modify the User model to create a new Stripe customer and initiate a credit card transaction when a new user is created.</p>
 <h3>Prepare Your Stripe Account</h3>
-<p>Before we can modify the Registrations controller to initiate a transaction with Stripe, we have to prepare our Stripe account to recognize the parameters we’ll be sending.</p>
+<p>Before we can modify the User model to create a new Stripe customer, we have to prepare our Stripe account to recognize the parameters we’ll be saving. We have to set up our subscription plans in Stripe.</p>
+<p>This step is necessary if you’re going to use Stripe to manage recurring billing. We’ll tell Stripe that we have three plans named “Silver”, “Gold”, and “Platinum” that will be billed monthly at rates of $9, $19, and $29. Once a customer is created and assigned a plan, Stripe will do all the work of notifying the user, initiating monthly billing, and contacting the user when a credit card is declined or expires.</p>
+<p>Go to the Stripe <a href="https://manage.stripe.com/#plans">plan management page</a> to create a subscription plan. Stripe offers <a href="https://stripe.com/docs/subscriptions">documentation about creating a plan</a> and <a href="https://stripe.com/docs/api#plans">additional detail about plans</a>.</p>
+<p>Look for the toggle switch “Live/Test” and set it to “Test.” Click the button to “Create your first plan.”</p>
+<p>Create three different plans with the following values:</p>
+<table>
+<tr>
+<th>ID </th>
+		<th>Name </th>
+		<th>Amount </th>
+		<th>Interval </th>
+	</tr>
+<tr>
+<td> silver </td>
+		<td> Silver </td>
+		<td> 9.00 </td>
+		<td> monthly </td>
+	</tr>
+<tr>
+<td> gold </td>
+		<td> Gold </td>
+		<td> 19.00 </td>
+		<td> monthly </td>
+	</tr>
+<tr>
+<td> platinum </td>
+		<td> Platinum </td>
+		<td> 29.00 </td>
+		<td> monthly </td>
+	</tr>
+</table><p>“ID” is a unique string of your choice that is used to identify the plan when subscribing a customer. In our application, each plan should have an ID that corresponds to the roles we’ve created to manage access using CanCan. “Name” is displayed on invoices and in the Stripe web interface. “Amount” is the subscription price in US dollars. “Interval” is the billing frequency. Optionally, you can specify a trial period (in days). If you include a trial period, the customer won’t be billed for the first time until the trial period ends. If the customer cancels before the trial period is over, she’ll never be billed at all.</p>
+<p>Now that Stripe knows about our subscription plans, we’ll modify the User model to create a new Stripe customer.</p>
+<h3>Modify the User Model</h3>
+<p>We want to make a request to Stripe to create a customer whenever a new user is created. There are several ways we could do this:</p>
+<ul>
+<li>modify the Registrations controller <code>create</code> action to initiate a request to Stripe</li>
+	<li>add a new method such as <code>save_new_customer</code> to the User model and swap it for <code>save</code> method used in the Registrations controller <code>create</code> action</li>
+	<li>add a <code>save_new_customer</code> method to the User model and call it with <code>before_create</code> in the User model</li>
+	<li>add an <code>update_stripe</code> method to the User model and call it with <code>before_save</code> in the User model</li>
+</ul><p>The first option, modifying the Registrations controller, results in the much-abhorred “fat controller” anti-pattern. We’ll avoid that. The second option moves the Stripe request to the model but there is no need to modify the Registrations controller to use an alternative to the <code>save</code> method. The third option requires no changes to the Registrations controller but only contacts Stripe when a new user is created. The fourth option is optimal. We’ll add an <code>update_stripe</code> method that is called whenever the user instance is saved. This approach allows us to either create a new Stripe customer (on <code>create</code>) or update the Stripe customer record (on <code>update</code>).</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
