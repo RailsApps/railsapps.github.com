@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 September 2012</em></p>
+<p><em>Last updated 29 September 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1498,9 +1498,21 @@ end
 <p>After create or update, we obtain the last four digits of the user’s credit card number. We finish by setting the <code>stripe_id</code> to match the Stripe customer ID and we set the stripe token to nil.</p>
 <p>The <code>update_stripe</code> method sets user attributes <code>stripe_id</code> and <code>last_4_digits</code> which are saved with the attributes passed from the form when the Registration controller completes the <code>user.save</code> call.</p>
 <p>We handle errors with a <code>rescue</code> condition. Errors in credit card data will be caught by the JavaScript functions before the form is submitted to the server. If another type of error prevents the Stripe customer from being created, the <code>rescue</code> condition will set an error message and return false which will prevent the user account from being saved.</p>
-<p>We have all the code we need for visitors to sign up for new subscriptions.</p>
-<p>Let’s test the application.</p>
-<p>Then we’ll make changes to allow the user to update a credit card.</p>
+<h3>Test Stripe Integration</h3>
+<p>We have all the code needed for visitors to sign up for new subscriptions. Let’s test the application.</p>
+<p>Start the web server:</p>
+<p>$ rails server</p>
+<p>Visit http://localhost:3000/ to see your home page.</p>
+<p>Click on the “Subscribe” button for any subscription plan. You’ll see the registration page. Fill in the form using the fake credit card number <em>4242424242424242</em>. Submit the form.</p>
+<p>You’ll be redirected to the home page and see a message “Welcome! You have signed up successfully.” You’ll be logged in as a new user. If you’ve selected the Silver Plan for the new user, try visiting http://localhost:3000/content/silver.html. You should be able to view the page. You should see an error message if you attempt to visit http://localhost:3000/content/gold.html.</p>
+<p>Visit your Stripe dashboard at <a href="https://manage.stripe.com/#test/customers">https://manage.stripe.com/#test/customers</a> and see the new customer you’ve created. If you check the customer details, you should see that the fake credit card was billed and the subscription status is “active.”</p>
+<p>Pat yourself on the back! That’s a milestone. You now can take credit card payments for subscriptions.</p>
+<p>There’s more to do, however:</p>
+<ul>
+<li>modify “edit account” so users can change credit cards</li>
+	<li>implement Stripe “webhooks” so expired subscribers will lose access to the site</li>
+	<li>change the redirect so new subscribers can view site content after registration</li>
+</ul><p>Let’s update our Git repository before we continue.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
@@ -1529,14 +1541,12 @@ $ git branch -D stripe
 </ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
 <h2>Deploy to Heroku</h2>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
-<h2>Conclusion</h2>
-<p>This concludes the tutorial for the RailsApp <a href="https://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> example app.</p>
-<h3 id="comment">Did You Like the Tutorial? Here’s What You Can Do</h3>
+<h2>Credits</h2>
+<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
+<h2 id="comment">Did You Like the Tutorial?</h2>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
-<h3>Credits</h3>
-<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
