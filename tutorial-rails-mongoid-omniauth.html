@@ -398,18 +398,17 @@ require "active_resource/railtie"
 </pre>
 <p>Now you can safely remove the file <strong>config/database.yml</strong>.</p>
 <p>Note that it is no longer necessary (as of <a href="https://github.com/mongoid/mongoid/commit/87718c30bc5e6ef69e1f78d704a5b386dd91b3eb">9 June 2010</a>) to modify <strong>config/application.rb</strong> for Mongoid. The necessary changes to the Rails generators are handled by the Mongoid gem. When you generate a model, Rails will generate a Mongoid Document.</p>
-<h4>Set Up a Database Seed File</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>You’ll want a convenient way to reset the datastore. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
+<h4>Database Commands</h4>
+<p>There’s no need to set up the <strong>db/seeds.rb</strong> file for a default user. You can test the application without a default user.</p>
+<p>During testing, if you wish to reset the MongoDB database you can run the command:</p>
 <pre>
-puts 'EMPTY THE MONGODB DATABASE'
-Mongoid.master.collections.reject { |c| c.name =~ /^system/}.each(&amp;:drop)
+$ rake db:drop
 </pre>
-<p>When you wish to reset the MongoDB database you can run the command:</p>
-<p><code>$ rake db:seed</code></p>
-<p>You can also use the <strong>db/seeds.rb</strong> file to initialize the database by creating and saving any model instances you need.</p>
+<p>Create indexes for the database with:</p>
+<pre>
+$ rake db:mongoid:create_indexes
+</pre>
+<p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <h4>Test the App</h4>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>

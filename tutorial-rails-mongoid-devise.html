@@ -583,26 +583,34 @@ end
 &lt;% end %&gt;
 </pre>
 <h4>Set Up a Database Seed File</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/seed_database.rb">seed_database</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
 <p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
 <pre>
-puts 'EMPTY THE MONGODB DATABASE'
-Mongoid.master.collections.reject { |c| c.name =~ /^system/}.each(&amp;:drop)
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'New user created: ' &lt;&lt; user2.name
 </pre>
 <p>You can change the values for name, email, and password as you wish.</p>
 <h4>Seed the Database</h4>
-<p>Add the default user to the MongoDB database by running the command:</p>
-<p><code>$ rake db:seed</code></p>
-<p>If you need to, you can run <code>$ rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
+<p>Create indexes for the database with:</p>
+<pre>
+$ rake db:mongoid:create_indexes
+</pre>
+<p>Add the default users to the MongoDB database by running the command:</p>
+<pre>
+$ rake db:seed
+</pre>
 <p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
 <pre>
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </pre>
+<p>During testing, if you wish to reset the MongoDB database you can run the command:</p>
+<pre>
+$ rake db:drop
+</pre>
+<p>Be sure to recreate the idnexes after dropping the database.</p>
+<p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <h4>Test the App</h4>
 <p>At this point, you may want to know if the default user has been saved to the MongoDB database.</p>
 <p>You can check that your app runs properly by entering the command</p>
