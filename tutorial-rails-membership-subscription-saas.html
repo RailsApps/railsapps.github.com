@@ -1070,7 +1070,7 @@ $ git branch -D registration
 	<li><a href="https://stripe.com/docs">Stripe documentation</a></li>
 	<li>Stripe’s <a href="https://github.com/stripe/monospace-rails">monospace-rails</a> sample Rails application</li>
 	<li><a href="http://net.tutsplus.com/tutorials/other/so-you-want-to-accept-credit-cards-online/">Nettuts: Stripe Tutorial</a></li>
-</ul><p>We’ve followed Ryan Bates’s implementation from his RailsCast on Stripe in several key areas.</p>
+</ul><p>We’ve followed Ryan Bates’s implementation from his RailsCast on Stripe in several key areas. Thank you, Ryan!</p>
 <p>Get started by creating a new git branch for this feature:</p>
 <pre>
 $ git checkout -b stripe
@@ -1224,7 +1224,7 @@ end
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;
 &lt;/div&gt;
-&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
+&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form'}) do |f| %&gt;
   &lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
   &lt;%= devise_error_messages! %&gt;
@@ -1258,16 +1258,16 @@ end
 &lt;% end %&gt;
 </pre>
 <p>Take a look at <code>div id="stripe_error"</code>. We give it the “alert alert-error” style from Twitter Bootstrap. It remains hidden with a <code>style="display:none"</code> unless we use JavaScript to show it when we receive an error message from the Stripe server. We’ll add the necessary JavaScript soon.</p>
+<p>If you examine the <span class="caps">HTML</span> source, you will see:</p>
+<pre>
+&lt;form accept-charset="UTF-8" action="/users" class="card_form" id="new_user" method="post"&gt;
+</pre>
+<p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller and action names “user” and “new”. We assign the class <code>card_form</code> to the form. Our JavaScript code will interact with the form. We could select the form with the “new_user” id but instead we’ll use the “card_form” class in our jQuery selector. This gives us flexibility to use the same JavaScript code to interact with either a “new registration” or “edit registration” form.</p>
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
 <p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
 <p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
 <p>We add a hidden field to the form named <code>stripe_token</code>. We’ll soon add JavaScript to submit credit card data from the form and obtain a Stripe token from the Stripe server. The JavaScript code will add the Stripe token to the hidden field before submitting the form to our server.</p>
 <p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.stripe_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Stripe accepts the credit card data and provides a <code>stripe_token</code> but there’s no email address, we’ll save the Stripe token in the hidden field and prompt the user to correct the email address.</p>
-<p>It’s not obvious from the code, but the Rails form builder will create a form with the element ID <code>new_user</code>. The name is generated from the controller and action names “user” and “new”. If you examine the <span class="caps">HTML</span> source, you will see:</p>
-<pre>
-&lt;form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post"&gt;
-</pre>
-<p>It’s important to know this when we write the JavaScript code that parses the form to obtain the credit card data.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
 <p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
@@ -1285,9 +1285,9 @@ $(function() {
   var subscription = {
     setupForm: function() {
       console.log('function: setupForm')
-      return $('#new_user').submit(function() {
+      return $('.card_form').submit(function() {
         console.log('setupForm: form submitted')
-        $('input[type=submit]').attr('disabled', true);
+        $('input[type=submit]').prop('disabled', true);
         subscription.processCard();
         return false;
       });
@@ -1296,6 +1296,7 @@ $(function() {
       console.log('function: processCard');
       var card;
       card = {
+        name: $('#user_name').val(),
         number: $('#card_number').val(),
         cvc: $('#card_code').val(),
         expMonth: $('#card_month').val(),
@@ -1341,8 +1342,8 @@ $(function() {
   Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
   var subscription = {
     setupForm: function() {
-      return $('#new_user').submit(function() {
-        $('input[type=submit]').attr('disabled', true);
+      return $('.card_form').submit(function() {
+        $('input[type=submit]').prop('disabled', true);
         if ($('#card_number').length) {
           subscription.processCard();
           return false;
@@ -1354,6 +1355,7 @@ $(function() {
     processCard: function() {
       var card;
       card = {
+        name: $('#user_name').val(),
         number: $('#card_number').val(),
         cvc: $('#card_code').val(),
         expMonth: $('#card_month').val(),
@@ -1364,10 +1366,10 @@ $(function() {
     handleStripeResponse: function(status, response) {
       if (status === 200) {
         $('#user_stripe_token').val(response.id)
-        $('#new_user')[0].submit()
+        $('.card_form')[0].submit()
       } else {
         $('#stripe_error').text(response.error.message).show();
-        return $('input[type=submit]').attr('disabled', false);
+        return $('input[type=submit]').prop('disabled', false);
       }
     }
   };
@@ -1375,12 +1377,12 @@ $(function() {
 });
 </pre>
 <p>Here’s an explanation of the JavaScript.</p>
-<p>The <code>$(function()</code> function is an alias for the <a href="http://api.jquery.com/jQuery/#jQuery3">jQuery object</a> and wraps other functions that depend on the <span class="caps">DOM</span> being ready.</p>
+<p>The <code>$(function()</code> function is an alias for the <a href="http://api.jquery.com/jQuery/#jQuery3">jQuery object</a>. Nothing inside the jQuery object will execute until the <span class="caps">DOM</span> is ready.</p>
 <p>We set the <code>STRIPE_PUBLIC_KEY</code> which is defined in the Stripe initializer file <strong>config/initializers/stripe.rb</strong>.</p>
 <p>We create a <code>subscription</code> object with several functions: <code>setupForm</code>, <code>processCard</code>, and <code>handleStripeResponse</code>.</p>
 <p>We call the <code>setupForm</code> function which listens for the form submission event. When the visitor submits the form, the submit button is disabled (so the user can’t press it repeatedly) and the <code>processCard</code> function is called. Returning <code>false</code> makes sure the form is not submitted to our server at this stage. Notice that we don’t call the <code>processCard</code> function if the credit card number is blank; instead we return “true” which submits the form. This will be true if the credit card data was previously accepted (and a Stripe token is included in the hidden field) but there was an error such as a missing email address.</p>
 <p>The <code>processCard</code> function parses the form and obtains the credit card data. Then it calls a function from the Stripe library named <code>createToken</code> which submits the card data to the Stripe server. When the Stripe server returns a response, we call the <code>handleStripeResponse</code> function.</p>
-<p>The <code>handleStripeResponse</code> function checks the <span class="caps">HTTP</span> status code. If it is okay (status code 200), the function sets the <code>:stripe_token</code> hidden field in the form (it has the <span class="caps">HTML</span> element ID “user_stripe_token”) and calls <code>submit</code> on the “new_user” element (which is the <span class="caps">HTML</span> element ID of the form). If the <span class="caps">HTTP</span> status code is not okay, the function sets the error message from the Stripe server in the <code>stripe_error</code> div and re-enables the submit button.</p>
+<p>The <code>handleStripeResponse</code> function checks the <span class="caps">HTTP</span> status code. If it is okay (status code 200), the function sets the <code>:stripe_token</code> hidden field in the form (it has the <span class="caps">HTML</span> element ID “user_stripe_token”) and calls <code>submit</code> on the element with the “card_form” class (which is the form). If the <span class="caps">HTTP</span> status code is not okay, the function sets the error message from the Stripe server in the <code>stripe_error</code> div and re-enables the submit button.</p>
 <p>In effect, we modify the form’s submit button so that the credit card data is first sent to the Striper server, the Stripe token is obtained and set in a hidden field, and then the form is submitted to our application for processing by our Registrations controller.</p>
 <p>You can start the server and create a subscription. Use the fake credit card number <em>4242424242424242</em>. You’ll see an error message on the page if the credit card data is incomplete. If the credit card data is accepted, a new User account will be created and you’ll be redirected to the application home page where you’ll see a message “Welcome! You have signed up successfully.”</p>
 <p>But wait. We’ve created a new User account but we haven’t charged the user for the subscription. To do so, we’ll modify the User model to create a new Stripe customer and initiate a credit card transaction when a new user is created.</p>
@@ -1501,15 +1503,17 @@ end
 <h3>Test Stripe Integration</h3>
 <p>We have all the code needed for visitors to sign up for new subscriptions. Let’s test the application.</p>
 <p>Start the web server:</p>
-<p>$ rails server</p>
-<p>Visit http://localhost:3000/ to see your home page.</p>
+<pre>
+$ rails server
+</pre>
+<p>Visit <a href="http://localhost:3000/">http://localhost:3000/</a> to see your home page.</p>
 <p>Click on the “Subscribe” button for any subscription plan. You’ll see the registration page. Fill in the form using the fake credit card number <em>4242424242424242</em>. Submit the form.</p>
-<p>You’ll be redirected to the home page and see a message “Welcome! You have signed up successfully.” You’ll be logged in as a new user. If you’ve selected the Silver Plan for the new user, try visiting http://localhost:3000/content/silver.html. You should be able to view the page. You should see an error message if you attempt to visit http://localhost:3000/content/gold.html.</p>
+<p>You’ll be redirected to the home page and see a message “Welcome! You have signed up successfully.” You’ll be logged in as a new user. If you’ve selected the Silver Plan for the new user, try visiting <a href="http://localhost:3000/content/silver.html">http://localhost:3000/content/silver.html</a>. You should be able to view the page. You should see an error message if you attempt to visit <a href="http://localhost:3000/content/gold.html">http://localhost:3000/content/gold.html</a>.</p>
 <p>Visit your Stripe dashboard at <a href="https://manage.stripe.com/#test/customers">https://manage.stripe.com/#test/customers</a> and see the new customer you’ve created. If you check the customer details, you should see that the fake credit card was billed and the subscription status is “active.”</p>
-<p>Pat yourself on the back! That’s a milestone. You now can take credit card payments for subscriptions.</p>
+<p>Pat yourself on the back! You’ve reached a milestone. You now can take credit card payments for subscriptions.</p>
 <p>There’s more to do, however:</p>
 <ul>
-<li>modify “edit account” so users can change credit cards</li>
+<li>modify “edit account” so users can change credit cards, change plans, and unsubscribe</li>
 	<li>implement Stripe “webhooks” so expired subscribers will lose access to the site</li>
 	<li>change the redirect so new subscribers can view site content after registration</li>
 </ul><p>Let’s update our Git repository before we continue.</p>
@@ -1522,6 +1526,92 @@ $ git checkout master
 $ git merge --squash stripe
 $ git commit -am "add stripe"
 $ git branch -D stripe
+</pre>
+<h2>Account Changes</h2>
+<p>We’ve completed integration with Stripe so we can sign up new subscribers. Stripe will automatically bill their credit cards every month. But what happens when a subscriber wants to use a different credit card for payments? We could require them to cancel their subscription and create a new one. But it would be nice if they could edit their account to change their credit card.</p>
+<p>We’ll also want to make it easy for a subscriber to upgrade or downgrade a subscription plan and cancel a subscription.</p>
+<p>Get started by creating a new git branch for this feature:</p>
+<pre>
+$ git checkout -b change-acct
+</pre>
+<h3>Change the Registration Form</h3>
+<p>Our “Edit account” page is very similar to the registration page.</p>
+<p>Modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
+  &lt;%= javascript_include_tag 'registrations' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Account&lt;/h2&gt;
+
+&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put }) do |f| %&gt;
+  &lt;%= devise_error_messages! %&gt;
+  &lt;p&gt;&lt;%= f.label :name %&gt;
+  &lt;%= f.text_field :name %&gt;&lt;/p&gt;
+  &lt;div&gt;&lt;%= f.label :email %&gt;
+  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;%= f.label :password %&gt; &lt;i&gt;(leave blank if you don't want to change it)&lt;/i&gt;&lt;br /&gt;
+  &lt;%= f.password_field :password, :autocomplete =&gt; "off" %&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
+  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
+  &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
+  &lt;%= f.hidden_field :last_4_digits %&gt;
+  &lt;div&gt;&lt;%= f.submit "Update" %&gt;&lt;/div&gt;
+&lt;% end %&gt;
+
+&lt;h3&gt;Card&lt;/h3&gt;
+&lt;div class="card_data"&gt;
+  Using card ending with &lt;%= @user.last_4_digits %&gt;
+  &lt;% if true %&gt;
+    &lt;a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button"&gt;Change card&lt;/a&gt;
+  &lt;% end %&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;Cancel my account&lt;/h3&gt;
+
+&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
+
+&lt;div id="card-data" class="modal" style="display: none;"&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal card_form' } do |f| %&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+      &lt;h3&gt;Change Credit Card&lt;/h3&gt;
+    &lt;/div&gt;
+      &lt;div class="field"&gt;
+        &lt;%= label_tag :card_number, "Credit Card Number" %&gt;
+        &lt;%= text_field_tag :card_number, nil, name: nil %&gt;
+      &lt;/div&gt;
+      &lt;div class="field"&gt;
+        &lt;%= label_tag :card_code, "Card Security Code (CVV)" %&gt;
+        &lt;%= text_field_tag :card_code, nil, name: nil %&gt;
+      &lt;/div&gt;
+      &lt;div class="field"&gt;
+        &lt;%= label_tag :card_month, "Card Expiration" %&gt;
+        &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
+        &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
+      &lt;/div&gt;
+      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
+      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
+      &lt;%= f.hidden_field :name %&gt;
+      &lt;%= f.hidden_field :email %&gt;
+      &lt;%= f.hidden_field :stripe_token %&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;%= f.submit "Change Credit Card", :class =&gt; "btn.btn-success" %&gt;
+      &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
+&lt;/div&gt;
+</pre>
+<h3>Git Workflow</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add .
+$ git commit -am "accommodate changes to account"
+$ git checkout master
+$ git merge --squash change-acct
+$ git commit -am "accommodate changes to account"
+$ git branch -D change-acct
 </pre>
 <h2>More to Come</h2>
 <p>Work in progress.</p>
