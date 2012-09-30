@@ -1534,7 +1534,7 @@ $ git branch -D stripe
 <pre>
 $ git checkout -b change-acct
 </pre>
-<h3>Change the Registration Form</h3>
+<h3>Change the Registration Form for Changing Credit Cards</h3>
 <p>Our “Edit account” page is very similar to the registration page.</p>
 <p>Modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
 <pre>
@@ -1603,6 +1603,67 @@ $ git checkout -b change-acct
   &lt;% end %&gt;
 &lt;/div&gt;
 </pre>
+<h3>Modify the User Model for Subscription Cancellations</h3>
+<p>It’s easy to handle a subscription cancellation request. Devise does the work of deleting the user account and we just piggyback on the Devise registration controller action with a <code>before_destroy</code> callback.</p>
+<p>Modify the file <strong>app/models/user.rb</strong>:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessor :stripe_token
+  before_save :update_stripe
+  before_destroy :cancel_subscription
+  
+  def update_stripe
+    return if email.include?('@example.com')
+    if stripe_id.nil?
+      if !stripe_token.present?
+        raise "Stripe token not present. Can't create account."
+      end
+      customer = Stripe::Customer.create(
+        :email =&gt; email,
+        :description =&gt; name,
+        :card =&gt; stripe_token,
+        :plan =&gt; roles.first.name
+      )
+    else
+      customer = Stripe::Customer.retrieve(stripe_id)
+      if stripe_token.present?
+        customer.card = stripe_token
+      end
+      customer.email = email
+      customer.description = name
+      customer.save
+    end
+    self.last_4_digits = customer.active_card.last4
+    self.stripe_id = customer.id
+    self.stripe_token = nil
+  rescue Stripe::StripeError =&gt; e
+    logger.error e.message
+    errors.add :base, "Unable to create your subscription. #{e.message}"
+    stripe_token = nil
+    false
+  end
+  
+  def cancel_subscription
+    customer = Stripe::Customer.retrieve(stripe_id)
+    customer.cancel_subscription
+  rescue Stripe::StripeError =&gt; e
+    logger.error e.message
+    errors.add :base, "Unable to cancel your subscription. #{e.message}"
+    false
+  end
+  
+end
+</pre>
+<p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The method uses the Stripe <span class="caps">API</span> to obtain a Stripe customer object and then initiates a subscription cancellation call. We return false to cancel the <code>destroy</code> action if Stripe returns an error.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
