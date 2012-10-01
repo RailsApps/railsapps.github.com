@@ -2610,11 +2610,7 @@ $ cucumber
 </ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
 <p>If you want to see what the admininstrative dashboard looks like with many users, you can add a line to the <strong>db/seeds.rb</strong> file to create a hundred bogus users:</p>
 <pre>
-100.times {|i| User.create! :name =&gt; "User #{i+3}", :email =&gt; "user#{i+3}@example.com", :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; (Time.now + i.day).utc, :created_at =&gt; (Time.now + i.day).utc  }
-</pre>
-<p>You’ll have to modify the file <strong>app/models/user.rb</strong> to allow mass assignment of the <code>created_at</code> field:</p>
-<pre>
-attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :opt_in, :created_at
+100.times {|i| User.create! :name =&gt; "User #{i+3}", :email =&gt; "user#{i+3}@example.com", :password =&gt; 'please', :password_confirmation =&gt; 'please'}
 </pre>
 <p>Then run <code>$ rake db:reset</code> to recreate the database and visit the site again.</p>
 <h2>Deploy to Heroku</h2>
