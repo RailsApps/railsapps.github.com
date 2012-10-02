@@ -336,6 +336,11 @@ Using bundle exec may solve this.
 <h3>Content or Service</h3>
 <p>We’ll create placeholder pages for content.</p>
 <p>For your application, the content can be anything you like: photo galleries, videos, downloadable ebooks. For a SaaS site, subscribers would gain access to a web application.</p>
+<h3>The Object Model</h3>
+<p>Software engineering attempts to model real-world entities and behaviors. As developers, we try to choose descriptive names for objects and methods to reduce ambiguity and increase understanding. For this application, a User is our most important object. In other projects, we might call this object an “Account” or “Member.”</p>
+<p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll try to define everything we need as attributes of the user, rather than separate objects.</p>
+<p>We won’t include a credit card number as an attribute of a user because we don’t want the vulnerability of storing a credit card number in our database. Instead, we’ll send the credit card number directly to Stripe and obtain a Stripe customer id that serves as an indirect reference to the credit card number when we need to ask Stripe to begin billing a user. The Stripe customer id will be an attribute of the user that substitutes for a credit card number.</p>
+<p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
 <p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps that build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
@@ -550,9 +555,17 @@ user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com'
 puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 </pre>
-<p>We’ll add three users with different subscription plans.</p>
+<p>First we’ll add a list of roles. One role will be “admin,” for an adminstrator. Three additional roles will correspond to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
+<p>Then we’ll add three users with different subscription plans.</p>
 <p>Replace <strong>db/seeds.rb</strong> with:</p>
 <pre>
+puts 'CREATING ROLES'
+Role.create([
+  { :name =&gt; 'admin' }, 
+  { :name =&gt; 'silver' }, 
+  { :name =&gt; 'gold' },
+  { :name =&gt; 'platinum' }
+], :without_protection =&gt; true)
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user.add_role :admin
@@ -570,6 +583,7 @@ puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
 <p>You can change the values for name, email, and password as you wish.</p>
 <p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
+<p>One final point. It’s not strictly necessary to create the list of roles before creating the users. Any role you assign a user will be stored as a Role. But if you remove the sample users before you deploy the application into production, you will want to create a full list of roles. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -1191,7 +1205,7 @@ config.assets.precompile += %w( registrations.js )
 </pre>
 <p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
 <p>With the Stripe JavaScript file in place, we will add a virtual attribute to the User model.</p>
-<h3>Modify the User Model</h3>
+<h3>Add a Virtual Attribute to the User Model</h3>
 <p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will included as a hidden field when the user submits the registration form.</p>
 <p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
@@ -1560,17 +1574,39 @@ $ git checkout -b change-acct
   &lt;div&gt;&lt;%= f.submit "Update" %&gt;&lt;/div&gt;
 &lt;% end %&gt;
 
+&lt;h3&gt;Subscription Plan&lt;/h3&gt;
+&lt;p&gt;
+  &lt;%= @user.roles.first.name.humanize %&gt;
+  &lt;a data-toggle="modal" href="#plan-options" class="btn btn-mini" type="button"&gt;Change plan&lt;/a&gt;
+&lt;/p&gt;
+
 &lt;h3&gt;Card&lt;/h3&gt;
-&lt;div class="card_data"&gt;
+&lt;p&gt;
   Using card ending with &lt;%= @user.last_4_digits %&gt;
-  &lt;% if true %&gt;
-    &lt;a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button"&gt;Change card&lt;/a&gt;
-  &lt;% end %&gt;
-&lt;/div&gt;
+  &lt;a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button"&gt;Change card&lt;/a&gt;
+&lt;/p&gt;
 
 &lt;h3&gt;Cancel my account&lt;/h3&gt;
 
-&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
+&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini' %&gt;&lt;/p&gt;
+
+&lt;div id="plan-options" class="modal" style="display: none;"&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+      &lt;h3&gt;Change Plan&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+      &lt;%= f.input :role_ids, :collection =&gt; Role.all.delete_if {|i| i.name == 'admin'}, :as =&gt; :radio_buttons, :label_method =&gt; lambda {|t| t.name.titleize}, :label =&gt; false, :item_wrapper_class =&gt; 'inline' %&gt;
+      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
+      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;%= f.submit "Change Plan", :class =&gt; "btn.btn-success" %&gt;
+      &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
+&lt;/div&gt;
 
 &lt;div id="card-data" class="modal" style="display: none;"&gt;
   &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal card_form' } do |f| %&gt;
@@ -1578,6 +1614,7 @@ $ git checkout -b change-acct
       &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
       &lt;h3&gt;Change Credit Card&lt;/h3&gt;
     &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
       &lt;div class="field"&gt;
         &lt;%= label_tag :card_number, "Credit Card Number" %&gt;
         &lt;%= text_field_tag :card_number, nil, name: nil %&gt;
@@ -1596,6 +1633,7 @@ $ git checkout -b change-acct
       &lt;%= f.hidden_field :name %&gt;
       &lt;%= f.hidden_field :email %&gt;
       &lt;%= f.hidden_field :stripe_token %&gt;
+    &lt;/div&gt;
     &lt;div class="modal-footer"&gt;
       &lt;%= f.submit "Change Credit Card", :class =&gt; "btn.btn-success" %&gt;
       &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
