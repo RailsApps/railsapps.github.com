@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 1 October 2012</em></p>
+<p><em>Last updated 3 October 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1542,15 +1542,84 @@ $ git commit -am "add stripe"
 $ git branch -D stripe
 </pre>
 <h2>Account Changes</h2>
-<p>We’ve completed integration with Stripe so we can sign up new subscribers. Stripe will automatically bill their credit cards every month. But what happens when a subscriber wants to use a different credit card for payments? We could require them to cancel their subscription and create a new one. But it would be nice if they could edit their account to change their credit card.</p>
-<p>We’ll also want to make it easy for a subscriber to upgrade or downgrade a subscription plan and cancel a subscription.</p>
+<p>We’ve completed integration with Stripe so we can sign up new subscribers. Stripe will automatically bill their credit cards every month. But what happens when a subscriber wants to use a different credit card for payments? We could require them to cancel their subscription and create a new one. It would be better if they could edit their account to change their credit card.</p>
+<p>We’ll also make it easy for a subscriber to upgrade or downgrade a subscription plan and cancel a subscription.</p>
 <p>Get started by creating a new git branch for this feature:</p>
 <pre>
 $ git checkout -b change-acct
 </pre>
-<h3>Change the Registration Form for Changing Credit Cards</h3>
-<p>Our “Edit account” page is very similar to the registration page.</p>
-<p>Modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
+<h3>Change the Registration Form</h3>
+<p>Our “Edit account” page is very similar to the registration page. In its rudimentary form, it contains a simple form to change the user’s name, email address, or password. We will add two additional forms that are hidden on the page and are revealed as modal windows when a “Change plan” or “Change card” button is clicked.</p>
+<p>We’ve got a lot of code to add, so we’ll do it in stages.</p>
+<p>Add the code to the file <strong>app/views/devise/registrations/edit.html.erb</strong>.</p>
+<p>First, let’s include the Stripe JavaScript library and our <em>registrations.js</em> script.</p>
+<p>Replace the line <code>&lt;h2&gt;Edit &lt;%= resource_name.to_s.humanize %&gt;&lt;/h2&gt;</code> with this:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
+  &lt;%= javascript_include_tag 'registrations' %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Account&lt;/h2&gt;
+</pre>
+<p>This identical to the code we added to the <strong>app/views/devise/registrations/new.html.erb</strong> file.</p>
+<p>There’s no need to replace the existing form. It’s useful for changing the user’s name, email address, or password.</p>
+<p>Add this code before the <code>&lt;h3&gt;Cancel my account&lt;/h3&gt;</code> statement:</p>
+<pre>
+&lt;h3&gt;Subscription Plan&lt;/h3&gt;
+&lt;p&gt;
+  &lt;%= @user.roles.first.name.titleize %&gt;
+  &lt;a data-toggle="modal" href="#plan-options" class="btn btn-mini" type="button"&gt;Change plan&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;h3&gt;Card&lt;/h3&gt;
+&lt;p&gt;
+  Using card ending with &lt;%= @user.last_4_digits %&gt;
+  &lt;a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button"&gt;Change card&lt;/a&gt;
+&lt;/p&gt;
+</pre>
+<p>We display the name of the current subscription plan, which is derived from the roles object associated with the user. Rolify lets us set multiple roles (a feature we will not use in this application). We pick the first role (the only role), obtain its name, and “titleize” it to display it in titlecase. We add a link that is styled as a Twitter button. The link will open a Twitter Bootstrap modal window labelled “plan-options”, which we will add soon.</p>
+<p>We do something similar for the credit card. We show the last four digits of the card that was used to purchase the subscription. Then we add a link that will open a Twitter Bootstrap modal window labelled “card-data”. The link will be styled as a miniature button.</p>
+<p>For stylistic consistency, replace this statement with the following:</p>
+<pre>
+&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
+</pre>
+
+<pre>
+&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini' %&gt;&lt;/p&gt;
+</pre>
+<p>We’ve added a Twitter Bootstrap class that styles the link as a miniature button.</p>
+<p>Now we’ll add the first of two modal windows containing a form. It doesn’t matter where the forms are placed in the file as they will be hidden when the page is initially displayed and will appear as an overlay when revealed by a click on the appropriate link.</p>
+<p>The first form is identifed as “plan-options”:</p>
+<pre>
+&lt;div id="plan-options" class="modal" style="display: none;"&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+      &lt;h3&gt;Change Plan&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+      &lt;%= f.input :role_ids, :collection =&gt; Role.all.delete_if {|i| i.name == 'admin'}, :as =&gt; :radio_buttons, :label_method =&gt; lambda {|t| t.name.titleize}, :label =&gt; false, :item_wrapper_class =&gt; 'inline' %&gt;
+      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
+      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;%= f.submit "Change Plan", :class =&gt; "btn.btn-success" %&gt;
+      &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
+&lt;/div&gt;
+</pre>
+<p>We include this form in an div designated with the Twitter Bootstrap “modal” class. It will be displayed as an overlay when the user clicks the “Change plan” button.</p>
+<p>We’re using helper methods provided by the <a href="http://simple-form.plataformatec.com.br/">simple_form gem</a>. It looks as if we <a href="http://guides.rubyonrails.org/form_helpers.html#binding-a-form-to-an-object">bind the form to an object</a> named “resource”; in fact, we bind the form to the User object. Devise abstracts the User object and names it “resource” which makes it possible to use objects with other names (such as Account or Member) in similar implementations. “Binding the form to the object” means the values for the form fields will be set with the attributes stored in the database.</p>
+<p>The form has a section named “modal-header” that contains a link to close the modal window. We follow Twitter Bootstrap’s example and use <span class="caps">HTML</span> entity #215 (an “x” character) for the link.</p>
+<p>The next section is named “modal-body” and it contains some of the most complex code we’ll use in this application.</p>
+<p>We want to display a set of radio buttons that display a collection of all the subscription plans and, when selected, set a role id. A user’s subscription plan is encoded as a role id. Role ids are nested attributes of a User object and can be obtained as <code>user.role_ids</code>. So <code>:role_ids</code> is the first parameter we pass to the input field helper.</p>
+<p>The input field helper wants a collection as the second parameter. We supply <code>Role.all</code> but we have to massage the list to remove the “admin” role. The Hash <code>delete_if</code> method is useful here. The block we supply to the <br><code>delete_if</code> method removes any role named “admin”.</p>
+<p>We tell the input field helper we want to display the selection field as radio buttons. The <code>:item_wrapper_class =&gt; 'inline'</code> will display the radio buttons and labels horizontally.</p>
+<p>The simple_form <code>label_method</code> parameter allows us to set a label for each radio button. If we didn’t set the <code>label_method</code>, the radio buttons would be labelled with an integer. We need to obtain the name attribute of each role and then apply the <code>titleize</code> method to display titlecase. The <code>label_method</code> parameter does not take a block but we can use a programming construct called an anonymous function (a Ruby language “lambda”) to manipulate the Role instance, obtaining the name attribute and making it titlecase, before passing it to the <code>label_method</code> parameter. This is a bit of advanced Ruby magic that is particularly useful here.</p>
+<p>Confusingly, we set the <code>label</code> parameter to false. If we didn’t do this, the entire field would be automatically labelled “Roles.”</p>
+<p>Finally, the form has a section named “modal-footer” that contains a submit button and another link to close the modal window.</p>
+<p>Here’s the complete version of the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
 <pre>
 &lt;% content_for :head do %&gt;
   &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
@@ -1570,13 +1639,12 @@ $ git checkout -b change-acct
   &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
   &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
   &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
-  &lt;%= f.hidden_field :last_4_digits %&gt;
   &lt;div&gt;&lt;%= f.submit "Update" %&gt;&lt;/div&gt;
 &lt;% end %&gt;
 
 &lt;h3&gt;Subscription Plan&lt;/h3&gt;
 &lt;p&gt;
-  &lt;%= @user.roles.first.name.humanize %&gt;
+  &lt;%= @user.roles.first.name.titleize %&gt;
   &lt;a data-toggle="modal" href="#plan-options" class="btn btn-mini" type="button"&gt;Change plan&lt;/a&gt;
 &lt;/p&gt;
 
@@ -1641,8 +1709,10 @@ $ git checkout -b change-acct
   &lt;% end %&gt;
 &lt;/div&gt;
 </pre>
+<p>There’s a lot of new code in the Devise user edit view but we don’t need to change the Devise registrations controller. We already accommodate the “Change card” and “Change plan” features with the <code>update_stripe</code> method that is called by a <code>before_save</code> callback in the User class.</p>
+<p>The “Cancel my account” feature is not complete, however. The Devise registrations controller will delete the user’s account but we also need to send a request to Stripe to de-activate monthly billing for the customer.</p>
 <h3>Modify the User Model for Subscription Cancellations</h3>
-<p>It’s easy to handle a subscription cancellation request. Devise does the work of deleting the user account and we just piggyback on the Devise registration controller action with a <code>before_destroy</code> callback.</p>
+<p>It’s easy to handle a subscription cancellation request. Devise does the work of deleting the user account and we just piggyback on the Devise registration controller action with a <code>before_destroy</code> callback so we can notify Stripe to cancel subscription billing.</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -1702,6 +1772,7 @@ class User &lt; ActiveRecord::Base
 end
 </pre>
 <p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The method uses the Stripe <span class="caps">API</span> to obtain a Stripe customer object and then initiates a subscription cancellation call. We return false to cancel the <code>destroy</code> action if Stripe returns an error.</p>
+<p>We’re done adding the features that allow users to change credit cards, change plans, and unsubscribe.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
