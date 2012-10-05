@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 3 October 2012</em></p>
+<p><em>Last updated 5 October 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -54,6 +54,14 @@
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
 <h2>Introduction</h2>
 <p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a service that provides recurring billing.</p>
+<p>This example application exists so you don’t have to build it yourself. It aims to:</p>
+<ul>
+<li>eliminate effort spent building an application that meets a common need;</li>
+	<li>offer code that is already implemented and tested by a large community;</li>
+	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
+</ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
+<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<h3>Functionality</h3>
 <p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
 <li>content or web functionality to deliver value</li>
@@ -63,14 +71,7 @@
 	<li>authorization management to restrict access to content or services based on role or other characteristics</li>
 	<li>account management to maintain records of subscription status</li>
 	<li>a recurring billing system for periodic payment transactions</li>
-</ul><p>This example application exists so you don’t have to build it yourself. It aims to:</p>
-<ul>
-<li>eliminate effort spent building an application that meets a common need;</li>
-	<li>offer code that is already implemented and tested by a large community;</li>
-	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
-</ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
-<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
-<h3>Features</h3>
+</ul><h3>Features</h3>
 <p>The example application provides a complete and fully functional membership site.</p>
 <ul>
 <li>site offers tiered pricing for multiple subscription plans</li>
@@ -93,7 +94,7 @@
 	<li>
 <a href="http://en.wikipedia.org/wiki/Multitenancy">multitenancy</a> database segmentation</li>
 </ul><p>These features are not included in this application. See the <a href="https://github.com/RailsApps/rails3-subdomains">rails3-subdomains</a> example application for help with subdomains. For multitenancy, try Brad Robertson’s <a href="https://github.com/bradrobertson/apartment">Apartment</a> gem.</p>
-<h3>Gems</h3>
+<h3>About the Gems</h3>
 <p>RubyGems is a package manager for the Ruby programming language that provides a standard format for distributing Ruby programs and libraries (in a self-contained format called a “gem”). Gems add functionality to a Rails app.</p>
 <p>We use these gems:</p>
 <ul>
@@ -439,6 +440,7 @@ gem "rolify", "&gt;= 3.2.0"
 <pre>
 gem "simple_form"
 gem "stripe"
+gem "stripe_event"
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.8'</code> accordingly.</p>
 <p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
@@ -698,7 +700,7 @@ end
 <h3>Commit to Git</h3>
 <p>Commit your changes to git:</p>
 <pre>
-$ git add .
+$ git add -A
 $ git commit -m "home page update"
 </pre>
 <h2>Add Content Pages</h2>
@@ -776,14 +778,14 @@ end
 <h3>Git Workflow</h3>
 <p>If you haven’t commited any changes yet, commit your changes to git:</p>
 <pre>
-$ git add .
-$ git commit -am "add content pages"
+$ git add -A
+$ git commit -m "add content pages"
 </pre>
 <p>Since the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
 <pre>
 $ git checkout master
 $ git merge --squash content-pages
-$ git commit -am "add content pages"
+$ git commit -m "add content pages"
 </pre>
 <p>You can delete the working branch when you’re done:</p>
 <pre>
@@ -880,11 +882,11 @@ end
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
-$ git add .
-$ git commit -am "add authorization"
+$ git add -A
+$ git commit -m "add authorization"
 $ git checkout master
 $ git merge --squash authorization
-$ git commit -am "add authorization"
+$ git commit -m "add authorization"
 $ git branch -D authorization
 </pre>
 <h2>Registration Page</h2>
@@ -1046,11 +1048,11 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
-$ git add .
-$ git commit -am "add registration"
+$ git add -A
+$ git commit -m "add registration"
 $ git checkout master
 $ git merge --squash registration
-$ git commit -am "add registration"
+$ git commit -m "add registration"
 $ git branch -D registration
 </pre>
 <h2>Stripe Integration</h2>
@@ -1534,11 +1536,11 @@ $ rails server
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
-$ git add .
-$ git commit -am "add stripe"
+$ git add -A
+$ git commit -m "add stripe"
 $ git checkout master
 $ git merge --squash stripe
-$ git commit -am "add stripe"
+$ git commit -m "add stripe"
 $ git branch -D stripe
 </pre>
 <h2>Account Changes</h2>
@@ -1776,12 +1778,139 @@ end
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
-$ git add .
-$ git commit -am "accommodate changes to account"
+$ git add -A
+$ git commit -m "accommodate changes to account"
 $ git checkout master
 $ git merge --squash change-acct
-$ git commit -am "accommodate changes to account"
+$ git commit -m "accommodate changes to account"
 $ git branch -D change-acct
+</pre>
+<h2>Stripe Webhooks</h2>
+<p>When a user visits your site, he or she can cancel a subscription. But what happens when a credit card expires or a monthly transaction is declined? Stripe will automatically retry a recurring payment after it fails. After a number of attempts (set in your Stripe account settings), Stripe will cancel the subscription. But how will your application know to deny access for a subscriber with an expired account? Stripe provides webhooks to communicate events to you (for details, see the <a href="https://stripe.com/docs/webhooks">Stripe webhooks documentation</a>).</p>
+<p>A Stripe webhook is an <span class="caps">HTTP</span> request from Stripe’s servers to your site. It is not a visit to your website from a web browser; rather it is an <span class="caps">HTTP</span> <span class="caps">POST</span> request (like a form submission) to your application from the Stripe servers. The <span class="caps">HTTP</span> request contains <span class="caps">JSON</span> data that provides data about the event, plus an event id that can be used to retrive the data from the Stripe server. It is best to ignore the event data (because it could be falsified) and immediately use the event id to obtain the event data from Stripe.</p>
+<p>There are a few ways we could handle webhook requests. We could create a new controller with an index action to process webhook requests. We could use the existing Registrations or Users controller, adding a new non-RESTful action to process the webhook requests. Both these approaches have merit. Instead, we’ll take a different approach. We’ll use Danny Whalen’s <a href="https://github.com/integrallis/stripe_event">stripe_event</a> gem. With this gem, we don’t need to add a new controller or action.</p>
+<p>Get started by creating a new git branch for this feature:</p>
+<pre>
+$ git checkout -b webhooks
+</pre>
+<h3>Stripe Event gem</h3>
+<p>We already added the <a href="https://github.com/integrallis/stripe_event">stripe_event</a> gem when we set up our Gemfile. If not, add the gem to the Gemfile:</p>
+<pre>
+gem "stripe_event"
+</pre>
+<p>and run the <code>bundle install</code> command to install the required gem on your computer.</p>
+<h3>Mount the Engine</h3>
+<p>The stripe_event gem is a <a href="http://edgeguides.rubyonrails.org/engines.html">Rails engine</a>, which is a miniature Rails application that can be added to an application. As a miniature Rails application, it has its own controller and routes hidden in the gem. The engine’s functionality becomes available when you mount it in your routes file.</p>
+<p>Modify <strong>config/routes.rb</strong> to mount the engine:</p>
+<pre>
+RailsMembershipSubscriptionSaas::Application.routes.draw do
+  mount StripeEvent::Engine =&gt; '/stripe'
+  get "content/gold"
+  get "content/silver"
+  get "content/platinum"
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  root :to =&gt; "home#index"
+  devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
+  resources :users, :only =&gt; [:show, :index]
+end
+</pre>
+<p>We’ve chosen to mount the engine so it responds to requests to <a href="http://localhost:3000/stripe">http://localhost:3000/stripe</a>. You can specify a different path. You’ll supply this address when you set the webhooks <span class="caps">URL</span> in your Stripe account settings.</p>
+<p>You will need to restart your server for the new route to become available.</p>
+<h3>Modify the Stripe Initializer</h3>
+<p>We need to specify what happens when the stripe_event engine receives a webhook request. Conveniently, we can specify this in the Stripe initializer file.</p>
+<p>Modify the <strong>config/initializers/stripe.rb</strong> file:</p>
+<pre>
+Stripe.api_key = ENV["STRIPE_API_KEY"]
+STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
+
+StripeEvent.setup do
+  subscribe 'customer.subscription.deleted' do |event|
+    User.expire(event)
+  end
+end
+</pre>
+<p>With this code, we’re telling the stripe_event engine to call the <code>User.expire</code> method when the application receives a webhook with a <code>customer.subscription.deleted</code> event. We’ll add the <code>expire</code> method to the User class in the next step.</p>
+<p>The <a href="https://github.com/integrallis/stripe_event">stripe_event gem readme</a> shows other possibilities, including handling multiple event types. Refer to the <a href="https://stripe.com/docs/api">Stripe <span class="caps">API</span> documentation</a> for a list of all event types. You can configure your application to respond to other events, such as sending a thank you email in response to an “invoice.payment_succeeded” event.</p>
+<p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
+<h3>Add an Expire Method to the User Class</h3>
+<p>Now that our application responds to webhook requests from Stripe, we must consider how to process an expired  customer subscription. We delete the customer record when a user visits the website and cancels a subscription. We could simply delete the customer record when a subscription expires. But we can offer better customer service by notifying the user with an email message when the subscription has ended due to a payment failure.</p>
+<p>Modify the file <strong>app/models/user.rb</strong> to add an <code>expire</code> method:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessor :stripe_token
+  before_save :update_stripe
+  before_destroy :cancel_subscription
+  
+  def update_stripe
+    return if email.include?('@example.com')
+    if stripe_id.nil?
+      if !stripe_token.present?
+        raise "Stripe token not present. Can't create account."
+      end
+      customer = Stripe::Customer.create(
+        :email =&gt; email,
+        :description =&gt; name,
+        :card =&gt; stripe_token,
+        :plan =&gt; roles.first.name
+      )
+    else
+      customer = Stripe::Customer.retrieve(stripe_id)
+      if stripe_token.present?
+        customer.card = stripe_token
+      end
+      customer.email = email
+      customer.description = name
+      customer.save
+    end
+    self.last_4_digits = customer.active_card.last4
+    self.stripe_id = customer.id
+    self.stripe_token = nil
+  rescue Stripe::StripeError =&gt; e
+    logger.error e.message
+    errors.add :base, "Unable to create your subscription. #{e.message}"
+    stripe_token = nil
+    false
+  end
+  
+  def cancel_subscription
+    customer = Stripe::Customer.retrieve(stripe_id)
+    customer.cancel_subscription
+  rescue Stripe::StripeError =&gt; e
+    logger.error e.message
+    errors.add :base, "Unable to cancel your subscription. #{e.message}"
+    false
+  end
+  
+  def expire(event)
+    customer = Stripe::Customer.retrieve(stripe_id)
+  	Rails.logger.info "\n\n"
+  	Rails.logger.info "EXPIRING! #{name}"
+  	Rails.logger.info "EXPIRING! #{name}"
+  	Rails.logger.info "\n\n"
+  end
+  
+end
+</pre>
+<h3>Git Workflow</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "add Stripe webhooks"
+$ git checkout master
+$ git merge --squash webhooks
+$ git commit -m "add Stripe webhooks"
+$ git branch -D webhooks
 </pre>
 <h2>More to Come</h2>
 <p>Work in progress.</p>
