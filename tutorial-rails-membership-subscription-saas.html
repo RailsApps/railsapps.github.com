@@ -876,8 +876,8 @@ end
 <p>You can check that the authorization limits work by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
-<p>Log in as the first user (the administrator) with “user@example.com@” (password “please”). Click on the “Subscribe” buttom for any subscription plan. CanCan grants you access as an administrator to any page. Log out.</p>
-<p>Log in as the second user (assigned a “silver plan”) with “user2@example.com@” (password “please”). Click on the “Subscribe” buttom for any subscription plan. CanCan only grants access to the “silver” content page.</p>
+<p>Log in as the first user (the administrator) with “user@example.com@” (password “please”). Click on the “Subscribe” button for any subscription plan. CanCan grants you access as an administrator to any page. Log out.</p>
+<p>Log in as the second user (assigned a “silver plan”) with “user2@example.com@” (password “please”). Click on the “Subscribe” button for any subscription plan. CanCan only grants access to the “silver” content page.</p>
 <p>Next we’ll set up a page where a visitor can register to use the site after choosing a subscription plan.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
@@ -1044,7 +1044,7 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 <p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
 <p>Click on the “Subscribe” button for any subscription plan. You’ll see the registration page. Fill in and submit the form. You’ll see a message “Welcome! You have signed up successfully.” Note that we’re not using the Devise Confirmable module so the application doesn’t send a confirmation email. You’ll be logged in as the new user as soon as you submit the form.</p>
 <p>If you’ve selected the Silver Plan for the new user, try visiting <a href="http://localhost:3000/content/silver">http://localhost:3000/content/silver.html</a>. You should be able to view the page. You should see an error message if you attempt to visit  <a href="http://localhost:3000/content/gold">http://localhost:3000/content/gold.html</a>.</p>
-<p>Now we have a registration page that assigns a subscription plan when a visitor signs up for the site. In the next step, we’ll integrate Stripe payment for subscription plans.</p>
+<p>Now we have a registration page that assigns a subscription plan when a visitor signs up for the site. In the next step, we’ll make sure the user gets redirected to an appropriate page after sign up or log in.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
@@ -1054,6 +1054,68 @@ $ git checkout master
 $ git merge --squash registration
 $ git commit -m "add registration"
 $ git branch -D registration
+</pre>
+<h2>Redirect After Sign Up or Log In</h2>
+<p>As currently implemented, when a user signs up or logs in, they see the home page with a confirmation message. Instead, we want a user to be redirected to a page that is an appropriate hub for their role or subscription tier.</p>
+<p>Get started by creating a new git branch for this feature:</p>
+<pre>
+$ git checkout -b redirect
+</pre>
+<h3>Modify the Registrations Controller</h3>
+<p>Modify the file <strong>app/controllers/registrations_controller.rb</strong>:</p>
+<pre>
+class RegistrationsController &lt; Devise::RegistrationsController
+  
+  before_filter :set_plan, :only =&gt; :new
+
+  def set_plan
+    @plan = params[:plan]
+  end
+  
+  def after_sign_in_path_for(resource)
+    case current_user.has_role?
+    when admin
+      redirect_to users_path
+    when silver
+      redirect_to content_silver_path
+    end
+    when gold
+      redirect_to content_gold_path
+    end
+    when platinum
+      redirect_to content_platinum_path
+    else
+      redirect_to root_path
+    end
+  end
+
+end
+  private  
+  def build_resource(*args)
+    super
+    if params[:plan]
+      resource.add_role(params[:plan])
+    end
+  end
+end
+</pre>
+<p>The <code>after_sign_in_path_for(resource)</code> method will redirect a user to an appropriate page after sign in or sign up. The <code>case</code> statement checks the user’s role and redirects to the appropriate content page, or if an administrator, to the administrative dashboard.</p>
+<p>Devise also offers an <code>after_sign_up_path_for(resource)</code> method that allows a different redirect after a user registers. You could implement the <code>after_sign_up_path_for(resource)</code> method if you wanted the new user to see a special page after sign up (for example, a thank you or introduction).</p>
+<h3>Test Redirect</h3>
+<p>You can check that the redirect works by entering the command:</p>
+<p><code>$ rails server</code></p>
+<p>Visit <a href="http://localhost:3000">http://localhost:3000/</a> to see your home page.</p>
+<p>Subscribe to any subscription plan. You should be redirected to the appropriate page and see a message “Welcome! You have signed up successfully.” Log out and log in. You should be redirected to the appropriate page.</p>
+<p>In the next step, we’ll integrate Stripe payment for subscription plans.</p>
+<h3>Git Workflow</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "redirect after log in"
+$ git checkout master
+$ git merge --squash redirect
+$ git commit -m "redirect after log in"
+$ git branch -D redirect
 </pre>
 <h2>Stripe Integration</h2>
 <p>We’ve got a fully functional web application that serves up placeholder content to registered users and restricts access based on the subscription plan the user has selected. Now we’ll integrate Stripe billing so we can charge users for subscriptions.</p>
