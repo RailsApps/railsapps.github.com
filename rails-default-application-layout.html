@@ -115,14 +115,17 @@
 <p>For simple <span class="caps">CSS</span> styling, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
 &lt;% flash.each do |name, msg| %&gt;
-  &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
+  &lt;% if msg.is_a?(String) %&gt;
+    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
+  &lt;% end %&gt;
 &lt;% end %&gt;
 </pre>
 <h3>Haml</h3>
 <p>For Haml, create a partial for flash messages in <strong>app/views/layouts/_messages.html.haml</strong> like this:</p>
 <pre>
 - flash.each do |name, msg|
-  = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
+  - if msg.is_a?(String)
+    = content_tag :div, msg, :id =&gt; "flash_#{name}"
 </pre>
 <h3>Flash Messages with Twitter Bootstrap</h3>
 <p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
@@ -133,17 +136,22 @@
 <p>For <span class="caps">CSS</span> styling with Twitter Bootstrap, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
 &lt;% flash.each do |name, msg| %&gt;
-  &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
-    &lt;a class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/a&gt;
-    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
-  &lt;/div&gt;
+  &lt;% if msg.is_a?(String) %&gt;
+    &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
+      &lt;a class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/a&gt;
+      &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
 &lt;% end %&gt;
 </pre>
 <h3>Haml (Twitter Bootstrap)</h3>
 <p>For <span class="caps">CSS</span> styling with Twitter Bootstrap using Haml, create a partial for flash messages in <strong>app/views/layouts/_messages.html.haml</strong> like this:</p>
 <pre>
 - flash.each do |name, msg|
-  = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
+  - if msg.is_a?(String)
+    %div{:class =&gt; "alert alert-#{name == :notice ? "success" : "error"}"}
+      %a.close{"data-dismiss" =&gt; "alert"} ×
+      = content_tag :div, msg, :id =&gt; "flash_#{name}"
 </pre>
 <h2>
 <span class="caps">CSS</span> Styling</h2>

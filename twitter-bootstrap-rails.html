@@ -240,19 +240,22 @@ body { padding-top: 60px; }
 <p>For <span class="caps">CSS</span> styling with Twitter Bootstrap, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
 &lt;% flash.each do |name, msg| %&gt;
-  &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
-    &lt;a class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/a&gt;
-    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
-  &lt;/div&gt;
+  &lt;% if msg.is_a?(String) %&gt;
+    &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
+      &lt;a class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/a&gt;
+      &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
 &lt;% end %&gt;
 </pre>
 <h3>Flash Messages with Twitter Bootstrap (Haml)</h3>
 <p>For <span class="caps">CSS</span> styling with Twitter Bootstrap using Haml, create a partial for flash messages in <strong>app/views/layouts/_messages.html.haml</strong> like this:</p>
 <pre>
 - flash.each do |name, msg|
-  %div{:class =&gt; "alert alert-#{name == :notice ? "success" : "error"}"}
-    %a.close{"data-dismiss" =&gt; "alert"} &amp;#215;
-    = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
+  - if msg.is_a?(String)
+    %div{:class =&gt; "alert alert-#{name == :notice ? "success" : "error"}"}
+      %a.close{"data-dismiss" =&gt; "alert"} ×
+      = content_tag :div, msg, :id =&gt; "flash_#{name}"
 </pre>
 <p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
 <h2>Options and Improvements</h2>

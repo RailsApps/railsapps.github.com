@@ -700,7 +700,9 @@ header nav ul li {
     &lt;%= render 'shared/navigation' %&gt;
   &lt;/ul&gt;
   &lt;% flash.each do |name, msg| %&gt;
-    &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String) %&gt;
+    &lt;% if msg.is_a?(String) %&gt;
+      &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
+    &lt;% end %&gt;
   &lt;% end %&gt;
 &lt;%= yield %&gt;
 </pre>
@@ -710,7 +712,8 @@ header nav ul li {
   %ul.hmenu
     = render 'shared/navigation'
   - flash.each do |name, msg|
-    = content_tag :div, msg, :id =&gt; "flash_#{name}" if msg.is_a?(String)
+    - if msg.is_a?(String)
+      = content_tag :div, msg, :id =&gt; "flash_#{name}"
   = yield
 </pre>
 <h4>Test the App</h4>
