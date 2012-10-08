@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 5 October 2012</em></p>
+<p><em>Last updated 7 October 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-prelaunch-signup.png" title="Rails Application for a Startup Prelaunch Signup Site" alt="Rails Application for a Startup Prelaunch Signup Site"></p>
 <h2>
@@ -1763,8 +1763,12 @@ class User &lt; ActiveRecord::Base
   end
   
   def cancel_subscription
-    customer = Stripe::Customer.retrieve(stripe_id)
-    customer.cancel_subscription
+    unless stripe_id.nil?
+      customer = Stripe::Customer.retrieve(stripe_id)
+      if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
+        customer.cancel_subscription
+      end
+    end
   rescue Stripe::StripeError =&gt; e
     logger.error e.message
     errors.add :base, "Unable to cancel your subscription. #{e.message}"
@@ -1774,6 +1778,7 @@ class User &lt; ActiveRecord::Base
 end
 </pre>
 <p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The method uses the Stripe <span class="caps">API</span> to obtain a Stripe customer object and then initiates a subscription cancellation call. We return false to cancel the <code>destroy</code> action if Stripe returns an error.</p>
+<p>The <code>cancel_subscription</code> method only takes action if the user has a Stripe id. You may want to delete the example users created by the <code>db:seed</code> process. The example users don’t have a Stripe id and the <code>destroy</code> action would fail for them unless we make the <code>cancel_subscription</code> method conditional. We also make sure the Stripe customer exists and has an active subscription before attempting to cancel the subscription.</p>
 <p>We’re done adding the features that allow users to change credit cards, change plans, and unsubscribe.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
@@ -1827,15 +1832,19 @@ STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 
 StripeEvent.setup do
   subscribe 'customer.subscription.deleted' do |event|
-    User.expire(event)
+    user = User.find_by_stripe_id(event.data.object.customer)
+    user.expire
   end
 end
 </pre>
-<p>With this code, we’re telling the stripe_event engine to call the <code>User.expire</code> method when the application receives a webhook with a <code>customer.subscription.deleted</code> event. We’ll add the <code>expire</code> method to the User class in the next step.</p>
-<p>The <a href="https://github.com/integrallis/stripe_event">stripe_event gem readme</a> shows other possibilities, including handling multiple event types. Refer to the <a href="https://stripe.com/docs/api">Stripe <span class="caps">API</span> documentation</a> for a list of all event types. You can configure your application to respond to other events, such as sending a thank you email in response to an “invoice.payment_succeeded” event.</p>
+<p>By default, Stripe will make three attempts to rebill after a failed payment. On each failure, Stripe will send a webhook request with an <code>invoice.payment_failed</code> event. On the third failure, Stripe will send a <code>customer.subscription.deleted</code> event.</p>
+<p>With this code, we’re telling the stripe_event engine to respond when the application receives a webhook with a <code>customer.subscription.deleted</code> event. We use the Stripe event data to find the appropriate User instance. Then we call the <code>User.expire</code> method. We’ll add the <code>expire</code> method to the User class in the next step.</p>
+<p>The <a href="https://github.com/integrallis/stripe_event">stripe_event gem readme</a> handles other possibilities, including multiple event types. Refer to the <a href="https://stripe.com/docs/api?lang=ruby#event_types">Stripe <span class="caps">API</span> documentation</a> for a list of all event types. You can configure your application to respond to other events, such as sending a thank you email in response to an “invoice.payment_succeeded” event.</p>
 <p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
 <h3>Add an Expire Method to the User Class</h3>
-<p>Now that our application responds to webhook requests from Stripe, we must consider how to process an expired  customer subscription. We delete the customer record when a user visits the website and cancels a subscription. We could simply delete the customer record when a subscription expires. But we can offer better customer service by notifying the user with an email message when the subscription has ended due to a payment failure.</p>
+<p>Now that our application responds to webhook requests from Stripe, we must consider how to process an expired  customer subscription.</p>
+<p>There are several possible approaches to handling an expired subscription. One option is to keep the customer record and change the subscription plan to a role named “expired” or something similar. If we did that, we’d have to provide a form to allow an expired subscriber to log in, change a credit card, and update the subscription. It’s easier to simply delete the account and expect the user to create a new account to re-subscribe.</p>
+<p>When a user visits the website and cancels a subscription, we delete the customer record. Similarly, we could simply delete the customer record when a subscription expires. Instead we can encourage the user to resubscribe by notifying the user with an email message when the subscription has ended due to a payment failure. We’ll add a custom <code>expire</code> method to our User class that will send an email message before deleting the user.</p>
 <p>Modify the file <strong>app/models/user.rb</strong> to add an <code>expire</code> method:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -1884,24 +1893,94 @@ class User &lt; ActiveRecord::Base
   end
   
   def cancel_subscription
-    customer = Stripe::Customer.retrieve(stripe_id)
-    customer.cancel_subscription
+    unless stripe_id.nil?
+      customer = Stripe::Customer.retrieve(stripe_id)
+      if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
+        customer.cancel_subscription
+      end
+    end
   rescue Stripe::StripeError =&gt; e
     logger.error e.message
     errors.add :base, "Unable to cancel your subscription. #{e.message}"
     false
   end
   
-  def expire(event)
-    customer = Stripe::Customer.retrieve(stripe_id)
-  	Rails.logger.info "\n\n"
-  	Rails.logger.info "EXPIRING! #{name}"
-  	Rails.logger.info "EXPIRING! #{name}"
-  	Rails.logger.info "\n\n"
+  def expire
+    UserMailer.expire_email(self).deliver
+  	destroy
   end
   
 end
 </pre>
+<p>Our new <code>expire</code> method is simple. We call a method on an ActionMailer method to send an email. Then we destroy the user.</p>
+<h3>Send an Expiration Email</h3>
+<p>We’ll use an ActionMailer method to send an email when we receive a Stripe webhook request indicating a subscription has been cancelled for pyament failure.</p>
+<p>Generate a mailer with accompanying views:</p>
+<pre>
+$ rails generate mailer UserMailer
+</pre>
+<p>Add an <code>expire_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
+<pre>
+class UserMailer &lt; ActionMailer::Base
+  default :from =&gt; "notifications@example.com"
+  
+  def expire_email(user)
+    mail(:to =&gt; user.email, :subject =&gt; "Subscription Cancelled")
+  end
+end
+</pre>
+<p>Replace the “notifications@example.com” string with your email address.</p>
+<p>Create a mailer view by creating a file <strong>app/views/user_mailer/expire_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Subscription Cancelled&lt;/h1&gt;
+    &lt;p&gt;
+      Your subscription has been cancelled.
+    &lt;/p&gt;
+    &lt;p&gt;
+      We are sorry to see you go. We'd love to have you back. 
+      Visit example.com anytime to create a new subscription.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>It is a good idea to make a text-only version for this message. Create a file  <strong>app/views/user_mailer/expire_email.text.erb</strong>:</p>
+<pre>
+Subscription Cancelled
+
+Your subscription has been cancelled.
+ 
+We are sorry to see you go. We'd love to have you back. 
+Visit example.com anytime to create a new subscription.
+</pre>
+<p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email. If you use the Mandrill email service, you can skip this step if you configure Mandrill to automatically generate a plain-text version of all emails.</p>
+<p>Now the User model is equipped to send an email message when a Stripe webhook notifies the application of a cancelled subscription.</p>
+<h3>Set Your Webhook Address in Your Stripe Account Settings</h3>
+<p>After you’ve implemented handling of Stripe webhooks, you need to set your webhook address in your Stripe account settings.</p>
+<p>Visit your Stripe dashboard at <a href="https://manage.stripe.com/#account/webhooks">https://manage.stripe.com/#account/webhooks</a> and add a <span class="caps">URL</span> such as <a href="https://example.com/stripe">https://example.com/stripe</a>.</p>
+<h3>Testing a Stripe Webhook Event</h3>
+<p>It’s not easy to test a Stripe webhook event.</p>
+<p>You can watch your development log file when you visit <a href="http://localhost:3000/stripe">http://localhost:3000/stripe</a>. You should see:</p>
+<pre>
+Started GET "/stripe" for 127.0.0.1 at ...
+Processing by StripeEvent::WebhookController#event as HTML
+Completed 401 Unauthorized in 0ms (ActiveRecord: 0.0ms)
+</pre>
+<p>The “401 Unauthorized” response indicates that the stripe_event gem received a request but was unable to retrieve a Stripe event from the Stripe servers.</p>
+<p>You can deploy the application so it is running on a production web server and then use the “Test Webhook” button on your Stripe dashboard. Stripe will send fake event to the <span class="caps">URL</span> you’ve specified in your account settings. However, your log file will again show a “401 Unauthorized” response because the “Test Webhook” button sends a fake event (“id”=&gt;"evt_00000000000000") that can’t be retrieved from Stripe.</p>
+<p>The most expedient test is to deploy the application on a production web server and trigger an actual event on your Stripe dashboard in “Test” mode by creating a customer and then canceling a subscription. If you are not getting the results you expect, you can include the following debug code in the <strong>config/initializers/stripe.rb</strong> file:</p>
+<pre>
+subscribe do |event|
+  Rails.logger.info event
+end
+</pre>
+<p>The debug code should show you the results of any request to the stripe_event gem in your log file.</p>
+<p>If you need to test requests to the stripe_event gem on your local development machine, you can install the <a href="http://progrium.com/localtunnel/">localtunnel gem</a> (<a href="https://github.com/progrium/localtunnel">localtunnel on GitHub</a>) which will expose your local web server to the Internet so you can receive webhook requests from the Stripe servers.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
@@ -1912,8 +1991,11 @@ $ git merge --squash webhooks
 $ git commit -m "add Stripe webhooks"
 $ git branch -D webhooks
 </pre>
-<h2>More to Come</h2>
-<p>Work in progress.</p>
+<h2>Additional Features</h2>
+<p>You’ve created a fully functional membership site that’s ready to take credit card payments and serve access to restricted content.</p>
+<p>It uses Stripe for payment processing, allows users to change credit cards or subscription plans, and uses Stripe webhooks to delete users who have expired or declined credit cards.</p>
+<p>You might consider a few enhancements. For example, you might want the application to respond to a Stripe webhook event when a credit card payment is successful by sending a “paid” invoice. Or you might respond to Stripe webhook events when credit card payments are unsuccessful by sending a friendly note encouraging the user to check for an expired credit card before the subscription is cancelled.</p>
+<p>If you have suggestions for additional features, please create an <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">issue</a> on GitHub.</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
