@@ -1061,45 +1061,35 @@ $ git branch -D registration
 <pre>
 $ git checkout -b redirect
 </pre>
-<h3>Modify the Registrations Controller</h3>
-<p>Modify the file <strong>app/controllers/registrations_controller.rb</strong>:</p>
+<h3>Modify the Application Controller</h3>
+<p>Modify the file <strong>app/controllers/application_controller.rb</strong>:</p>
 <pre>
-class RegistrationsController &lt; Devise::RegistrationsController
-  
-  before_filter :set_plan, :only =&gt; :new
+class ApplicationController &lt; ActionController::Base
+  protect_from_forgery
 
-  def set_plan
-    @plan = params[:plan]
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, :alert =&gt; exception.message
   end
-  
+
   def after_sign_in_path_for(resource)
-    case current_user.has_role?
-    when admin
-      redirect_to users_path
-    when silver
-      redirect_to content_silver_path
-    end
-    when gold
-      redirect_to content_gold_path
-    end
-    when platinum
-      redirect_to content_platinum_path
-    else
-      redirect_to root_path
+    case current_user.roles.first.name
+      when 'admin'
+        users_path
+      when 'silver'
+        content_silver_path
+      when 'gold'
+        content_gold_path
+      when 'platinum'
+        content_platinum_path
+      else
+        root_path
     end
   end
-
-end
-  private  
-  def build_resource(*args)
-    super
-    if params[:plan]
-      resource.add_role(params[:plan])
-    end
-  end
+  
 end
 </pre>
 <p>The <code>after_sign_in_path_for(resource)</code> method will redirect a user to an appropriate page after sign in or sign up. The <code>case</code> statement checks the user’s role and redirects to the appropriate content page, or if an administrator, to the administrative dashboard.</p>
+<p>When we use Rolify, each user can have multiple roles. We only assign a single role in this application, so we ask for the first role associated with the user. When a role object is displayed as a string, it will be a number, so we ask for the name atrribute of the role.</p>
 <p>Devise also offers an <code>after_sign_up_path_for(resource)</code> method that allows a different redirect after a user registers. You could implement the <code>after_sign_up_path_for(resource)</code> method if you wanted the new user to see a special page after sign up (for example, a thank you or introduction).</p>
 <h3>Test Redirect</h3>
 <p>You can check that the redirect works by entering the command:</p>
