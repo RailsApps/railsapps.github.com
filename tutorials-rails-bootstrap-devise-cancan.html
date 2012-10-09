@@ -220,7 +220,6 @@ gem "simple_form", "&gt;= 2.0.3"
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
 <h2>Configure Email</h2>
-<p><em>The “Configure Email” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
 <p>You must configure the app for your email account if you want your application to send email messages, for example, if you’ve generated the application with the option to install the Devise <code>:confirmable</code> module.</p>
 <h3>Configure ActionMailer</h3>
 <p>Remove the following from the <strong>config/environments/development.rb</strong> file:</p>
@@ -278,410 +277,6 @@ export GMAIL_USERNAME="myname@gmail.com"
 export GMAIL_PASSWORD="secret*"
 </pre>
 <p>Open a new shell or restart your terminal application to continue.</p>
-<h2>Set up SimpleForm with Twitter Bootstrap</h2>
-<p><em>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial does not include this step.</em></p>
-<p>We want to use the styling that Twitter Bootstrap provides for forms. The easiest way to integrate Twitter Bootstrap styles with our forms is to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>, There’s a great <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm and Twitter Bootstrap demo app</a> that shows what can be accomplished.</p>
-<p>You should have the following gem in your <strong>Gemfile</strong>:</p>
-<pre>
-gem 'simple_form'
-</pre>
-<p>If you haven’t already, run:</p>
-<pre>
-$ bundle install
-</pre>
-<p>Run the generator to install SimpleForm:</p>
-<pre>
-$ rails generate simple_form:install --bootstrap
-</pre>
-<p>which installs several configuration files:</p>
-<pre>
-config/initializers/simple_form.rb
-config/initializers/simple_form_bootstrap.rb
-config/locales/simple_form.en.yml
-lib/templates/erb/scaffold/_form.html.erb
-</pre>
-<p>Later we’ll add forms that use the SimpleForm view helpers.</p>
-<h2>Set Up Authentication</h2>
-<p><em>The “Set Up Authentication” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
-<p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
-<h3>Set Up Configuration for Devise</h3>
-<p>You should have the following gem in your <strong>Gemfile</strong>:</p>
-<pre>
-gem 'devise'
-</pre>
-<p>If you haven’t already, run:</p>
-<p><code>$ bundle install</code></p>
-<p>Run the generator to install Devise:</p>
-<p><code>$ rails generate devise:install</code></p>
-<p>which installs a configuration file:</p>
-<p><strong>config/initializers/devise.rb</strong></p>
-<p>and a localization file.</p>
-<h3>Configure Devise for Email</h3>
-<p>Complete your email configuration by modifying</p>
-<p><strong>config/initializers/devise.rb</strong></p>
-<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
-<h3>Generate a Model and Routes for Users</h3>
-<p>Use Devise to generate models and routes for a User.</p>
-<pre>
-$ rails generate devise User
-</pre>
-<p>Devise will create a database migration and a User model.</p>
-<p>Devise will try to create a spec file for the User model. If you’ve already downloaded the example app spec files, don’t let the Devise generator overwrite the <strong>spec/models/user_spec.rb</strong> file.</p>
-<p>Devise will modify the <strong>config/routes.rb</strong> file to add:</p>
-<pre>
-devise_for :users
-</pre>
-<p>which provides a complete set of routes for user signup and login. If you run <code>rake routes</code> you can see the routes that this line of code creates.</p>
-<h3>Accommodate Cucumber Testing for “Sign Out”</h3>
-<p>By default, Devise uses an http <span class="caps">DELETE</span> request for sign out requests (<code>destroy_user_session_path</code>). Rails uses Javascript to implement http <span class="caps">DELETE</span> requests. Prior to Devise 1.4.1 (27 June 2011), Devise used an http <span class="caps">GET</span> request for sign out requests. Jose Valim explained the change: “<span class="caps">GET</span> requests should not change the state of the server. When sign out is a <span class="caps">GET</span> request, <span class="caps">CSRF</span> can be used to sign you out automatically and things that preload links can eventually sign you out by mistake as well.”</p>
-<p>However, Cucumber wants to test <span class="caps">GET</span> requests not <span class="caps">DELETE</span> requests. If you intend to use Cucumber with Devise, you must change the Devise default from <span class="caps">DELETE</span> to <span class="caps">GET</span> in <strong>/config/initializers/devise.rb</strong> for the Rails test environment. You may see a suggestion elsewhere to tweak the routes.rb file or change the log_out link to make the fix. It isn’t necessary if you change the <strong>/config/initializers/devise.rb</strong> file.</p>
-<pre>
-# The default HTTP method used to sign out a resource. Default is :delete.
-config.sign_out_via = Rails.env.test? ? :get : :delete
-</pre>
-<p>Since you only use Cucumber during testing, switching the default is only needed for testing.</p>
-<p>If you’re not going to use Cucumber, leave Devise’s default (<span class="caps">DELETE</span>) in place.</p>
-<h3>Prevent Logging of Passwords</h3>
-<p>We don’t want passwords written to our log file.</p>
-<p>Modify the file <strong>config/application.rb</strong> to include:</p>
-<pre>
-config.filter_parameters += [:password, :password_confirmation]
-</pre>
-
-<p>Note that filter_parameters is an array.</p>
-<h2>Set Up Authorization</h2>
-<p><em>The <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial does not include a “Set Up Authorization” step.</em></p>
-<p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. This app uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an administrator. Cancan is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site) . The author of CanCan, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
-<p>There are many ways to implement authorization in a web application. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. For a discussion of the benefits of using a single, consolidated location for the permissions, see the article <a href="http://lostechies.com/derickbailey/2011/05/24/dont-do-role-based-authorization-checks-do-activity-based-checks/">Don’t Do Role-Based Authorization Checks; Do Activity-Based Checks</a>.</p>
-<p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a> for use with CanCan. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
-<h3>Set Up CanCan</h3>
-<p>CanCan provides a Rails generator to create the CanCan <code>Ability</code> class. Run the generator to create the file <strong>app/models/ability.rb</strong>:</p>
-<pre>
-$ rails generate cancan:ability
-</pre>
-<p>Edit the file <strong>app/models/ability.rb</strong> to define a simple rule for granting permission to an administrator to access any page:</p>
-<pre>
-class Ability
-  include CanCan::Ability
-
-  def initialize(user)
-    user ||= User.new # guest user (not logged in)
-    if user.has_role? :admin
-      can :manage, :all
-    end
-  end
-  
-end
-</pre>
-<p>Rules defined in the <code>Ability</code> class can become quite complex. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/defining-abilities">Defining Abilities</a> for details.</p>
-<p>Note that the <code>user.has_role?</code> method doesn’t yet exist. We’ll add the method when we set up Rolify.</p>
-<h3>Configure CanCan Exception Handling</h3>
-<p>If user authorization fails, a <code>CanCan::AccessDenied</code> exception will be raised. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/exception-handling">Exception Handling</a> for ways to handle authorization exceptions.</p>
-<p>For this example, we’ll handle the <code>CanCan::AccessDenied</code> exception in the ApplicationController. We’ll set an error message and redirect to the home page. Modify the file <strong>app/controllers/application_controller.rb</strong> like this:</p>
-<pre>
-class ApplicationController &lt; ActionController::Base
-  protect_from_forgery
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, :alert =&gt; exception.message
-  end
-end
-</pre>
-<h3>Set Up User Roles</h3>
-<p>We’ll use the <a href="https://github.com/EppO/rolify">Rolify</a> gem to implement user roles. Rolify provides a Rails generator to create a Role model, add methods to a User model, and generate a migration for a roles table. Run the command:</p>
-<pre>
-$ rails generate rolify:role
-</pre>
-<p>If you’re using Mongoid with the MongoDB datastore, add parameters to the command:</p>
-<pre>
-$ rails generate rolify:role Role User mongoid
-</pre>
-<p>The generator will insert a <code>rolify</code> method in <strong>app/models/users.rb</strong> and it will create several files:</p>
-<ul>
-<li><strong>app/models/role.rb</strong></li>
-	<li><strong>config/initializers/rolify.rb</strong></li>
-	<li><strong>db/migrate/…rolify_create_roles.rb</strong></li>
-</ul><p>The <strong>app/models/role.rb</strong> looks like this:</p>
-<pre>
-class Role &lt; ActiveRecord::Base
-  has_and_belongs_to_many :users, :join_table =&gt; :users_roles
-  belongs_to :resource, :polymorphic =&gt; true
-end
-</pre>
-<p>These few steps with CanCan and Rolify implement role-based authorization in our application. We’ll use the authorization options provided by CanCan and Rolify when we add an administrative page with corresponding links.</p>
-<h2>Add Names for Users</h2>
-<p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
-<h3>Add a Migration</h3>
-<p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
-<pre>
-rails generate migration AddNameToUsers name:string
-</pre>
-<p>Run the migration and prepare the test database to pick up the “name” field:</p>
-<pre>
-$ bundle exec rake db:migrate
-$ bundle exec rake db:test:prepare
-</pre>
-<h3>Modify the User Model</h3>
-<p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of update_attributes(attrs) and new(attrs). Devise already added this to the <strong>models/user.rb</strong> file:</p>
-<pre>
-attr_accessible :email, :password, :password_confirmation, :remember_me
-</pre>
-<p>but you’ll need to add the “name” attribute:</p>
-<pre>
-attr_accessible :name, :email, :password, :password_confirmation, :remember_me
-</pre>
-<p>If you wish, you can modify the user model to validate the presence and uniqueness of the “name” attribute. Modify the file <strong>app/models/user.rb</strong> and add:</p>
-<pre>
-validates_presence_of :name
-validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
-</pre>
-
-<p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank and that the email address is unique.</p>
-<h2 id="registration-views">Create Custom Views for User Registration</h2>
-<p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults.</p>
-<p>We want the forms for signing up (registering or creating a new user account) and editing a user’s account details to use the Twitter Bootstrap form styles. Devise provides these forms (hidden in the Devise gem) but we’ll override the Devise defualt forms with our own forms that use the SimpleForm view helpers that integrate with Twitter Bootstrap.</p>
-<p>We’ve already installed SimpleForm in a previous step.</p>
-<p>Create a new <strong>app/views/devise/registrations/new.html.erb</strong> file:</p>
-<pre>
-&lt;h2&gt;Sign up&lt;/h2&gt;
-&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
-  &lt;%= f.error_notification %&gt;
-  &lt;%= f.input :name %&gt; 
-  &lt;%= f.input :email %&gt; 
-  &lt;%= f.input :password %&gt; 
-  &lt;%= f.input :password_confirmation %&gt;
-  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
-&lt;% end %&gt;
-&lt;%= render "devise/shared/links" %&gt;
-</pre>
-<p>Create a new <strong>app/views/devise/registrations/edit.html.erb</strong> file:</p>
-<pre>
-&lt;h2&gt;Edit &lt;%= resource_name.to_s.humanize %&gt;&lt;/h2&gt;
-&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
-  &lt;%= f.error_notification %&gt;
-  &lt;%= f.input :name %&gt; 
-  &lt;%= f.input :email %&gt;
-  &lt;%= f.input :password, :hint =&gt; "leave blank if you don't want to change it" %&gt; 
-  &lt;%= f.input :password_confirmation %&gt;
-  &lt;%= f.input :current_password, :hint =&gt; "we need your current password to confirm your changes" %&gt; 
-  &lt;%= f.button :submit, 'Update', :class =&gt; 'btn-primary' %&gt;
-&lt;% end %&gt;
-&lt;h3&gt;Cancel my account&lt;/h3&gt;
-&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
-&lt;%= link_to "Back", :back %&gt;
-</pre>
-<p>We do not need to add a controller with methods to create a new user or edit or delete a user. We use the existing “registerable” module from Devise which provides a controller with methods to create, edit or delete a user.</p>
-<p>Note that Devise’s default behaviour allows any logged-in user to edit or delete his or her own record (but no one else’s). When you access the edit page you are editing just your info, and not info of other users.</p>
-<p>If you are using Haml, you can convert the <span class="caps">ERB</span> files using the online tool <a href="http://html2haml.heroku.com/">Html2Haml</a>. You’ll need to remove the <strong>.erb</strong> files and replace them with <strong>app/views/devise/registrations/edit.html.haml</strong> and <strong>app/views/devise/registrations/new.html.haml</strong>.</p>
-<h2>Create a Home Page</h2>
-<p><em>The “Create a Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
-<h3>Remove the Default Home Page</h3>
-<p>Delete the default home page from your application:</p>
-<p><code>$ rm public/index.html</code></p>
-<h3>Create a Home Controller and View</h3>
-<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
-<p><code>$ rails generate controller home index --no-controller-specs</code></p>
-<p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
-<p><strong>app/views/home/index.html.erb</strong></p>
-<p>Next, set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
-<p><code>get "home/index"</code></p>
-<p>with</p>
-<pre>
-authenticated :user do
-  root :to =&gt; 'home#index'
-end
-
-root :to =&gt; "home#index"
-</pre>
-<p>If you examine this code, you’ll see that authenticated users (those who have an account and are logged in) will see the home/index page as the application root (or home) page. And all other users (those who don’t have an account or who are not logged in) will see the same home page. The redundancy serves a didactic purpose: If you decide you want  users to see a different page when they log in, you now know exactly where to change it.</p>
-<p>By default, Devise will redirect to the root_path after successful sign in or sign out. It is easy to change the root_path as shown in the <strong>config/routes.rb</strong> file. Alternatively, you can override the Devise methods <code>after_sign_in_path_for</code> and <code>after_sign_out_path_for</code> as described in the Devise wiki article <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-out">How To Redirect to a Specific Page</a>.</p>
-<h3>Test the App</h3>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Display Users on the Home Page</h2>
-<p><em>The “Display Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
-<p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
-<pre>
-def index
-  @users = User.all
-end
-</pre>
-<p>Modify the file <strong>app/views/home/index.html.erb</strong> and add:</p>
-<pre>
-&lt;h3&gt;Home&lt;/h3&gt;
-&lt;% @users.each do |user| %&gt;
-  &lt;p&gt;User: &lt;%= user.name %&gt; &lt;/p&gt;
-&lt;% end %&gt;
-</pre>
-<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
-<h2>Create a Default User</h2>
-<h3>Set Up a Database Seed File</h3>
-<p><em>The “Set Up a Database Seed File” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to make the first user an administrator.</em></p>
-<p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
-<pre>
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user2.name
-user.add_role :admin
-</pre>
-<p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
-<pre>
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
-puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
-puts 'New user created: ' &lt;&lt; user2.name
-user.add_role :admin
-</pre>
-<p>You can change the values for name, email, and password as you wish.</p>
-<h3>Seed the Database</h3>
-<p>Add the default user to the database by running the command:</p>
-<p><code>$ bundle exec rake db:seed</code></p>
-<p>If you need to, you can run <code>$ bundle exec rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
-<p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
-<pre>
-attr_accessible :name, :email, :password, :password_confirmation, :remember_me
-</pre>
-<h3>Test the App</h3>
-<p>At this point, you may want to know if the default user has been saved to the database.</p>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Add Links to Users on the Home Page</h2>
-<p><em>The “Add Links to Users on the Home Page” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is identical.</em></p>
-<p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
-<pre>
-def index
-  @users = User.all
-end
-</pre>
-<p>Now modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
-<pre>
-&lt;h3&gt;Home&lt;/h3&gt;
-&lt;% @users.each do |user| %&gt;
-  &lt;p&gt;User: &lt;%=link_to user.name, user %&gt;&lt;/p&gt;
-&lt;% end %&gt;
-</pre>
-<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
-<p>The links to the user’s profile page will not yet work; in the next section we’ll create a users controller, routes, and views.</p>
-<h2>Set Up the Users Controller, Routes, and Views</h2>
-<p><em>The “Set Up the Users Controller, Views, and Routes” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we set up the UsersController to demonstrate use of authorization in a later step.</em></p>
-<h3>Create a Users Controller</h3>
-<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
-<p><code>$ rails generate controller users index show --no-controller-specs</code></p>
-<p>Note that “users” is plural when you create the controller.</p>
-<h3>Set Up the Users Routes</h3>
-<p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
-<pre>
-get "users/index"
-get "users/show"
-</pre>
-<p>Remove that and change the routes to:</p>
-<pre>
-root :to =&gt; "home#index"
-devise_for :users
-resources :users, :only =&gt; [:show, :index]
-</pre>
-<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; [:show, :index]</code>.</p>
-<h3>Set Up the Users#Show Page</h3>
-<p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
-<pre>
-&lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
-&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
-</pre>
-<p>In a typical application, this page might provide additional details about the user’s account.</p>
-<h3>Set Up the Users#Index Page</h3>
-<p>For the purposes of our example, this page will be accessible only to administrators. It will display a list of all users of the application.</p>
-<p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
-<pre>
-&lt;ul class="users"&gt;
-  &lt;% @users.each do |user| %&gt;
-    &lt;li&gt;
-      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
-    &lt;/li&gt;
-  &lt;% end %&gt;
-&lt;/ul&gt;
-</pre>
-<p>We want to restrict access to this page, the <strong>Users#index</strong> page at <a href="http://localhost:3000/users">http://localhost:3000/users</a>. In the next section, we will set up authorization so the page is accessible only to administrators.</p>
-<h2>Set Up a Demonstration of CanCan</h2>
-<p><em>The “Set Up a Demonstration of Devise” step in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> tutorial is very similar. Here we add code to limit access to the <code>index</code> method of the UsersController.</em></p>
-<p>You’ll want to see how CanCan is used to limit access to only the administrator.</p>
-<h3>First Authorization Example: Users Controller with CanCan “@authorize!”</h3>
-<p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
-<pre>
-class UsersController &lt; ApplicationController
-  before_filter :authenticate_user!
-
-  def index
-    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-    @users = User.all
-  end
-
-  def show
-    @user = User.find(params[:id])
-  end
-
-end
-</pre>
-<p>Only one line of code is needed to limit access to the <strong>Users#index</strong> page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
-<pre>
-authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
-</pre>
-<p>The CanCan <code>authorize!</code> method will check the CanCan <code>Ability</code> class definition to determine if the user has permission to execute the <code>index</code> method. We’ve previously set a rule in the <code>Ability</code> class definition that gives a user in an administrator role the ability to execute all methods:</p>
-<pre>
-if user.has_role? :admin
-  can :manage, :all
-end
-</pre>
-<p>No rule is present for other users, so by default, other users are restricted from executing the <code>index</code> method.</p>
-<p>This approach is the most obvious way to implement authorization using CanCan. However, CanCan offers convenience methods that can eliminate superfluous controller code in some applications. The next example shows how to use CanCan convenience methods to reduce the amount of code in your controllers.</p>
-<h3>Second Authorization Example: Users Controller with CanCan “load_and_authorize_resource”</h3>
-<p>CanCan provides a convenience method <code>authorize_resource</code> that applies the <code>authorize!</code> method to every action in the controller. Another convenience method <code>load_resource</code> queries the database and loads the resources required by each action (for example, <code>users = User.all</code> for the <code>index</code> action). A third convenience method combines the two as <code>load_and_authorize_resource</code>.</p>
-<p>Using <code>load_and_authorize_resource</code>, you can set up the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
-<pre>
-class UsersController &lt; ApplicationController
-  before_filter :authenticate_user!
-  load_and_authorize_resource :only =&gt; :index
-
-  def show
-    @user = User.find(params[:id])
-  end
-
-end
-</pre>
-<p>The <code>index</code> action does not need to be declared because Rails provides it by default.</p>
-<p>If a non-administrator tries to view the at <a href="http://localhost:3000/users">http://localhost:3000/users</a> he or she will be redirected to the home page (as specified by the <code>rescue_from CanCan::AccessDenied</code> method in the ApplicationController) and will see CanCan’s generic exception message, “You are not authorized to access this page.” You can customize the exception message in the ApplicationController, if you wish.</p>
-<p>Some developers will like this approach; others will feel it dries up code at the expense of introducing layers of black magic. If you prefer a more explicit approach, the next example shows how to implement simple role-based authorization without using CanCan at all.</p>
-<h3>Third Authorization Example: Users Controller without CanCan</h3>
-<p>The purported benefit of using CanCan is the advantage of maintaining authorization rules in one location, the <code>Ability</code> class. This may be a matter of taste; you may prefer to confine authorization code to only the controllers that need it.</p>
-<p>Here is an example of limiting access to the <strong>Users#index</strong> page using only methods provided by the <a href="https://github.com/EppO/rolify">Rolify</a> gem. CanCan is not used.</p>
-<pre>
-class UsersController &lt; ApplicationController
-  before_filter :authenticate_user!
-  before_filter :only_allow_admin, :only =&gt; [ :index ]
-
-  def index
-    @users = User.all
-  end
-
-  def show
-    @user = User.find(params[:id])
-  end
-
-  private
-
-  def only_allow_admin
-    redirect_to root_path, :alert =&gt; 'Not authorized as an administrator.' unless current_user.has_role? :admin
-  end
-
-end
-</pre>
-<p>If multiple controllers will use the <code>only_allow_admin</code> method, it can be moved to the ApplicationController so all controllers will inherit the method.</p>
-<p>In contrast to CanCan, all the authorization logic is defined in the controller. For a small application, this approach is simpler and less confusing. You may find this approach preferable to using CanCan, if your application only requires simple role-based authorization. However, for a large or complex application with multiple roles and many constrained activities, CanCan offers better <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 <h2>Create an Application Layout</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
@@ -787,15 +382,13 @@ body { padding-top: 60px; }
 <p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
 <p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
 <pre>
-&lt;!doctype html&gt;
+&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Myapp" %&gt;&lt;/title&gt;
-    &lt;meta name="description" content=""&gt;
-    &lt;meta name="author" content=""&gt;
-    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "App_Name" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "App_Name" %&gt;"&gt;
+    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
     &lt;%= javascript_include_tag "application" %&gt;
     &lt;%= csrf_meta_tags %&gt;
     &lt;%= yield(:head) %&gt;
@@ -825,9 +418,537 @@ body { padding-top: 60px; }
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-<h3>Options and Improvements</h3>
+<p>See the article <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
 <p>Your default application layout defines the look-and-feel of your application. You now have the basics with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling using Twitter Bootstrap.</p>
+<h2>Set up SimpleForm with Twitter Bootstrap</h2>
+<p>We want to use the styling that Twitter Bootstrap provides for forms. The easiest way to integrate Twitter Bootstrap styles with our forms is to use the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>. There’s a great <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm and Twitter Bootstrap demo app</a> that shows what can be accomplished.</p>
+<p>You should have the following gem in your <strong>Gemfile</strong>:</p>
+<pre>
+gem 'simple_form'
+</pre>
+<p>If you haven’t already, run:</p>
+<pre>
+$ bundle install
+</pre>
+<p>Run the generator to install SimpleForm with a Twitter Bootstrap option:</p>
+<pre>
+$ rails generate simple_form:install --bootstrap
+</pre>
+<p>which installs several configuration files:</p>
+<pre>
+config/initializers/simple_form.rb
+config/initializers/simple_form_bootstrap.rb
+config/locales/simple_form.en.yml
+lib/templates/erb/scaffold/_form.html.erb
+</pre>
+<p>Later we’ll add forms that use the SimpleForm view helpers.</p>
+<h2>Set Up Authentication</h2>
+<p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
+<h3>Set Up Configuration for Devise</h3>
+<p>You should have the following gem in your <strong>Gemfile</strong>:</p>
+<pre>
+gem 'devise'
+</pre>
+<p>If you haven’t already, run:</p>
+<p><code>$ bundle install</code></p>
+<p>Run the generator to install Devise:</p>
+<p><code>$ rails generate devise:install</code></p>
+<p>which installs a configuration file:</p>
+<p><strong>config/initializers/devise.rb</strong></p>
+<p>and a localization file.</p>
+<h3>Configure Devise for Email</h3>
+<p>Complete your email configuration by modifying</p>
+<p><strong>config/initializers/devise.rb</strong></p>
+<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
+<h3>Generate a Model and Routes for Users</h3>
+<p>Use Devise to generate models and routes for a User.</p>
+<pre>
+$ rails generate devise User
+</pre>
+<p>Devise will create a database migration and a User model.</p>
+<p>Devise will try to create a spec file for the User model. If you’ve already downloaded the example app spec files, don’t let the Devise generator overwrite the <strong>spec/models/user_spec.rb</strong> file.</p>
+<p>Devise will modify the <strong>config/routes.rb</strong> file to add:</p>
+<pre>
+devise_for :users
+</pre>
+<p>which provides a complete set of routes for user signup and login. If you run <code>rake routes</code> you can see the routes that this line of code creates.</p>
+<h3>Accommodate Cucumber Testing for “Sign Out”</h3>
+<p>By default, Devise uses an http <span class="caps">DELETE</span> request for sign out requests (<code>destroy_user_session_path</code>). Rails uses Javascript to implement http <span class="caps">DELETE</span> requests. Prior to Devise 1.4.1 (27 June 2011), Devise used an http <span class="caps">GET</span> request for sign out requests. Jose Valim explained the change: “<span class="caps">GET</span> requests should not change the state of the server. When sign out is a <span class="caps">GET</span> request, <span class="caps">CSRF</span> can be used to sign you out automatically and things that preload links can eventually sign you out by mistake as well.”</p>
+<p>However, Cucumber wants to test <span class="caps">GET</span> requests not <span class="caps">DELETE</span> requests. If you intend to use Cucumber with Devise, you must change the Devise default from <span class="caps">DELETE</span> to <span class="caps">GET</span> in <strong>/config/initializers/devise.rb</strong> for the Rails test environment. You may see a suggestion elsewhere to tweak the routes.rb file or change the log_out link to make the fix. It isn’t necessary if you change the <strong>/config/initializers/devise.rb</strong> file.</p>
+<pre>
+# The default HTTP method used to sign out a resource. Default is :delete.
+config.sign_out_via = Rails.env.test? ? :get : :delete
+</pre>
+<p>Since you only use Cucumber during testing, switching the default is only needed for testing.</p>
+<p>If you’re not going to use Cucumber, leave Devise’s default (<span class="caps">DELETE</span>) in place.</p>
+<h3>Prevent Logging of Passwords</h3>
+<p>We don’t want passwords written to our log file.</p>
+<p>Modify the file <strong>config/application.rb</strong> to include:</p>
+<pre>
+config.filter_parameters += [:password, :password_confirmation]
+</pre>
+
+<p>Note that filter_parameters is an array.</p>
+<h3>Improve the Sign In Form</h3>
+<p>We want the form for signing in (login) to use the Twitter Bootstrap form styles. Devise provides this form (hidden in the Devise gem) but we’ll override the Devise default form with our own form that uses the SimpleForm view helpers that integrate with Twitter Bootstrap.</p>
+<p>Create a new <strong>app/views/devise/sessions/new.html.erb</strong> file:</p>
+<pre>
+&lt;h2&gt;Sign in&lt;/h2&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; session_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
+  &lt;%= f.input :email, :autofocus =&gt; true %&gt;
+  &lt;%= f.input :password %&gt;
+  &lt;%= f.input :remember_me, :as =&gt; :boolean if devise_mapping.rememberable? %&gt;
+  &lt;%= f.button :submit, "Sign in", :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+&lt;%= render "devise/shared/links" %&gt;
+</pre>
+<p>The new form uses Twitter Bootstrap styles.</p>
+<h2>Set Up Authorization</h2>
+<p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. We need to add a system for authorization to determine if an authenticated user should have access to secured resources. This app uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an administrator. Cancan is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site) . The author of CanCan, Ryan Bates, offers a <a href="http://railscasts.com/episodes/192-authorization-with-cancan">RailsCast on Authorization with CanCan</a> to show how to use it.</p>
+<p>There are many ways to implement authorization in a web application. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. For a discussion of the benefits of using a single, consolidated location for the permissions, see the article <a href="http://lostechies.com/derickbailey/2011/05/24/dont-do-role-based-authorization-checks-do-activity-based-checks/">Don’t Do Role-Based Authorization Checks; Do Activity-Based Checks</a>.</p>
+<p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles; you must implement this outside of CanCan. There are many ways to <a href="https://github.com/ryanb/cancan/wiki/Role-Based-Authorization">implement role-based authorization</a> for use with CanCan. For this example, we use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
+<h3>Set Up CanCan</h3>
+<p>CanCan provides a Rails generator to create the CanCan <code>Ability</code> class. Run the generator to create the file <strong>app/models/ability.rb</strong>:</p>
+<pre>
+$ rails generate cancan:ability
+</pre>
+<p>Edit the file <strong>app/models/ability.rb</strong> to define a simple rule for granting permission to an administrator to access any page:</p>
+<pre>
+class Ability
+  include CanCan::Ability
+
+  def initialize(user)
+    user ||= User.new # guest user (not logged in)
+    if user.has_role? :admin
+      can :manage, :all
+    end
+  end
+  
+end
+</pre>
+<p>Rules defined in the <code>Ability</code> class can become quite complex. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/defining-abilities">Defining Abilities</a> for details.</p>
+<p>Note that the <code>user.has_role?</code> method doesn’t yet exist. We’ll add the method when we set up Rolify.</p>
+<h3>Configure CanCan Exception Handling</h3>
+<p>If user authorization fails, a <code>CanCan::AccessDenied</code> exception will be raised. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/exception-handling">Exception Handling</a> for ways to handle authorization exceptions.</p>
+<p>For this example, we’ll handle the <code>CanCan::AccessDenied</code> exception in the ApplicationController. We’ll set an error message and redirect to the home page. Modify the file <strong>app/controllers/application_controller.rb</strong> like this:</p>
+<pre>
+class ApplicationController &lt; ActionController::Base
+  protect_from_forgery
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, :alert =&gt; exception.message
+  end
+end
+</pre>
+<h3>Set Up User Roles</h3>
+<p>We’ll use the <a href="https://github.com/EppO/rolify">Rolify</a> gem to implement user roles. Rolify provides a Rails generator to create a Role model, add methods to a User model, and generate a migration for a roles table. Run the command:</p>
+<pre>
+$ rails generate rolify:role
+</pre>
+<p>If you’re using Mongoid with the MongoDB datastore, add parameters to the command:</p>
+<pre>
+$ rails generate rolify:role Role User mongoid
+</pre>
+<p>The generator will insert a <code>rolify</code> method in <strong>app/models/users.rb</strong> and it will create several files:</p>
+<ul>
+<li><strong>app/models/role.rb</strong></li>
+	<li><strong>config/initializers/rolify.rb</strong></li>
+	<li><strong>db/migrate/…rolify_create_roles.rb</strong></li>
+</ul><p>The <strong>app/models/role.rb</strong> looks like this:</p>
+<pre>
+class Role &lt; ActiveRecord::Base
+  has_and_belongs_to_many :users, :join_table =&gt; :users_roles
+  belongs_to :resource, :polymorphic =&gt; true
+end
+</pre>
+<p>These few steps with CanCan and Rolify implement role-based authorization in our application. We’ll use the authorization options provided by CanCan and Rolify when we add an administrative page with corresponding links.</p>
+<h2>Add Names for Users</h2>
+<p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
+<h3>Add a Migration</h3>
+<p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
+<pre>
+rails generate migration AddNameToUsers name:string
+</pre>
+<p>Run the migration and prepare the test database to pick up the “name” field:</p>
+<pre>
+$ bundle exec rake db:migrate
+$ bundle exec rake db:test:prepare
+</pre>
+<h3>Modify the User Model</h3>
+<p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of update_attributes(attrs) and new(attrs). Devise already added this to the <strong>models/user.rb</strong> file:</p>
+<pre>
+attr_accessible :email, :password, :password_confirmation, :remember_me
+</pre>
+<p>but you’ll need to add the “name” attribute:</p>
+<pre>
+attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+</pre>
+<p>If you wish, you can modify the user model to validate the presence and uniqueness of the “name” attribute. Modify the file <strong>app/models/user.rb</strong> and add:</p>
+<pre>
+validates_presence_of :name
+validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
+</pre>
+
+<p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank and that the email address is unique.</p>
+<h2 id="registration-views">Create Custom Views for User Registration</h2>
+<p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults. We’ll use the SimpleForm view helpers (we already installed SimpleForm in a previous step).</p>
+<p>Create a new <strong>app/views/devise/registrations/new.html.erb</strong> file:</p>
+<pre>
+&lt;h2&gt;Sign up&lt;/h2&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :required =&gt; true %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+&lt;%= render "devise/shared/links" %&gt;
+</pre>
+<p>Create a new <strong>app/views/devise/registrations/edit.html.erb</strong> file:</p>
+<pre>
+&lt;h2&gt;Edit &lt;%= resource_name.to_s.humanize %&gt;&lt;/h2&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :autocomplete =&gt; "off", :hint =&gt; "leave it blank if you don't want to change it", :required =&gt; false %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; false %&gt;
+  &lt;%= f.input :current_password, :hint =&gt; "we need your current password to confirm your changes", :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Update', :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+&lt;h3&gt;Cancel my account&lt;/h3&gt;
+&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
+&lt;%= link_to "Back", :back %&gt;
+
+</pre>
+<p>We do not need to add a controller with methods to create a new user or edit or delete a user. We use the existing “registerable” module from Devise which provides a controller with methods to create, edit or delete a user.</p>
+<p>Note that Devise’s default behaviour allows any logged-in user to edit or delete his or her own record (but no one else’s). When you access the edit page you are editing just your info, and not info of other users.</p>
+<p>If you are using Haml, you can convert the <span class="caps">ERB</span> files using the online tool <a href="http://html2haml.heroku.com/">Html2Haml</a>. You’ll need to remove the <strong>.erb</strong> files and replace them with <strong>app/views/devise/registrations/edit.html.haml</strong> and <strong>app/views/devise/registrations/new.html.haml</strong>.</p>
+<h2>Create a Home Page</h2>
+<h3>Remove the Default Home Page</h3>
+<p>Delete the default home page from your application:</p>
+<p><code>$ rm public/index.html</code></p>
+<h3>Create a Home Controller and View</h3>
+<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
+<p><code>$ rails generate controller home index --no-controller-specs</code></p>
+<p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
+<p><strong>app/views/home/index.html.erb</strong></p>
+<p>Next, set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
+<p><code>get "home/index"</code></p>
+<p>with</p>
+<pre>
+authenticated :user do
+  root :to =&gt; 'home#index'
+end
+
+root :to =&gt; "home#index"
+</pre>
+<p>If you examine this code, you’ll see that authenticated users (those who have an account and are logged in) will see the home/index page as the application root (or home) page. And all other users (those who don’t have an account or who are not logged in) will see the same home page. The redundancy serves a didactic purpose: If you decide you want  users to see a different page when they log in, you now know exactly where to change it.</p>
+<p>By default, Devise will redirect to the root_path after successful sign in or sign out. It is easy to change the root_path as shown in the <strong>config/routes.rb</strong> file. Alternatively, you can override the Devise methods <code>after_sign_in_path_for</code> and <code>after_sign_out_path_for</code> as described in the Devise wiki article <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-out">How To Redirect to a Specific Page</a>.</p>
+<h3>Test the App</h3>
+<p>You can check that your app runs properly by entering the command</p>
+<p><code>$ rails server</code></p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
+<p>Stop the server with Control-C.</p>
+<h2>Display Users on the Home Page</h2>
+<p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
+<pre>
+def index
+  @users = User.all
+end
+</pre>
+<p>Modify the file <strong>app/views/home/index.html.erb</strong> and add:</p>
+<pre>
+&lt;h3&gt;Home&lt;/h3&gt;
+&lt;% @users.each do |user| %&gt;
+  &lt;p&gt;User: &lt;%= user.name %&gt; &lt;/p&gt;
+&lt;% end %&gt;
+</pre>
+<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
+<h2>Create a Default User</h2>
+<h3>Set Up a Database Seed File</h3>
+<p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
+<pre>
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'New user created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'New user created: ' &lt;&lt; user2.name
+user.add_role :admin
+</pre>
+<p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
+<pre>
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+puts 'New user created: ' &lt;&lt; user.name
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+puts 'New user created: ' &lt;&lt; user2.name
+user.add_role :admin
+</pre>
+<p>You can change the values for name, email, and password as you wish.</p>
+<h3>Seed the Database</h3>
+<p>Add the default user to the database by running the command:</p>
+<p><code>$ bundle exec rake db:seed</code></p>
+<p>If you need to, you can run <code>$ bundle exec rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
+<p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
+<pre>
+attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+</pre>
+<h3>Test the App</h3>
+<p>At this point, you may want to know if the default user has been saved to the database.</p>
+<p>You can check that your app runs properly by entering the command</p>
+<p><code>$ rails server</code></p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
+<p>Stop the server with Control-C.</p>
+<h2>Add Links to Users on the Home Page</h2>
+<p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
+<pre>
+def index
+  @users = User.all
+end
+</pre>
+<p>Now modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
+<pre>
+&lt;h3&gt;Home&lt;/h3&gt;
+&lt;% @users.each do |user| %&gt;
+  &lt;p&gt;User: &lt;%=link_to user.name, user %&gt;&lt;/p&gt;
+&lt;% end %&gt;
+</pre>
+<p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
+<p>The links to the user’s profile page will not yet work; in the next section we’ll create a users controller, routes, and views.</p>
+<h2>Set Up the Users Controller, Routes, and Views</h2>
+<h3>Create a Users Controller</h3>
+<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
+<p><code>$ rails generate controller users index show --no-controller-specs</code></p>
+<p>Note that “users” is plural when you create the controller.</p>
+<h3>Set Up the Users Routes</h3>
+<p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
+<pre>
+get "users/index"
+get "users/show"
+</pre>
+<p>Remove that and change the routes to:</p>
+<pre>
+root :to =&gt; "home#index"
+devise_for :users
+resources :users, :only =&gt; [:show, :index]
+</pre>
+<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; [:show, :index]</code>.</p>
+<h3>Set Up the Users#Show Page</h3>
+<p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
+<pre>
+&lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
+&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
+</pre>
+<p>In a typical application, this page might provide additional details about the user’s account.</p>
+<h3>Set Up the Users#Index Page</h3>
+<p>For the purposes of our example, this page will be accessible only to administrators. It will display a list of all users of the application.</p>
+<p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
+<pre>
+&lt;ul class="users"&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;li&gt;
+      &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
+</pre>
+<p>We want to restrict access to this page, the <strong>Users#index</strong> page at <a href="http://localhost:3000/users">http://localhost:3000/users</a>. In the next section, we will set up authorization so the page is accessible only to administrators.</p>
+<h2>Set Up a Demonstration of CanCan</h2>
+<p>You’ll want to see how CanCan is used to limit access to only the administrator.</p>
+<h3>First Authorization Example: Users Controller with CanCan “@authorize!”</h3>
+<p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+end
+</pre>
+<p>Only one line of code is needed to limit access to the <strong>Users#index</strong> page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
+<pre>
+authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+</pre>
+<p>The CanCan <code>authorize!</code> method will check the CanCan <code>Ability</code> class definition to determine if the user has permission to execute the <code>index</code> method. We’ve previously set a rule in the <code>Ability</code> class definition that gives a user in an administrator role the ability to execute all methods:</p>
+<pre>
+if user.has_role? :admin
+  can :manage, :all
+end
+</pre>
+<p>No rule is present for other users, so by default, other users are restricted from executing the <code>index</code> method.</p>
+<p>This approach is the most obvious way to implement authorization using CanCan. We’ll use this approach throughout this tutorial.</p>
+<p>Before we implement additional features, it is worthwhile to take a look at other options available with CanCan. CanCan offers convenience methods that can eliminate superfluous controller code in some applications. The next example shows how to use CanCan convenience methods to reduce the amount of code in your controllers. We won’t use this approach in this tutorial but is worth reviewing.</p>
+<h3>Second Authorization Example: Users Controller with CanCan “load_and_authorize_resource”</h3>
+<p>CanCan provides a convenience method <code>authorize_resource</code> that applies the <code>authorize!</code> method to every action in the controller. Another convenience method <code>load_resource</code> queries the database and loads the resources required by each action (for example, <code>users = User.all</code> for the <code>index</code> action). A third convenience method combines the two as <code>load_and_authorize_resource</code>.</p>
+<p>Using <code>load_and_authorize_resource</code>, you can set up the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  load_and_authorize_resource :only =&gt; :index
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+end
+</pre>
+<p>The <code>index</code> action does not need to be declared because Rails provides it by default.</p>
+<p>If a non-administrator tries to view the at <a href="http://localhost:3000/users">http://localhost:3000/users</a> he or she will be redirected to the home page (as specified by the <code>rescue_from CanCan::AccessDenied</code> method in the ApplicationController) and will see CanCan’s generic exception message, “You are not authorized to access this page.” You can customize the exception message in the ApplicationController, if you wish.</p>
+<p>Some developers will like this approach; others will feel it dries up code at the expense of introducing layers of black magic. If you prefer a more explicit approach, the next example shows how to implement simple role-based authorization without using CanCan at all.</p>
+<h3>Third Authorization Example: Users Controller without CanCan</h3>
+<p>The purported benefit of using CanCan is the advantage of maintaining authorization rules in one location, the <code>Ability</code> class. This may be a matter of taste; you may prefer to confine authorization code to only the controllers that need it.</p>
+<p>Here is an example of limiting access to the <strong>Users#index</strong> page using only methods provided by the <a href="https://github.com/EppO/rolify">Rolify</a> gem. CanCan is not used.</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  before_filter :only_allow_admin, :only =&gt; [ :index ]
+
+  def index
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+  private
+
+  def only_allow_admin
+    redirect_to root_path, :alert =&gt; 'Not authorized as an administrator.' unless current_user.has_role? :admin
+  end
+
+end
+</pre>
+<p>If multiple controllers will use the <code>only_allow_admin</code> method, it can be moved to the ApplicationController so all controllers will inherit the method.</p>
+<p>In contrast to CanCan, all the authorization logic is defined in the controller. For a small application, this approach is simpler and less confusing. You may find this approach preferable to using CanCan, if your application only requires simple role-based authorization. However, for a large or complex application with multiple roles and many constrained activities, CanCan offers better <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
+<p>Now that we’ve explored a variety of approaches to implementing authorization, we’ll implement additional features that require authorization.</p>
+<h2>Improve the Administrative Dashboard</h2>
+<p>The <strong>Users#index</strong> page is our administrative dashboard. We’re using the CanCan authorization system to restrict access to this page to only users in the “admin” role. Right now, the page lists users and shows the date each registered.</p>
+<p>We’ll change the listing of users to an <span class="caps">HTML</span> table, display email addresses and roles, and add buttons to change roles and delete users.</p>
+<h3>Modify the Users#index Page</h3>
+<p>Change the file <strong>app/views/users/index.html.erb</strong> to look like this:</p>
+<pre>
+&lt;h3&gt;Users&lt;/h3&gt;
+&lt;div class="span6"&gt;
+&lt;table class="table table-striped table-condensed"&gt;
+	  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Username&lt;/th&gt;
+          &lt;th&gt;Email&lt;/th&gt;
+          &lt;th&gt;Date registered&lt;/th&gt;
+          &lt;th&gt;Role&lt;/th&gt;
+          &lt;th&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;/th&gt;                                      
+      &lt;/tr&gt;
+  &lt;/thead&gt;   
+  &lt;tbody&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;%= link_to user.name, user %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= user.email %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= user.roles.first.name.titleize unless user.roles.first.nil? %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= link_to("Delete user", user_path(user), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini') unless user == current_user %&gt;&lt;/td&gt;                                       
+    &lt;/tr&gt;
+  &lt;% end %&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</pre>
+<p>We’ve replaced a simple listing with an <span class="caps">HTML</span> table and applied styles from Twitter Bootstrap.</p>
+<p>We now display the user’s email address and the date he or she registered.</p>
+<p>We also display the user’s role, if one has been assigned. When we use Rolify, each user can have multiple roles. We only assign a single role in this application, so we ask for the first role associated with the user. When a role object is displayed as a string, it will be a number, so we ask for the name attribute of the role. Then we capitalize the role name with the <code>titleize</code> method.</p>
+<p>We’ve added a “Delete user” link. The link directs to the User controller and passes the user id as a parameter. Before the action completes, the user must confirm the request in an alert dialog. We include the <code>:method =&gt; :delete</code> parameter so Rails will call the controller’s <code>destroy</code> method. We apply Twitter Bootstrap styles for a miniature button with the <code>class</code> argument. Finally, we don’t display the “Delete user” link for the current user (we don’t allow the administrator to delete self).</p>
+<p>The link doesn’t yet work. We need to add a controller action and a route.</p>
+<h3>Modify the Users Controller</h3>
+<p>We’ll add a <code>destroy</code> action to the Users controller.</p>
+<p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+  
+  def destroy
+    authorize! :destroy, @user, :message =&gt; 'Not authorized as an administrator.'
+    user = User.find(params[:id])
+    unless user == current_user
+      user.destroy
+      redirect_to users_url, :notice =&gt; "User deleted."
+    else
+      redirect_to users_url, :notice =&gt; "Can't delete yourself."
+    end
+  end
+end
+</pre>
+<p>We add a <code>destroy</code> method to the Users controller. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>destroy</code> method. The “Delete user” link on the administrative dashboard won’t display for the administrator’s own account but we take the precaution of making sure we are not deleting the logged-in administrator with the <code>unless user == current_user</code> condition.</p>
+<h3>Add a Route for the Destroy Action</h3>
+<p>Modify the file <strong>config/routes.rb</strong> to include:</p>
+<pre>
+Rails3BootstrapDeviseCancan::Application.routes.draw do
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  root :to =&gt; "home#index"
+  devise_for :users
+  resources :users, :only =&gt; [:show, :index, :destroy]
+end
+</pre>
+<p>We add a <code>:destroy</code> action to the list of resources for <code>users</code>.</p>
+<p>That’s everything we need to give the administrator the power to delete users.</p>
+<h3>Add a “Change Role” Form to the Users#index Page</h3>
+<p>Now let’s give the administrator the power to change a user’s role. In this application, a signed-in administrator will be able upgrade a user to administrator status. If you add additional roles to your application, the administrator will be able to assign the other roles.</p>
+<p>Change the file <strong>app/views/users/index.html.erb</strong> to look like this:</p>
+<pre>
+&lt;h3&gt;Users&lt;/h3&gt;
+&lt;div class="span6"&gt;
+&lt;table class="table table-striped table-condensed"&gt;
+	  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Username&lt;/th&gt;
+          &lt;th&gt;Email&lt;/th&gt;
+          &lt;th&gt;Date registered&lt;/th&gt;
+          &lt;th&gt;Role&lt;/th&gt;
+          &lt;th&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;/th&gt;                                      
+      &lt;/tr&gt;
+  &lt;/thead&gt;   
+  &lt;tbody&gt;
+  &lt;% @users.each do |user| %&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;%= link_to user.name, user %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= user.email %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= user.roles.first.name.titleize unless user.roles.first.nil? %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;a data-toggle="modal" href="#role-options" class="btn btn-mini" type="button"&gt;Change role&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= link_to("Delete user", user_path(user), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini') unless user == current_user %&gt;&lt;/td&gt;                                       
+    &lt;/tr&gt;
+  &lt;% end %&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</pre>
+<p>We add a link that is styled as a Twitter button. The link will open a Twitter Bootstrap modal window labelled “role-options”.</p>
+<p><strong>TO <span class="caps">COME</span>:</strong> Form for changing role.</p>
+<h2>Additional Features</h2>
+<p>You’ve created a fully functional web application that allows visitors to register and sign in, with special access for an administrator.</p>
 <p>There’s much more you can do. For an advanced example, see the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app. The <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">rails-prelaunch-signup tutorial</a> shows how you can use Twitter Bootstrap to add a modal window and <span class="caps">AJAX</span> for a “sign up” form for a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
+<p>If you have suggestions for additional features, please create an <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">issue</a> on GitHub.</p>
 <h2>Cleanup</h2>
 <p>Several unneeded files are generated in the process of creating a new Rails application.</p>
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
