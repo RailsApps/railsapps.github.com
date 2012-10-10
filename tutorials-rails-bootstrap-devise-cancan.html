@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 8 October 2012</em></p>
+<p><em>Last updated 9 October 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul>
 <li>
@@ -574,7 +574,7 @@ $ bundle exec rake db:migrate
 $ bundle exec rake db:test:prepare
 </pre>
 <h3>Modify the User Model</h3>
-<p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of update_attributes(attrs) and new(attrs). Devise already added this to the <strong>models/user.rb</strong> file:</p>
+<p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of <code>update_attributes(attrs)</code> or <code>new(attrs)</code>. Devise already added this to the <strong>models/user.rb</strong> file:</p>
 <pre>
 attr_accessible :email, :password, :password_confirmation, :remember_me
 </pre>
@@ -665,9 +665,10 @@ end
 &lt;% end %&gt;
 </pre>
 <p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
-<h2>Create a Default User</h2>
+<h2>Create Default Users and Roles</h2>
 <h3>Set Up a Database Seed File</h3>
-<p>You’ll want to set up a default user so you can test the app. Modify the file <strong>db/seeds.rb</strong> by adding:</p>
+<p>You’ll want to set up default users so you can test the application.</p>
+<p>The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
@@ -676,26 +677,48 @@ user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com'
 puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 </pre>
-<p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
+<p>First we’ll add a list of roles. One role will be “admin,” for an adminstrator. We’ll create two additional roles, “user” and “<span class="caps">VIP</span>.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
+<p>Then we’ll add two default users. The first will be an administrator. The second will be designated a <span class="caps">VIP</span>.</p>
+<p>Replace <strong>db/seeds.rb</strong> with:</p>
 <pre>
+puts 'CREATING ROLES'
+Role.create([
+  { :name =&gt; 'admin' }, 
+  { :name =&gt; 'user' }, 
+  { :name =&gt; 'VIP' }
+], :without_protection =&gt; true)
 puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
+user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please', :confirmed_at =&gt; DateTime.now
-puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
+user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'New user created: ' &lt;&lt; user2.name
+user.add_role :VIP
 </pre>
 <p>You can change the values for name, email, and password as you wish.</p>
+<p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
+<p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
+<p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles. Any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>.</p>
 <h3>Seed the Database</h3>
-<p>Add the default user to the database by running the command:</p>
-<p><code>$ bundle exec rake db:seed</code></p>
-<p>If you need to, you can run <code>$ bundle exec rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
+<p>Initialize the database by running:</p>
+<pre>
+$ rake db:migrate
+$ rake db:seed
+</pre>
+<p>You can run <code>$ rake db:reset</code> whenever you need to recreate the database:</p>
+<pre>
+$ rake db:reset
+</pre>
+<p>You should set up the database for the test environment:</p>
+<pre>
+$ rake db:test:prepare
+</pre>
+<p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
 <pre>
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </pre>
 <h3>Test the App</h3>
-<p>At this point, you may want to know if the default user has been saved to the database.</p>
 <p>You can check that your app runs properly by entering the command</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
@@ -838,12 +861,12 @@ end
 <pre>
 &lt;h3&gt;Users&lt;/h3&gt;
 &lt;div class="span6"&gt;
-&lt;table class="table table-striped table-condensed"&gt;
+&lt;table class="table table-condensed"&gt;
 	  &lt;thead&gt;
       &lt;tr&gt;
           &lt;th&gt;Username&lt;/th&gt;
           &lt;th&gt;Email&lt;/th&gt;
-          &lt;th&gt;Date registered&lt;/th&gt;
+          &lt;th&gt;Registered&lt;/th&gt;
           &lt;th&gt;Role&lt;/th&gt;
           &lt;th&gt;&lt;/th&gt;
           &lt;th&gt;&lt;/th&gt;                                      
@@ -856,6 +879,10 @@ end
         &lt;td&gt;&lt;%= user.email %&gt;&lt;/td&gt;
         &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
         &lt;td&gt;&lt;%= user.roles.first.name.titleize unless user.roles.first.nil? %&gt;&lt;/td&gt;
+        &lt;td&gt;
+          &lt;a data-toggle="modal" href="#role-options-&lt;%= user.id %&gt;" class="btn btn-mini" type="button"&gt;Change role&lt;/a&gt;
+          &lt;%= render user %&gt;
+        &lt;/td&gt;
         &lt;td&gt;&lt;%= link_to("Delete user", user_path(user), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini') unless user == current_user %&gt;&lt;/td&gt;                                       
     &lt;/tr&gt;
   &lt;% end %&gt;
@@ -864,12 +891,63 @@ end
 &lt;/div&gt;
 </pre>
 <p>We’ve replaced a simple listing with an <span class="caps">HTML</span> table and applied styles from Twitter Bootstrap.</p>
-<p>We now display the user’s email address and the date he or she registered.</p>
+<p>We display the user’s email address and the date he or she registered.</p>
 <p>We also display the user’s role, if one has been assigned. When we use Rolify, each user can have multiple roles. We only assign a single role in this application, so we ask for the first role associated with the user. When a role object is displayed as a string, it will be a number, so we ask for the name attribute of the role. Then we capitalize the role name with the <code>titleize</code> method.</p>
+<p>We’ve added a “Change role” link that is styled as a Twitter button. The link will open a Twitter Bootstrap modal window labeled “role-options” with an appended integer that corresponds to the user id (it will look like <code>role-options-1</code> in the <span class="caps">HTML</span> source code). You won’t see the code for the modal window and form in this template file; instead we’ll use the <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">template partial</a> <code>&lt;%= render user %&gt;</code> to incorporate an individualized “Change role” form for each listed user. We’ll add the partial soon.</p>
 <p>We’ve added a “Delete user” link. The link directs to the User controller and passes the user id as a parameter. Before the action completes, the user must confirm the request in an alert dialog. We include the <code>:method =&gt; :delete</code> parameter so Rails will call the controller’s <code>destroy</code> method. We apply Twitter Bootstrap styles for a miniature button with the <code>class</code> argument. Finally, we don’t display the “Delete user” link for the current user (we don’t allow the administrator to delete self).</p>
-<p>The link doesn’t yet work. We need to add a controller action and a route.</p>
-<h3>Modify the Users Controller</h3>
-<p>We’ll add a <code>destroy</code> action to the Users controller.</p>
+<p>We’ll need to add controller actions and routes before the new buttons will work.</p>
+<p>First we’ll add a template partial that contains a “Change role” form.</p>
+<h3>Add a “Change Role” Partial</h3>
+<p>Our administrative dashboard contains a “Change role” button. We’ll add a partial that contains a “Change role” form.</p>
+<p>Create a file (don’t overlook the leading underscore in the filename) <strong>app/views/users/_user.html.erb</strong> :</p>
+<pre>
+&lt;div id="role-options-&lt;%= user.id %&gt;" class="modal" style="display: none;"&gt;
+  &lt;%= simple_form_for user, :url =&gt; user_path(user), :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
+      &lt;h3&gt;Change Role&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+      &lt;%= f.input :role_ids, :collection =&gt; Role.all, :as =&gt; :radio_buttons, :label_method =&gt; lambda {|t| t.name.titleize}, :label =&gt; false, :item_wrapper_class =&gt; 'inline' %&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;%= f.submit "Change Role", :class =&gt; "btn" %&gt;
+      &lt;a class="btn" data-dismiss="modal" href="#"&gt;Close&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
+&lt;/div&gt;
+</pre>
+<p>This contains some of the most complex code in the application.</p>
+<h3>Modify the User Model for Administrative Updates</h3>
+<p>The <strong>models/user.rb</strong> file contains an <code>attr_accessible</code> statement that prevents malicious hackers from creating fake web forms that could chnage passwords or user roles through the mass-assignment operations of <code>update_attributes</code> or <code>new</code>:</p>
+<pre>
+attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+</pre>
+<p>We need to modify the User model to give an administrator the power to change a user’s role. Rails gives us a mechanism to override the <code>attr_accessible</code> limits.</p>
+<p>Modify the <strong>models/user.rb</strong> file:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :role_ids, :as =&gt; :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  
+end
+</pre>
+<p>We add the statement:</p>
+<pre>
+attr_accessible :role_ids, :as =&gt; :admin
+</pre>
+<p>This statement allows us to add a matching <code>:as =&gt; :admin</code> argument to the User’s <code>update_attributes</code> method called in a controller. It means we can “special case” the role id mass-assignment restriction as necessary.</p>
+<p>We’ll use the special case when we add an <code>update</code> action to the Users controller.</p>
+<h3>Add Destroy and Update Actions to the Users Controller</h3>
+<p>We’ll add <code>destroy</code> and <code>update</code> actions to the Users controller.</p>
 <p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
 <pre>
 class UsersController &lt; ApplicationController
@@ -884,20 +962,32 @@ class UsersController &lt; ApplicationController
     @user = User.find(params[:id])
   end
   
+  def update
+    authorize! :update, @user, :message =&gt; 'Not authorized as an administrator.'
+    @user = User.find(params[:id])
+    if @user.update_attributes(params[:user], :as =&gt; :admin)
+      redirect_to users_path, :notice =&gt; "User updated."
+    else
+      redirect_to users_path, :alert =&gt; "Unable to update user."
+    end
+  end
+    
   def destroy
     authorize! :destroy, @user, :message =&gt; 'Not authorized as an administrator.'
     user = User.find(params[:id])
     unless user == current_user
       user.destroy
-      redirect_to users_url, :notice =&gt; "User deleted."
+      redirect_to users_path, :notice =&gt; "User deleted."
     else
-      redirect_to users_url, :notice =&gt; "Can't delete yourself."
+      redirect_to users_path, :notice =&gt; "Can't delete yourself."
     end
   end
 end
 </pre>
+<p>We add an <code>update</code> method to the Users controller. The <code>update</code> action responds to the “Change role” form submission. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>update_attributes</code> method. We pass the parameters from the form with the special argument <code>:as =&gt; :admin</code>. This is how we let the User model know that we want to override the mass-assignment restrictions set by the <code>attr_accessible</code> statement in the User model.</p>
 <p>We add a <code>destroy</code> method to the Users controller. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>destroy</code> method. The “Delete user” link on the administrative dashboard won’t display for the administrator’s own account but we take the precaution of making sure we are not deleting the logged-in administrator with the <code>unless user == current_user</code> condition.</p>
-<h3>Add a Route for the Destroy Action</h3>
+<p>Either action will result in a return to the administrative dashboard page with an appropriate confirmation message or error message. But first we need to add appropriate routes for these new actions.</p>
+<h3>Add Routes for the Destroy and Update Actions</h3>
 <p>Modify the file <strong>config/routes.rb</strong> to include:</p>
 <pre>
 Rails3BootstrapDeviseCancan::Application.routes.draw do
@@ -906,45 +996,11 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
   end
   root :to =&gt; "home#index"
   devise_for :users
-  resources :users, :only =&gt; [:show, :index, :destroy]
+  resources :users, :only =&gt; [:show, :index, :update, :destroy]
 end
 </pre>
-<p>We add a <code>:destroy</code> action to the list of resources for <code>users</code>.</p>
-<p>That’s everything we need to give the administrator the power to delete users.</p>
-<h3>Add a “Change Role” Form to the Users#index Page</h3>
-<p>Now let’s give the administrator the power to change a user’s role. In this application, a signed-in administrator will be able upgrade a user to administrator status. If you add additional roles to your application, the administrator will be able to assign the other roles.</p>
-<p>Change the file <strong>app/views/users/index.html.erb</strong> to look like this:</p>
-<pre>
-&lt;h3&gt;Users&lt;/h3&gt;
-&lt;div class="span6"&gt;
-&lt;table class="table table-striped table-condensed"&gt;
-	  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Username&lt;/th&gt;
-          &lt;th&gt;Email&lt;/th&gt;
-          &lt;th&gt;Date registered&lt;/th&gt;
-          &lt;th&gt;Role&lt;/th&gt;
-          &lt;th&gt;&lt;/th&gt;
-          &lt;th&gt;&lt;/th&gt;                                      
-      &lt;/tr&gt;
-  &lt;/thead&gt;   
-  &lt;tbody&gt;
-  &lt;% @users.each do |user| %&gt;
-    &lt;tr&gt;
-        &lt;td&gt;&lt;%= link_to user.name, user %&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;%= user.email %&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;%= user.created_at.to_date %&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;%= user.roles.first.name.titleize unless user.roles.first.nil? %&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;a data-toggle="modal" href="#role-options" class="btn btn-mini" type="button"&gt;Change role&lt;/a&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;%= link_to("Delete user", user_path(user), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini') unless user == current_user %&gt;&lt;/td&gt;                                       
-    &lt;/tr&gt;
-  &lt;% end %&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-</pre>
-<p>We add a link that is styled as a Twitter button. The link will open a Twitter Bootstrap modal window labelled “role-options”.</p>
-<p><strong>TO <span class="caps">COME</span>:</strong> Form for changing role.</p>
+<p>We add <code>:destroy</code> and <code>:update</code> actions to the list of resources for <code>users</code>.</p>
+<p>That’s everything we need to give the administrator the power to delete users or change roles.</p>
 <h2>Additional Features</h2>
 <p>You’ve created a fully functional web application that allows visitors to register and sign in, with special access for an administrator.</p>
 <p>There’s much more you can do. For an advanced example, see the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app. The <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">rails-prelaunch-signup tutorial</a> shows how you can use Twitter Bootstrap to add a modal window and <span class="caps">AJAX</span> for a “sign up” form for a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
