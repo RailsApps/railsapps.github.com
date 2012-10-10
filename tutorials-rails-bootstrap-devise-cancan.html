@@ -917,7 +917,17 @@ end
   &lt;% end %&gt;
 &lt;/div&gt;
 </pre>
-<p>This contains some of the most complex code in the application.</p>
+<p>We wrap this form in a div designated with the Twitter Bootstrap “modal” class. It will be displayed as an overlay when the administrator clicks the “Change role” button.</p>
+<p>We bind the form to the User object. <a href="http://guides.rubyonrails.org/form_helpers.html#binding-a-form-to-an-object">Binding the form to the object</a> means the values for the form fields will be set with the attributes stored in the database. The <code>user_path(user)</code> route helper will send the submitted form to the Users controller supplying the user id in the form parameters. The <code>put</code> method ensures that the form is processed as an <span class="caps">HTTP</span> <span class="caps">PUT</span> request. We style the form with the Twitter Bootstrap “form-horizontal” class.</p>
+<p>The form has a section named “modal-header” that contains a link to close the modal window. We follow Twitter Bootstrap’s example and use <span class="caps">HTML</span> entity #215 (an “x” character) for the link.</p>
+<p>The next section is named “modal-body” and it contains some of the most complex code we’ll use in this application.</p>
+<p>We want to display a set of radio buttons that display a collection of all the subscription plans and, when selected, set a role id. A user’s subscription plan is encoded as a role id. Role ids are nested attributes of a User object and can be set as <code>user.role_ids</code>. So <code>role_ids</code> is the first parameter we pass to the input field helper.</p>
+<p>The input field helper wants a collection as the second parameter. We supply <code>Role.all</code> to provide a list of all the possible roles.</p>
+<p>We tell the input field helper we want to display the selection field as radio buttons. The <code>:item_wrapper_class =&gt; 'inline'</code> will display the radio buttons and labels horizontally.</p>
+<p>The simple_form <code>label_method</code> parameter allows us to set a label for each radio button. If we didn’t set the <code>label_method</code>, the radio buttons would be labeled with an integer. We need to obtain the name attribute of each role and then apply the <code>titleize</code> method to display titlecase. The <code>label_method</code> parameter does not take a block but we can use a programming construct called an anonymous function (a Ruby language “lambda”) to manipulate the Role instance, obtaining the name attribute and making it titlecase, before passing it to the <code>label_method</code> parameter. This is a bit of advanced Ruby magic that is particularly useful here.</p>
+<p>Confusingly, we set the <code>label</code> parameter to false. If we didn’t do this, the entire field would be automatically labelled “Roles.”</p>
+<p>Finally, the form has a section named “modal-footer” that contains a submit button and another link to close the modal window.</p>
+<p>With the “Change role” form in place, we can modify the User model, controller and routes to handle the form submission.</p>
 <h3>Modify the User Model for Administrative Updates</h3>
 <p>The <strong>models/user.rb</strong> file contains an <code>attr_accessible</code> statement that prevents malicious hackers from creating fake web forms that could chnage passwords or user roles through the mass-assignment operations of <code>update_attributes</code> or <code>new</code>:</p>
 <pre>
@@ -946,8 +956,8 @@ attr_accessible :role_ids, :as =&gt; :admin
 </pre>
 <p>This statement allows us to add a matching <code>:as =&gt; :admin</code> argument to the User’s <code>update_attributes</code> method called in a controller. It means we can “special case” the role id mass-assignment restriction as necessary.</p>
 <p>We’ll use the special case when we add an <code>update</code> action to the Users controller.</p>
-<h3>Add Destroy and Update Actions to the Users Controller</h3>
-<p>We’ll add <code>destroy</code> and <code>update</code> actions to the Users controller.</p>
+<h3>Add Update and Destroy Actions to the Users Controller</h3>
+<p>We’ll add <code>update</code> and <code>destroy</code> actions to the Users controller.</p>
 <p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
 <pre>
 class UsersController &lt; ApplicationController
@@ -987,7 +997,7 @@ end
 <p>We add an <code>update</code> method to the Users controller. The <code>update</code> action responds to the “Change role” form submission. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>update_attributes</code> method. We pass the parameters from the form with the special argument <code>:as =&gt; :admin</code>. This is how we let the User model know that we want to override the mass-assignment restrictions set by the <code>attr_accessible</code> statement in the User model.</p>
 <p>We add a <code>destroy</code> method to the Users controller. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>destroy</code> method. The “Delete user” link on the administrative dashboard won’t display for the administrator’s own account but we take the precaution of making sure we are not deleting the logged-in administrator with the <code>unless user == current_user</code> condition.</p>
 <p>Either action will result in a return to the administrative dashboard page with an appropriate confirmation message or error message. But first we need to add appropriate routes for these new actions.</p>
-<h3>Add Routes for the Destroy and Update Actions</h3>
+<h3>Add Routes for the Update and Destroy Actions</h3>
 <p>Modify the file <strong>config/routes.rb</strong> to include:</p>
 <pre>
 Rails3BootstrapDeviseCancan::Application.routes.draw do
@@ -1001,6 +1011,7 @@ end
 </pre>
 <p>We add <code>:destroy</code> and <code>:update</code> actions to the list of resources for <code>users</code>.</p>
 <p>That’s everything we need to give the administrator the power to delete users or change roles.</p>
+<p>Your application is ready to customize and deploy!</p>
 <h2>Additional Features</h2>
 <p>You’ve created a fully functional web application that allows visitors to register and sign in, with special access for an administrator.</p>
 <p>There’s much more you can do. For an advanced example, see the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app. The <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">rails-prelaunch-signup tutorial</a> shows how you can use Twitter Bootstrap to add a modal window and <span class="caps">AJAX</span> for a “sign up” form for a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
@@ -1031,7 +1042,7 @@ end
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">Issue</a> on GitHub.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">issue</a> on GitHub.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
