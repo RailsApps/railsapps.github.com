@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Send Email with Rails &#183; RailsApps &#183; RailsApps</title>
+    <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/site.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/syntax.css" type="text/css" charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/gollum.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5109366-14']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a href="http://railsapps.github.com/" class="brand">RailsApps Project</a>
+        <ul class="pull-right nav">
+          <li><a href="http://blog.railsapps.org/" class="twitter">Blog</a></li>
+          <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
+          <li><a href="https://plus.google.com/117374718581973393536" class="google">Google +</a></li>
+          <li><a href="https://github.com/RailsApps" class="github">GitHub Repository</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container"> 
+
+    <div class="content wikistyle gollum textile">
+      <h1>Send Email with Rails</h1>
+<h4>by Daniel Kehoe</h4>
+<p><em>Last updated 10 October 2012</em></p>
+<p>Sending email from a Ruby on Rails application. How to configure Rails to send email using Gmail or Mandrill accounts.</p>
+<p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well. You can use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to set up email for a starter application.</p>
+<h2>Configure Email</h2>
+<p>You must configure your application for your email account if you want your application to send email messages.</p>
+<h3>Configure ActionMailer</h3>
+<p>Remove the following from the <strong>config/environments/development.rb</strong> file:</p>
+<pre>
+# Don't care if the mailer can't send
+config.action_mailer.raise_delivery_errors = false
+</pre>
+<p>Add the following to the <strong>config/environments/development.rb</strong> file:</p>
+<pre>
+# ActionMailer Config
+config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
+config.action_mailer.delivery_method = :smtp
+# change to false to prevent email from being sent during development
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.default :charset =&gt; "utf-8"
+</pre>
+<p>Add the following to the <strong>config/environments/production.rb</strong> file:</p>
+<pre>
+config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
+# ActionMailer Config
+# Setup for production - deliveries, no errors raised
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = false
+config.action_mailer.default :charset =&gt; "utf-8"
+</pre>
+<p>Add the following to the <strong>config/environments/test.rb</strong> file:</p>
+<pre>
+# ActionMailer Config
+config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
+</pre>
+<p>This will set the example application to deliver email in both development and production. It will raise delivery errors in development but not production.</p>
+<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly during development.</p>
+<p>For testing, <code>config.action_mailer.default_url_options</code> is set for a host at <code>example.com</code>. Any value allows tests to run.</p>
+<p>For production, you’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain.</p>
+<h3>Use a Gmail account</h3>
+<p>If you want to use a Gmail account to send email, you’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
+<pre>
+config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "example.com",
+  authentication: "plain",
+  enable_starttls_auto: true,
+  user_name: ENV["GMAIL_USERNAME"],
+  password: ENV["GMAIL_PASSWORD"]
+}
+</pre>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
+<p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
+<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add:</p>
+<pre>
+export GMAIL_USERNAME="myname@gmail.com"
+export GMAIL_PASSWORD="secret*"
+</pre>
+<p>Open a new shell or restart your terminal application to continue.</p>
+<h2>Credits</h2>
+<p>Daniel Kehoe wrote the article.</p>
+<h2 id="comment">Did You Like the Article?</h2>
+<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
+<p>Any issues? Please leave a comment below.</p>
+    </div><!-- class="content" -->
+    
+    <div class="comments">
+      <div class="content wikistyle gollum">
+        <h2>Comments</h2>
+      </div>
+      <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p> 
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div><!-- class="comments" -->
+
+    <div class="footer row">
+      <div class="span4">
+      </div>
+    
+      <div class="span4">
+       </div>
+
+      <div class="span4">
+      </div>
+    </div>
+
+  </div>
+            
+  </body>
+</html>
