@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 October 2012</em></p>
+<p><em>Last updated 11 October 2012</em></p>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul>
 <li>
@@ -90,66 +90,15 @@
 <h3>Fork</h3>
 <p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
 <h3>Clone</h3>
-<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
+<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below). To clone:</p>
+<pre>
+$ git clone git://github.com/RailsApps/rails3-bootstrap-devise-cancan.git
+</pre>
+
+<p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
 <h3>Generate</h3>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the complete example application immediately, run the command:</p>
-<pre>
-$ rails new rails3-bootstrap-devise-cancan -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
-</pre>
-<p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
-<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails3-bootstrap-devise-cancan</code> on your computer. You can use a different name if you wish.</p>
-<p>You’ll see a prompt:</p>
-<pre>
-question  Install an example application?
-      1)  I want to build my own application
-      2)  rails3-bootstrap-devise-cancan
-      3)  rails3-devise-rspec-cucumber
-      4)  rails3-mongoid-devise
-      5)  rails3-mongoid-omniauth
-      6)  rails3-subdomains
-</pre>
-<p>Choose <strong>rails3-bootstrap-devise-cancan</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written).</p>
-<p>The application generator template will ask you for additional preferences:</p>
-<pre>
- question  Web server for development?
-       1)  WEBrick (default)
-       2)  Thin
-       3)  Unicorn
-       4)  Puma
- question  Web server for production?
-       1)  Same as development
-       2)  Thin
-       3)  Unicorn
-       4)  Puma
- question  Template engine?
-       1)  ERB
-       2)  Haml
-       3)  Slim
-   extras  Set a robots.txt file to ban spiders? (y/n)
-   extras  Create a project-specific rvm gemset and .rvmrc? (y/n)
-   extras  Create a GitHub repository? (y/n)
-</pre>
-<h4>Web Servers</h4>
-<p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
-<h4>Template Engine</h4>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
-<h4>Other Choices</h4>
-<p>Don’t set a robots.txt file to ban spiders if you want your new site to appear in Google search results.</p>
-<p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file. See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
-<p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
-<h4>Troubleshooting</h4>
-<p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
-<p>If you get an error like this:</p>
-<pre>
-Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
-    composer  Running 'after bundler' callbacks.
-The template [...] could not be loaded.
-Error: You have already activated ..., but your Gemfile requires .... 
-Using bundle exec may solve this.
-</pre>
-<p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
+<p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> example application.</p>
 <h2>Testing and the Software Development Process</h2>
 <p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code.</p>
 <p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
@@ -665,6 +614,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
 <p>Stop the server with Control-C.</p>
+<p>If you test the app by starting the web server and then leave the server running while you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. Stop the server each time after testing and you will avoid this issue.</p>
 <h2>Add Links to Users on the Home Page</h2>
 <p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
 <pre>
