@@ -754,9 +754,9 @@ get "users/show"
 <pre>
 root :to =&gt; "home#index"
 devise_for :users
-resources :users, :only =&gt; [:show, :index]
+resources :users
 </pre>
-<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users, :only =&gt; [:show, :index]</code>.</p>
+<p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users</code>.</p>
 <h3>Set Up the Users#Show Page</h3>
 <p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
 <pre>
@@ -895,7 +895,7 @@ end
 <p>We also display the user’s role, if one has been assigned. When we use Rolify, each user can have multiple roles. We only assign a single role in this application, so we ask for the first role associated with the user. When a role object is displayed as a string, it will be a number, so we ask for the name attribute of the role. Then we capitalize the role name with the <code>titleize</code> method.</p>
 <p>We’ve added a “Change role” link that is styled as a Twitter button. The link will open a Twitter Bootstrap modal window labeled “role-options” with an appended integer that corresponds to the user id (it will look like <code>role-options-1</code> in the <span class="caps">HTML</span> source code). You won’t see the code for the modal window and form in this template file; instead we’ll use the <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">template partial</a> <code>&lt;%= render user %&gt;</code> to incorporate an individualized “Change role” form for each listed user. We’ll add the partial soon.</p>
 <p>We’ve added a “Delete user” link. The link directs to the User controller and passes the user id as a parameter. Before the action completes, the user must confirm the request in an alert dialog. We include the <code>:method =&gt; :delete</code> parameter so Rails will call the controller’s <code>destroy</code> method. We apply Twitter Bootstrap styles for a miniature button with the <code>class</code> argument. Finally, we don’t display the “Delete user” link for the current user (we don’t allow the administrator to delete self).</p>
-<p>We’ll need to add controller actions and routes before the new buttons will work.</p>
+<p>We’ll need to add controller actions before the new buttons will work.</p>
 <p>First we’ll add a template partial that contains a “Change role” form.</p>
 <h3>Add a “Change Role” Partial</h3>
 <p>Our administrative dashboard contains a “Change role” button. We’ll add a partial that contains a “Change role” form.</p>
@@ -927,7 +927,7 @@ end
 <p>The simple_form <code>label_method</code> parameter allows us to set a label for each radio button. If we didn’t set the <code>label_method</code>, the radio buttons would be labeled with an integer. We need to obtain the name attribute of each role and then apply the <code>titleize</code> method to display titlecase. The <code>label_method</code> parameter does not take a block but we can use a programming construct called an anonymous function (a Ruby language “lambda”) to manipulate the Role instance, obtaining the name attribute and making it titlecase, before passing it to the <code>label_method</code> parameter. This is a bit of advanced Ruby magic that is particularly useful here.</p>
 <p>Confusingly, we set the <code>label</code> parameter to false. If we didn’t do this, the entire field would be automatically labelled “Roles.”</p>
 <p>Finally, the form has a section named “modal-footer” that contains a submit button and another link to close the modal window.</p>
-<p>With the “Change role” form in place, we can modify the User model, controller and routes to handle the form submission.</p>
+<p>With the “Change role” form in place, we can modify the User model and controller to handle the form submission.</p>
 <h3>Modify the User Model for Administrative Updates</h3>
 <p>The <strong>models/user.rb</strong> file contains an <code>attr_accessible</code> statement that prevents malicious hackers from creating fake web forms that could chnage passwords or user roles through the mass-assignment operations of <code>update_attributes</code> or <code>new</code>:</p>
 <pre>
@@ -996,20 +996,9 @@ end
 </pre>
 <p>We add an <code>update</code> method to the Users controller. The <code>update</code> action responds to the “Change role” form submission. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>update_attributes</code> method. We pass the parameters from the form with the special argument <code>:as =&gt; :admin</code>. This is how we let the User model know that we want to override the mass-assignment restrictions set by the <code>attr_accessible</code> statement in the User model.</p>
 <p>We add a <code>destroy</code> method to the Users controller. We use the CanCan <code>authorize!</code> method to limit use to only an administrator. We find the user specified by a parameter. Then we call the user model’s <code>destroy</code> method. The “Delete user” link on the administrative dashboard won’t display for the administrator’s own account but we take the precaution of making sure we are not deleting the logged-in administrator with the <code>unless user == current_user</code> condition.</p>
-<p>Either action will result in a return to the administrative dashboard page with an appropriate confirmation message or error message. But first we need to add appropriate routes for these new actions.</p>
-<h3>Add Routes for the Update and Destroy Actions</h3>
-<p>Modify the file <strong>config/routes.rb</strong> to include:</p>
-<pre>
-Rails3BootstrapDeviseCancan::Application.routes.draw do
-  authenticated :user do
-    root :to =&gt; 'home#index'
-  end
-  root :to =&gt; "home#index"
-  devise_for :users
-  resources :users, :only =&gt; [:show, :index, :update, :destroy]
-end
-</pre>
-<p>We add <code>:destroy</code> and <code>:update</code> actions to the list of resources for <code>users</code>.</p>
+<p>Either action will result in a return to the administrative dashboard page with an appropriate confirmation message or error message.</p>
+<h3>Routes for the Update and Destroy Actions</h3>
+<p>There’s no need to modify the routes file to include the new actions. The <code>destroy</code> and <code>update</code> actions are automatically generated by the <code>resources :users</code> route in the file <strong>config/routes.rb</strong>.</p>
 <p>That’s everything we need to give the administrator the power to delete users or change roles.</p>
 <p>Your application is ready to customize and deploy!</p>
 <h2>Additional Features</h2>

@@ -762,7 +762,7 @@ RailsPrelaunchSignup::Application.routes.draw do
     root :to =&gt; "devise/registrations#new"
   end
   devise_for :users
-  resources :users, :only =&gt; [:show, :index]
+  resources :users
 end
 </pre>
 <p>With this change, casual visitors will see a “Request Invitation” form on the home page. And users who log in (presumably only an administrator or invited guests) will see the application “home#index” page.</p>
@@ -1746,9 +1746,9 @@ end
 <p>CanCan’s <code>authorize!</code> method ensures that only an administrator is authorized to initiate the <code>invite</code> action.</p>
 <p>The <code>invite</code> action will use Devise’s supplied <code>send_confirmation_instructions</code> method to generate a confirmation token and send an email to the selected user. Then it will redirect the administrator back to a previous page. The redirect method takes an extra argument <code>:only_path =&gt; true</code> to avoid a potential security vulnerability. Without this precaution, the <a href="http://brakemanscanner.org/">Brakeman</a> security scanner warns of <a href="http://brakemanscanner.org/docs/warning_types/redirect/">unvalidated redirects</a>.</p>
 <h3>Add a Route</h3>
-<p>Modify <strong>config/routes.rb</strong> to add the new action. Replace <code>resources :users, :only =&gt; [:show, :index]</code> with:</p>
+<p>Modify <strong>config/routes.rb</strong> to add the new action. Replace <code>resources :users</code> with:</p>
 <pre>
-resources :users, :only =&gt; [:show, :index] do
+resources :users do
   get 'invite', :on =&gt; :member
 end
 </pre>
@@ -1933,7 +1933,7 @@ RailsPrelaunchSignup::Application.routes.draw do
   end
   devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations" }
   match 'users/bulk_invite/:quantity' =&gt; 'users#bulk_invite', :via =&gt; :get, :as =&gt; :bulk_invite
-  resources :users, :only =&gt; [:show, :index] do
+  resources :users do
     get 'invite', :on =&gt; :member
   end
 end
@@ -2201,7 +2201,7 @@ RailsPrelaunchSignup::Application.routes.draw do
   end
   devise_for :users, :controllers =&gt; { :registrations =&gt; "registrations", :confirmations =&gt; "confirmations" }
   match 'users/bulk_invite/:quantity' =&gt; 'users#bulk_invite', :via =&gt; :get, :as =&gt; :bulk_invite
-  resources :users, :only =&gt; [:show, :index] do
+  resources :users do
     get 'invite', :on =&gt; :member
   end
 end
