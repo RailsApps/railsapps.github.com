@@ -459,6 +459,8 @@ $ rails generate rolify:role Role User mongoid
 class Role &lt; ActiveRecord::Base
   has_and_belongs_to_many :users, :join_table =&gt; :users_roles
   belongs_to :resource, :polymorphic =&gt; true
+  
+  scopify
 end
 </pre>
 <p>These few steps with CanCan and Rolify implement role-based authorization in our application. We’ll use the authorization options provided by CanCan and Rolify when we add an administrative page with corresponding links.</p>
@@ -471,8 +473,8 @@ rails generate migration AddNameToUsers name:string
 </pre>
 <p>Run the migration and prepare the test database to pick up the “name” field:</p>
 <pre>
-$ bundle exec rake db:migrate
-$ bundle exec rake db:test:prepare
+$ rake db:migrate
+$ rake db:test:prepare
 </pre>
 <h3>Modify the User Model</h3>
 <p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of <code>update_attributes(attrs)</code> or <code>new(attrs)</code>. Devise already added this to the <strong>models/user.rb</strong> file:</p>
@@ -530,19 +532,21 @@ validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 <p>Delete the default home page from your application:</p>
 <p><code>$ rm public/index.html</code></p>
 <h3>Create a Home Controller and View</h3>
-<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page. Specify <code>--no-controller-specs</code> to avoid overwriting the RSpec files you’ve already downloaded.</p>
-<p><code>$ rails generate controller home index --no-controller-specs</code></p>
+<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page:</p>
+<p><code>$ rails generate controller home index --no-controller-specs --skip-stylesheets --skip-javascripts</code></p>
+<p>Specify <code>--no-controller-specs</code>. You can add the RSpec files from the example application later. We’ll use <code>--skip-stylesheets --skip-javascripts</code> to avoid cluttering our application with stylesheet and JavaScript files we don’t need.</p>
 <p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
 <p><strong>app/views/home/index.html.erb</strong></p>
-<p>Next, set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
-<p><code>get "home/index"</code></p>
-<p>with</p>
+<p>Next, set a route to your home page.</p>
+<p>Modify the file <strong>config/routes.rb</strong> so it looks like this:</p>
 <pre>
-authenticated :user do
-  root :to =&gt; 'home#index'
+Rails3BootstrapDeviseCancan::Application.routes.draw do
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  root :to =&gt; "home#index"
+  devise_for :users
 end
-
-root :to =&gt; "home#index"
 </pre>
 <p>If you examine this code, you’ll see that authenticated users (those who have an account and are logged in) will see the home/index page as the application root (or home) page. And all other users (those who don’t have an account or who are not logged in) will see the same home page. The redundancy serves a didactic purpose: If you decide you want  users to see a different page when they log in, you now know exactly where to change it.</p>
 <p>By default, Devise will redirect to the root_path after successful sign in or sign out. It is easy to change the root_path as shown in the <strong>config/routes.rb</strong> file. Alternatively, you can override the Devise methods <code>after_sign_in_path_for</code> and <code>after_sign_out_path_for</code> as described in the Devise wiki article <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-out">How To Redirect to a Specific Page</a>.</p>
