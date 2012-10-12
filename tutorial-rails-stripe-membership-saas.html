@@ -369,20 +369,21 @@ group :assets do
 end
 gem 'jquery-rails'
 gem "rspec-rails", "&gt;= 2.11.0", :group =&gt; [:development, :test]
-gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
 gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
 gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test, :require =&gt; false
-gem "database_cleaner", "&gt;= 0.8.0", :group =&gt; :test
+gem "database_cleaner", "&gt;= 0.9.1", :group =&gt; :test
 gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
-gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
+gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
+gem "factory_girl_rails", "&gt;= 4.1.0", :group =&gt; [:development, :test]
 gem "bootstrap-sass", "&gt;= 2.1.0.0"
 gem "devise", "&gt;= 2.1.2"
 gem "cancan", "&gt;= 1.6.8"
 gem "rolify", "&gt;= 3.2.0"
+gem "simple_form", "&gt;= 2.0.4"
+gem "quiet_assets", "&gt;= 1.0.1", :group =&gt; :development
 </pre>
 <p>Add the following gems which will be needed for the rails-stripe-membership-saas application:</p>
 <pre>
-gem "simple_form"
 gem "stripe"
 gem "stripe_event"
 </pre>
@@ -408,20 +409,10 @@ $ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
 <h2>Configure Email</h2>
-<p>You can configure the app for your email account so your application can send email messages.</p>
-<p>The starter app script sets up a default email configuration. You must add details about your email account.</p>
+<p>The starter app script sets up a default email configuration. You must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
 <h3>Configure ActionMailer</h3>
-<p>ActionMailer is configured for development in the <strong>config/environments/development.rb</strong> file:</p>
-<pre>
-# ActionMailer Config
-config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
-config.action_mailer.delivery_method = :smtp
-# change to true to allow email to be sent during development
-config.action_mailer.perform_deliveries = false
-config.action_mailer.raise_delivery_errors = true
-config.action_mailer.default :charset =&gt; "utf-8"
-</pre>
-<p>ActionMailer is configured for production in the <strong>config/environments/production.rb</strong> file:</p>
+<p>The starter app has already configured ActionMailer but you must set your email account details.</p>
+<p>Repalce <code>example.com</code> in the <strong>config/environments/production.rb</strong> file:</p>
 <pre>
 config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
 # ActionMailer Config
@@ -431,18 +422,11 @@ config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
-<p>ActionMailer is configured for testing in  the <strong>config/environments/test.rb</strong> file:</p>
-<pre>
-# ActionMailer Config
-config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
-</pre>
-<p>This will set the example application to deliver email in production. Email messages are visible in the log file so there is no need to send email in development. The configuration above will raise delivery errors in development but not in production.</p>
-<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code> which will enable links in Devise confirmation email messages to work properly during development.</p>
-<p>For testing, <code>config.action_mailer.default_url_options</code> is set for a host at <code>example.com</code>. Any value allows tests to run.</p>
-<p>For production, you’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain.</p>
+<p>The example application will deliver email in production. Email messages are visible in the log file so there is no need to send email in development.</p>
 <h3>Use a Gmail account</h3>
+<p>In production, you should use an email service provider such as <a href="http://mandrill.com/">Mandrill</a> to increase deliverability for email messages from your app.</p>
 <p>Use Gmail for experimenting, if you want to keep things simple.</p>
-<p>You’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
+<p>The file <strong>config/environments/production.rb</strong> is set to use:</p>
 <pre>
 config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
@@ -454,41 +438,7 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
-<h3>Use a Mandrill account</h3>
-<p>Use an <span class="caps">SMTP</span> relay service such as Mandrill if you want to increase deliverability for email messages from your app.</p>
-<p>You’ll need to modify the files <strong>config/environments/development.rb</strong> and <strong>config/environments/production.rb</strong>:</p>
-<pre>
-config.action_mailer.smtp_settings = {
-  :address   =&gt; "smtp.mandrillapp.com",
-  :port      =&gt; 25,
-  :user_name =&gt; ENV["MANDRILL_USERNAME"],
-  :password  =&gt; ENV["MANDRILL_API_KEY"]
-}
-</pre>
-<p>Note that the password will be your Mandrill <span class="caps">API</span> key.</p>
-<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_API_KEY"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key.</p>
-<h3>Keep Email Account Passwords Secret</h3>
-<p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
-<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add (for Gmail):</p>
-<pre>
-export GMAIL_USERNAME="myname@gmail.com"
-export GMAIL_PASSWORD="secret"
-</pre>
-<p>or for Mandrill:</p>
-<pre>
-export MANDRILL_USERNAME="myname"
-export MANDRILL_API_KEY="secret"
-</pre>
-<p>If you intend to use MailChimp for managing a mailing list, add your MailChimp <span class="caps">API</span> key:</p>
-<pre>
-export MAILCHIMP_API_KEY="secret"
-</pre>
-<p>If you’ve set Unix environment variables, open a new shell or restart your terminal application to continue.</p>
-<h3>Configure Devise for Email</h3>
-<p>Complete your email configuration by modifying</p>
-<p><strong>config/initializers/devise.rb</strong></p>
-<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, follow the instructions in the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a> to set Unix environment variables to keep email account passwords secret.</p>
 <h2>Set Up the Database</h2>
 <h3>Create a Default User</h3>
 <p>You’ll want to set up default users so you can test the application.</p>
