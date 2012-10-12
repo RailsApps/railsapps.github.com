@@ -60,7 +60,7 @@
 	<li>offer code that is already implemented and tested by a large community;</li>
 	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
 </ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
-<p>Experienced developers will find the complete application on GitHub; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<p>Experienced developers will find the <a href="http://github.com/RailsApps/rails-stripe-membership-saas">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
 <h3>Functionality</h3>
 <p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
@@ -84,7 +84,6 @@
 	<li>paid subscriptions are created only after a successful credit card transaction</li>
 	<li>subscribers can upgrade or downgrade subscription plans</li>
 	<li>subscribers can cancel subscription plans</li>
-	<li>subscribers can use coupons for discounted subscriptions</li>
 	<li>configurable subscription renewal period (defaults to one month)</li>
 	<li>administrator can change subscription plan or delete user</li>
 </ul><h3>What is Not Implemented</h3>
@@ -233,30 +232,27 @@
 	<li>recurring billing with Stripe</li>
 	<li>landing pages</li>
 	<li>content or service pages</li>
-</ul><h3>User Management, Authentication, Authorization</h3>
+</ul><h3>User Management, Authentication, and Authorization</h3>
 <p>The tutorial for the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application shows how to set up user management and authentication using Devise, as well as authorization management using CanCan and Rolify. The first step in the tutorial will be to generate the rails3-bootstrap-devise-cancan application as a starter app.</p>
 <p>Users are managed with the User model, which has attributes for name, email, and password, as well as some fields provided by Devise such as sign_in_count. The Devise gem provides its own controllers for managing sessions, registration, email confirmation and similar functions. You won’t see these controllers as they are hidden in the gem itself.</p>
 <p>CanCan uses an Ability model to set access control rules. We’ll modify the Ability model to set access rules based on subscription plans. We’ll use the Role model required by Rolify to define roles based on subscription plans.</p>
-<h3>Account Management</h3>
-<p>The account management system keeps subscription records so the access control system can determine which users are current subscribers. We’ll create a Subscription model. Each user can have a Subscription (a one-to-one association with a User). The Subscription model has a status attribute which can be active, past_due, cancelled or unpaid.</p>
-<p>A Subscription controller handles actions such as:</p>
-<ul>
-<li>change subscription plans (upgrade or downgrade)</li>
-</ul><h3>Recurring Billing</h3>
-<p>The recurring billing system stores the users’ credit card data and initiates payment transactions.</p>
+<h3>Account Management and Recurring Billing</h3>
+<p>An account management system keeps subscription records so the access control system can determine which users are current subscribers. We’ll combine services offered by Stripe with user management provided by Devise for our account management system.</p>
+<p>Stripe will provide the recurring billing system to store the users’ credit card data and initiate payment transactions.</p>
+<p>We’ll use the Stripe <span class="caps">API</span> to create a new customer and specify a subscription plan. When the customer’s subscription expires due to failed payment, we’ll use Stripe “webhooks” to update our application’s user records.</p>
+<p>We’ll provide options for the user to change credit cards, upgrade or downgrade subscription plans, and cancel a subscription as an extension of the user management system provided by Devise.</p>
 <p>Two approaches are possible in building a recurring billing system. You could implement a complete billing management system as part of the application. This would require building a mechanism to check for expiring subscriptions (typically a daily cron job) and initiate payment requests through Stripe when a user’s account comes due. With this approach, you would use Stripe only for processing credit card transactions. But there’s no reason to implement recurring billing yourself. Stripe provides a complete, well-tested, and hosted mechanism for recurring billing. We’ll use Stripe’s <span class="caps">API</span> to supply the recurring billing services we need.</p>
 <p>A key requirement for the application is to keep the recurring billing and account management systems in sync. We face a problem if we establish a new subscription, hand off recurring billing to Stripe, and then months later find that the subscriber’s credit card has expired and can no longer be billed. We need a mechanism to update our subscription status when Stripe encounters a declined transaction. Stripe provides “webhooks” to set the status of a subscription. When Stripe encounters a declined transaction it will initiate an <span class="caps">HTTP</span> request to our application which we can decode to change a subscription status.</p>
 <p>If we didn’t use the Stripe webhooks, we’d have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration. The application will be notified immediately by Stripe so there is no need for the overhead of checking on each login. The Stripe webhook mechanism is very robust: If for some reason it cannot make an <span class="caps">HTTP</span> request to our application, it will retry several times with exponential backoff.</p>
 <p>A key requirement for any ecommerce site that takes credit cards is <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> to minimize risk of customer credit card exposure. Using Stripe, your server will never receive sensitive credit card details. Instead you’ll use a the Stripe JavaScript library on your subscription payment form which sends the credit card details directly to the Stripe servers. Your site will meet <span class="caps">PCI</span> compliance requirememts if you solely accept payment information through the Stripe JavaScript library and serve your payment page over <span class="caps">SSL</span>.</p>
 <h3>Landing Pages</h3>
-<p>Ideally, landing pages should be static pages that load quickly and can be cached for fast response.</p>
-<p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. The home page of the application is a landing page. We’ll show you how to add alternative landing pages that can be customized to match specific search terms for better <span class="caps">SEO</span> and an improved conversion rate.</p>
+<p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. For our example application, the home page of the application is our landing page.</p>
 <h3>Content or Service</h3>
 <p>We’ll create placeholder pages for content.</p>
 <p>For your application, the content can be anything you like: photo galleries, videos, downloadable ebooks. For a SaaS site, subscribers would gain access to a web application.</p>
 <h3>The Object Model</h3>
 <p>Software engineering attempts to model real-world entities and behaviors. As developers, we try to choose descriptive names for objects and methods to reduce ambiguity and increase understanding. For this application, a User is our most important object. In other projects, we might call this object an “Account” or “Member.”</p>
-<p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll try to define everything we need as attributes of the user, rather than separate objects.</p>
+<p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll define everything we need as attributes of the user, rather than separate objects.</p>
 <p>We won’t include a credit card number as an attribute of a user because we don’t want the vulnerability of storing a credit card number in our database. Instead, we’ll send the credit card number directly to Stripe and obtain a Stripe customer id that serves as an indirect reference to the credit card number when we need to ask Stripe to begin billing a user. The Stripe customer id will be an attribute of the user that substitutes for a credit card number.</p>
 <p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.</p>
 <h2>Testing and the Software Development Process</h2>
@@ -287,12 +283,11 @@ $ git clone git://github.com/RailsApps/rails-stripe-membership-saas.git
 <p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
 <h3 id="Generate">Generate</h3>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> example application.</p>
+<p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
 <p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps that build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
-<p>In the <a href="#Generate">Generate</a> section above, we saw how to create the complete example application with one command. If you tried that, you may already have the complete application on your computer. To build the application step by step, we suggest you delete the application (or move it elsewhere), and follow the tutorial, starting with the rails3-bootstrap-devise-cancan starter app.</p>
-<p>For the starter app we want, use the command:</p>
+<p>For the starter app we need, use the command:</p>
 <pre>
 $ rails new rails-stripe-membership-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
 </pre>
@@ -311,7 +306,7 @@ question  Install an example application?
       7)  rails3-mongoid-omniauth
       8)  rails3-subdomains
 </pre>
-<p>Choose <strong>rails3-bootstrap-devise-cancan</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written). Don’t choose “rails-stripe-membership-saas” (unless you want to skip the tutorial).</p>
+<p>Choose <strong>rails3-bootstrap-devise-cancan</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written). <strong>Note:</strong> Don’t choose “rails-stripe-membership-saas” (unless you want to skip the tutorial).</p>
 <p>The application generator template will ask you for additional preferences:</p>
 <pre>
  question  Web server for development?
@@ -332,11 +327,14 @@ question  Install an example application?
    extras  Create a project-specific rvm gemset and .rvmrc? (y/n)
    extras  Create a GitHub repository? (y/n)
 </pre>
-<p>For this tutorial, choose “WEBrick” for your development and production webserver.</p>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
-<p>You can choose to set a robots.txt file to ban spiders. Choosing “no” makes sense if you want your prelaunch site to show up in Google search results.</p>
-<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
-<p>Finally, the program will ask if you want to create a GitHub repository. This is optional and not necessary for the tutorial.</p>
+<h4>Web Servers</h4>
+<p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
+<h4>Template Engine</h4>
+<p>The example application uses the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml or Slim. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
+<h4>Other Choices</h4>
+<p>Set a robots.txt file to ban spiders if you want to keep your new site out of Google search results.</p>
+<p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file (not available on Windows). See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
 <p><code>$ cd rails-stripe-membership-saas</code></p>
 <h4>Troubleshooting</h4>
