@@ -47,7 +47,7 @@
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
 <p><em>Last updated 12 October 2012</em></p>
-<p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-membership-subscription-saas">rails-membership-subscription-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
+<p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-stripe-membership-saas">rails-stripe-membership-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-stripe-membership-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
@@ -74,19 +74,19 @@
 </ul><h3>Features</h3>
 <p>The example application provides a complete and fully functional membership site.</p>
 <ul>
-<li>site offers tiered pricing for multiple subscription plans</li>
-	<li>site can offer a “free trial” subscription as well as free accounts</li>
-	<li>no local credit card storage</li>
+<li>tiered pricing for multiple subscription plans</li>
+	<li>optional “free trial” subscription as well as free accounts using Stripe</li>
+	<li>uses Stripe for no local credit card storage</li>
 	<li>Stripe accepts credit card payments from customers in any country or currency</li>
 	<li>
 <span class="caps">PCI</span> compliance using the Stripe JavaScript library</li>
-	<li>site served over <span class="caps">SSL</span> for security</li>
-	<li>Stripe handles recurring billing, retries if payment fails, and cancels if retries fail</li>
+	<li>Stripe handles recurring billing, retries if payment fails, and cancels subscription if retries fail</li>
 	<li>paid subscriptions are created only after a successful credit card transaction</li>
 	<li>subscribers can upgrade or downgrade subscription plans</li>
 	<li>subscribers can cancel subscription plans</li>
 	<li>subscribers can use coupons for discounted subscriptions</li>
 	<li>configurable subscription renewal period (defaults to one month)</li>
+	<li>administrator can change subscription plan or delete user</li>
 </ul><h3>What is Not Implemented</h3>
 <p>There are additional features you may want for a SaaS application, such as:</p>
 <ul>
@@ -125,11 +125,11 @@
 <p>You might also be interested in the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example if you are planning prelaunch promotion. Use it to announce your plans and collect email addresses from visitors for future notification of the site’s launch.</p>
 <h2>About the Tutorial</h2>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please <a href="#comment">leave a comment</a> when you are done.)</p>
-<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
+<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>.</p>
 <p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
 <h2>Before You Start</h2>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in the GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">GitHub issue</a>.</p>
+<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, please leave comments below.</p>
 <h2>Accounts You May Need</h2>
 <p>Before you start, you will need accounts for <em>recurring billing</em>, <em>hosting</em>, <em>email</em>, and a <em>source control repository</em>.</p>
@@ -223,91 +223,6 @@
 <p>You’ve likely already selected and registered a domain name. If not, you’ll need a domain before you start sending email messages from the application. If you’re disgusted by GoDaddy, consider <a href="http://www.namecheap.com/">NameCheap</a> and other popular alternatives.</p>
 <h3>GitHub</h3>
 <p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. You’ll need a GitHub account if you plan to deploy to Heroku. If you’re not going to use Heroku, you’ll still need to use git to manage your source code.  See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
-<h2>Assumptions</h2>
-<p>Before beginning this tutorial, you need to install</p>
-<ul>
-<li>The Ruby language (version 1.9.3)</li>
-	<li>Rails 3.2</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
-<p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
-<p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
-<h2>Creating the Application</h2>
-<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
-<h3>Copy from the Tutorial</h3>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely. Before you start, the tutorial will ask you to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a starter app to save some steps. Then you can follow the tutorial step-by-step to build the complete application.</p>
-<h3>Fork</h3>
-<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
-<h3>Clone</h3>
-<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
-<h3 id="Generate">Generate</h3>
-<p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the complete example application immediately, run the command:</p>
-<pre>
-$ rails new rails-membership-subscription-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
-</pre>
-<p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
-<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails-membership-subscription-saas</code> on your computer. You can use a different name if you wish.</p>
-<p>You’ll see a prompt:</p>
-<pre>
-question  Install an example application?
-      1)  I want to build my own application
-      2)  rails-membership-subscription-saas
-      3)  rails-prelaunch-signup
-      4)  rails3-bootstrap-devise-cancan
-      5)  rails3-devise-rspec-cucumber
-      6)  rails3-mongoid-devise
-      7)  rails3-mongoid-omniauth
-      8)  rails3-subdomains
-</pre>
-<p>Choose <strong>rails-membership-subscription-saas</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written).</p>
-<p>The application generator template will ask you for additional preferences:</p>
-<pre>
- question  Install a prelaunch app? (y/n)
- question  Web server for development?
-       1)  WEBrick (default)
-       2)  Thin
-       3)  Unicorn
-       4)  Puma
- question  Web server for production?
-       1)  Same as development
-       2)  Thin
-       3)  Unicorn
-       4)  Puma
- question  Template engine?
-       1)  ERB
-       2)  Haml
-       3)  Slim
-   extras  Set a robots.txt file to ban spiders? (y/n)
-   extras  Create a project-specific rvm gemset and .rvmrc? (y/n)
-   extras  Create a GitHub repository? (y/n)
-</pre>
-<p>Here’s more information about your options:</p>
-<h4>Prelaunch App</h4>
-<p>If you’re planning a prelaunch promotion campaign, or if you need a placeholder page while you build your website, you can a install a prelaunch app. See the <a href="http://railsapps.github.com/rails-prelaunch-signup/">rails-prelaunch-signup</a> example application for details.</p>
-<p>If you install a prelaunch app, the generator will ask if you want to create Git branches. This allows you to maintain two versions of the application: one for immediate deployment as a prelaunch app; and another version that you can use for ongoing development. I recommend deploying the prelaunch app in the “master” branch. Work on your ultimate application in a work-in-progress or “wip” branch.</p>
-<h4>Web Servers</h4>
-<p>Use the default WEBrick server for convenience. If you plan to deploy to Heroku, select “thin” as your production webserver.</p>
-<h4>Template Engine</h4>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
-<h4>Other Choices</h4>
-<p>Don’t set a robots.txt file to ban spiders if you want your new site to appear in Google search results.</p>
-<p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file. See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
-<p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
-<h4>Troubleshooting</h4>
-<p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
-<p>If you get an error like this:</p>
-<pre>
-Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
-    composer  Running 'after bundler' callbacks.
-The template [...] could not be loaded.
-Error: You have already activated ..., but your Gemfile requires .... 
-Using bundle exec may solve this.
-</pre>
-<p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
-<h2>Testing and the Software Development Process</h2>
-<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code.</p>
-<p>This example application uses Cucumber for integration testing and RSpec for unit testing. The test suites are part of the code in the GitHub repository and are installed when the application is cloned or generated. This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
 <h2>Architecture and Implementation</h2>
 <p>Here is a high-level abstraction of the application, as a list of systems:</p>
 <ul>
@@ -344,22 +259,51 @@ Using bundle exec may solve this.
 <p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll try to define everything we need as attributes of the user, rather than separate objects.</p>
 <p>We won’t include a credit card number as an attribute of a user because we don’t want the vulnerability of storing a credit card number in our database. Instead, we’ll send the credit card number directly to Stripe and obtain a Stripe customer id that serves as an indirect reference to the credit card number when we need to ask Stripe to begin billing a user. The Stripe customer id will be an attribute of the user that substitutes for a credit card number.</p>
 <p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.</p>
+<h2>Testing and the Software Development Process</h2>
+<p>This example application uses RSpec for unit testing and Cucumber for integration testing.</p>
+<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. RSpec is a popular choice for unit testing. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise. Cucumber is a popular choice for integration testing and behavior driven development. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
+<p>This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
+<p>The Rails Composer tool creates a starter app that is set up for RSpec and Cucumber test frameworks.</p>
+<h2>Assumptions</h2>
+<p>Before beginning this tutorial, you need to install</p>
+<ul>
+<li>The Ruby language (version 1.9.3)</li>
+	<li>Rails 3.2</li>
+</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
+<p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
+<p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
+<h2>Creating the Application</h2>
+<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
+<h3>Copy from the Tutorial</h3>
+<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely. Before you start, the tutorial will ask you to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a starter app to save some steps. Then you can follow the tutorial step-by-step to build the complete application.</p>
+<h3>Fork</h3>
+<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
+<h3>Clone</h3>
+<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below). To clone:</p>
+<pre>
+$ git clone git://github.com/RailsApps/rails-stripe-membership-saas.git
+</pre>
+
+<p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
+<h3 id="Generate">Generate</h3>
+<p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
+<p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> example application.</p>
 <h2>Create the Rails Application</h2>
 <p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
 <p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps that build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
 <p>In the <a href="#Generate">Generate</a> section above, we saw how to create the complete example application with one command. If you tried that, you may already have the complete application on your computer. To build the application step by step, we suggest you delete the application (or move it elsewhere), and follow the tutorial, starting with the rails3-bootstrap-devise-cancan starter app.</p>
 <p>For the starter app we want, use the command:</p>
 <pre>
-$ rails new rails-membership-subscription-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
+$ rails new rails-stripe-membership-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
 </pre>
 <p>Use the <code>-T</code> flag to skip Test::Unit files since we’ll be using RSpec.</p>
 <p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails-membership-subscription-saas</code> on your computer. You can use a different name if you wish.</p>
+<p>This creates a new Rails app named <code>rails-stripe-membership-saas</code> on your computer. You can use a different name if you wish.</p>
 <p>You’ll see a prompt:</p>
 <pre>
 question  Install an example application?
       1)  I want to build my own application
-      2)  rails-membership-subscription-saas
+      2)  rails-stripe-membership-saas
       3)  rails-prelaunch-signup
       4)  rails3-bootstrap-devise-cancan
       5)  rails3-devise-rspec-cucumber
@@ -367,7 +311,7 @@ question  Install an example application?
       7)  rails3-mongoid-omniauth
       8)  rails3-subdomains
 </pre>
-<p>Choose <strong>rails3-bootstrap-devise-cancan</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written). Don’t choose “rails-membership-subscription-saas” (unless you want to skip the tutorial).</p>
+<p>Choose <strong>rails3-bootstrap-devise-cancan</strong>. The Rails Composer tool may give you other options (other choices may have been added since this tutorial was written). Don’t choose “rails-stripe-membership-saas” (unless you want to skip the tutorial).</p>
 <p>The application generator template will ask you for additional preferences:</p>
 <pre>
  question  Web server for development?
@@ -394,7 +338,7 @@ question  Install an example application?
 <p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Create a project-specific rvm gemset and .rvmrc?” See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
 <p>Finally, the program will ask if you want to create a GitHub repository. This is optional and not necessary for the tutorial.</p>
 <p>After you create the application, switch to its folder to continue work directly in the application:</p>
-<p><code>$ cd rails-membership-subscription-saas</code></p>
+<p><code>$ cd rails-stripe-membership-saas</code></p>
 <h4>Troubleshooting</h4>
 <p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <p>If you get an error like this:</p>
@@ -438,7 +382,7 @@ gem "devise", "&gt;= 2.1.2"
 gem "cancan", "&gt;= 1.6.8"
 gem "rolify", "&gt;= 3.2.0"
 </pre>
-<p>Add the following gems which will be needed for the rails-membership-subscription-saas application:</p>
+<p>Add the following gems which will be needed for the rails-stripe-membership-saas application:</p>
 <pre>
 gem "simple_form"
 gem "stripe"
@@ -2049,7 +1993,7 @@ $ git branch -D webhooks
 <p>You’ve created a fully functional membership site that’s ready to take credit card payments and serve access to restricted content.</p>
 <p>It uses Stripe for payment processing, allows users to change credit cards or subscription plans, and uses Stripe webhooks to delete users who have expired or declined credit cards.</p>
 <p>You might consider a few enhancements. For example, you might want the application to respond to a Stripe webhook event when a credit card payment is successful by sending a “paid” invoice. Or you might respond to Stripe webhook events when credit card payments are unsuccessful by sending a friendly note encouraging the user to check for an expired credit card before the subscription is cancelled.</p>
-<p>If you have suggestions for additional features, please create an <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">issue</a> on GitHub.</p>
+<p>If you have suggestions for additional features, please create an <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">issue</a> on GitHub.</p>
 <h2>Test the App</h2>
 <p>You can check that your app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
@@ -2071,7 +2015,7 @@ $ git branch -D webhooks
 <h2 id="comment">Did You Like the Tutorial?</h2>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
-<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-membership-subscription-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
