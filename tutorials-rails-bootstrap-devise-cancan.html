@@ -530,10 +530,14 @@ validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 <h2>Create a Home Page</h2>
 <h3>Remove the Default Home Page</h3>
 <p>Delete the default home page from your application:</p>
-<p><code>$ rm public/index.html</code></p>
+<pre>
+$ rm public/index.html
+</pre>
 <h3>Create a Home Controller and View</h3>
 <p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page:</p>
-<p><code>$ rails generate controller home index --no-controller-specs --skip-stylesheets --skip-javascripts</code></p>
+<pre>
+$ rails generate controller home index --no-controller-specs --skip-stylesheets --skip-javascripts
+</pre>
 <p>Specify <code>--no-controller-specs</code>. You can add the RSpec files from the example application later. We’ll use <code>--skip-stylesheets --skip-javascripts</code> to avoid cluttering our application with stylesheet and JavaScript files we don’t need.</p>
 <p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
 <p><strong>app/views/home/index.html.erb</strong></p>
@@ -573,18 +577,7 @@ end
 <h2>Create Default Users and Roles</h2>
 <h3>Set Up a Database Seed File</h3>
 <p>You’ll want to set up default users so you can test the application.</p>
-<p>The file <strong>db/seeds.rb</strong> already contains:</p>
-<pre>
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user2.name
-user.add_role :admin
-</pre>
-<p>First we’ll add a list of roles. One role will be “admin,” for an adminstrator. We’ll create two additional roles, “user” and “<span class="caps">VIP</span>.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
-<p>Then we’ll add two default users. The first will be an administrator. The second will be designated a <span class="caps">VIP</span>.</p>
-<p>Replace <strong>db/seeds.rb</strong> with:</p>
+<p>Replace the file <strong>db/seeds.rb</strong> with:</p>
 <pre>
 puts 'CREATING ROLES'
 Role.create([
@@ -595,11 +588,13 @@ Role.create([
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user.name
-user.add_role :admin
 user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user2.name
-user.add_role :VIP
+user.add_role :admin
+user2.add_role :VIP
 </pre>
+<p>First we add a list of roles. One role will be “admin,” for an adminstrator. We’ll create two additional roles, “user” and “<span class="caps">VIP</span>.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
+<p>Then we add two default users. The first will be an administrator. The second will be designated a <span class="caps">VIP</span>.</p>
 <p>You can change the values for name, email, and password as you wish.</p>
 <p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
@@ -636,7 +631,8 @@ def index
   @users = User.all
 end
 </pre>
-<p>Now modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
+<p>Now we’ll add links to each user’s profile.</p>
+<p>Modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
 <pre>
 &lt;h3&gt;Home&lt;/h3&gt;
 &lt;% @users.each do |user| %&gt;
@@ -648,19 +644,26 @@ end
 <h2>Set Up the Users Controller, Routes, and Views</h2>
 <h3>Create a Users Controller</h3>
 <p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
-<p><code>$ rails generate controller users index show --no-controller-specs</code></p>
+<pre>
+$ rails generate controller users index show --no-controller-specs --skip-stylesheets --skip-javascripts
+</pre>
 <p>Note that “users” is plural when you create the controller.</p>
 <h3>Set Up the Users Routes</h3>
-<p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
+<p>The generator command has changed the file <strong>config/routes.rb</strong> to include:</p>
 <pre>
 get "users/index"
 get "users/show"
 </pre>
-<p>Remove that and change the routes to:</p>
+<p>Remove that and change the file <strong>config/routes.rb</strong> to look like this:</p>
 <pre>
-root :to =&gt; "home#index"
-devise_for :users
-resources :users
+Rails3BootstrapDeviseCancan::Application.routes.draw do
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  root :to =&gt; "home#index"
+  devise_for :users
+  resources :users
+end
 </pre>
 <p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users</code>.</p>
 <h3>Set Up the Users#Show Page</h3>
