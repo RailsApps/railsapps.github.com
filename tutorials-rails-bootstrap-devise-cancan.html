@@ -669,12 +669,13 @@ end
 <h3>Set Up the Users#Show Page</h3>
 <p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
 <pre>
+&lt;h3&gt;User&lt;/h3&gt;
 &lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
 &lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
 </pre>
 <p>In a typical application, this page might provide additional details about the user’s account.</p>
 <h3>Set Up the Users#Index Page</h3>
-<p>For the purposes of our example, this page will be accessible only to administrators. It will display a list of all users of the application.</p>
+<p>For the purposes of our example, this page will be accessible only to administrators. This will be our “Administrator’s Dashboard.” It will display a list of all users of the application.</p>
 <p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
 <pre>
 &lt;ul class="users"&gt;
@@ -689,7 +690,7 @@ end
 <h2>Set Up a Demonstration of CanCan</h2>
 <p>You’ll want to see how CanCan is used to limit access to only the administrator.</p>
 <h3>First Authorization Example: Users Controller with CanCan “@authorize!”</h3>
-<p>Modify the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
+<p>Modify the file <strong>app/controllers/users_controller.rb</strong> to look like this:</p>
 <pre>
 class UsersController &lt; ApplicationController
   before_filter :authenticate_user!
@@ -705,7 +706,8 @@ class UsersController &lt; ApplicationController
 
 end
 </pre>
-<p>Only one line of code is needed to limit access to the <strong>Users#index</strong> page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
+<p>The <code>before_filter :authenticate_user!</code> uses Devise to make sure a user is logged in.</p>
+<p>Then we add one line of code to limit access to the <strong>Users#index</strong> page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>:</p>
 <pre>
 authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
 </pre>
@@ -717,7 +719,7 @@ end
 </pre>
 <p>No rule is present for other users, so by default, other users are restricted from executing the <code>index</code> method.</p>
 <p>This approach is the most obvious way to implement authorization using CanCan. We’ll use this approach throughout this tutorial.</p>
-<p>Before we implement additional features, it is worthwhile to take a look at other options available with CanCan. CanCan offers convenience methods that can eliminate superfluous controller code in some applications. The next example shows how to use CanCan convenience methods to reduce the amount of code in your controllers. We won’t use this approach in this tutorial but is worth reviewing.</p>
+<p>Before we implement additional features, it is worthwhile to take a look at other options available for authorization. CanCan offers convenience methods that can eliminate superfluous controller code in some applications. The next example shows how to use CanCan convenience methods to reduce the amount of code in your controllers. We won’t use this approach in this tutorial but is worth reviewing.</p>
 <h3>Second Authorization Example: Users Controller with CanCan “load_and_authorize_resource”</h3>
 <p>CanCan provides a convenience method <code>authorize_resource</code> that applies the <code>authorize!</code> method to every action in the controller. Another convenience method <code>load_resource</code> queries the database and loads the resources required by each action (for example, <code>users = User.all</code> for the <code>index</code> action). A third convenience method combines the two as <code>load_and_authorize_resource</code>.</p>
 <p>Using <code>load_and_authorize_resource</code>, you can set up the file <strong>app/controllers/users_controller.rb</strong> like this:</p>
