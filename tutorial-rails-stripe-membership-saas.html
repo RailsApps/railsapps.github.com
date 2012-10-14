@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>tutorial rails stripe membership saas &#183; RailsApps</title>
+    <title>Rails Tutorial &#183; Membership Subscription or SaaS Site with Stripe &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 October 2012</em></p>
+<p><em>Last updated 13 October 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership, subscription, or SaaS site. Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-stripe-membership-saas">rails-stripe-membership-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-stripe-membership-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
 <h2>
@@ -381,7 +381,7 @@ $ cucumber features/visitors/request_invitation.feature
 <p>The starter app script sets up a default email configuration. You must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
 <h3>Configure ActionMailer</h3>
 <p>The starter app has already configured ActionMailer but you must set your email account details.</p>
-<p>Repalce <code>example.com</code> in the <strong>config/environments/production.rb</strong> file:</p>
+<p>Replace <code>example.com</code> in the <strong>config/environments/production.rb</strong> file:</p>
 <pre>
 config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
 # ActionMailer Config
@@ -392,7 +392,7 @@ config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
 <p>The example application will deliver email in production. Email messages are visible in the log file so there is no need to send email in development.</p>
-<h3>Use a Gmail account</h3>
+<h3>How to Use a Gmail Account</h3>
 <p>In production, you should use an email service provider such as <a href="http://mandrill.com/">Mandrill</a> to increase deliverability for email messages from your app.</p>
 <p>Use Gmail for experimenting, if you want to keep things simple.</p>
 <p>The file <strong>config/environments/production.rb</strong> is set to use:</p>
@@ -413,14 +413,21 @@ config.action_mailer.smtp_settings = {
 <p>You’ll want to set up default users so you can test the application.</p>
 <p>The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
+puts 'CREATING ROLES'
+Role.create([
+  { :name =&gt; 'admin' }, 
+  { :name =&gt; 'user' }, 
+  { :name =&gt; 'VIP' }
+], :without_protection =&gt; true)
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user.name
 user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
+user2.add_role :VIP
 </pre>
-<p>First we’ll add a list of roles. One role will be “admin,” for an adminstrator. Three additional roles will correspond to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
+<p>The starter app contains a placeholder list of roles. One role is “admin,” for an adminstrator. We should remove the “user” and “<span class="caps">VIP</span>” roles and add three additional roles corresponding to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
 <p>Then we’ll add three users with different subscription plans.</p>
 <p>Replace <strong>db/seeds.rb</strong> with:</p>
 <pre>
@@ -448,8 +455,8 @@ puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
 <p>You can change the values for name, email, and password as you wish.</p>
 <p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
-<p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles. Any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>.</p>
-<p>One final point. It’s not strictly necessary to create the list of roles before creating the users. Any role you assign a user will be stored as a Role. But if you remove the sample users before you deploy the application into production, you will want to create a full list of roles. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
+<p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles.</p>
+<p>It’s not strictly necessary to create the list of roles before creating the users. Any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. Howver, I suggest you create a full list of roles in the <strong>db/seeds.rb</strong> file. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -470,7 +477,8 @@ $ rake db:test:prepare
 <p>At this point, the app is identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
 <p>You can check that the example app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default users listed on the home page. When you click on a user’s name, you should be required to log in before seeing the user’s detail page.</p>
+<p>If you sign in as the first user, you will have administrative privileges. You’ll see an “Admin” link in the navigation bar. Clicking the “Admin” link will display the administrative dashboard. Each user will be listed with buttons to “Change role” or “Delete user.”</p>
 <p>Stop the server with Control-C.</p>
 <h4>When to Restart</h4>
 <p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. As a rule, remember to restart the server when you add gems, change routes, or change anything in the config folder; leave the server running whn you change models, controllers, views or anything else in app folder.</p>
@@ -599,8 +607,8 @@ get "content/silver"
 get "content/gold"
 get "content/platinum"
 </pre>
-<p>If you want a different <span class="caps">URL</span> path, you could specify a different path like this: <code>get "articles/silver" =&gt; "content#silver", :as =&gt; :content_silver</code>. Visitors will see a <span class="caps">URL</span> path <a href="http://localhost:3000/articles/silver">http://localhost:3000/articles/silver</a> but you won’t need to make any other changes to the application.</p>
-<p>The controller is very simple:</p>
+<p>If you want a different <span class="caps">URL</span> path, you could specify a different path like this: <code>get "articles/silver" =&gt; "content#silver", :as =&gt; :content_silver</code>. Visitors will see a <span class="caps">URL</span> path <a href="http://localhost:3000/articles/silver">http://localhost:3000/articles/silver</a> but you won’t need to make any other changes to the application. We won’t do this; we’ll just use the supplied path.</p>
+<p>If you look at <strong>app/controllers/content_controller</strong> controller, you’ll see it is very simple:</p>
 <pre>
 class ContentController &lt; ApplicationController
 
@@ -632,7 +640,7 @@ end
 &lt;h1&gt;Content#platinum&lt;/h1&gt;
 &lt;p&gt;Find me in app/views/content/platinum.html.erb&lt;/p&gt;
 </pre>
-<p>If you’re building a real application, you’ll want to provide content that is more useful than our placeholders. For a membership site that delivers content such as ebooks or videos, you could use a structure such as this, where we’ll restrict access to pages in a <strong>content</strong> directory based on the user’s subscription plan. For a site that delivers sotware as a service, the structure of your application will necessarily be more complex.</p>
+<p>If you’re building a real application, you’ll want to provide content that is more useful than our placeholders. For a membership site that delivers content such as ebooks or videos, you could use a structure such as this, where we’ll restrict access to pages in a <strong>content</strong> directory based on the user’s subscription plan. For a site that delivers software as a service, the structure of your application will necessarily be more complex.</p>
 <h3>Test the Content Pages</h3>
 <p>You can check that the example app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
@@ -837,17 +845,16 @@ $ git checkout -b registration
 </pre>
 <p>We’ve removed the “Sign up” link.</p>
 <h3>Override the Devise Registrations Controller</h3>
-<p>Create a file <strong>app/controllers/registrations_controller.rb</strong>:</p>
+<p>Create a file <strong>app/controllers/registrations_controller.rb</strong> to override the Devise registrations controller:</p>
 <pre>
 class RegistrationsController &lt; Devise::RegistrationsController
-  
-  before_filter :set_plan, :only =&gt; :new
 
-  def set_plan
+  def new
     @plan = params[:plan]
+    super
   end
 
-  private  
+  private
   def build_resource(*args)
     super
     if params[:plan]
@@ -856,15 +863,23 @@ class RegistrationsController &lt; Devise::RegistrationsController
   end
 end
 </pre>
-<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub). Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. Of course the default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role. If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
-<p>We use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. This allows us to display the name of the selected subscription plan on the registration page. There’s more than one way to implement this. For example, we could do this:</p>
+<p>We override the controller <code>new</code> action to set the <em>plan</em> variable. This allows us to display the name of the selected subscription plan on the registration page. When we modify the registration form, we’ll include the <em>plan</em> variable in a hidden input field. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons. We call the <code>super</code> method to inherit the original controller <code>new</code> action.</p>
 <pre>
   def new
     @plan = params[:plan]
     super
   end
 </pre>
-<p>Either implementation is effective; we’ve chosen to use a <code>before_filter</code> rather than overriding the <code>new</code> method.</p>
+<p>Alternatively, we could use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. We could do this:</p>
+<pre>
+  before_filter :set_plan, :only =&gt; :new
+
+  def set_plan
+    @plan = params[:plan]
+  end
+</pre>
+<p>Either implementation is effective; we’ve chosen to  override the <code>new</code> method rather than using a <code>before_filter</code>.</p>
+<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub). Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. The default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. On a <code>new</code> action, it will be available as a parameter passed from the home page. On a <code>create</code> action, it will be passed as a parameter from a hidden input field on the registration form. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role. If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
 <h3>Override the Devise Routes</h3>
 <p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
 <pre>
@@ -873,33 +888,22 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 <p>You’ve modified the routes file, so you must restart the server for any changes to take effect.</p>
 <h3>Modify the Devise Registration Page</h3>
 <p>We’ll use the Devise registration page as our subscription sign-up form.</p>
-<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong> to add details about the subscription plan:</p>
 <pre>
 &lt;h2&gt;Sign up&lt;/h2&gt;
-
-&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
-
-&lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-&lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
-
-  &lt;%= devise_error_messages! %&gt;
-&lt;p&gt;&lt;%= f.label :name %&gt;
-&lt;%= f.text_field :name %&gt;&lt;/p&gt;
-
-  &lt;div&gt;&lt;%= f.label :email %&gt;
-  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
-
-  &lt;div&gt;&lt;%= f.label :password %&gt;
-  &lt;%= f.password_field :password %&gt;&lt;/div&gt;
-
-  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
-  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
-
-  &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
+  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :required =&gt; true %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
 &lt;% end %&gt;
 </pre>
-<p>We display the name of the selected subscription plan. The <code>humanize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
-<p>We use a hidden input field to include a role ID corresponding to the selected subscription plan. The field ID <code>user[role_ids][]</code> follows Rails convention to create an <span class="caps">HTML</span> tag ID that will be interpreted as a named parameter. We obtain a role ID from the User model which is preset by the <code>build_resource</code> method in our Registrations controller.</p>
+<p>We display the name of the selected subscription plan. The <code>titleize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
+<p>We use a hidden input field to include a parameter identifying the selected subscription plan. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons and set as a variable by our Registrations controller.</p>
 <p>We remove the <code>&lt;%= render "devise/shared/links" %&gt;</code> navigation links because we already have a login link in the page navigation bar.</p>
 <p>When we submit the form, Rails does its form processing magic, including validation of the model attributes, and saves the new User record to the database.</p>
 <h3>Test Registration</h3>
