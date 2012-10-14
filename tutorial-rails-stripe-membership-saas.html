@@ -864,13 +864,8 @@ class RegistrationsController &lt; Devise::RegistrationsController
 end
 </pre>
 <p>We override the controller <code>new</code> action to set the <em>plan</em> variable. This allows us to display the name of the selected subscription plan on the registration page. When we modify the registration form, we’ll include the <em>plan</em> variable in a hidden input field. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons. We call the <code>super</code> method to inherit the original controller <code>new</code> action.</p>
-<pre>
-  def new
-    @plan = params[:plan]
-    super
-  end
-</pre>
-<p>Alternatively, we could use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. We could do this:</p>
+<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub). Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. The default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. On a <code>new</code> action, it will be available as a parameter passed from the home page. On a <code>create</code> action, it will be passed as a parameter from a hidden input field on the registration form. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role. If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
+<p>Instead of overriding the controller <code>new</code> action, we could use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. We could do this:</p>
 <pre>
   before_filter :set_plan, :only =&gt; :new
 
@@ -879,7 +874,6 @@ end
   end
 </pre>
 <p>Either implementation is effective; we’ve chosen to  override the <code>new</code> method rather than using a <code>before_filter</code>.</p>
-<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub). Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. The default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. On a <code>new</code> action, it will be available as a parameter passed from the home page. On a <code>create</code> action, it will be passed as a parameter from a hidden input field on the registration form. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role. If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
 <h3>Override the Devise Routes</h3>
 <p>Modify <strong>config/routes.rb</strong> to use the new controller. Replace <code>devise_for :users</code> with:</p>
 <pre>
@@ -903,7 +897,7 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 &lt;% end %&gt;
 </pre>
 <p>We display the name of the selected subscription plan. The <code>titleize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
-<p>We use a hidden input field to include a parameter identifying the selected subscription plan. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons and set as a variable by our Registrations controller.</p>
+<p>We add a hidden input field with <code>hidden_field_tag</code> to include a parameter identifying the selected subscription plan. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons and set as a variable by our Registrations controller.</p>
 <p>We remove the <code>&lt;%= render "devise/shared/links" %&gt;</code> navigation links because we already have a login link in the page navigation bar.</p>
 <p>When we submit the form, Rails does its form processing magic, including validation of the model attributes, and saves the new User record to the database.</p>
 <h3>Test Registration</h3>
