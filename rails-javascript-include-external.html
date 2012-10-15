@@ -112,17 +112,17 @@
 </ul><p>Here are guidelines for selecting a location for your scripts:</p>
 <ul>
 <li>Use <strong>app/assets/javascripts</strong> for JavaScript you use throughout your application.</li>
-	<li>Use <strong>lib/assets/javascripts</strong> for scripts you don’t want to manage with the asset pipeline (see an explanation below).</li>
+	<li>Use <strong>lib/assets/javascripts</strong> for scripts that are shared by many applications (but use a gem if you can).</li>
 	<li>Use <strong>vendor/assets/javascripts</strong> for copies of jQuery plugins, etc., from other developers.</li>
-</ul><p>All scripts in the <em>app/…</em> folder are automatically added to the default <em>application.js</em> script (when the manifest file includes the default <code>//= require_tree .</code> directive).</p>
-<p>If you add a script to the <em>vendor/…</em> folder and you wish to have it combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below). The same is true for the <em>lib/…</em> folder; because scripts in this folder are not automatically included in the <em>application.js</em> script, you can use it for scripts you wish to only include directly in a view.</p>
+</ul><p>All scripts in the <em>app/…</em> folder are automatically added to the default <em>application.js</em> script when the manifest file includes the default <code>//= require_tree .</code> directive.</p>
+<p>If you add a script to the <em>vendor/…</em> folder and you wish to have it combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below). The same is true for the <em>lib/…</em> folder.</p>
 <h2 id="manifest">Mysterious Manifests</h2>
 <p>There are two kinds of files in a JavaScript assets folder:</p>
 <ul>
 <li>ordinary JavaScript files</li>
 	<li>manifest files</li>
-</ul><p>(You can also have CoffeeScript files and <span class="caps">ERB</span> files which are variations on ordinary JavaScript files.)</p>
-<p>Manifest files have the same <em>.js</em> file extension as ordinary JavaScript files. Manifest files and ordinary JavaScript files can be combined in a single file. This makes a manifest file rather mysterious, or at least non-obvious.</p>
+</ul><p>You can also have CoffeeScript files and <span class="caps">ERB</span> files which are variations on ordinary JavaScript files.</p>
+<p>Manifest files have the same <em>.js</em> file extension as ordinary JavaScript files. Manifest files and ordinary JavaScript files can be combined in a single file. This makes manifest files mysterious, or at least non-obvious.</p>
 <p>The default <strong>app/assets/javascripts/application.js</strong> file is a manifest file. It’s a manifest file because it contains directives:</p>
 <pre>
 //= require jquery
@@ -133,12 +133,11 @@
 <h2 id="organizing">Organizing Your Scripts</h2>
 <p>In a simple application, collect all your JavaScript files in the <strong>app/assets/javascripts</strong> folder and rely on the default <code>//= require_tree .</code> directive to combine the scripts into a single <em>application.js</em> script. There’s nothing more to configure and this works as long as you don’t have any requirements to load the scripts in a particular order.</p>
 <p>In a complex application, remove the <code>//= require_tree .</code> directive and use subfolders to organize your scripts.</p>
-<p>This article focuses on the mechanics of including external JavaScript libraries and does not delve into recommended practices for organizing your own JavaScript files. Here’s advice about organizing your scripts:</p>
+<p>Rails is all about following conventions to save effort and simplify teamwork. But there’s no well-known and accepted practice for organizing your JavaScript files. Leave a <a href="#comment">comment</a> below if you’d like to recommend  articles or screencasts that show how to organize your JavaScript files. Here’s advice I like about organizing your scripts:</p>
 <ul>
 <li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
 </li>
-</ul><p>Leave a <a href="#comment">comment</a> below if you’d like to recommend other articles or screencasts that show how to organize your JavaScript files.</p>
-<h3>Create Your Own Gems When You Can</h3>
+</ul><h3>Create Your Own Gems When You Can</h3>
 <p>By convention, <strong>lib/assets/javascripts</strong> is intended for scripts used on more than one project. Consider putting these in a gem to gain the benefits of RubyGems as a package manager if you use these scripts across different applications. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
 <p>The Rails asset pipeline will recognize scripts from any gem that contains files in these locations. If you wish to have a script from a gem combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest.</p>
 <p>Here’s where to place scripts in gems:</p>
