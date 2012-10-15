@@ -78,7 +78,7 @@
 <p>You can easily and cheaply set up a <span class="caps">CDN</span> for your own application with a service such as <a href="http://en.wikipedia.org/wiki/Amazon_CloudFront">CloudFront</a>. This gives you the advantage of a <span class="caps">CDN</span> for files you’ve added to the Rails asset pipeline, allowing you to combine popular JavaScript libraries with your own code for first-page delivery faster than your own server. But again, the only advantage is for first-page delivery.</p>
 <p>Inline JavaScript (mixed in your <span class="caps">HTML</span> code) blocks loading and rendering the page. Plus it is messy to mix JavaScript, Ruby, and <span class="caps">HTML</span> in a view template. Keep JavaScript (or CoffeeScript) in its own files in the Rails assets directories.</p>
 <p>The fewer <code>&lt;script&gt;</code> tags you use, the faster your pages will load. Modern web browsers download scripts in parallel but each script tag has to be parsed and evaluated to determine if a file is cached and current. Dynamic loading (from within another script) is faster than using an additional script tag.</p>
-<p>Scripts that are concatenated into a single file (such as <em>application.js</em>) minimize download time and can be cached for site-wide use.</p>
+<p>Scripts that are concatenated into a single file (such as <em>application.js</em> with the Rails asset pipeline) minimize download time and can be cached for site-wide use.</p>
 <p>External JavaScript libraries can be copied and concatenated into a single file to minimize download time. Make your own copy of an external library when your application requires a specific version. When you want to rely on a third party to update and maintain the library, don’t make a copy; use dynamic loading.</p>
 <p>External JavaScript libraries that are likely to be cached from visits to other websites can be dynamically loaded from within your local JavaScript code. Dynamically loading scripts allows use of cached files, allows loading scripts asnychronously, and eliminates the overhead of parsing and evaluating multiple script tags.</p>
 <p>Certain external JavaScript libraries that introduce security vulnerabilities, such as code that handles credit cards, should not be copied into your application asset directories. Instead, include the external script in an <em>application.js</em> script through dynamic loading.</p>
@@ -137,15 +137,15 @@
 <p>All scripts in the <strong>app/assets/javascripts</strong> folder are automatically added to the default <em>application.js</em> script when the manifest file includes the default <code>//= require_tree .</code> directive. See below for suggestions why you might want to change this default.</p>
 <p>If you add a script to the <em>vendor/…</em> folder and you wish to have it combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest (details below). The same is true for the <em>lib/…</em> folder.</p>
 <h2 id="organizing">Organizing Your Scripts</h2>
-<p>Rails is all about following conventions to save effort and simplify teamwork. But there is no well-known and accepted practice for organizing your JavaScript files. Leave a <a href="#comment">comment</a> below if you’d like to suggest ways to organize your JavaScript files. Here’s advice I’ve found about organizing your scripts:</p>
+<p>Rails is all about following conventions to save effort and simplify teamwork. But there is no well-known and accepted practice for organizing your JavaScript files. Here’s advice I’ve found about organizing your scripts:</p>
 <ul>
 <li>Jerod Santo’s <a href="http://blog.jerodsanto.net/2012/02/a-simple-pattern-to-namespace-and-selectively-execute-certain-bits-of-javascript-depending-on-which-rails-controller-and-action-are-active/">A Simple Pattern to Namespace…</a>
 </li>
-</ul><ul>
-<li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
+	<li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
 </li>
-</ul><h3 id="default">Default Locations</h3>
-<p>In a simple application, you can collect all the JavaScript files in the <strong>app/assets/javascripts</strong> folder and rely on the default <code>//= require_tree .</code> directive to combine the scripts into a single <em>application.js</em> script. Here we add <em>google-analytics.js</em> and <em>admin.js</em> scripts to the default directory:</p>
+</ul><p>Leave a <a href="#comment">comment</a> below if you’d like to suggest ways to organize your JavaScript files. Here’s my advice about organizing your JavaScript files.</p>
+<h3 id="default">Default Locations</h3>
+<p>In a simple application, you can collect all the JavaScript files in the <strong>app/assets/javascripts</strong> folder and rely on the default <code>//= require_tree .</code> directive to combine the scripts into a single <em>application.js</em> script. Here we add <strong>google-analytics.js</strong> and <strong>admin.js</strong> files to the default directory.</p>
 <pre>
 +-javascripts/
 | +-application.js (manifest)
@@ -163,7 +163,7 @@
 <p>The jQuery and Twitter Bootstrap scripts are included from gems and all scripts in the default directory are included.</p>
 <p>In a complex application, use subdirectories to organize your scripts. Here are suggestions.</p>
 <h3 id="sitewide">Site-wide Scripts</h3>
-<p>You can create a folder <strong>app/assets/javascripts/sitewide</strong> for scripts that are used on all (or many) pages of the application. Here we place the <em>google-analytics.js</em> script in a directory we use for site-wide scripts:</p>
+<p>You can create a folder <strong>app/assets/javascripts/sitewide</strong> for scripts that are used on all (or many) pages of the application. Here we place the <strong>google-analytics.js</strong> file in a directory we use for site-wide scripts:</p>
 <pre>
 +-javascripts/
 | +-application.js (manifest)
@@ -181,7 +181,7 @@
 <p>The jQuery and Twitter Bootstrap scripts are included from gems and any scripts in a <em>sitewide</em> directory are included.</p>
 <p>There’s nothing more you need to do for site-wide scripts.</p>
 <h3 id="specific">Page-Specific Scripts</h3>
-<p>Following the principles described above, you will frequently include page-specific JavaScript in the <em>application.js</em> script to be combined with site-wide scripts. If you have only a few page-specific scripts, place them in the top-level <strong>app/assets/javascripts</strong> folder. For example, you might have an <em>admin.js</em> script you use on only a few administrative pages. Add it as <strong>app/assets/javascripts/admin.js</strong>:</p>
+<p>Following the principles described above, you will frequently include page-specific JavaScript in the <em>application.js</em> script to be combined with site-wide scripts. If you have only a few page-specific scripts, place them in the top-level <strong>app/assets/javascripts</strong> folder. For example, you might have an <em>admin.js</em> script you use on only a few administrative pages. Add it as <strong>app/assets/javascripts/admin.js</strong> file:</p>
 <pre>
 +-javascripts/
 | +-application.js (manifest)
@@ -190,7 +190,7 @@
 | | +-google_analytics.js
 +-stylesheets/
 </pre>
-<p>You’ll need to explicitly specify this script in the <strong>app/assets/javascripts/application.js</strong> manifest file if you’ve removed the <code>//= require_tree .</code> directive as described above. Set up the <strong>app/assets/javascripts/application.js</strong> manifest file like this:</p>
+<p>You’ll need to explicitly specify this script in the <strong>app/assets/javascripts/application.js</strong> manifest file if you’ve removed the <code>//= require_tree .</code> directive as described above. Note that we drop the file extension when we specify the filename in the manifest file. Set up the <strong>app/assets/javascripts/application.js</strong> manifest file like this:</p>
 <pre>
 //= require jquery
 //= require jquery_ujs
