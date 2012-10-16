@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Unholy Rails: Adding JavaScript to Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 15 October 2012</em></p>
+<p><em>Last updated 16 October 2012</em></p>
 <p>Rails and JavaScript topics: How to include external JavaScript files and jQuery plugins in Rails 3.1 or newer. Using page-specific JavaScript in Rails. Organizing JavaScript files.</p>
 <p>What is the best way to add a JavaScript library to a Rails application? Use the Rails asset pipeline? Or include directly in a view template? This article explains what to do when your application is not wholly Rails.</p>
 <p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source applications and detailed tutorials for Rails. Next time you build an app, try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
@@ -307,9 +307,10 @@ _gaq.push(['_trackPageview']);
 <p>Does that look familar? It’s the Google Analytics tracking code. It creates a tiny script using <code>document.createElement</code> and inserts it into the page where it dynamically and asynchronously downloads the full Google Analytics script.</p>
 <p>The Google Analytics tracking code is delivered by a content delivery network, likely to be cached in a web browser by visits to other sites, and used throughout an application. In this case, the Rails asset pipeline doesn’t offer any performance advantages so you might want to access the Google Analytics tracking code from Google’s servers. Consider that Google may update and revise the tracking script and you have one more good reason to use Google’s servers.</p>
 <p>You could add it directly to the application layout. Instead, you can use the asset pipeline and include it from within another JavaScript file. Using the asset pipeline gives you two benefits. You avoid the performance hit of evaluating a second <code>&lt;script&gt;</code> tag. And your application layout is less cluttered when all your JavaScript is consolidated in the <em>application.js</em> script.</p>
-<p>You can use the same <code>document.createElement</code> method that Google uses or let jQuery help you.</p>
-<p>JQuery offers the <a href="http://api.jquery.com/jQuery.getScript/">jQuery getScript method</a>. It will load any JavaScript file from within a JavaScript file. The <code>getScript</code> method has one big limitation: It doesn’t retrieve scripts from the browser cache. To overcome this limitation, we can define a similar method that looks for a cached script before attempting a download of an external script.</p>
-<p>Here’s how we use jQuery to download (or load from the cache) a JavaScript file from within the Rails asset pipeline. Create a file <strong>app/assets/javascripts/google_analytics.js.erb</strong>:</p>
+<p>Google’s technique uses the JavaScript <code>document.createElement</code> method. With Rails, you can use the <a href="http://api.jquery.com/jQuery.getScript/">jQuery getScript method</a>. It will load any JavaScript file from within a JavaScript file. The <code>getScript</code> method has one big limitation: It doesn’t retrieve scripts from the browser cache. To overcome this limitation, we can define a similar method that looks for a cached script before attempting a download of an external script.</p>
+<h3 id="implementing-loading">Implementing Dynamic Loading</h3>
+<p>Here’s how we can download (or load from the cache) a JavaScript file from a remote server from within the Rails asset pipeline.</p>
+<p>Create a file <strong>app/assets/javascripts/jquery.externalscript.js</strong>:</p>
 <pre>
 jQuery.externalScript = function(url, options) {
   // allow user to set any option except for dataType, cache, and url
@@ -322,7 +323,17 @@ jQuery.externalScript = function(url, options) {
   // Return the jqXHR object so we can chain callbacks
   return jQuery.ajax(options);
 };
-
+</pre>
+<p>If you haven’t changed the default manifest file, the <em>jquery.externalscript.js</em> script will be automatically loaded by the <code>//= require_tree .</code> directive. If you’ve removed the <code>//= require_tree .</code> directive, specify the script in the manifest:</p>
+<pre>
+//= require jquery
+//= require jquery_ujs
+//= require jquery.externalscript
+</pre>
+<p>Alternatively, you could place the <code>externalScript</code> code in the <strong>app/assets/javascripts/application.js</strong> file and add <code>//= require_self</code> to the manifest.</p>
+<p>Let’s test it by downloading the Google Analytics tracking script.</p>
+<p>Create a file <strong>app/assets/javascripts/google_analytics.js.erb</strong>:</p>
+<pre>
 &lt;% if Rails.env == 'production' %&gt;
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-XXXXXXX-XX']);
@@ -340,9 +351,8 @@ jQuery.externalScript = function(url, options) {
   });
 &lt;% end %&gt;
 </pre>
-<p>We add the <code>externalScript</code> function so we can download the external script (or find it in the browser cache). Then we obtain the Google Analytics script.</p>
+<p>We use the <code>externalScript</code> function to obtain the Google Analytics script. Then we test for the presence of a variable set by the Google Analytics tracking script and</p>
 <p>Notice that we only load the Google Analytics script for tracking traffic in production mode. To do so, we use the <em>.erb</em> file extension so it will be preprocessed by Tilt.</p>
-<p>If you want to use the <code>externalScript</code> method in other JavaScript files, move it to <strong>app/assets/javascripts/application.js</strong> and add <code>//= require_self</code> to the manifest.</p>
 <p>With this technique, you’ve added an external script to the site-wide <em>application.js</em> script without copying it locally.</p>
 <p>Now let’s consider cases where you want to use JavaScript on a specific page, not throughout the entire application. If external scripts are complicated, page-specific JavaScript in Rails gets even more complex.</p>
 <h2 id="specific">Page-Specific JavaScript</h2>
@@ -382,20 +392,50 @@ $('document').ready(function() {
   }
 });
 </pre>
-<p>This approach can be refined by setting both the controller name and action in the <span class="caps">HTML</span> <code>body</code> tag:</p>
+<p>This provides a simple technique to execute JavaScript conditionally on a page.</p>
+<h3 id="garber-irish">The Garber-Irish Technique</h3>
+<p>For a sophisticated approach to namespacing assets and executing JavaScript based on controller name and action, investigate the <a href="http://viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution">Garber-Irish</a> technique.</p>
+<h3 id="implementing-conditional">Implementing Conditional Execution of Page-Specific JavaScript</h3>
+<p>We can use a simplified version of the Garber-Irish technique to execute JavaScript conditionally on a page. We use John Firebaugh’s <a href="https://github.com/Verba/jquery-readyselector">jquery-readyselector</a> script to extend the jQuery <code>.ready()</code> to simplify the conditional test.</p>
+<p>Set the controller name and action in the <span class="caps">HTML</span> <code>body</code> tag:</p>
 <pre>
 &lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
 </pre>
 <p>You have a choice of syntax: use either <code>&lt;%= params[:controller] %&gt;</code> or <code>&lt;%= controller_name %&gt;</code>.</p>
-<p>Use John Firebaugh’s <a href="https://github.com/Verba/jquery-readyselector">jquery-readyselector</a> gem to extend the jQuery <code>.ready()</code> to simplify the conditional test:</p>
+<p>Create a file <strong>app/assets/javascripts/jquery.readyselector.js</strong>:</p>
 <pre>
-$('.project.index').ready(function() {
-  console.log("Page-specific JavaScript on the projects/index page.");
+(function ($) {
+  var ready = $.fn.ready;
+  $.fn.ready = function (fn) {
+    if (this.context === undefined) {
+      // The $().ready(fn) case.
+      ready(fn);
+    } else if (this.selector) {
+      ready($.proxy(function(){
+        $(this.selector, this.context).each(fn);
+      }, this));
+    } else {
+      ready($.proxy(function(){
+        $(this).each(fn);
+      }, this));
+    }
+  }
+})(jQuery);
+</pre>
+<p>If you haven’t changed the default manifest file, the <em>jquery.readyselector.js</em> script will be automatically loaded by the <code>//= require_tree .</code> directive. If you’ve removed the <code>//= require_tree .</code> directive, specify the script in the manifest:</p>
+<pre>
+//= require jquery
+//= require jquery_ujs
+//= require jquery.readyselector
+</pre>
+<p>Alternatively, you could place the code in the <strong>app/assets/javascripts/application.js</strong> file and add <code>//= require_self</code> to the manifest.</p>
+<p>Here’s how you can test the <em>jquery.readyselector.js</em> script for a home/index page:</p>
+<pre>
+$('.home.index').ready(function() {
+  console.log("Page-specific JavaScript on the home/index page.");
 });
 </pre>
-<p>This is what we use to restrict execution of JavaScript to a specific page.</p>
-<h3 id="garber-irish">The Garber-Irish Technique</h3>
-<p>For a sophisticated approach to namespacing assets and executing JavaScript based on controller name and action, investigate the <a href="http://viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution">Garber-Irish</a> technique.</p>
+<p>You’ll see execution of JavaScript is restricted to the specified page.</p>
 <h3 id="recap">Summary</h3>
 <p>To recap, I’ve shown an approach where the Rails asset pipeline is used for all JavaScript files. I’ve shown the benefits of delivering all JavaScript in a single <em>application.js</em> script, how to organize JavaScript files for ease of development, and how to dynamically load scripts from external servers where appropriate. Finally, I’ve shown how to restrict execution of JavaScript to a specific page even when a script is available site-wide.</p>
 <p>For completeness, I want to present the edge cases where it is not optimal to include all JavaScript in a single <em>application.js</em> script. Keep in mind that you’ll only know if you have an edge case if you conduct performance testing to determine that a single <em>application.js</em> script is not optimal. In most cases, a single <em>application.js</em> script offers the best performance.</p>
