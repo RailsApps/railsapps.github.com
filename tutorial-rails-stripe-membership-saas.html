@@ -239,7 +239,7 @@
 <p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
 <h2>Creating the Application</h2>
 <p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
-<p>Keep in mind that this is a starter application. If you want to add this code to an existing application, you can follow the tutorial and cut and paste the code into your existing application, resolving any conflicts as needed.</p>
+<p>If you want to add this code to an existing application, you can follow the tutorial and cut and paste the code into your existing application, resolving any conflicts as needed.</p>
 <h3>Copy from the Tutorial</h3>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely. Before you start, the tutorial will ask you to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a starter app to save some steps. Then you can follow the tutorial step-by-step to build the complete application.</p>
 <h3>Fork</h3>
@@ -255,8 +255,8 @@ $ git clone git://github.com/RailsApps/rails-stripe-membership-saas.git
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
 <p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application.</p>
 <h2>Create the Rails Application</h2>
-<p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
-<p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want a tutorial that shows you the steps that build the starter app, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
+<p>Before you write any code, you’ll start by generating a starter app using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool.</p>
+<p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want to learn how the starter app is put together, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
 <p>For the starter app we need, use the command:</p>
 <pre>
 $ rails new rails-stripe-membership-saas -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb -T
@@ -428,8 +428,9 @@ puts 'New user created: ' &lt;&lt; user2.name
 user.add_role :admin
 user2.add_role :VIP
 </pre>
-<p>The starter app contains a placeholder list of roles. One role is “admin,” for an adminstrator. We should remove the “user” and “<span class="caps">VIP</span>” roles and add three additional roles corresponding to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
-<p>Then we’ll add three users with different subscription plans.</p>
+<p>The starter app contains a placeholder list of roles. One role is “admin,” for an adminstrator.</p>
+<p>Remove the “user” and “<span class="caps">VIP</span>” roles and add three additional roles corresponding to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
+<p>We’ll add three users with different subscription plans.</p>
 <p>Replace <strong>db/seeds.rb</strong> with:</p>
 <pre>
 puts 'CREATING ROLES'
@@ -1066,7 +1067,6 @@ end
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
-
   &lt;% if @user.stripe_token %&gt;
     Credit card has been accepted.
   &lt;% else %&gt;
@@ -1131,10 +1131,12 @@ end
   }
 })(jQuery);
 </pre>
+<p>If you prefer CoffeeScript, you can convert JavaScript to CoffeeScript <a href="http://js2coffee.org/">here</a> or <a href="http://js2cs.nodejitsu.com/">here</a>.</p>
 <p>If you haven’t changed the default manifest file, the <em>jquery.readyselector.js</em> script will be automatically loaded by the <code>//= require_tree .</code> directive in the <strong>app/assets/javascripts/application.js</strong> manifest file. If you’ve removed the <code>//= require_tree .</code> directive, specify the script in the <strong>app/assets/javascripts/application.js</strong> manifest file:</p>
 <pre>
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require jquery.readyselector
 </pre>
 <h3>Script for Dynamic Loading of Remote JavaScript Files</h3>
@@ -1155,6 +1157,7 @@ jQuery.externalScript = function(url, options) {
 <pre>
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require jquery.readyselector
 //= require jquery.externalscript
 </pre>
@@ -1187,60 +1190,73 @@ $('.registrations.new').ready(function() {
 <p>This code will test if the Stripe JavaScript library has been successfully downloaded.</p>
 <p>Later we will add the code that collects the credit card data from the subscription form, submits it to the Stripe server, and obtains the Stripe token.</p>
 <p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
+<p>Let’s test the code to make sure the Stripe JavaScript library is loading from the remote server.</p>
+<p>Start the server and visit the home page. Check the JavaScript console to observe the debugging messages.</p>
+<p>Here’s how to use the JavaScript console. Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <em>View/Developer/JavaScript Console</em>. Reload the page and you will the console messages. We’ve added console messages to trace the program flow as each function is executed. Use this technique for debugging if you have problems.</p>
+<p>When you visit the home page, you should see a debugging messages in the JavaScript console:</p>
+<pre>
+Page-specific JavaScript on the home.index page.
+</pre>
+<p>Click a “Subscribe” button. You should see the registration page. You’ll see more debugging messages in the JavaScript console:</p>
+<pre>
+Page-specific JavaScript on the registrations.new page.
+Script loading: success
+Okay. Stripe file loaded. 
+</pre>
+<p>If you see these messages, you’re ready to continue.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
 <p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
-$(function() {
-  if (typeof Stripe != 'undefined') {
-    console.log('Stripe JavaScript file loaded.');
-  }
-  else
-  {
-    console.log('Problem: Stripe JavaScript file not loaded.');
-  }
-  Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
-  console.log('set Stripe public key: &lt;%= STRIPE_PUBLIC_KEY %&gt;');
-  var subscription = {
-    setupForm: function() {
-      console.log('function: setupForm')
-      return $('.card_form').submit(function() {
-        console.log('setupForm: form submitted')
-        $('input[type=submit]').prop('disabled', true);
-        subscription.processCard();
-        return false;
-      });
-    },
-    processCard: function() {
-      console.log('function: processCard');
-      var card;
-      card = {
-        name: $('#user_name').val(),
-        number: $('#card_number').val(),
-        cvc: $('#card_code').val(),
-        expMonth: $('#card_month').val(),
-        expYear: $('#card_year').val()
-      };
-      return Stripe.createToken(card, subscription.handleStripeResponse);
-    },
-    handleStripeResponse: function(status, response) {
-      console.log('function: handleStripeResponse');
-      if (status === 200) {
-        return alert('Stripe response: ' + response.id);
-      } else {
-        return alert('Stripe response: ' + response.error.message);
-      }
+$('.registrations.new').ready(function() {
+  $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
+    if (typeof Stripe != 'undefined') {
+      console.log('Stripe JavaScript file loaded.');
     }
-  };
-  return subscription.setupForm();
+    else
+    {
+      console.log('Problem: Stripe JavaScript file not loaded.');
+    }
+    Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+    console.log('set Stripe public key: &lt;%= STRIPE_PUBLIC_KEY %&gt;');
+    var subscription = {
+      setupForm: function() {
+        console.log('function: setupForm')
+        return $('.card_form').submit(function() {
+          console.log('setupForm: form submitted')
+          $('input[type=submit]').prop('disabled', true);
+          subscription.processCard();
+          return false;
+        });
+      },
+      processCard: function() {
+        console.log('function: processCard');
+        var card;
+        card = {
+          name: $('#user_name').val(),
+          number: $('#card_number').val(),
+          cvc: $('#card_code').val(),
+          expMonth: $('#card_month').val(),
+          expYear: $('#card_year').val()
+        };
+        return Stripe.createToken(card, subscription.handleStripeResponse);
+      },
+      handleStripeResponse: function(status, response) {
+        console.log('function: handleStripeResponse');
+        if (status === 200) {
+          return alert('Stripe response: ' + response.id);
+        } else {
+          return alert('Stripe response: ' + response.error.message);
+        }
+      }
+    };
+    return subscription.setupForm();
+  });
 });
 </pre>
-<p>If you prefer CoffeeScript, you can convert JavaScript to CoffeeScript <a href="http://js2coffee.org/">here</a> or <a href="http://js2cs.nodejitsu.com/">here</a>.</p>
-<p>Instead of using a JavaScript alert to confirm that Stripe JavaScript file loaded properly, we write a message to the JavaScript console.</p>
-<p>Here’s how to use the JavaScript console. Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <strong>View/Developer/Developer Tools</strong> and select the “Console” tab. Reload the page and you will the console messages. We’ve added console messages to trace the program flow as each function is executed. You can use the console messages for debugging if you have problems.</p>
-<p>We read the Ruby constant STRIPE_PUBLIC_KEY before the file is compiled into JavaScript (that’s why we used the <strong>.erb</strong> file extension when we created the file).</p>
-<p>Finally, we raise an alert displaying the response we get from the Stripe server.</p>
-<p>Start the server and visit the page. Check the JavaScript console to observe the debugging messages. Fill out the form, using a fake credit card number. You should see an alert displaying the response from the Stripe server.</p>
+<p>This is not the final version of the JavaScript code; it contains debugging messages so you can verify the code is working.</p>
+<p>We add the functionality we need to process a form and submit the credit card data to the Stripe server. We’ll look closely at the code in the next section. For now, let’s test the new code.</p>
+<p>Start the server and visit the page. Check the JavaScript console to observe the debugging messages. Fill out the form, using a fake credit card number.</p>
 <p>Stripe provides a set of fake credit card numbers which will force various responses. See the <a href="https://stripe.com/docs/testing">Stripe Testing</a> documentation. Here are some useful numbers:</p>
 <ul>
 <li>a fake Visa card: <em>4242424242424242</em>
@@ -1253,50 +1269,64 @@ $(function() {
 </li>
 	<li>invalid cvc: use a two digit number, e.g. <em>99</em>
 </li>
-</ul><p>It’s fun (for a few minutes) to enter various numbers and observe the response from the Stripe server.</p>
+</ul><p>Submit the form. You should see an alert displaying the response from the Stripe server.</p>
+<p>It’s fun (for a few minutes) to enter various numbers and observe the response from the Stripe server.</p>
+<p>Here’s what you should see in the JavaScript console:</p>
+<pre>
+Stripe JavaScript file loaded.
+set Stripe public key: ...
+function: setupForm
+setupForm: form submitted
+function: processCard
+function: handleStripeResponse
+</pre>
+<p>Yea! You’re communicating with the Stripe server.</p>
 <p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script. While we’re at it, we’ll add the code to handle the response from the Stripe server.</p>
 <p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
-$(function() {
-  Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
-  var subscription = {
-    setupForm: function() {
-      return $('.card_form').submit(function() {
-        $('input[type=submit]').prop('disabled', true);
-        if ($('#card_number').length) {
-          subscription.processCard();
-          return false;
-        } else {
-          return true;
+$('.registrations.new').ready(function() {
+  $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
+      Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+      var subscription = {
+        setupForm: function() {
+          return $('.card_form').submit(function() {
+            $('input[type=submit]').prop('disabled', true);
+            if ($('#card_number').length) {
+              subscription.processCard();
+              return false;
+            } else {
+              return true;
+            }
+          });
+        },
+        processCard: function() {
+          var card;
+          card = {
+            name: $('#user_name').val(),
+            number: $('#card_number').val(),
+            cvc: $('#card_code').val(),
+            expMonth: $('#card_month').val(),
+            expYear: $('#card_year').val()
+          };
+          return Stripe.createToken(card, subscription.handleStripeResponse);
+        },
+        handleStripeResponse: function(status, response) {
+          if (status === 200) {
+            $('#user_stripe_token').val(response.id)
+            $('.card_form')[0].submit()
+          } else {
+            $('#stripe_error').text(response.error.message).show();
+            return $('input[type=submit]').prop('disabled', false);
+          }
         }
-      });
-    },
-    processCard: function() {
-      var card;
-      card = {
-        name: $('#user_name').val(),
-        number: $('#card_number').val(),
-        cvc: $('#card_code').val(),
-        expMonth: $('#card_month').val(),
-        expYear: $('#card_year').val()
       };
-      return Stripe.createToken(card, subscription.handleStripeResponse);
-    },
-    handleStripeResponse: function(status, response) {
-      if (status === 200) {
-        $('#user_stripe_token').val(response.id)
-        $('.card_form')[0].submit()
-      } else {
-        $('#stripe_error').text(response.error.message).show();
-        return $('input[type=submit]').prop('disabled', false);
-      }
-    }
-  };
-  return subscription.setupForm();
+      return subscription.setupForm();
+  });
 });
 </pre>
 <p>Here’s an explanation of the JavaScript.</p>
-<p>The <code>$(function()</code> function is an alias for the <a href="http://api.jquery.com/jQuery/#jQuery3">jQuery object</a>. Nothing inside the jQuery object will execute until the <span class="caps">DOM</span> is ready.</p>
+<p>We restrict execution of the code to a page that has a class “registrations” and “new”.</p>
+<p>We use the <code>externalScript</code> function to obtain the Stripe JavaScript library from the Stripe server (or a local cache).</p>
 <p>We set the <code>STRIPE_PUBLIC_KEY</code> which is defined in the Stripe initializer file <strong>config/initializers/stripe.rb</strong>.</p>
 <p>We create a <code>subscription</code> object with several functions: <code>setupForm</code>, <code>processCard</code>, and <code>handleStripeResponse</code>.</p>
 <p>We call the <code>setupForm</code> function which listens for the form submission event. When the visitor submits the form, the submit button is disabled (so the user can’t press it repeatedly) and the <code>processCard</code> function is called. Returning <code>false</code> makes sure the form is not submitted to our server at this stage. Notice that we don’t call the <code>processCard</code> function if the credit card number is blank; instead we return “true” which submits the form. This will be true if the credit card data was previously accepted (and a Stripe token is included in the hidden field) but there was an error such as a missing email address.</p>
