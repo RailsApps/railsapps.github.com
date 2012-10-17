@@ -886,7 +886,7 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong> to add details about the subscription plan:</p>
 <pre>
 &lt;h2&gt;Sign up&lt;/h2&gt;
-&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
   &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= hidden_field_tag 'plan', @plan %&gt;
   &lt;%= f.error_notification %&gt;
@@ -1029,10 +1029,81 @@ export STRIPE_PUBLIC_KEY="secret"
 $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
-<h3>Use Page-Specific JavaScript</h3>
+<h3>Add a Virtual Attribute to the User Model</h3>
+<p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will included as a hidden field when the user submits the registration form.</p>
+<p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
+<p>Modify the file <strong>app/models/user.rb</strong>:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessor :stripe_token
+
+end
+</pre>
+<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the value in an instance variable. Also we add the new <code>:stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass-assignment.</p>
+<p>With the virtual attribute in place, we will add fields for credit card data to the form.</p>
+<h3>Add Credit Card Data to the Registration Form</h3>
+<p>We’ll need fields for a credit card number, security code, and expiration date.</p>
+<p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Stripe server.</p>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;h2&gt;Sign up&lt;/h2&gt;
+&lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;
+&lt;/div&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
+  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :required =&gt; true %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
+
+  &lt;% if @user.stripe_token %&gt;
+    Credit card has been accepted.
+  &lt;% else %&gt;
+    &lt;div class="field"&gt;
+      &lt;%= label_tag :card_number, "Credit Card Number" %&gt;
+      &lt;%= text_field_tag :card_number, nil, name: nil %&gt;
+    &lt;/div&gt;
+    &lt;div class="field"&gt;
+      &lt;%= label_tag :card_code, "Card Security Code (CVV)" %&gt;
+      &lt;%= text_field_tag :card_code, nil, name: nil %&gt;
+    &lt;/div&gt;
+    &lt;div class="field"&gt;
+      &lt;%= label_tag :card_month, "Card Expiration" %&gt;
+      &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
+      &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
+  &lt;%= f.hidden_field :stripe_token %&gt;
+  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+</pre>
+<p>Take a look at <code>div id="stripe_error"</code>. We give it the “alert alert-error” style from Twitter Bootstrap. It remains hidden with a <code>style="display:none"</code> unless we use JavaScript to show it when we receive an error message from the Stripe server. We’ll add the necessary JavaScript soon.</p>
+<p>If you examine the <span class="caps">HTML</span> source, you will see:</p>
+<pre>
+&lt;form accept-charset="UTF-8" action="/users" class="card_form form-vertical" id="new_user" method="post"&gt;
+</pre>
+<p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller and action names “user” and “new”. We assign the class <code>card_form</code> to the form. Our JavaScript code will interact with the form. We could select the form with the “new_user” id but instead we’ll use the “card_form” class in our jQuery selector. This gives us flexibility to use the same JavaScript code to interact with either a “new registration” or “edit registration” form.</p>
+<p>Notice the differences between the credit card data fields and the previous data fields.</p>
+<p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
+<p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
+<p>We add a hidden field to the form named <code>stripe_token</code>. We’ll soon add JavaScript to submit credit card data from the form and obtain a Stripe token from the Stripe server. The JavaScript code will add the Stripe token to the hidden field before submitting the form to our server.</p>
+<p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.stripe_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Stripe accepts the credit card data and provides a <code>stripe_token</code> but there’s no email address, we’ll save the Stripe token in the hidden field and prompt the user to correct the email address.</p>
+<p>Now we’ll add the JavaScript to process the form.</p>
+<h3>Adding JavaScript from the Stripe Server</h3>
 <p>There are several approaches to accessing external JavaScript libraries and setting up scripts to only run on a specific page. For a comprehensive introduction to using external JavaScript libraries and page-specific JavaScript, see our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a>.</p>
-<p>Developers often copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. We don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It is best to load it from Stripe’s server. And we want to execute in only on the registration page.</p>
-<p>We’ll use two techniques described in the <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a> article. We’ll add a script named <em>jquery.readyselector.js</em> (from <a href="https://github.com/Verba/jquery-readyselector">John Firebaugh</a>) that allows us to execute JavaScript conditionally on a page. A second script, <em>jquery.externalscript.js</em>, extends jQuery to add a function that allows us to download (or load from the cache) a JavaScript file from a remote server.</p>
+<p>Developers often copy external JavaScript libraries to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. We don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It is best to load it from Stripe’s server. And we want to execute it only on the registration page.</p>
+<p>We’ll use two techniques described in the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a>. We’ll add a script named <em>jquery.readyselector.js</em> (from <a href="https://github.com/Verba/jquery-readyselector">John Firebaugh</a>) that allows us to execute JavaScript conditionally on a page. A second script, <em>jquery.externalscript.js</em>, extends jQuery to add a function that allows us to download (or load from the cache) a JavaScript file from a remote server.</p>
 <h3>Script for Conditional Execution of Page-Specific JavaScript</h3>
 <p>First, make sure that the application layout file is set to provide parameters needed for the <em>jquery.readyselector.js</em> script. The default RailsApps application layout file should already contain a <code>&lt;body&gt;</code> tag that looks like this:</p>
 <pre>
@@ -1066,177 +1137,59 @@ $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 //= require jquery_ujs
 //= require jquery.readyselector
 </pre>
+<h3>Script for Dynamic Loading of Remote JavaScript Files</h3>
+<p>Here’s how we can download (or load from the cache) a JavaScript file from a remote server.</p>
+<p>Other approaches to downloading a JavaScript file from a remote server require adding additional <code>&lt;script&gt;</code> tags to the page. For the optimal performance, it is better to use the following technique. See our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a> for details.</p>
+<p>Create a file <strong>app/assets/javascripts/jquery.externalscript.js</strong>:</p>
+<pre>
+jQuery.externalScript = function(url, options) {
+  options = $.extend(options || {}, {
+    dataType: "script",
+    cache: true,
+    url: url
+  });
+  return jQuery.ajax(options);
+};
+</pre>
+<p>If you haven’t changed the default manifest file, the <em>jquery.externalscript.js</em> script will be automatically loaded by the <code>//= require_tree .</code> directive. If you’ve removed the <code>//= require_tree .</code> directive, specify the script in the manifest:</p>
+<pre>
+//= require jquery
+//= require jquery_ujs
+//= require jquery.readyselector
+//= require jquery.externalscript
+</pre>
+<p>Next we’ll combine functions from these two scripts to load the Stripe JavaScript library.</p>
 <h3>Create a Registrations JavaScript File</h3>
 <p>We’ll create a new file for our page-specific JavaScript and give the file the same name as the controller. For now, we’ll only create some test code.</p>
 <p>Create a file <strong>app/lib/javascripts/registrations.js.erb</strong>:</p>
 <pre>
-$(function() {
-  if (typeof Stripe != 'undefined') {
-    alert('Stripe JavaScript file loaded.');
-  }
-  else
-  {
-    alert('Problem: Stripe JavaScript file not loaded.');
-  }
+$('.home.index').ready(function() {
+  console.log("Page-specific JavaScript on the home.index page.");
+});
+
+$('.registrations.new').ready(function() {
+  console.log("Page-specific JavaScript on the registrations.new page.");
+});
+
+$('.registrations.new').ready(function() {
+  $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
+    console.log('Script loading: ' + textStatus );
+    if (typeof Stripe != 'undefined') {
+      console.log('Okay. Stripe file loaded.');
+    }
+    else
+    {
+      console.log('Problem. Stripe file not loaded.');
+    }
+  });
 });
 </pre>
 <p>This code will test if the Stripe JavaScript library has been successfully downloaded.</p>
 <p>Later we will add the code that collects the credit card data from the subscription form, submits it to the Stripe server, and obtains the Stripe token.</p>
 <p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
-<h3>Configuration for Precompiling in Production</h3>
-<p>Notice that we don’t add the file to the <em><strong>app</strong>/assets/javascripts/</em> folder. We add it to the <em><strong>lib</strong>/assets/javascripts/</em> folder. Our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Unholy Rails: External Scripts, jQuery Plugins, and Page-Specific JavaScript</a> explains that selecting the  <em>lib/assets/javascripts/</em> folder means we can continue to use our <em>app/assets/javascripts/</em> folder for site-wide scripts without configuration changes.</p>
-<p>In development mode, nothing more is required to use our new <em>registrations.js</em> script on any page where it is needed. The asset pipeline “live compiles” all the JavaScript files it finds and makes them available for use.</p>
-<p>For production, we must make an important configuration change so our new script is precompiled and available on deployment. Change the configuration now; don’t wait until it’s time to deploy.</p>
-<p>Add this to the file <strong>config/environments/production.rb</strong>:</p>
-<pre>
-config.assets.precompile += %w( registrations.js )
-</pre>
-<p>We don’t need to include the <strong>.erb</strong> file extension.</p>
-<p>When you precompile assets in production mode, the Rails asset pipeline will automatically process the <strong>app/assets/javascripts/application.js</strong> file and any additional files listed in its manifest to produce a concatenated and minified site-wide <em>application.js</em> script.</p>
-<p>Any other scripts that you wish to use on a page in addition to the site-wide <em>application.js</em> script must be specified by the <code>config.assets.precompile</code> statement or else they will not be precompiled and made available.</p>
-<p>If you don’t make this configuration change, you won’t see the error until your application is deployed in production.</p>
-<h3>Add Page-Specific JavaScript</h3>
-<p>To use Stripe on our payment page we need to obtain a JavaScript file from Stripe’s server. We’ll also need to include our custom <em>registrations.js</em> script.</p>
-<p>Take a look at the application layout file <strong>app/views/layouts/application.html.erb</strong>:</p>
-<pre>
-&lt;head&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
-  &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Rails Stripe Membership Saas" %&gt;&lt;/title&gt;
-  &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "..." %&gt;"&gt;
-  &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
-  &lt;%= javascript_include_tag "application" %&gt;
-  &lt;%= csrf_meta_tags %&gt;
-  &lt;%= yield(:head) %&gt;
-&lt;/head&gt;
-</pre>
-<p>The <code>&lt;%= yield(:head) %&gt;</code> statement makes it easy to add page-specific JavaScript files. The element is positioned to load scripts following our <em>application.js</em> script which loads jQuery and any application-wide JavaScript code.</p>
-<p>We can use <code>content_for :head</code> in our view file to load our page-specific JavaScript code.</p>
-<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
-<pre>
-&lt;% content_for :head do %&gt;
-  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
-  &lt;%= javascript_include_tag 'registrations' %&gt;
-&lt;% end %&gt;
-&lt;h2&gt;Sign up&lt;/h2&gt;
-
-&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name)) do |f| %&gt;
-
-  &lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
-
-  &lt;%= devise_error_messages! %&gt;
-  &lt;p&gt;&lt;%= f.label :name %&gt;
-  &lt;%= f.text_field :name %&gt;&lt;/p&gt;
-
-  &lt;div&gt;&lt;%= f.label :email %&gt;
-  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
-
-  &lt;div&gt;&lt;%= f.label :password %&gt;
-  &lt;%= f.password_field :password %&gt;&lt;/div&gt;
-
-  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
-  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
-
-  &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
-&lt;% end %&gt;
-</pre>
-<p>The <code>content_for :head</code> block will pass <code>&lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;</code> to the <code>&lt;head&gt;</code> section of the application layout. This will load Stripe’s JavaScript file via a secure connection when the payment page is rendered in the browser. After that, our <em>registrations.js</em> script will load.</p>
-<p>You can verify it by starting the server and viewing the page source. You should see something similar to this:</p>
-<pre>
-&lt;head&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
-  &lt;title&gt;Rails Stripe Membership Saas&lt;/title&gt;
-  &lt;meta name="description" content="..."&gt;
-  &lt;link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" /&gt;
-  &lt;script src="/assets/application.js" type="text/javascript"&gt;&lt;/script&gt;
-  &lt;meta content="authenticity_token" name="csrf-param" /&gt;
-  &lt;meta content="..." name="csrf-token" /&gt;
-  &lt;script src="https://js.stripe.com/v1/" type="text/javascript"&gt;&lt;/script&gt;
-  &lt;script src="/assets/registrations.js" type="text/javascript"&gt;&lt;/script&gt;
-&lt;/head&gt;
-</pre>
-<p>Start the server and visit the page. You should see an alert indicating the Stripe JavaScript file loaded without a problem.</p>
-<p>With the Stripe JavaScript file in place, we will add a virtual attribute to the User model.</p>
-<h3>Add a Virtual Attribute to the User Model</h3>
-<p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will included as a hidden field when the user submits the registration form.</p>
-<p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
-<p>Modify the file <strong>app/models/user.rb</strong>:</p>
-<pre>
-class User &lt; ActiveRecord::Base
-  rolify
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
-  attr_accessor :stripe_token
-
-end
-</pre>
-<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the value in an instance variable. Also we add the new <code>:stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass-assignment.</p>
-<p>With the virtual attribute in place, we will add fields for credit card data to the form.</p>
-<h3>Add Credit Card Data to the Registration Form</h3>
-<p>We’ll need fields for a credit card number, security code, and expiration date.</p>
-<p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Stripe server.</p>
-<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
-<pre>
-&lt;% content_for :head do %&gt;
-  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
-  &lt;%= javascript_include_tag 'registrations' %&gt;
-&lt;% end %&gt;
-&lt;h2&gt;Sign up&lt;/h2&gt;
-&lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;
-&lt;/div&gt;
-&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form'}) do |f| %&gt;
-  &lt;h3&gt;&lt;%= @plan.humanize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'user[role_ids][]', @user.role_ids %&gt;
-  &lt;%= devise_error_messages! %&gt;
-  &lt;p&gt;&lt;%= f.label :name %&gt;
-  &lt;%= f.text_field :name %&gt;&lt;/p&gt;
-  &lt;div&gt;&lt;%= f.label :email %&gt;
-  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;%= f.label :password %&gt;
-  &lt;%= f.password_field :password %&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
-  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt; 
-  &lt;% if @user.stripe_token %&gt;
-    Credit card has been accepted.
-  &lt;% else %&gt;
-    &lt;div class="field"&gt;
-      &lt;%= label_tag :card_number, "Credit Card Number" %&gt;
-      &lt;%= text_field_tag :card_number, nil, name: nil %&gt;
-    &lt;/div&gt;
-    &lt;div class="field"&gt;
-      &lt;%= label_tag :card_code, "Card Security Code (CVV)" %&gt;
-      &lt;%= text_field_tag :card_code, nil, name: nil %&gt;
-    &lt;/div&gt;
-    &lt;div class="field"&gt;
-      &lt;%= label_tag :card_month, "Card Expiration" %&gt;
-      &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
-      &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
-    &lt;/div&gt;
-  &lt;% end %&gt;
-  &lt;%= f.hidden_field :stripe_token %&gt;
-  &lt;div&gt;&lt;%= f.submit "Sign up" %&gt;&lt;/div&gt;
-&lt;% end %&gt;
-</pre>
-<p>Take a look at <code>div id="stripe_error"</code>. We give it the “alert alert-error” style from Twitter Bootstrap. It remains hidden with a <code>style="display:none"</code> unless we use JavaScript to show it when we receive an error message from the Stripe server. We’ll add the necessary JavaScript soon.</p>
-<p>If you examine the <span class="caps">HTML</span> source, you will see:</p>
-<pre>
-&lt;form accept-charset="UTF-8" action="/users" class="card_form" id="new_user" method="post"&gt;
-</pre>
-<p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller and action names “user” and “new”. We assign the class <code>card_form</code> to the form. Our JavaScript code will interact with the form. We could select the form with the “new_user” id but instead we’ll use the “card_form” class in our jQuery selector. This gives us flexibility to use the same JavaScript code to interact with either a “new registration” or “edit registration” form.</p>
-<p>Notice the differences between the credit card data fields and the previous data fields.</p>
-<p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
-<p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
-<p>We add a hidden field to the form named <code>stripe_token</code>. We’ll soon add JavaScript to submit credit card data from the form and obtain a Stripe token from the Stripe server. The JavaScript code will add the Stripe token to the hidden field before submitting the form to our server.</p>
-<p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.stripe_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Stripe accepts the credit card data and provides a <code>stripe_token</code> but there’s no email address, we’ll save the Stripe token in the hidden field and prompt the user to correct the email address.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
-<p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
 $(function() {
   if (typeof Stripe != 'undefined') {
@@ -1302,7 +1255,7 @@ $(function() {
 </li>
 </ul><p>It’s fun (for a few minutes) to enter various numbers and observe the response from the Stripe server.</p>
 <p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script. While we’re at it, we’ll add the code to handle the response from the Stripe server.</p>
-<p>Replace the contents of <strong>lib/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
 $(function() {
   Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
