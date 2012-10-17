@@ -1372,13 +1372,13 @@ $('.registrations.new').ready(function() {
 <p>We will need two extra fields in the database to accommodate Stripe:</p>
 <ul>
 <li>
-<code>stripe_id</code> will store the Stripe customer ID</li>
+<code>customer_id</code> will store the Stripe customer ID</li>
 	<li>
 <code>last_4_digits</code> will store the last four digits of the user’s credit card number</li>
 </ul><p>The <code>last_4_digits</code> field isn’t needed for integration with Stripe but we can use it to show the user which credit card was used for the subscription.</p>
 <p>Create a database migration with this command:</p>
 <pre>
-$ rails generate migration AddStripeToUsers stripe_id:string last_4_digits:string
+$ rails generate migration AddStripeToUsers customer_id:string last_4_digits:string
 </pre>
 <p>After you’ve created the migration, update the database:</p>
 <pre>
@@ -1410,7 +1410,7 @@ class User &lt; ActiveRecord::Base
 
   def update_stripe
     return if email.include?('@example.com')
-    if stripe_id.nil?
+    if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
@@ -1421,7 +1421,7 @@ class User &lt; ActiveRecord::Base
         :plan =&gt; roles.first.name
       )
     else
-      customer = Stripe::Customer.retrieve(stripe_id)
+      customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
         customer.card = stripe_token
       end
@@ -1430,7 +1430,7 @@ class User &lt; ActiveRecord::Base
       customer.save
     end
     self.last_4_digits = customer.active_card.last4
-    self.stripe_id = customer.id
+    self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
     logger.error e.message
@@ -1444,10 +1444,10 @@ end
 <p>We add <code>before_save :update_stripe</code> to call the <code>update_stripe</code> method when the user is saved or updated.</p>
 <p>The <code>before_save</code> callback is carried out after validation so there will be no attempt to create a Stripe customer if an email address is missing or if there are other validation errors.</p>
 <p>The <code>update_stripe</code> method makes our request to the Stripe service. We skip the process if the email address includes “example.com”. This allows us to run <code>rake db:seed</code> or <code>rake db:reset</code> to set up our administrative user and default sample accounts for this tutorial. You should remove the statement <code>return if email.include?('example.com')</code> and modify the <strong>db/seeds.rb</strong> before deploying the application or your application will allow any visitor to create a free account by using an “example.com” email address.</p>
-<p>The <code>update_stripe</code> method checks if the user instance already has a <code>stripe_id</code>. If it does not, and a <code>stripe_token</code> is present, we can create a new Stripe customer. We make a request using the Stripe <span class="caps">API</span> call <code>Stripe::Customer.create</code> and provide the customer’s email address and name. We don’t transmit any credit card data. Stripe already has the credit card data keyed to the stripe token; we transmit the token instead of providing credit card data. Stripe also needs to know what subscription plan the user wants. We’re using Rolify roles to designate subscription plans so we retrieve the role name and use it to designate the subscription plan.</p>
-<p>If <code>stripe_id</code> is already available as an attribute of the user instance, we know that we’re updating a record rather than creating a new customer. We use the Stripe <span class="caps">API</span> call <code>Stripe::Customer.retrieve(stripe_id)</code> to obtain a customer object and then reset the email address and name. If a <code>stripe_token</code> is present, we tell Stripe to use a new credit card. We’ll implement this function when we modify the application’s “Edit Account” feature.</p>
-<p>After create or update, we obtain the last four digits of the user’s credit card number. We finish by setting the <code>stripe_id</code> to match the Stripe customer ID and we set the stripe token to nil.</p>
-<p>The <code>update_stripe</code> method sets user attributes <code>stripe_id</code> and <code>last_4_digits</code> which are saved with the attributes passed from the form when the Registration controller completes the <code>user.save</code> call.</p>
+<p>The <code>update_stripe</code> method checks if the user instance already has a <code>customer_id</code>. If it does not, and a <code>stripe_token</code> is present, we can create a new Stripe customer. We make a request using the Stripe <span class="caps">API</span> call <code>Stripe::Customer.create</code> and provide the customer’s email address and name. We don’t transmit any credit card data. Stripe already has the credit card data keyed to the stripe token; we transmit the token instead of providing credit card data. Stripe also needs to know what subscription plan the user wants. We’re using Rolify roles to designate subscription plans so we retrieve the role name and use it to designate the subscription plan.</p>
+<p>If <code>customer_id</code> is already available as an attribute of the user instance, we know that we’re updating a record rather than creating a new customer. We use the Stripe <span class="caps">API</span> call <code>Stripe::Customer.retrieve(customer_id)</code> to obtain a customer object and then reset the email address and name. If a <code>stripe_token</code> is present, we tell Stripe to use a new credit card. We’ll implement this function when we modify the application’s “Edit Account” feature.</p>
+<p>After create or update, we obtain the last four digits of the user’s credit card number. We finish by setting the <code>customer_id</code> to match the Stripe customer ID and we set the stripe token to nil.</p>
+<p>The <code>update_stripe</code> method sets user attributes <code>customer_id</code> and <code>last_4_digits</code> which are saved with the attributes passed from the form when the Registration controller completes the <code>user.save</code> call.</p>
 <p>We handle errors with a <code>rescue</code> condition. Errors in credit card data will be caught by the JavaScript functions before the form is submitted to the server. If another type of error prevents the Stripe customer from being created, the <code>rescue</code> condition will set an error message and return false which will prevent the user account from being saved.</p>
 <h3>Test Stripe Integration</h3>
 <p>We have all the code needed for visitors to sign up for new subscriptions. Let’s test the application.</p>
@@ -1665,7 +1665,7 @@ class User &lt; ActiveRecord::Base
   
   def update_stripe
     return if email.include?('@example.com')
-    if stripe_id.nil?
+    if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
@@ -1676,7 +1676,7 @@ class User &lt; ActiveRecord::Base
         :plan =&gt; roles.first.name
       )
     else
-      customer = Stripe::Customer.retrieve(stripe_id)
+      customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
         customer.card = stripe_token
       end
@@ -1685,7 +1685,7 @@ class User &lt; ActiveRecord::Base
       customer.save
     end
     self.last_4_digits = customer.active_card.last4
-    self.stripe_id = customer.id
+    self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
     logger.error e.message
@@ -1695,8 +1695,8 @@ class User &lt; ActiveRecord::Base
   end
   
   def cancel_subscription
-    unless stripe_id.nil?
-      customer = Stripe::Customer.retrieve(stripe_id)
+    unless customer_id.nil?
+      customer = Stripe::Customer.retrieve(customer_id)
       if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
         customer.cancel_subscription
       end
@@ -1764,7 +1764,7 @@ STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 
 StripeEvent.setup do
   subscribe 'customer.subscription.deleted' do |event|
-    user = User.find_by_stripe_id(event.data.object.customer)
+    user = User.find_by_customer_id(event.data.object.customer)
     user.expire
   end
 end
@@ -1795,7 +1795,7 @@ class User &lt; ActiveRecord::Base
   
   def update_stripe
     return if email.include?('@example.com')
-    if stripe_id.nil?
+    if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
@@ -1806,7 +1806,7 @@ class User &lt; ActiveRecord::Base
         :plan =&gt; roles.first.name
       )
     else
-      customer = Stripe::Customer.retrieve(stripe_id)
+      customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
         customer.card = stripe_token
       end
@@ -1815,7 +1815,7 @@ class User &lt; ActiveRecord::Base
       customer.save
     end
     self.last_4_digits = customer.active_card.last4
-    self.stripe_id = customer.id
+    self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
     logger.error e.message
@@ -1825,8 +1825,8 @@ class User &lt; ActiveRecord::Base
   end
   
   def cancel_subscription
-    unless stripe_id.nil?
-      customer = Stripe::Customer.retrieve(stripe_id)
+    unless customer_id.nil?
+      customer = Stripe::Customer.retrieve(customer_id)
       if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
         customer.cancel_subscription
       end
