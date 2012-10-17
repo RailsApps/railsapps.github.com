@@ -1024,15 +1024,15 @@ STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 export STRIPE_API_KEY="secret"
 export STRIPE_PUBLIC_KEY="secret"
 </pre>
-<p>Replace “secret” with your keys. You can find both keys on your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. Two sets of keys are available: one for testing, one for live transactions. Use the tesing keys on your development machine. When you deploy, use the live keys. If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment.</p>
+<p>Replace “secret” with your keys. You can find both keys on your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. Two sets of keys are available: one for testing, one for live transactions. Use the testing keys on your development machine. When you deploy, use the live keys. If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment.</p>
 <p>Here’s how to set Heroku environment variables to provide the same data your application obtains from your local shell environment:</p>
 <pre>
 $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Add a Virtual Attribute to the User Model</h3>
-<p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will included as a hidden field when the user submits the registration form.</p>
-<p>Before we can include a hidden field in the form, we must modify the User model to accept this field as a virtual attribute. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
+<p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will be included as a hidden field when the user submits the registration form.</p>
+<p>Before we can include a hidden field in the form, we must modify the User model to accept this field. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. We’ll add it as a virtual attribute. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -1044,12 +1044,13 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessible :role_ids, :as =&gt; :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
 
 end
 </pre>
-<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the value in an instance variable. Also we add the new <code>:stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass-assignment.</p>
+<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the <code>stripe_token</code> value as an instance variable. Also we add the new <code>stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass-assignment.</p>
 <p>With the virtual attribute in place, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
@@ -1404,7 +1405,8 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessible :role_ids, :as =&gt; :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
   before_save :update_stripe
 
@@ -1643,7 +1645,8 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessible :role_ids, :as =&gt; :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
   before_save :update_stripe
   before_destroy :cancel_subscription
@@ -1773,7 +1776,8 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :role_ids, :stripe_token
+  attr_accessible :role_ids, :as =&gt; :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
   before_save :update_stripe
   before_destroy :cancel_subscription
