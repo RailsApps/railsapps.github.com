@@ -1174,7 +1174,7 @@ $('.registrations.new').ready(function() {
   console.log("Page-specific JavaScript on the registrations.new page.");
 });
 
-$('.registrations.new').ready(function() {
+$('.registrations').ready(function() {
   $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
     console.log('Script loading: ' + textStatus );
     if (typeof Stripe != 'undefined') {
@@ -1208,7 +1208,7 @@ Okay. Stripe file loaded.
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
 <p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
-$('.registrations.new').ready(function() {
+$('.registrations').ready(function() {
   $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
     if (typeof Stripe != 'undefined') {
       console.log('Stripe JavaScript file loaded.');
@@ -1284,7 +1284,7 @@ function: handleStripeResponse
 <p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script. While we’re at it, we’ll add the code to handle the response from the Stripe server.</p>
 <p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
 <pre>
-$('.registrations.new').ready(function() {
+$('.registrations').ready(function() {
   $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
       Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
       var subscription = {
@@ -1325,7 +1325,7 @@ $('.registrations.new').ready(function() {
 });
 </pre>
 <p>Here’s an explanation of the JavaScript.</p>
-<p>We restrict execution of the code to a page that has a class “registrations” and “new”.</p>
+<p>We restrict execution of the code to a page that has a class “registrations”. In this case, the code will run on the Registrations#New page. It will also run on the Registrations#Edit page which we will set up later.</p>
 <p>We use the <code>externalScript</code> function to obtain the Stripe JavaScript library from the Stripe server (or a local cache).</p>
 <p>We set the <code>STRIPE_PUBLIC_KEY</code> which is defined in the Stripe initializer file <strong>config/initializers/stripe.rb</strong>.</p>
 <p>We create a <code>subscription</code> object with several functions: <code>setupForm</code>, <code>processCard</code>, and <code>handleStripeResponse</code>.</p>
@@ -1485,18 +1485,8 @@ $ git checkout -b change-acct
 <h3>Change the Registration Form</h3>
 <p>Our “Edit account” page is very similar to the registration page. In its rudimentary form, it contains a simple form to change the user’s name, email address, or password. We will add two additional forms that are hidden on the page and are revealed as modal windows when a “Change plan” or “Change card” button is clicked.</p>
 <p>We’ve got a lot of code to add, so we’ll do it in stages.</p>
-<p>Add the code to the file <strong>app/views/devise/registrations/edit.html.erb</strong>.</p>
-<p>First, let’s include the Stripe JavaScript library and our <em>registrations.js</em> script.</p>
-<p>Replace the line <code>&lt;h2&gt;Edit &lt;%= resource_name.to_s.humanize %&gt;&lt;/h2&gt;</code> with this:</p>
-<pre>
-&lt;% content_for :head do %&gt;
-  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
-  &lt;%= javascript_include_tag 'registrations' %&gt;
-&lt;% end %&gt;
-&lt;h2&gt;Account&lt;/h2&gt;
-</pre>
-<p>This identical to the code we added to the <strong>app/views/devise/registrations/new.html.erb</strong> file.</p>
-<p>There’s no need to replace the existing form. It’s useful for changing the user’s name, email address, or password.</p>
+<p>We’ll modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>.</p>
+<p>There’s no need to replace the existing form. It is useful for changing the user’s name, email address, or password.</p>
 <p>Add this code before the <code>&lt;h3&gt;Cancel my account&lt;/h3&gt;</code> statement:</p>
 <pre>
 &lt;h3&gt;Subscription Plan&lt;/h3&gt;
@@ -1522,6 +1512,10 @@ $ git checkout -b change-acct
 &lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini' %&gt;&lt;/p&gt;
 </pre>
 <p>We’ve added a Twitter Bootstrap class that styles the link as a miniature button.</p>
+<p>You can also remove the line:</p>
+<pre>
+&lt;%= link_to "Back", :back %&gt;
+</pre>
 <p>Now we’ll add the first of two modal windows containing a form. It doesn’t matter where the forms are placed in the file as they will be hidden when the page is initially displayed and will appear as an overlay when revealed by a click on the appropriate link.</p>
 <p>The first form is identifed as “plan-options”:</p>
 <pre>
@@ -1555,25 +1549,16 @@ $ git checkout -b change-acct
 <p>Finally, the form has a section named “modal-footer” that contains a submit button and another link to close the modal window.</p>
 <p>Here’s the complete version of the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
 <pre>
-&lt;% content_for :head do %&gt;
-  &lt;%= javascript_include_tag 'https://js.stripe.com/v1/' %&gt;
-  &lt;%= javascript_include_tag 'registrations' %&gt;
-&lt;% end %&gt;
 &lt;h2&gt;Account&lt;/h2&gt;
 
-&lt;%= form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put }) do |f| %&gt;
-  &lt;%= devise_error_messages! %&gt;
-  &lt;p&gt;&lt;%= f.label :name %&gt;
-  &lt;%= f.text_field :name %&gt;&lt;/p&gt;
-  &lt;div&gt;&lt;%= f.label :email %&gt;
-  &lt;%= f.email_field :email %&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;%= f.label :password %&gt; &lt;i&gt;(leave blank if you don't want to change it)&lt;/i&gt;&lt;br /&gt;
-  &lt;%= f.password_field :password, :autocomplete =&gt; "off" %&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;%= f.label :password_confirmation %&gt;
-  &lt;%= f.password_field :password_confirmation %&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
-  &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;%= f.submit "Update" %&gt;&lt;/div&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :autocomplete =&gt; "off", :hint =&gt; "leave it blank if you don't want to change it", :required =&gt; false %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; false %&gt;
+  &lt;%= f.input :current_password, :hint =&gt; "we need your current password to confirm your changes", :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Update', :class =&gt; 'btn-primary' %&gt;
 &lt;% end %&gt;
 
 &lt;h3&gt;Subscription Plan&lt;/h3&gt;
