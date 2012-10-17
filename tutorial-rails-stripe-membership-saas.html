@@ -1765,7 +1765,7 @@ gem "stripe_event"
 <p>The stripe_event gem is a <a href="http://edgeguides.rubyonrails.org/engines.html">Rails engine</a>, which is a miniature Rails application that can be added to an application. As a miniature Rails application, it has its own controller and routes hidden in the gem. The engine’s functionality becomes available when you mount it in your routes file.</p>
 <p>Modify <strong>config/routes.rb</strong> to mount the engine:</p>
 <pre>
-RailsMembershipSubscriptionSaas::Application.routes.draw do
+RailsStripeMembershipSaas::Application.routes.draw do
   mount StripeEvent::Engine =&gt; '/stripe'
   get "content/gold"
   get "content/silver"
@@ -1779,7 +1779,7 @@ RailsMembershipSubscriptionSaas::Application.routes.draw do
 end
 </pre>
 <p>We’ve chosen to mount the engine so it responds to requests to <a href="http://localhost:3000/stripe">http://localhost:3000/stripe</a>. You can specify a different path. You’ll supply this address when you set the webhooks <span class="caps">URL</span> in your Stripe account settings.</p>
-<p>You will need to restart your server for the new route to become available.</p>
+<p>Note that the application name is used in the routes file. If you’ve changed the name of the application from “rails-stripe-membership-saas” you’ll need to change the first line of the routes file.</p>
 <h3>Modify the Stripe Initializer</h3>
 <p>We need to specify what happens when the stripe_event engine receives a webhook request. Conveniently, we can specify this in the Stripe initializer file.</p>
 <p>Modify the <strong>config/initializers/stripe.rb</strong> file:</p>
@@ -1968,9 +1968,11 @@ $ git branch -D webhooks
 <li>email: user2@example.com</li>
 	<li>password: please</li>
 </ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+<p>You should be able to create additional users using a fake credit card number. You’ll see the new users listed when you log in as an administrator. And you’ll see the new users listed as customers when you visit your Stripe dashboard.</p>
 <h2>Deploy to Heroku</h2>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
 <p>Before you deploy to production, modify the <strong>app/models/user.rb</strong> file to remove the statement <code>return if email.include?('example.com')</code>. If you don’t do so, your application will allow any visitor to create a free account by using an “example.com” email address.</p>
+<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
 <h2>Credits</h2>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
 <h2 id="comment">Did You Like the Tutorial?</h2>
