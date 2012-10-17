@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Application Layout for HTML5</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 25 September 2012</em></p>
+<p><em>Last updated 16 October 2012</em></p>
 <p>Rails Default Application Layout for HTML5. Shows how to set up a default application layout with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling.</p>
 <p>See the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> for an explanation of what should be included in the default application layout.</p>
 <h3>RailsApps Examples and Tutorials</h3>
@@ -275,7 +275,14 @@ body { padding-top: 60px; }
 </pre>
 <p>When a controller renders the view template and combines it with the application layout, the text “My Title” will replace <code>&lt;%= content_for?(:title) ? yield(:title) : "App_Name" %&gt;</code> in the application layout. If no <code>content_for</code> block is found in the view template, the alternate text “App_Name” will be used.</p>
 <h3>Yield Head</h3>
-<p>The statement <code>&lt;%= yield(:head) %&gt;</code> makes it easy to add more head elements if needed for a specific page. For example, you may wish to add page-specific JavaScript. See the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Rails and JavaScript</a> for details.</p>
+<p>The statement <code>&lt;%= yield(:head) %&gt;</code> makes it easy to add more head elements if needed for a specific page.</p>
+<p>Some developers use this for adding additional JavaScript scripts but other techniques are better. See the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a> for details.</p>
+<h2>The <code>&lt;body&gt;</code> Tag</h2>
+<p>The simplest form of the <code>&lt;body&gt;</code> tag is all you need for many applications. However, if you’re using JavaScript extensively and wish to execute JavaScript conditionally on a page, it’s helpful to set the controller name and action in the <code>&lt;body&gt;</code> tag:</p>
+<pre>
+&lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
+</pre>
+<p>See the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a> for details.</p>
 <h2>Default Application Layout (for Rails 3.1 and newer)</h2>
 <p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling.</p>
 <p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
@@ -294,7 +301,7 @@ body { padding-top: 60px; }
     &lt;%= csrf_meta_tags %&gt;
     &lt;%= yield(:head) %&gt;
   &lt;/head&gt;
-  &lt;body&gt;
+  &lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
     &lt;div id="container" class="container"&gt;
       &lt;header&gt;
         &lt;%= render 'layouts/navigation' %&gt;
@@ -346,7 +353,7 @@ body { padding-top: 60px; }
     &lt;%= csrf_meta_tags %&gt;
     &lt;%= yield(:head) %&gt;
   &lt;/head&gt;
-  &lt;body&gt;
+  &lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
     &lt;header class="navbar navbar-fixed-top"&gt;
       &lt;nav class="navbar-inner"&gt;
         &lt;div class="container"&gt;

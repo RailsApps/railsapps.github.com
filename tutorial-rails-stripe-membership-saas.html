@@ -982,7 +982,7 @@ $ git branch -D redirect
 	<li>the <code>create</code> method receives an acknowledgment of a completed or declined transaction</li>
 	<li>the <code>create</code> method saves the user data (and creates an account) or shows an error message</li>
 </ul><p>There’s a big drawback to this approach: Credit card data is sent to your server. Your server becomes a target for thieves and you must secure the server and maintain <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> (the credit card industry security standard).</p>
-<p>Instead, Stripe offers an architecture that cuts risk and makes it much easier to meet <span class="caps">PCI</span> compliance requirements. Stripe provides a JavaScript file that we add to our payment page. We set a public key in the JavaScript code to identify our Stripe account. We trigger the JavaScript code when the user submits the payment form. The JavaScript code obtains the credit card data from our form, transmits the data to Stripe’s servers, and returns a unique token that serves as a substitute for the credit card data. Stripe takes responsibility for the security of the credit card data and it never touches our server. We can safely use  the Stripe token as a substitute for credit card data when we make a request to Stripe to bill the user.</p>
+<p>Instead, Stripe offers an architecture that cuts risk and makes it much easier to meet <span class="caps">PCI</span> compliance requirements. Stripe provides a JavaScript file that we add to our payment page. We set a public key in the JavaScript code to identify our Stripe account. We trigger the JavaScript code when the user submits the payment form. The JavaScript code obtains the credit card data from our form, transmits the data to Stripe’s servers, and returns a unique token that serves as a substitute for the credit card data. Stripe takes responsibility for the security of the credit card data and it never touches our server. We can safely use the Stripe token as a substitute for credit card data when we make a request to Stripe to bill the user.</p>
 <p>Here is our preferred program flow:</p>
 <ul>
 <li>the visitor enters credit card data on a form</li>
@@ -990,9 +990,10 @@ $ git branch -D redirect
 	<li>a JavaScript function sends the card data to Stripe’s servers</li>
 	<li>a JavaScript callback receives a Stripe token or an error message</li>
 	<li>the JavaScript function submits the form to your server, substituting the token for credit card data</li>
-	<li>an application controller <code>create</code> action sends a request (with the token) to Stripe to create a customer account</li>
-	<li>the <code>create</code> method receives an acknowledgment of a completed or declined transaction</li>
-	<li>the <code>create</code> method saves the user data (and creates an account) or shows an error message</li>
+	<li>an application controller <code>create</code> action attempts to save the new user</li>
+	<li>a User model <code>before_save</code> method sends a request (with the token) to Stripe to create a customer account</li>
+	<li>the User model <code>before_save</code> method receives an acknowledgment of a completed or declined transaction</li>
+	<li>the User model <code>before_save</code> method saves the user data (and creates an account) or shows an error message</li>
 </ul><p>Stripe’s multi-step JavaScript-based approach makes implementation more complex but the result is robust and secure.</p>
 <p>Here are useful resources for understanding the implementation:</p>
 <ul>
@@ -1029,8 +1030,15 @@ $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Use Page-Specific JavaScript</h3>
-<p>In most projects, we copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. Only a small portion of our site’s visitors will use it (only those visiting the payment page). And we don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It’s best to manage it as page-specific JavaScript, loaded only on the payment page.</p>
-<p>For details about using external JavaScript libraries and page-specific JavaScript, see our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Unholy Rails: External Scripts, jQuery Plugins, and Page-Specific JavaScript</a>.</p>
+<p>There are several approaches to accessing external JavaScript libraries and setting up scripts to only run on a specific page. For a comprehensive introduction to using external JavaScript libraries and page-specific JavaScript, see our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a>.</p>
+<p>Developers often copy external JavaScript libraries (such as jQuery plugins) to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. We don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It is best to load it from Stripe’s server. And we want to execute in only on the registration page.</p>
+<p>We’ll use two techniques described in the <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a> article. We’ll add a script named <em>jquery.readyselector.js</em> (from <a href="https://github.com/Verba/jquery-readyselector">John Firebaugh</a>) that allows us to execute JavaScript conditionally on a page. A second script, <em>jquery.externalscript.js</em>, extends jQuery to add a function that allows us to download (or load from the cache) a JavaScript file from a remote server.</p>
+<h3>Implement Conditional Execution of Page-Specific JavaScript</h3>
+<p>First, make sure that the application layout file is set to provide parameters needed for the <em>jquery.readyselector.js</em> script. The default RailsApps application layout file should already contain a <code>&lt;body&gt;</code> tag that looks like this:</p>
+<pre>
+&lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
+</pre>
+<p>If it doesn’t, make sure to add it now.</p>
 <h3>Create a Registrations JavaScript File</h3>
 <p>We’ll create a new file for our page-specific JavaScript and give the file the same name as the controller. For now, we’ll only create some test code.</p>
 <p>Create a file <strong>app/lib/javascripts/registrations.js.erb</strong>:</p>
