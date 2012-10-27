@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 17 October 2012</em></p>
+<p><em>Last updated 27 October 2012</em></p>
 <p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service). Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-stripe-membership-saas">rails-stripe-membership-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
 <p><img src="http://railsapps.github.com/images/rails-stripe-membership-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
 <h2>
@@ -1667,8 +1667,7 @@ $ git checkout -b change-acct
   &lt;% end %&gt;
 &lt;/div&gt;
 </pre>
-<p>There’s a lot of new code in the Devise user edit view but we don’t need to change the Devise registrations controller. We already accommodate the “Change card” and “Change plan” features with the <code>update_stripe</code> method that is called by a <code>before_save</code> callback in the User class.</p>
-<p>The “Cancel my account” feature is not complete, however. The Devise registrations controller will delete the user’s account but we also need to send a request to Stripe to de-activate monthly billing for the customer.</p>
+<p>There’s a lot of new code in the Devise user edit view. To accommodate the “Change Plans” feature we will need to improve the registrations controller, the users controller, and the User model. First we will modify the User model to accommodate the “Cancel my account” feature.</p>
 <h3>Modify the User Model for Subscription Cancellations</h3>
 <p>It’s easy to handle a subscription cancellation request. Devise does the work of deleting the user account and we just piggyback on the Devise registration controller action with a <code>before_destroy</code> callback so we can notify Stripe to cancel subscription billing.</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
@@ -1736,7 +1735,167 @@ end
 </pre>
 <p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The method uses the Stripe <span class="caps">API</span> to obtain a Stripe customer object and then initiates a subscription cancellation call. We return false to cancel the <code>destroy</code> action if Stripe returns an error.</p>
 <p>The <code>cancel_subscription</code> method only takes action if the user has a Stripe id. You may want to delete the example users created by the <code>db:seed</code> process. The example users don’t have a Stripe id and the <code>destroy</code> action would fail for them unless we make the <code>cancel_subscription</code> method conditional. We also make sure the Stripe customer exists and has an active subscription before attempting to cancel the subscription.</p>
-<p>We’re done adding the features that allow users to change credit cards, change plans, and unsubscribe.</p>
+<h3>Modify the User Model for Subscription Plan Changes</h3>
+<p>As implemented, either the user or the administrator can upgrade or downgrade a user’s subscription plan and the change will be recorded in the application’s roles datatable. However, we need to inform Stripe when a subscription plan changes. Stripe will pro-rate the plan cost and refund or bill the price difference (or optionally, wait until the next billing cycle to change the billed rate).</p>
+<p>Modify the file <strong>app/models/user.rb</strong>:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
+  attr_accessor :stripe_token
+  before_save :update_stripe
+  before_destroy :cancel_subscription
+
+  def update_plan(role)
+    self.remove_role(self.roles.first.name)
+    self.add_role(role.name)
+    unless customer_id.nil?
+      customer = Stripe::Customer.retrieve(customer_id)
+      customer.update_subscription(:plan =&gt; role.name)
+    end
+  end
+  
+  def update_stripe
+    return if email.include?('@example.com')
+    if customer_id.nil?
+      if !stripe_token.present?
+        raise "Stripe token not present. Can't create account."
+      end
+      customer = Stripe::Customer.create(
+        :email =&gt; email,
+        :description =&gt; name,
+        :card =&gt; stripe_token,
+        :plan =&gt; roles.first.name
+      )
+    else
+      customer = Stripe::Customer.retrieve(customer_id)
+      if stripe_token.present?
+        customer.card = stripe_token
+      end
+      customer.email = email
+      customer.description = name
+      customer.save
+    end
+    self.last_4_digits = customer.active_card.last4
+    self.customer_id = customer.id
+    self.stripe_token = nil
+  rescue Stripe::StripeError =&gt; e
+    logger.error e.message
+    errors.add :base, "Unable to create your subscription. #{e.message}"
+    stripe_token = nil
+    false
+  end
+  
+  def cancel_subscription
+    unless customer_id.nil?
+      customer = Stripe::Customer.retrieve(customer_id)
+      if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
+        customer.cancel_subscription
+      end
+    end
+  rescue Stripe::StripeError =&gt; e
+    logger.error e.message
+    errors.add :base, "Unable to cancel your subscription. #{e.message}"
+    false
+  end
+  
+  def expire
+    UserMailer.expire_email(self).deliver
+    destroy
+  end
+  
+end
+</pre>
+<p>First we remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement. This statement gives the administrator the power to override the mass assignment protection for the role attribute. The statement is no longer necessary because we will add a method that allows both the user and an administrator to reset the role.</p>
+<p>We add the <code>update_plan</code> method for resetting the role. Rolify supports multiple roles (though we only use a single role in this application) and we must remove an existing role before adding a new role. Then we make sure the user has a Stripe customer account, obtain a customer object with a call to Stripe, and call the the Stripe <code>update_subscription</code> method.</p>
+<p>With these changes, the User model can update the Stripe customer account when a user or administrator changes a subscription plan.</p>
+<h3>Modify the Registrations Controller for Subscription Plan Changes</h3>
+<p>The registrations controller handles requests when the user submits the edit form.</p>
+<p>We need to override the <code>update</code> method in the Devise registrations controller to accommodate the “Change Plans” feature.</p>
+<p>Modify the file <strong>app/controllers/registrations_controller.rb</strong>:</p>
+<pre>
+class RegistrationsController &lt; Devise::RegistrationsController
+
+  def new
+    @plan = params[:plan]
+    if @plan
+      super
+    else
+      redirect_to root_path, :notice =&gt; 'Please select a subscription plan below'
+    end
+  end
+
+  def update
+    role = Role.find(params[:user][:role_ids]) unless params[:user][:role_ids].nil?
+    params[:user] = params[:user].except(:role_ids)
+    super
+    resource.update_plan(role) unless role.nil?
+  end
+  
+  private
+  def build_resource(*args)
+    super
+    if params[:plan]
+      resource.add_role(params[:plan])
+    end
+  end
+end
+</pre>
+<p>Not every request will require a change of subscription plans. Sometimes the user will be submitting the form to change name, email address, or credit card number. In those cases, there will be no <code>role_ids</code> parameter. When a <code>role_ids</code> parameter is present, the user wants to change subscription plans and we look up the name of the role.</p>
+<p>The next statement <code>params[:user] = params[:user].except(:role_ids)</code> is essential to avoid a mass assignment error. Our User model doesn’t allow a <code>role_ids</code> attribute to be set with the <code>update_attributes</code> method that is used by the Devise registrations controller <code>update</code> method. We strip out the <code>params[:user][:role_ids]</code> parameter after using it to find the requested role name. Then we activate the original Devise registrations controller <code>update</code> method with a call to <code>super</code>.</p>
+<p>Finally, we call the <code>User.update_plan</code> method that we just added to the User model. Now the user can change subscription plans and Stripe will update the customer account and apply refunds or additional charges as necessary.</p>
+<h3>Modify the User Controller for Subscription Plan Changes</h3>
+<p>The users controller handles requests when an administrator changes the user’s subscription plan.</p>
+<p>We need to modify the <code>update</code> method in the users controller to make sure Stripe’s customer records are updated when an administrator makes a change.</p>
+<p>Modify the file <strong>app/controllers/users_controller.rb</strong>:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+  
+  def update
+    authorize! :update, @user, :message =&gt; 'Not authorized as an administrator.'
+    @user = User.find(params[:id])
+    role = Role.find(params[:user][:role_ids]) unless params[:user][:role_ids].nil?
+    params[:user] = params[:user].except(:role_ids)
+    if @user.update_attributes(params[:user])
+      @user.update_plan(role) unless role.nil?
+      redirect_to users_path, :notice =&gt; "User updated."
+    else
+      redirect_to users_path, :alert =&gt; "Unable to update user."
+    end
+  end
+    
+  def destroy
+    authorize! :destroy, @user, :message =&gt; 'Not authorized as an administrator.'
+    user = User.find(params[:id])
+    unless user == current_user
+      user.destroy
+      redirect_to users_path, :notice =&gt; "User deleted."
+    else
+      redirect_to users_path, :notice =&gt; "Can't delete yourself."
+    end
+  end
+end
+</pre>
+<p>The code is similar to what we added to the registrations controller.</p>
+<p>First we find the name of the requested role if a <code>params[:user][:role_ids]</code> parameter exists. We strip away the <code>params[:user][:role_ids]</code> parameter to avoid mass assignment errors. Then we call <code>update_attributes</code>. If the User object successfully saves the new attributes, we call the <code>User.update_plan</code> method to change the subscription plan in both the application role table and the remote Stripe customer account.</p>
+<p>Now an administrator can change subscription plans and Stripe will update the customer account and apply refunds or additional charges as necessary.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
 <pre>
