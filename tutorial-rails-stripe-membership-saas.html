@@ -1529,8 +1529,6 @@ $ git checkout -b change-acct
     &lt;/div&gt;
     &lt;div class="modal-body"&gt;
       &lt;%= f.input :role_ids, :collection =&gt; Role.all.delete_if {|i| i.name == 'admin'}, :as =&gt; :radio_buttons, :label_method =&gt; lambda {|t| t.name.titleize}, :label =&gt; false, :item_wrapper_class =&gt; 'inline' %&gt;
-      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
-      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class="modal-footer"&gt;
       &lt;%= f.submit "Change Plan", :class =&gt; "btn btn-primary" %&gt;
@@ -1571,8 +1569,6 @@ $ git checkout -b change-acct
         &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
         &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
       &lt;/div&gt;
-      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
-      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
       &lt;%= f.hidden_field :name %&gt;
       &lt;%= f.hidden_field :email %&gt;
       &lt;%= f.hidden_field :stripe_token %&gt;
@@ -1624,8 +1620,6 @@ $ git checkout -b change-acct
     &lt;/div&gt;
     &lt;div class="modal-body"&gt;
       &lt;%= f.input :role_ids, :collection =&gt; Role.all.delete_if {|i| i.name == 'admin'}, :as =&gt; :radio_buttons, :label_method =&gt; lambda {|t| t.name.titleize}, :label =&gt; false, :item_wrapper_class =&gt; 'inline' %&gt;
-      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
-      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class="modal-footer"&gt;
       &lt;%= f.submit "Change Plan", :class =&gt; "btn btn-primary" %&gt;
@@ -1654,8 +1648,6 @@ $ git checkout -b change-acct
         &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
         &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
       &lt;/div&gt;
-      &lt;div&gt;&lt;%= f.label :current_password %&gt; &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;
-      &lt;%= f.password_field :current_password %&gt;&lt;/div&gt;
       &lt;%= f.hidden_field :name %&gt;
       &lt;%= f.hidden_field :email %&gt;
       &lt;%= f.hidden_field :stripe_token %&gt;
@@ -1833,10 +1825,29 @@ class RegistrationsController &lt; Devise::RegistrationsController
   end
 
   def update
+    @user = User.find(current_user.id)
     role = Role.find(params[:user][:role_ids]) unless params[:user][:role_ids].nil?
     params[:user] = params[:user].except(:role_ids)
-    super
-    resource.update_plan(role) unless role.nil?
+    successfully_updated = false
+    unless params[:user][:email].nil? or params[:user][:password].nil?
+      name_changed = @user.name != params[:user][:name]
+      email_changed = @user.email != params[:user][:email]
+      password_changed = !params[:user][:password].empty?
+      if email_changed or password_changed or name_changed
+        successfully_updated = @user.update_with_password(params[:user])
+      end
+    else
+      successfully_updated = @user.update_without_password(params[:user])
+    end
+    if successfully_updated
+      @user.update_plan(role) unless role.nil?
+      set_flash_message :notice, :updated
+      # Sign in the user bypassing validation in case his password changed
+      sign_in @user, :bypass =&gt; true
+      redirect_to after_update_path_for(@user)
+    else
+      render :edit
+    end
   end
   
   private
@@ -2031,7 +2042,7 @@ end
 </pre>
 <p>Our new <code>expire</code> method is simple. We call a method on an ActionMailer method to send an email. Then we destroy the user.</p>
 <h3>Send an Expiration Email</h3>
-<p>We’ll use an ActionMailer method to send an email when we receive a Stripe webhook request indicating a subscription has been cancelled for pyament failure.</p>
+<p>We’ll use an ActionMailer method to send an email when we receive a Stripe webhook request indicating a subscription has been cancelled for payment failure.</p>
 <p>Generate a mailer with accompanying views:</p>
 <pre>
 $ rails generate mailer UserMailer
