@@ -353,6 +353,37 @@ config/locales/simple_form.en.yml
 lib/templates/erb/scaffold/_form.html.erb
 </pre>
 <p>Later we’ll add forms that use the SimpleForm view helpers.</p>
+<h3>Base Errors Helper for SimpleForm</h3>
+<p>SimpleForm provides excellent handling of validation errors for any attributes of a model. However, some applications set model errors that are not matched to a specific form field. These are called “base errors.” For example, a model might set an error like this: <code>errors.add :base, "Credit card declined"</code>. SimpleForm does not provide a helper to display base errors; if your application sets base errors, you’ll need to add the following view helper.</p>
+<p>Add this view helper to <strong>app/helpers/application_helper.rb</strong>:</p>
+<pre>
+module ApplicationHelper
+  
+  def display_base_errors resource
+    return '' if resource.errors.empty?
+    messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
+    html = &lt;&lt;-HTML
+    &lt;div class="alert alert-error alert-block"&gt;
+      &lt;button type="button" class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/button&gt;
+      #{messages}
+    &lt;/div&gt;
+    HTML
+    html.html_safe
+  end
+  
+end
+</pre>
+<p>Use the view helper in a form like this:</p>
+<pre>
+&lt;%= simple_form_for ... %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
+.
+.
+.
+&lt;% end %&gt;
+</pre>
+<p>This extra helper is not needed in most applications; however, it can save time-consuming debugging for applications that use the <code>errors.add :base</code> method.</p>
 <h2>Set Up Authentication</h2>
 <p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
 <h3>Set Up Configuration for Devise</h3>

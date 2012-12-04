@@ -47,10 +47,38 @@
       <h1>Twitter Bootstrap and Rails</h1>
 <h4>by Daniel Kehoe</h4>
 <p><em>Last updated 23 June 2012</em></p>
-<p>Twitter Bootstrap and Rails. Shows how to set up a Rails 3.2 application to use Twitter Bootstrap as a <span class="caps">CSS</span> front-end framework, providing an HTML5 application layout and <span class="caps">CSS</span> styling for Rails alerts and notices.</p>
-<p>You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. Twitter Bootstrap is the most popular of the various <span class="caps">CSS</span> front-end frameworks.</p>
-<p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well. It’s easy to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to install Twitter Bootstrap and set up your default application layout. If you do so, the program will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly. An example app and <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">Rails tutorial for Devise with CanCan and Twitter Bootstrap</a> gives an example of a complete working application offering user authentication and administrative authorization combined with Twitter Bootstrap.</p>
-<h2>Installing Twitter Bootstrap</h2>
+<p>Twitter Bootstrap and Rails. Shows how to set up a Rails 3.2 application to use Twitter Bootstrap as a <span class="caps">CSS</span>/JavaScript/HTML5 front-end framework, providing an HTML5 application layout and <span class="caps">CSS</span> styling for Rails alerts and notices.</p>
+<p>You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application. <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> “front-end” frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that have made Rails popular for server-side (“back-end”) development. Twitter Bootstrap is the most popular of the various <span class="caps">CSS</span> front-end frameworks.</p>
+<h3>What’s Here</h3>
+<ul>
+<li>Installation</li>
+	<li>Application Layout</li>
+	<li>Navigation Links</li>
+	<li>Rails Flash Messages</li>
+</ul><p>This is a guide for developers using the example apps from the RailsApps repository. Others may find it helpful as well. We recommend using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to install Twitter Bootstrap and set up your default application layout. Rails Composer will offer to install Twitter Bootstrap or other <span class="caps">CSS</span> front-end frameworks and set up your default application layout accordingly. An example app and <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">Rails tutorial for Devise with CanCan and Twitter Bootstrap</a> gives an example of a complete working application offering user authentication and administrative authorization combined with Twitter Bootstrap.</p>
+<p>Twitter Bootstrap example applications and tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>:</p>
+<table>
+<tr>
+<th>Example App </th>
+		<th>Tutorial </th>
+		<th>Comments </th>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">Twitter Bootstrap, Devise, CanCan</a> </td>
+		<td> <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">Tutorial</a> </td>
+		<td> Complete starter application </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.com/rails-prelaunch-signup/">Startup Prelaunch Signup App</a> </td>
+		<td> <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">Tutorial</a> </td>
+		<td> Capture emails for a site prelaunch </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.com/rails-stripe-membership-saas/">Rails Membership Site with Stripe</a> </td>
+		<td> <a href="http://railsapps.github.com/tutorial-rails-stripe-membership-saas.html">Tutorial</a> </td>
+		<td> Complete membership site with subscription billing </td>
+	</tr>
+</table><h2>Installing Twitter Bootstrap</h2>
 <p>There are four steps to adding Twitter Bootstrap to a Rails application:</p>
 <ul>
 <li>add a gem to the <strong>Gemfile</strong>
@@ -61,7 +89,34 @@
 	<li>include Twitter Bootstrap <span class="caps">CSS</span> styling in Rails flash messages</li>
 </ul><p>You’ll find full instructions below.</p>
 <h3>Twitter Bootstrap Gem</h3>
-<p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend installing Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
+<p>Twitter Bootstrap is best installed using one of several Ruby gems. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/">Sass</a> language. Learn more from the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>.</p>
+<table>
+<tr>
+<th>Gem </th>
+		<th>Author </th>
+		<th>Comments </th>
+	</tr>
+<tr>
+<td> <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> </td>
+		<td> Thomas McDonald </td>
+		<td> <strong><span class="caps">RECOMMENDED</span></strong> </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/jlong/sass-twitter-bootstrap">sass-twitter-bootstrap</a> </td>
+		<td> John W. Long and others </td>
+		<td> Sass </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/metaskills/less-rails-bootstrap">less-rails-bootstrap</a> </td>
+		<td> Ken Collins </td>
+		<td> <span class="caps">LESS</span> </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/seyhunak/twitter-bootstrap-rails">twitter-bootstrap-rails</a> </td>
+		<td> Seyhun Akyürek </td>
+		<td> <span class="caps">LESS</span> </td>
+	</tr>
+</table><p>Sass is a default for <span class="caps">CSS</span> development in Rails so I recommend installing Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
 <p>In your <strong>Gemfile</strong>, add:</p>
 <pre>
 gem 'bootstrap-sass'
@@ -75,11 +130,10 @@ gem 'bootstrap-sass'
 //= require bootstrap
 //= require_tree .
 </pre>
-<h3>Using <span class="caps">SASS</span>
-</h3>
-<p>The <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language is the default for <span class="caps">CSS</span> development in Rails.</p>
+<h3>Using Sass</h3>
+<p>The <a href="http://sass-lang.com/">Sass</a> language is the default for <span class="caps">CSS</span> development in Rails.</p>
 <p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
-<p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
+<p>This will allow you to use the advantages of the Sass syntax and features for your application stylesheet. For more on the advantages of Sass and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics">Sass Basics</a> RailsCast from Ryan Bates.</p>
 <h3>Import the Twitter Bootstrap <span class="caps">CSS</span>
 </h3>
 <p>Next, import the Twitter Bootstrap <span class="caps">CSS</span> files. You can modify the  <strong>app/assets/stylesheets/application.css.scss</strong> file to import Bootstrap. However, I recommend adding a new file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> file. You may wish to modify the Twitter Bootstrap <span class="caps">CSS</span> rules; you can do so in the <strong>application.css.scss</strong> file but placing changes to Twitter Bootstrap <span class="caps">CSS</span> rules in the <strong>bootstrap_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
@@ -91,7 +145,7 @@ body { padding-top: 60px; }
 @import "bootstrap-responsive";
 </pre>
 <p>The file will import both basic Bootstrap <span class="caps">CSS</span> rules and the Bootstrap rules for responsive design (allowing the layout to resize for various devices and secreen sizes).</p>
-<p>The <span class="caps">CSS</span> rule <code>body { padding-top: 60px; }</code> applies an additional <span class="caps">CSS</span> rule to accommodate the “Bootstrap black bar” heading created by the <code>navbar-fixed-top class</code> in the <code>header</code> tag in the layout below.</p>
+<p>The <span class="caps">CSS</span> rule <code>body { padding-top: 60px; }</code> applies an additional <span class="caps">CSS</span> rule to accommodate the “Bootstrap Navigation Bar” heading created by the <code>navbar-fixed-top class</code> in the <code>header</code> tag in the layout below.</p>
 <p><em>Note:</em> Prior to bootstrap-sass version 2.0.2, a bug required setting the iconSpritePath parameter. That is no longer necessary.</p>
 <p>Finally, to provide an example of adding a <span class="caps">CSS</span> rule that will be used on every page of your application, the following code creates a nice gray box as a background to page content.</p>
 <p>Add this to your <strong>app/assets/stylesheets/application.css.scss</strong> file for a gray background:</p>
@@ -124,7 +178,7 @@ body { padding-top: 60px; }
     &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Myapp" %&gt;&lt;/title&gt;
     &lt;meta name="description" content=""&gt;
     &lt;meta name="author" content=""&gt;
-    &lt;%= stylesheet_link_tag    "application", :media =&gt; "all" %&gt;
+    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
     &lt;%= javascript_include_tag "application" %&gt;
     &lt;%= csrf_meta_tags %&gt;
     &lt;%= yield(:head) %&gt;
@@ -165,7 +219,7 @@ body { padding-top: 60px; }
     %title= content_for?(:title) ? yield(:title) : "Myapp"
     %meta{:content =&gt; "", :name =&gt; "description"}
     %meta{:content =&gt; "", :name =&gt; "author"}
-    = stylesheet_link_tag    "application", :media =&gt; "all"
+    = stylesheet_link_tag "application", :media =&gt; "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
     = yield(:head)
@@ -236,6 +290,7 @@ body { padding-top: 60px; }
 <p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
 <p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
 <p>By default, Twitter Bootstrap applies a green background to <code>.alert-success</code> and a red background to <code>.alert-error</code>. Twitter Bootstrap provides a third class <code>.alert-info</code> with a blue background. With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>.alert-info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
+<p>For an alternative that accommodates four different flash message types (success, error, alert, notice), see an example of <a href="https://gist.github.com/3344628">Rails Flash Messages using Twitter Bootstrap</a>.</p>
 <h3>Flash Messages with Twitter Bootstrap (<span class="caps">ERB</span>)</h3>
 <p>For <span class="caps">CSS</span> styling with Twitter Bootstrap, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <pre>
@@ -258,6 +313,72 @@ body { padding-top: 60px; }
       = content_tag :div, msg, :id =&gt; "flash_#{name}"
 </pre>
 <p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
+<h2>Form Builders</h2>
+<p>Most Rails applications use forms; most Rails developers use a form builder gem to simplify and improve upon the default Rails form helpers. Twitter Bootstrap provides styling for forms. Two popular form builder gems offer options to generate the markup required to display the Twitter Bootstrap form styling:</p>
+<table>
+<tr>
+<th>Gem </th>
+		<th>Author </th>
+		<td>_.<br>
+| <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm</a> </td>
+		<td> Plataformatec </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/justinfrench/formtastic">Formtastic</a> </td>
+		<td> Justin French </td>
+	</tr>
+</table><p>I prefer <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm</a>.</p>
+<h3>Installing SimpleForm with Twitter Bootstrap</h3>
+<p>You’ll need the following gem in your Gemfile:</p>
+<pre>
+gem 'simple_form'
+</pre>
+<p>If you haven’t already, run:</p>
+<pre>
+$ bundle install
+</pre>
+<p>Run the generator to install SimpleForm with a Twitter Bootstrap option:</p>
+<pre>
+$ rails generate simple_form:install --bootstrap
+</pre>
+<p>which installs several configuration files:</p>
+<pre>
+config/initializers/simple_form.rb
+config/initializers/simple_form_bootstrap.rb
+config/locales/simple_form.en.yml
+lib/templates/erb/scaffold/_form.html.erb
+</pre>
+<h3>Base Errors Helper for SimpleForm</h3>
+<p>SimpleForm provides excellent handling of validation errors for any attributes of a model. However, some applications set model errors that are not matched to a specific form field. These are called “base errors.” For example, a model might set an error like this: <code>errors.add :base, "Credit card declined"</code>. SimpleForm does not provide a helper to display base errors; if your application sets base errors, you’ll need to add the following view helper.</p>
+<p>Add this view helper to <strong>app/helpers/application_helper.rb</strong>:</p>
+<pre>
+module ApplicationHelper
+  
+  def display_base_errors resource
+    return '' if resource.errors.empty?
+    messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
+    html = &lt;&lt;-HTML
+    &lt;div class="alert alert-error alert-block"&gt;
+      &lt;button type="button" class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/button&gt;
+      #{messages}
+    &lt;/div&gt;
+    HTML
+    html.html_safe
+  end
+  
+end
+</pre>
+<p>Use the view helper in a form like this:</p>
+<pre>
+&lt;%= simple_form_for ... %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
+.
+.
+.
+&lt;% end %&gt;
+</pre>
+<p>This extra helper is not needed in most applications; however, it can save time-consuming debugging for applications that use the <code>errors.add :base</code> method.</p>
 <h2>Options and Improvements</h2>
 <p>This introduction gives you the basics of Twitter Bootstrap with Rails, including messages for alerts and notices, and an application layout using Twitter Bootstrap.</p>
 <p>There’s much more you can do with Twitter Bootstrap. For an advanced example, see the RailsApp <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example app. The <a href="http://railsapps.github.com/tutorial-rails-prelaunch-signup.html">rails-prelaunch-signup tutorial</a> shows how you can use Twitter Bootstrap to add a modal window and <span class="caps">AJAX</span> for a “sign up” form for a “Web 2.0” application. When the visitor submits the form, the modal window changes to display a “thank you” message (or an error message) without a page refresh.</p>
