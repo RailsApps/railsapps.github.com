@@ -44,10 +44,7 @@
   <div class="container"> 
 
     <div class="content wikistyle gollum textile">
-      <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 6 December 2012</em></p>
-<h2>Introduction</h2>
+      <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
 <li>
@@ -116,8 +113,8 @@
 <p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles based on subscription price; you must implement this outside of CanCan. There are many ways to implement role-based authorization for use with CanCan. For this example, we use Florent Monbillard’s Rolify gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
 <h4>Stripe</h4>
 <p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low-volume startups. Stripe costs 2.9% + 30¢ per successful charge, with no monthly or setup fees (see <a href="https://stripe.com/help/pricing">Stripe pricing</a>). Unfortunately, Stripe is only available to developers who have bank accounts in the US or Canada, though you can receive payments from customers internationally.</p>
-<p>Stripe is the best choice for low-volume businesses based in the US or Canada. You may want to also look at the <a href="https://recurly.com/">Recurly</a> billing service. The RailsApps project provides the <a href="http://railsapps.github.com/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> application if you’d prefer to use Recurly. Unlike Stripe, Recurly requires you to obtain a merchant bank account from a third party which requires an additional step and a few days lead time. Recurly charges a monthly minimum fee of $69 per month which makes the per-transaction cost higher than Stripe for low-volume businesses. Above a threshold of about 600 monthly users (at an average transaction of $10), Recurly will be less expensive than Stripe (see the <a href="http://www.billingsavvy.com/">BillingSavvy</a> calculator). Unlike Stripe, Recurly offers dunning management (sending emails to users with expired credit cards) that can increase customer retention. Stripe is available to businesses with US and Canadian bank accounts only; Recurly is available to businesses in many more countries.<br>
-h2. Architecture and Implementation</p>
+<p>Stripe is the best choice for low-volume businesses based in the US or Canada. You may want to also look at the <a href="https://recurly.com/">Recurly</a> billing service. The RailsApps project provides the <a href="http://railsapps.github.com/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> application if you’d prefer to use Recurly. Unlike Stripe, Recurly requires you to obtain a merchant bank account from a third party which requires an additional step and a few days lead time. Recurly charges a monthly minimum fee of $69 per month which makes the per-transaction cost higher than Stripe for low-volume businesses. Above a threshold of about 600 monthly users (at an average transaction of $10), Recurly will be less expensive than Stripe (see the <a href="http://www.billingsavvy.com/">BillingSavvy</a> calculator). Unlike Stripe, Recurly offers dunning management (sending emails to users with expired credit cards) that can increase customer retention. Stripe is available to businesses with US and Canadian bank accounts only; Recurly is available to businesses in many more countries.</p>
+<h2>Architecture and Implementation</h2>
 <p>Here is a high-level abstraction of the application, as a list of systems:</p>
 <ul>
 <li>user management with Devise (to register or remove users)</li>
@@ -149,8 +146,8 @@ h2. Architecture and Implementation</p>
 <p>Software engineering attempts to model real-world entities and behaviors. As developers, we try to choose descriptive names for objects and methods to reduce ambiguity and increase understanding. For this application, a User is our most important object. In other projects, we might call this object an “Account” or “Member.”</p>
 <p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll define everything we need as attributes of the user, rather than separate objects.</p>
 <p>We won’t include a credit card number as an attribute of a user because we don’t want the vulnerability of storing a credit card number in our database. Instead, we’ll send the credit card number directly to Stripe and obtain a Stripe customer id that serves as an indirect reference to the credit card number when we need to ask Stripe to begin billing a user. The Stripe customer id will be an attribute of the user that substitutes for a credit card number.</p>
-<p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.<br>
-h2. Accounts You May Need</p>
+<p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.</p>
+<h2>Accounts You May Need</h2>
 <p>Before you start, you will need accounts for <em>recurring billing</em>, a <em>merchant account</em>, <em>hosting</em>, <em>email</em>, and a <em>source control repository</em>.</p>
 <h3>Billing</h3>
 <p>Many providers of billing services want your business:</p>
@@ -221,8 +218,8 @@ h2. Accounts You May Need</p>
 <h3>Domain Registration</h3>
 <p>You’ve likely already selected and registered a domain name. If not, you’ll need a domain before you start sending email messages from the application. If you’re disgusted by GoDaddy, consider <a href="http://www.namecheap.com/">NameCheap</a> and other popular alternatives.</p>
 <h3>GitHub</h3>
-<p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. You’ll use <a href="http://git-scm.com/">git</a> for version control and you should get a GitHub account for remote backup and collaboration. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git and GitHub for code source control.<br>
-h2. Getting Started</p>
+<p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. You’ll use <a href="http://git-scm.com/">git</a> for version control and you should get a GitHub account for remote backup and collaboration. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git and GitHub for code source control.</p>
+<h2>Getting Started</h2>
 <h3>Is It for You?</h3>
 <p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
 <p>Experienced developers will find the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
@@ -410,7 +407,8 @@ $ rails server
 <pre>
 $ cucumber features/visitors/request_invitation.feature
 </pre>
-<p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.h2. Configuration</p>
+<p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
+<h2>Configuration</h2>
 <p>The starter app script sets up a default email configuration. You must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
 <h3>Configure Devise for Email</h3>
 <p>Start your email configuration by modifying</p>
@@ -444,8 +442,8 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, follow the instructions in the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a> to set Unix environment variables to keep email account passwords secret.<br>
-h2. Layout and Stylesheets</p>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, follow the instructions in the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a> to set Unix environment variables to keep email account passwords secret.</p>
+<h2>Layout and Stylesheets</h2>
 <p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer, you can generate the starter app with Haml instead of <span class="caps">ERB</span>. Then convert the <span class="caps">ERB</span> in the tutorial to Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. See the article <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
 <p>The starter app:</p>
@@ -489,8 +487,8 @@ end
 .
 &lt;% end %&gt;
 </pre>
-<p>Without the <code>display_base_errors</code> view helper, the application’s users will not see a “Credit card declined” message if a transaction is declined.<br>
-h2. Authentication</p>
+<p>Without the <code>display_base_errors</code> view helper, the application’s users will not see a “Credit card declined” message if a transaction is declined.</p>
+<h2>Authentication</h2>
 <p>This application uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication. Devise provides a system to securely identify users, making sure the user is really who he represents himself to be. Devise provides everything needed to implement user registration with log in and log out.</p>
 <p>The starter app script sets up Devise:</p>
 <ul>
@@ -503,10 +501,9 @@ h2. Authentication</p>
 </ul><p>For details about how Devise is used in the starter application, see the tutorials:</p>
 <ul>
 <li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
-	<li>
-<a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a><br>
-h2. Authorization</li>
-</ul><p>This application uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an authorized user. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. This application uses Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model and add methods to a User model that are used to set CanCan permissions.</p>
+	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
+</ul><h2>Authorization</h2>
+<p>This application uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an authorized user. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. This application uses Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model and add methods to a User model that are used to set CanCan permissions.</p>
 <p>The starter app script sets up CanCan and Rolify:</p>
 <ul>
 <li>adds the CanCan and Rolify gems to the Gemfile</li>
@@ -515,10 +512,9 @@ h2. Authorization</li>
 	<li>sets up User roles with Rolify</li>
 </ul><p>For details about how authorization is implemented in the starter application, see the tutorial:</p>
 <ul>
-<li>
-<a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a><br>
-h2. User Management</li>
-</ul><p>By default, Devise uses an email address to identify users. The starter application adds a “name” attribute as well.</p>
+<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
+</ul><h2>User Management</h2>
+<p>By default, Devise uses an email address to identify users. The starter application adds a “name” attribute as well.</p>
 <p>Devise provides all the functionality for a user to log in and view and edit the user’s profile. The user’s profile only includes an email address, a name, and a password. You’ll likely customize the User model and user pages for your own application.</p>
 <p>The starter application:</p>
 <ul>
@@ -612,8 +608,8 @@ $ git commit -m "initial data"
 <p>If you sign in as the first user, you will have administrative privileges. You’ll see an “Admin” link in the navigation bar. Clicking the “Admin” link will display the administrative dashboard. Each user will be listed with buttons to “Change role” or “Delete user.”</p>
 <p>Stop the server with Control-C.</p>
 <h4>When to Restart</h4>
-<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. As a rule, remember to restart the server when you add gems, change routes, or change anything in the config folder; leave the server running whn you change models, controllers, views or anything else in app folder.<br>
-h2. Home Page</p>
+<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. As a rule, remember to restart the server when you add gems, change routes, or change anything in the config folder; leave the server running whn you change models, controllers, views or anything else in app folder.</p>
+<h2>Home Page</h2>
 <h3>Replace the Home Page</h3>
 <p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for a subscription site.</p>
 <h3>Home Page with Subscription Plans</h3>
@@ -716,10 +712,9 @@ $ git commit -m "home page update"
 	<li>provides buttons to change roles and delete users</li>
 </ul><p>For details about how the administrative page is set up by the starter application, see the tutorial:</p>
 <ul>
-<li>
-<a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a><br>
-h2. Content Pages</li>
-</ul><p>This application can be used for a Software-as-a-Service (SaaS) website or it can be used to limit access to pages containing content such as articles, photos, or video. For purposes of demonstration, we’ll set up the site so a membership is required to view some placeholder content.</p>
+<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
+</ul><h2>Content Pages</h2>
+<p>This application can be used for a Software-as-a-Service (SaaS) website or it can be used to limit access to pages containing content such as articles, photos, or video. For purposes of demonstration, we’ll set up the site so a membership is required to view some placeholder content.</p>
 <p>Let’s add pages for our placeholder content.</p>
 <p>First let’s consider a git workflow for adding a new feature.</p>
 <h3>Git Workflow</h3>
@@ -2345,8 +2340,8 @@ $ git branch -D webhooks
 <p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run all Cucumber scenarios.</p>
 <h3>Deploy to Heroku</h3>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
-<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.<br>
-h2. Comments</p>
+<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
+<h2>Comments</h2>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
 <h3>Did You Like the Tutorial?</h3>
