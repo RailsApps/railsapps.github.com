@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 6 December 2012</em></p>
+<p><em>Last updated 7 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
@@ -467,7 +467,7 @@ config.action_mailer.smtp_settings = {
 module ApplicationHelper
   
   def display_base_errors resource
-    return '' if resource.errors.empty?
+    return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
     html = &lt;&lt;-HTML
     &lt;div class="alert alert-error alert-block"&gt;
@@ -1218,7 +1218,7 @@ end
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
   &lt;% if @user.stripe_token %&gt;
-    Credit card has been accepted.
+    &lt;p&gt;Credit card acceptance is pending.&lt;/p&gt;
   &lt;% else %&gt;
     &lt;div class="field"&gt;
       &lt;%= label_tag :card_number, "Credit Card Number" %&gt;
@@ -1862,20 +1862,22 @@ class User &lt; ActiveRecord::Base
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
-        customer.cancel_subscription
+      unless customer.nil? or customer.deleted
+        if customer.subscription.status == 'active'
+          customer.cancel_subscription
+        end
       end
     end
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to cancel your subscription. #{e.message}"
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "Unable to cancel your subscription. #{e.message}."
     false
   end
   
 end
 </pre>
-<p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The method uses the Stripe <span class="caps">API</span> to obtain a Stripe customer object and then initiates a subscription cancellation call. We return false to cancel the <code>destroy</code> action if Stripe returns an error.</p>
-<p>The <code>cancel_subscription</code> method only takes action if the user has a Stripe id. You may want to delete the example users created by the <code>db:seed</code> process. The example users don’t have a Stripe id and the <code>destroy</code> action would fail for them unless we make the <code>cancel_subscription</code> method conditional. We also make sure the Stripe customer exists and has an active subscription before attempting to cancel the subscription.</p>
+<p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The <code>cancel_subscription</code> method only takes action if the user has a customer id. Example users created by the <code>db:seed</code> process don’t have a customer id and the <code>destroy</code> action would fail for them which is why we make the <code>cancel_subscription</code> method conditional.</p>
+<p>The method uses the Stripe <span class="caps">API</span> to obtain a Stripe customer object and then initiates a subscription cancellation call. We make sure the Stripe customer exists and has an active subscription before attempting to cancel the subscription. We return false to cancel the <code>destroy</code> action if Stripe returns an error.</p>
 <h3>Modify the User Model for Subscription Plan Changes</h3>
 <p>As implemented, either the user or the administrator can upgrade or downgrade a user’s subscription plan and the change will be recorded in the application’s roles datatable. However, we need to inform Stripe when a subscription plan changes. Stripe will pro-rate the plan cost and refund or bill the price difference (or optionally, wait until the next billing cycle to change the billed rate).</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
@@ -1942,13 +1944,15 @@ class User &lt; ActiveRecord::Base
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
-        customer.cancel_subscription
+      unless customer.nil? or customer.deleted
+        if customer.subscription.status == 'active'
+          customer.cancel_subscription
+        end
       end
     end
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to cancel your subscription. #{e.message}"
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "Unable to cancel your subscription. #{e.message}."
     false
   end
   
@@ -2215,13 +2219,15 @@ class User &lt; ActiveRecord::Base
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      if (!customer.nil?) &amp;&amp; (customer.subscription.status == 'active')
-        customer.cancel_subscription
+      unless customer.nil? or customer.deleted
+        if customer.subscription.status == 'active'
+          customer.cancel_subscription
+        end
       end
     end
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to cancel your subscription. #{e.message}"
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "Unable to cancel your subscription. #{e.message}."
     false
   end
   
