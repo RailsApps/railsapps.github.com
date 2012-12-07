@@ -541,6 +541,7 @@ validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
   &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
@@ -554,6 +555,7 @@ validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 &lt;h2&gt;Edit &lt;%= resource_name.to_s.humanize %&gt;&lt;/h2&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
   &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :autocomplete =&gt; "off", :hint =&gt; "leave it blank if you don't want to change it", :required =&gt; false %&gt;
