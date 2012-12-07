@@ -46,21 +46,26 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 October 2012</em></p>
-<p>Ruby on Rails tutorial for a web application with Rails recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service). Complete Rails 3.2 example application available on GitHub at  <a href="http://github.com/RailsApps/rails-stripe-membership-saas">rails-stripe-membership-saas</a> from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
-<p><img src="http://railsapps.github.com/images/rails-stripe-membership-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
-<h2>
-<a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
-<p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
+<p><em>Last updated 6 December 2012</em></p>
 <h2>Introduction</h2>
-<p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a service that provides recurring billing.</p>
+<p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
+<ul>
+<li>
+<a href="https://stripe.com/">Stripe</a> for recurring billing</li>
+	<li>
+<a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication</li>
+	<li>
+<a href="https://github.com/ryanb/cancan">CanCan</a> with <a href="https://github.com/EppO/rolify">Rolify</a> for authorization</li>
+	<li>
+<a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> front-end framework for <span class="caps">CSS</span> styling</li>
+</ul><h3>Screenshot</h3>
+<p><img src="http://railsapps.github.com/images/rails-stripe-membership-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
 <p>This example application exists so you don’t have to build it yourself. It aims to:</p>
 <ul>
 <li>eliminate effort spent building an application that meets a common need;</li>
 	<li>offer code that is already implemented and tested by a large community;</li>
 	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
-</ul><p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
-<p>Experienced developers will find the <a href="http://github.com/RailsApps/rails-stripe-membership-saas">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+</ul><p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a service that provides recurring billing.</p>
 <h3>Functionality</h3>
 <p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
@@ -110,28 +115,43 @@
 <p>CanCan provides a system for authorization to determine if an authenticated user should have access to secured resources. CanCan is often used to restrict access to administrative pages. This application will use CanCan to restrict access to content based on the price a user has paid for a subscription.</p>
 <p>CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. CanCan doesn’t provide default user attributes such as user roles based on subscription price; you must implement this outside of CanCan. There are many ways to implement role-based authorization for use with CanCan. For this example, we use Florent Monbillard’s Rolify gem to create a Role model, add methods to a User model, and generate a migration for a roles table.</p>
 <h4>Stripe</h4>
-<p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low-volume startups. Stripe costs 2.9% + 30¢ per successful charge, with no monthly or setup fees (see <a href="https://stripe.com/help/pricing">Stripe pricing</a>). Unfortunately, Stripe is only available to developers who have bank accounts in the US or Canada, though you can receive payments from customers internationally (<a href="#comment">leave a comment</a> if you want to suggest a billing service for non-US developers for a future tutorial).</p>
-<h3>RailsApps Examples and Tutorials</h3>
-<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>.</p>
-<p>This application is based on two simpler example apps:</p>
+<p>Stripe is a third-party billing service that provides an <span class="caps">API</span> and gem for integration with Rails applications. There are several other third-party billing services; Stripe is the least expensive and most popular for low-volume startups. Stripe costs 2.9% + 30¢ per successful charge, with no monthly or setup fees (see <a href="https://stripe.com/help/pricing">Stripe pricing</a>). Unfortunately, Stripe is only available to developers who have bank accounts in the US or Canada, though you can receive payments from customers internationally.</p>
+<p>Stripe is the best choice for low-volume businesses based in the US or Canada. You may want to also look at the <a href="https://recurly.com/">Recurly</a> billing service. The RailsApps project provides the <a href="http://railsapps.github.com/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> application if you’d prefer to use Recurly. Unlike Stripe, Recurly requires you to obtain a merchant bank account from a third party which requires an additional step and a few days lead time. Recurly charges a monthly minimum fee of $69 per month which makes the per-transaction cost higher than Stripe for low-volume businesses. Above a threshold of about 600 monthly users (at an average transaction of $10), Recurly will be less expensive than Stripe (see the <a href="http://www.billingsavvy.com/">BillingSavvy</a> calculator). Unlike Stripe, Recurly offers dunning management (sending emails to users with expired credit cards) that can increase customer retention. Stripe is available to businesses with US and Canadian bank accounts only; Recurly is available to businesses in many more countries.<br>
+h2. Architecture and Implementation</p>
+<p>Here is a high-level abstraction of the application, as a list of systems:</p>
 <ul>
-<li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
-	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
-</ul><p>The first example shows how to set up Devise for user authentication. It also shows how to set up the app to use RSpec and Cucumber for testing.</p>
-<p>The second example shows how to set up Devise and add CanCan and Rolify to manage access to administrative pages. It also shows how to set up Twitter Bootstrap as a front-end framework for <span class="caps">CSS</span> styling.</p>
-<p>You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
-<p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at the  <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
-<p>You might also be interested in the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example if you are planning prelaunch promotion. Use it to announce your plans and collect email addresses from visitors for future notification of the site’s launch.</p>
-<h2>About the Tutorial</h2>
-<p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please <a href="#comment">leave a comment</a> when you are done.)</p>
-<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>.</p>
-<p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
-<h2>Before You Start</h2>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in the GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please leave comments below.</p>
-<h2>Accounts You May Need</h2>
-<p>Before you start, you will need accounts for <em>recurring billing</em>, <em>hosting</em>, <em>email</em>, and a <em>source control repository</em>.</p>
+<li>user management with Devise (to register or remove users)</li>
+	<li>authentication with Devise (log in and log out)</li>
+	<li>authorization management with CanCan and Rolify (access determined by the subscription plan)</li>
+	<li>account management to maintain records of subscription status</li>
+	<li>recurring billing with Stripe</li>
+	<li>landing pages</li>
+	<li>content or service pages</li>
+</ul><h3>User Management, Authentication, and Authorization</h3>
+<p>The tutorial for the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application shows how to set up user management and authentication using Devise, as well as authorization management using CanCan and Rolify. The first step in the tutorial will be to generate the rails3-bootstrap-devise-cancan application as a starter app.</p>
+<p>Users are managed with the User model, which has attributes for name, email, and password, as well as some fields provided by Devise such as sign_in_count. The Devise gem provides its own controllers for managing sessions, registration, email confirmation and similar functions. You won’t see these controllers as they are hidden in the gem itself.</p>
+<p>CanCan uses an Ability model to set access control rules. We’ll modify the Ability model to set access rules based on subscription plans. We’ll use the Role model required by Rolify to define roles based on subscription plans.</p>
+<h3>Account Management and Recurring Billing</h3>
+<p>An account management system keeps subscription records so the access control system can determine which users are current subscribers. We’ll combine services offered by Stripe with user management provided by Devise for our account management system.</p>
+<p>Stripe will provide the recurring billing system to store the users’ credit card data and initiate payment transactions.</p>
+<p>We’ll use the Stripe <span class="caps">API</span> to create a new customer and specify a subscription plan. When the customer’s subscription expires due to failed payment, we’ll use Stripe “webhooks” to update our application’s user records.</p>
+<p>We’ll provide options for the user to change credit cards, upgrade or downgrade subscription plans, and cancel a subscription as an extension of the user management system provided by Devise.</p>
+<p>Two approaches are possible in building a recurring billing system. You could implement a complete billing management system as part of the application. This would require building a mechanism to check for expiring subscriptions (typically a daily cron job) and initiate payment requests through Stripe when a user’s account comes due. With this approach, you would use Stripe only for processing credit card transactions. But there’s no reason to implement recurring billing yourself. Stripe provides a complete, well-tested, and hosted mechanism for recurring billing. We’ll use Stripe’s <span class="caps">API</span> to supply the recurring billing services we need.</p>
+<p>A key requirement for the application is to keep the recurring billing and account management systems in sync. We face a problem if we establish a new subscription, hand off recurring billing to Stripe, and then months later find that the subscriber’s credit card has expired and can no longer be billed. We need a mechanism to update our subscription status when Stripe encounters a declined transaction. Stripe provides “webhooks” to set the status of a subscription. When Stripe encounters a declined transaction it will initiate an <span class="caps">HTTP</span> request to our application which we can decode to change a subscription status.</p>
+<p>If we didn’t use the Stripe webhooks, we’d have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration. The application will be notified immediately by Stripe so there is no need for the overhead of checking on each login. The Stripe webhook mechanism is very robust: If for some reason it cannot make an <span class="caps">HTTP</span> request to our application, it will retry several times with exponential backoff.</p>
+<p>A key requirement for any ecommerce site that takes credit cards is <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> to minimize risk of customer credit card exposure. Using Stripe, your server will never receive sensitive credit card details. Instead you’ll use a the Stripe JavaScript library on your subscription payment form which sends the credit card details directly to the Stripe servers. Your business can easily meet <span class="caps">PCI</span> compliance requirements of the “<span class="caps">PCI</span> <span class="caps">DSS</span> Self-Assessment Questionnaire A” if you solely accept payment information through the Stripe JavaScript library and serve your payment page over <span class="caps">SSL</span>.</p>
+<h3>Landing Pages</h3>
+<p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. For our example application, the home page of the application is our landing page.</p>
+<h3>Content or Service</h3>
+<p>We’ll create placeholder pages for content.</p>
+<p>For your application, the content can be anything you like: photo galleries, videos, downloadable ebooks. For a SaaS site, subscribers would gain access to a web application.</p>
+<h3>The Object Model</h3>
+<p>Software engineering attempts to model real-world entities and behaviors. As developers, we try to choose descriptive names for objects and methods to reduce ambiguity and increase understanding. For this application, a User is our most important object. In other projects, we might call this object an “Account” or “Member.”</p>
+<p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll define everything we need as attributes of the user, rather than separate objects.</p>
+<p>We won’t include a credit card number as an attribute of a user because we don’t want the vulnerability of storing a credit card number in our database. Instead, we’ll send the credit card number directly to Stripe and obtain a Stripe customer id that serves as an indirect reference to the credit card number when we need to ask Stripe to begin billing a user. The Stripe customer id will be an attribute of the user that substitutes for a credit card number.</p>
+<p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.<br>
+h2. Accounts You May Need</p>
+<p>Before you start, you will need accounts for <em>recurring billing</em>, a <em>merchant account</em>, <em>hosting</em>, <em>email</em>, and a <em>source control repository</em>.</p>
 <h3>Billing</h3>
 <p>Many providers of billing services want your business:</p>
 <ul>
@@ -139,6 +159,8 @@
 <a href="https://stripe.com/">Stripe</a> (2011)</li>
 	<li>
 <a href="http://saasy.com/">SaaSy</a> (2011)</li>
+	<li>
+<a href="http://www.fusebill.com/">Fusebill</a> (2011)</li>
 	<li>
 <a href="http://recurly.com/">Recurly</a> (2010)</li>
 	<li>
@@ -171,6 +193,9 @@
 <li><a href="http://www.billingsavvy.com/">BillingSavvy</a></li>
 </ul><p>BillingSavvy shows Stripe is cheaper than Recurly for less than 600 subscribers. Over 600 subscribers, Recurly becomes cheaper. Stripe and Recurly are always cheaper than Chargify, CheddarGetter and Spreedly for $12/month subscriptions.</p>
 <p>This tutorial shows to set up recurring billing using Stripe. Before you start, go to the <a href="https://stripe.com/">Stripe website</a> and set up an account. You don’t need a credit card merchant account or payment gateway. There’s no approval process to delay getting started.</p>
+<h3>Merchant Account</h3>
+<p>Your business will need a merchant account in order to accept credit card payments. Here’s an explanation from Phillip Parker of <a href="http://www.cardpaymentoptions.com/">CardPaymentOptions.com</a>: “A merchant account is a line of credit account that allows a business to accept card payments from its customers. Similar to how a checking account allows you to deposit another person’s check into your checking account, a merchant account allows you to accept a card payment from a customer. Unlike a checking account, a merchant account doesn’t hold money. Instead, a card payment passes through the merchant account and is deposited into a checking account after the funds have been cleared through the merchant account.”</p>
+<p>Unlike other providers of billing services, Stripe provides a merchant account as part of the service.</p>
 <h3>Hosting</h3>
 <p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
@@ -180,6 +205,12 @@
 	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
 </ul><p>Instructions are provided for deployment to Heroku.</p>
 <p>It’s common for technically skilled people to want to set up their own servers. Please, do yourself a favor, and unless system administration is your most dearly loved recreation, let the platform providers do it for you.</p>
+<h3><span class="caps">SSL</span></h3>
+<p>Visitors to your website will be sending credit card information from their browser to Stripe’s servers when they sign up for a subscription. The Stripe JavaScript library will open an <span class="caps">SSL</span> connection to Stripe’s servers when the form is submitted.</p>
+<p>You can host your membership site without <span class="caps">SSL</span> and your users’ credit card numbers will be protected on the way to Stripe’s servers. However, your security-conscious visitors will be uneasy if they see that the web <span class="caps">URL</span> for your regsitration page begins with <code>http://</code> and not <code>https://</code> (indicating an <span class="caps">SSL</span> connection). For their peace of mind (and the higher conversion rate that comes with trust), you should host your website with an <span class="caps">SSL</span> connection. Additionally, as a general practice, it is wise to host any webapp that requires login over an <span class="caps">SSL</span> connection.</p>
+<p>If you’re deploying with Heroku, you can access any Heroku app over <span class="caps">SSL</span> at <code>https://myapp.herokuapp.com/</code>. For your custom domain, Heroku offers the <a href="https://devcenter.heroku.com/articles/ssl-endpoint"><span class="caps">SSL</span> Endpoint add-on</a> for a fee of $20/month. You’ll need to <a href="https://devcenter.heroku.com/articles/ssl-certificate">purchase a signed certificate from a certificate provider</a> for an annual fee (typically $20 a year). Setting up an <span class="caps">SSL</span> certificate for a custom domain on Heroku can be a hassle but there’s a convenient alternative that is a better value. You can purchase <a href="http://cloudflare.com/">CloudFlare</a> for $20/month and get <span class="caps">SSL</span> without purchasing or installing an <span class="caps">SSL</span> certificate. CloudFlare is a content delivery network (<span class="caps">CDN</span>) and website optimizer; the $20/month <a href="http://blog.cloudflare.com/easiest-ssl-ever-now-included-automatically-w">CloudFlare Pro plan includes <span class="caps">SSL</span></a>. If you use Cloudflare in combination with Heroku hosting, you can use the Heroku piggyback <span class="caps">SSL</span> to encrypt the traffic between Heroku and Cloudflare, and your website visitors will connect to Cloudfare with their web browsers, providing a complete <span class="caps">SSL</span> connection through Cloudfare to Heroku with your custom domain. Not only do you get <span class="caps">SSL</span> for no more than you’d pay at Heroku to use an <span class="caps">SSL</span> certificate, but you get the Cloudfare <span class="caps">CDN</span> services as part of the bargain.</p>
+<p>If you’re deploying on Heroku, you can wait until you’ve deployed to sign up for a Cloudfare account.</p>
+<p>If you’re deploying elsewhere, do your research early to find out how to set up <span class="caps">SSL</span> and apply for an <span class="caps">SSL</span> certificate if necessary.</p>
 <h3>Email Service Providers</h3>
 <p>You’ll need infrastructure for three types of email:</p>
 <ul>
@@ -190,46 +221,31 @@
 <h3>Domain Registration</h3>
 <p>You’ve likely already selected and registered a domain name. If not, you’ll need a domain before you start sending email messages from the application. If you’re disgusted by GoDaddy, consider <a href="http://www.namecheap.com/">NameCheap</a> and other popular alternatives.</p>
 <h3>GitHub</h3>
-<p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. You’ll need a GitHub account if you plan to deploy to Heroku. If you’re not going to use Heroku, you’ll still need to use git to manage your source code.  See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git for code source control.</p>
-<h2>Architecture and Implementation</h2>
-<p>Here is a high-level abstraction of the application, as a list of systems:</p>
+<p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. You’ll use <a href="http://git-scm.com/">git</a> for version control and you should get a GitHub account for remote backup and collaboration. See <a href="http://railsapps.github.com/rails-git.html">GitHub and Rails</a> if you need more information about working with git and GitHub for code source control.<br>
+h2. Getting Started</p>
+<h3>Is It for You?</h3>
+<p>This tutorial is for experienced developers as well as startup founders or hobbyist coders who are new to Rails.</p>
+<p>Experienced developers will find the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth. For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
+<h3>Where to Start</h3>
+<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<p>This application is based on two simpler example apps:</p>
 <ul>
-<li>user management with Devise (to register or remove users)</li>
-	<li>authentication with Devise (log in and log out)</li>
-	<li>authorization management with CanCan and Rolify (access determined by the subscription plan)</li>
-	<li>account management to maintain records of subscription status</li>
-	<li>recurring billing with Stripe</li>
-	<li>landing pages</li>
-	<li>content or service pages</li>
-</ul><h3>User Management, Authentication, and Authorization</h3>
-<p>The tutorial for the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application shows how to set up user management and authentication using Devise, as well as authorization management using CanCan and Rolify. The first step in the tutorial will be to generate the rails3-bootstrap-devise-cancan application as a starter app.</p>
-<p>Users are managed with the User model, which has attributes for name, email, and password, as well as some fields provided by Devise such as sign_in_count. The Devise gem provides its own controllers for managing sessions, registration, email confirmation and similar functions. You won’t see these controllers as they are hidden in the gem itself.</p>
-<p>CanCan uses an Ability model to set access control rules. We’ll modify the Ability model to set access rules based on subscription plans. We’ll use the Role model required by Rolify to define roles based on subscription plans.</p>
-<h3>Account Management and Recurring Billing</h3>
-<p>An account management system keeps subscription records so the access control system can determine which users are current subscribers. We’ll combine services offered by Stripe with user management provided by Devise for our account management system.</p>
-<p>Stripe will provide the recurring billing system to store the users’ credit card data and initiate payment transactions.</p>
-<p>We’ll use the Stripe <span class="caps">API</span> to create a new customer and specify a subscription plan. When the customer’s subscription expires due to failed payment, we’ll use Stripe “webhooks” to update our application’s user records.</p>
-<p>We’ll provide options for the user to change credit cards, upgrade or downgrade subscription plans, and cancel a subscription as an extension of the user management system provided by Devise.</p>
-<p>Two approaches are possible in building a recurring billing system. You could implement a complete billing management system as part of the application. This would require building a mechanism to check for expiring subscriptions (typically a daily cron job) and initiate payment requests through Stripe when a user’s account comes due. With this approach, you would use Stripe only for processing credit card transactions. But there’s no reason to implement recurring billing yourself. Stripe provides a complete, well-tested, and hosted mechanism for recurring billing. We’ll use Stripe’s <span class="caps">API</span> to supply the recurring billing services we need.</p>
-<p>A key requirement for the application is to keep the recurring billing and account management systems in sync. We face a problem if we establish a new subscription, hand off recurring billing to Stripe, and then months later find that the subscriber’s credit card has expired and can no longer be billed. We need a mechanism to update our subscription status when Stripe encounters a declined transaction. Stripe provides “webhooks” to set the status of a subscription. When Stripe encounters a declined transaction it will initiate an <span class="caps">HTTP</span> request to our application which we can decode to change a subscription status.</p>
-<p>If we didn’t use the Stripe webhooks, we’d have to either query the Stripe <span class="caps">API</span> on each login or run a repeating cron job to check for subscription expiration. The application will be notified immediately by Stripe so there is no need for the overhead of checking on each login. The Stripe webhook mechanism is very robust: If for some reason it cannot make an <span class="caps">HTTP</span> request to our application, it will retry several times with exponential backoff.</p>
-<p>A key requirement for any ecommerce site that takes credit cards is <a href="http://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"><span class="caps">PCI</span> compliance</a> to minimize risk of customer credit card exposure. Using Stripe, your server will never receive sensitive credit card details. Instead you’ll use a the Stripe JavaScript library on your subscription payment form which sends the credit card details directly to the Stripe servers. Your site will meet <span class="caps">PCI</span> compliance requirememts if you solely accept payment information through the Stripe JavaScript library and serve your payment page over <span class="caps">SSL</span>.</p>
-<h3>Landing Pages</h3>
-<p>Landing pages serve to describe the value of the content or service and convince the visitor to purchase a subscription. For our example application, the home page of the application is our landing page.</p>
-<h3>Content or Service</h3>
-<p>We’ll create placeholder pages for content.</p>
-<p>For your application, the content can be anything you like: photo galleries, videos, downloadable ebooks. For a SaaS site, subscribers would gain access to a web application.</p>
-<h3>The Object Model</h3>
-<p>Software engineering attempts to model real-world entities and behaviors. As developers, we try to choose descriptive names for objects and methods to reduce ambiguity and increase understanding. For this application, a User is our most important object. In other projects, we might call this object an “Account” or “Member.”</p>
-<p>Users have several important attributes: email address, password, credit card number, subscription plan. A user also has less important attributes such as name or creation date. Any of these attributes could be separate objects that are associated with the user through an id or key. You could make “Subscription” or “Plan” an object associated with a user. To keep this application simple, we’ll define everything we need as attributes of the user, rather than separate objects.</p>
-<p>We won’t include a credit card number as an attribute of a user because we don’t want the vulnerability of storing a credit card number in our database. Instead, we’ll send the credit card number directly to Stripe and obtain a Stripe customer id that serves as an indirect reference to the credit card number when we need to ask Stripe to begin billing a user. The Stripe customer id will be an attribute of the user that substitutes for a credit card number.</p>
-<p>Our authorization system is based on the concept of roles. The user’s role constrains his or her access to the website’s content pages. Though “Subcription Plan” and “Role” appear to be distinct concepts, in this application they functionally overlap. We’ll use the Role model supplied by the Rolify gem as an object that corresponds to a “Subcription Plan.” Each user will have a role id that describes the subscription plan (or access level) that he or she has purchased.</p>
-<h2>Testing and the Software Development Process</h2>
-<p>This example application uses RSpec for unit testing and Cucumber for integration testing.</p>
-<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. RSpec is a popular choice for unit testing. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise. Cucumber is a popular choice for integration testing and behavior driven development. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
-<p>This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
-<p>The Rails Composer tool creates a starter app that is set up for RSpec and Cucumber test frameworks.</p>
-<h2>Assumptions</h2>
+<li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
+	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
+</ul><p>The first example shows how to set up Devise for user authentication. It also shows how to set up the app to use RSpec and Cucumber for testing.</p>
+<p>The second example shows how to set up Devise and add CanCan and Rolify to manage access to administrative pages. It also shows how to set up Twitter Bootstrap as a front-end framework for <span class="caps">CSS</span> styling.</p>
+<p>You can use this tutorial without studying these example applications; if you find you are lost, it may be helpful to look at the two simpler examples.</p>
+<p>If you want to use the MongoDB datastore instead of ActiveRecord and a <span class="caps">SQL</span> database, look at the  <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example.</p>
+<p>You might also be interested in the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example if you are planning prelaunch promotion. Use it to announce your plans and collect email addresses from visitors for future notification of the site’s launch.</p>
+<h3>About the Tutorial</h3>
+<p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please <a href="#comments">leave a comment</a> when you are done.)</p>
+<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>.</p>
+<p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
+<h3>Before You Start</h3>
+<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
+<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>. It’s best to clone and check the example application from the GitHub repository before you report an issue, just to make sure the error isn’t a result of your own mistake.</p>
+<p>The online edition of this tutorial contains a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
+<h3>Assumptions</h3>
 <p>Before beginning this tutorial, you need to install</p>
 <ul>
 <li>The Ruby language (version 1.9.3)</li>
@@ -237,7 +253,7 @@
 </ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:<br><code>$ ruby -v</code><br><code>$ rails -v</code></p>
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
 <p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
-<h2>Creating the Application</h2>
+<h2>Create the Application</h2>
 <p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
 <p>If you want to add this code to an existing application, you can follow the tutorial and cut and paste the code into your existing application, resolving any conflicts as needed.</p>
 <h3>Copy from the Tutorial</h3>
@@ -251,10 +267,10 @@ $ git clone git://github.com/RailsApps/rails-stripe-membership-saas.git
 </pre>
 
 <p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
-<h3 id="Generate">Generate</h3>
+<h3>Generate</h3>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
 <p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application.</p>
-<h2>Create the Rails Application</h2>
+<h3>Building from Scratch</h3>
 <p>Before you write any code, you’ll start by generating a starter app using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool.</p>
 <p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to create a starter app. The starter app saves us some steps. Devise will be installed with Cancan for authorization. Twitter Bootstrap will be set up as a front end for <span class="caps">CSS</span> styling. If you want to learn how the starter app is put together, see the <a href="http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html">rails3-bootstrap-devise-cancan</a> tutorial.</p>
 <p>For the starter app we need, use the command:</p>
@@ -320,12 +336,12 @@ Using bundle exec may solve this.
 <p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
 <h4>Replace the READMEs</h4>
 <p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.com/">RailsApps project</a>.</p>
-<h2>Set Up Source Control (Git)</h2>
+<h3>Set Up Source Control (Git)</h3>
 <p>When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.</p>
 <p>At your request, the template will also create a GitHub repository for your project.</p>
 <p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Git and Rails</a>.</p>
 <p>Git has already been initialized by the application template script. If you’ve selected the GitHub option, the template commits your code to your GitHub repository.</p>
-<h2>Set Up Gems</h2>
+<h3>Set Up Gems</h3>
 <p>The Rails Composer program sets up your Gemfile and (if you are using rvm) creates a project-specific gemset.</p>
 <p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
 <pre>
@@ -369,17 +385,37 @@ bundle install
 $ gem list
 </pre>
 <p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
-<h2>RSpec</h2>
-<p>The starter app script sets up RSpec for unit testing. Run <code>rake -T</code> to check that rake tasks for RSpec are available. You should be able to run <code>rake spec</code> to run all specs provided with the example app. To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
-<h2>Cucumber</h2>
-<p>The starter app script sets up Cucumber for specifications and acceptance testing. To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
-<p>You should be able to run <code>rake cucumber</code>, or more simply, <code>cucumber</code>, to run the Cucumber scenarios and steps provided with the example app. You can run a single Cucumber feature with a command such as:</p>
+<h3>Test the App</h3>
+<p>You can check that your app runs properly by entering the command</p>
+<pre>
+$ rails server
+</pre>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
+<p>Stop the server with Control-C.</p>
+<h2>Test-Driven Development</h2>
+<p>This example application uses Cucumber for integration testing and RSpec for unit testing.</p>
+<p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. RSpec is a popular choice for unit testing. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise. Cucumber is a popular choice for integration testing and behavior driven development. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
+<p>To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
+<p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
+<p>This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
+<p>The Rails Composer tool creates a starter app that is set up for RSpec and Cucumber test frameworks.</p>
+<h3>Copying Tests from the Example Application</h3>
+<p>You can copy the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application. Replace both the <strong>spec</strong> and <strong>features</strong> directories entirely. Copying all the files will include necessary configuration and helper files.</p>
+<p>Run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available. You won’t be able to run <code>rake spec</code> or <code>rake cucumber</code> until the database is set up.</p>
+<h3>RSpec</h3>
+<p>The starter app script sets up RSpec for unit testing. You should be able to run <code>rake spec</code> to run all specs provided with the example app after the database is set up.</p>
+<h3>Cucumber</h3>
+<p>The starter app script sets up Cucumber for specifications and acceptance testing.</p>
+<p>You should be able to run <code>rake cucumber</code>, or more simply, <code>cucumber</code>, to run the Cucumber scenarios and steps provided with the example app after the database is set up. You can run a single Cucumber feature with a command such as:</p>
 <pre>
 $ cucumber features/visitors/request_invitation.feature
 </pre>
-<p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
-<h2>Configure Email</h2>
+<p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.h2. Configuration</p>
 <p>The starter app script sets up a default email configuration. You must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
+<h3>Configure Devise for Email</h3>
+<p>Start your email configuration by modifying</p>
+<p><strong>config/initializers/devise.rb</strong></p>
+<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
 <h3>Configure ActionMailer</h3>
 <p>The starter app has already configured ActionMailer but you must set your email account details.</p>
 <p>Replace <code>example.com</code> in the <strong>config/environments/production.rb</strong> file:</p>
@@ -408,9 +444,93 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, follow the instructions in the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a> to set Unix environment variables to keep email account passwords secret.</p>
-<h2>Set Up the Database</h2>
-<h3>Create a Default User</h3>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, follow the instructions in the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a> to set Unix environment variables to keep email account passwords secret.<br>
+h2. Layout and Stylesheets</p>
+<p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer, you can generate the starter app with Haml instead of <span class="caps">ERB</span>. Then convert the <span class="caps">ERB</span> in the tutorial to Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
+<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. See the article <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
+<p>The starter app:</p>
+<ul>
+<li>installs Twitter Bootstrap</li>
+	<li>updates the application layout</li>
+	<li>adds navigation links</li>
+	<li>styles Rails flash messages</li>
+	<li>installs and configures <a href="https://github.com/plataformatec/simple_form">SimpleForm</a>
+</li>
+</ul><p>See the article <a href="http://railsapps.github.com/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a> and review the tutorial for the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application for details.</p>
+<p>The file <strong>app/views/layouts/_navigation.html.erb</strong> contains navigation links.</p>
+<p>The file <strong>app/views/layouts/_messages.html.erb</strong> contains flash messages.</p>
+<h3>Base Errors Helper for SimpleForm</h3>
+<p>In this application, some failed transactions set model errors that are not matched to a specific form field. These are called “base errors.” For example, the User model sets an error like this: <code>errors.add :base, "Credit card declined"</code>. SimpleForm does not provide a helper to display base errors; to accommodate base errors, we use a custom view helper.</p>
+<p>The starter application installs this view helper in <strong>app/helpers/application_helper.rb</strong>:</p>
+<pre>
+module ApplicationHelper
+  
+  def display_base_errors resource
+    return '' if resource.errors.empty?
+    messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
+    html = &lt;&lt;-HTML
+    &lt;div class="alert alert-error alert-block"&gt;
+      &lt;button type="button" class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/button&gt;
+      #{messages}
+    &lt;/div&gt;
+    HTML
+    html.html_safe
+  end
+  
+end
+</pre>
+<p>The view helper will be used in the files <strong>app/views/devise/registrations/new.html.erb</strong> and <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
+<pre>
+&lt;%= simple_form_for ... %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
+.
+.
+.
+&lt;% end %&gt;
+</pre>
+<p>Without the <code>display_base_errors</code> view helper, the application’s users will not see a “Credit card declined” message if a transaction is declined.<br>
+h2. Authentication</p>
+<p>This application uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication. Devise provides a system to securely identify users, making sure the user is really who he represents himself to be. Devise provides everything needed to implement user registration with log in and log out.</p>
+<p>The starter app script sets up Devise:</p>
+<ul>
+<li>adds the Devise gem to the Gemfile</li>
+	<li>runs <code>$ rails generate devise:install</code>
+</li>
+	<li>uses Devise to generate a User model and database migration</li>
+	<li>prevents logging of passwords</li>
+	<li>adds a sign-in form that uses SimpleForm and Twitter Bootstrap</li>
+</ul><p>For details about how Devise is used in the starter application, see the tutorials:</p>
+<ul>
+<li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
+	<li>
+<a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a><br>
+h2. Authorization</li>
+</ul><p>This application uses <a href="https://github.com/ryanb/cancan">CanCan</a> for authorization, to restrict access to pages that should only be viewed by an authorized user. CanCan offers an architecture that centralizes all authorization rules (permissions or “abilities”) in a single location, the CanCan <code>Ability</code> class. CanCan provides a mechanism for limiting access at the level of controller and controller method and expects you to set permissions based on user attributes you define. This application uses Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to create a Role model and add methods to a User model that are used to set CanCan permissions.</p>
+<p>The starter app script sets up CanCan and Rolify:</p>
+<ul>
+<li>adds the CanCan and Rolify gems to the Gemfile</li>
+	<li>creates the CanCan <code>Ability</code> class</li>
+	<li>configures CanCan exception handling</li>
+	<li>sets up User roles with Rolify</li>
+</ul><p>For details about how authorization is implemented in the starter application, see the tutorial:</p>
+<ul>
+<li>
+<a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a><br>
+h2. User Management</li>
+</ul><p>By default, Devise uses an email address to identify users. The starter application adds a “name” attribute as well.</p>
+<p>Devise provides all the functionality for a user to log in and view and edit the user’s profile. The user’s profile only includes an email address, a name, and a password. You’ll likely customize the User model and user pages for your own application.</p>
+<p>The starter application:</p>
+<ul>
+<li>adds a name attribute to the User model</li>
+	<li>limits mass-assignment operations with the <code>attr_accessible</code> method</li>
+	<li>provides custom views for registering and editing users</li>
+</ul><p>For details about how user management is set up in the starter application, see the tutorials:</p>
+<ul>
+<li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
+	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
+</ul><h2>Initial Data</h2>
+<h3>Set Up a Database Seed File</h3>
 <p>You’ll want to set up default users so you can test the application.</p>
 <p>The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
@@ -454,11 +574,14 @@ puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
 </pre>
 <p>The first user will be given an administrator role. You can log in with this account for access as an administrator.</p>
 <p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
-<p>You can change the values for name, email, and password as you wish.</p>
+<p>You can change the values for name, email, and password as you wish. If you change the email address from “example.com,” be sure to change this line in the file <strong>app/models/user.rb</strong>:</p>
+<pre>
+return if email.include?('@example.com') and not Rails.env.production?
+</pre>
 <p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
 <p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles.</p>
-<p>It’s not strictly necessary to create the list of roles before creating the users. Any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. Howver, I suggest you create a full list of roles in the <strong>db/seeds.rb</strong> file. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
+<p>It’s not strictly necessary to create the list of roles before creating the users. Any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. However, I suggest you create a full list of roles in the <strong>db/seeds.rb</strong> file. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -475,16 +598,23 @@ $ rake db:reset
 $ rake db:test:prepare
 </pre>
 <p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
-<h2>Test the Starter App</h2>
-<p>At this point, the app is identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
+<h3>Commit to Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "initial data"
+</pre>
+<h3>Test the Starter App</h3>
+<p>At this point, the app is almost identical to the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> starter app.</p>
 <p>You can check that the example app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default users listed on the home page. When you click on a user’s name, you should be required to log in before seeing the user’s detail page.</p>
 <p>If you sign in as the first user, you will have administrative privileges. You’ll see an “Admin” link in the navigation bar. Clicking the “Admin” link will display the administrative dashboard. Each user will be listed with buttons to “Change role” or “Delete user.”</p>
 <p>Stop the server with Control-C.</p>
 <h4>When to Restart</h4>
-<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. As a rule, remember to restart the server when you add gems, change routes, or change anything in the config folder; leave the server running whn you change models, controllers, views or anything else in app folder.</p>
-<h2>Replace the Home Page</h2>
+<p>If you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. As a rule, remember to restart the server when you add gems, change routes, or change anything in the config folder; leave the server running whn you change models, controllers, views or anything else in app folder.<br>
+h2. Home Page</p>
+<h3>Replace the Home Page</h3>
 <p>If you’ve tested the example app, you’ve seen that any user who logs in will see a list of all the users on the home page. That’s fine for an example app but it’s not what we want for a subscription site.</p>
 <h3>Home Page with Subscription Plans</h3>
 <p>We’ll put our subscription offer and pricing plan on the home page. For this tutorial, it’s simplest to show the offer and prices right on the home page. For a real application, you might describe your offer on the home page and show pricing on a separate page.</p>
@@ -577,8 +707,20 @@ end
 $ git add -A
 $ git commit -m "home page update"
 </pre>
-<h2>Add Content Pages</h2>
-<p>We’ll add placeholder pages for our valuable content.</p>
+<h2>Administrative Page</h2>
+<p>This application provides the <strong>Users#index</strong> page as an administrative dashboard. The CanCan authorization system restricts access to this page to only users in the “admin” role.</p>
+<p>The starter application sets up the administrative page:</p>
+<ul>
+<li>lists users and shows the date each registered</li>
+	<li>displays email addresses and roles</li>
+	<li>provides buttons to change roles and delete users</li>
+</ul><p>For details about how the administrative page is set up by the starter application, see the tutorial:</p>
+<ul>
+<li>
+<a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a><br>
+h2. Content Pages</li>
+</ul><p>This application can be used for a Software-as-a-Service (SaaS) website or it can be used to limit access to pages containing content such as articles, photos, or video. For purposes of demonstration, we’ll set up the site so a membership is required to view some placeholder content.</p>
+<p>Let’s add pages for our placeholder content.</p>
 <p>First let’s consider a git workflow for adding a new feature.</p>
 <h3>Git Workflow</h3>
 <p>When you are using git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
@@ -665,7 +807,7 @@ $ git commit -m "add content pages"
 <pre>
 $ git branch -D content-pages
 </pre>
-<h2>Implement Authorization</h2>
+<h2>Limit Access to Content</h2>
 <p>We’ve got a home page with links to content pages for Silver, Gold, and Platinum subscribers. And we have created three users: Silver User, Gold User, and Platinum User. Now we’ll set limits on access to the content.</p>
 <p>Create a new git branch for this feature:</p>
 <pre>
@@ -764,8 +906,8 @@ $ git commit -m "add authorization"
 $ git branch -D authorization
 </pre>
 <h2>Registration Page</h2>
-<p>Now that we have a home page with links to our placeholder content pages, plus authorization limits to  restrict access based on subscription plan, let’s create a page where a visitor can register for the site and sign up for a subscription.</p>
-<p>For the initial version of our registration page, we’ll let the visitor sign up for any subscription for free. Later, we’ll integrate Stripe payment for purchase of a subscription plan.</p>
+<p>Now that we have a home page with links to our placeholder content pages, plus authorization limits to restrict access based on subscription plan, let’s create a page where a visitor can register for the site and sign up for a subscription.</p>
+<p>For the initial version of our registration page, we’ll let the visitor sign up for any subscription for free. Later, we’ll integrate Stripe billing services for purchase of a subscription plan.</p>
 <p>The Devise authentication gem provides user management, including signing up users on a registration page. Our starter app already has a User model and uses a Devise controller and views to sign up visitors, asking for a name and email address and creating a user account. We could add a new “subscription purchase” page. Instead, since we already have a sign-up form provided by Devise, it’ll be easier to adapt the existing Devise registration page.</p>
 <p>Create a new git branch for this feature:</p>
 <pre>
@@ -853,7 +995,11 @@ class RegistrationsController &lt; Devise::RegistrationsController
 
   def new
     @plan = params[:plan]
-    super
+    if @plan
+      super
+    else
+      redirect_to root_path, :notice =&gt; 'Please select a subscription plan below'
+    end
   end
 
   private
@@ -865,8 +1011,12 @@ class RegistrationsController &lt; Devise::RegistrationsController
   end
 end
 </pre>
-<p>We override the controller <code>new</code> action to set the <em>plan</em> variable. This allows us to display the name of the selected subscription plan on the registration page. When we modify the registration form, we’ll include the <em>plan</em> variable in a hidden input field. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons. We call the <code>super</code> method to inherit the original controller <code>new</code> action.</p>
-<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub). Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. The default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. On a <code>new</code> action, it will be available as a parameter passed from the home page. On a <code>create</code> action, it will be passed as a parameter from a hidden input field on the registration form. Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role. If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
+<p>Devise provides a Registrations controller inside the Devise gem. It contains standard RESTful controller actions, including <code>new</code> and <code>create</code> (see <a href="https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb">Devise::RegistrationsController</a> on GitHub).</p>
+<p>We override the controller <code>new</code> action to set the <em>plan</em> variable. This allows us to display the name of the selected subscription plan on the registration page. When we modify the registration form, we’ll include the <em>plan</em> variable in a hidden input field. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons.</p>
+<p>If the <em>plan</em> parameter is present, we call the <code>super</code> method to inherit the original controller <code>new</code> action. If the visitor has not selected a plan, we redirect back to the home page and display a message “Please select a subscription plan below.”</p>
+<p>Before calling <code>new</code> or <code>create</code>, the Devise Registrations controller initializes a new User with a private method named <code>build_resource</code>. The default <code>build_resource</code> method won’t assign an authorization role to our user. We override the <code>build_resource</code> method, first using the <code>super</code> method to call the parent <code>build_resource</code> method. Then we check if the <em>plan</em> parameter is available. On a <code>new</code> action, it will be available as a parameter passed from the home page. On a <code>create</code> action, it will be passed as a parameter from a hidden input field on the registration form.</p>
+<p>If you’re wondering why you don’t see the User model as a <em>@user</em> variable, Devise has aliased it as the <em>resource</em> instance variable (<em>resource</em> allows Devise to accommodate models with names other than User, such as Account or Person).</p>
+<p>Rolify has added the <code>add_role</code> method to the User model, so we call <code>add_role</code> to assign the plan as an authorization role.</p>
 <p>Instead of overriding the controller <code>new</code> action, we could use a <code>before_filter</code> to set the <em>plan</em> variable before the <code>new</code> method is called. We could do this:</p>
 <pre>
   before_filter :set_plan, :only =&gt; :new
@@ -891,6 +1041,7 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
   &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= hidden_field_tag 'plan', @plan %&gt;
   &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
@@ -990,12 +1141,11 @@ $ git branch -D redirect
 	<li>the visitor submits the form</li>
 	<li>a JavaScript function sends the card data to Stripe’s servers</li>
 	<li>a JavaScript callback receives a Stripe token or an error message</li>
-	<li>the JavaScript function submits the form to your server, substituting the token for credit card data</li>
-	<li>an application controller <code>create</code> action attempts to save the new user</li>
+	<li>the JavaScript function submits the form to our server, substituting the token for credit card data</li>
 	<li>a User model <code>before_save</code> method sends a request (with the token) to Stripe to create a customer account</li>
 	<li>the User model <code>before_save</code> method receives an acknowledgment of a completed or declined transaction</li>
-	<li>the User model <code>before_save</code> method saves the user data (and creates an account) or shows an error message</li>
-</ul><p>Stripe’s multi-step JavaScript-based approach makes implementation more complex but the result is robust and secure.</p>
+	<li>a Registrations controller <code>create</code> action saves the user data or shows an error message</li>
+</ul><p>This hybrid approach makes implementation more complex but the result is robust and secure.</p>
 <p>Here are useful resources for understanding the implementation:</p>
 <ul>
 <li>RailsCast <a href="http://railscasts.com/episodes/288-billing-with-stripe">Billing with Stripe</a>
@@ -1006,7 +1156,7 @@ $ git branch -D redirect
 </ul><p>We’ve followed Ryan Bates’s implementation from his RailsCast on Stripe in several key areas. Thank you, Ryan!</p>
 <p>Get started by creating a new git branch for this feature:</p>
 <pre>
-$ git checkout -b stripe
+$ git checkout -b billing
 </pre>
 <h3>Stripe Initializer</h3>
 <p>We’ve already installed the Stripe gem in our Gemfile.</p>
@@ -1021,13 +1171,13 @@ STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 <p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. Instead, set Unix environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
 <p>Add this to your <strong>~/.bashrc</strong> file (or the equivalent file for your preferred Unix shell):</p>
 <pre>
-export STRIPE_API_KEY="secret"
-export STRIPE_PUBLIC_KEY="secret"
+export STRIPE_API_KEY="Test Secret Key"
+export STRIPE_PUBLIC_KEY="Test Publishable Key"
 </pre>
 <p>Replace “secret” with your keys. You can find both keys on your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. Two sets of keys are available: one for testing, one for live transactions. Use the testing keys on your development machine. When you deploy, use the live keys. If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment.</p>
 <p>Here’s how to set Heroku environment variables to provide the same data your application obtains from your local shell environment:</p>
 <pre>
-$ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
+$ heroku config:add STRIPE_API_KEY=secret-key STRIPE_PUBLIC_KEY=public-key
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Add a Virtual Attribute to the User Model</h3>
@@ -1050,7 +1200,7 @@ class User &lt; ActiveRecord::Base
 
 end
 </pre>
-<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the <code>stripe_token</code> value as an instance variable. Also we add the new <code>stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass-assignment.</p>
+<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the <code>stripe_token</code> value as an instance variable. Also we add the new <code>stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass assignment.</p>
 <p>With the virtual attribute in place, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
@@ -1064,6 +1214,7 @@ end
   &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= hidden_field_tag 'plan', @plan %&gt;
   &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
@@ -1095,11 +1246,11 @@ end
 &lt;form accept-charset="UTF-8" action="/users" class="card_form form-vertical" id="new_user" method="post"&gt;
 </pre>
 <p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller and action names “user” and “new”. We assign the class <code>card_form</code> to the form. Our JavaScript code will interact with the form. We could select the form with the “new_user” id but instead we’ll use the “card_form” class in our jQuery selector. This gives us flexibility to use the same JavaScript code to interact with either a “new registration” or “edit registration” form.</p>
+<p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.stripe_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Stripe accepts the credit card data and provides a <code>stripe_token</code> but there’s no email address, we’ll save the Stripe token in the hidden field and prompt the user to correct the email address.</p>
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
 <p>The name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
 <p>The credit card data fields do not correspond to attributes of the User model so we can’t use the form builder object. We use the more primitive <code>label_tag</code> and <code>text_field_tag</code> instead. Notice we specify the <code>name:</code> of the element as nil. For the expiration <code>select_month</code> and <code>select_year</code> we also set an element ID to replace the ID that the Rails form helper generates. Thus the fields will be available to our JavaScript code but will not be submitted to the server.</p>
 <p>We add a hidden field to the form named <code>stripe_token</code>. We’ll soon add JavaScript to submit credit card data from the form and obtain a Stripe token from the Stripe server. The JavaScript code will add the Stripe token to the hidden field before submitting the form to our server.</p>
-<p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.stripe_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Stripe accepts the credit card data and provides a <code>stripe_token</code> but there’s no email address, we’ll save the Stripe token in the hidden field and prompt the user to correct the email address.</p>
 <p>Now we’ll add the JavaScript to process the form.</p>
 <h3>Adding JavaScript from the Stripe Server</h3>
 <p>There are several approaches to accessing external JavaScript libraries and setting up scripts to only run on a specific page. For a comprehensive introduction to using external JavaScript libraries and page-specific JavaScript, see our article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a>.</p>
@@ -1193,8 +1344,8 @@ $('.registrations').ready(function() {
 <p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
 <p>Let’s test the code to make sure the Stripe JavaScript library is loading from the remote server.</p>
 <p>Start the server and visit the home page. Check the JavaScript console to observe the debugging messages.</p>
-<p>Here’s how to use the JavaScript console. Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <em>View/Developer/JavaScript Console</em>. Reload the page and you will the console messages. We’ve added console messages to trace the program flow as each function is executed. Use this technique for debugging if you have problems.</p>
-<p>When you visit the home page, you should see a debugging messages in the JavaScript console:</p>
+<p>Here’s how to use the JavaScript console. Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <em>View/Developer/JavaScript Console</em>. Reload the page and you will see console messages. We’ve added console messages to trace the program flow as each function is executed. Use this technique for debugging if you have problems.</p>
+<p>When you visit the home page, you should see a debugging message in the JavaScript console:</p>
 <pre>
 Page-specific JavaScript on the home.index page.
 </pre>
@@ -1332,13 +1483,13 @@ $('.registrations').ready(function() {
 <p>We create a <code>subscription</code> object with several functions: <code>setupForm</code>, <code>processCard</code>, and <code>handleStripeResponse</code>.</p>
 <p>We call the <code>setupForm</code> function which listens for the form submission event. When the visitor submits the form, the submit button is disabled (so the user can’t press it repeatedly) and the <code>processCard</code> function is called. Returning <code>false</code> makes sure the form is not submitted to our server at this stage. Notice that we don’t call the <code>processCard</code> function if the credit card number is blank; instead we return “true” which submits the form. This will be true if the credit card data was previously accepted (and a Stripe token is included in the hidden field) but there was an error such as a missing email address.</p>
 <p>The <code>processCard</code> function parses the form and obtains the credit card data. Then it calls a function from the Stripe library named <code>createToken</code> which submits the card data to the Stripe server. When the Stripe server returns a response, we call the <code>handleStripeResponse</code> function.</p>
-<p>The <code>handleStripeResponse</code> function checks the <span class="caps">HTTP</span> status code. If it is okay (status code 200), the function sets the <code>:stripe_token</code> hidden field in the form (it has the <span class="caps">HTML</span> element ID “user_stripe_token”) and calls <code>submit</code> on the element with the “card_form” class (which is the form). If the <span class="caps">HTTP</span> status code is not okay, the function sets the error message from the Stripe server in the <code>stripe_error</code> div and re-enables the submit button.</p>
-<p>In effect, we modify the form’s submit button so that the credit card data is first sent to the Striper server, the Stripe token is obtained and set in a hidden field, and then the form is submitted to our application for processing by our Registrations controller.</p>
+<p>The <code>handleStripeResponse</code> function checks the <span class="caps">HTTP</span> status code. If it is okay (status code 200), the function sets the <code>stripe_token</code> hidden field in the form (it has the <span class="caps">HTML</span> element ID “user_stripe_token”) and calls <code>submit</code> on the element with the “card_form” class (which is the form). If the <span class="caps">HTTP</span> status code is not okay, the function sets the error message from the Stripe server in the <code>stripe_error</code> div and re-enables the submit button.</p>
+<p>In effect, we modify the form’s submit button so that the credit card data is first sent to the Stripe server, the Stripe token is obtained and set in a hidden field, and then the form is submitted to our application for processing by our Registrations controller.</p>
 <p>You can start the server and create a subscription. Use the fake credit card number <em>4242424242424242</em>. You’ll see an error message on the page if the credit card data is incomplete. If the credit card data is accepted, a new User account will be created and you’ll be redirected to an appropriate content page where you’ll see a message “Welcome! You have signed up successfully.”</p>
 <p>But wait. We’ve created a new User account but we haven’t charged the user for the subscription. To do so, we’ll modify the User model to create a new Stripe customer and initiate a credit card transaction when a new user is created.</p>
 <h3>Prepare Your Stripe Account</h3>
 <p>Before we can modify the User model to create a new Stripe customer, we have to prepare our Stripe account to recognize the parameters we’ll be saving. We have to set up our subscription plans in Stripe.</p>
-<p>This step is necessary if you’re going to use Stripe to automatically handle recurring billing. We’ll tell Stripe that we have three plans named “Silver”, “Gold”, and “Platinum” that will be billed monthly at rates of $9, $19, and $29. Once a customer is created and assigned a plan, Stripe will do all the work of notifying the user, initiating monthly billing, and contacting the user when a credit card is declined or expires.</p>
+<p>This step is necessary if you’re going to use Stripe to automatically handle recurring billing. We’ll tell Stripe that we have three plans named “Silver”, “Gold”, and “Platinum” that will be billed monthly at rates of $9, $19, and $29. Once a customer is created and assigned a plan, Stripe will do all the work of initiating monthly billing and retrying the transaction when a credit card is declined or expires.</p>
 <p>Go to the Stripe <a href="https://manage.stripe.com/#plans">plan management page</a> to create a subscription plan. Stripe offers <a href="https://stripe.com/docs/subscriptions">documentation about creating a plan</a> and <a href="https://stripe.com/docs/api#plans">additional detail about plans</a>.</p>
 <p>Look for the toggle switch “Live/Test” and set it to “Test.” Click the button to “Create your first plan.”</p>
 <p>Create three different plans with the following values:</p>
@@ -1411,7 +1562,7 @@ class User &lt; ActiveRecord::Base
   before_save :update_stripe
 
   def update_stripe
-    return if email.include?('@example.com')
+    return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
@@ -1435,9 +1586,9 @@ class User &lt; ActiveRecord::Base
     self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to create your subscription. #{e.message}"
-    stripe_token = nil
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "#{e.message}."
+    self.stripe_token = nil
     false
   end
   
@@ -1473,9 +1624,9 @@ $ rails server
 $ git add -A
 $ git commit -m "add stripe"
 $ git checkout master
-$ git merge --squash stripe
+$ git merge --squash billing
 $ git commit -m "add stripe"
-$ git branch -D stripe
+$ git branch -D billing
 </pre>
 <h2>Account Changes</h2>
 <p>We’ve completed integration with Stripe so we can sign up new subscribers. Stripe will automatically bill their credit cards every month. But what happens when a subscriber wants to use a different credit card for payments? We could require them to cancel their subscription and create a new one. It would be better if they could edit their account to change their credit card.</p>
@@ -1484,7 +1635,7 @@ $ git branch -D stripe
 <pre>
 $ git checkout -b change-acct
 </pre>
-<h3>Change the Registration Form</h3>
+<h3>Change the “Edit account” Page</h3>
 <p>Our “Edit account” page is very similar to the registration page. In its rudimentary form, it contains a simple form to change the user’s name, email address, or password. We will add two additional forms that are hidden on the page and are revealed as modal windows when a “Change plan” or “Change card” button is clicked.</p>
 <p>We’ve got a lot of code to add, so we’ll do it in stages.</p>
 <p>We’ll modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>.</p>
@@ -1518,11 +1669,11 @@ $ git checkout -b change-acct
 <pre>
 &lt;%= link_to "Back", :back %&gt;
 </pre>
-<p>Now we’ll add the first of two modal windows containing a form. It doesn’t matter where the forms are placed in the file as they will be hidden when the page is initially displayed and will appear as an overlay when revealed by a click on the appropriate link.</p>
+<p>Now we’ll add the first of two modal windows containing a form. It doesn’t matter where the forms are placed in the file as they will be hidden when the page is initially displayed and will appear as an overlay when revealed by a click on the appropriate link. I suggest you append the code at the end of the file.</p>
 <p>The first form is identifed as “plan-options”:</p>
 <pre>
 &lt;div id="plan-options" class="modal" style="display: none;"&gt;
-  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_plan_path, :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
     &lt;div class="modal-header"&gt;
       &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
       &lt;h3&gt;Change Plan&lt;/h3&gt;
@@ -1550,7 +1701,7 @@ $ git checkout -b change-acct
 <p>Now we’ll add another modal window containing a form for changing the credit card.</p>
 <pre>
 &lt;div id="card-data" class="modal" style="display: none;"&gt;
-  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal card_form' } do |f| %&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_card_path, :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal card_form' } do |f| %&gt;
     &lt;div class="modal-header"&gt;
       &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
       &lt;h3&gt;Change Credit Card&lt;/h3&gt;
@@ -1566,7 +1717,7 @@ $ git checkout -b change-acct
       &lt;/div&gt;
       &lt;div class="field"&gt;
         &lt;%= label_tag :card_month, "Card Expiration" %&gt;
-        &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
+        &lt;%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"}%&gt;
         &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
       &lt;/div&gt;
       &lt;%= f.hidden_field :name %&gt;
@@ -1585,9 +1736,10 @@ $ git checkout -b change-acct
 <p>Here’s the complete version of the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
 <pre>
 &lt;h2&gt;Account&lt;/h2&gt;
-
+&lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;&lt;/div&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
   &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :autocomplete =&gt; "off", :hint =&gt; "leave it blank if you don't want to change it", :required =&gt; false %&gt;
@@ -1613,7 +1765,7 @@ $ git checkout -b change-acct
 &lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini' %&gt;&lt;/p&gt;
 
 &lt;div id="plan-options" class="modal" style="display: none;"&gt;
-  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_plan_path, :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
     &lt;div class="modal-header"&gt;
       &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
       &lt;h3&gt;Change Plan&lt;/h3&gt;
@@ -1629,7 +1781,7 @@ $ git checkout -b change-acct
 &lt;/div&gt;
 
 &lt;div id="card-data" class="modal" style="display: none;"&gt;
-  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal card_form' } do |f| %&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_card_path, :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal card_form' } do |f| %&gt;
     &lt;div class="modal-header"&gt;
       &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
       &lt;h3&gt;Change Credit Card&lt;/h3&gt;
@@ -1645,7 +1797,7 @@ $ git checkout -b change-acct
       &lt;/div&gt;
       &lt;div class="field"&gt;
         &lt;%= label_tag :card_month, "Card Expiration" %&gt;
-        &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
+        &lt;%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"}%&gt;
         &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
       &lt;/div&gt;
       &lt;%= f.hidden_field :name %&gt;
@@ -1673,14 +1825,13 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :role_ids, :as =&gt; :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
   before_save :update_stripe
   before_destroy :cancel_subscription
   
   def update_stripe
-    return if email.include?('@example.com')
+    return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
@@ -1704,12 +1855,12 @@ class User &lt; ActiveRecord::Base
     self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to create your subscription. #{e.message}"
-    stripe_token = nil
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "#{e.message}."
+    self.stripe_token = nil
     false
   end
-  
+
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
@@ -1746,16 +1897,21 @@ class User &lt; ActiveRecord::Base
   before_destroy :cancel_subscription
 
   def update_plan(role)
-    self.remove_role(self.roles.first.name)
+    self.role_ids = []
     self.add_role(role.name)
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
       customer.update_subscription(:plan =&gt; role.name)
     end
+    true
+  rescue Stripe::StripeError =&gt; e
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "Unable to update your subscription. #{e.message}."
+    false
   end
   
   def update_stripe
-    return if email.include?('@example.com')
+    return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
@@ -1779,9 +1935,9 @@ class User &lt; ActiveRecord::Base
     self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to create your subscription. #{e.message}"
-    stripe_token = nil
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "#{e.message}."
+    self.stripe_token = nil
     false
   end
   
@@ -1808,9 +1964,10 @@ end
 <p>First we remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement. This statement gives the administrator the power to override the mass assignment protection for the role attribute. The statement is no longer necessary because we will add a method that allows both the user and an administrator to reset the role.</p>
 <p>We add the <code>update_plan</code> method for resetting the role. Rolify supports multiple roles (though we only use a single role in this application) and we must remove an existing role before adding a new role. Then we make sure the user has a Stripe customer account, obtain a customer object with a call to Stripe, and call the the Stripe <code>update_subscription</code> method.</p>
 <p>With these changes, the User model can update the Stripe customer account when a user or administrator changes a subscription plan.</p>
-<h3>Modify the Registrations Controller for Subscription Plan Changes</h3>
+<h3>Modify the Registrations Controller for Account Changes</h3>
 <p>The registrations controller handles requests when the user submits the edit form.</p>
-<p>We need to override the <code>update</code> method in the Devise registrations controller to accommodate the “Change Plans” feature.</p>
+<p>We will add <code>update_plan</code> and <code>update_card</code> actions to the registrations controller to accommodate the “Change Plans” and “Change Card” features.</p>
+<p>It would be nice to keep the controller completely RESTful and not add any new actions, replacing the <code>update</code> method to handle submissions of three different forms (changing the plan, changing the card, and updating name/email/password). However, the <code>update</code> method supplied by Devise is quite complex, with logic that forces the user to enter the current password to authorize any changes. We don’t want to ask the user to enter a password to change the card or plan, so we’ll leave the <code>update</code> method untouched (for changing name/email/password) and add two new methods.</p>
 <p>Modify the file <strong>app/controllers/registrations_controller.rb</strong>:</p>
 <pre>
 class RegistrationsController &lt; Devise::RegistrationsController
@@ -1820,36 +1977,32 @@ class RegistrationsController &lt; Devise::RegistrationsController
     if @plan
       super
     else
-      redirect_to root_path, :notice =&gt; 'Please select a subscription plan below'
+      redirect_to root_path, :notice =&gt; 'Please select a subscription plan below.'
     end
   end
 
-  def update
-    @user = User.find(current_user.id)
+  def update_plan
+    @user = current_user
     role = Role.find(params[:user][:role_ids]) unless params[:user][:role_ids].nil?
-    params[:user] = params[:user].except(:role_ids)
-    successfully_updated = false
-    unless params[:user][:email].nil? or params[:user][:password].nil?
-      name_changed = @user.name != params[:user][:name]
-      email_changed = @user.email != params[:user][:email]
-      password_changed = !params[:user][:password].empty?
-      if email_changed or password_changed or name_changed
-        successfully_updated = @user.update_with_password(params[:user])
-      end
+    if @user.update_plan(role)
+      redirect_to edit_user_registration_path, :notice =&gt; 'Updated plan.'
     else
-      successfully_updated = @user.update_without_password(params[:user])
-    end
-    if successfully_updated
-      @user.update_plan(role) unless role.nil?
-      set_flash_message :notice, :updated
-      # Sign in the user bypassing validation in case his password changed
-      sign_in @user, :bypass =&gt; true
-      redirect_to after_update_path_for(@user)
-    else
+      flash.alert = 'Unable to update plan.'
       render :edit
     end
   end
-  
+
+  def update_card
+    @user = current_user
+    @user.stripe_token = params[:user][:stripe_token]
+    if @user.save
+      redirect_to edit_user_registration_path, :notice =&gt; 'Updated card.'
+    else
+      flash.alert = 'Unable to update card.'
+      render :edit
+    end
+  end
+
   private
   def build_resource(*args)
     super
@@ -1858,10 +2011,39 @@ class RegistrationsController &lt; Devise::RegistrationsController
     end
   end
 end
+
 </pre>
-<p>Not every request will require a change of subscription plans. Sometimes the user will be submitting the form to change name, email address, or credit card number. In those cases, there will be no <code>role_ids</code> parameter. When a <code>role_ids</code> parameter is present, the user wants to change subscription plans and we look up the name of the role.</p>
-<p>The next statement <code>params[:user] = params[:user].except(:role_ids)</code> is essential to avoid a mass assignment error. Our User model doesn’t allow a <code>role_ids</code> attribute to be set with the <code>update_attributes</code> method that is used by the Devise registrations controller <code>update</code> method. We strip out the <code>params[:user][:role_ids]</code> parameter after using it to find the requested role name. Then we activate the original Devise registrations controller <code>update</code> method with a call to <code>super</code>.</p>
-<p>Finally, we call the <code>User.update_plan</code> method that we just added to the User model. Now the user can change subscription plans and Stripe will update the customer account and apply refunds or additional charges as necessary.</p>
+<p>Not every request will require a change of card or subscription plan. Sometimes the user will be submitting a form to change name, email address, or password. In that case, the inherited <code>update</code> method from the Devise registrations controller will be invoked.</p>
+<p>The <code>update_plan</code> method applies changes to the <code>current_user</code> (note that changes by an administrator are accommodated elsewhere by the User controller). We identify the new role that is specified in the form and call the User <code>update_plan(role)</code> method. That method will make a request to Stripe to update the customer account. Stripe will automatically apply refunds or additional charges as necessary. The User <code>update_plan(role)</code> method returns <code>true</code> on a successful update or throws an error if an attempt to reach the Stripe server fails. On a successful update we redirect to the edit page with a status message. On a failure we render the edit page, showing any errors with the <code>display_base_errors</code> view helper.</p>
+<p>The <code>update_card</code> method relies on the JavaScript code in <strong>app/assets/javascripts/registrations.js.erb</strong> to intercept the card data and submit it to the Stripe server to obtain the Stripe token. The process is very similar to creating a new subscription. Once we have obtained the Stripe token, we call <code>@user.save</code>. Just like when a subscription is created, the User model <code>update_stripe</code> method calls the Stripe <span class="caps">API</span> and makes a request that associates the new card with the customer record for future billing. On a successful update we redirect to the edit page with a status message. On a failure we render the edit page, showing any errors with the <code>display_base_errors</code> view helper (this is where a “Credit card declined” message will appear).</p>
+<h3>Add Routes for Account Changes</h3>
+<p>We’ve added two new actions to the registrations controller to accommodate the “Change Plans” and “Change Card” features. We need to add routes to invoke the new actions.</p>
+<p>Modify the <strong>config/routes.rb</strong> file to add two routes:</p>
+<pre>
+RailsStripeMembershipSaas::Application.routes.draw do
+  mount StripeEvent::Engine =&gt; '/stripe'
+  get "content/gold"
+  get "content/silver"
+  get "content/platinum"
+  authenticated :user do
+    root :to =&gt; 'home#index'
+  end
+  root :to =&gt; "home#index"
+  devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
+  devise_scope :user do
+    put 'update_plan', :to =&gt; 'registrations#update_plan'
+    put 'update_card', :to =&gt; 'registrations#update_card'
+  end
+  resources :users
+end
+</pre>
+<p>The <a href="http://rdoc.info/github/plataformatec/devise/ActionDispatch/Routing/Mapper:devise_scope"><code>devise_scope</code> method</a> applies <a href="http://rubydoc.info/github/plataformatec/devise/master/Devise/Mapping">Devise.mappings</a> so the new routes are associated with other routes specified by <a href="http://rubydoc.info/github/plataformatec/devise/master/ActionDispatch/Routing/Mapper#devise_for-instance_method"><code>devise_for</code></a>. Our Registrations controller subclasses the Devise Registrations controller and it will raise an “Unknown action” error if the scope is not set by <code>devise_scope</code>. Note that <code>devise_for</code> takes a <code>:users</code> argument (plural) and <code>devise_scope</code> takes a <code>:user</code> argument (singular).</p>
+<p>We add the <code>update_plan</code> and <code>update_card</code> routes to respond to an <span class="caps">HTTP</span> “put” request (a form submission). This generates the routes that we use in our “Change Plans” and “Change Card” forms:</p>
+<ul>
+<li>update_plan_path</li>
+	<li>update_card_path</li>
+</ul><p>Our “Change Plans” and “Change Card” features are now ready for the user.</p>
+<p>We’ll add one more feature. We want to allow the administrator to change a subscription plan for any user.</p>
 <h3>Modify the User Controller for Subscription Plan Changes</h3>
 <p>The users controller handles requests when an administrator changes the user’s subscription plan.</p>
 <p>We need to modify the <code>update</code> method in the users controller to make sure Stripe’s customer records are updated when an administrator makes a change.</p>
@@ -1904,8 +2086,7 @@ class UsersController &lt; ApplicationController
   end
 end
 </pre>
-<p>The code is similar to what we added to the registrations controller.</p>
-<p>First we find the name of the requested role if a <code>params[:user][:role_ids]</code> parameter exists. We strip away the <code>params[:user][:role_ids]</code> parameter to avoid mass assignment errors. Then we call <code>update_attributes</code>. If the User object successfully saves the new attributes, we call the <code>User.update_plan</code> method to change the subscription plan in both the application role table and the remote Stripe customer account.</p>
+<p>The <code>update</code> action is more complex than the actions we added to the registrations controller because we are updating all attributes with a single action. The <code>authorize!</code> uses CanCan to make sure only the administrator can invoke the update. We find the name of the requested role if a <code>params[:user][:role_ids]</code> parameter exists. We strip away the <code>params[:user][:role_ids]</code> parameter to avoid mass assignment errors. Then we call <code>update_attributes</code>. If the User object successfully saves the new attributes, we call the <code>User.update_plan</code> method to change the subscription plan in both the application role table and the remote Stripe customer account.</p>
 <p>Now an administrator can change subscription plans and Stripe will update the customer account and apply refunds or additional charges as necessary.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
@@ -1983,14 +2164,27 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :role_ids, :as =&gt; :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
   before_save :update_stripe
   before_destroy :cancel_subscription
-  
+
+  def update_plan(role)
+    self.role_ids = []
+    self.add_role(role.name)
+    unless customer_id.nil?
+      customer = Stripe::Customer.retrieve(customer_id)
+      customer.update_subscription(:plan =&gt; role.name)
+    end
+    true
+  rescue Stripe::StripeError =&gt; e
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "Unable to update your subscription. #{e.message}."
+    false
+  end
+
   def update_stripe
-    return if email.include?('@example.com')
+    return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
@@ -2014,9 +2208,9 @@ class User &lt; ActiveRecord::Base
     self.customer_id = customer.id
     self.stripe_token = nil
   rescue Stripe::StripeError =&gt; e
-    logger.error e.message
-    errors.add :base, "Unable to create your subscription. #{e.message}"
-    stripe_token = nil
+    logger.error "Stripe Error: " + e.message
+    errors.add :base, "#{e.message}."
+    self.stripe_token = nil
     false
   end
   
@@ -2119,12 +2313,17 @@ $ git merge --squash webhooks
 $ git commit -m "add Stripe webhooks"
 $ git branch -D webhooks
 </pre>
-<h2>Additional Features</h2>
+<h2>Customize, Test, and Deploy</h2>
+<h3>Additional Features</h3>
 <p>You’ve created a fully functional membership site that’s ready to take credit card payments and serve access to restricted content.</p>
 <p>It uses Stripe for payment processing, allows users to change credit cards or subscription plans, and uses Stripe webhooks to delete users who have expired or declined credit cards.</p>
 <p>You might consider a few enhancements. For example, you might want the application to respond to a Stripe webhook event when a credit card payment is successful by sending a “paid” invoice. Or you might respond to Stripe webhook events when credit card payments are unsuccessful by sending a friendly note encouraging the user to check for an expired credit card before the subscription is cancelled.</p>
 <p>If you have suggestions for additional features, please create an <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">issue</a> on GitHub.</p>
-<h2>Test the App</h2>
+<h3>Cleanup</h3>
+<p>Several unneeded files are generated in the process of creating a new Rails application.</p>
+<p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
+<p>See instructions for <a href="http://railsapps.github.com/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
+<h3>Test the App</h3>
 <p>You can check that your app runs properly by entering the command:</p>
 <p><code>$ rails server</code></p>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
@@ -2139,13 +2338,18 @@ $ git branch -D webhooks
 	<li>password: please</li>
 </ul><p>The second user will not see the Admin navigation link and will not be able to access the page at<br><a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
 <p>You should be able to create additional users using a fake credit card number. You’ll see the new users listed when you log in as an administrator. And you’ll see the new users listed as customers when you visit your Stripe dashboard.</p>
-<h2>Deploy to Heroku</h2>
+<p>Stop the server with Control-C.</p>
+<h3>Testing</h3>
+<p>If you’ve copied the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application, you can run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available.</p>
+<p>Run <code>rake spec</code> to run all RSpec tests.</p>
+<p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run all Cucumber scenarios.</p>
+<h3>Deploy to Heroku</h3>
 <p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
-<p>Before you deploy to production, modify the <strong>app/models/user.rb</strong> file to remove the statement <code>return if email.include?('example.com')</code>. If you don’t do so, your application will allow any visitor to create a free account by using an “example.com” email address.</p>
-<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
-<h2>Credits</h2>
+<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.<br>
+h2. Comments</p>
+<h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
-<h2 id="comment">Did You Like the Tutorial?</h2>
+<h3>Did You Like the Tutorial?</h3>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
