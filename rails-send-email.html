@@ -46,8 +46,8 @@
     <div class="content wikistyle gollum textile">
       <h1>Send Email with Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 October 2012</em></p>
-<p>Sending email from a Ruby on Rails application. How to <a href="#configure">configure Rails to send email</a> using Gmail or Mandrill accounts. With an introduction comparing <a href="#providers">Email Service Providers</a> for application transactional email or mailing lists. Plus, how to <a href="#keepsecret">Keep Email Account Passwords Secret</a> by setting Unix environment variables.</p>
+<p><em>Last updated 12 December 2012</em></p>
+<p>Sending email from a Ruby on Rails application. How to <a href="#configure">configure Rails to send email</a> using Gmail or Mandrill accounts. With an introduction comparing <a href="#providers">Email Service Providers</a> for application transactional email or mailing lists.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well. You can use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to set up email for a starter application.</p>
 <p>Any issues? Please <a href="#comment">leave a comment</a> below with your feedback.</p>
 <h2 id="providers">Email Service Providers</h2>
@@ -141,7 +141,7 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See below to set Unix environment variables to keep email account passwords secret.</p>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
 <h3 id="mandrill">Use a Mandrill account</h3>
 <p>Use an <span class="caps">SMTP</span> relay service such as Mandrill if you want to increase deliverability for email messages from your application.</p>
 <p>If you have selected Mandrill, Rails Composer will set the file <strong>config/environments/production.rb</strong> to look like this:</p>
@@ -154,24 +154,7 @@ config.action_mailer.smtp_settings = {
 }
 </pre>
 <p>Note that the password will be your Mandrill <span class="caps">API</span> key.</p>
-<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_API_KEY"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key. See below to set Unix environment variables to keep email account passwords secret.</p>
-<h2 id="keepsecret">Keep Email Account Passwords Secret</h2>
-<p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
-<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add (for Gmail):</p>
-<pre>
-export GMAIL_USERNAME="myname@gmail.com"
-export GMAIL_PASSWORD="secret"
-</pre>
-<p>or for Mandrill:</p>
-<pre>
-export MANDRILL_USERNAME="myname"
-export MANDRILL_API_KEY="secret"
-</pre>
-<p>If you intend to use MailChimp for managing a mailing list, add your MailChimp <span class="caps">API</span> key:</p>
-<pre>
-export MAILCHIMP_API_KEY="secret"
-</pre>
-<p>If you’ve set Unix environment variables, open a new shell or restart your terminal application to continue.</p>
+<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_API_KEY"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
 <h2>Credits</h2>
 <p>Daniel Kehoe wrote the article.</p>
 <h2 id="comment">Did You Like the Article?</h2>

@@ -469,14 +469,7 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password.</p>
-<p>If you’re familiar with setting <a href="http://en.wikipedia.org/wiki/Environment_variable">Unix environment variables</a>, it’s advisable to leave <code>config.action_mailer.smtp_settings</code> unchanged and set your environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
-<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add:</p>
-<pre>
-export GMAIL_USERNAME="myname@gmail.com"
-export GMAIL_PASSWORD="secret*"
-</pre>
-<p>Open a new shell or restart your terminal application to continue.</p>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
 <h2>Set Up Authentication</h2>
 <p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
 <h4>Set Up Configuration for Devise</h4>

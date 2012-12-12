@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Environment Variables</h1>
 <h4>by Taylor Mock and Daniel Kehoe</h4>
-<p><em>Last updated 11 December 2012</em></p>
+<p><em>Last updated 12 December 2012</em></p>
 <p>Setting Rails environment variables. Using <span class="caps">ENV</span> variables in Rails, locally and with Heroku. A guide for developers using the example apps from the <a href="http://railsapps.github.com/">RailsApps</a> project. Others may find it helpful as well.</p>
 <h2>Environment Variables</h2>
 <p>Rails applications should be “turnkey”; that is, deployed anywhere without modifying code. But many applications require configuration of settings such as email account credentials or <span class="caps">API</span> keys for external services. You can pass local configuration settings to an application using environment variables.</p>
@@ -69,7 +69,7 @@ config.action_mailer.smtp_settings = {
 <p>You could “hardcode” your Gmail username and password into the file but that would expose it to everyone who has access to your git repository. Instead obtain an environment variable with <code>ENV["GMAIL_USERNAME"]</code>.</p>
 <p>Ruby will replace <code>ENV["GMAIL_USERNAME"]</code> with an environment variable. The variable can be used anywhere in a Rails application.</p>
 <p>Let’s consider how to set local environment variables.</p>
-<h2>Setting Unix Environment Variables</h2>
+<h2>Option One: Set Unix Environment Variables</h2>
 <p>If you’re familiar with Unix, you’ve likely had experience setting environment variables. Unix environment variables are typically set in a file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell).</p>
 <p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, edit the <strong>~/.bashrc</strong> file and add (for our Gmail example):</p>
 <pre>
@@ -78,7 +78,7 @@ export GMAIL_USERNAME="myname@gmail.com"
 <p>You’ll have to open a new shell or restart your terminal application to continue.</p>
 <p>The Unix shell can be a headache, especially when used in combination with rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, or when the application is launched in nonstandard ways. For example, the Passenger web server runs as a different user and may not have access to the same environment variables as your login account.</p>
 <p>We’ll show you an alternative to using the Unix shell that only requires a few lines of code in your Rails application to set environment variables. Use the alternative approach when you don’t want to set environment variables in the Unix shell.</p>
-<h2>An Alternative Approach</h2>
+<h2>Option Two: Use a <em>local_env.yml</em> File</h2>
 <p>This technique takes advantage of Ruby’s ability to set environment variables as well as read them. We’ll create a simple file that contains key/value pairs for each environment variable using the standard <span class="caps">YAML</span> file format. We’ll make sure this file is listed in the <strong>.gitignore</strong> file so it isn’t checked into the git repository. And we’ll add some code to the <strong>config/application.rb</strong> to read the file and set the environment variables before anything else is configured in the Rails application.</p>
 <h3>The <em>local_env.yml</em> File</h3>
 <p>If you’re using one of the <a href="http://railsapps.github.com/">RailsApps example applications</a> or you have generated a starter application using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/local_env.example.yml</strong>. Change the filename if the file exists (or create the file if it doesn’t), so you have a file <strong>config/local_env.yml</strong>:</p>
