@@ -80,8 +80,8 @@ export GMAIL_USERNAME="myname@gmail.com"
 <h2>Option Two: Use the Figaro Gem</h2>
 <p>The <a href="https://github.com/laserlemon/figaro">figaro gem</a> offers a practical alternative to setting environment variables in the Unix shell.</p>
 <p>The gem takes advantage of Ruby’s ability to set environment variables as well as read them. The gem reads a  <strong>config/application.yml</strong> file and sets environment variables before anything else is configured in the Rails application.</p>
-<p>If you want to use different credentials in development, test, or production environments, the gem will let you specify the different credentials in the <strong>config/application.yml</strong> file. If you’re deploying to Heroku, the gem gives you a rake task that will set all the environment variables on Heroku. The gem also allows you a syntax to access the environment variables as Figaro method calls which can be useful in setting up tests.</p>
-<p>The figaro gem makes it so easy to set configuration variables you may find it useful for other configuration parameters besides email account credentials or private <span class="caps">API</span> keys.</p>
+<p>If you want to use different credentials in development, test, or production environments, the gem will let you specify the different credentials in the <strong>config/application.yml</strong> file. If you’re deploying to Heroku, the gem gives you a rake task that will set all the environment variables on Heroku. The gem also gives you a syntax to access the environment variables as Figaro method calls which can be useful in setting up tests.</p>
+<p>The figaro gem makes it so easy to set configuration variables you may find it useful to set other configuration parameters besides email account credentials or private <span class="caps">API</span> keys.</p>
 <p>Here’s how to use it. In your <strong>Gemfile</strong>, add:</p>
 <pre>
 gem 'figaro'
@@ -91,7 +91,7 @@ gem 'figaro'
 <pre>
 $ rails generate figaro:install
 </pre>
-<p>The generator creates a <strong>config/application.yml</strong> file and modifies the <strong>.gitignore</strong> file to prevent the file from being checked in to a git repository.</p>
+<p>The generator creates a <strong>config/application.yml</strong> file and modifies the <strong>.gitignore</strong> file to prevent the file from being checked into a git repository.</p>
 <p>You can add environment variables as key/value pairs to <strong>config/application.yml</strong>:</p>
 <pre>
 GMAIL_USERNAME: Your_Username
@@ -135,7 +135,6 @@ rake figaro:heroku
 # makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
 GMAIL_USERNAME: 'Your_Gmail_Username'
 </pre>
-<p>If you are working on a team and you wish to share your configuration, you can copy this file for your collaborators to use.</p>
 <h3>Set .gitignore</h3>
 <p>If you have created a git repository for your application, your application root directory should contain a file named <strong>.gitignore</strong> (it is a hidden file). Be sure your <strong>.gitignore</strong> file contains:</p>
 <pre>
@@ -206,6 +205,10 @@ $ heroku config:add GMAIL_USERNAME=myname@gmail.com --remote staging
 $ heroku info --app myapp
 </pre>
 <p>where “myapp” is the name of your Heroku application.</p>
+<p>If you are using the figaro gem, just run:</p>
+<pre>
+rake figaro:heroku
+</pre>
 <p>Notice that you don’t use the <strong>config/local_env.yml</strong> file. Your <strong>.gitignore</strong> file should prevent it from getting added to the git repository. It won’t exist when you deploy to Heroku and your application will obtain environment variables from the Heroku configuration table.</p>
 <h2>Other Approaches</h2>
 <p>There are other approaches to setting environment variables in Rails.</p>
