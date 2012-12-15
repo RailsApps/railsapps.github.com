@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 December 2012</em></p>
+<p><em>Last updated 14 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
@@ -532,7 +532,47 @@ end
 <ul>
 <li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></li>
 	<li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a></li>
-</ul><h2>Initial Data</h2>
+</ul><h3>Add Fields for Stripe</h3>
+<p>We will need two extra fields in the database to accommodate Stripe:</p>
+<ul>
+<li>
+<code>customer_id</code> will store the Stripe customer ID</li>
+	<li>
+<code>last_4_digits</code> will store the last four digits of the user’s credit card number</li>
+</ul><p>The <code>last_4_digits</code> field isn’t needed for integration with Stripe but we can use it to show the user which credit card was used for the subscription.</p>
+<p>We’ll change our User model and database schema accordingly.</p>
+<h3>Migration for the User Model</h3>
+<p>Create a database migration with this command:</p>
+<pre>
+$ rails generate migration AddStripeToUsers   # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
+:string last_4_digits:string
+</pre>
+<p>After you’ve created the migration, update the database:</p>
+<pre>
+$ rake db:migrate
+</pre>
+<p>Now we’ll modify the User model.</p>
+<h3>Modify the User Model</h3>
+<p>There’s no need to add the attributes <code>customer_id</code> or <code>last_4_digits</code> to the <code>attr_accessible</code> parameters because we won’t be setting those vales from a form. We will remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement.</p>
+<p>Modify the file <strong>app/models/user.rb</strong>:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  rolify
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+
+end
+</pre>
+<p>We remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement. This statement gives the administrator the power to override the mass assignment protection for the role attribute. The statement is no longer necessary because we will add a method that allows both the user and an administrator to reset the role.</p>
+<p>With this change to our User model, we are ready to seed the database.</p>
+<h2>Initial Data</h2>
 <h3>Set Up a Database Seed File</h3>
 <p>You’ll want to set up default users so you can test the application.</p>
 <p>The file <strong>db/seeds.rb</strong> already contains:</p>
@@ -1174,22 +1214,23 @@ STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 </pre>
 <p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
 <p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
-<p>The article shows an approach using the <strong>config/local_env.yml</strong> file. If you have generated the starter application using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/local_env.example.yml</strong>. Change the filename if the file exists (or create the file if it doesn’t), so you have a file <strong>config/local_env.yml</strong>:</p>
+<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to read environment variables from the <strong>config/application.yml</strong> file. If you have generated the starter application using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/application.yml</strong>. Remove comment characters and set your credentials:</p>
 <pre>
-# Rename this file to local_env.yml
-# Add account settings and API keys here.
+# Add account credentials and API keys here.
+# See http://railsapps.github.com/rails-environment-variables.html
 # This file should be listed in .gitignore to keep your settings secret!
-# Each entry gets set as a local environment variable.
-# This file overrides ENV variables in the Unix shell.
+# Each entry sets a local environment variable and overrides ENV variables in the Unix shell.
 # For example, setting:
-# GMAIL_USERNAME: 'Your_Gmail_Username'
+# GMAIL_USERNAME: Your_Gmail_Username
 # makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
-GMAIL_USERNAME: 'Your_Username'
-GMAIL_PASSWORD: 'Your_Password'
-STRIPE_API_KEY: 'API Key'
-STRIPE_PUBLIC_KEY: 'Private Key'
+# Add application configuration variables here, as shown below.
+#
+GMAIL_USERNAME: Your_Username
+GMAIL_PASSWORD: Your_Password
+STRIPE_API_KEY: Your_Stripe_API_key
+STRIPE_PUBLIC_KEY: Your_Stripe_Public_Key
 </pre>
-<p>Your <strong>.gitignore</strong> file should be set to keep <strong>config/local_env.yml</strong> out of your git repository.</p>
+<p>Your <strong>.gitignore</strong> file should be set to keep <strong>config/application.yml</strong> out of your git repository.</p>
 <p>Alternatively, you can set Unix environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
 <p>If you choose to set Unix environment variables, add this to your <strong>~/.bashrc</strong> file (or the equivalent file for your preferred Unix shell):</p>
 <pre>
@@ -1200,6 +1241,10 @@ export STRIPE_PUBLIC_KEY="Test Publishable Key"
 <p>If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment. Here’s how to set Heroku environment variables to provide the same data your application obtains from your local shell environment:</p>
 <pre>
 $ heroku config:add STRIPE_API_KEY=secret-key STRIPE_PUBLIC_KEY=public-key
+</pre>
+<p>Alternatively, the figaro gem provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
+<pre>
+rake figaro:heroku
 </pre>
 <p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Add a Virtual Attribute to the User Model</h3>
@@ -1216,7 +1261,6 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :role_ids, :as =&gt; :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
 
@@ -1578,7 +1622,6 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :role_ids, :as =&gt; :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
   attr_accessor :stripe_token
   before_save :update_stripe
@@ -1968,7 +2011,7 @@ class User &lt; ActiveRecord::Base
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      unless customer.nil? or customer.deleted
+      unless customer.nil? or customer.respond_to?('deleted')
         if customer.subscription.status == 'active'
           customer.cancel_subscription
         end
@@ -1979,16 +2022,10 @@ class User &lt; ActiveRecord::Base
     errors.add :base, "Unable to cancel your subscription. #{e.message}."
     false
   end
-  
-  def expire
-    UserMailer.expire_email(self).deliver
-    destroy
-  end
-  
+
 end
 </pre>
-<p>First we remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement. This statement gives the administrator the power to override the mass assignment protection for the role attribute. The statement is no longer necessary because we will add a method that allows both the user and an administrator to reset the role.</p>
-<p>We add the <code>update_plan</code> method for resetting the role. Rolify supports multiple roles (though we only use a single role in this application) and we must remove an existing role before adding a new role. Then we make sure the user has a Stripe customer account, obtain a customer object with a call to Stripe, and call the the Stripe <code>update_subscription</code> method.</p>
+<p>We add the <code>update_plan</code> method for resetting the role. Rolify supports multiple roles (though we only use a single role in this application) and we must remove an existing role before adding a new role. Then we make sure the user has a Stripe customer account, obtain a customer object with a call to Stripe, and call the Stripe <code>update_subscription</code> method.</p>
 <p>With these changes, the User model can update the Stripe customer account when a user or administrator changes a subscription plan.</p>
 <h3>Modify the Registrations Controller for Account Changes</h3>
 <p>The registrations controller handles requests when the user submits the edit form.</p>
@@ -2124,8 +2161,8 @@ $ git merge --squash change-acct
 $ git commit -m "accommodate changes to account"
 $ git branch -D change-acct
 </pre>
-<h2>Stripe Webhooks</h2>
-<p>When a user visits your site, he or she can cancel a subscription. But what happens when a credit card expires or a monthly transaction is declined? Stripe will automatically retry a recurring payment after it fails. After a number of attempts (set in your Stripe account settings), Stripe will cancel the subscription. But how will your application know to deny access for a subscriber with an expired account? Stripe provides webhooks to communicate events to you (for details, see the <a href="https://stripe.com/docs/webhooks">Stripe webhooks documentation</a>).</p>
+<h2>Stripe Push Notifications</h2>
+<p>What happens when a credit card expires or a monthly transaction is declined? Stripe will automatically retry a recurring payment after it fails. After a number of attempts (set in your Stripe account settings), Stripe will cancel the subscription. But how will your application know to deny access for a subscriber with an expired account? Stripe provides <a href="http://en.wikipedia.org/wiki/Webhook">webhooks</a> (push notifications) to communicate events to you (for details, see the <a href="https://stripe.com/docs/webhooks">Stripe webhooks documentation</a>).</p>
 <p>A Stripe webhook is an <span class="caps">HTTP</span> request from Stripe’s servers to your site. It is not a visit to your website from a web browser; rather it is an <span class="caps">HTTP</span> <span class="caps">POST</span> request (like a form submission) to your application from the Stripe servers. The <span class="caps">HTTP</span> request contains <span class="caps">JSON</span> data that provides data about the event, plus an event id that can be used to retrive the data from the Stripe server. It is best to ignore the event data (because it could be falsified) and immediately use the event id to obtain the event data from Stripe.</p>
 <p>There are a few ways we could handle webhook requests. We could create a new controller with an index action to process webhook requests. We could use the existing Registrations or Users controller, adding a new non-RESTful action to process the webhook requests. Both these approaches have merit. Instead, we’ll take a different approach. We’ll use Danny Whalen’s <a href="https://github.com/integrallis/stripe_event">stripe_event</a> gem. With this gem, we don’t need to add a new controller or action.</p>
 <p>Get started by creating a new git branch for this feature:</p>
@@ -2175,7 +2212,7 @@ end
 <p>With this code, we’re telling the stripe_event engine to respond when the application receives a webhook with a <code>customer.subscription.deleted</code> event. We use the Stripe event data to find the appropriate User instance. Then we call the <code>User.expire</code> method. We’ll add the <code>expire</code> method to the User class in the next step.</p>
 <p>The <a href="https://github.com/integrallis/stripe_event">stripe_event gem readme</a> handles other possibilities, including multiple event types. Refer to the <a href="https://stripe.com/docs/api?lang=ruby#event_types">Stripe <span class="caps">API</span> documentation</a> for a list of all event types. You can configure your application to respond to other events, such as sending a thank you email in response to an “invoice.payment_succeeded” event.</p>
 <p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
-<h3>Add an Expire Method to the User Class</h3>
+<h3>Add an Expire Method to the User Model</h3>
 <p>Now that our application responds to webhook requests from Stripe, we must consider how to process an expired  customer subscription.</p>
 <p>There are several possible approaches to handling an expired subscription. One option is to keep the customer record and change the subscription plan to a role named “expired” or something similar. If we did that, we’d have to provide a form to allow an expired subscriber to log in, change a credit card, and update the subscription. It’s easier to simply delete the account and expect the user to create a new account to re-subscribe.</p>
 <p>When a user visits the website and cancels a subscription, we delete the customer record. Similarly, we could simply delete the customer record when a subscription expires. Instead we can encourage the user to resubscribe by notifying the user with an email message when the subscription has ended due to a payment failure. We’ll add a custom <code>expire</code> method to our User class that will send an email message before deleting the user.</p>
@@ -2330,6 +2367,7 @@ subscribe do |event|
 end
 </pre>
 <p>The debug code should show you the results of any request to the stripe_event gem in your log file.</p>
+<p>You can use the <a href="http://requestb.in/">RequestBin</a> service to see what Stripe is sending. RequestBin lets you create a <span class="caps">URL</span> that will collect requests made to it, then lets you inspect the request headers and body.</p>
 <p>If you need to test requests to the stripe_event gem on your local development machine, you can install the <a href="http://progrium.com/localtunnel/">localtunnel gem</a> (<a href="https://github.com/progrium/localtunnel">localtunnel on GitHub</a>) which will expose your local web server to the Internet so you can receive webhook requests from the Stripe servers.</p>
 <h3>Git Workflow</h3>
 <p>Commit your changes to git:</p>
@@ -2377,6 +2415,10 @@ $ git branch -D webhooks
 <p>You’ll need to set your Stripe <span class="caps">API</span> and public key as Heroku environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information. Here’s how to set Heroku environment variables for your Stripe <span class="caps">API</span> and public key:</p>
 <pre>
 $ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
+</pre>
+<p>Alternatively, the figaro gem provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
+<pre>
+rake figaro:heroku
 </pre>
 <p>Prior to deployment, it’s advisable to change your <strong>db/seeds.rb</strong> file. At a minimum, change the “example.com” address for the administrator and remove the “example.com” sample users. Optionally, you can change your own name, email and password or wait and change the values through the application “Edit account” interface later. You can also change the list of roles that correspond to the subscription plans you will offer.</p>
 <pre>
