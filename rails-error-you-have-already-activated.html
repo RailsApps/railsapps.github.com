@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Error: “Could not be loaded… You have already activated…”</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 13 December 2012</em></p>
+<p><em>Last updated 15 December 2012</em></p>
 <p>Here’s help for the error “You have already activated (…) but your Gemfile requires (…)”.</p>
 <p>This is a note for developers using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool. Others may find it helpful as well.</p>
 <h2>Quick Fix</h2>
@@ -85,14 +85,17 @@ You have already activated &lt;some gem version&gt;, but your Gemfile requires &
 <p>See the section <a href="#others">Other Cases</a> below.</p>
 <h2 id="composer">Rails Composer</h2>
 <p>The error is caused by conflicting gem versions (see the section <a href="#explanation">What is Happening</a> for details). Ignore the misleading hint in the error message: “using bundle exec” will not solve this.</p>
-<p>When you use the <code>rails new</code> command, a specific set of gems is available, either in your system environment, or (if you use <a href="https://rvm.io/">rvm</a>) in a default rvm gemset. The Rails Composer tool attempts to use the newest available gem versions. Occasionally one of the gems (often a gem required as a dependency for another gem) will have been recently updated (since the time you last ran a <code>bundle update</code> using the default gemset). If that’s the case, <code>rails new</code> creates a new application using the default gemset (containing the outdated gem) and then tries to run the Rails Composer application template with the new set of gems (containing an updated gem). The outdated gem has already been activated so the application template cannot be loaded, resulting in the error you see.</p>
-<p>Sometimes the problem is resolved by simply running the <code>rails new</code> command again (after you delete the partially built application folder).</p>
-<p>Try removing the outdated gem:</p>
+<p>When you use the <code>rails new</code> command, the Rails gem and all its related gems must be present, either in your system environment, or (if you use <a href="https://rvm.io/">rvm</a>) from a default rvm gemset. The Rails Composer tool wants to use the newest available gem versions. Occasionally one of the gems (often a gem required as a dependency for another gem) has been recently updated. If that’s the case, <code>rails new</code> uses the Rails gemset (containing the outdated gem) and then tries to run the Rails Composer application template with a new set of gems (containing an updated gem). The outdated gem has already been activated so the application template cannot be loaded, resulting in the error you see.</p>
+<p>Try removing the outdated gem from the initial gemset:</p>
 <pre>
 $ gem uninstall some_gem
 </pre>
-<p>and running the <code>rails new</code> command again.</p>
-<p>To fully resolve the problem, use rvm and create and use a new gemset before you run the <code>rails new</code> command again. Installing Rails into a new gemset before running <code>rails new</code> will populate the gemset with the most current available gems (including any gems required by a gem dependency).</p>
+<p>And install the newest version of the gem:</p>
+<pre>
+gem install some_gem
+</pre>
+<p>Then run the <code>rails new</code> command again.</p>
+<p>To fully resolve the problem, you may need to install <a href="https://rvm.io/">rvm</a> and create and use a new gemset before you run the <code>rails new</code> command again. Installing Rails into a new gemset before running <code>rails new</code> will populate the gemset with the most current available gems (including any gems required by a gem dependency).</p>
 <pre>
 $ rvm ruby-1.9.3@my_new_gemset --create --default
 </pre>
