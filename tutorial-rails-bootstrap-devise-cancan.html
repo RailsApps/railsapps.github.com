@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 14 December 2012</em></p>
+<p><em>Last updated 16 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul>
@@ -65,13 +65,17 @@
 <p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <p>This example application is based on the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example and tutorial and adds <a href="https://github.com/ryanb/cancan">CanCan</a> and <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. View the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a> example and tutorial for the basics of setting up an application with <a href="http://rspec.info/">RSpec</a> and <a href="http://cukes.info/">Cucumber</a> for testing.</p>
 <p>This example application uses ActiveRecord and a SQLite database. You can use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead, for faster development without schemas or migrations. The <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
-<p>To see a more complex application that uses Devise, CanCan, and Twitter Bootstrap, see the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example and tutorial from the RailsApps project.</p>
-<h3>About the Tutorial</h3>
+<p>For more complex applications that use Devise, CanCan, and Twitter Bootstrap, see:</p>
+<ul>
+<li>
+<a href="http://railsapps.github.com/rails-stripe-membership-saas">rails-stripe-membership-saas</a> example and tutorial</li>
+	<li>
+<a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example and tutorial</li>
+</ul><h3>About the Tutorial</h3>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete. Is our estimate accurate? Please <a href="#comment">leave a comment</a> when you are done.</p>
 <p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">GitHub issue</a>.</p>
 <p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
 <h3>Before You Start</h3>
-<p>Most of the tutorials from the RailsApps project take about an hour to complete. Is our estimate accurate? Please <a href="#comment">leave a comment</a> when you are done.</p>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/">rails3-bootstrap-devise-cancan</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
 <p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails3-bootstrap-devise-cancan/issues">GitHub issue</a>. It’s best to clone and check the example application from the GitHub repository before you report an issue, just to make sure the error isn’t a result of your own mistake.</p>
 <p>The online edition of this tutorial contains a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
@@ -130,7 +134,7 @@ $ rvm use ruby-1.9.3-p194@rails3-bootstrap-devise-cancan --create
 <p><strong>Gemfile</strong></p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.9'
 gem 'sqlite3'
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
@@ -138,21 +142,24 @@ group :assets do
   gem 'uglifier', '&gt;= 1.0.3'
 end
 gem 'jquery-rails'
-gem "rspec-rails", "&gt;= 2.11.0", :group =&gt; [:development, :test]
-gem "email_spec", "&gt;= 1.2.1", :group =&gt; :test
+gem "rspec-rails", "&gt;= 2.11.4", :group =&gt; [:development, :test]
+gem "database_cleaner", "&gt;= 0.9.1", :group =&gt; :test
+gem "email_spec", "&gt;= 1.4.0", :group =&gt; :test
 gem "cucumber-rails", "&gt;= 1.3.0", :group =&gt; :test, :require =&gt; false
-gem "database_cleaner", "&gt;= 0.8.0", :group =&gt; :test
 gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
-gem "capybara", "&gt;= 1.1.2", :group =&gt; :test
+gem "capybara", "&gt;= 2.0.1", :group =&gt; :test
 gem "factory_girl_rails", "&gt;= 4.1.0", :group =&gt; [:development, :test]
-gem "bootstrap-sass", "&gt;= 2.1.0.0"
+gem "bootstrap-sass", "&gt;= 2.1.1.0"
 gem "devise", "&gt;= 2.1.2"
 gem "cancan", "&gt;= 1.6.8"
 gem "rolify", "&gt;= 3.2.0"
-gem "simple_form", "&gt;= 2.0.3"
+gem "simple_form", "&gt;= 2.0.4"
 gem "quiet_assets", "&gt;= 1.0.1", :group =&gt; :development
+gem "figaro", "&gt;= 0.5.0"
+gem "better_errors", "&gt;= 0.2.0", :group =&gt; :development
+gem "binding_of_caller", "&gt;= 0.6.8", :group =&gt; :development
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.8'</code> accordingly.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.9'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h3>Install the Required Gems</h3>
 <p>Install the required gems on your computer:</p>
@@ -189,6 +196,37 @@ $ rails generate cucumber:install --capybara --rspec
 <h2>Configuration</h2>
 <h3>Configure Email</h3>
 <p>This example application doesn’t send email messages. However, if you want your application to send email messages (for example, if you plan to install the Devise <code>:confirmable</code> module) you must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
+<h3>Configuration File</h3>
+<p>See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. The figaro gem uses a generator to set up the necessary files. Run:</p>
+<pre>
+$ rails generate figaro:install
+</pre>
+<p>This generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
+<p>Credentials for your administrator account and email account are set in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the git repository so your credentials are kept private.</p>
+<p>Modify the file <strong>config/application.yml</strong>:</p>
+<pre>
+# Add account credentials and API keys here.
+# See http://railsapps.github.com/rails-environment-variables.html
+# This file should be listed in .gitignore to keep your settings secret!
+# Each entry sets a local environment variable and overrides ENV variables in the Unix shell.
+# For example, setting:
+# GMAIL_USERNAME: Your_Gmail_Username
+# makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
+# Add application configuration variables here, as shown below.
+#
+GMAIL_USERNAME: Your_Username
+GMAIL_PASSWORD: Your_Password
+ADMIN_NAME: First User
+ADMIN_EMAIL: user@example.com
+ADMIN_PASSWORD: please
+ROLES: [admin, user, VIP]
+</pre>
+<p>Set the user name and password needed for the application to send email.</p>
+<p>If you wish, set your name, email address, and password for an administrator’s account. If you prefer, you can use the default to sign in to the application and edit the account after deployment. It is always a good idea to change the administrator’s password after the application is deployed.</p>
+<p>Specify roles in the configuration file. You will need an “admin” role. Change the “user” and “<span class="caps">VIP</span>” roles as you wish.</p>
+<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. For example, <code>ENV["GMAIL_USERNAME"]</code> will return the string “Your_Username”.</p>
+<p>If you prefer, you can delete the <strong>config/application.yml</strong> file and set each value as an environment variable in the Unix shell.</p>
 <h2>Layout and Stylesheets</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
@@ -623,26 +661,24 @@ end
 <p>You’ll want to set up default users so you can test the application.</p>
 <p>Replace the file <strong>db/seeds.rb</strong> with:</p>
 <pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'user' }, 
-  { :name =&gt; 'VIP' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user2.name
+puts 'ROLES'
+YAML.load(ENV['ROLES']).each do |role|
+  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
+  puts 'role: ' &lt;&lt; role
+end
+puts 'DEFAULT USERS'
+user = User.find_or_create_by_name :name =&gt; ENV['ADMIN_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
+puts 'user: ' &lt;&lt; user.name
 user.add_role :admin
+user2 = User.find_or_create_by_name :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'user: ' &lt;&lt; user2.name
 user2.add_role :VIP
 </pre>
-<p>First we add a list of roles. One role will be “admin,” for an adminstrator. We’ll create two additional roles, “user” and “<span class="caps">VIP</span>.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
+<p>The <strong>db/seeds.rb</strong> file initializes the database with default values. To keep some data private, and consolidate configuration settings in a single location, we use the <strong>config/application.yml</strong> file to set environment variables and then use the environment variables in the <strong>db/seeds.rb</strong> file.</p>
+<p>The <strong>db/seeds.rb</strong> file reads a list of roles from the <strong>config/application.yml</strong> file and adds the roles to the database. In fact, any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. Setting the roles in the <strong>db/seeds.rb</strong> file simply makes sure each role is listed and available should a user wish to change roles. Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
 <p>Then we add two default users. The first will be an administrator. The second will be designated a <span class="caps">VIP</span>.</p>
-<p>You can change the values for name, email, and password as you wish.</p>
-<p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
+<p>You can change the administrator name, email, and password in this file but it is better to make the changes in the <strong>config/application.yml</strong> file to keep the credentials private. If you decide to include your private password in the <strong>db/seeds.rb</strong> file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
-<p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles. Any new role can be added to the roles datatable with a statement such as <code>user.add_role :superhero</code>.</p>
 <h3>Seed the Database</h3>
 <p>Initialize the database by running:</p>
 <pre>
@@ -884,7 +920,7 @@ end
 <p>Finally, the form has a section named “modal-footer” that contains a submit button and another link to close the modal window.</p>
 <p>With the “Change role” form in place, we can modify the User model and controller to handle the form submission.</p>
 <h3>Modify the User Model for Administrative Updates</h3>
-<p>The <strong>models/user.rb</strong> file contains an <code>attr_accessible</code> statement that prevents malicious hackers from creating fake web forms that could chnage passwords or user roles through the mass-assignment operations of <code>update_attributes</code> or <code>new</code>:</p>
+<p>The <strong>models/user.rb</strong> file contains an <code>attr_accessible</code> statement that prevents malicious hackers from creating fake web forms that could change passwords or user roles through the mass-assignment operations of <code>update_attributes</code> or <code>new</code>:</p>
 <pre>
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </pre>
