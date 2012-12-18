@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 14 December 2012</em></p>
+<p><em>Last updated 17 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
@@ -396,6 +396,12 @@ $ rails server
 </pre>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
+<h3>Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "add gems"
+</pre>
 <h2>Test-Driven Development</h2>
 <p>This example application uses Cucumber for integration testing and RSpec for unit testing.</p>
 <p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. RSpec is a popular choice for unit testing. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise. Cucumber is a popular choice for integration testing and behavior driven development. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
@@ -416,12 +422,38 @@ $ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
 <h2>Configuration</h2>
+<h3>Configuration File</h3>
+<p>See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. The starter app sets up the figaro gem and generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
+<p>Credentials for your administrator account and email account are set in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the git repository so your credentials are kept private.</p>
+<p>Modify the file <strong>config/application.yml</strong>:</p>
+<pre>
+# Add account credentials and API keys here.
+# See http://railsapps.github.com/rails-environment-variables.html
+# This file should be listed in .gitignore to keep your settings secret!
+# Each entry sets a local environment variable and overrides ENV variables in the Unix shell.
+# For example, setting:
+# GMAIL_USERNAME: Your_Gmail_Username
+# makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
+# Add application configuration variables here, as shown below.
+#
+GMAIL_USERNAME: Your_Username
+GMAIL_PASSWORD: Your_Password
+ADMIN_NAME: First User
+ADMIN_EMAIL: user@example.com
+ADMIN_PASSWORD: please
+ROLES: [admin, silver, gold, platinum]
+STRIPE_API_KEY: Your_Stripe_API_key
+STRIPE_PUBLIC_KEY: Your_Stripe_Public_Key
+</pre>
+<p>Set the user name and password needed for the application to send email.</p>
+<p>If you wish, set your name, email address, and password for an administrator’s account. If you prefer, you can use the default to sign in to the application and edit the account after deployment. It is always a good idea to change the administrator’s password after the application is deployed.</p>
+<p>The roles you specify in the configuration file are the subscription plans that will be available to the application’s users. You will need an “admin” role. Keep the “silver”, “gold”, and “platinum” roles while you are testing the application. You can change these roles later, after you familiarize yourself with the application and begin to customize it for your own needs.</p>
+<p>The Stripe gem requires an <span class="caps">API</span> key to operate. You also need to supply a public key when initiating a transaction. You can find both keys on your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. Two sets of keys are available: one for testing, one for live transactions. Use the testing keys on your development machine. When you deploy, use the live keys.</p>
+<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. For example, <code>ENV["GMAIL_USERNAME"]</code> will return the string “Your_Username”.</p>
+<p>If you prefer, you can delete the <strong>config/application.yml</strong> file and set each value as an environment variable in the Unix shell.</p>
+<h3>Configure Email</h3>
 <p>The starter app script sets up a default email configuration. You must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
-<h3>Configure Devise for Email</h3>
-<p>Start your email configuration by modifying</p>
-<p><strong>config/initializers/devise.rb</strong></p>
-<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
-<h3>Configure ActionMailer</h3>
 <p>The starter app has already configured ActionMailer but you must set your email account details.</p>
 <p>Replace <code>example.com</code> in the <strong>config/environments/production.rb</strong> file:</p>
 <pre>
@@ -434,7 +466,6 @@ config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
 <p>The example application will deliver email in production. Email messages are visible in the log file so there is no need to send email in development.</p>
-<h3>How to Use a Gmail Account</h3>
 <p>In production, you should use an email service provider such as <a href="http://mandrill.com/">Mandrill</a> to increase deliverability for email messages from your app.</p>
 <p>Use Gmail for experimenting, if you want to keep things simple.</p>
 <p>The file <strong>config/environments/production.rb</strong> is set to use:</p>
@@ -449,7 +480,26 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, use local environment variables from the <strong>config/application.yml</strong> file to keep email account passwords secret.</p>
+<h3>Configure Devise for Email</h3>
+<p>Complete your email configuration by modifying</p>
+<p><strong>config/initializers/devise.rb</strong></p>
+<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
+<h3>Stripe Initializer</h3>
+<p>You’ve set the Stripe <span class="caps">API</span> key and public key in your <strong>config/application.yml</strong> file. The file is there for security so your credentials won’t be exposed publicly on a GitHub repo.</p>
+<p>We’ll use an initializer file to set the <span class="caps">API</span> key for use by the Stripe gem. We’ll also set a constant for the public key which we can use in JavaScript code.</p>
+<p>Create a file <strong>config/initializers/stripe.rb</strong>:</p>
+<pre>
+Stripe.api_key = ENV["STRIPE_API_KEY"]
+STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
+</pre>
+<p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
+<h3>Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "configure"
+</pre>
 <h2>Layout and Stylesheets</h2>
 <p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer, you can generate the starter app with Haml instead of <span class="caps">ERB</span>. Then convert the <span class="caps">ERB</span> in the tutorial to Haml. See instructions for <a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a>.</p>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. See the article <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
@@ -572,63 +622,54 @@ end
 </pre>
 <p>We remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement. This statement gives the administrator the power to override the mass assignment protection for the role attribute. The statement is no longer necessary because we will add a method that allows both the user and an administrator to reset the role.</p>
 <p>With this change to our User model, we are ready to seed the database.</p>
+<h3>Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "update user model"
+</pre>
 <h2>Initial Data</h2>
 <h3>Set Up a Database Seed File</h3>
-<p>You’ll want to set up default users so you can test the application.</p>
-<p>The file <strong>db/seeds.rb</strong> already contains:</p>
+<p>You’ll want to set up default users so you can test the application. We’ll add three users with different subscription plans.</p>
+<p>The <strong>db/seeds.rb</strong> file initializes the database with default values. To keep some data private, and consolidate configuration settings in a single location, we use the <strong>config/application.yml</strong> file to set environment variables and then use the environment variables in the <strong>db/seeds.rb</strong> file.</p>
+<p>Replace the file <strong>db/seeds.rb</strong> with:</p>
 <pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'user' }, 
-  { :name =&gt; 'VIP' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user2.name
+puts 'ROLES'
+YAML.load(ENV['ROLES']).each do |role|
+  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
+  puts 'role: ' &lt;&lt; role
+end
+puts 'DEFAULT USERS'
+user = User.find_or_create_by_email :name =&gt; ENV['ADMIN_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
+puts 'user: ' &lt;&lt; user.name
 user.add_role :admin
-user2.add_role :VIP
-</pre>
-<p>The starter app contains a placeholder list of roles. One role is “admin,” for an adminstrator.</p>
-<p>Remove the “user” and “<span class="caps">VIP</span>” roles and add three additional roles corresponding to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
-<p>We’ll add three users with different subscription plans.</p>
-<p>Replace <strong>db/seeds.rb</strong> with:</p>
-<pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'silver' }, 
-  { :name =&gt; 'gold' },
-  { :name =&gt; 'platinum' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-user.add_role :admin
-puts 'admin created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Silver User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user2 = User.find_or_create_by_email :name =&gt; 'Silver User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user2.add_role :silver
-user3 = User.create! :name =&gt; 'Gold User', :email =&gt; 'user3@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user3 = User.find_or_create_by_email :name =&gt; 'Gold User', :email =&gt; 'user3@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user3.add_role :gold
-user4 = User.create! :name =&gt; 'Platinum User', :email =&gt; 'user4@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user4 = User.find_or_create_by_email :name =&gt; 'Platinum User', :email =&gt; 'user4@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user4.add_role :platinum
-puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
+puts "users: #{user2.name}, #{user3.name}, #{user4.name}"
 </pre>
-<p>The first user will be given an administrator role. You can log in with this account for access as an administrator.</p>
-<p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
-<p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles.</p>
-<p>It’s not strictly necessary to create the list of roles before creating the users. Any new role can be added to the roles datatable with a statement such as <code>user.add_role :superhero</code>. However, I suggest you create a full list of roles in the <strong>db/seeds.rb</strong> file. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
+<p>The <strong>db/seeds.rb</strong> file reads a list of roles from the <strong>config/application.yml</strong> file and adds the roles to the database. In fact, any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. Setting the roles in the <strong>db/seeds.rb</strong> file simply makes sure each role is listed and available should a user wish to change roles.</p>
+<p>We’ve added a user with an administrator role using vales from the <strong>config/application.yml</strong> file. You can log in with this account for access as an administrator.</p>
+<p>You can change the administrator name, email, and password in this file but it is better to make the changes in the <strong>config/application.yml</strong> file to keep the credentials private. If you decide to include your private password in the <strong>db/seeds.rb</strong> file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
-<p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
+<p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
 <h3>Using “example.com” Email Addresses</h3>
-<p>The application handles “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Stripe as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to set up the administrator’s account and any sample users for development and testing.</p>
-<p>If you test subscribing a new user (providing a fake credit card number such as <em>4242424242424242</em>), don’t use an “example.com” email address if you want to see the results in the Stripe administrative dashboard.</p>
-<p>If you wish to special case a different domain for email addresses (such as your own for an administrator’s account), look at the <strong>app/models/user.rb</strong> file. Change the statement in the <code>update_stripe</code> method:</p>
+<p>The application handles the administrator’s account and any “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Stripe as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to add administrator and set up sample users for development and testing.</p>
+<p>If you want to see Stripe’s response when subscribing a new user (using a fake credit card number such as <em>4242424242424242</em>), don’t use an “example.com” email address.</p>
+<p>Two statements in the <code>update_stripe</code> method in the <strong>app/models/user.rb</strong> file implement the special case so that the Stripe server is not contacted:</p>
 <pre>
-return if email.include?('@example.com') and not Rails.env.production?
+def update_stripe
+  return if email.include?(ENV['ADMIN_EMAIL'])
+  return if email.include?('@example.com') and not Rails.env.production?
+  .
+  .
+  .
+end
 </pre>
-<p>As you can see from the code, the “example.com” email addresses will not be special cased in production. That means <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment. See the section “Customize, Test, and Deploy” for advice about deploying to Heroku.</p>
+<p>As you can see from the code, the “example.com” email addresses will not be special cased in production. That means <code>rake db:seed</code> will fail with errors if you attempt to run it after deployment. You should remove the sample users (but not the administrator) from the <strong>db/seeds.rb</strong> file before deploying to production. See the section “Customize, Test, and Deploy” for advice about deploying to Heroku.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -1204,52 +1245,10 @@ $ git branch -D redirect
 <pre>
 $ git checkout -b billing
 </pre>
-<h3>Stripe Initializer</h3>
-<p>We’ve already installed the Stripe gem in our Gemfile.</p>
-<p>The Stripe gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a public key when we initiate a transaction. The <code>STRIPE_PUBLIC_KEY</code> is a constant we’ll use in the JavaScript code. You can find both keys on the Stripe website when you visit your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. We’ll use an initializer file to store the <span class="caps">API</span> and public key.</p>
-<p>Create a file <strong>config/initializers/stripe.rb</strong>:</p>
-<pre>
-Stripe.api_key = ENV["STRIPE_API_KEY"]
-STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
-</pre>
-<p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
-<p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
-<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to read environment variables from the <strong>config/application.yml</strong> file. If you have generated the starter application using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/application.yml</strong>. Remove comment characters and set your credentials:</p>
-<pre>
-# Add account credentials and API keys here.
-# See http://railsapps.github.com/rails-environment-variables.html
-# This file should be listed in .gitignore to keep your settings secret!
-# Each entry sets a local environment variable and overrides ENV variables in the Unix shell.
-# For example, setting:
-# GMAIL_USERNAME: Your_Gmail_Username
-# makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
-# Add application configuration variables here, as shown below.
-#
-GMAIL_USERNAME: Your_Username
-GMAIL_PASSWORD: Your_Password
-STRIPE_API_KEY: Your_Stripe_API_key
-STRIPE_PUBLIC_KEY: Your_Stripe_Public_Key
-</pre>
-<p>Your <strong>.gitignore</strong> file should be set to keep <strong>config/application.yml</strong> out of your git repository.</p>
-<p>Alternatively, you can set Unix environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
-<p>If you choose to set Unix environment variables, add this to your <strong>~/.bashrc</strong> file (or the equivalent file for your preferred Unix shell):</p>
-<pre>
-export STRIPE_API_KEY="Test Secret Key"
-export STRIPE_PUBLIC_KEY="Test Publishable Key"
-</pre>
-<p>You can find both keys on your <a href="https://manage.stripe.com/#account/apikeys">Stripe account page</a>. Two sets of keys are available: one for testing, one for live transactions. Use the testing keys on your development machine. When you deploy, use the live keys.</p>
-<p>If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment. Here’s how to set Heroku environment variables to provide the same data your application obtains from your local shell environment:</p>
-<pre>
-$ heroku config:add STRIPE_API_KEY=secret-key STRIPE_PUBLIC_KEY=public-key
-</pre>
-<p>Alternatively, the figaro gem provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
-<pre>
-rake figaro:heroku
-</pre>
-<p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
-<h3>Add a Virtual Attribute to the User Model</h3>
+<h3>Add Virtual Attributes to the User Model</h3>
 <p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Stripe and obtain a Stripe token that substitutes for credit card data. The Stripe token will be included as a hidden field when the user submits the registration form.</p>
 <p>Before we can include a hidden field in the form, we must modify the User model to accept this field. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. We’ll add it as a virtual attribute. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
+<p>We’ll also add a <code>coupon</code> field as a virtual attribute.</p>
 <p>Modify the file <strong>app/models/user.rb</strong>:</p>
 <pre>
 class User &lt; ActiveRecord::Base
@@ -1261,18 +1260,69 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
-  attr_accessor :stripe_token
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon
+  attr_accessor :stripe_token, :coupon
 
 end
 </pre>
-<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the <code>stripe_token</code> value as an instance variable. Also we add the new <code>stripe_token</code> field to the <code>attr_accessible</code> list so that it can be set through mass assignment.</p>
-<p>With the virtual attribute in place, we will add fields for credit card data to the form.</p>
+<p>We add the virtual attribute with <code>attr_accessor</code> which will automatically create getter and setter methods and store the <code>stripe_token</code> and <code>coupon</code> values as instance variables. Also we add the <code>stripe_token</code> and <code>coupon</code> fields to the <code>attr_accessible</code> list so they can be set through mass assignment from a form submission.</p>
+<p>With the new virtual attributes in place, we will begin work on the forms that submit the credit card data.</p>
+<h3>Use a Metatag to Set the Stripe Public Key</h3>
+<p>Stripe provides a unique public key that identifies your website and authenticates a request to the Stripe servers.</p>
+<p>You’ve set the Stripe public key in your <strong>config/application.yml</strong> file. We put it there for convenience, so your Stripe configuration settings are in one location and easier to copy to Heroku for deployment. Unlike the Stripe <span class="caps">API</span> key, the public key doesn’t need to stay secret.</p>
+<p>We set a constant <code>STRIPE_PUBLIC_KEY</code> in the file <strong>config/initializers/stripe.rb</strong>. For ease in testing, we use a constant rather than using the environment variable directly.</p>
+<p>Now we must make the public key available to the JavaScript code we’ll use to submit credit card data to the Stripe server.</p>
+<p>We have several options. We could hardcode the Stripe public key in the JavaScript code we’ll write. But it is easier to use the constant we’ve already set, so we’re using the same value in development, testing, and production. We could include the constant as a Ruby variable in the JavaScript code by giving the JavaScript file an <strong>.erb</strong> extension. But we’d like to avoid mixing Ruby variables into JavaScript. So instead we’ll use an advanced technique to set the Stripe public key constant as a metatag that can be accessed using conventional JavaScript.</p>
+<p>We only want the metatag to appear on pages that contain forms that submit credit card data to Stripe. We’ll use a combination of a <code>content_for?</code> view helper with <code>yield</code> to inject the metatag into the application layout from the <strong>app/views/devise/registrations/new.html.erb</strong> and <strong>app/views/devise/registrations/edit.html.erb</strong> files. Our application layout already includes <code>&lt;%= yield(:head) %&gt;</code> so we can easily add additional tags to the page <span class="caps">HEAD</span> element.</p>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "stripe-key", :content =&gt; STRIPE_PUBLIC_KEY %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Sign up&lt;/h2&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
+  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :required =&gt; true %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+</pre>
+<p>The <code>&lt;% content_for :head do %&gt;</code> block injects the <code>STRIPE_PUBLIC_KEY</code> in the application layout as a metatag named “stripe-key.”</p>
+<p>Do the same for the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "stripe-key", :content =&gt; STRIPE_PUBLIC_KEY %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Edit &lt;%= resource_name.to_s.humanize %&gt;&lt;/h2&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :autocomplete =&gt; "off", :hint =&gt; "leave it blank if you don't want to change it", :required =&gt; false %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; false %&gt;
+  &lt;%= f.input :current_password, :hint =&gt; "we need your current password to confirm your changes", :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Update', :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+&lt;h3&gt;Cancel my account&lt;/h3&gt;
+&lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
+&lt;%= link_to "Back", :back %&gt;
+</pre>
+<p>Any JavaScript used on these two pages will have access to the Stripe public key through a jQuery selector. It’s more complicated than hardcoding the Stripe public key or using a Ruby variable in the JavaScript but the layers of indirection make the implementation more robust.</p>
+<p>With the Stripe public key aet as a metatag, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
 <p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Stripe server.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "stripe-key", :content =&gt; STRIPE_PUBLIC_KEY %&gt;
+&lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;
 &lt;/div&gt;
@@ -1300,6 +1350,9 @@ end
       &lt;%= label_tag :card_month, "Card Expiration" %&gt;
       &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
       &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
+    &lt;/div&gt;
+    &lt;div class="field"&gt;
+      &lt;%= f.input :coupon, :label =&gt; 'Promotional Coupon (if any)' %&gt;
     &lt;/div&gt;
   &lt;% end %&gt;
   &lt;%= f.hidden_field :stripe_token %&gt;
@@ -1382,7 +1435,7 @@ jQuery.externalScript = function(url, options) {
 <p>Next we’ll combine functions from these two scripts to load the Stripe JavaScript library.</p>
 <h3>Create a Registrations JavaScript File</h3>
 <p>We’ll create a new file for our page-specific JavaScript and give the file the same name as the controller. For now, we’ll only create some test code.</p>
-<p>Create a file <strong>app/assets/javascripts/registrations.js.erb</strong>:</p>
+<p>Create a file <strong>app/assets/javascripts/registrations.js</strong>:</p>
 <pre>
 $('.home.index').ready(function() {
   console.log("Page-specific JavaScript on the home.index page.");
@@ -1424,7 +1477,7 @@ Okay. Stripe file loaded.
 <p>If you see these messages, you’re ready to continue.</p>
 <h3>Add JavaScript for Form Processing</h3>
 <p>We need code that runs in the browser to submit the credit card data to Stripe and obtain a Stripe token before the form is sent to our server.</p>
-<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<p>Replace the contents of <strong>app/assets/javascripts/registrations.js</strong> with this:</p>
 <pre>
 $('.registrations').ready(function() {
   $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
@@ -1435,8 +1488,8 @@ $('.registrations').ready(function() {
     {
       console.log('Problem: Stripe JavaScript file not loaded.');
     }
-    Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
-    console.log('set Stripe public key: &lt;%= STRIPE_PUBLIC_KEY %&gt;');
+    Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+    console.log('set Stripe public key: ' + $('meta[name="stripe-key"]').attr('content'));
     var subscription = {
       setupForm: function() {
         console.log('function: setupForm')
@@ -1500,11 +1553,11 @@ function: handleStripeResponse
 </pre>
 <p>Yea! You’re communicating with the Stripe server.</p>
 <p>Now that you’ve confirmed you can send credit card data to the Stripe server, remove the debugging code from the script. While we’re at it, we’ll add the code to handle the response from the Stripe server.</p>
-<p>Replace the contents of <strong>app/assets/javascripts/registrations.js.erb</strong> with this:</p>
+<p>Replace the contents of <strong>app/assets/javascripts/registrations.js</strong> with this:</p>
 <pre>
 $('.registrations').ready(function() {
   $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
-      Stripe.setPublishableKey('&lt;%= STRIPE_PUBLIC_KEY %&gt;');
+      Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
       var subscription = {
         setupForm: function() {
           return $('.card_form').submit(function() {
@@ -1545,7 +1598,7 @@ $('.registrations').ready(function() {
 <p>Here’s an explanation of the JavaScript.</p>
 <p>We restrict execution of the code to a page that has a class “registrations.” In this case, the code will run on the Registrations#New page. It will also run on the Registrations#Edit page which we will set up later.</p>
 <p>We use the <code>externalScript</code> function to obtain the Stripe JavaScript library from the Stripe server (or a local cache).</p>
-<p>We set the <code>STRIPE_PUBLIC_KEY</code> which is defined in the Stripe initializer file <strong>config/initializers/stripe.rb</strong>.</p>
+<p>We obtain the Stripe public key. You’ll recall it is initially set as an environment variable in the <strong>config/application.yml</strong> file, set as a constant in the <strong>config/initializers/stripe.rb</strong> file, and injected as a metatag in the application layout by the <strong>app/views/devise/registrations/new.html.erb</strong> view. It is finally obtained from the metatag with a jQuery selector.</p>
 <p>We create a <code>subscription</code> object with several functions: <code>setupForm</code>, <code>processCard</code>, and <code>handleStripeResponse</code>.</p>
 <p>We call the <code>setupForm</code> function which listens for the form submission event. When the visitor submits the form, the submit button is disabled (so the user can’t press it repeatedly) and the <code>processCard</code> function is called. Returning <code>false</code> makes sure the form is not submitted to our server at this stage. Notice that we don’t call the <code>processCard</code> function if the credit card number is blank; instead we return “true” which submits the form. This will be true if the credit card data was previously accepted (and a Stripe token is included in the hidden field) but there was an error such as a missing email address.</p>
 <p>The <code>processCard</code> function parses the form and obtains the credit card data. Then it calls a function from the Stripe library named <code>createToken</code> which submits the card data to the Stripe server. When the Stripe server returns a response, we call the <code>handleStripeResponse</code> function.</p>
@@ -1622,22 +1675,33 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
-  attr_accessor :stripe_token
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon
+  attr_accessor :stripe_token, :coupon
   before_save :update_stripe
 
   def update_stripe
+    return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
-      customer = Stripe::Customer.create(
-        :email =&gt; email,
-        :description =&gt; name,
-        :card =&gt; stripe_token,
-        :plan =&gt; roles.first.name
-      )
+      if coupon.blank?
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name
+        )
+      else
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name,
+          :coupon =&gt; coupon
+        )
+      end
     else
       customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
@@ -1661,8 +1725,11 @@ end
 </pre>
 <p>We add <code>before_save :update_stripe</code> to call the <code>update_stripe</code> method when the user is saved or updated.</p>
 <p>The <code>before_save</code> callback is carried out after validation so there will be no attempt to create a Stripe customer if an email address is missing or if there are other validation errors.</p>
-<p>The <code>update_stripe</code> method makes our request to the Stripe service. We skip the process if the email address includes “example.com”. This allows us to run <code>rake db:seed</code> or <code>rake db:reset</code> to set up our administrative user and default sample accounts for this tutorial. You should remove the statement <code>return if email.include?('example.com')</code> and modify the <strong>db/seeds.rb</strong> before deploying the application or your application will allow any visitor to create a free account by using an “example.com” email address.</p>
-<p>The <code>update_stripe</code> method checks if the user instance already has a <code>customer_id</code>. If it does not, and a <code>stripe_token</code> is present, we can create a new Stripe customer. We make a request using the Stripe <span class="caps">API</span> call <code>Stripe::Customer.create</code> and provide the customer’s email address and name. We don’t transmit any credit card data. Stripe already has the credit card data keyed to the stripe token; we transmit the token instead of providing credit card data. Stripe also needs to know what subscription plan the user wants. We’re using Rolify roles to designate subscription plans so we retrieve the role name and use it to designate the subscription plan.</p>
+<p>The <code>update_stripe</code> method makes our request to the Stripe service. We skip the process if the email address contains our administrator’s email address or includes “example.com”. This allows us to run <code>rake db:seed</code> or <code>rake db:reset</code> to set up our administrative user and default sample accounts for this tutorial.</p>
+<p>The <code>update_stripe</code> method checks if the user instance already has a <code>customer_id</code>. If it does not, and a <code>stripe_token</code> is present, we can create a new Stripe customer. To create a new Stripe customer, we make a request using the Stripe <span class="caps">API</span> call <code>Stripe::Customer.create</code>.</p>
+<p>We will create a new subscription when we create a new customer. We provide the customer’s email address and name. We supply the <code>stripe_token</code> which tells Stripe how to charge the customer. We provide a <code>plan</code> which tells Stripe how much to charge. We’re using Rolify roles to designate subscription plans so we retrieve the role name and use it to designate the subscription plan.</p>
+<p>If we have a coupon, we include a <code>coupon</code> identifier so Stripe will apply a discount.</p>
+<p>We don’t transmit any credit card data. Stripe already has the credit card data keyed to the stripe token; we transmit the token instead of providing credit card data.</p>
 <p>If <code>customer_id</code> is already available as an attribute of the user instance, we know that we’re updating a record rather than creating a new customer. We use the Stripe <span class="caps">API</span> call <code>Stripe::Customer.retrieve(customer_id)</code> to obtain a customer object and then reset the email address and name. If a <code>stripe_token</code> is present, we tell Stripe to use a new credit card. We’ll implement this function when we modify the application’s “Edit Account” feature.</p>
 <p>After create or update, we obtain the last four digits of the user’s credit card number. We finish by setting the <code>customer_id</code> to match the Stripe customer ID and we set the stripe token to nil.</p>
 <p>The <code>update_stripe</code> method sets user attributes <code>customer_id</code> and <code>last_4_digits</code> which are saved with the attributes passed from the form when the Registration controller completes the <code>user.save</code> call.</p>
@@ -1800,6 +1867,9 @@ $ git checkout -b change-acct
 <p>Our JavaScript code will intercept the submission of this form, access the Stripe server to set a new credit card, and obtain a Stripe token before submitting the form to our server.</p>
 <p>Here’s the complete version of the file <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
 <pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "stripe-key", :content =&gt; STRIPE_PUBLIC_KEY %&gt;
+&lt;% end %&gt;
 &lt;h2&gt;Account&lt;/h2&gt;
 &lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;&lt;/div&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; { :method =&gt; :put, :class =&gt; 'form-vertical' }) do |f| %&gt;
@@ -1890,23 +1960,34 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
-  attr_accessor :stripe_token
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon
+  attr_accessor :stripe_token, :coupon
   before_save :update_stripe
   before_destroy :cancel_subscription
   
   def update_stripe
+    return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
-      customer = Stripe::Customer.create(
-        :email =&gt; email,
-        :description =&gt; name,
-        :card =&gt; stripe_token,
-        :plan =&gt; roles.first.name
-      )
+      if coupon.blank?
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name
+        )
+      else
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name,
+          :coupon =&gt; coupon
+        )
+      end
     else
       customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
@@ -1958,8 +2039,8 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
-  attr_accessor :stripe_token
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon
+  attr_accessor :stripe_token, :coupon
   before_save :update_stripe
   before_destroy :cancel_subscription
 
@@ -1978,17 +2059,28 @@ class User &lt; ActiveRecord::Base
   end
   
   def update_stripe
+    return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
-      customer = Stripe::Customer.create(
-        :email =&gt; email,
-        :description =&gt; name,
-        :card =&gt; stripe_token,
-        :plan =&gt; roles.first.name
-      )
+      if coupon.blank?
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name
+        )
+      else
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name,
+          :coupon =&gt; coupon
+        )
+      end
     else
       customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
@@ -2078,7 +2170,7 @@ end
 </pre>
 <p>Not every request will require a change of card or subscription plan. Sometimes the user will be submitting a form to change name, email address, or password. In that case, the inherited <code>update</code> method from the Devise registrations controller will be invoked.</p>
 <p>The <code>update_plan</code> method applies changes to the <code>current_user</code> (note that changes by an administrator are accommodated elsewhere by the User controller). We identify the new role that is specified in the form and call the User <code>update_plan(role)</code> method. That method will make a request to Stripe to update the customer account. Stripe will automatically apply refunds or additional charges as necessary. The User <code>update_plan(role)</code> method returns <code>true</code> on a successful update or throws an error if an attempt to reach the Stripe server fails. On a successful update we redirect to the edit page with a status message. On a failure we render the edit page, showing any errors with the <code>display_base_errors</code> view helper.</p>
-<p>The <code>update_card</code> method relies on the JavaScript code in <strong>app/assets/javascripts/registrations.js.erb</strong> to intercept the card data and submit it to the Stripe server to obtain the Stripe token. The process is very similar to creating a new subscription. Once we have obtained the Stripe token, we call <code>@user.save</code>. Just like when a subscription is created, the User model <code>update_stripe</code> method calls the Stripe <span class="caps">API</span> and makes a request that associates the new card with the customer record for future billing. On a successful update we redirect to the edit page with a status message. On a failure we render the edit page, showing any errors with the <code>display_base_errors</code> view helper (this is where a “Credit card declined” message will appear).</p>
+<p>The <code>update_card</code> method relies on the JavaScript code in <strong>app/assets/javascripts/registrations.js</strong> to intercept the card data and submit it to the Stripe server to obtain the Stripe token. The process is very similar to creating a new subscription. Once we have obtained the Stripe token, we call <code>@user.save</code>. Just like when a subscription is created, the User model <code>update_stripe</code> method calls the Stripe <span class="caps">API</span> and makes a request that associates the new card with the customer record for future billing. On a successful update we redirect to the edit page with a status message. On a failure we render the edit page, showing any errors with the <code>display_base_errors</code> view helper (this is where a “Credit card declined” message will appear).</p>
 <h3>Add Routes for Account Changes</h3>
 <p>We’ve added two new actions to the registrations controller to accommodate the “Change Plans” and “Change Card” features. We need to add routes to invoke the new actions.</p>
 <p>Modify the <strong>config/routes.rb</strong> file to add two routes:</p>
@@ -2227,8 +2319,8 @@ class User &lt; ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
-  attr_accessor :stripe_token
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon
+  attr_accessor :stripe_token, :coupon
   before_save :update_stripe
   before_destroy :cancel_subscription
 
@@ -2247,17 +2339,28 @@ class User &lt; ActiveRecord::Base
   end
 
   def update_stripe
+    return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
-      customer = Stripe::Customer.create(
-        :email =&gt; email,
-        :description =&gt; name,
-        :card =&gt; stripe_token,
-        :plan =&gt; roles.first.name
-      )
+      if coupon.blank?
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name
+        )
+      else
+        customer = Stripe::Customer.create(
+          :email =&gt; email,
+          :description =&gt; name,
+          :card =&gt; stripe_token,
+          :plan =&gt; roles.first.name,
+          :coupon =&gt; coupon
+        )
+      end
     else
       customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
@@ -2412,38 +2515,28 @@ $ git branch -D webhooks
 <h3>Deploy to Heroku</h3>
 <p>For your convenience, here is a <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
 <p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
-<p>You’ll need to set your Stripe <span class="caps">API</span> and public key as Heroku environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information. Here’s how to set Heroku environment variables for your Stripe <span class="caps">API</span> and public key:</p>
-<pre>
-$ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
-</pre>
-<p>Alternatively, the figaro gem provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
+<p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>With the figaro gem, just run:</p>
 <pre>
 rake figaro:heroku
 </pre>
-<p>Prior to deployment, it’s advisable to change your <strong>db/seeds.rb</strong> file. At a minimum, change the “example.com” address for the administrator and remove the “example.com” sample users. Optionally, you can change your own name, email and password or wait and change the values through the application “Edit account” interface later. You can also change the list of roles that correspond to the subscription plans you will offer.</p>
+<p>Alternatively, you can set Heroku environment variables for your Stripe <span class="caps">API</span> and public key like this:</p>
 <pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'silver' }, 
-  { :name =&gt; 'gold' },
-  { :name =&gt; 'platinum' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'My Name', :email =&gt; 'me@mydomain.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+$ heroku config:add STRIPE_API_KEY=secret STRIPE_PUBLIC_KEY=secret
+</pre>
+<p>Prior to deployment, it’s advisable to change your <strong>db/seeds.rb</strong> file. At a minimum, remove the “example.com” sample users. Optionally, you can change the administrator name, email and password though it is better to wait and change the values through the application “Edit account” interface later.</p>
+<pre>
+puts 'ROLES'
+YAML.load(ENV['ROLES']).each do |role|
+  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
+  puts 'role: ' &lt;&lt; role
+end
+puts 'DEFAULT USERS'
+user = User.find_or_create_by_email :name =&gt; ENV['ADMIN_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
+puts 'user: ' &lt;&lt; user.name
 user.add_role :admin
-puts 'admin created: ' &lt;&lt; user.name
 </pre>
-<p>You can change the roles and name, email, and password as you wish. See the advice below about using “example.com” email addresses.</p>
-<p>You’ll need to special case your administrator’s email address in the <strong>app/models/user.rb</strong> file. Change the statement in the <code>update_stripe</code> method:</p>
-<pre>
-return if email.include?('@example.com') and not Rails.env.production?
-</pre>
-<p>to</p>
-<pre>
-return if email.include?('@mydomain.com')
-</pre>
-<p>If you don’t special case your email address, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Stripe for the administrator.</p>
+<p>If you don’t remove the “example.com” sample users, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Stripe for these users.</p>
 <h2>Comments</h2>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
