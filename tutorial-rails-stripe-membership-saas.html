@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 17 December 2012</em></p>
+<p><em>Last updated 18 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Stripe. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
@@ -323,8 +323,6 @@ question  Install an example application?
 <p>Set a robots.txt file to ban spiders if you want to keep your new site out of Google search results.</p>
 <p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file (not available on Windows). See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
-<p>After you create the application, switch to its folder to continue work directly in the application:</p>
-<p><code>$ cd rails-stripe-membership-saas</code></p>
 <h4>Troubleshooting</h4>
 <p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <p>If you get an error like this:</p>
@@ -336,7 +334,10 @@ Error: You have already activated ..., but your Gemfile requires ....
 Using bundle exec may solve this.
 </pre>
 <p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
-<h4>Replace the READMEs</h4>
+<h3>Begin Development</h3>
+<p>After you create the application, switch to its folder to continue work directly in the application:</p>
+<p><code>$ cd rails-stripe-membership-saas</code></p>
+<h3>Replace the READMEs</h3>
 <p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.com/">RailsApps project</a>.</p>
 <h3>Set Up Source Control (Git)</h3>
 <p>When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.</p>
@@ -394,7 +395,7 @@ $ gem list
 <pre>
 $ rails server
 </pre>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the home page created by the starter app.</p>
 <p>Stop the server with Control-C.</p>
 <h3>Git</h3>
 <p>Commit your changes to git:</p>
@@ -408,19 +409,22 @@ $ git commit -m "add gems"
 <p>To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
 <p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
 <p>This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
+<h3>Tests Installed by Rails Composer</h3>
 <p>The Rails Composer tool creates a starter app that is set up for RSpec and Cucumber test frameworks.</p>
-<h3>Copying Tests from the Example Application</h3>
-<p>You can copy the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application. Replace both the <strong>spec</strong> and <strong>features</strong> directories entirely. Copying all the files will include necessary configuration and helper files.</p>
-<p>Run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available. You won’t be able to run <code>rake spec</code> or <code>rake cucumber</code> until the database is set up.</p>
-<h3>RSpec</h3>
+<p>The starter app includes RSpec and Cucumber test suites designed for the features of the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application.</p>
+<h4>Running RSpec Tests</h4>
 <p>The starter app script sets up RSpec for unit testing. You should be able to run <code>rake spec</code> to run all specs provided with the example app after the database is set up.</p>
-<h3>Cucumber</h3>
+<h4>Running Cucumber Tests</h4>
 <p>The starter app script sets up Cucumber for specifications and acceptance testing.</p>
 <p>You should be able to run <code>rake cucumber</code>, or more simply, <code>cucumber</code>, to run the Cucumber scenarios and steps provided with the example app after the database is set up. You can run a single Cucumber feature with a command such as:</p>
 <pre>
 $ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
+<h3>Installing Tests from the Example Application</h3>
+<p>The starter app only installs tests designed for the features of the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application. However, a full suite of tests for the <a href="http://github.com/RailsApps/rails-stripe-membership-saas/">rails-stripe-membership-saas</a> example application are available in the GitHub repository.</p>
+<p>You can copy the RSpec unit tests and Cucumber integration tests from the GitHub repository. Replace both the <strong>spec</strong> and <strong>features</strong> directories entirely. Copying all the files will include necessary configuration and helper files.</p>
+<p>Run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available. You won’t be able to run <code>rake spec</code> or <code>rake cucumber</code> until the database is set up.</p>
 <h2>Configuration</h2>
 <h3>Configuration File</h3>
 <p>See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
@@ -493,6 +497,7 @@ config.action_mailer.smtp_settings = {
 Stripe.api_key = ENV["STRIPE_API_KEY"]
 STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 </pre>
+<p>The <code>Stripe.api_key</code> value and the <code>STRIPE_PUBLIC_KEY</code> constant are set using local environment variables from the <strong>config/application.yml</strong> file. The <code>Stripe.api_key</code> value should be kept secret so no other developer can use your Stripe account. The <code>STRIPE_PUBLIC_KEY</code> constant does not need to be kept secret but we set it in the <strong>config/application.yml</strong> file for convenience, so all your configuration settings are in one location.</p>
 <p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
 <h3>Git</h3>
 <p>Commit your changes to git:</p>
@@ -594,9 +599,7 @@ end
 <h3>Migration for the User Model</h3>
 <p>Create a database migration with this command:</p>
 <pre>
-$ rails generate migration AddStripeToUsers   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token
-:string last_4_digits:string
+$ rails generate migration AddStripeToUsers customer_id:string last_4_digits:string
 </pre>
 <p>After you’ve created the migration, update the database:</p>
 <pre>
@@ -657,9 +660,8 @@ puts "users: #{user2.name}, #{user3.name}, #{user4.name}"
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
 <p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
 <h3>Using “example.com” Email Addresses</h3>
-<p>The application handles the administrator’s account and any “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Stripe as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to add administrator and set up sample users for development and testing.</p>
-<p>If you want to see Stripe’s response when subscribing a new user (using a fake credit card number such as <em>4242424242424242</em>), don’t use an “example.com” email address.</p>
-<p>Two statements in the <code>update_stripe</code> method in the <strong>app/models/user.rb</strong> file implement the special case so that the Stripe server is not contacted:</p>
+<p>We want the application to handle the administrator’s account and any “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Stripe as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to add the administrator and set up sample users for development and testing.</p>
+<p>Later we’ll add two statements in an <code>update_stripe</code> method in the <strong>app/models/user.rb</strong> file implement the special case so that the Stripe server is not contacted:</p>
 <pre>
 def update_stripe
   return if email.include?(ENV['ADMIN_EMAIL'])
@@ -1125,8 +1127,8 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 <pre>
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
-  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
@@ -1281,8 +1283,8 @@ end
 &lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
-  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
@@ -1327,8 +1329,8 @@ end
 &lt;div id="stripe_error" class="alert alert-error" style="display:none" &gt;
 &lt;/div&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
-  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
   &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
@@ -1348,7 +1350,7 @@ end
     &lt;/div&gt;
     &lt;div class="field"&gt;
       &lt;%= label_tag :card_month, "Card Expiration" %&gt;
-      &lt;%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%&gt;
+      &lt;%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"}%&gt;
       &lt;%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%&gt;
     &lt;/div&gt;
     &lt;div class="field"&gt;
@@ -1376,7 +1378,7 @@ end
 <p>Developers often copy external JavaScript libraries to the <strong>vendor/assets/javascripts</strong> folder and let the Rails asset pipeline combine all the JavaScript, making it available throughout the application. That’s not how we want to handle the Stripe JavaScript library. We don’t want to store it in our application where a trespasser could modify it to intercept credit card data. It is best to load it from Stripe’s server. And we want to execute it only on the registration page.</p>
 <p>We’ll use two techniques described in the article <a href="http://railsapps.github.com/rails-javascript-include-external.html">Adding JavaScript to Rails</a>. We’ll add a script named <em>jquery.readyselector.js</em> (from <a href="https://github.com/Verba/jquery-readyselector">John Firebaugh</a>) that allows us to execute JavaScript conditionally on a page. A second script, <em>jquery.externalscript.js</em>, extends jQuery to add a function that allows us to download (or load from the cache) a JavaScript file from a remote server.</p>
 <h3>Script for Conditional Execution of Page-Specific JavaScript</h3>
-<p>First, make sure that the application layout file is set to provide parameters needed for the <em>jquery.readyselector.js</em> script. The default RailsApps application layout file should already contain a <code>&lt;body&gt;</code> tag that looks like this:</p>
+<p>First, make sure that the application layout file is set to provide parameters needed for the <em>jquery.readyselector.js</em> script. The default RailsApps application layout file <strong>app/views/layouts/application.html.erb</strong> should already contain a <code>&lt;body&gt;</code> tag that looks like this:</p>
 <pre>
 &lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
 </pre>
@@ -1460,7 +1462,6 @@ $('.registrations').ready(function() {
 </pre>
 <p>This code will test if the Stripe JavaScript library has been successfully downloaded.</p>
 <p>Later we will add the code that collects the credit card data from the subscription form, submits it to the Stripe server, and obtains the Stripe token.</p>
-<p>We add the <strong>.erb</strong> file extension because we will want to use a Ruby constant in our code before the file is compiled into JavaScript.</p>
 <p>Let’s test the code to make sure the Stripe JavaScript library is loading from the remote server.</p>
 <p>Start the server and visit the home page. Check the JavaScript console to observe the debugging messages.</p>
 <p>Here’s how to use the JavaScript console. Every web browser provides access to the JavaScript console for debugging. In Chrome, choose the menu item <em>View/Developer/JavaScript Console</em>. Reload the page and you will see console messages. We’ve added console messages to trace the program flow as each function is executed. Use this technique for debugging if you have problems.</p>
@@ -1639,23 +1640,6 @@ $('.registrations').ready(function() {
 	</tr>
 </table><p>“ID” is a unique string of your choice that is used to identify the plan when subscribing a customer. In our application, each plan should have an ID that corresponds to the roles we’ve created to manage access. “Name” is displayed on invoices and in the Stripe web interface. “Amount” is the subscription price in US dollars. “Interval” is the billing frequency. Optionally, you can specify a trial period (in days). If you include a trial period, the customer won’t be billed for the first time until the trial period ends. If the customer cancels before the trial period is over, she’ll never be billed at all.</p>
 <p>Now that Stripe knows about our subscription plans, we’ll modify the User model to create a new Stripe customer.</p>
-<h3>Migration for the User Model</h3>
-<p>We will need two extra fields in the database to accommodate Stripe:</p>
-<ul>
-<li>
-<code>customer_id</code> will store the Stripe customer ID</li>
-	<li>
-<code>last_4_digits</code> will store the last four digits of the user’s credit card number</li>
-</ul><p>The <code>last_4_digits</code> field isn’t needed for integration with Stripe but we can use it to show the user which credit card was used for the subscription.</p>
-<p>Create a database migration with this command:</p>
-<pre>
-$ rails generate migration AddStripeToUsers customer_id:string last_4_digits:string
-</pre>
-<p>After you’ve created the migration, update the database:</p>
-<pre>
-$ rake db:migrate
-</pre>
-<p>Now we’ll modify the User model.</p>
 <h3>Modify the User Model</h3>
 <p>We want to make a request to Stripe to create a customer whenever a new user is created. There are several ways we could do this:</p>
 <ul>
@@ -1736,6 +1720,10 @@ end
 <p>We handle errors with a <code>rescue</code> condition. Errors in credit card data will be caught by the JavaScript functions before the form is submitted to the server. If another type of error prevents the Stripe customer from being created, the <code>rescue</code> condition will set an error message and return false which will prevent the user account from being saved.</p>
 <h3>Test Stripe Integration</h3>
 <p>We have all the code needed for visitors to sign up for new subscriptions. Let’s test the application.</p>
+<p>Reset the database:</p>
+<pre>
+$ rake db:reset
+</pre>
 <p>Start the web server:</p>
 <pre>
 $ rails server
@@ -2010,7 +1998,7 @@ class User &lt; ActiveRecord::Base
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      unless customer.nil? or customer.deleted
+      unless customer.nil? or customer.respond_to?('deleted')
         if customer.subscription.status == 'active'
           customer.cancel_subscription
         end
@@ -2176,7 +2164,6 @@ end
 <p>Modify the <strong>config/routes.rb</strong> file to add two routes:</p>
 <pre>
 RailsStripeMembershipSaas::Application.routes.draw do
-  mount StripeEvent::Engine =&gt; '/stripe'
   get "content/gold"
   get "content/silver"
   get "content/platinum"
@@ -2281,6 +2268,10 @@ RailsStripeMembershipSaas::Application.routes.draw do
   end
   root :to =&gt; "home#index"
   devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
+  devise_scope :user do
+    put 'update_plan', :to =&gt; 'registrations#update_plan'
+    put 'update_card', :to =&gt; 'registrations#update_card'
+  end
   resources :users
 end
 </pre>
@@ -2383,7 +2374,7 @@ class User &lt; ActiveRecord::Base
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      unless customer.nil? or customer.deleted
+      unless customer.nil? or customer.respond_to?('deleted')
         if customer.subscription.status == 'active'
           customer.cancel_subscription
         end
