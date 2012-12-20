@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site with Recurly</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 18 December 2012</em></p>
+<p><em>Last updated 20 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Recurly. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
@@ -353,8 +353,6 @@ question  Install an example application?
 <p>Set a robots.txt file to ban spiders if you want to keep your new site out of Google search results.</p>
 <p>It is a good idea to use <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, and create a project-specific rvm gemset and .rvmrc file (not available on Windows). See <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>If you choose to create a GitHub repository, the generator will prompt you for a GitHub username and password.</p>
-<p>After you create the application, switch to its folder to continue work directly in the application:</p>
-<p><code>$ cd rails-recurly-subscription-saas</code></p>
 <h4>Troubleshooting</h4>
 <p>If you get an error “OpenSSL certificate verify failed” or “Gem::RemoteFetcher::FetchError: SSL_connect” see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <p>If you get an error like this:</p>
@@ -366,7 +364,10 @@ Error: You have already activated ..., but your Gemfile requires ....
 Using bundle exec may solve this.
 </pre>
 <p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
-<h4>Replace the READMEs</h4>
+<h3>Begin Development</h3>
+<p>After you create the application, switch to its folder to continue work directly in the application:</p>
+<p><code>$ cd rails-recurly-subscription-saas</code></p>
+<h3>Replace the READMEs</h3>
 <p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.com/">RailsApps project</a>.</p>
 <h3>Set Up Source Control (Git)</h3>
 <p>When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.</p>
@@ -429,32 +430,69 @@ $ rails server
 </pre>
 <p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
+<h3>Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "add gems"
+</pre>
 <h2>Test-Driven Development</h2>
 <p>This example application uses Cucumber for integration testing and RSpec for unit testing.</p>
 <p>Testing is at the center of any robust software development process. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. RSpec is a popular choice for unit testing. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up RSpec and provides example specs for use with Devise. Cucumber is a popular choice for integration testing and behavior driven development. The <a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">rails3-devise-rspec-cucumber tutorial</a> shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
 <p>To learn more about using RSpec, refer to <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a>.</p>
 <p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
 <p>This tutorial assumes you’ve learned to write tests elsewhere (see a list of <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>). I won’t spend time showing you how to write tests but you can use tests to make sure the application works as expected.</p>
+<h3>Tests Installed by Rails Composer</h3>
 <p>The Rails Composer tool creates a starter app that is set up for RSpec and Cucumber test frameworks.</p>
-<h3>Copying Tests from the Example Application</h3>
-<p>You can copy the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> example application. Replace both the <strong>spec</strong> and <strong>features</strong> directories entirely. Copying all the files will include necessary configuration and helper files.</p>
-<p>Run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available. You won’t be able to run <code>rake spec</code> or <code>rake cucumber</code> until the database is set up.</p>
-<h3>RSpec</h3>
+<p>The starter app includes RSpec and Cucumber test suites designed for the features of the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application.</p>
+<h4>Running RSpec Tests</h4>
 <p>The starter app script sets up RSpec for unit testing. You should be able to run <code>rake spec</code> to run all specs provided with the example app after the database is set up.</p>
-<h3>Cucumber</h3>
+<h4>Running Cucumber Tests</h4>
 <p>The starter app script sets up Cucumber for specifications and acceptance testing.</p>
 <p>You should be able to run <code>rake cucumber</code>, or more simply, <code>cucumber</code>, to run the Cucumber scenarios and steps provided with the example app after the database is set up. You can run a single Cucumber feature with a command such as:</p>
 <pre>
 $ cucumber features/visitors/request_invitation.feature
 </pre>
 <p>If you’ve used Cucumber, you may know that you need to add <code>--require features</code> to run a single Cucumber feature. Here it is not necessary to do so; the starter app script sets up the <strong>config/cucumber.yml</strong> file so it is not necessary to add <code>--require features</code>.</p>
+<h3>Installing Tests from the Example Application</h3>
+<p>The starter app only installs tests designed for the features of the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example application. However, a full suite of tests for the <a href="http://github.com/RailsApps/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> example application are available in the GitHub repository.</p>
+<p>You can copy the RSpec unit tests and Cucumber integration tests from the GitHub repository. Replace both the <strong>spec</strong> and <strong>features</strong> directories entirely. Copying all the files will include necessary configuration and helper files.</p>
+<p>Run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available. You won’t be able to run <code>rake spec</code> or <code>rake cucumber</code> until the database is set up.</p>
 <h2>Configuration</h2>
+<h3>Configuration File</h3>
+<p>See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. The starter app sets up the figaro gem and generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
+<p>Credentials for your administrator account and email account are set in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the git repository so your credentials are kept private.</p>
+<p>Modify the file <strong>config/application.yml</strong>:</p>
+<pre>
+# Add account credentials and API keys here.
+# See http://railsapps.github.com/rails-environment-variables.html
+# This file should be listed in .gitignore to keep your settings secret!
+# Each entry sets a local environment variable and overrides ENV variables in the Unix shell.
+# For example, setting:
+# GMAIL_USERNAME: Your_Gmail_Username
+# makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
+# Add application configuration variables here, as shown below.
+#
+GMAIL_USERNAME: Your_Username
+GMAIL_PASSWORD: Your_Password
+ADMIN_FIRST_NAME: First
+ADMIN_LAST_NAME: User
+ADMIN_EMAIL: user@example.com
+ADMIN_PASSWORD: please
+ROLES: [admin, silver, gold, platinum]
+RECURLY_API_KEY: = recurly_api_key
+RECURLY_JS_PRIVATE_KEY: = recurly_js_private_key
+RECURLY_SUBDOMAIN: myapp
+</pre>
+<p>Set the user name and password needed for the application to send email.</p>
+<p>If you wish, set your name, email address, and password for an administrator’s account. If you prefer, you can use the default to sign in to the application and edit the account after deployment. It is always a good idea to change the administrator’s password after the application is deployed.</p>
+<p>The roles you specify in the configuration file are the subscription plans that will be available to the application’s users. You will need an “admin” role. Keep the “silver”, “gold”, and “platinum” roles while you are testing the application. You can change these roles later, after you familiarize yourself with the application and begin to customize it for your own needs.</p>
+<p>The Recurly gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a private key so the Recurly gem can generate a cryptographic signature. You can find both keys on your Recurly account profile under “<span class="caps">API</span> Credentials”. We’ll also set a <code>RECURLY_SUBDOMAIN</code> constant that we’ll use in the JavaScript code that initiates the Recurly transaction. The Recurly subdomain is listed on your Recurly account profile.</p>
+<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. For example, <code>ENV["GMAIL_USERNAME"]</code> will return the string “Your_Username”.</p>
+<p>If you prefer, you can delete the <strong>config/application.yml</strong> file and set each value as an environment variable in the Unix shell.</p>
+<h3>Configure Email</h3>
 <p>The starter app script sets up a default email configuration. You must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
-<h3>Configure Devise for Email</h3>
-<p>Start your email configuration by modifying</p>
-<p><strong>config/initializers/devise.rb</strong></p>
-<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
-<h3>Configure ActionMailer</h3>
 <p>The starter app has already configured ActionMailer but you must set your email account details.</p>
 <p>Replace <code>example.com</code> in the <strong>config/environments/production.rb</strong> file:</p>
 <pre>
@@ -467,7 +505,6 @@ config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
 <p>The example application will deliver email in production. Email messages are visible in the log file so there is no need to send email in development.</p>
-<h3>How to Use a Gmail Account</h3>
 <p>In production, you should use an email service provider such as <a href="http://mandrill.com/">Mandrill</a> to increase deliverability for email messages from your app.</p>
 <p>Use Gmail for experimenting, if you want to keep things simple.</p>
 <p>The file <strong>config/environments/production.rb</strong> is set to use:</p>
@@ -482,7 +519,30 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
+<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. Instead, use local environment variables from the <strong>config/application.yml</strong> file to keep email account passwords secret.</p>
+<h3>Configure Devise for Email</h3>
+<p>Complete your email configuration by modifying</p>
+<p><strong>config/initializers/devise.rb</strong></p>
+<p>and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
+<h3>Recurly Initializer</h3>
+<p>You’ve set the Recurly <span class="caps">API</span> key and private key in your <strong>config/application.yml</strong> file. The file is there for security so your credentials won’t be exposed publicly on a GitHub repo.</p>
+<p>We’ll use an initializer file to set the data.</p>
+<p>Create a file <strong>config/initializers/recurly.rb</strong>:</p>
+<pre>
+Recurly.api_key = ENV['RECURLY_API_KEY']
+Recurly.js.private_key = ENV['RECURLY_JS_PRIVATE_KEY']
+RECURLY_SUBDOMAIN = ENV['RECURLY_SUBDOMAIN']
+# Recurly.default_currency = 'USD'
+</pre>
+<p>If you’re not operating with US dollars as your currency, you can change the default in the initializer file.</p>
+<p>We are using local environment variables from the <strong>config/application.yml</strong> file. The <code>Recurly.api_key</code> and <code>Recurly.js.private_key</code> values should be kept secret so no other developer can use your Recurly account. The <code>RECURLY_SUBDOMAIN</code> constant does not need to be kept secret but we set it in the <strong>config/application.yml</strong> file for convenience, so all your configuration settings are in one location.</p>
+<p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
+<h3>Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "configure"
+</pre>
 <h2>Layout and Stylesheets</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. See the article <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
 <p>The starter app adds navigation links, includes flash messages for errors and notifications, and applies <span class="caps">CSS</span> styling using Twitter Bootstrap.</p>
@@ -580,53 +640,44 @@ end
 <p>With these changes to our User model, we are ready to seed the database.</p>
 <h2>Initial Data</h2>
 <h3>Set Up a Database Seed File</h3>
-<p>You’ll want to set up default users so you can test the application.</p>
+<p>You’ll want to set up default users so you can test the application. We’ll add three users with different subscription plans.</p>
 <p>The file <strong>db/seeds.rb</strong> already contains:</p>
 <pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'user' }, 
-  { :name =&gt; 'VIP' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user.name
-user2 = User.create! :name =&gt; 'Second User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-puts 'New user created: ' &lt;&lt; user2.name
+puts 'ROLES'
+YAML.load(ENV['ROLES']).each do |role|
+  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
+  puts 'role: ' &lt;&lt; role
+end
+puts 'DEFAULT USERS'
+user = User.find_or_create_by_email :name =&gt; ENV['ADMIN_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
+puts 'user: ' &lt;&lt; user.name
 user.add_role :admin
-user2.add_role :VIP
 </pre>
-<p>The starter app contains a placeholder list of roles. One role is “admin,” for an adminstrator.</p>
-<p>Remove the “user” and “<span class="caps">VIP</span>” roles and add three additional roles corresponding to our subscription plans, “silver”, “gold”, and “platinum.” Notice we have to supply the argument <code>:without_protection =&gt; true</code> to override the mass-assignment protection configured in the Role class.</p>
-<p>We’ll add three users with different subscription plans. Our User model now has separate first and last names to accommodate Recurly’s customer schema.</p>
 <p>Replace <strong>db/seeds.rb</strong> with:</p>
 <pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'silver' }, 
-  { :name =&gt; 'gold' },
-  { :name =&gt; 'platinum' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :first_name =&gt; 'First', :last_name =&gt; 'User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+puts 'ROLES'
+YAML.load(ENV['ROLES']).each do |role|
+  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
+  puts 'role: ' &lt;&lt; role
+end
+puts 'DEFAULT USERS'
+user = User.find_or_create_by_email :first_name =&gt; ENV['ADMIN_FIRST_NAME'].dup, :last_name =&gt; ENV['ADMIN_LAST_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
+puts 'user: ' &lt;&lt; user.name
 user.add_role :admin
-puts 'admin created: ' &lt;&lt; user.name
-user2 = User.create! :first_name =&gt; 'Silver', :last_name =&gt; 'User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user2 = User.find_or_create_by_email :first_name =&gt; 'Silver', :last_name =&gt; 'User', :email =&gt; 'user2@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user2.add_role :silver
-user3 = User.create! :first_name =&gt; 'Gold', :last_name =&gt; 'User', :email =&gt; 'user3@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user3 = User.find_or_create_by_email :first_name =&gt; 'Gold', :last_name =&gt; 'User', :email =&gt; 'user3@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user3.add_role :gold
-user4 = User.create! :first_name =&gt; 'Platinum', :last_name =&gt; 'User', :email =&gt; 'user4@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
+user4 = User.find_or_create_by_email :first_name =&gt; 'Platinum', :last_name =&gt; 'User', :email =&gt; 'user4@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user4.add_role :platinum
-puts "added users: #{user2.name}, #{user3.name}, #{user4.name}"
+puts "users: #{user2.name}, #{user3.name}, #{user4.name}"
 </pre>
-<p>The first user will be given an administrator role. You can log in with this account for access as an administrator.</p>
-<p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
-<p>The <strong>db/seeds.rb</strong> file is the only place where we create a list of possible roles. There is no other configuration of roles.</p>
-<p>It’s not strictly necessary to create the list of roles before creating the users. Any new role can be added to the roles datatable with a statement such as <code>user.add_role :superhero</code>. However, I suggest you create a full list of roles in the <strong>db/seeds.rb</strong> file. If you don’t, users may not have a full range of subscription plans to choose from for an upgrade or downgrade of plans.</p>
+<p>The <strong>db/seeds.rb</strong> file reads a list of roles from the <strong>config/application.yml</strong> file and adds the roles to the database. In fact, any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. Setting the roles in the <strong>db/seeds.rb</strong> file simply makes sure each role is listed and available should a user wish to change roles.</p>
+<p>Next we add an administrator and three sample users. Our User model now has separate first and last names to accommodate Recurly’s customer schema.</p>
+<p>We’ve added a user with an administrator role using vales from the <strong>config/application.yml</strong> file. You can log in with this account for access as an administrator.</p>
+<p>You can change the administrator name, email, and password in this file but it is better to make the changes in the <strong>config/application.yml</strong> file to keep the credentials private. If you decide to include your private password in the <strong>db/seeds.rb</strong> file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
-<p>If you include your private password in the file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
+<p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
 <h3>Using “example.com” Email Addresses</h3>
 <p>The application handles “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Recurly as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to set up the administrator’s account and any sample users for development and testing.</p>
 <p>If you test subscribing a new user (providing a fake credit card number such as <em>4111-1111-1111-1111</em>), don’t use an “example.com” email address if you want to see the results in the Recurly administrative dashboard.</p>
@@ -1235,55 +1286,6 @@ $ git checkout -b billing
 	</tr>
 </table><p>“Plan Name” is displayed on invoices and in the Recurly web interface. “Plan Code” is a unique string of your choice that is used to identify the plan when subscribing a customer. The “Plan Code” should correspond to a role we’ve created to manage access. “Pricing” is the subscription price. You’ll specify the billing frequency. Optionally, you can specify a free trial period. If you include a trial period, the customer won’t be billed for the first time until the trial period ends. If the customer cancels before the trial period is over, she’ll never be billed at all.</p>
 <p>Now that Recurly knows about our subscription plans, we’ll set up an initializer file to configure the Recurly gem.</p>
-<h3>Recurly Initializer</h3>
-<p>We’ve already installed the Recurly gem in our Gemfile.</p>
-<p>The Recurly gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a private key so the Recurly gem can generate a cryptographic signature. You can find both keys on your Recurly account profile under “<span class="caps">API</span> Credentials”. We’ll also set a <code>RECURLY_SUBDOMAIN</code> constant that we’ll use in the JavaScript code that initiates the Recurly transaction. The Recurly subdomain is listed on your Recurly account profile.</p>
-<p>We’ll use an initializer file to store the data.</p>
-<p>Create a file <strong>config/initializers/recurly.rb</strong>:</p>
-<pre>
-Recurly.api_key = ENV['RECURLY_API_KEY']
-Recurly.js.private_key = ENV['RECURLY_JS_PRIVATE_KEY']
-RECURLY_SUBDOMAIN = ENV['RECURLY_SUBDOMAIN']
-# Recurly.default_currency = 'USD'
-</pre>
-<p>If you’re not operating with US dollars as your currency, you can change the default in the initializer file.</p>
-<p>Remember you’ll need to restart your server before testing because you’ve made a change to configuration files.</p>
-<p>For security, don’t record sensitive information in your application code where it might be exposed publicly on a GitHub repo. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
-<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to read environment variables from the <strong>config/application.yml</strong> file. If you have generated the starter application using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/application.yml</strong>. Remove comment characters and set your credentials:</p>
-<pre>
-# Add account credentials and API keys here.
-# See http://railsapps.github.com/rails-environment-variables.html
-# This file should be listed in .gitignore to keep your settings secret!
-# Each entry sets a local environment variable and overrides ENV variables in the Unix shell.
-# For example, setting:
-# GMAIL_USERNAME: Your_Gmail_Username
-# makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
-# Add application configuration variables here, as shown below.
-#
-GMAIL_USERNAME: Your_Username
-GMAIL_PASSWORD: Your_Password
-RECURLY_API_KEY: Your_Recurly_API_key
-RECURLY_JS_PRIVATE_KEY: Your_Recurly_JS_Private_Key
-RECURLY_SUBDOMAIN: mydomain
-</pre>
-<p>Your <strong>.gitignore</strong> file should be set to keep <strong>config/application.yml</strong> out of your git repository.</p>
-<p>Alternatively, you can set Unix environment variables in the file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell). This will keep the password out of your repository.</p>
-<p>If you choose to set Unix environment variables, add this to your <strong>~/.bashrc</strong> file (or the equivalent file for your preferred Unix shell):</p>
-<pre>
-export RECURLY_API_KEY="API Key"
-export RECURLY_JS_PRIVATE_KEY="Private Key"
-export RECURLY_SUBDOMAIN="mydomain"
-</pre>
-<p>You can find the data on your Recurly account profile.</p>
-<p>If you plan to use Heroku for hosting, make a note for yourself to set up the Heroku environment variables after deployment. Here’s how to set Heroku environment variables to provide the same data your application obtains from your local shell environment:</p>
-<pre>
-$ heroku config:add RECURLY_API_KEY=api-key RECURLY_JS_PRIVATE_KEY=private-key RECURLY_SUBDOMAIN=mydomain
-</pre>
-<p>Alternatively, the figaro gem provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
-<pre>
-rake figaro:heroku
-</pre>
-<p>You can’t set Heroku environment variables now; you’ll do that after you deploy.</p>
 <h3>Add a Virtual Attribute to the User Model</h3>
 <p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Recurly. A successful transaction will return a Recurly token. The Recurly token will be included as a hidden field when the user submits the registration form.</p>
 <p>Before we can include a hidden field in the form, we must modify the User model to accept this field. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. We’ll add it as a virtual attribute. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
@@ -1346,16 +1348,48 @@ end
 resource.customer_id ||= SecureRandom.uuid
 </pre>
 <p>We set a customer id for the User object. The customer id is essential, as it allows us to maintain concurrency between Recurly’s customer records and our own. Recurly wants us to assign a unique identifier when we create a customer record. As a Rails ActiveRecord object, our User model will get a unique object id when the database record is created. But we are creating a Recurly customer record before we create the ActiveRecord object so the ActiveRecord object id is not yet available. We surmount this obstacle by using the Ruby <a href="http://apidock.com/ruby/SecureRandom/uuid/class">SecureRandom.uuid</a> method to generate a unique identifier. This will be our customer id for both Recurly’s customer records and our own.</p>
+<h3>Use a Metatag to Set the Recurly Subdomain</h3>
+<p>Recurly creates a customer-facing website and <span class="caps">API</span> interface with a subdomain on the Recurly website. The <span class="caps">URL</span> will look like this: <code>https://myapp.recurly.com/</code> where “myapp” is the name of your company or service. You’ll use the subdomain “myapp” to form the <span class="caps">URL</span> that makes requests to the Recurly <span class="caps">API</span> interface.</p>
+<p>You’ve set the Recurly subdomain in your <strong>config/application.yml</strong> file. We put it there for convenience, so your Recurly configuration settings are in one location and easier to copy to Heroku for deployment. Unlike the Recurly <span class="caps">API</span> and private key, the Recurly subdomain doesn’t need to stay secret.</p>
+<p>We set a constant <code>RECURLY_SUBDOMAIN</code> in the file <strong>config/initializers/recurly.rb</strong>. For ease in testing, we use a constant rather than using the environment variable directly.</p>
+<p>Now we must make the Recurly subdomain available to the JavaScript code we’ll use to submit credit card data to the Recurly server.</p>
+<p>We have several options. We could hardcode the Recurly subdomain in the JavaScript code we’ll write. But it is easier to use the constant we’ve already set, so we’re using the same value in development, testing, and production. We could include the constant as a Ruby variable in the JavaScript code by giving the JavaScript file an <strong>.erb</strong> extension. But we’d like to avoid mixing Ruby variables into JavaScript. So instead we’ll use an advanced technique to set the Recurly subdomain constant as a metatag that can be accessed using conventional JavaScript.</p>
+<p>We only want the metatag to appear on the page that contains a form that submits credit card data to Recurly. We’ll use a combination of a <code>content_for?</code> view helper with <code>yield</code> to inject the metatag into the application layout from the <strong>app/views/devise/registrations/new.html.erb</strong> file. Our application layout already includes <code>&lt;%= yield(:head) %&gt;</code> so we can easily add additional tags to the page <span class="caps">HEAD</span> element.</p>
+<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "recurly-subdomain", :content =&gt; RECURLY_SUBDOMAIN %&gt;
+&lt;% end %&gt;
+&lt;h2&gt;Sign up&lt;/h2&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
+  &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
+  &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
+  &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :email, :required =&gt; true %&gt;
+  &lt;%= f.input :password, :required =&gt; true %&gt;
+  &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
+  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
+&lt;% end %&gt;
+</pre>
+<p>The <code>&lt;% content_for :head do %&gt;</code> block injects the <code>RECURLY_SUBDOMAIN</code> in the application layout as a metatag named “recurly-subdomain.”</p>
+<p>Any JavaScript used on this page will have access to the Recurly subdomain through a jQuery selector. It’s more complicated than hardcoding the Recurly subdomain or using a Ruby variable in the JavaScript but the layers of indirection make the implementation more robust.</p>
+<p>With the Recurly subdomain set as a metatag, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
 <p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Recurly server.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "recurly-subdomain", :content =&gt; RECURLY_SUBDOMAIN %&gt;
+&lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;div id="card_error" class="alert alert-error" style="display:none" &gt;&lt;/div&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical', 'data-signature' =&gt; @signature, 'data-ip_address' =&gt; request.remote_ip}) do |f| %&gt;
   &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= f.error_notification %&gt;
+  &lt;%= display_base_errors resource %&gt;
   &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.hidden_field :customer_id %&gt;
   &lt;%= f.input :first_name, :autofocus =&gt; true %&gt;
@@ -1408,8 +1442,7 @@ resource.customer_id ||= SecureRandom.uuid
 <p>Now we’ll add JavaScript to submit credit card data from the form to the Recurly server.</p>
 <h3>Add the Recurly JavaScript Library</h3>
 <p>You can learn more about the <a href="http://js.recurly.com/">Recurly JavaScript library</a> (with examples), see the <a href="https://docs.recurly.com/recurlyjs">Recurly JavaScript library documentation</a>, or download the code from the <a href="https://github.com/recurly/recurly-js">Recurly.js GitHub repository</a>. The Recurly JavaScript library is intended to be used to generate a form dynamically using JavaScript. We’ve hacked the code to create our own <em>recurly.js</em> script that allows us to submit a billing request to the Recurly servers from our own Rails-based form. The hacked code is not elegant. You may wish to rewrite it using CoffeeScript (if you do, please contribute it to the project).</p>
-<p>We use the <strong>.erb</strong> file extension because we want to use a Ruby constant <code>&lt;%= RECURLY_SUBDOMAIN %&gt;</code> in our code before the file is compiled into JavaScript.</p>
-<p>Create a file <strong>app/assets/javascripts/recurly.js.erb</strong>:</p>
+<p>Create a file <strong>app/assets/javascripts/recurly.js</strong>:</p>
 <pre>
 // Recurly.js
 // JavaScript library for the Recurly API
@@ -1422,193 +1455,197 @@ function createObject(o) {
   return new F();
 };
 
-var Recurly = {}; 
-Recurly.settings = {
-  enableGeoIP: true
-, acceptedCards: ['american_express', 'discover', 'mastercard', 'visa']
-, oneErrorPerField: true
-, baseURL: 'https://api.recurly.com/jsonp/' + '&lt;%= RECURLY_SUBDOMAIN %&gt;' + '/'
-};
+var Recurly = {};
 
-Recurly.version = '2.1.3';
+$('.registrations.new').ready(function() {
+  
+  Recurly.settings = {
+    enableGeoIP: true
+  , acceptedCards: ['american_express', 'discover', 'mastercard', 'visa']
+  , oneErrorPerField: true
+  , baseURL: 'https://api.recurly.com/jsonp/' + $('meta[name="recurly-subdomain"]').attr('content') + '/'
+  };
 
-Recurly.ajax = function(options) {
-  options.data = $.extend({js_version: Recurly.version}, options.data);
-  return $.ajax(options);
-};
+  Recurly.version = '2.1.3';
 
-Recurly.flattenErrors = function(obj, attr) {
-  var arr = [];
-  var attr = attr || '';
-  if(  typeof obj == 'string'
-    || typeof obj == 'number'
-    || typeof obj == 'boolean') {
-    if (attr == 'base') {
-      return [obj];
+  Recurly.ajax = function(options) {
+    options.data = $.extend({js_version: Recurly.version}, options.data);
+    return $.ajax(options);
+  };
+
+  Recurly.flattenErrors = function(obj, attr) {
+    var arr = [];
+    var attr = attr || '';
+    if(  typeof obj == 'string'
+      || typeof obj == 'number'
+      || typeof obj == 'boolean') {
+      if (attr == 'base') {
+        return [obj];
+      }
+      return ['' + attr + ' ' + obj];
     }
-    return ['' + attr + ' ' + obj];
+    for(var k in obj) {
+      if(obj.hasOwnProperty(k)) {
+        // Inherit parent attribute names when property key
+        // is a numeric string; how we deal with arrays
+        attr = (parseInt(k).toString() == k) ? attr : k;
+        var children = Recurly.flattenErrors(obj[k], attr);
+        for(var i=0, l=children.length; i &lt; l; ++i) {
+          arr.push(children[i]);
+        }
+      }
+    }
+    return arr;
+  };
+
+  Recurly.Account = {
+    create: createObject
+  , toJSON: function(card) {
+      return {
+        first_name: card.first_name
+      , last_name: card.last_name
+      , account_code: card.customer_id
+      , email: card.email
+      };
+    }
+  };
+
+  Recurly.BillingInfo = {
+    create: createObject
+  , toJSON: function(card) {
+      return {
+        first_name: card.first_name
+      , last_name: card.last_name
+      , month: card.expMonth
+      , year: card.expYear
+      , number: card.number
+      , verification_value: card.cvc
+      , country: card.country
+      , ip_address: card.ip_address
+      };
+    }
+  };
+
+  Recurly.Subscription = {
+    create: createObject
+  , plan: Recurly.Plan
+  , addOns: []
+
+  , calculateTotals: function() {
+      var totals = {
+        stages: {}
+      };
+
+      // PLAN
+      totals.plan = this.plan.cost.mult(this.plan.quantity);
+
+      // ADD-ONS
+      totals.allAddOns = new Recurly.Cost(0);
+      totals.addOns = {};
+      for(var l=this.addOns.length, i=0; i &lt; l; ++i) {
+        var a = this.addOns[i],
+            c = a.cost.mult(a.quantity);
+        totals.addOns[a.code] = c;
+        totals.allAddOns = totals.allAddOns.add(c);
+      }
+
+      totals.stages.recurring = totals.plan.add(totals.allAddOns);
+
+      totals.stages.now = totals.plan.add(totals.allAddOns);
+
+      // FREE TRIAL 
+      if(this.plan.trial) {
+        totals.stages.now = Recurly.Cost.FREE; 
+      }
+
+      // COUPON
+      if(this.coupon) {
+        var beforeDiscount = totals.stages.now;
+        var afterDiscount = totals.stages.now.discount(this.coupon);
+        totals.coupon = afterDiscount.sub(beforeDiscount);
+        totals.stages.now = afterDiscount;
+      }
+
+      // SETUP FEE
+      if(this.plan.setupFee) {
+        totals.stages.now = totals.stages.now.add(this.plan.setupFee);
+      }
+
+      // VAT
+      if(this.billingInfo &amp;&amp; Recurly.isVATChargeApplicable(this.billingInfo.country,this.billingInfo.vatNumber)) {
+        totals.vat = totals.stages.now.mult( (Recurly.settings.VATPercent/100) );
+        totals.stages.now = totals.stages.now.add(totals.vat);
+      }
+
+      return totals;
+    }
+  , redeemAddOn: function(addOn) {
+    var redemption = addOn.createRedemption();
+    this.addOns.push(redemption); 
+    return redemption;
   }
-  for(var k in obj) {
-    if(obj.hasOwnProperty(k)) {
-      // Inherit parent attribute names when property key
-      // is a numeric string; how we deal with arrays
-      attr = (parseInt(k).toString() == k) ? attr : k;
-      var children = Recurly.flattenErrors(obj[k], attr);
-      for(var i=0, l=children.length; i &lt; l; ++i) {
-        arr.push(children[i]);
+
+  , removeAddOn: function(code) {
+    for(var a=this.addOns, l=a.length, i=0; i &lt; l; ++i) {
+      if(a[i].code == code) {
+        return a.splice(i,1);
       }
     }
   }
-  return arr;
-};
 
-Recurly.Account = {
-  create: createObject
-, toJSON: function(card) {
-    return {
-      first_name: card.first_name
-    , last_name: card.last_name
-    , account_code: card.customer_id
-    , email: card.email
-    };
-  }
-};
-
-Recurly.BillingInfo = {
-  create: createObject
-, toJSON: function(card) {
-    return {
-      first_name: card.first_name
-    , last_name: card.last_name
-    , month: card.expMonth
-    , year: card.expYear
-    , number: card.number
-    , verification_value: card.cvc
-    , country: card.country
-    , ip_address: card.ip_address
-    };
-  }
-};
-
-Recurly.Subscription = {
-  create: createObject
-, plan: Recurly.Plan
-, addOns: []
-
-, calculateTotals: function() {
-    var totals = {
-      stages: {}
-    };
-
-    // PLAN
-    totals.plan = this.plan.cost.mult(this.plan.quantity);
-
-    // ADD-ONS
-    totals.allAddOns = new Recurly.Cost(0);
-    totals.addOns = {};
-    for(var l=this.addOns.length, i=0; i &lt; l; ++i) {
-      var a = this.addOns[i],
-          c = a.cost.mult(a.quantity);
-      totals.addOns[a.code] = c;
-      totals.allAddOns = totals.allAddOns.add(c);
-    }
-
-    totals.stages.recurring = totals.plan.add(totals.allAddOns);
-
-    totals.stages.now = totals.plan.add(totals.allAddOns);
-
-    // FREE TRIAL 
-    if(this.plan.trial) {
-      totals.stages.now = Recurly.Cost.FREE; 
-    }
-
-    // COUPON
-    if(this.coupon) {
-      var beforeDiscount = totals.stages.now;
-      var afterDiscount = totals.stages.now.discount(this.coupon);
-      totals.coupon = afterDiscount.sub(beforeDiscount);
-      totals.stages.now = afterDiscount;
-    }
-
-    // SETUP FEE
-    if(this.plan.setupFee) {
-      totals.stages.now = totals.stages.now.add(this.plan.setupFee);
-    }
-
-    // VAT
-    if(this.billingInfo &amp;&amp; Recurly.isVATChargeApplicable(this.billingInfo.country,this.billingInfo.vatNumber)) {
-      totals.vat = totals.stages.now.mult( (Recurly.settings.VATPercent/100) );
-      totals.stages.now = totals.stages.now.add(totals.vat);
-    }
-
-    return totals;
-  }
-, redeemAddOn: function(addOn) {
-  var redemption = addOn.createRedemption();
-  this.addOns.push(redemption); 
-  return redemption;
-}
-
-, removeAddOn: function(code) {
-  for(var a=this.addOns, l=a.length, i=0; i &lt; l; ++i) {
-    if(a[i].code == code) {
-      return a.splice(i,1);
-    }
-  }
-}
-
-, findAddOnByCode: function(code) {
-    for(var l=this.addOns.length, i=0; i &lt; l; ++i) {
-      if(this.addOns[i].code == code) {
-        return this.addOns[i];
+  , findAddOnByCode: function(code) {
+      for(var l=this.addOns.length, i=0; i &lt; l; ++i) {
+        if(this.addOns[i].code == code) {
+          return this.addOns[i];
+        }
       }
+      return false;
     }
-    return false;
-  }
 
-, toJSON: function(plan, coupon) {
-    var json = {
-      plan_code: plan.plan_code
-    , quantity: plan.quantity ? plan.quantity : 1
-    , currency: plan.currency ? plan.quantity : 'USD'
-    , coupon_code: coupon.coupon_code ? coupon.coupon_code : undefined
-    , add_ons: []
-    };
+  , toJSON: function(plan, coupon) {
+      var json = {
+        plan_code: plan.plan_code
+      , quantity: plan.quantity ? plan.quantity : 1
+      , currency: plan.currency ? plan.quantity : 'USD'
+      , coupon_code: coupon.coupon_code ? coupon.coupon_code : undefined
+      , add_ons: []
+      };
 
-    for(var i=0, l=this.addOns.length, a=json.add_ons, b=this.addOns; i &lt; l; ++i) {
-      a.push({
-        add_on_code: b[i].code
-      , quantity: b[i].quantity
+      for(var i=0, l=this.addOns.length, a=json.add_ons, b=this.addOns; i &lt; l; ++i) {
+        a.push({
+          add_on_code: b[i].code
+        , quantity: b[i].quantity
+        });
+      }
+
+      return json;
+    }
+
+  , save: function(signature, plan, coupon, card, callback) {
+      var json = {
+        subscription: this.toJSON(plan, coupon)
+      , account: Recurly.Account.toJSON(card)
+      , billing_info: Recurly.BillingInfo.toJSON(card)
+      , signature: signature
+      };
+
+      Recurly.ajax({
+        url: Recurly.settings.baseURL+'subscribe',
+        data: json,
+        dataType: "jsonp",
+        jsonp: "callback",
+        timeout: 60000,
+        success: function(response){
+          callback(response)
+        },
+        error: function() {
+          console.log(['Unknown error processing transaction. Please try again later.']);
+        }
       });
+
     }
-
-    return json;
-  }
-
-, save: function(signature, plan, coupon, card, callback) {
-    var json = {
-      subscription: this.toJSON(plan, coupon)
-    , account: Recurly.Account.toJSON(card)
-    , billing_info: Recurly.BillingInfo.toJSON(card)
-    , signature: signature
-    };
-
-    Recurly.ajax({
-      url: Recurly.settings.baseURL+'subscribe',
-      data: json,
-      dataType: "jsonp",
-      jsonp: "callback",
-      timeout: 60000,
-      success: function(response){
-        callback(response)
-      },
-      error: function() {
-        console.log(['Unknown error processing transaction. Please try again later.']);
-      }
-    });
-
-  }
-};
+  };
+});
 </pre>
 <p>The code is idiosyncratic and can be improved. The best that can be said is that it works. Please feel free to improve it and contribute back to the project.</p>
 <h3>Script for Conditional Execution of Page-Specific JavaScript</h3>
