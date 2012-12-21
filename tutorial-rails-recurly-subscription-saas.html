@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for a Membership, Subscription, or SaaS Site with Recurly</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 20 December 2012</em></p>
+<p><em>Last updated 21 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial for a web application with recurring billing using Recurly. Use for a Rails membership site, subscription site, or SaaS site (software-as-a-service).</p>
 <ul>
@@ -59,7 +59,7 @@
 	<li>
 <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> front-end framework for <span class="caps">CSS</span> styling</li>
 </ul><h3>Screenshot</h3>
-<p><img src="http://railsapps.github.com/images/rails-Recurly-membership-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
+<p><img src="http://railsapps.github.com/images/rails-recurly-subscription-saas.png" title="Rails Application for a Membership, Subscription, or SaaS Site" alt="Rails Application for a Membership, Subscription, or SaaS Site"></p>
 <p>This example application exists so you don’t have to build it yourself. It aims to:</p>
 <ul>
 <li>eliminate effort spent building an application that meets a common need;</li>
@@ -270,7 +270,7 @@
 <p>You might also be interested in the <a href="https://github.com/RailsApps/rails-prelaunch-signup">rails-prelaunch-signup</a> example if you are planning prelaunch promotion. Use it to announce your plans and collect email addresses from visitors for future notification of the site’s launch.</p>
 <h3>About the Tutorial</h3>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete. This tutorial is more complex; it will take you about three hours to build the complete app. (Is our estimate accurate? Please <a href="#comments">leave a comment</a> when you are done.)</p>
-<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">GitHub issue</a>.</p>
+<p>If you find problems or wish to suggest improvements, please create a <a href="http://github.com/RailsApps/rails-recurly-subscription-saas/issues">GitHub issue</a>.</p>
 <p>You’ll find a comments section at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
 <h3>Before You Start</h3>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="http://github.com/RailsApps/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
@@ -289,16 +289,17 @@
 <p>If you want to add this code to an existing application, you can follow the tutorial and cut and paste the code into your existing application, resolving any conflicts as needed.</p>
 <h3>Copy from the Tutorial</h3>
 <p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely. Before you start, the tutorial will ask you to use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate a starter app to save some steps. Then you can follow the tutorial step-by-step to build the complete application.</p>
-<h3>Fork</h3>
+<h3>Other Options</h3>
+<h4>Fork</h4>
 <p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
-<h3>Clone</h3>
+<h4>Clone</h4>
 <p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below). To clone:</p>
 <pre>
 $ git clone git://github.com/RailsApps/rails-recurly-subscription-saas.git
 </pre>
 
 <p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
-<h3>Generate</h3>
+<h4>Generate</h4>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
 <p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="http://github.com/RailsApps/rails-recurly-subscription-saas/">rails-recurly-subscription-saas</a> example application.</p>
 <h3>Building from Scratch</h3>
@@ -638,6 +639,12 @@ end
 <p>We add <code>first_name</code>, <code>last_name</code>, and <code>customer_id</code> to the <code>attr_accessible</code> method so we can set these attributes from our registration form.</p>
 <p>We’ve also defined a method that concatenates the <code>first_name</code> and <code>last_name</code> to return a full name.</p>
 <p>With these changes to our User model, we are ready to seed the database.</p>
+<h3>Git</h3>
+<p>Commit your changes to git:</p>
+<pre>
+$ git add -A
+$ git commit -m "update user model"
+</pre>
 <h2>Initial Data</h2>
 <h3>Set Up a Database Seed File</h3>
 <p>You’ll want to set up default users so you can test the application. We’ll add three users with different subscription plans.</p>
@@ -1376,7 +1383,7 @@ resource.customer_id ||= SecureRandom.uuid
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
   &lt;% if @user.card_token %&gt;
-    Credit card has been accepted.
+    &lt;p&gt;Credit card acceptance is pending.&lt;/p&gt;
   &lt;% else %&gt;
     &lt;div class="field"&gt;
       &lt;%= label_tag :country, "Country" %&gt;
@@ -1411,7 +1418,7 @@ resource.customer_id ||= SecureRandom.uuid
 </pre>
 <p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller name “user” and action name “new”.</p>
 <p>We use an HTML5 technique for embedding data within the page that will be used by our JavaScript code. We set form tag attributes <code>data-subdomain</code>, <code>data-signature</code>, and <code>data-ip_address</code>. The <code>data-subdomain</code> value is set with the <code>RECURLY_SUBDOMAIN</code> constant that we set in our <strong>config/initializers/recurly.rb</strong> file (which was originally set in the <strong>config/application.yml</strong> file). Recurly needs the user’s IP address (for credit card fraud prevention) and a cryptographic signature (to guarantee the form data is tamperproof). The IP address is obtained from the Rails <code>request</code> object and the cryptographic signature is generated in the Registrations controller <code>new</code> action.</p>
-<p>We also pass the customer_id attribute as a hidden field. This will be used by the JavaScript library when the caredit card data is submitted to Recurly to create a customer record. It will also be used to set the User model customer_id attribute when our application saves the record in our database.</p>
+<p>We also pass the customer_id attribute as a hidden field. This will be used by the JavaScript library when the credit card data is submitted to Recurly to create a customer record. It will also be used to set the User model customer_id attribute when our application saves the record in our database.</p>
 <p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.card_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Recurly accepts the credit card data and provides a <code>card_token</code> but there’s no email address, we’ll save the Recurly token in a hidden field and prompt the user to correct the email address.</p>
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
 <p>The first_name, last_name, email, and password fields correspond to attributes of the User model. We use the Rails form builder object (the <em>f</em> variable) to bind the form to the User model. Methods such as <code>f.text_field</code> create form controls using the form builder object which automatically populate the attributes of the User model.</p>
@@ -1912,8 +1919,22 @@ $ git branch -D billing
 <pre>
 $ git checkout -b change-acct
 </pre>
+<h3>Modify “Edit account” Page for “First Name” and “Last Name”</h3>
+<p>Recurly customer accounts require both a first name and last name. We’ll modify the “Edit account” Page to add “First Name” and “Last Name”.</p>
+<p>Modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>.</p>
+<p>Remove:</p>
+<pre>
+&lt;%= f.input :name, :autofocus =&gt; true %&gt;
+</pre>
+<p>and substitute:</p>
+<pre>
+&lt;%= f.input :first_name, :autofocus =&gt; true %&gt;
+&lt;%= f.input :last_name %&gt;
+</pre>
+<p>Now the form matches the User model.</p>
 <h3>Change the Style for the “Cancel My Account” Link on the “Edit account” Page</h3>
 <p>We’re going to add small buttons using Twitter Bootstrap styles for our “Change Card” and “Change Plan” features.</p>
+<p>Modify the file <strong>app/views/devise/registrations/edit.html.erb</strong>.</p>
 <p>For stylistic consistency, replace the next statement with the following:</p>
 <pre>
 &lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete %&gt;.&lt;/p&gt;
@@ -2015,7 +2036,7 @@ $ git checkout -b change-acct
 &lt;p&gt;Unhappy? &lt;%= link_to "Cancel my account", registration_path(resource_name), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini' %&gt;&lt;/p&gt;
 
 &lt;div id="plan-options" class="modal" style="display: none;"&gt;
-  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name) , :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
+  &lt;%= simple_form_for resource, :as =&gt; resource_name, :url =&gt; update_plan_path, :html =&gt; {:method =&gt; :put, :class =&gt; 'form-horizontal' } do |f| %&gt;
     &lt;div class="modal-header"&gt;
       &lt;a class="close" data-dismiss="modal"&gt;&amp;#215;&lt;/a&gt;
       &lt;h3&gt;Change Plan&lt;/h3&gt;
@@ -2188,8 +2209,6 @@ end
 <p>Modify the <strong>config/routes.rb</strong> file to add the new route:</p>
 <pre>
 RailsRecurlySubscriptionSaas::Application.routes.draw do
-  post "recurly/push"
-  get "recurly/test"
   get "content/gold"
   get "content/silver"
   get "content/platinum"
@@ -2204,7 +2223,7 @@ RailsRecurlySubscriptionSaas::Application.routes.draw do
   resources :users
 end
 </pre>
-<p>The <a href="http://rdoc.info/github/plataformatec/devise/ActionDispatch/Routing/Mapper:devise_scope"><code>devise_scope</code> method</a> applies <a href="http://rubydoc.info/github/plataformatec/devise/master/Devise/Mapping">Devise.mappings</a> so the new routes are associated with other routes specified by <a href="http://rubydoc.info/github/plataformatec/devise/master/ActionDispatch/Routing/Mapper#devise_for-instance_method"><code>devise_for</code></a>. Our Registrations controller subclasses the Devise Registrations controller and it will raise an “Unknown action” error if the scope is not set by <code>devise_scope</code>. Note that <code>devise_for</code> takes a <code>:users</code> argument (plural) and <code>devise_scope</code> takes a <code>:user</code> argument (singular).</p>
+<p>The <code>devise_scope</code> method <a href="http://rdoc.info/github/plataformatec/devise/ActionDispatch/Routing/Mapper:devise_scope">(see <span class="caps">API</span>)</a> applies <a href="http://rubydoc.info/github/plataformatec/devise/master/Devise/Mapping">Devise.mappings</a> so the new routes are associated with other routes specified by <code>devise_for</code> <a href="http://rubydoc.info/github/plataformatec/devise/master/ActionDispatch/Routing/Mapper#devise_for-instance_method">(see <span class="caps">API</span>)</a>. Our Registrations controller subclasses the Devise Registrations controller and it will raise an “Unknown action” error if the scope is not set by <code>devise_scope</code>. Note that <code>devise_for</code> takes a <code>:users</code> argument (plural) and <code>devise_scope</code> takes a <code>:user</code> argument (singular).</p>
 <p>We add the <code>update_plan</code> route to respond to an <span class="caps">HTTP</span> “put” request (a form submission). This generates the route that we use in our “Change Plans” form:</p>
 <ul>
 <li>update_plan_path</li>
@@ -2580,10 +2599,10 @@ end
 <p>Commit your changes to git:</p>
 <pre>
 $ git add -A
-$ git commit -m "add Stripe webhooks"
+$ git commit -m "add Recurly webhooks"
 $ git checkout master
 $ git merge --squash webhooks
-$ git commit -m "add Stripe webhooks"
+$ git commit -m "add Recurly webhooks"
 $ git branch -D webhooks
 </pre>
 <h2>Customize, Test, and Deploy</h2>
@@ -2623,7 +2642,7 @@ $ git branch -D webhooks
 <pre>
 rake figaro:heroku
 </pre>
-<p>Alternatively, you can set Heroku environment variables for your Stripe <span class="caps">API</span> and public key like this:</p>
+<p>Alternatively, you can set Heroku environment variables for your Recurly <span class="caps">API</span> and private key like this:</p>
 <pre>
 $ heroku config:add RECURLY_API_KEY=secret RECURLY_JS_PRIVATE_KEY=secret RECURLY_SUBDOMAIN=mydomain
 </pre>
@@ -2638,14 +2657,14 @@ puts 'DEFAULT USERS'
 user = User.find_or_create_by_email :first_name =&gt; ENV['ADMIN_FIRST_NAME'].dup, :last_name =&gt; ENV['ADMIN_LAST_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
 puts 'user: ' &lt;&lt; user.name
 </pre>
-<p>If you don’t remove the “example.com” sample users, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Stripe for these users.<br>
-h2. Comments</p>
+<p>If you don’t remove the “example.com” sample users, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Recurly for these users.</p>
+<h2>Comments</h2>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
 <h3>Did You Like the Tutorial?</h3>
 <p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Get some link juice! Add your website to the list of <a href="http://railsapps.github.com/rails-applications-from-examples.html">Rails Applications Built from the Examples</a>. I love to see what people have built with these examples.</p>
-<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-stripe-membership-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/rails-recurly-subscription-saas/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
     </div><!-- class="content" -->
     
     <div class="comments">
