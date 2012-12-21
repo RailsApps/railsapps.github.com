@@ -488,7 +488,8 @@ RECURLY_SUBDOMAIN: myapp
 <p>Set the user name and password needed for the application to send email.</p>
 <p>If you wish, set your name, email address, and password for an administrator’s account. If you prefer, you can use the default to sign in to the application and edit the account after deployment. It is always a good idea to change the administrator’s password after the application is deployed.</p>
 <p>The roles you specify in the configuration file are the subscription plans that will be available to the application’s users. You will need an “admin” role. Keep the “silver”, “gold”, and “platinum” roles while you are testing the application. You can change these roles later, after you familiarize yourself with the application and begin to customize it for your own needs.</p>
-<p>The Recurly gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a private key so the Recurly gem can generate a cryptographic signature. You can find both keys on your Recurly account profile under “<span class="caps">API</span> Credentials”. We’ll also set a <code>RECURLY_SUBDOMAIN</code> constant that we’ll use in the JavaScript code that initiates the Recurly transaction. The Recurly subdomain is listed on your Recurly account profile.</p>
+<p>The Recurly gem requires an <span class="caps">API</span> key to operate. We’ll also need to supply a private key so the Recurly gem can generate a cryptographic signature. You can find both keys on your Recurly account profile under “<span class="caps">API</span> Credentials”.</p>
+<p>We’ll also set a <code>RECURLY_SUBDOMAIN</code> environment variable that we’ll use in the JavaScript code that initiates the Recurly transaction. Recurly creates a customer-facing website and <span class="caps">API</span> interface with a subdomain on the Recurly website. The <span class="caps">URL</span> will look like this: <code>https://myapp.recurly.com/</code> where “myapp” is the name of your company or service. You’ll use the subdomain “myapp” to form the <span class="caps">URL</span> that makes requests to the Recurly <span class="caps">API</span> interface. The Recurly subdomain is listed on your Recurly account profile.</p>
 <p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. For example, <code>ENV["GMAIL_USERNAME"]</code> will return the string “Your_Username”.</p>
 <p>If you prefer, you can delete the <strong>config/application.yml</strong> file and set each value as an environment variable in the Unix shell.</p>
 <h3>Configure Email</h3>
@@ -1145,10 +1146,13 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 <pre>
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
-  &lt;h3&gt;&lt;%= @plan.titleize if @plan %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'plan', @plan %&gt;
+  &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= f.error_notification %&gt;
-  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= display_base_errors resource %&gt;
+  &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
+  &lt;%= f.hidden_field :customer_id %&gt;
+  &lt;%= f.input :first_name, :autofocus =&gt; true %&gt;
+  &lt;%= f.input :last_name %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
@@ -1156,7 +1160,8 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
 &lt;% end %&gt;
 </pre>
 <p>We display the name of the selected subscription plan. The <code>titleize</code> method transforms the <em>plan</em> string from lowercase to titlecase.</p>
-<p>We add a hidden input field with <code>hidden_field_tag</code> to include a parameter identifying the selected subscription plan. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons and set as a variable by our Registrations controller.</p>
+<p>We add a hidden input field with <code>hidden_field_tag</code> to include a parameter identifying the selected subscription plan. The <em>plan</em> parameter is passed from the home page when the visitor clicks one of the “Subscribe” buttons and set as a variable by our Registrations controller. We also include the <code>customer_id</code> as a hidden field.</p>
+<p>We add input fields for Recurly’s required <code>first_name</code> and <code>last_name</code>.</p>
 <p>We remove the <code>&lt;%= render "devise/shared/links" %&gt;</code> navigation links because we already have a login link in the page navigation bar.</p>
 <p>When we submit the form, Rails does its form processing magic, including validation of the model attributes, and saves the new User record to the database.</p>
 <h3>Test Registration</h3>
@@ -1289,7 +1294,7 @@ $ git checkout -b billing
 		<td> monthly </td>
 	</tr>
 </table><p>“Plan Name” is displayed on invoices and in the Recurly web interface. “Plan Code” is a unique string of your choice that is used to identify the plan when subscribing a customer. The “Plan Code” should correspond to a role we’ve created to manage access. “Pricing” is the subscription price. You’ll specify the billing frequency. Optionally, you can specify a free trial period. If you include a trial period, the customer won’t be billed for the first time until the trial period ends. If the customer cancels before the trial period is over, she’ll never be billed at all.</p>
-<p>Now that Recurly knows about our subscription plans, we’ll set up an initializer file to configure the Recurly gem.</p>
+<p>Now that Recurly knows about our subscription plans, we’ll add attributes to our User model.</p>
 <h3>Add a Virtual Attribute to the User Model</h3>
 <p>When a new user signs up for a subscription, we’ll use JavaScript on the registration page to submit credit card data to Recurly. A successful transaction will return a Recurly token. The Recurly token will be included as a hidden field when the user submits the registration form.</p>
 <p>Before we can include a hidden field in the form, we must modify the User model to accept this field. It doesn’t need to be added to the User database schema as it will only be used when the form is processed by the Registrations controller. We’ll add it as a virtual attribute. For more on virtual attributes, see the RailsCast <a href="http://railscasts.com/episodes/16-virtual-attributes-revised">Virtual Attributes</a>.</p>
@@ -1352,45 +1357,14 @@ end
 resource.customer_id ||= SecureRandom.uuid
 </pre>
 <p>We set a customer id for the User object. The customer id is essential, as it allows us to maintain concurrency between Recurly’s customer records and our own. Recurly wants us to assign a unique identifier when we create a customer record. As a Rails ActiveRecord object, our User model will get a unique object id when the database record is created. But we are creating a Recurly customer record before we create the ActiveRecord object so the ActiveRecord object id is not yet available. We surmount this obstacle by using the Ruby <a href="http://apidock.com/ruby/SecureRandom/uuid/class">SecureRandom.uuid</a> method to generate a unique identifier. This will be our customer id for both Recurly’s customer records and our own.</p>
-<h3>Use a Metatag to Set the Recurly Subdomain</h3>
-<p>Recurly creates a customer-facing website and <span class="caps">API</span> interface with a subdomain on the Recurly website. The <span class="caps">URL</span> will look like this: <code>https://myapp.recurly.com/</code> where “myapp” is the name of your company or service. You’ll use the subdomain “myapp” to form the <span class="caps">URL</span> that makes requests to the Recurly <span class="caps">API</span> interface.</p>
-<p>You’ve set the Recurly subdomain in your <strong>config/application.yml</strong> file. We put it there for convenience, so your Recurly configuration settings are in one location and easier to copy to Heroku for deployment. Unlike the Recurly <span class="caps">API</span> and private key, the Recurly subdomain doesn’t need to stay secret.</p>
-<p>We set a constant <code>RECURLY_SUBDOMAIN</code> in the file <strong>config/initializers/recurly.rb</strong>. For ease in testing, we use a constant rather than using the environment variable directly.</p>
-<p>Now we must make the Recurly subdomain available to the JavaScript code we’ll use to submit credit card data to the Recurly server.</p>
-<p>We have several options. We could hardcode the Recurly subdomain in the JavaScript code we’ll write. But it is easier to use the constant we’ve already set, so we’re using the same value in development, testing, and production. We could include the constant as a Ruby variable in the JavaScript code by giving the JavaScript file an <strong>.erb</strong> extension. But we’d like to avoid mixing Ruby variables into JavaScript. So instead we’ll use an advanced technique to set the Recurly subdomain constant as a metatag that can be accessed using conventional JavaScript.</p>
-<p>We only want the metatag to appear on the page that contains a form that submits credit card data to Recurly. We’ll use a combination of a <code>content_for?</code> view helper with <code>yield</code> to inject the metatag into the application layout from the <strong>app/views/devise/registrations/new.html.erb</strong> file. Our application layout already includes <code>&lt;%= yield(:head) %&gt;</code> so we can easily add additional tags to the page <span class="caps">HEAD</span> element.</p>
-<p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
-<pre>
-&lt;% content_for :head do %&gt;
-  &lt;%= tag :meta, :name =&gt; "recurly-subdomain", :content =&gt; RECURLY_SUBDOMAIN %&gt;
-&lt;% end %&gt;
-&lt;h2&gt;Sign up&lt;/h2&gt;
-&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical' }) do |f| %&gt;
-  &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
-  &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
-  &lt;%= f.error_notification %&gt;
-  &lt;%= display_base_errors resource %&gt;
-  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
-  &lt;%= f.input :email, :required =&gt; true %&gt;
-  &lt;%= f.input :password, :required =&gt; true %&gt;
-  &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
-  &lt;%= f.button :submit, 'Sign up', :class =&gt; 'btn-primary' %&gt;
-&lt;% end %&gt;
-</pre>
-<p>The <code>&lt;% content_for :head do %&gt;</code> block injects the <code>RECURLY_SUBDOMAIN</code> in the application layout as a metatag named “recurly-subdomain.”</p>
-<p>Any JavaScript used on this page will have access to the Recurly subdomain through a jQuery selector. It’s more complicated than hardcoding the Recurly subdomain or using a Ruby variable in the JavaScript but the layers of indirection make the implementation more robust.</p>
-<p>With the Recurly subdomain set as a metatag, we will add fields for credit card data to the form.</p>
 <h3>Add Credit Card Data to the Registration Form</h3>
 <p>We’ll need fields for a credit card number, security code, and expiration date.</p>
 <p>We’ll also add a placeholder <code>div</code> for any error messages returned by the Recurly server.</p>
 <p>Modify the file <strong>app/views/devise/registrations/new.html.erb</strong>:</p>
 <pre>
-&lt;% content_for :head do %&gt;
-  &lt;%= tag :meta, :name =&gt; "recurly-subdomain", :content =&gt; RECURLY_SUBDOMAIN %&gt;
-&lt;% end %&gt;
 &lt;h2&gt;Sign up&lt;/h2&gt;
 &lt;div id="card_error" class="alert alert-error" style="display:none" &gt;&lt;/div&gt;
-&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical', 'data-signature' =&gt; @signature, 'data-ip_address' =&gt; request.remote_ip}) do |f| %&gt;
+&lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'card_form form-vertical', 'data-subdomain' =&gt; RECURLY_SUBDOMAIN, 'data-signature' =&gt; @signature, 'data-ip_address' =&gt; request.remote_ip}) do |f| %&gt;
   &lt;h3&gt;&lt;%= params[:plan].titleize if params[:plan] %&gt; Subscription Plan&lt;/h3&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
@@ -1433,10 +1407,10 @@ resource.customer_id ||= SecureRandom.uuid
 <p>Take a look at <code>div id="card_error"</code>. We give it the “alert alert-error” style from Twitter Bootstrap. It remains hidden with a <code>style="display:none"</code> unless we use JavaScript to show it when we receive an error message from the Recurly server. We’ll add the necessary JavaScript soon.</p>
 <p>If you examine the <span class="caps">HTML</span> source, you will see:</p>
 <pre>
-&lt;form accept-charset="UTF-8" action="/users" class="card_form form-vertical" data-signature="..." data-ip_address="..." id="new_user" method="post"&gt;
+&lt;form accept-charset="UTF-8" action="/users" class="card_form form-vertical" data-subdomain="..." data-signature="..." data-ip_address="..." id="new_user" method="post"&gt;
 </pre>
-<p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller and action names “user” and “new”. We assign the class <code>card_form</code> to the form. Our JavaScript code will interact with the form. We could select the form with the “new_user” id but instead we’ll use the “card_form” class in our jQuery selector. This gives us flexibility to use the same JavaScript code to interact with either a “new registration” or “edit registration” form.</p>
-<p>The form tag attributes include <code>data-signature</code> and <code>data-ip_address</code>. This uses an HTML5 technique for embedding data within the page that will be used by the JavaScript library. Recurly needs the user’s IP address (for credit card fraud prevention) and a cryptographic signature (to guarantee the form data is tamperproof).</p>
+<p>The Rails form builder creates a form with the id <code>new_user</code>. The id is generated automatically from the controller name “user” and action name “new”.</p>
+<p>We use an HTML5 technique for embedding data within the page that will be used by our JavaScript code. We set form tag attributes <code>data-subdomain</code>, <code>data-signature</code>, and <code>data-ip_address</code>. The <code>data-subdomain</code> value is set with the <code>RECURLY_SUBDOMAIN</code> constant that we set in our <strong>config/initializers/recurly.rb</strong> file (which was originally set in the <strong>config/application.yml</strong> file). Recurly needs the user’s IP address (for credit card fraud prevention) and a cryptographic signature (to guarantee the form data is tamperproof). The IP address is obtained from the Rails <code>request</code> object and the cryptographic signature is generated in the Registrations controller <code>new</code> action.</p>
 <p>We also pass the customer_id attribute as a hidden field. This will be used by the JavaScript library when the caredit card data is submitted to Recurly to create a customer record. It will also be used to set the User model customer_id attribute when our application saves the record in our database.</p>
 <p>We’ve added fields for credit card data but we’ve made inclusion of the fields conditional on the absence of the <code>@user.card_token</code> attribute. This accommodates a situation where correct credit card data is provided but the form fails to pass a validation test (such as a blank email address). If Recurly accepts the credit card data and provides a <code>card_token</code> but there’s no email address, we’ll save the Recurly token in a hidden field and prompt the user to correct the email address.</p>
 <p>Notice the differences between the credit card data fields and the previous data fields.</p>
@@ -1467,7 +1441,7 @@ $('.registrations.new').ready(function() {
     enableGeoIP: true
   , acceptedCards: ['american_express', 'discover', 'mastercard', 'visa']
   , oneErrorPerField: true
-  , baseURL: 'https://api.recurly.com/jsonp/' + $('meta[name="recurly-subdomain"]').attr('content') + '/'
+  , baseURL: 'https://api.recurly.com/jsonp/' + $('#new_user').data('subdomain') + '/'
   };
 
   Recurly.version = '2.1.3';
