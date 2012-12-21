@@ -67,7 +67,7 @@
 	<li>provide a well-thought-out app containing most of the features you’ll need.</li>
 </ul><p>Membership sites restrict access to content such as articles, videos, or user forums. Software-as-a-service (SaaS) sites limit use of web-based software to paid subscribers. The revenue model is the same whether the site provides high-value content or software as a service: A visitor purchases a subscription and gains access to restricted areas of the site. Typically, the subscription is repurchased monthly through a service that provides recurring billing.</p>
 <h3>Functionality</h3>
-<p>If you’re planning to build a SaaS applications, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
+<p>If you’re planning to build a SaaS application, a membership site, or some other subscription-based web service, your application will need the following rudimentary functionality:</p>
 <ul>
 <li>content or web functionality to deliver value</li>
 	<li>landing pages to convert visitors to paying customers</li>
@@ -412,7 +412,7 @@ gem 'httpi', '&gt;= 1.1.1'
 gem 'httpclient', '&gt;= 2.3.0.1'
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.9'</code> accordingly.</p>
-<p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
+<p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfile to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h3>Install the Required Gems</h3>
 <p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. Run:</p>
 <pre>
@@ -589,7 +589,6 @@ $ git commit -m "configure"
 </ul><h3>Add Fields for Recurly</h3>
 <p>Recurly customer accounts require both a first name and last name.</p>
 <p>We’ll also need a customer id that will be used to match our application users with Recurly customer accounts.</p>
-<p>Finally, we’ll add a field for the last four digits of the customer’s credit card number for ease in identifying and changing credit cards as necessary. The <code>last_4_digits</code> field isn’t needed for integration with Recurly but we can use it to show the user which credit card was used for the subscription.</p>
 <p>We’ll change our User model and database schema accordingly.</p>
 <h3>Migration for the User Model</h3>
 <p>Create a database migration with this command:</p>
@@ -679,13 +678,18 @@ puts "users: #{user2.name}, #{user3.name}, #{user4.name}"
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
 <p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
 <h3>Using “example.com” Email Addresses</h3>
-<p>The application handles “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Recurly as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to set up the administrator’s account and any sample users for development and testing.</p>
-<p>If you test subscribing a new user (providing a fake credit card number such as <em>4111-1111-1111-1111</em>), don’t use an “example.com” email address if you want to see the results in the Recurly administrative dashboard.</p>
-<p>If you wish to special case a different domain for email addresses (such as your own for an administrator’s account), look at the <strong>app/models/user.rb</strong> file. Change the statement in the <code>update_recurly</code> method:</p>
+<p>We want the application to handle the administrator’s account and any “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Recurly as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to add the administrator and set up sample users for development and testing.</p>
+<p>Later we’ll add two statements in an <code>update_recurly</code> method in the <strong>app/models/user.rb</strong> file implement the special case so that the Recurly server is not contacted:</p>
 <pre>
-return if email.include?('@example.com') and not Rails.env.production?
+def update_recurly
+  return if email.include?(ENV['ADMIN_EMAIL'])
+  return if email.include?('@example.com') and not Rails.env.production?
+  .
+  .
+  .
+end
 </pre>
-<p>As you can see from the code, the “example.com” email addresses will not be special cased in production. That means <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment. See the section “Customize, Test, and Deploy” for advice about deploying to Heroku.</p>
+<p>As you can see from the code, the “example.com” email addresses will not be special cased in production. That means <code>rake db:seed</code> will fail with errors if you attempt to run it after deployment. You should remove the sample users (but not the administrator) from the <strong>db/seeds.rb</strong> file before deploying to production. See the section “Customize, Test, and Deploy” for advice about deploying to Heroku.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -2640,39 +2644,28 @@ $ git branch -D webhooks
 <h3>Deploy to Heroku</h3>
 <p>For your convenience, here is a <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
 <p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
-<p>You’ll need to set your Recurly <span class="caps">API</span> and public key as Heroku environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information. Here’s how to set Heroku environment variables for your Recurly <span class="caps">API</span> data:</p>
-<pre>
-$ heroku config:add RECURLY_API_KEY=secret RECURLY_JS_PRIVATE_KEY=secret RECURLY_SUBDOMAIN=mydomain
-</pre>
-<p>Alternatively, the figaro gem provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
+<p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>With the figaro gem, just run:</p>
 <pre>
 rake figaro:heroku
 </pre>
-<p>Prior to deployment, it’s advisable to change your <strong>db/seeds.rb</strong> file. At a minimum, change the “example.com” address for the administrator and remove the “example.com” sample users. Optionally, you can change your own name, email and password or wait and change the values through the application “Edit account” interface later. You can also change the list of roles that correspond to the subscription plans you will offer.</p>
+<p>Alternatively, you can set Heroku environment variables for your Stripe <span class="caps">API</span> and public key like this:</p>
 <pre>
-puts 'CREATING ROLES'
-Role.create([
-  { :name =&gt; 'admin' }, 
-  { :name =&gt; 'silver' }, 
-  { :name =&gt; 'gold' },
-  { :name =&gt; 'platinum' }
-], :without_protection =&gt; true)
-puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name =&gt; 'My Name', :email =&gt; 'me@mydomain.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
-user.add_role :admin
-puts 'admin created: ' &lt;&lt; user.name
+$ heroku config:add RECURLY_API_KEY=secret RECURLY_JS_PRIVATE_KEY=secret RECURLY_SUBDOMAIN=mydomain
 </pre>
-<p>You can change the roles and name, email, and password as you wish. See the advice below about using “example.com” email addresses.</p>
-<p>You’ll need to special case your administrator’s email address in the <strong>app/models/user.rb</strong> file. Change the statement in the <code>update_recurly</code> method:</p>
+<p>Prior to deployment, it’s advisable to change your <strong>db/seeds.rb</strong> file. At a minimum, remove the “example.com” sample users. Optionally, you can change the administrator name, email and password though it is better to wait and change the values through the application “Edit account” interface later.</p>
 <pre>
-return if email.include?('@example.com') and not Rails.env.production?
+puts 'ROLES'
+YAML.load(ENV['ROLES']).each do |role|
+  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
+  puts 'role: ' &lt;&lt; role
+end
+puts 'DEFAULT USERS'
+user = User.find_or_create_by_email :first_name =&gt; ENV['ADMIN_FIRST_NAME'].dup, :last_name =&gt; ENV['ADMIN_LAST_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
+puts 'user: ' &lt;&lt; user.name
 </pre>
-<p>to</p>
-<pre>
-return if email.include?('@mydomain.com')
-</pre>
-<p>If you don’t special case your email address, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Recurly for the administrator.</p>
-<h2>Comments</h2>
+<p>If you don’t remove the “example.com” sample users, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Stripe for these users.<br>
+h2. Comments</p>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
 <h3>Did You Like the Tutorial?</h3>
