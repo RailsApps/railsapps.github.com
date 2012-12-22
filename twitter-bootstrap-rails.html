@@ -77,7 +77,12 @@
 <tr>
 <td> <a href="http://railsapps.github.com/rails-stripe-membership-saas/">Rails Membership Site with Stripe</a> </td>
 		<td> <a href="http://railsapps.github.com/tutorial-rails-stripe-membership-saas.html">Tutorial</a> </td>
-		<td> Complete membership site with subscription billing </td>
+		<td> Site with subscription billing using Stripe </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.com/rails-recurly-subscription-saas/">Rails Membership Site with Recurly</a> </td>
+		<td> <a href="http://railsapps.github.com/tutorial-rails-recurly-subscription-saas.html">Tutorial</a> </td>
+		<td> Site with subscription billing using Recurly </td>
 	</tr>
 </table><h2>Installing Twitter Bootstrap</h2>
 <p>There are four steps to adding Twitter Bootstrap to a Rails application:</p>
@@ -249,11 +254,11 @@ body { padding-top: 60px; }
 &lt;ul class="nav"&gt;
   &lt;% if user_signed_in? %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;        
+    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;
     &lt;/li&gt;
   &lt;% else %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Login', new_user_session_path)  %&gt;  
+    &lt;%= link_to('Login', new_user_session_path)  %&gt;
     &lt;/li&gt;
   &lt;% end %&gt;
   &lt;% if user_signed_in? %&gt;
@@ -355,7 +360,7 @@ lib/templates/erb/scaffold/_form.html.erb
 <p>Add this view helper to <strong>app/helpers/application_helper.rb</strong>:</p>
 <pre>
 module ApplicationHelper
-  
+
   def display_base_errors resource
     return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
@@ -367,7 +372,7 @@ module ApplicationHelper
     HTML
     html.html_safe
   end
-  
+
 end
 </pre>
 <p>Use the view helper in a form like this:</p>
