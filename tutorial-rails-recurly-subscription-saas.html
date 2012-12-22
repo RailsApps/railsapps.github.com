@@ -297,7 +297,6 @@
 <pre>
 $ git clone git://github.com/RailsApps/rails-recurly-subscription-saas.git
 </pre>
-
 <p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
 <h4>Generate</h4>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
@@ -361,7 +360,7 @@ question  Install an example application?
 Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
     composer  Running 'after bundler' callbacks.
 The template [...] could not be loaded.
-Error: You have already activated ..., but your Gemfile requires .... 
+Error: You have already activated ..., but your Gemfile requires ....
 Using bundle exec may solve this.
 </pre>
 <p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
@@ -632,7 +631,7 @@ class User &lt; ActiveRecord::Base
   def name
     name = "#{first_name.capitalize} #{last_name.capitalize}"
   end
-  
+
 end
 </pre>
 <p>First we remove the <code>attr_accessible :role_ids, :as =&gt; :admin</code> statement. This statement gives the administrator the power to override the mass assignment protection for the role attribute. The statement is no longer necessary because we will add a method that allows both the user and an administrator to reset the role.</p>
@@ -681,23 +680,10 @@ puts "users: #{user2.name}, #{user3.name}, #{user4.name}"
 </pre>
 <p>The <strong>db/seeds.rb</strong> file reads a list of roles from the <strong>config/application.yml</strong> file and adds the roles to the database. In fact, any new role can be added to the roles datatable with a statement such <code>user.add_role :superhero</code>. Setting the roles in the <strong>db/seeds.rb</strong> file simply makes sure each role is listed and available should a user wish to change roles.</p>
 <p>Next we add an administrator and three sample users. Our User model now has separate first and last names to accommodate Recurly’s customer schema.</p>
-<p>We’ve added a user with an administrator role using vales from the <strong>config/application.yml</strong> file. You can log in with this account for access as an administrator.</p>
+<p>We’ve added a user with an administrator role using values from the <strong>config/application.yml</strong> file. You can log in with this account for access as an administrator.</p>
 <p>You can change the administrator name, email, and password in this file but it is better to make the changes in the <strong>config/application.yml</strong> file to keep the credentials private. If you decide to include your private password in the <strong>db/seeds.rb</strong> file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
 <p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in. Use this feature to log in as an administrator and change the user name and password to your own.</p>
 <p>We’ve added three users and assigned “silver,” “gold,” and “platinum” roles corresponding to a tiered subscription plan.</p>
-<h3>Using “example.com” Email Addresses</h3>
-<p>We want the application to handle the administrator’s account and any “example.com” email addresses as a special case. Users with an “example.com” domain will not be added to Recurly as subscribers; they will only be added to the application database. This makes it possible to run <code>rake db:seed</code> to add the administrator and set up sample users for development and testing.</p>
-<p>Later we’ll add two statements in an <code>update_recurly</code> method in the <strong>app/models/user.rb</strong> file implement the special case so that the Recurly server is not contacted:</p>
-<pre>
-def update_recurly
-  return if email.include?(ENV['ADMIN_EMAIL'])
-  return if email.include?('@example.com') and not Rails.env.production?
-  .
-  .
-  .
-end
-</pre>
-<p>As you can see from the code, the “example.com” email addresses will not be special cased in production. That means <code>rake db:seed</code> will fail with errors if you attempt to run it after deployment. You should remove the sample users (but not the administrator) from the <strong>db/seeds.rb</strong> file before deploying to production. See the section “Customize, Test, and Deploy” for advice about deploying to Heroku.</p>
 <h3>Seed the Database</h3>
 <p>The starter app script has already set up the database and added the default user by running:</p>
 <pre>
@@ -747,7 +733,7 @@ $ git commit -m "initial data"
       &lt;li&gt;One lesson a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$9/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', content_silver_path, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_silver_path, :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well featured"&gt;
     &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
@@ -755,7 +741,7 @@ $ git commit -m "initial data"
       &lt;li&gt;Ten lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$19/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', content_gold_path, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_gold_path, :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well"&gt;
     &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
@@ -763,7 +749,7 @@ $ git commit -m "initial data"
       &lt;li&gt;Thirty lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$29/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', content_platinum_path, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_platinum_path, :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
@@ -794,7 +780,7 @@ $ git commit -m "initial data"
   text-align: center;
 }
 .featured{
-  -webkit-transform:scale(1.15); 
+  -webkit-transform:scale(1.15);
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.67);
 }
 .plan{
@@ -876,7 +862,7 @@ class ContentController &lt; ApplicationController
 
   def gold
   end
-  
+
   def platinum
   end
 end
@@ -952,11 +938,11 @@ end
 <pre>
 class ContentController &lt; ApplicationController
   before_filter :authenticate_user!
-  
+
   def silver
     authorize! :view, :silver, :message =&gt; 'Access limited to Silver Plan subscribers.'
   end
-  
+
   def gold
     authorize! :view, :gold, :message =&gt; 'Access limited to Gold Plan subscribers.'
   end
@@ -975,7 +961,7 @@ end
 <pre>
 class ContentController &lt; ApplicationController
   before_filter :authenticate_user!
-  
+
   def silver
     if (current_user.has_role? :silver) || (current_user.has_role? :admin)
       render :silver
@@ -983,7 +969,7 @@ class ContentController &lt; ApplicationController
       redirect_to :back, :notice =&gt; 'Access limited to Silver Plan subscribers.'
     end
   end
- 
+
   def gold
    if (current_user.has_role? :gold) || (current_user.has_role? :admin)
       render :gold
@@ -991,7 +977,7 @@ class ContentController &lt; ApplicationController
       redirect_to :back, :notice =&gt; 'Access limited to Gold Plan subscribers.'
     end
   end
-  
+
   def platinum
     if (current_user.has_role? :platinum) || (current_user.has_role? :admin)
       render :platinum
@@ -1043,7 +1029,7 @@ $ git checkout -b registration
       &lt;li&gt;One lesson a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$9/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'silver'), :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'silver'), :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well featured"&gt;
     &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
@@ -1051,7 +1037,7 @@ $ git checkout -b registration
       &lt;li&gt;Ten lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$19/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'gold'), :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'gold'), :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well"&gt;
     &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
@@ -1059,7 +1045,7 @@ $ git checkout -b registration
       &lt;li&gt;Thirty lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$29/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'platinum'), :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'platinum'), :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
@@ -1083,11 +1069,11 @@ $ git checkout -b registration
 &lt;ul class="nav"&gt;
   &lt;% if user_signed_in? %&gt;
     &lt;li&gt;
-    &lt;%= link_to 'Logout', destroy_user_session_path, :method=&gt;'delete' %&gt;        
+    &lt;%= link_to 'Logout', destroy_user_session_path, :method=&gt;'delete' %&gt;
     &lt;/li&gt;
   &lt;% else %&gt;
     &lt;li&gt;
-    &lt;%= link_to 'Login', new_user_session_path %&gt;  
+    &lt;%= link_to 'Login', new_user_session_path %&gt;
     &lt;/li&gt;
   &lt;% end %&gt;
   &lt;% if user_signed_in? %&gt;
@@ -1218,7 +1204,7 @@ class ApplicationController &lt; ActionController::Base
         root_path
     end
   end
-  
+
 end
 </pre>
 <p>The <code>after_sign_in_path_for(resource)</code> method will redirect a user to an appropriate page after sign in or sign up. The <code>case</code> statement checks the user’s role and redirects to the appropriate content page, or if an administrator, to the administrative dashboard.</p>
@@ -1443,7 +1429,7 @@ function createObject(o) {
 var Recurly = {};
 
 $('.registrations.new').ready(function() {
-  
+
   Recurly.settings = {
     enableGeoIP: true
   , acceptedCards: ['american_express', 'discover', 'mastercard', 'visa']
@@ -1538,9 +1524,9 @@ $('.registrations.new').ready(function() {
 
       totals.stages.now = totals.plan.add(totals.allAddOns);
 
-      // FREE TRIAL 
+      // FREE TRIAL
       if(this.plan.trial) {
-        totals.stages.now = Recurly.Cost.FREE; 
+        totals.stages.now = Recurly.Cost.FREE;
       }
 
       // COUPON
@@ -1566,7 +1552,7 @@ $('.registrations.new').ready(function() {
     }
   , redeemAddOn: function(addOn) {
     var redemption = addOn.createRedemption();
-    this.addOns.push(redemption); 
+    this.addOns.push(redemption);
     return redemption;
   }
 
@@ -1998,7 +1984,7 @@ $ git checkout -b change-acct
 <p>The form has a section named “modal-header” that contains a link to close the modal window. We follow Twitter Bootstrap’s example and use <span class="caps">HTML</span> entity #215 (an “x” character) for the link.</p>
 <p>The next section is named “modal-body” and it contains some of the most complex code we’ll use in this application.</p>
 <p>We want to display a set of radio buttons that display a collection of all the subscription plans and, when selected, set a role id. A user’s subscription plan is encoded as a role id. Role ids are nested attributes of a User object and can be set as <code>user.role_ids</code>. So <code>:role_ids</code> is the first parameter we pass to the input field helper.</p>
-<p>The input field helper wants a collection as the second parameter. We supply <code>Role.all</code> but we have to massage the list to remove the “admin” role. The Hash <code>delete_if</code> method is useful here. The block we supply to the <br><code>delete_if</code> method removes any role named “admin”.</p>
+<p>The input field helper wants a collection as the second parameter. We supply <code>Role.all</code> but we have to massage the list to remove the “admin” role. The Hash <code>delete_if</code> method is useful here. The block we supply to the<br><code>delete_if</code> method removes any role named “admin”.</p>
 <p>We tell the input field helper we want to display the selection field as radio buttons. The <code>:item_wrapper_class =&gt; 'inline'</code> will display the radio buttons and labels horizontally.</p>
 <p>The simple_form <code>label_method</code> parameter allows us to set a label for each radio button. If we didn’t set the <code>label_method</code>, the radio buttons would be labeled with an integer. We need to obtain the name attribute of each role and then apply the <code>titleize</code> method to display titlecase. The <code>label_method</code> parameter does not take a block but we can use a programming construct called an anonymous function (a Ruby language “lambda”) to manipulate the Role instance, obtaining the name attribute and making it titlecase, before passing it to the <code>label_method</code> parameter. This is a bit of advanced Ruby magic that is particularly useful here.</p>
 <p>Confusingly, we set the <code>label</code> parameter to false. If we didn’t do this, the entire field would be automatically labelled “Roles.”</p>
@@ -2245,7 +2231,7 @@ class UsersController &lt; ApplicationController
   def show
     @user = User.find(params[:id])
   end
-  
+
   def update
     authorize! :update, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
@@ -2258,7 +2244,7 @@ class UsersController &lt; ApplicationController
       redirect_to users_path, :alert =&gt; "Unable to update user."
     end
   end
-    
+
   def destroy
     authorize! :destroy, @user, :message =&gt; 'Not authorized as an administrator.'
     user = User.find(params[:id])
@@ -2316,7 +2302,7 @@ class RecurlyController &lt; ApplicationController
   rescue ActiveRecord::RecordNotFound =&gt; e
     logger.error "Customer record not found: #{e.message}"
   end
-  
+
 end
 </pre>
 <p>There’s no need to make this a RESTful controller (with actions such as <code>index</code>, <code>update</code>, etc.) as we are just responding to one type of request. We can give any name to the action; we’ll call it <code>push</code>.</p>
@@ -2427,7 +2413,7 @@ class User &lt; ActiveRecord::Base
     UserMailer.expire_email(self).deliver
     destroy
   end
-  
+
 end
 </pre>
 <p>Our new <code>expire</code> method is simple. We call a method on an ActionMailer method to send an email. Then we destroy the user.</p>
@@ -2441,7 +2427,7 @@ $ rails generate mailer UserMailer
 <pre>
 class UserMailer &lt; ActionMailer::Base
   default :from =&gt; "notifications@example.com"
-  
+
   def expire_email(user)
     mail(:to =&gt; user.email, :subject =&gt; "Subscription Cancelled")
   end
@@ -2461,7 +2447,7 @@ end
       Your subscription has been cancelled.
     &lt;/p&gt;
     &lt;p&gt;
-      We are sorry to see you go. We'd love to have you back. 
+      We are sorry to see you go. We'd love to have you back.
       Visit example.com anytime to create a new subscription.
     &lt;/p&gt;
   &lt;/body&gt;
@@ -2472,8 +2458,8 @@ end
 Subscription Cancelled
 
 Your subscription has been cancelled.
- 
-We are sorry to see you go. We'd love to have you back. 
+
+We are sorry to see you go. We'd love to have you back.
 Visit example.com anytime to create a new subscription.
 </pre>
 <p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email. If you use the Mandrill email service, you can skip this step if you configure Mandrill to automatically generate a plain-text version of all emails.</p>
@@ -2646,18 +2632,7 @@ rake figaro:heroku
 <pre>
 $ heroku config:add RECURLY_API_KEY=secret RECURLY_JS_PRIVATE_KEY=secret RECURLY_SUBDOMAIN=mydomain
 </pre>
-<p>Prior to deployment, it’s advisable to change your <strong>db/seeds.rb</strong> file. At a minimum, remove the “example.com” sample users. Optionally, you can change the administrator name, email and password though it is better to wait and change the values through the application “Edit account” interface later.</p>
-<pre>
-puts 'ROLES'
-YAML.load(ENV['ROLES']).each do |role|
-  Role.find_or_create_by_name({ :name =&gt; role }, :without_protection =&gt; true)
-  puts 'role: ' &lt;&lt; role
-end
-puts 'DEFAULT USERS'
-user = User.find_or_create_by_email :first_name =&gt; ENV['ADMIN_FIRST_NAME'].dup, :last_name =&gt; ENV['ADMIN_LAST_NAME'].dup, :email =&gt; ENV['ADMIN_EMAIL'].dup, :password =&gt; ENV['ADMIN_PASSWORD'].dup, :password_confirmation =&gt; ENV['ADMIN_PASSWORD'].dup
-puts 'user: ' &lt;&lt; user.name
-</pre>
-<p>If you don’t remove the “example.com” sample users, <code>rake db:seed</code> will fail with errors if you attempt to run it on Heroku after deployment, since you are not supplying a credit card for Recurly for these users.</p>
+<p>Optionally, you can change your <strong>db/seeds.rb</strong> file before deployment. You may wish to remove the “example.com” sample users. Optionally, you can change the administrator name, email and password though it is better to wait and change the values through the application “Edit account” interface later.</p>
 <h2>Comments</h2>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>

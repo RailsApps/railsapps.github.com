@@ -99,7 +99,6 @@
 <pre>
 $ git clone git://github.com/RailsApps/rails3-bootstrap-devise-cancan.git
 </pre>
-
 <p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
 <h4>Generate</h4>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
@@ -241,11 +240,11 @@ ROLES: [admin, user, VIP]
 &lt;ul class="nav"&gt;
   &lt;% if user_signed_in? %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;        
+    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;
     &lt;/li&gt;
   &lt;% else %&gt;
     &lt;li&gt;
-    &lt;%= link_to('Login', new_user_session_path)  %&gt;  
+    &lt;%= link_to('Login', new_user_session_path)  %&gt;
     &lt;/li&gt;
   &lt;% end %&gt;
   &lt;% if user_signed_in? %&gt;
@@ -398,7 +397,7 @@ lib/templates/erb/scaffold/_form.html.erb
 <p>Add this view helper to <strong>app/helpers/application_helper.rb</strong>:</p>
 <pre>
 module ApplicationHelper
-  
+
   def display_base_errors resource
     return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
@@ -410,7 +409,7 @@ module ApplicationHelper
     HTML
     html.html_safe
   end
-  
+
 end
 </pre>
 <p>Use the view helper in a form like this:</p>
@@ -469,7 +468,6 @@ config.sign_out_via = Rails.env.test? ? :get : :delete
 <pre>
 config.filter_parameters += [:password, :password_confirmation]
 </pre>
-
 <p>Note that filter_parameters is an array.</p>
 <h3>Improve the Sign In Form</h3>
 <p>We want the form for signing in (login) to use the Twitter Bootstrap form styles. Devise provides this form (hidden in the Devise gem) but we’ll override the Devise default form with our own form that uses the SimpleForm view helpers that integrate with Twitter Bootstrap.</p>
@@ -505,7 +503,7 @@ class Ability
       can :manage, :all
     end
   end
-  
+
 end
 </pre>
 <p>Rules defined in the <code>Ability</code> class can become quite complex. See the CanCan wiki <a href="https://github.com/ryanb/cancan/wiki/defining-abilities">Defining Abilities</a> for details.</p>
@@ -540,7 +538,7 @@ $ rails generate rolify:role Role User mongoid
 class Role &lt; ActiveRecord::Base
   has_and_belongs_to_many :users, :join_table =&gt; :users_roles
   belongs_to :resource, :polymorphic =&gt; true
-  
+
   scopify
 end
 </pre>
@@ -571,7 +569,6 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 validates_presence_of :name
 validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 </pre>
-
 <p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank and that the email address is unique.</p>
 <h3 id="registration-views">Create Custom Views for User Registration</h3>
 <p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults. We’ll use the SimpleForm view helpers (we already installed SimpleForm in a previous step).</p>
@@ -581,7 +578,7 @@ validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 &lt;%= simple_form_for(resource, :as =&gt; resource_name, :url =&gt; registration_path(resource_name), :html =&gt; {:class =&gt; 'form-vertical' }) do |f| %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
-  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
@@ -854,16 +851,16 @@ end
 &lt;h3&gt;Users&lt;/h3&gt;
 &lt;div class="span8"&gt;
 &lt;table class="table table-condensed"&gt;
-	  &lt;thead&gt;
+    &lt;thead&gt;
       &lt;tr&gt;
           &lt;th&gt;Username&lt;/th&gt;
           &lt;th&gt;Email&lt;/th&gt;
           &lt;th&gt;Registered&lt;/th&gt;
           &lt;th&gt;Role&lt;/th&gt;
           &lt;th&gt;&lt;/th&gt;
-          &lt;th&gt;&lt;/th&gt;                                      
+          &lt;th&gt;&lt;/th&gt;
       &lt;/tr&gt;
-  &lt;/thead&gt;   
+  &lt;/thead&gt;
   &lt;tbody&gt;
   &lt;% @users.each do |user| %&gt;
     &lt;tr&gt;
@@ -875,7 +872,7 @@ end
           &lt;a data-toggle="modal" href="#role-options-&lt;%= user.id %&gt;" class="btn btn-mini" type="button"&gt;Change role&lt;/a&gt;
           &lt;%= render user %&gt;
         &lt;/td&gt;
-        &lt;td&gt;&lt;%= link_to("Delete user", user_path(user), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini') unless user == current_user %&gt;&lt;/td&gt;                                       
+        &lt;td&gt;&lt;%= link_to("Delete user", user_path(user), :data =&gt; { :confirm =&gt; "Are you sure?" }, :method =&gt; :delete, :class =&gt; 'btn btn-mini') unless user == current_user %&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;% end %&gt;
   &lt;/tbody&gt;
@@ -939,7 +936,7 @@ class User &lt; ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :role_ids, :as =&gt; :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
-  
+
 end
 </pre>
 <p>We add the statement:</p>
@@ -963,7 +960,7 @@ class UsersController &lt; ApplicationController
   def show
     @user = User.find(params[:id])
   end
-  
+
   def update
     authorize! :update, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
@@ -973,7 +970,7 @@ class UsersController &lt; ApplicationController
       redirect_to users_path, :alert =&gt; "Unable to update user."
     end
   end
-    
+
   def destroy
     authorize! :destroy, @user, :message =&gt; 'Not authorized as an administrator.'
     user = User.find(params[:id])

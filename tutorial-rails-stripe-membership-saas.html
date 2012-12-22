@@ -268,7 +268,6 @@
 <pre>
 $ git clone git://github.com/RailsApps/rails-stripe-membership-saas.git
 </pre>
-
 <p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
 <h4>Generate</h4>
 <p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
@@ -331,7 +330,7 @@ question  Install an example application?
 Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
     composer  Running 'after bundler' callbacks.
 The template [...] could not be loaded.
-Error: You have already activated ..., but your Gemfile requires .... 
+Error: You have already activated ..., but your Gemfile requires ....
 Using bundle exec may solve this.
 </pre>
 <p>It’s due to conflicting gem versions. See the article <a href="http://railsapps.github.com/rails-error-you-have-already-activated.html">Rails Error: “You have already activated (…)”</a>.</p>
@@ -525,7 +524,7 @@ $ git commit -m "configure"
 <p>The starter application installs this view helper in <strong>app/helpers/application_helper.rb</strong>:</p>
 <pre>
 module ApplicationHelper
-  
+
   def display_base_errors resource
     return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
     messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
@@ -537,7 +536,7 @@ module ApplicationHelper
     HTML
     html.html_safe
   end
-  
+
 end
 </pre>
 <p>The view helper will be used in the files <strong>app/views/devise/registrations/new.html.erb</strong> and <strong>app/views/devise/registrations/edit.html.erb</strong>:</p>
@@ -722,7 +721,7 @@ $ git commit -m "initial data"
       &lt;li&gt;One lesson a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$9/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', content_silver_path, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_silver_path, :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well featured"&gt;
     &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
@@ -730,7 +729,7 @@ $ git commit -m "initial data"
       &lt;li&gt;Ten lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$19/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', content_gold_path, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_gold_path, :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well"&gt;
     &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
@@ -738,7 +737,7 @@ $ git commit -m "initial data"
       &lt;li&gt;Thirty lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$29/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', content_platinum_path, :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', content_platinum_path, :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
@@ -769,7 +768,7 @@ $ git commit -m "initial data"
   text-align: center;
 }
 .featured{
-  -webkit-transform:scale(1.15); 
+  -webkit-transform:scale(1.15);
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.67);
 }
 .plan{
@@ -851,7 +850,7 @@ class ContentController &lt; ApplicationController
 
   def gold
   end
-  
+
   def platinum
   end
 end
@@ -927,11 +926,11 @@ end
 <pre>
 class ContentController &lt; ApplicationController
   before_filter :authenticate_user!
-  
+
   def silver
     authorize! :view, :silver, :message =&gt; 'Access limited to Silver Plan subscribers.'
   end
-  
+
   def gold
     authorize! :view, :gold, :message =&gt; 'Access limited to Gold Plan subscribers.'
   end
@@ -950,7 +949,7 @@ end
 <pre>
 class ContentController &lt; ApplicationController
   before_filter :authenticate_user!
-  
+
   def silver
     if (current_user.has_role? :silver) || (current_user.has_role? :admin)
       render :silver
@@ -958,7 +957,7 @@ class ContentController &lt; ApplicationController
       redirect_to :back, :notice =&gt; 'Access limited to Silver Plan subscribers.'
     end
   end
- 
+
   def gold
    if (current_user.has_role? :gold) || (current_user.has_role? :admin)
       render :gold
@@ -966,7 +965,7 @@ class ContentController &lt; ApplicationController
       redirect_to :back, :notice =&gt; 'Access limited to Gold Plan subscribers.'
     end
   end
-  
+
   def platinum
     if (current_user.has_role? :platinum) || (current_user.has_role? :admin)
       render :platinum
@@ -1018,7 +1017,7 @@ $ git checkout -b registration
       &lt;li&gt;One lesson a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$9/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'silver'), :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'silver'), :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well featured"&gt;
     &lt;div class="plan featured-plan"&gt;&lt;h2&gt;Gold&lt;/h2&gt;&lt;/div&gt;
@@ -1026,7 +1025,7 @@ $ git checkout -b registration
       &lt;li&gt;Ten lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$19/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'gold'), :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'gold'), :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
   &lt;div class="span2 well"&gt;
     &lt;div class="plan"&gt;&lt;h2&gt;Platinum&lt;/h2&gt;&lt;/div&gt;
@@ -1034,7 +1033,7 @@ $ git checkout -b registration
       &lt;li&gt;Thirty lessons a month&lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;$29/month&lt;/h3&gt;
-    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'platinum'), :class =&gt; 'btn btn-primary' %&gt; 
+    &lt;%= link_to 'Subscribe', new_user_registration_path(:plan =&gt; 'platinum'), :class =&gt; 'btn btn-primary' %&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
@@ -1058,11 +1057,11 @@ $ git checkout -b registration
 &lt;ul class="nav"&gt;
   &lt;% if user_signed_in? %&gt;
     &lt;li&gt;
-    &lt;%= link_to 'Logout', destroy_user_session_path, :method=&gt;'delete' %&gt;        
+    &lt;%= link_to 'Logout', destroy_user_session_path, :method=&gt;'delete' %&gt;
     &lt;/li&gt;
   &lt;% else %&gt;
     &lt;li&gt;
-    &lt;%= link_to 'Login', new_user_session_path %&gt;  
+    &lt;%= link_to 'Login', new_user_session_path %&gt;
     &lt;/li&gt;
   &lt;% end %&gt;
   &lt;% if user_signed_in? %&gt;
@@ -1132,7 +1131,7 @@ devise_for :users, :controllers =&gt; { :registrations =&gt; 'registrations' }
   &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
-  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
@@ -1190,7 +1189,7 @@ class ApplicationController &lt; ActionController::Base
         root_path
     end
   end
-  
+
 end
 </pre>
 <p>The <code>after_sign_in_path_for(resource)</code> method will redirect a user to an appropriate page after sign in or sign up. The <code>case</code> statement checks the user’s role and redirects to the appropriate content page, or if an administrator, to the administrative dashboard.</p>
@@ -1288,7 +1287,7 @@ end
   &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
-  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
@@ -1334,7 +1333,7 @@ end
   &lt;%= hidden_field_tag 'plan', params[:plan] %&gt;
   &lt;%= f.error_notification %&gt;
   &lt;%= display_base_errors resource %&gt;
-  &lt;%= f.input :name, :autofocus =&gt; true %&gt; 
+  &lt;%= f.input :name, :autofocus =&gt; true %&gt;
   &lt;%= f.input :email, :required =&gt; true %&gt;
   &lt;%= f.input :password, :required =&gt; true %&gt;
   &lt;%= f.input :password_confirmation, :required =&gt; true %&gt;
@@ -1474,7 +1473,7 @@ Page-specific JavaScript on the home.index page.
 <pre>
 Page-specific JavaScript on the registrations.new page.
 Script loading: success
-Okay. Stripe file loaded. 
+Okay. Stripe file loaded.
 </pre>
 <p>If you see these messages, you’re ready to continue.</p>
 <h3>Add JavaScript for Form Processing</h3>
@@ -1705,7 +1704,7 @@ class User &lt; ActiveRecord::Base
     self.stripe_token = nil
     false
   end
-  
+
 end
 </pre>
 <p>We add <code>before_save :update_stripe</code> to call the <code>update_stripe</code> method when the user is saved or updated.</p>
@@ -1814,7 +1813,7 @@ $ git checkout -b change-acct
 <p>The form has a section named “modal-header” that contains a link to close the modal window. We follow Twitter Bootstrap’s example and use <span class="caps">HTML</span> entity #215 (an “x” character) for the link.</p>
 <p>The next section is named “modal-body” and it contains some of the most complex code we’ll use in this application.</p>
 <p>We want to display a set of radio buttons that display a collection of all the subscription plans and, when selected, set a role id. A user’s subscription plan is encoded as a role id. Role ids are nested attributes of a User object and can be set as <code>user.role_ids</code>. So <code>:role_ids</code> is the first parameter we pass to the input field helper.</p>
-<p>The input field helper wants a collection as the second parameter. We supply <code>Role.all</code> but we have to massage the list to remove the “admin” role. The Hash <code>delete_if</code> method is useful here. The block we supply to the <br><code>delete_if</code> method removes any role named “admin”.</p>
+<p>The input field helper wants a collection as the second parameter. We supply <code>Role.all</code> but we have to massage the list to remove the “admin” role. The Hash <code>delete_if</code> method is useful here. The block we supply to the<br><code>delete_if</code> method removes any role named “admin”.</p>
 <p>We tell the input field helper we want to display the selection field as radio buttons. The <code>:item_wrapper_class =&gt; 'inline'</code> will display the radio buttons and labels horizontally.</p>
 <p>The simple_form <code>label_method</code> parameter allows us to set a label for each radio button. If we didn’t set the <code>label_method</code>, the radio buttons would be labeled with an integer. We need to obtain the name attribute of each role and then apply the <code>titleize</code> method to display titlecase. The <code>label_method</code> parameter does not take a block but we can use a programming construct called an anonymous function (a Ruby language “lambda”) to manipulate the Role instance, obtaining the name attribute and making it titlecase, before passing it to the <code>label_method</code> parameter. This is a bit of advanced Ruby magic that is particularly useful here.</p>
 <p>Confusingly, we set the <code>label</code> parameter to false. If we didn’t do this, the entire field would be automatically labelled “Roles.”</p>
@@ -1953,7 +1952,7 @@ class User &lt; ActiveRecord::Base
   attr_accessor :stripe_token, :coupon
   before_save :update_stripe
   before_destroy :cancel_subscription
-  
+
   def update_stripe
     return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
@@ -2010,7 +2009,7 @@ class User &lt; ActiveRecord::Base
     errors.add :base, "Unable to cancel your subscription. #{e.message}."
     false
   end
-  
+
 end
 </pre>
 <p>We’ve added a <code>cancel_subscription</code> method that is activated by the <code>before_destroy</code> callback. The <code>cancel_subscription</code> method only takes action if the user has a customer id. Example users created by the <code>db:seed</code> process don’t have a customer id and the <code>destroy</code> action would fail for them which is why we make the <code>cancel_subscription</code> method conditional.</p>
@@ -2046,7 +2045,7 @@ class User &lt; ActiveRecord::Base
     errors.add :base, "Unable to update your subscription. #{e.message}."
     false
   end
-  
+
   def update_stripe
     return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
@@ -2088,7 +2087,7 @@ class User &lt; ActiveRecord::Base
     self.stripe_token = nil
     false
   end
-  
+
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
@@ -2203,7 +2202,7 @@ class UsersController &lt; ApplicationController
   def show
     @user = User.find(params[:id])
   end
-  
+
   def update
     authorize! :update, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
@@ -2216,7 +2215,7 @@ class UsersController &lt; ApplicationController
       redirect_to users_path, :alert =&gt; "Unable to update user."
     end
   end
-    
+
   def destroy
     authorize! :destroy, @user, :message =&gt; 'Not authorized as an administrator.'
     user = User.find(params[:id])
@@ -2371,7 +2370,7 @@ class User &lt; ActiveRecord::Base
     self.stripe_token = nil
     false
   end
-  
+
   def cancel_subscription
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
@@ -2386,12 +2385,12 @@ class User &lt; ActiveRecord::Base
     errors.add :base, "Unable to cancel your subscription. #{e.message}."
     false
   end
-  
+
   def expire
     UserMailer.expire_email(self).deliver
     destroy
   end
-  
+
 end
 </pre>
 <p>Our new <code>expire</code> method is simple. We call a method on an ActionMailer method to send an email. Then we destroy the user.</p>
@@ -2405,7 +2404,7 @@ $ rails generate mailer UserMailer
 <pre>
 class UserMailer &lt; ActionMailer::Base
   default :from =&gt; "notifications@example.com"
-  
+
   def expire_email(user)
     mail(:to =&gt; user.email, :subject =&gt; "Subscription Cancelled")
   end
@@ -2425,7 +2424,7 @@ end
       Your subscription has been cancelled.
     &lt;/p&gt;
     &lt;p&gt;
-      We are sorry to see you go. We'd love to have you back. 
+      We are sorry to see you go. We'd love to have you back.
       Visit example.com anytime to create a new subscription.
     &lt;/p&gt;
   &lt;/body&gt;
@@ -2436,8 +2435,8 @@ end
 Subscription Cancelled
 
 Your subscription has been cancelled.
- 
-We are sorry to see you go. We'd love to have you back. 
+
+We are sorry to see you go. We'd love to have you back.
 Visit example.com anytime to create a new subscription.
 </pre>
 <p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email. If you use the Mandrill email service, you can skip this step if you configure Mandrill to automatically generate a plain-text version of all emails.</p>
