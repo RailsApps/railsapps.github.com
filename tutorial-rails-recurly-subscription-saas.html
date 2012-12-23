@@ -192,8 +192,9 @@
 </ul><p>You can use a web-based calculator to compare pricing of some services:</p>
 <ul>
 <li><a href="http://www.billingsavvy.com/">BillingSavvy</a></li>
-</ul><p>BillingSavvy shows Stripe is cheaper than Recurly for less than 600 subscribers. Over 600 subscribers, Recurly becomes cheaper. Stripe and Recurly are always cheaper than Chargify, CheddarGetter and Spreedly for $12/month subscriptions.</p>
-<p>In addition to offering a price advantage for high-volume sites, Recurly is available to businesses located outside of the US and Canada. And Recurly claims to offer better features for customer retention. Unlike Stripe, for example, Recurly’s dunning managagement feature sends emails to the customer when the customer’s credit card expires to encourage continuing the subscription.</p>
+</ul><p>Looking specifically at Recurly and Stripe, it appears that costs for Recurly or Stripe are similar for low-volume web businesses. Costs for either service are within $20 per month of each other for websites generating revenue of $4,000 to $20,000 per month with volume of 200 to 1000 transactions at an average price of $20 per transaction. If you anticipate revenue greater than $20,000/month, especially with a high average transaction price or a large number of transactions, you should carefully analyze the costs before deciding to choose either Stripe or Recurly.</p>
+<p>Looking at other factors, Recurly is available to businesses located outside of the US and Canada (Stripe is not). And Recurly claims to offer better features for customer retention. Unlike Stripe, for example, Recurly’s dunning managagement feature sends emails to the customer when the customer’s credit card expires to encourage continuing the subscription.</p>
+<p>The RailsApps project provides example applications for either Stripe or Recurly.</p>
 <p>This tutorial shows to set up recurring billing using Recurly. Before you start, go to the <a href="http://recurly.com/">Recurly website</a> and set up an account.</p>
 <h3>Merchant Account</h3>
 <p>Your business will need a merchant account in order to accept credit card payments. Here’s an explanation from Phillip Parker of <a href="http://www.cardpaymentoptions.com/">CardPaymentOptions.com</a>: “A merchant account is a line of credit account that allows a business to accept card payments from its customers. Similar to how a checking account allows you to deposit another person’s check into your checking account, a merchant account allows you to accept a card payment from a customer. Unlike a checking account, a merchant account doesn’t hold money. Instead, a card payment passes through the merchant account and is deposited into a checking account after the funds have been cleared through the merchant account.”</p>
@@ -212,13 +213,16 @@
 	<li>batch fee $0</li>
 	<li>monthly <span class="caps">PCI</span> compliance $6.50</li>
 	<li>Amex rate 3.50%</li>
+</ul><p>Add the average <a href="http://en.wikipedia.org/wiki/Interchange_fee">interchange fee</a> charged by banks:</p>
+<ul>
+<li>interchange fee 1.79%</li>
 </ul><p>Add Recurly’s fees:</p>
 <ul>
 <li>1.25% + $0.10/transaction</li>
 	<li>$69/monthly minimum</li>
 </ul><p>And you can see a total for the merchant account and Recurly:</p>
 <ul>
-<li>1.55% + $0.18/transaction</li>
+<li>3.34% + $0.18/transaction</li>
 	<li>$11.50/month fees</li>
 	<li>$69/monthly minimum</li>
 </ul><p>Compare to Stripe:</p>
@@ -226,7 +230,7 @@
 <li>2.9% + $0.30/transaction</li>
 	<li>no monthly minimum</li>
 	<li>no merchant account needed</li>
-</ul><p>For 600 users per month at $10 per transaction, Recurly/<span class="caps">TSYS</span> will cost $212 and Stripe will cost $354.</p>
+</ul><p>Again, you should carefully analyze costs based on your projected revenue before choosing either Stripe or Recurly. Stripe’s low percentage fee is offset by a high per-transaction fee and Recurly’s high percentage fee is offset by a low per-transaction fee.</p>
 <h3>Hosting</h3>
 <p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
