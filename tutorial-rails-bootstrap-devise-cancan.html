@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Rails Tutorial for Devise with CanCan and Twitter Bootstrap</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 18 December 2012</em></p>
+<p><em>Last updated 24 December 2012</em></p>
 <h2>Introduction</h2>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>CanCan</strong> and <strong>Twitter Bootstrap</strong>.</p>
 <ul>
@@ -1020,7 +1020,41 @@ end
 <p>Run <code>rake spec</code> to run all RSpec tests.</p>
 <p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run all Cucumber scenarios.</p>
 <h3>Deploy to Heroku</h3>
-<p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial: Rails on Heroku</a>.</p>
+<p>For your convenience, here is a <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
+<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
+<p>Add this configuration parameter to the <strong>config/application.rb</strong> file:</p>
+<pre>
+# Heroku requires this to be false
+config.assets.initialize_on_precompile=false
+</pre>
+<p>Then precompile assets, commit to git, and push to Heroku:</p>
+<pre>
+$ rake assets:precompile
+$ git add -A
+$ git commit -m "assets compiled for Heroku"
+$ git push heroku master
+
+You'll need to set the configuration values from the *config/application.yml* file as Heroku environment variables. See the article "Rails Environment Variables":http://railsapps.github.com/rails-environment-variables.html for more information.
+
+With the figaro gem, just run:
+
+&lt;pre&gt;
+rake figaro:heroku
+</pre>
+<p>Alternatively, you can set Heroku environment variables directly.</p>
+<p>The figaro gem version 0.5.0 has a bug and can’t run <code>rake figaro:heroku</code>.</p>
+<p>Set environment variables directly on Heroku with <code>heroku config:add</code>.</p>
+<pre>
+$ heroku config:add GMAIL_USERNAME='myname@gmail.com' GMAIL_PASSWORD='secret'
+$ heroku config:add 'ROLES=[admin, user, VIP]'
+$ heroku config:add ADMIN_NAME='First User' ADMIN_EMAIL='user@example.com' ADMIN_PASSWORD='please'
+</pre>
+<p>Complete Heroku deployment with:</p>
+<pre>
+$ heroku run rake db:migrate
+$ heroku run rake db:seed
+</pre>
+<p>See the <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
 <h2>Comments</h2>
 <h3>Credits</h3>
 <p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
