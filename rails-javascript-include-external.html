@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Unholy Rails: Adding JavaScript to Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 16 October 2012</em></p>
+<p><em>Last updated 31 December 2012</em></p>
 <p>Rails and JavaScript topics: How to include external JavaScript files and jQuery plugins in Rails 3.1 or newer. Using page-specific JavaScript in Rails. Organizing JavaScript files.</p>
 <p>What is the best way to add a JavaScript library to a Rails application? Use the Rails asset pipeline? Or include directly in a view template? This article explains what to do when your application is not wholly Rails.</p>
 <p>This is a guide for developers using the example apps from the RailsApps repository. The <a href="http://railsapps.github.com/">RailsApps project</a> provides open source applications and detailed tutorials for Rails. Next time you build an app, try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool; it’s a better way to build a starter app.</p>
@@ -144,7 +144,10 @@
 </li>
 	<li>Ken Collins’s <a href="https://speakerdeck.com/u/metaskills/p/secrets-of-the-asset-pipeline">Secrets Of The Asset Pipeline</a>
 </li>
-</ul><p>Leave a <a href="#comment">comment</a> below if you’d like to suggest ways to organize your JavaScript files. Here’s my advice about organizing your JavaScript files.</p>
+</ul><p>Leave a <a href="#comment">comment</a> below if you’d like to suggest ways to organize your JavaScript files.</p>
+<h4>Using the Paloma Gem</h4>
+<p>The <a href="https://github.com/kbparagua/paloma">Paloma gem</a> offers an easy way to organize JavaScript files using the Rails asset pipeline. It also provides a capability to execute page-specific JavaScript.</p>
+<p>Read on for my advice about organizing your JavaScript files.</p>
 <h3 id="default">Default Locations</h3>
 <p>In a simple application, you can collect all the JavaScript files in the <strong>app/assets/javascripts</strong> folder and rely on the default <code>//= require_tree .</code> directive to combine the scripts into a single <em>application.js</em> script. Here we add <strong>google-analytics.js</strong> and <strong>admin.js</strong> files to the default directory.</p>
 <pre>
@@ -227,6 +230,19 @@
 //= require ./content/comments
 </pre>
 <p>The jQuery and Twitter Bootstrap scripts are included from gems; any scripts in a <em>sitewide</em> directory are included; and the scripts in the <em>admin</em> and <em>content</em> directories are explicitly included.</p>
+<h3>Using the Paloma Gem</h3>
+<p>If you use the <a href="https://github.com/kbparagua/paloma">Paloma gem</a>, you’ll organize JavaScript files like this:</p>
+<pre>
++-javascripts/
+| +-application.js (manifest)
+| +-paloma/
+| | +-users/ (assuming you have a UsersController)
+| | | +-new.js (assuming you have JavaScript you want to execute only for the "new" action)
+| | +-foobars/ (assuming you have a FoobarsController)
+| | | +-show.js (assuming you have JavaScript you want to execute only for the "show" action)
++-stylesheets/
+</pre>
+<p>This structure is ideal for executing page-specific (or controller-specific) JavaScript.</p>
 <h3>Create Your Own Gems When You Can</h3>
 <p>By convention, <strong>lib/assets/javascripts</strong> is intended for scripts used on more than one project. Consider putting these in a gem to gain the benefits of RubyGems as a package manager if you use these scripts across different applications. You get easy version management and you can <code>bundle update &lt;gem&gt;</code> when you need the latest version of a JavaScript library.</p>
 <p>The Rails asset pipeline will recognize scripts from any gem that contains files in these locations. If you wish to have a script from a gem combined with your project code in the <em>application.js</em> script for use throughout your application, you must specify it with a directive in the manifest. The examples above show how jQuery and Twitter Bootstrap scripts are included from gems.</p>
@@ -395,6 +411,10 @@ $('document').ready(function() {
 <p>This provides a simple technique to execute JavaScript conditionally on a page.</p>
 <h3 id="garber-irish">The Garber-Irish Technique</h3>
 <p>For a sophisticated approach to namespacing assets and executing JavaScript based on controller name and action, investigate the <a href="http://viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution">Garber-Irish</a> technique.</p>
+<h3>Using the Paloma Gem</h3>
+<p>The <a href="https://github.com/kbparagua/paloma">Paloma gem</a> offers an easy way to organize JavaScript files using the Rails asset pipeline. It also provides a capability to execute page-specific JavaScript based on controller name and action.</p>
+<p>The Paloma gem simplifies implementation of page-specific JavaScript. I recommend it.</p>
+<p>Read on if you’d like to understand how to implement page-specific JavaScript yourself.</p>
 <h3 id="implementing-conditional">Implementing Conditional Execution of Page-Specific JavaScript</h3>
 <p>We can use a simplified version of the Garber-Irish technique to execute JavaScript conditionally on a page. We use John Firebaugh’s <a href="https://github.com/Verba/jquery-readyselector">jquery-readyselector</a> script to extend the jQuery <code>.ready()</code> to simplify the conditional test.</p>
 <p>Set the controller name and action in the <span class="caps">HTML</span> <code>body</code> tag:</p>
@@ -547,9 +567,80 @@ $ rails server -e production
 </pre>
 <p>Visit the web pages that use your scripts and check functionality. In our MegaAdmin example, we’ll see an error “admin.js isn’t precompiled” unless we set <code>config.assets.precompile</code> to include it.</p>
 <p>Use <code>rake assets:clean</code> to remove the precompiled assets when you return to development mode.</p>
+<h2 id="parameters">Passing Parameters to JavaScript</h2>
+<p>It is often necessary to pass parameters from a Rails controller to JavaScript. We’ll look at several approaches and consider the issues.</p>
+<h3>Using the Paloma Gem</h3>
+<p>The <a href="https://github.com/kbparagua/paloma">Paloma gem</a> offers an easy way to organize JavaScript files using the Rails asset pipeline. It provides a capability to execute page-specific JavaScript and it provides an easy way to pass parameters to JavaScript.</p>
+<p>For example, you might have a UsersController with a <code>destroy</code> action:</p>
+<pre>
+def destroy
+    user = User.find params[:id]
+    user.destroy
+    js_callback :params =&gt; {:user_id =&gt; params[:id]}
+end
+</pre>
+<p>The <code>js_callback</code> directive makes the parameter available in a corresponding JavaScript file named <strong>assets/javascripts/paloma/users/destroy.js</strong>:</p>
+<pre>
+Paloma.callbacks['users/destroy'] = function(params){
+    var id = params['user_id'];
+    alert('User ' + id + ' deleted.');
+};
+</pre>
+<p>If you use the Paloma gem, there’s nothing more you need to do.</p>
+<h3>Use HTML5 Data Attributes</h3>
+<p>HTML5 offers a convenient way to store data strings in an <span class="caps">HTML</span> page that are not rendered but are available to JavaScript through the <span class="caps">DOM</span> (the <a href="http://en.wikipedia.org/wiki/Document_Object_Model">document object model</a>). The HTML5 specification describes <a href="http://www.w3.org/TR/2010/WD-html5-20101019/elements.html#custom-data-attribute">custom data attributes</a>. Custom data attributes are the best way to set parameters that will be used in JavaScript.</p>
+<p>Here’s an example. Suppose you have a form that will be manipulated with JavaScript before it is submitted to your application. Using the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>, you might use a form helper and set an HTML5 data attribute. In our example, we obtain the user’s IP address from the <code>request</code> object and set it as a <code>data-ip_address</code> data attribute.</p>
+<pre>
+&lt;%= simple_form_for @user, :html =&gt; {:class =&gt; 'form-vertical', 'data-ip_address' =&gt; request.remote_ip}) do |f| %&gt;
+.
+.
+.
+&lt;% end %&gt;
+</pre>
+<p>The view will render <span class="caps">HTML</span> in the browser:</p>
+<pre>
+&lt;form accept-charset="UTF-8" action="/users" class="form-vertical" data-ip_address="..." id="new_user" method="post"&gt;
+</pre>
+<p>Using a jQuery selector, we can obtain the value of the IP address in our JavaScript with:</p>
+<pre>
+console.log('IP address: ' + $('#new_user').data('ip_address'));
+</pre>
+<p>In general, this is the best way to pass a parameter to JavaScript.</p>
+<h3>Use Metatags</h3>
+<p>You may see this technique used in some Rails applications.</p>
+<p>Add a <code>&lt;%= yield(:head) %&gt;</code> directive to the <code>head</code> section of the  <strong>app/views/layouts/application.html.erb</strong> application layout file:</p>
+<pre>
+&lt;head&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "App_Name" %&gt;&lt;/title&gt;
+  &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "App_Name" %&gt;"&gt;
+  &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
+  &lt;%= javascript_include_tag "application" %&gt;
+  &lt;%= csrf_meta_tags %&gt;
+  &lt;%= yield(:head) %&gt;
+&lt;/head&gt;
+</pre>
+<p>In a view file, add a <code>content_for?</code> view helper:</p>
+<pre>
+&lt;% content_for :head do %&gt;
+  &lt;%= tag :meta, :name =&gt; "ip_address", :content =&gt; request.remote_ip %&gt;
+&lt;% end %&gt;
+</pre>
+<p>The <code>&lt;% content_for :head do %&gt;</code> block injects the IP address in the application layout as a metatag named “ip_address.” Any JavaScript used on the page will have access to the IP address through a jQuery selector:</p>
+<pre>
+console.log('IP address: ' + $('meta[name="ip_address"]').attr('content'));
+</pre>
+<p>The metatag technique is an alternative to using HTML5 data attributes.</p>
+<h3>Use a “.js.erb” File</h3>
+<p>Any Ruby variable can be included in JavaScript code by giving the JavaScript file an <strong>.erb</strong> extension.</p>
+<p>For example, you may have a file <strong>app/assets/javascripts/myscript.js.erb</strong> that contains:</p>
+<pre>
+console.log('IP address: ' + &lt;%= request.remote_ip %&gt;);
+</pre>
+<p>This technique of passing a parameter to JavaScript is simple, but it is best to avoid mixing Ruby variables into JavaScript, so try to use HTML5 data attributes instead.</p>
 <h2 id="comment">Credits</h2>
 <p>Daniel Kehoe wrote this article for the RailsApps project.</p>
-<p>Was this useful to you? Follow me on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a> <br>
+<p>Was this useful to you? Follow me on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a><br>
 and tweet some praise. I’d love to know you were helped out by the article.</p>
 <p>Thank you to Peter Cooper (<a href="http://twitter.com/peterc">@peterc</a>), Pat Shaughnessy (<a href="http://twitter.com/pat_shaughnessy">@pat_shaughnessy</a>), Eric Berry (<a href="http://twitter.com/cavneb">@cavneb</a>), Ken Collins (<a href="http://twitter.com/metaskills">@metaskills</a>), Jo Liss (<a href="http://twitter.com/jo_liss">@jo_liss</a>), Stephen Ball (<a href="http://twitter.com/StephenBallNC">@StephenBallNC</a>), and Andrey Koleshko (<a href="http://twitter.com/ka8725">@ka8725</a>) for technical review and advice.</p>
     </div><!-- class="content" -->
