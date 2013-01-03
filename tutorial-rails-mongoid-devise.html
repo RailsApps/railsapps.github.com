@@ -168,7 +168,7 @@ question  Install an example application?
 <p><strong>Gemfile</strong></p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.10'
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
   gem 'coffee-rails', '~&gt; 3.2.1'
@@ -186,7 +186,7 @@ gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
 gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
 gem "devise", "&gt;= 2.1.2"
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.9'</code> accordingly.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.10'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h3>Install the Required Gems</h3>
 <p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. Run:</p>
@@ -457,7 +457,6 @@ validates_presence_of :name
 validates_uniqueness_of :name, :email, :case_sensitive =&gt; false
 attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 </pre>
-
 <p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank.</p>
 <h4>Create Customized Views for User Registration (<span class="caps">ERB</span>)</h4>
 <p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults.</p>
@@ -704,11 +703,11 @@ header nav ul li {
 <pre>
 &lt;% if user_signed_in? %&gt;
   &lt;li&gt;
-  &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;        
+  &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;
   &lt;/li&gt;
 &lt;% else %&gt;
   &lt;li&gt;
-  &lt;%= link_to('Login', new_user_session_path)  %&gt;  
+  &lt;%= link_to('Login', new_user_session_path)  %&gt;
   &lt;/li&gt;
 &lt;% end %&gt;
 &lt;% if user_signed_in? %&gt;

@@ -229,7 +229,7 @@ As a &lt;role&gt;, I want &lt;goal&gt; so that &lt;benefit&gt;
 <pre>
 *Request Invitation*
 As a visitor to the website
-I want to request an invitation 
+I want to request an invitation
 so I can be notified when the site is launched
 
 *See Invitation Requests*
@@ -290,7 +290,7 @@ question  Install an example application?
 <p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.10'
 gem 'sqlite3'
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
@@ -317,7 +317,7 @@ gem "google_visualr", "&gt;= 2.1.2"
 gem "jquery-datatables-rails", "&gt;= 1.10.0"
 gem "simple_form"
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.9'</code> accordingly.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.10'</code> accordingly.</p>
 <p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h3>Install the Required Gems</h3>
 <p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. Run:</p>
@@ -483,7 +483,7 @@ $ git checkout -b request-invitation
 <pre>
 *Request Invitation*
 As a visitor to the website
-I want to request an invitation 
+I want to request an invitation
 so I'll be notified when the site is launched
 </pre>
 <p>In many situations, your user story is all you need to guide you in coding the implementation. If you are both the product owner and a hands-on developer, you don’t need a written specification to implement a feature. Many developers code directly from a user story. However, I recommend wriitng a specification before coding.</p>
@@ -503,7 +503,7 @@ so I'll be notified when the site is launched
 <pre>
 Feature: Request Invitation
   As a visitor to the website
-  I want to request an invitation 
+  I want to request an invitation
   so I can be notified when the site is launched
 
   Background:
@@ -667,13 +667,13 @@ class User &lt; ActiveRecord::Base
   # no password is required when the account is created; validate password when the user sets one
   validates_confirmation_of :password
   def password_required?
-    if !persisted? 
+    if !persisted?
       !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
   end
-  
+
 end
 </pre>
 <h3>Adjust Acceptance Tests</h3>
@@ -756,12 +756,12 @@ class RegistrationsController &lt; Devise::RegistrationsController
     # the page prelaunch visitors will see after they request an invitation
     '/thankyou.html'
   end
-  
+
   def after_sign_up_path_for(resource)
     # the page new users will see after sign up (after launch, when no invitation is needed)
     redirect_to root_path
   end
-  
+
 end
 </pre>
 <p>When a visitor creates an account by requesting an invitation, Devise will call the <code>after_inactive_sign_up_path_for</code> method to redirect the visitor to the thank you page. In the future, after you launch the application and allow visitors to become active as soon as they create an account, you may use the <code>after_sign_up_path_for</code> to redirect the new user to a welcome page.</p>
@@ -796,18 +796,18 @@ class User &lt; ActiveRecord::Base
   # no password is required when the account is created; validate password when the user sets one
   validates_confirmation_of :password
   def password_required?
-    if !persisted? 
+    if !persisted?
       !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
   end
-  
+
   # override Devise method
   def confirmation_required?
     false
   end
-  
+
   # override Devise method
   def active_for_authentication?
     confirmed? || confirmation_period_valid?
@@ -853,7 +853,7 @@ end
 <pre>
 class UserMailer &lt; ActionMailer::Base
   default :from =&gt; "notifications@example.com"
-  
+
   def welcome_email(user)
     mail(:to =&gt; user.email, :subject =&gt; "Invitation Request Received")
     headers['X-MC-GoogleAnalytics'] = "example.com"
@@ -891,7 +891,7 @@ end
 Welcome!
 
 We have received your request for an invitation to example.com.
- 
+
 We'll contact you when we launch.
 </pre>
 <p>When you call the mailer method, ActionMailer will detect the two templates (text and <span class="caps">HTML</span>) and automatically generate a multipart/alternative email. If you use the Mandrill service, you can skip this step if you configure Mandrill to automatically generate a plain-text version of all emails.</p>
@@ -914,23 +914,23 @@ class User &lt; ActiveRecord::Base
   # no password is required when the account is created; validate password when the user sets one
   validates_confirmation_of :password
   def password_required?
-    if !persisted? 
+    if !persisted?
       !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
   end
-  
+
   # override Devise method
   def confirmation_required?
     false
   end
-  
+
   # override Devise method
   def active_for_authentication?
     confirmed? || confirmation_period_valid?
   end
-  
+
   private
 
   def send_welcome_email
@@ -980,7 +980,7 @@ unconfirmed: 'Your account is not active.'
 
 &lt;%- if devise_mapping.lockable? &amp;&amp; resource_class.unlock_strategy_enabled?(:email) &amp;&amp; controller_name != 'unlocks' %&gt;
   &lt;%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %&gt;&lt;br /&gt;
-&lt;% end -%&gt;  
+&lt;% end -%&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/devise/shared/_links.html.haml</strong></p>
@@ -1068,7 +1068,7 @@ $ git checkout -b modal
 &lt;/div&gt;
 &lt;div id="call-to-action" style="text-align: center; margin-top: 80px"&gt;
   &lt;a class="btn btn-primary btn-large" data-toggle="modal" href="#request-invite"&gt;Request invite&lt;/a&gt;
-&lt;/div&gt; 
+&lt;/div&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/devise/registrations/new.html.haml</strong></p>
@@ -1118,7 +1118,7 @@ $ git checkout -b modal
     &lt;p&gt;We have received your request for an invitation to example.com.&lt;/p&gt;
     &lt;p&gt;We'll contact you when we launch.&lt;/p&gt;
   &lt;/div&gt;
-&lt;/div&gt; 
+&lt;/div&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/devise/registrations/_thankyou.html.haml</strong>:</p>
@@ -1135,12 +1135,12 @@ $ git checkout -b modal
 <p>Next, add some JavaScript to the file <strong>app/assets/javascripts/application.js</strong>. This will trigger an <span class="caps">AJAX</span> submission action when the “request invitation” button is clicked and update the <code>#request-invite</code> div on completion.</p>
 <pre>
 $('document').ready(function() {
-  
+
   // display validation errors for the "request invitation" form
   if ($('.alert-error').length &gt; 0) {
     $("#request-invite").modal('toggle');
   }
-  
+
   // use AJAX to submit the "request invitation" form
   $('#invitation_button').live('click', function() {
     var email = $('form #user_email').val();
@@ -1161,7 +1161,7 @@ $('document').ready(function() {
     });
     return false;
   });
-  
+
 })
 </pre>
 <p>Finally, we need to override the <code>create</code> method in the Devise registration controller to render the “thank you” partial. Modify the file <strong>app/controllers/registrations_controller.rb</strong>:</p>
@@ -1319,7 +1319,7 @@ class UsersController &lt; ApplicationController
     authorize! :index, @user, :message =&gt; 'Not authorized as an administrator.'
     @users = User.all
   end
-  
+
   def show
     @user = User.find(params[:id])
   end
@@ -1342,7 +1342,7 @@ class Ability
       can :manage, :all
     end
   end
-  
+
 end
 </pre>
 <p>Very simply, if we add the <code>authorize!</code> method to any controller action, it will check the <code>Ability</code> class and  allow access for users in the “admin” role. By default, other users will not be allowed. Of course, if the <code>authorize!</code> method is not included in a controller action, any user will have access.</p>
@@ -1402,7 +1402,7 @@ $ bundle install
       &lt;%= link_to user.name, user %&gt; signed up &lt;%= user.created_at.to_date %&gt;
     &lt;/li&gt;
   &lt;% end %&gt;
-&lt;/ul&gt;  
+&lt;/ul&gt;
 </pre>
 <p>If you prefer Haml, it looks like this:</p>
 <p><strong>app/views/users/index.html.haml</strong></p>
@@ -1428,13 +1428,13 @@ class UsersController &lt; ApplicationController
     @users = User.all
     @chart = create_chart
   end
-  
+
   def show
     @user = User.find(params[:id])
   end
-  
+
   private
-  
+
   def create_chart
     users_by_day = User.group("DATE(created_at)").count
     data_table = GoogleVisualr::DataTable.new
@@ -1478,7 +1478,7 @@ end
 
 #chart{:style =&gt; "width: 700px; height: 240px;"}
   = render_chart @chart, 'chart'
-  
+
 %h2 Users
 - @users.each do |user|
   %br/
@@ -1686,20 +1686,20 @@ class UsersController &lt; ApplicationController
     @users = User.all
     @chart = create_chart
   end
-  
+
   def show
     @user = User.find(params[:id])
   end
-  
+
   def invite
     authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
     @user.send_confirmation_instructions
     redirect_to :back, :only_path =&gt; true, :notice =&gt; "Sent invitation to #{@user.email}."
   end
-  
+
   private
-  
+
   def create_chart
     users_by_day = User.group("DATE(created_at)").count
     data_table = GoogleVisualr::DataTable.new
@@ -1854,18 +1854,18 @@ class UsersController &lt; ApplicationController
     @users = User.all
     @chart = create_chart
   end
-  
+
   def show
     @user = User.find(params[:id])
   end
-  
+
   def invite
     authorize! :invite, @user, :message =&gt; 'Not authorized as an administrator.'
     @user = User.find(params[:id])
     @user.send_confirmation_instructions
     redirect_to :back, :only_path =&gt; true, :notice =&gt; "Sent invitation to #{@user.email}."
   end
-  
+
   def bulk_invite
     authorize! :bulk_invite, @user, :message =&gt; 'Not authorized as an administrator.'
     users = User.where(:confirmation_token =&gt; nil).order(:created_at).limit(params[:quantity])
@@ -1874,9 +1874,9 @@ class UsersController &lt; ApplicationController
     end
     redirect_to :back, :only_path =&gt; true, :notice =&gt; "Sent invitation to #{users.count} users."
   end
-  
+
   private
-  
+
   def create_chart
     users_by_day = User.group("DATE(created_at)").count
     data_table = GoogleVisualr::DataTable.new
@@ -1967,8 +1967,8 @@ end
   = render_chart @chart, 'chart'
   %br
 .span9
-  %p 
-    Send Bulk Invitations: 
+  %p
+    Send Bulk Invitations:
     = link_to "10 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '10')
     = link_to "50 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '50')
     = link_to "100 &amp;#183;".html_safe, bulk_invite_path(:quantity =&gt; '100')
@@ -2088,7 +2088,7 @@ class ConfirmationsController &lt; Devise::PasswordsController
       respond_with(resource)
     end
   end
-  
+
   # PUT /resource/confirmation
   def update
     with_unconfirmed_confirmable do
@@ -2123,7 +2123,7 @@ class ConfirmationsController &lt; Devise::PasswordsController
       render 'devise/confirmations/new'
     end
   end
-  
+
   protected
 
   def with_unconfirmed_confirmable
@@ -2145,7 +2145,7 @@ class ConfirmationsController &lt; Devise::PasswordsController
     set_flash_message :notice, :confirmed
     sign_in_and_redirect(resource_name, @confirmable)
   end
-  
+
   # The path used after resending confirmation instructions.
   def after_resending_confirmation_instructions_path_for(resource_name)
     new_session_path(resource_name)
@@ -2155,7 +2155,7 @@ class ConfirmationsController &lt; Devise::PasswordsController
   def after_confirmation_path_for(resource_name, resource)
     after_sign_in_path_for(resource)
   end
-  
+
 end
 </pre>
 <h3>Add a Route</h3>
@@ -2249,23 +2249,23 @@ class User &lt; ActiveRecord::Base
   # no password is required when the account is created; validate password when the user sets one
   validates_confirmation_of :password
   def password_required?
-    if !persisted? 
+    if !persisted?
       !(password != "")
     else
       !password.nil? || !password_confirmation.nil?
     end
   end
-  
+
   # override Devise method
   def confirmation_required?
     false
   end
-  
+
   # override Devise method
   def active_for_authentication?
     confirmed? || confirmation_period_valid?
   end
-  
+
   # new function to set the password
   def attempt_set_password(params)
     p = {}
@@ -2273,7 +2273,7 @@ class User &lt; ActiveRecord::Base
     p[:password_confirmation] = params[:password_confirmation]
     update_attributes(p)
   end
-  
+
   # new function to determine whether a password has been set
   def has_no_password?
     self.encrypted_password.blank?
@@ -2283,7 +2283,7 @@ class User &lt; ActiveRecord::Base
   def only_if_unconfirmed
     pending_any_confirmation {yield}
   end
-    
+
   private
 
   def add_user_to_mailchimp
@@ -2295,12 +2295,12 @@ class User &lt; ActiveRecord::Base
       Rails.logger.info("MAILCHIMP SUBSCRIBE: result #{result.inspect} for #{self.email}")
     end
   end
-  
+
   def remove_user_from_mailchimp
     unless self.email.include?('@example.com')
       mailchimp = Hominid::API.new(ENV["MAILCHIMP_API_KEY"])
       list_id = mailchimp.find_list_id_by_name "visitors"
-      result = mailchimp.list_unsubscribe(list_id, self.email, true, false, true)  
+      result = mailchimp.list_unsubscribe(list_id, self.email, true, false, true)
       Rails.logger.info("MAILCHIMP UNSUBSCRIBE: result #{result.inspect} for #{self.email}")
     end
   end
@@ -2420,7 +2420,7 @@ $('document').ready(function() {
 
 // load social sharing scripts if the page includes a Twitter "share" button
 function loadSocial() {
-    
+
     //Twitter
     if (typeof (twttr) != 'undefined') {
       twttr.widgets.load();

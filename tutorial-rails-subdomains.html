@@ -156,7 +156,7 @@ question  Install an example application?
 <p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.10'
 group :assets do
   gem 'sass-rails',   '~&gt; 3.2.3'
   gem 'coffee-rails', '~&gt; 3.2.1'
@@ -174,7 +174,7 @@ gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
 gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
 gem "devise", "&gt;= 2.1.2"
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.9'</code> accordingly.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.10'</code> accordingly.</p>
 <p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <h3>Install the Required Gems</h3>
 <p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. Run:</p>
@@ -235,7 +235,6 @@ user = User.create! :name =&gt; 'myname', :email =&gt; 'user@example.com', :pass
 <pre>
 $ rails generate controller Profiles show
 </pre>
-
 <p>Before we display a profile, we’ll try to find the user with a name that matches the subdomain attribute of the request object. If the user is not found, we’ll raise an exception and display an error message.</p>
 <p><strong>app/controllers/profiles_controller.rb</strong></p>
 <pre>
@@ -243,7 +242,7 @@ class ProfilesController &lt; ApplicationController
   def show
     @user = User.where(:name =&gt; request.subdomain).first || not_found
   end
-  
+
   def not_found
     raise ActionController::RoutingError.new('User Not Found')
   end
@@ -283,11 +282,11 @@ end
 <p>Rails 3.0 introduced support for routing constrained by subdomains.</p>
 <p>A subdomain can be specified explicitly, like this:</p>
 <pre>
-match '/' =&gt; 'home#index', :constraints =&gt; { :subdomain =&gt; 'www' } 
+match '/' =&gt; 'home#index', :constraints =&gt; { :subdomain =&gt; 'www' }
 </pre>
 <p>Or a set of subdomains can be matched using a regular expression:</p>
 <pre>
-match '/' =&gt; 'profiles#show', :constraints =&gt; { :subdomain =&gt; /.+/ } 
+match '/' =&gt; 'profiles#show', :constraints =&gt; { :subdomain =&gt; /.+/ }
 </pre>
 <p>Finally, for greatest flexibility, router constraints can also take objects, allowing custom code.</p>
 <p>Create a class like this:</p>
@@ -340,7 +339,7 @@ root :to =&gt; "home#index"
 &lt;h3&gt;Home&lt;/h3&gt;
 &lt;% @users.each do |user| %&gt;
   &lt;p&gt;&lt;%= user.name %&gt; &lt;%= link_to root_url(:subdomain =&gt; user.name), root_url(:subdomain =&gt; user.name) %&gt;&lt;/p&gt;
-&lt;% end %&gt;  
+&lt;% end %&gt;
 </pre>
 <p>If you prefer Haml, it looks likes this:</p>
 <p><strong>app/views/home/index.html.haml</strong></p>
@@ -357,7 +356,7 @@ root :to =&gt; "home#index"
 <pre>
 &lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
 &lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
-&lt;p&gt;Profile: &lt;%= link_to root_url(:subdomain =&gt; @user.name), root_url(:subdomain =&gt; @user.name) %&gt;&lt;/p&gt;  
+&lt;p&gt;Profile: &lt;%= link_to root_url(:subdomain =&gt; @user.name), root_url(:subdomain =&gt; @user.name) %&gt;&lt;/p&gt;
 </pre>
 <p>If you prefer Haml, it looks likes this:</p>
 <p><strong>app/views/users/show.html.haml</strong></p>
@@ -402,7 +401,7 @@ root :to =&gt; "home#index"
       &lt;/li&gt;
     &lt;% end %&gt;
   &lt;% end %&gt;
-&lt;/ul&gt;  
+&lt;/ul&gt;
 </pre>
 <p>If you prefer Haml, it looks likes this:</p>
 <p><strong>app/views/layouts/_navigation.html.haml</strong></p>
