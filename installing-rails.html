@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 2 January 2013</em></p>
+<p><em>Last updated 4 January 2013</em></p>
 <p>Rails 3.2.10. Installing Rails on Mac OS X, Ubuntu, or Windows. Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails, emphasizing updates to the complete development environment.</p>
 <h3>From the RailsApps Project</h3>
@@ -61,7 +61,7 @@
 <p>If you have not been closely following the evolution of the Rails platform, here’s a summary of recent developments.</p>
 <h4>Rails 3.2.10</h4>
 <ul>
-<li>Rails 3.2.10 was released January 2, 2013 with an important security fix. See <a href="http://weblog.rubyonrails.org/2013/1/2/Rails-3-2-10--3-1-9--and-3-0-18-have-been-released/">Rails 3.2.10, 3.1.9, and 3.0.18 have been released</a>
+<li>Rails 3.2.10 was released January 2, 2013 with a fix for a <a href="http://blog.phusion.nl/2013/01/03/rails-sql-injection-vulnerability-hold-your-horses-here-are-the-facts/">Rails <span class="caps">SQL</span> injection vulnerability</a>. See <a href="http://weblog.rubyonrails.org/2013/1/2/Rails-3-2-10--3-1-9--and-3-0-18-have-been-released/">Rails 3.2.10, 3.1.9, and 3.0.18 have been released</a>
 </li>
 	<li>Rails 3.2.9 was released November 12, 2012 with many small bug fixes. See <a href="http://weblog.rubyonrails.org/2012/11/12/ann-rails-3-2-9-has-been-released/">Rails version 3.2.9 has been released</a>.</li>
 	<li>Rails 3.2.8 was released August 9, 2012 with a security fix that potentially impacts all users. See <a href="http://weblog.rubyonrails.org/2012/8/9/ann-rails-3-2-8-has-been-released/">Rails version 3.2.8 has been released</a>.</li>
@@ -406,6 +406,8 @@ $ echo "rvm ruby-1.9.3-p327@rails32 --create" &gt; .rvmrc
 </pre>
 <p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you run your application on your local machine.</p>
 <h2>Deployment</h2>
+<p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
+<h3>Hosting</h3>
 <p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
 <li><a href="http://www.heroku.com/">Heroku</a></li>
@@ -415,7 +417,11 @@ $ echo "rvm ruby-1.9.3-p327@rails32 --create" &gt; .rvmrc
 </ul><p>For deployment on Heroku, see the article:</p>
 <ul>
 <li><a href="http://railsapps.github.com/rails-heroku-tutorial.html">Rails 3.2 on Heroku</a></li>
-</ul><h2>Troubleshooting</h2>
+</ul><h2>Security</h2>
+<p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
+<h3>Your Application’s Secret Token</h3>
+<p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
+<h2>Troubleshooting</h2>
 <h4>Problems with “Segmentation Fault”</h4>
 <p>If you get a “segfault” when you try <code>rails new</code>, try removing and reinstalling rvm. If you are not using the current version of Mac OS X, you should upgrade before installing rvm.</p>
 <h4>Problems with “Gem::RemoteFetcher::FetchError: SSL_connect”</h4>
