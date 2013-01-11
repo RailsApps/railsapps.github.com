@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 9 January 2013</em></p>
+<p><em>Last updated 10 January 2013</em></p>
 <p>Rails 3.2.11. Installing Rails on Mac OS X, Ubuntu, or Windows. Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and troubleshooting tips.</p>
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. A rapidly evolving ecosystem is not a bad thing. Rails is a powerful, widely used, and well-supported development platform. The constant changes bring increased utility. This guide explains how to install Rails, emphasizing updates to the complete development environment.</p>
 <h3>From the RailsApps Project</h3>
@@ -55,13 +55,15 @@
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h2>Shortcuts</h2>
 <p>If you’ve already installed Ruby 1.9.3 and rvm (the Ruby Version Manager), skip ahead to the section <a href="#gems">Updating the Gems.</a></p>
-<h4>Is Rails Already Installed?</h4>
-<p>If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get a newer version of Rails. <em>This is not recommended.</em> Instead, install rvm (the Ruby Version Manager) to create a new gemset and install the newest Rails version. Then you can switch between versions if necessary.</p>
+<h2>Updating Rails</h2>
+<p>If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get a newer version of the Rails gem. <em>This is not recommended.</em> Instead, install rvm (the Ruby Version Manager) to create a new gemset and install the newest Rails version. Then you can switch between versions if necessary.</p>
+<p>It is best to update each of your Rails applications when a new version of Rails is released. Occasionally a critical security fix is released (Rails 3.2.11, <a href="http://news.ycombinator.com/item?id=5035023">for example</a>). If you neglect to update regularly, upgrading several versions at once may require considerable effort, making it difficult to resolve security vulnerabilities quickly.</p>
+<p>For instructions and advice, see the article <a href="http://railsapps.github.com/updating-rails.html">Updating Rails</a>. Before you update the Rails gem, read what’s here to make sure your development environment is current.</p>
 <h2>What’s New</h2>
-<p>If you have not been closely following the evolution of the Rails platform, here’s a summary of recent developments.</p>
+<p>If you have not been closely following the evolution of the Rails platform, here’s a summary of recent developments. To stay informed of new releases, subscribe to Peter Cooper’s <a href="http://rubyweekly.com/">Ruby Weekly</a> newsletter and follow <a href="http://twitter.com/ruby_news">@ruby_news</a> or <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter.</p>
 <h4>Rails 3.2.11</h4>
 <ul>
-<li>Rails 3.2.11 was released January 8, 2013 with an “upgrade right now!” security fix. If you’re running any earlier version of Rails, your website is vulnerable to attack and the vulnerability is well known. See <a href="http://weblog.rubyonrails.org/2013/1/8/Rails-3-2-11-3-1-10-3-0-19-and-2-3-15-have-been-released/">Rails 3.2.11, 3.1.10, 3.0.19, and 2.3.15 have been released</a> and a preliminary <a href="http://www.insinuator.net/2013/01/rails-yaml/">Analysis of Rails <span class="caps">XML</span> Parameter Parsing Vulnerability</a>.</li>
+<li>Rails 3.2.11 was released January 8, 2013 with an “upgrade right now!” security fix. Security researcher <a href="https://twitter.com/hdmoore">HD Moore</a> called it, “The worst security issue that the Rails platform has seen to date” (<a href="https://community.rapid7.com/community/metasploit/blog/2013/01/10/exploiting-ruby-on-rails-with-metasploit-cve-2013-0156">details</a> and <a href="http://news.ycombinator.com/item?id=5035023">discussion</a>). If you’re running any earlier version of Rails, your application and its server are vulnerable to attack and the exploit code is readily available. See <a href="http://weblog.rubyonrails.org/2013/1/8/Rails-3-2-11-3-1-10-3-0-19-and-2-3-15-have-been-released/">Rails 3.2.11, 3.1.10, 3.0.19, and 2.3.15 have been released</a> and a preliminary <a href="http://www.insinuator.net/2013/01/rails-yaml/">Analysis of Rails <span class="caps">XML</span> Parameter Parsing Vulnerability</a>.</li>
 	<li>Rails 3.2.10 was released January 2, 2013 with a fix for a <a href="http://blog.phusion.nl/2013/01/03/rails-sql-injection-vulnerability-hold-your-horses-here-are-the-facts/">Rails <span class="caps">SQL</span> injection vulnerability</a>. See <a href="http://weblog.rubyonrails.org/2013/1/2/Rails-3-2-10--3-1-9--and-3-0-18-have-been-released/">Rails 3.2.10, 3.1.9, and 3.0.18 have been released</a>
 </li>
 	<li>Rails 3.2.9 was released November 12, 2012 with many small bug fixes. See <a href="http://weblog.rubyonrails.org/2012/11/12/ann-rails-3-2-9-has-been-released/">Rails version 3.2.9 has been released</a>.</li>
@@ -90,8 +92,8 @@
 <p><em>What You Need to Know:</em> Use <code>gem update --system</code> to upgrade to the <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems system gem</a>.</p>
 <h4>Rake</h4>
 <p>Rake is the build tool for Ruby. Rake version 10.0.3 was released on December 12, 2012. Rake installs as part of Ruby 1.9.3.</p>
-<p>Many gems depend on Rake and conflicting dependencies can be a problem, especially since the release of Rake version 0.9.0 (May 20, 2011). For an explanation, see <a href="http://blog.davidchelimsky.net/2011/05/28/rake-09-and-gem-version-constraints/">David Chelimsky’s blog post</a>. If needed, you can specify an earlier version of Rake in your gemfile to force the use of an earlier Rake version.</p>
-<p>You may have heard that it is good practice to use the command <code>bundle exec rake</code> instead of <code>rake</code> to force use of executables specified in your gemfile (or a dependency specified in the Gemfile.lock file) instead of other versions. For example, instead of <code>rake db:migrate</code>, run <code>bundle exec rake db:migrate</code>. If you’re using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, as recommended below, you don’t need to use <code>bundle exec rake</code> instead of <code>rake</code> (rvm versions 1.11.0 and newer include the rubygems-bundler gem to handle this).</p>
+<p>Many gems depend on Rake and conflicting dependencies can be a problem, especially since the release of Rake version 0.9.0 (May 20, 2011). For an explanation, see <a href="http://blog.davidchelimsky.net/2011/05/28/rake-09-and-gem-version-constraints/">David Chelimsky’s blog post</a>. If needed, you can specify an earlier version of Rake in your Gemfile to force the use of an earlier Rake version.</p>
+<p>You may have heard that it is good practice to use the command <code>bundle exec rake</code> instead of <code>rake</code> to force use of executables specified in your Gemfile (or a dependency specified in the Gemfile.lock file) instead of other versions. For example, instead of <code>rake db:migrate</code>, run <code>bundle exec rake db:migrate</code>. If you’re using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, as recommended below, you don’t need to use <code>bundle exec rake</code> instead of <code>rake</code> (rvm versions 1.11.0 and newer include the rubygems-bundler gem to handle this).</p>
 <p><em>What You Need to Know:</em> Make sure you are using Rake 10.0.3 (or <a href="http://rubygems.org/gems/rake">newer</a>) with <code>gem update rake</code> before installing Rails 3.2.</p>
 <h4>Bundler</h4>
 <p><a href="http://gembundler.com/">Bundler</a> version 1.2.3 was released November 30, 2012. Version 1.2.0 lets you specify a Ruby version (such as “1.9.3”) as well as a Ruby engine (such as “jruby”) in your Gemfile. See <a href="http://gembundler.com/v1.2/whats_new.html">What’s New in Bundler 1.2</a>. Specifying a Ruby version is required if you plan to deploy to Heroku. It also helps rvm switch to the right Ruby version. And it prevents people from running your code with the wrong version of Ruby.</p>
@@ -405,7 +407,7 @@ $ bundle install
 <pre>
 $ echo "rvm ruby-1.9.3-p327@rails32 --create" &gt; .rvmrc
 </pre>
-<p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you run your application on your local machine.</p>
+<p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
 <h2>Deployment</h2>
 <p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
 <h3>Hosting</h3>

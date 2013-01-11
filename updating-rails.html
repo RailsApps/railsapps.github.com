@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Updating Rails &#183; RailsApps</title>
+    <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/site.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/syntax.css" type="text/css" charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.com/javascript/gollum.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5109366-14']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a href="http://railsapps.github.com/" class="brand">RailsApps Project</a>
+        <ul class="pull-right nav">
+          <li><a href="http://blog.railsapps.org/" class="twitter">Blog</a></li>
+          <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
+          <li><a href="https://plus.google.com/117374718581973393536" class="google">Google +</a></li>
+          <li><a href="https://github.com/RailsApps" class="github">GitHub Repository</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container"> 
+
+    <div class="content wikistyle gollum textile">
+      <h1>Updating Rails</h1>
+<h4>by Daniel Kehoe</h4>
+<p><em>Last updated 10 January 2013</em></p>
+<p>Updating to Rails 3.2.11. Detailed (and current) instructions on how to install the latest release of Rails 3.2 with advice and tips.</p>
+<h3>From the RailsApps Project</h3>
+<p>This is a guide for developers using the example apps from the RailsApps repository. Don’t write code that is already written; get open source applications with detailed Rails tutorials from the <a href="http://railsapps.github.com/">RailsApps project</a>. Try using our <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool for a better way to build a starter app.</p>
+<p>Also see a list of our <a href="http://railsapps.github.com/rails.html">recommended resources for Rails</a>.</p>
+<p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
+<h2>Don’t Just Update Rails!</h2>
+<p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. It is important to deploy with the most current version of Rails. It is just as important to set up your development environment with the most current version of the gems that are needed for development. Before you update Rails, check that you have installed and properly set up the current versions of these gems: <a href="http://en.wikipedia.org/wiki/RubyGems">RubyGems</a>, <a href="http://en.wikipedia.org/wiki/Rake_(software)">rake</a>, <a href="http://gembundler.com/">Bundler</a>, and rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>.</p>
+<p>See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for complete instructions on preparing the development environment.</p>
+<h2>Updating Rails</h2>
+<p>If you have an older version of Rails installed, it is possible to run <code>gem update rails</code> to get a newer version of the Rails gem. <em>This is not recommended.</em> Instead, install rvm (the Ruby Version Manager) to create a new gemset and install the newest Rails version. Then you can switch between versions if necessary.</p>
+<p>It is best to update each of your Rails applications when a new version of Rails is released. Occasionally a critical security fix is released (Rails 3.2.11, <a href="http://news.ycombinator.com/item?id=5035023">for example</a>). If you neglect to update regularly, upgrading several versions at once may require considerable effort, making it difficult to resolve security vulnerabilities quickly.</p>
+<h2>What’s New</h2>
+<p>If you have not been closely following the evolution of the Rails platform, here’s a summary of recent developments. To stay informed of new releases, subscribe to Peter Cooper’s <a href="http://rubyweekly.com/">Ruby Weekly</a> newsletter and follow <a href="http://twitter.com/ruby_news">@ruby_news</a> or <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter.</p>
+<h4>Rails 3.2.11</h4>
+<ul>
+<li>Rails 3.2.11 was released January 8, 2013 with an “upgrade right now!” security fix. Security researcher <a href="https://twitter.com/hdmoore">HD Moore</a> called it, “The worst security issue that the Rails platform has seen to date” (<a href="https://community.rapid7.com/community/metasploit/blog/2013/01/10/exploiting-ruby-on-rails-with-metasploit-cve-2013-0156">details</a> and <a href="http://news.ycombinator.com/item?id=5035023">discussion</a>). If you’re running any earlier version of Rails, your application and its server are vulnerable to attack and the exploit code is readily available. See <a href="http://weblog.rubyonrails.org/2013/1/8/Rails-3-2-11-3-1-10-3-0-19-and-2-3-15-have-been-released/">Rails 3.2.11, 3.1.10, 3.0.19, and 2.3.15 have been released</a> and a preliminary <a href="http://www.insinuator.net/2013/01/rails-yaml/">Analysis of Rails <span class="caps">XML</span> Parameter Parsing Vulnerability</a>.</li>
+	<li>Rails 3.2.10 was released January 2, 2013 with a fix for a <a href="http://blog.phusion.nl/2013/01/03/rails-sql-injection-vulnerability-hold-your-horses-here-are-the-facts/">Rails <span class="caps">SQL</span> injection vulnerability</a>. See <a href="http://weblog.rubyonrails.org/2013/1/2/Rails-3-2-10--3-1-9--and-3-0-18-have-been-released/">Rails 3.2.10, 3.1.9, and 3.0.18 have been released</a>
+</li>
+	<li>Rails 3.2.9 was released November 12, 2012 with many small bug fixes. See <a href="http://weblog.rubyonrails.org/2012/11/12/ann-rails-3-2-9-has-been-released/">Rails version 3.2.9 has been released</a>.</li>
+	<li>Rails 3.2.8 was released August 9, 2012 with a security fix that potentially impacts all users. See <a href="http://weblog.rubyonrails.org/2012/8/9/ann-rails-3-2-8-has-been-released/">Rails version 3.2.8 has been released</a>.</li>
+	<li>Rails 3.2.7 was released July 26, 2012 with a security fix for digest authentication plus various minor fixes. See <a href="http://weblog.rubyonrails.org/2012/7/26/ann-rails-3-2-7-has-been-released/">Rails version 3.2.7 has been released</a>.</li>
+	<li>Rails 3.2.6 was released June 12, 2012 with two important security fixes. See <a href="http://weblog.rubyonrails.org/2012/6/12/ann-rails-3-2-6-has-been-released/">Rails version 3.2.6 has been released</a>.</li>
+	<li>Rails 3.2.5 was released June 1, 2012 to correct a regression in Rails 3.2.4. See <a href="http://weblog.rubyonrails.org/2012/5/31/ann-rails-3-2-5-has-been-released/">Rails version 3.2.5 has been released</a>.</li>
+	<li>Rails 3.2.4 was released May 31, 2012 with minor bug fixes plus two important security fixes. See <a href="http://weblog.rubyonrails.org/2012/5/31/ann-rails-3-2-4-has-been-released/">Rails version 3.2.4 has been released</a>.</li>
+	<li>Rails 3.2.3 was released March 31, 2012 with improved protection from mass assignment vulnerabilities. See the <a href="http://weblog.rubyonrails.org/2012/3/30/ann-rails-3-2-3-has-been-released/">Rails 3.2.3 Announcement</a>.</li>
+	<li>Rails 3.2.2 was released March 1, 2012 with some minor bug fixes plus two important security fixes. See the <a href="http://weblog.rubyonrails.org/2012/3/1/ann-rails-3-2-2-has-been-released">Rails 3.2.2 Announcement</a>.</li>
+	<li>Rails 3.2.1 was released January 26, 2012 with some minor fixes. See <a href="https://gist.github.com/1685812">Ruby on Rails v3.2.1 Changelogs</a>.</li>
+</ul><p><em>What You Need to Know:</em> Use the newest release of Rails because it is the most secure version.</p>
+<h4>Rails 4.0</h4>
+<p>At the time this was written, Rails 4.0 is only available in an <a href="https://github.com/rails/rails">Edge Rails version on GitHub</a>. You can see a summary of anticipated new features in the <a href="http://edgeguides.rubyonrails.org/4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a> and follow the progress of Rails 4.0 development on the <a href="http://www.edgerails.info/">EdgeRails.info</a> site.</p>
+<p>As of the final week of 2012, EdgeRails.info says, “After anticipating Rails 4 for a year, it feels close to me. I’d be amazed if we weren’t playing with it by RailsConf.” <a href="http://www.railsconf.com/">RailsConf 2013</a> is April 29 to May 2 in Portland, OR.</p>
+<h4>Rails 3.2</h4>
+<p>Rails 3.2 was released January 20, 2012. Improvements include faster execution in development mode. The speed of resolving routes also improved. There are many tiny (but helpful) improvements throughout the framework. Rails 3.2 deprecates plugins (Rails 4.0 will remove them completely) so find Ruby gems to replace any plugins you may still be using. You can use Ruby 1.8.7 but consider moving to Ruby 1.9.3 (the current stable and recommended Ruby version) because Rails 4.0 will require Ruby 1.9.3. See the <a href="http://weblog.rubyonrails.org/2012/1/20/rails-3-2-0-faster-dev-mode-routing-explain-queries-tagged-logger-store">Rails 3.2.0 Announcement</a> and <a href="http://guides.rubyonrails.org/3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a> (with upgrade instructions). There’s a Railscast from Ryan Bates titiled <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Upgrading to Rails 3.2</a>. Michael Hartl’s popular Ruby on Rails Tutorial book has been rewritten to cover Rails 3.2 with improved treatment of RSpec and Cucumber (<a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2">Ruby on Rails Tutorial Version 3.2</a>). Finally, José Valim highlights his <a href="http://blog.plataformatec.com.br/2012/01/my-five-favorite-hidden-features-in-rails-3-2/">Five Favorite ‘Hidden’ features in Rails 3.2</a>.</p>
+<p><em>What You Need to Know:</em> Upgrading from Rails 3.1 to Rails 3.2 is easy and yields faster performance (especially in development mode). You may run into issues if your application has routing complexities (the routing engine has changed). For an older application, upgrade to Rails 3.1 before upgrading to Rails 3.2.</p>
+<h4>Rails 3.1</h4>
+<p>Rails 3.1.0 was released August 31, 2011. Eight release candidates were released beginning May 21, 2011. Rails 3.1 introduced the <a href="http://www.youtube.com/watch?v=cGdCI2HhfAU">asset pipeline</a> which enables proper organization of <span class="caps">CSS</span> and JavaScript. Other features include <a href="http://railscasts.com/episodes/266-http-streaming"><span class="caps">HTTP</span> streaming</a>, default jQuery, reversible migrations, mountable engines, identity map, prepared statements, Rack::Cache on by default, forced <span class="caps">SSL</span>, role-based mass-assignment protection, has_secure_password, and custom serializers. See the <a href="http://weblog.rubyonrails.org/2011/5/22/rails-3-1-release-candidate">Rails 3.1 release candidate announcement</a> for details. There’s a <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Rails 3.1 Overview</a> from Ryan Bates and a <a href="https://gist.github.com/958283">changelog</a> for all the details. Yehuda Katz explains <a href="http://yehudakatz.com/2011/06/14/what-the-hell-is-happening-to-rails/">What’s Up With All These Changes in Rails?</a>. The best overview of Rails 3.1 is Michael Hartl’s <a href="http://ruby.railstutorial.org/chapters/rails-3-1#top">chapter on Rails 3.1</a> in his Ruby on Rails Tutorial book.</p>
+<p><em>What You Need to Know:</em> The greatest impact for developers moving from Rails 3.0 to 3.1 is the new location for <span class="caps">CSS</span> and JavaScript files and changes to the application layout file. See the official <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails 3.1 Asset Pipeline guide</a> for details.</p>
+<h2>Updating Rails</h2>
+<p>If you update your applications with each new release of Rails, you’ll minimize the pain and inconvenience of upgrading. If you avoid updating Rails, you could leave your application and its server open to security vulnerabilities (<a href="http://news.ycombinator.com/item?id=5035023">for example</a>, applications that have not been updated to Rails 3.2.11).</p>
+<h3>Creating a New <span class="caps">RVM</span> Gemset</h3>
+<p>It’s important to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset if necessary. This is why it is useful to create an application-specific gemset for each application you build.</p>
+<p>Start the upgrade in the application’s root directory:</p>
+<pre>
+$ cd myapp
+</pre>
+<p>If you already have a project-specific gemset, rename it:</p>
+<pre>
+$ rvm gemset rename myapp_gemset_name old_myapp_gemset_name
+</pre>
+<p>Create a new project-specific gemset:</p>
+<pre>
+$ rvm --rvmrc --create ruby-1.9.3@myapp
+$ rvm gemset use myapp_gemset_name
+</pre>
+<p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
+<p>Check that the only installed gems are those from the global gemset:</p>
+<pre>
+$ gem list
+*** LOCAL GEMS ***
+bundler (...)
+rake (...)
+rubygems-bundler (...)
+rvm (...)
+</pre>
+<p>Next, you’ll update the Gemfile to specify a new version of Rails.</p>
+<h3>Updating the Gemfile</h3>
+<p>Your Gemfile specifies the Rails version used by your application:</p>
+<pre>
+source 'https://rubygems.org'
+gem 'rails', '3.2.11'
+.
+.
+.
+</pre>
+<p>Change the Rails version and then run <code>bundle install</code>. Each gem specified in the Gemfile will be installed by bundler and a Gemfile.lock file will be created to record the gem versions. You can run <code>gem list</code> again to see the gems that installed in the gemset.</p>
+<p>Check the Rails version:</p>
+<pre>
+$ rails -v
+</pre>
+<p>You’ll also see a message showing which version of Rails is running when you start the webserver.</p>
+<h3>Updating the Gemset</h3>
+<p>It’s important to update the Rails gem when there are security fixes. You’ll seldom need to update other gems once you’ve deployed your application but you may want to stay informed of changes. You can track updates to gems by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a> at the RubyGems.org site. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). As an alternative, use the <a href="https://gemnasium.com/">Gemnasium</a> service which surveys your GitHub repo and sends email notifications when gem versions change. Gemnasium is free for public repositories with a premium plan for private repositories.</p>
+<p>You can update any gem by running <code>bundle update gem_name</code>. This installs the newest version of the gem (if the Gemfile entry doesn’t require a specific version) and updates the Gemfile.lock file.</p>
+<p>You can run <code>bundle update</code> to update all gems at once. Bundler will observe the version rules specified in the Gemfile; when a specific version is specified in the Gemfile, running <code>bundle update</code> without changing the Gemfile entry won’t update a gem. Running <code>bundle update</code> installs new gem versions and uodates the Gemfile.lock file. As an alternative to running <code>bundle update</code>, you can delete the Gemfile.lock file and run <code>bundle install</code> to replace the Gemfile.lock file.</p>
+<p>It is best not to use <code>bundle update rails</code>. Instead, create a new gemset as described above so you can switch gemsets as needed.</p>
+<h3>Updating Your Application</h3>
+<p>After updating Rails or other gems, run your test suite (hopefully, you have tests; this is why you need them!).</p>
+<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you may have to rework parts of your application. After major new Rails releases, many community members offer helpful blog posts (and even some gems) to identify specific code that needs to be updated for a new version of Rails. For example, there’s a Railscast from Ryan Bates titiled <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Upgrading to Rails 3.2</a>.</p>
+<h2>Security</h2>
+<p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
+<h3>Your Application’s Secret Token</h3>
+<p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
+<h2>Where to Get Help</h2>
+<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<p>You can also try <a href="http://www.railshotline.com/">Rails Hotline</a>, a free telephone hotline for Rails help staffed by volunteers.</p>
+    </div><!-- class="content" -->
+    
+    <div class="comments">
+      <div class="content wikistyle gollum">
+        <h2>Comments</h2>
+      </div>
+      <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p> 
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div><!-- class="comments" -->
+
+    <div class="footer row">
+      <div class="span4">
+      </div>
+    
+      <div class="span4">
+       </div>
+
+      <div class="span4">
+      </div>
+    </div>
+
+  </div>
+            
+  </body>
+</html>
