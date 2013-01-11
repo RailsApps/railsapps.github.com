@@ -99,7 +99,6 @@ $ rvm gemset rename myapp_gemset_name old_myapp_gemset_name
 <p>Create a new project-specific gemset:</p>
 <pre>
 $ rvm --rvmrc --create ruby-1.9.3@myapp
-$ rvm gemset use myapp_gemset_name
 </pre>
 <p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
 <p>Check that the only installed gems are those from the global gemset:</p>
@@ -121,7 +120,16 @@ gem 'rails', '3.2.11'
 .
 .
 </pre>
-<p>Change the Rails version and then run <code>bundle install</code>. Each gem specified in the Gemfile will be installed by bundler and a Gemfile.lock file will be created to record the gem versions. You can run <code>gem list</code> again to see the gems that installed in the gemset.</p>
+<p>Change the Rails version to the <a href="http://rubygems.org/gems/rails">current version of Rails</a>.</p>
+<p>Remove the Gemfile.lock file:</p>
+<pre>
+$ rm Gemfile.lock
+</pre>
+<p>Then install the gems specified in the Gemfile:</p>
+<pre>
+$ bundle install
+</pre>
+<p>Each gem specified in the Gemfile will be installed by bundler and a Gemfile.lock file will be created to record the gem versions. You can run <code>gem list</code> again to see the gems that were installed in the gemset.</p>
 <p>Check the Rails version:</p>
 <pre>
 $ rails -v
