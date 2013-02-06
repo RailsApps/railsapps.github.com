@@ -9,6 +9,7 @@
 
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/tutorials.css" type="text/css" />
+    <link rel="stylesheet" href="http://railsapps.github.com/css/github.css" type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
     <script src="http://railsapps.github.com/javascript/tutorials.js"></script>
@@ -24,6 +25,7 @@
     </script>
   </head>
   <body class='tutorials show' data-spy='scroll' data-target='.bs-docs-sidebar'>
+
 
 
 
@@ -75,10 +77,11 @@
 
   <section class='chapter' id='introduction'><h2>Introduction</h2>
 <p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
-<ul><li><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management.</li>
-  <li><a href="http://rspec.info/">RSpec</a>  is a popular alternative to the Test::Unit testing framework.</li>
-  <li><a href="http://cukes.info/">Cucumber</a> is used for Behaviour Driven Development.</li>
-</ul><h3 id="is-it-for-you">Is It for You?</h3>
+<ul><li><a href="http://github.com/plataformatec/devise">Devise</a> provides ready-made authentication and user management.</li>
+  <li><a href="http://rspec.info/">RSpec</a> is a popular framework for unit testing.</li>
+  <li><a href="http://cukes.info/">Cucumber</a> is used for integration testing and behavior driven development.</li>
+</ul><p>The combination of Devise, RSpec, and Cucumber is the foundation for many real-world Rails applications. Devise provides features for signing up a new user and creating an account, as well as requiring a visitor to log in before allowing access to the application. Unit tests built with RSpec confirm that small, discrete portions of the application continue working as developers add features and refactor code. Integration tests built with Cucumber determine whether the application’s features work as expected, testing the application from the point of view of the user.</p>
+<h3 id="is-it-for-you">Is It for You?</h3>
 <p>This tutorial is for experienced Rails developers as well as startup founders or hobbyist coders who are new to Rails.</p>
 <p>Experienced developers will find the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth.</p>
 <p>For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. See resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
@@ -94,9 +97,8 @@
 <h3 id="before-you-start">Before You Start</h3>
 <p>Most of the tutorials from the RailsApps project take about an hour to complete.</p>
 <p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you find problems or wish to suggest improvements, please create a <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">GitHub issue</a><br />
-issues. It’s best to clone and check the example application from the GitHub repository before you report an issue, just to make sure the error isn’t a result of your own mistake.</p>
-<p>The online edition of this tutorial contains a <a href="#comment">comments section</a> at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
+<p>If you find problems or wish to suggest improvements, please create a <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">GitHub issue</a>. It’s best to clone and check the example application from the GitHub repository before you report an issue, just to make sure the error isn’t a result of your own mistake.</p>
+<p>The online edition of this tutorial contains a <a href="#comments">comments section</a> at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
 <h3 id="assumptions">Assumptions</h3>
 <p>Before beginning this tutorial, you need to install</p>
 <ul><li>The Ruby language (version 1.9.3)</li>
@@ -123,14 +125,22 @@ issues. It’s best to clone and check the example application from the GitHub r
 <p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> example application.</p>
 <h3 id="building-from-scratch">Building from Scratch</h3>
 <p>Beginning here, we show how to create the application from scratch.</p>
-<p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
+<p>Your tools are a terminal application and text editor.</p>
+<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>. If you are using rvm to manage gemsets, create a new gemset and install Rails:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm use ruby-1.9.3@rails3-devise-rspec-cucumber --create
+<span class="gp">$</span> gem install rails
+</pre></div><p>The first step will create and make active a new gemset named <code>rails3-devise-rspec-cucumber</code>. You can give the gemset any name but it’ll be easier to recognize if you give it the same name as the application you are going to build. The second step installs the newest stable Rails version.</p>
+<p>Next, create a new Rails project. Navigate to a folder where you have rights to create files, and type:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails new rails3-devise-rspec-cucumber -T
-</pre></div><p>Use the <code>-T</code> flag to skip Test::Unit files (since you are using RSpec).</p>
+</pre></div><p>Use the <code>-T</code> flag to skip Test::Unit files (since you will be using RSpec).</p>
 <p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-devise-rspec-cucumber.”</p>
 <p>This will create a Rails application that uses a SQLite database for data storage.</p>
-<p>After you create the application, switch to its folder to continue work directly in that application:</p>
+<p>After you create the application, switch to its folder to continue work directly in the application root directory:</p>
 <div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>rails3-devise-rspec-cucumber
-</pre></div><h4 id="replace-the-readmes">Replace the READMEs</h4>
+</pre></div><p>If you are using rvm to manage gemsets, create a <strong>.rvmrc</strong> file:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm ruby-1.9.3@rails3-devise-rspec-cucumber --rvmrc
+</pre></div><p>In the future, when you <code>cd</code> into the application root directory, rvm will activate the project-specific gemfile.</p>
+<h4 id="replace-the-readmes">Replace the READMEs</h4>
 <p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.com/">RailsApps project</a>.</p>
 <h3 id="set-up-source-control-git">Set Up Source Control (Git)</h3>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
@@ -140,11 +150,7 @@ issues. It’s best to clone and check the example application from the GitHub r
 </pre></div><p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
 <p>If you want to store your application on GitHub, you should now set up your <a href="http://railsapps.github.com/rails-git.html">GitHub repository</a>.</p>
 <h3 id="set-up-gems">Set Up Gems</h3>
-<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
-<p>Create a gemset:</p>
-<div class="highlight"><pre><span class="gp">$</span> rvm use ruby-1.9.3-p194@rails3-devise-rspec-cucumber --create
-</pre></div><p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
-<p><strong>Gemfile</strong></p>
+<p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
 <div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
 <span class="n">gem</span> <span class="s1">'rails'</span><span class="p">,</span> <span class="s1">'3.2.11'</span>
 <span class="n">gem</span> <span class="s1">'sqlite3'</span>
@@ -168,27 +174,28 @@ issues. It’s best to clone and check the example application from the GitHub r
 <span class="n">gem</span> <span class="s2">"binding_of_caller"</span><span class="p">,</span> <span class="s2">"&gt;= 0.6.8"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:development</span>
 </pre></div><p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.11'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
-<p>For more information about the Gemfile, see <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Gemfiles for Rails 3.2</a>.</p>
+<p>If you want to use PostgreSQL instead of SQLite for your database, replace <code>gem 'sqlite3'</code> with <code>gem 'pg'</code>. SQLite is already running if you are using Mac OS X; if you want to use PostgreSQL, you’ll need to install and launch it.</p>
+<p>For more information about the gems we are using in this Gemfile, see <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Gemfiles for Rails 3.2</a>.</p>
 <h3 id="install-the-required-gems">Install the Required Gems</h3>
 <p>Install the required gems on your computer:</p>
 <div class="highlight"><pre><span class="gp">$</span> bundle install
 </pre></div><p>You can check which gems are installed on your computer with:</p>
 <div class="highlight"><pre><span class="gp">$</span> gem list
-</pre></div><p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
+</pre></div><p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available. If you deploy to Heroku, the Gemfile will manage that for you.</p>
 <h3 id="test-the-app-2">Test the App</h3>
-<p>You can check that your app runs properly by entering the command</p>
+<p>Check that your app runs properly by entering the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
-</pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
+</pre></div><p>You can use <code>rails s</code> as a shortcut.</p>
+<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
 <p>Stop the server with Control-C.</p>
 </section>
 <section class='chapter' id='test-driven-development'><h2>Test-Driven Development</h2>
 <p>This example application uses RSpec for unit testing and Cucumber for integration testing.</p>
-<p>Testing is at the center of any robust software development process. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. <a href="http://rspec.info/">RSpec</a> is a popular choice for unit testing. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user. <a href="http://cukes.info/">Cucumber</a> is a popular choice for integration testing and behavior driven development.</p>
-<p>This tutorial:</p>
+<p>Testing is at the center of any robust software development process. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user.</p>
+<p>This tutorial provides examples but does not teach the art of writing tests. This tutorial:</p>
 <ul><li>shows how to set up RSpec and provides example specs for use with Devise</li>
   <li>shows how to set up Cucumber and provides example scenarios for use with Devise</li>
-</ul><p>This tutorial provides examples but does not teach the art of writing tests.</p>
-<p>To learn more about writing tests, see the books:</p>
+</ul><p>To learn more about writing tests, see the books:</p>
 <ul><li><a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a></li>
   <li><a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a></li>
 </ul><h3 id="install-rspec-and-related-gems">Install RSpec and Related Gems</h3>
@@ -199,7 +206,7 @@ issues. It’s best to clone and check the example application from the GitHub r
 <span class="n">gem</span> <span class="s2">"database_cleaner"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
 <span class="n">gem</span> <span class="s2">"email_spec"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
 </pre></div><p>The gem <code>rspec-rails</code> needs to be in the <code>:development</code> group (as well as the <code>:test</code> group) to expose generators and rake tasks during development.</p>
-<p>Install the required gems on your computer:</p>
+<p>Install the required gems on your computer if you haven’t already done so:</p>
 <div class="highlight"><pre><span class="gp">$</span> bundle install
 </pre></div><h3 id="generate-rspec">Generate RSpec</h3>
 <p>Use the rspec-rails generator to set up files needed for RSpec:</p>
@@ -207,7 +214,7 @@ issues. It’s best to clone and check the example application from the GitHub r
 </pre></div><p>The rspec-rails generator creates the files:</p>
 <ul><li><strong>.rspec</strong></li>
   <li><strong>spec/spec_helper.rb</strong></li>
-</ul><p>In you did not include the -T option when you ran rails new, you can remove the <strong>test</strong> folder (it is not needed for RSpec):</p>
+</ul><p>In you did not include the -T option when you ran <code>rails new</code>, you can remove the <strong>test</strong> folder (it is not needed for RSpec):</p>
 <div class="highlight"><pre><span class="gp">$</span> rm -rf <span class="nb">test</span>/
 </pre></div><h3 id="database-cleaner-for-rspec">Database Cleaner for RSpec</h3>
 <p>To reset your application database to a pristine state during testing, you can use <a href="http://github.com/bmabey/database_cleaner">Database Cleaner</a> with RSpec.</p>
@@ -279,24 +286,38 @@ issues. It’s best to clone and check the example application from the GitHub r
 <p>We’re using Cucumber scenarios (integration tests) so unit tests of helpers and views are redundant. We’ll tell the Rails generator to skip unit tests for helpers and views.</p>
 <p>Rails also likes to create controller-specific helper classes, JavaScript files and stylesheet stubs. If you are like most developers, you will create these files manually as you need them, so this is a good time to tell the generator to skip the clutter.</p>
 <p>Modify the file <strong>config/application.rb</strong> to include:</p>
-<div class="highlight"><pre><span class="c1"># don't generate RSpec tests for views and helpers</span>
-<span class="n">config</span><span class="o">.</span><span class="n">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">test_framework</span> <span class="ss">:rspec</span><span class="p">,</span> <span class="ss">fixture</span><span class="p">:</span> <span class="kp">true</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">fixture_replacement</span> <span class="ss">:factory_girl</span><span class="p">,</span> <span class="ss">dir</span><span class="p">:</span> <span class="s1">'spec/factories'</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">view_specs</span> <span class="kp">false</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">helper_specs</span> <span class="kp">false</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">stylesheets</span> <span class="o">=</span> <span class="kp">false</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">javascripts</span> <span class="o">=</span> <span class="kp">false</span>
-  <span class="n">g</span><span class="o">.</span><span class="n">helper</span> <span class="o">=</span> <span class="kp">false</span>
-<span class="k">end</span>
-</pre></div><h3 id="run-rspec">Run RSpec</h3>
-<p>Run <code>rake -T</code> to check that rake tasks for RSpec are available.</p>
+<div class="highlight"><pre><span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="k">module</span> <span class="nn">Rails3DeviseRspecCucumber</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="ss">Rails</span><span class="p">:</span><span class="ss">:Application</span>
+
+  <span class="c1"># don't generate RSpec tests for views and helpers</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">test_framework</span> <span class="ss">:rspec</span><span class="p">,</span> <span class="ss">fixture</span><span class="p">:</span> <span class="kp">true</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">fixture_replacement</span> <span class="ss">:factory_girl</span><span class="p">,</span> <span class="ss">dir</span><span class="p">:</span> <span class="s1">'spec/factories'</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">view_specs</span> <span class="kp">false</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">helper_specs</span> <span class="kp">false</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">stylesheets</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">javascripts</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">helper</span> <span class="o">=</span> <span class="kp">false</span>
+  <span class="k">end</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+</pre></div><p>Again, don’t copy the dots.</p>
+<h3 id="run-rspec">Run RSpec</h3>
+<p>You can run <code>rake -T</code> as a quick “smoke test” to check that rake tasks for RSpec are available.</p>
+<div class="highlight"><pre><span class="gp">$</span> rake -T
+</pre></div><p>You’ll see <code>rake spec</code> as well as numerous other RSpec rake tasks.</p>
 <p>Prepare the database for testing by running the commands:</p>
 <div class="highlight"><pre><span class="gp">$</span> rake db:migrate
 <span class="gp">$</span> rake db:test:prepare
 </pre></div><p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
 <p>This will create a <strong>db/schema.rb</strong> file so <code>rake spec</code> can run successfully.</p>
-<p>You should be able to run <code>rake spec</code> to run all specs. If you haven’t written any specs, you’ll see the message “No examples matching … could be found”.</p>
+<p>You should be able to run <code>rake spec</code> to run all specs.</p>
+<div class="highlight"><pre><span class="gp">$</span> rake spec
+</pre></div><p>If you haven’t written any specs, you’ll see the message “No examples matching … could be found”.</p>
 <p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/tree/master/spec">spec directory</a> to use our ready-made specs.</p>
 <div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>spec
 <span class="gp">$</span> mkdir controllers
