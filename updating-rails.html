@@ -84,6 +84,9 @@
 <p><em>What You Need to Know:</em> The greatest impact for developers moving from Rails 3.0 to 3.1 is the new location for <span class="caps">CSS</span> and JavaScript files and changes to the application layout file. See the official <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails 3.1 Asset Pipeline guide</a> for details.</p>
 <h2>When to Update Rails</h2>
 <p>If you update your applications with each new release of Rails, you’ll minimize the pain and inconvenience of upgrading. If you avoid updating Rails, you could leave your application and its server open to security vulnerabilities (for example, applications that have not been updated to Rails 3.2.12 are open to attack). If you cannot upgrade Rails regularly, at least stay informed of changes in each release and be prepared to upgrade through multiple versions if a security fix is released.</p>
+<h2>Learn What’s Changed</h2>
+<p>Before you update Rails, take time to find out if the default new Rails application has changed. Using the older version of Rails that is installed on your computer, run <code>rails new myapp_old</code> to create a new Rails application. After updating Rails, run <code>rails new myapp_new</code> and compare the two applications with a file compare tool.</p>
+<p>Minor Rails version updates seldom change the default new Rails application. Major Rails updates often make many changes. You’ll be able to see the changes by comparing the old and new default Rails applications.</p>
 <h2>Simple Rails Update</h2>
 <p>You can run <code>gem update rails</code> to get a newer version of the Rails gem. This is the simplest approach.</p>
 <p>Before you update the Rails gem, make sure you have committed the Gemfile and Gemfile.lock files to git so you can restore a known working version of your application if necessary.</p>
@@ -153,6 +156,18 @@ $ bundle install
 $ rails -v
 </pre>
 <p>You’ll also see a message showing which version of Rails is running when you start the webserver.</p>
+<h2>Rake Rails:Update</h2>
+<p>Minor Rails version updates seldom require changes to configuration files. Major Rails updates often change configuration files. If you don’t make the required configuration file changes, you’ll likely see deprecation warnings when you launch a Rails application.</p>
+<p>Rails provides a rake task to update configuration files. Be sure you’ve committed your application with git before running <code>rake rails:update</code> in case you need to roll back changes.</p>
+<pre>
+$ git commit -m 'before rake rails update'
+$ rake rails:update
+</pre>
+<p>The <code>rake rails:update</code> will identify every configuration file in your application that differs from a new Rails application. When it detects a conflict, it will offer to overwrite your file.</p>
+<p>Don’t blindly allow <code>rake rails:update</code> to overwrite your files. Many of your files will be different because you’ve made changes from a default new Rails application. You’ll need to check each file to determine if <code>rake rails:update</code> is seeing your own changes or pointing out changes due to a Rails update.</p>
+<p>When <code>rake rails:update</code> offers to overwrite a file, enter <code>d</code> (for “diff”) and review the differences. Most differences will be your own. If you’re uncertain, don’t overwrite the file; make a note for yourself and investigate later. If you are certain that the difference is due to a Rails version change, you can allow <code>rake rails:update</code> to overwrite the file.</p>
+<h3>Researching Changes to Configuration Files</h3>
+<p>Instead of running <code>rake rails:update</code> on your application, it may be easier to use the rake command to compare two default Rails applications to identify changes to configuration files. Using the older version of Rails that you’ve used to build your application run <code>rails new my_old_app</code>. Update the “my_old_app” application to the newest version of Rails by changing the Gemfile and running <code>bundle update</code>. Then run <code>rake rails:update</code> to find how configuration files changed between versions.</p>
 <h2>Updating Other Gems</h2>
 <p>It’s important to update the Rails gem when there are security fixes. You’ll seldom need to update other gems once you’ve deployed your application but you may want to stay informed of changes. You can track updates to gems by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a> at the RubyGems.org site. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). As an alternative, use the <a href="https://gemnasium.com/">Gemnasium</a> service which surveys your GitHub repo and sends email notifications when gem versions change. Gemnasium is free for public repositories with a premium plan for private repositories.</p>
 <p>You can update any gem by running <code>bundle update gem_name</code>. This installs the newest version of the gem (if the Gemfile entry doesn’t require a specific version) and updates the Gemfile.lock file.</p>
@@ -160,7 +175,7 @@ $ rails -v
 <p>If you are using rvm and multiple gemsets, it is best not to run <code>bundle update rails</code>. Instead, create a new gemset for the new Rails version as described above so you can switch gemsets as needed.</p>
 <h2>Updating Your Application</h2>
 <p>After updating Rails or other gems, run your test suite (hopefully, you have tests; this is why you need them!).</p>
-<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you may have to rework parts of your application. After major new Rails releases, many community members offer helpful blog posts (and even some gems) to identify specific code that needs to be updated for a new version of Rails. For example, there’s a Railscast from Ryan Bates titiled <a href="http://railscasts.com/episodes/265-rails-3-1-overview">Upgrading to Rails 3.2</a>.</p>
+<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you may have to rework parts of your application. After major new Rails releases, many community members offer helpful blog posts (and even some gems) to identify specific code that needs to be updated for a new version of Rails. For example, there’s a Railscast from Ryan Bates titiled <a href="http://railscasts.com/episodes/318-upgrading-to-rails-3-2">Upgrading to Rails 3.2</a>.</p>
 <h2>Security</h2>
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
