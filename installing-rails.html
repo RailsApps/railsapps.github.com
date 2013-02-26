@@ -137,37 +137,30 @@ gem 'therubyracer'
 <p><em>Before you start:</em> You can develop with Rails on Windows but be aware that most developers use Mac OS X or Ubuntu to develop Rails applications. Some gems requiring native extensions may be difficult to install on Windows.</p>
 <p>See instructions for <a href="http://installfest.railsbridge.org/installfest/windows">Installing Rails on Windows</a> from the <a href="http://railsbridge.org/">Railsbridge Workshops</a>. The instructions recommend using <a href="http://railsinstaller.org/">RailsInstaller for Windows</a>. RailsInstaller includes a “DevKit” which installs gcc and other Unix build tools. Also see Amit Kazmirsky’s <a href="http://amitkazmirsky.com/2013/01/03/installing-rails-with-mysql-on-windows-8">Installing Rails with MySQL on Windows 8</a> for important tips. On Windows, use <a href="http://github.com/vertiginous/pik">Pik</a> for services similar to rvm.</p>
 <p>Another option on Windows is to install Ruby under <a href="http://www.cygwin.com/">Cygwin</a>. This gives you a Linux environment on Windows. Make sure you have the following Cygwin packages installed: git, readline, wget, patch, make, gcc, libsqlite3-devel, libxml2-devel, libxslt-devel.</p>
-<h2>Install <span class="caps">RVM</span>
-</h2>
+<h2>Install <span class="caps">RVM</span> and Ruby</h2>
 <p>Use Wayne Seguin’s rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions. <span class="caps">RVM</span> will make it easy to switch between Rails 3.2 and Rails 4.0. You’ll use rvm to create a project-specific gemset for each application you build.</p>
-<p>The rvm website explains <a href="https://rvm.io/rvm/install/">how to install rvm</a>. Installation is simple:</p>
+<p>The rvm website explains <a href="https://rvm.io/rvm/install/">how to install rvm</a>. However, I recommend using the newest (unreleased) version. The newest (unreleased) version of rvm includes an “autolibs” option which identifies and installs components needed for your version of Mac OS X.</p>
 <pre>
-$ \curl -L https://get.rvm.io | bash -s stable
+$ \curl -L https://get.rvm.io | bash -s head --autolibs=3 --ruby
 </pre>
 <p>Note the backslash before “curl” (this avoids potential version conflicts).</p>
-<p>If you already have rvm installed, update it to the latest version.</p>
+<p>The “—ruby” flag will install the newest version of Ruby. Ruby 2.0 patch level 0 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
+<p>Ruby may already be installed on your computer. For example, Mac OS X 10.8 comes with Ruby 1.8.7 preinstalled. You should install the newest version of Ruby. If you have an older version of Ruby installed you don’t need to remove it. Any older Ruby and Rails versions will remain on your system and the rvm versions will take precedence. <span class="caps">RVM</span> will leave your system version of Ruby untouched and use your shell to intercept any calls to Ruby.</p>
+<p>If you already have rvm installed, update it to the latest version and make it your default:</p>
 <pre>
-$ rvm get latest
-$ rvm -v
+$ rvm get head
+$ rvm install ruby-2.0.0 --autolibs=3
+$ rvm --default use ruby-2.0.0
 </pre>
+<h4>Troubleshooting</h4>
+<p>If you have problems installing Ruby using rvm, you can get help directly from the rvm team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
+<ul>
+	<li><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></li>
+</ul>
 <h4>Alternatives to <span class="caps">RVM</span>
 </h4>
 <p>Sam Stephenson offers an alternative to rvm named <a href="https://github.com/sstephenson/rbenv">rbenv</a>. With rbenv, use Jamis Buck’s <a href="https://github.com/jamis">rbenv-gemset</a> to switch between gemsets. The utilities rbenv and rbenv-gemset are less “magic” than rvm and can be useful if you encounter issues with rvm. If you want to try rbenv, see notes for <a href="https://gist.github.com/1859298">installing Ruby on MacOS X 10.7.3 with XCode 4.3 and rbenv</a>.</p>
 <p>The <a href="https://github.com/postmodern/chruby">Chruby</a> project is another alternative to rvm.</p>
-<h2>Install Ruby</h2>
-<p>Check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. Ruby 2.0 patch level 0 was current when this was written.</p>
-<p>Ruby may already be installed on your computer. For example, Mac OS X 10.8 comes with Ruby 1.8.7 preinstalled. You should install the newest version of Ruby. If you have an older version of Ruby installed you don’t need to remove it. Any older Ruby and Rails versions will remain on your system and the rvm versions will take precedence. <span class="caps">RVM</span> will leave your system version of Ruby untouched and use your shell to intercept any calls to Ruby.</p>
-<p>Check for rvm installation notes for your operating system version:</p>
-<pre>
-$ rvm requirements
-</pre>
-<p>Examine the listed requirements carefully. You may have to install additional components before you can use rvm to install Ruby.</p>
-<p>Use rvm to install the recommended version of Ruby and make it your default:</p>
-<pre>
-$ rvm install ruby-2.0.0
-$ rvm --default use ruby-2.0.0
-$ ruby -v
-</pre>
 <h4>Alternative Rubies</h4>
 <p><span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, is the reference implementation. It is the default when you install Ruby 2.0 using rvm. There are other Ruby interpreters available for specialized use:</p>
 <ul>
@@ -178,20 +171,9 @@ $ ruby -v
 	<li><a href="http://www.macruby.org/">MacRuby</a></li>
 </ul>
 <p>You may want to investigate the alternatives later (any can be installed using rvm).</p>
-<h4>Troubleshooting</h4>
-<p>On Mac OS X, you may have a problem installing Ruby because you don’t have a working C language compiler. The newest (unreleased) version of rvm includes an “autolibs” option which identifies and installs components needed for your version of Mac OS X.</p>
-<p>If you get an error while installing Ruby with rvm, try the newest (unreleased) version of rvm:</p>
-<pre>
-$ rvm get head
-$ rvm install ruby-2.0.0 --autolibs=4
-$ rvm --default use ruby-2.0.0
-</pre>
-<p>If you continue to have problems installing Ruby using rvm, you can get help directly from the rvm team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
-<ul>
-	<li><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></li>
-</ul>
 <h2 id="gems">Updating the Gems</h2>
 <p>You can read more about how the building blocks of the Rails platform work together by reading the article <a href="http://railsapps.github.com/managing-rails-versions-gems.html">Managing Rails Versions and Gems</a>. It explains the relationships among Ruby, RubyGems, Rails, Rake, Bundler, and gemfiles and offers some advice.</p>
+<p>If you’ve just installed the newest version of Ruby using rvm, you’ll have the newest versions of all the gems you need. If you are working with an older installation, you should update the following gems.</p>
 <h4>RubyGems</h4>
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
