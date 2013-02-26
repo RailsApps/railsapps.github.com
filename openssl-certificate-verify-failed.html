@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>OpenSSL Errors and Rails – Certificate Verify Failed – Gem::RemoteFetcher::FetchError</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 4 May 2012</em></p>
+<p><em>Last updated 25 February 2013</em></p>
 <p>Are you getting an error “OpenSSL certificate verify failed” with Ruby?</p>
 <p>Or an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0”?</p>
 <p>Here are suggestions.</p>
@@ -78,9 +78,10 @@ Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read 
 <p>Prior to 20 April 2012, the error likely resulted when the certificate file on your computer was out of date, missing, or couldn’t be found.</p>
 <p>On 20 April 2012, <a href="http://www.ruby-lang.org/en/news/2012/04/20/ruby-1-9-3-p194-is-released/">Ruby 1.9.3-p194 was released</a> incorporating RubyGems 1.8.23 which included two security fixes:</p>
 <ul>
-<li>verification of server <span class="caps">SSL</span> certs is required when RubyGems connects to an https server</li>
+	<li>verification of server <span class="caps">SSL</span> certs is required when RubyGems connects to an https server</li>
 	<li>RubyGems no longer allows redirects from https to http servers</li>
-</ul><p>This is the commit to RubyGems that implemented the security fixes: <a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">Insecure connection to <span class="caps">SSL</span> repository</a>. Following the release, an issue was reported for an <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>.</p>
+</ul>
+<p>This is the commit to RubyGems that implemented the security fixes: <a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">Insecure connection to <span class="caps">SSL</span> repository</a>. Following the release, an issue was reported for an <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>.</p>
 <p>Following the release of RubyGems 1.8.23, the RubyGems team identified a problem with misconfiguration of <span class="caps">SSL</span> certificates on the <a href="https://rubygems.org/">https://rubygems.org/</a> server. The RubyGems team fixed the <span class="caps">SSL</span> certificates on 24 April 2012.</p>
 <p>RubyGems 1.8.23 was supposed to install a <code>.pem</code> file containing current <span class="caps">SSL</span> certificates but didn’t do so, according to this isse: <a href="https://github.com/rubygems/rubygems/issues/320">1.8.23 actually does not install pem file</a>. This commit <a href="https://github.com/rubygems/rubygems/commit/521163b1e4ccbab08d3a9dbfa504c9aa3ef42506">Install the .pem files properly</a> fixed the problem and was released on 27 April 2012 with RubyGems 1.8.24 (<a href="https://github.com/rubygems/rubygems/blob/1.8/History.txt">RubyGems changelog</a>). The 1.8.24 release also eliminated a problematic dependency on OpenSSL for http connections.</p>
 <p>At the current time (after 1 May 2012), if you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL or certificate files on your computer. Users of older versions of Mac OS X and Ubuntu operating systems are likely to see these errors. Upgrading your OS will resolve the issues. Alternatively, you can update OpenSSL as described below.</p>
@@ -167,17 +168,71 @@ $ rvm install 1.9.3 --with-openssl-dir=`brew --prefix openssl`
 $ ln -s /etc/ssl/certs $rvm_path/usr/ssl
 </pre>
 <p><em>Doesn’t work for you? Please add to the comments below.</em></p>
-<h2>Solutions for Mac OS</h2>
-<p>Mac OS 10.7 (Lion) has a current version of OpenSSL and certificate files and you are not likely to see an error (please leave a comment if you do). If you can update to Mac OS X 10.7.3, please do so.</p>
-<p>Mac OS 10.6.8 and earlier versions are likely to have outdated versions of OpenSSL or certificate files.</p>
-<p>Try updating your OpenSSL library using MacPorts. You’ll need to <a href="http://www.macports.org/install.php">install MacPorts</a> first.</p>
+<h2>Updating OpenSSL on Mac OS</h2>
+<p>Your Mac may have outdated versions of OpenSSL or certificate files.</p>
+<h3>Updating OpenSSL with Homebrew</h3>
 <pre>
+$ openssl version
+.
+$ brew update
+.
+.
+.
+$ brew install openssl
+==&gt; Downloading http://openssl.org/source/openssl-1.0.1e.tar.gz
+==&gt; perl ./Configure --prefix=/usr/local/Cellar/openssl/1.0.1e --openssldir=/usr
+==&gt; make
+==&gt; make test
+==&gt; make install MANDIR=/usr/local/Cellar/openssl/1.0.1e/share/man MANSUFFIX=ssl
+==&gt; Caveats
+To install updated CA certs from Mozilla.org:
+
+    brew install curl-ca-bundle
+
+This formula is keg-only: so it was not symlinked into /usr/local.
+
+Mac OS X already provides this software and installing another version in
+parallel can cause all kinds of trouble.
+
+The OpenSSL provided by OS X is too old for some software.
+
+Generally there are no consequences of this for you. If you build your
+own software and it requires this formula, you'll need to add to your
+build variables:
+
+    LDFLAGS:  -L/usr/local/opt/openssl/lib
+    CPPFLAGS: -I/usr/local/opt/openssl/include
+
+==&gt; Summary
+/usr/local/Cellar/openssl/1.0.1e: 429 files, 15M, built in 3.9 minutes
+$ brew link openssl --force
+Linking /usr/local/Cellar/openssl/1.0.1e... 1139 symlinks created
+$ brew install curl-ca-bundle
+==&gt; Downloading https://downloads.sourceforge.net/project/machomebrew/...
+/usr/local/Cellar/curl-ca-bundle/1.87: 2 files, 252K, built in 5 seconds
+</pre>
+<p>Close and reopen your terminal (or reload your shell).</p>
+<pre>
+$ openssl version
+OpenSSL 1.0.1e 11 Feb 2013
+</pre>
+<h3>Updating OpenSSL with MacPorts</h3>
+<p>You can also try updating your OpenSSL library using MacPorts. You’ll need to <a href="http://www.macports.org/install.php">install MacPorts</a> first.</p>
+<pre>
+$ openssl version
 $ sudo port sync; sudo port selfupdate; sudo port install openssl
 ...
 $ openssl version
 OpenSSL 1.0.1a 19 Apr 2012
 </pre>
-<p>If you don’t want to install MacPorts, you can compile OpenSSL from source:</p>
+<p>Alternatively, some developers have suggested to download an updated certificate file. This assumes you are using MacPorts and have a directory <strong>/opt/local/etc/openssl</strong>:</p>
+<pre>
+$ cd /opt/local/etc/openssl
+$ sudo curl -O http://curl.haxx.se/ca/cacert.pem
+$ sudo mv cacert.pem cert.pem
+</pre>
+<h3>OpenSSL from Source</h3>
+<p>If you don’t want to use Homebrew or install MacPorts, you can compile OpenSSL from source:</p>
 <pre>
 curl -L -O http://www.openssl.org/source/openssl-1.0.1b.tar.gz.asc
 curl -L -O http://www.openssl.org/source/openssl-1.0.1b.tar.gz
@@ -188,12 +243,6 @@ perl ./Configure shared zlib --prefix=/opt/local darwin64-x86_64-cc
 make
 make test
 sudo make install
-</pre>
-<p>Alternatively, some developers have suggested to download an updated certificate file. This assumes you are using MacPorts and have a directory <strong>/opt/local/etc/openssl</strong>:</p>
-<pre>
-$ cd /opt/local/etc/openssl
-$ sudo curl -O http://curl.haxx.se/ca/cacert.pem
-$ sudo mv cacert.pem cert.pem
 </pre>
 <p>If you find that the problem is not resolved by updating OpenSSL, please leave a comment below.</p>
 <p><em>Doesn’t work for you? Please add to the comments below.</em></p>

@@ -50,18 +50,20 @@
 <p>The Rails Apps Composer gem installs a command line tool to assemble a Rails application from a collection of “recipes.”</p>
 <p>What you can do with the rails_apps_composer gem:</p>
 <ul>
-<li>create a starter app from the command line</li>
+	<li>create a starter app from the command line</li>
 	<li>make a reusable application template</li>
-</ul><p>The rails_apps_composer gem is used to build the example applications and tutorials from the <a href="http://railsapps.github.com/">RailsApps</a> project.</p>
+</ul>
+<p>The rails_apps_composer gem is used to build the example applications and tutorials from the <a href="http://railsapps.github.com/">RailsApps</a> project.</p>
 <p>Convenient links:</p>
 <ul>
-<li>
+	<li>
 <a href="https://github.com/RailsApps/rails_apps_composer">GitHub repository</a> for rails_apps_composer</li>
 	<li>
 <a href="https://rubygems.org/gems/rails_apps_composer">RubyGems</a> page for rails_apps_composer</li>
 	<li>
 <a href="https://www.ruby-toolbox.com/projects/rails_apps_composer">The Ruby Toolbox</a> listing for rails_apps_composer</li>
-</ul><p><img src="http://railsapps.github.com/images/rails-apps-composer.png" title="Rails Apps Composer" alt="Rails Apps Composer"></p>
+</ul>
+<p><img src="http://railsapps.github.com/images/rails-apps-composer.png" title="Rails Apps Composer" alt="Rails Apps Composer"></p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
@@ -70,7 +72,7 @@
 <p>If you are new to Rails, try the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool instead. It provides an application template that is generated from the rails_apps_composer gem’s core recipes. It is easier to use.</p>
 <h2 id="TOC">Table of Contents</h2>
 <ul>
-<li><a href="#Overview">Overview</a></li>
+	<li><a href="#Overview">Overview</a></li>
 	<li><a href="#Recipes">Recipes</a></li>
 	<li><a href="#Usage">Usage</a></li>
 	<li><a href="#Diagnostics">Diagnostics</a></li>
@@ -79,7 +81,8 @@
 	<li><a href="#Architecture">Architecture</a></li>
 	<li><a href="#Defaults">Defaults File</a></li>
 	<li><a href="#Issues">Issues</a></li>
-</ul><h2 id="Introduction">Introduction</h2>
+</ul>
+<h2 id="Introduction">Introduction</h2>
 <p>The rails_apps_composer gem was originally developed as a tool for the RailsApps project. The <a href="http://railsapps.github.com/">RailsApps</a> project provides Rails example applications and tutorials.</p>
 <p>Over a hundred Rails developers now use the tool to create their own starter apps. An active open source community contributes to maintenance and development of the gem with patches and new recipes.</p>
 <p>The rails_apps_composer gem serves as a common point of integration for many popular Rails gems. As you are no doubt aware, Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. Not all gems work together; sometimes new gem versions introduce unexpected incompatibilities. By using the rails_apps_composer gem to build your Rails starter apps, you will benefit from the collaborative problem-solving of Rails developers who face the same challenges as you. Check the GitHub issues if you find problems; share solutions by submitting pull requests.</p>
@@ -88,9 +91,10 @@
 <h2 id="Dependencies">Dependencies</h2>
 <p>Before using the rails_apps_composer gem, you will need:</p>
 <ul>
-<li>The Ruby language (version 1.9.3)</li>
+	<li>The Ruby language (version 1.9.3)</li>
 	<li>Rails 3.2 or newer</li>
-</ul><p>See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice about updating Rails and your development environment. You’ll avoid many potential headaches if you review the article step by step before beginning development.</p>
+</ul>
+<p>See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for advice about updating Rails and your development environment. You’ll avoid many potential headaches if you review the article step by step before beginning development.</p>
 <h2 id="Installation">Installation</h2>
 <p>I recommend installing and using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to create a new gemset for rails_apps_composer. Using an rvm gemset will make it easier to identify and isolate incompatibilities among gems.</p>
 <p>Installation is simple:</p>
@@ -98,14 +102,16 @@
 <h2 id="Overview">Overview</h2>
 <p>This guide covers use of the rails_apps_composer gem as:</p>
 <ul>
-<li>a tool to build a <strong>starter app</strong> from recipes</li>
+	<li>a tool to build a <strong>starter app</strong> from recipes</li>
 	<li>a tool to generate a reusuable <strong>application template</strong>
 </li>
-</ul><p>There are two ways to use rails_apps_composer as a tool:</p>
+</ul>
+<p>There are two ways to use rails_apps_composer as a tool:</p>
 <ul>
-<li>interactively, driven from prompts on the command line</li>
+	<li>interactively, driven from prompts on the command line</li>
 	<li>“automatically,” from a defaults file that specifies parameters</li>
-</ul><p>This guide shows how to use the recipes that come with the gem.</p>
+</ul>
+<p>This guide shows how to use the recipes that come with the gem.</p>
 <p>You can also use <strong>local recipes</strong> you’ve created for yourself.</p>
 <p>This guide shows how to <strong>modify and create recipes</strong> to accommodate your specific development needs. I encourage you to contribute your recipes to be included in the gem for others to use.</p>
 <p>If you intend to use the rails_apps_composer gem frequently, I recommend creating a <strong>defaults file</strong> that drives the assembly of your starter apps. The defaults file will eliminate the need to respond to prompts when you build a starter app interactively or generate an application template. Note that you can both set defaults and allow prompts for options which vary with each build.</p>
@@ -123,13 +129,14 @@
 <p>Recipe <strong>configuration parameters</strong> and global <strong>preferences</strong> are used to express your preferences for choices offered by a recipe. For example, a recipe might ask you to choose between SQLite and PostgreSQL for your database. Each recipe has access to configuration parameters in a <code>config{}</code> hash that is local to the recipe. These configuration parameters can be set with an interactive prompt. Each recipe also has access to preferences which are made available to all the recipes via the <code>prefs{}</code> hash.</p>
 <p>Configuration parameters can be set at an interactive prompt (the rails_apps_composer program will “quiz” you for your preferences) or they can be specified in a <strong>defaults file</strong> so the program will run automatically with prior knowledge of your preferences. You can have more than one defaults file; for example, if you want different starter apps for different types of web applications. Parameters in the defaults file are saved internally as:</p>
 <ul>
-<li>
+	<li>
 <code>recipes[]</code> array</li>
 	<li>
 <code>prefs{}</code> hash</li>
 	<li>
 <code>gems[]</code> array</li>
-</ul><p>Your <strong>starter app</strong> is the “template” (there’s that ambiguous term again!) you’ll use as the foundation for the custom application you build for yourself or your clients. Rails gives you a simple application in a standard configuration when you use the <code>rails new</code> command; it is seldom everything you need to get started. That’s why we build starter apps.</p>
+</ul>
+<p>Your <strong>starter app</strong> is the “template” (there’s that ambiguous term again!) you’ll use as the foundation for the custom application you build for yourself or your clients. Rails gives you a simple application in a standard configuration when you use the <code>rails new</code> command; it is seldom everything you need to get started. That’s why we build starter apps.</p>
 <p>So now you understand: When you use the rails_apps_composer gem, you’ll save <em>configuration parameters</em> in a <em>defaults file</em> which set up <em>recipes</em> that are assembled by the rails_apps_composer gem to generate an <em>application template</em> which is used by the <code>rails new</code> command to build a Rails <em>starter app</em> which you’ll customize to deploy as a Rails application.</p>
 <h2 id="FirstEncounter">First Encounter</h2>
 <p>Here’s what you can try on a first encounter with the rails_apps_composer gem.</p>
@@ -191,13 +198,14 @@ question  Install a starter app?
 <h4>Extras</h4>
 <p>The <em>extras</em> recipe is a grab bag of ingredients. In rails_apps_composer 2.1, the <em>extras</em> recipe offers:</p>
 <ul>
-<li>an option to install a form builder gem</li>
+	<li>an option to install a form builder gem</li>
 	<li>a “ban_spiders” option to control search-engine spidering by modifying the <strong>public/robots.txt</strong> file</li>
 	<li>a “jsruntime” option to add ‘therubyracer’ JavaScript runtime for Linux users without node.js</li>
 	<li>an “rvmrc” option to create a project-specific rvm gemset and .rvmrc file</li>
 	<li>a housekeeping procedure to remove unnecessary files and whitespace</li>
 	<li>an option to create a GitHub repository</li>
-</ul><p>Each of these procedures could be moved into its own recipe. However, since the procedures only require a few lines of code and will be useful to a large number of developers, we’ve consolidated them in the <em>extras</em> recipe.</p>
+</ul>
+<p>Each of these procedures could be moved into its own recipe. However, since the procedures only require a few lines of code and will be useful to a large number of developers, we’ve consolidated them in the <em>extras</em> recipe.</p>
 <p>If you have a favorite option that you think many other developers would like, feel free to customize the <em>extras</em> recipe and submit a pull request. Keep in mind that every developer who builds a starter app with the rails_apps_composer gem will have to respond to prompts introduced by the <em>extras</em> recipe. If you’re not certain that everyone will want to consider your favorite option, create a custom recipe instead and allow developers a choice of including it in their recipe list.</p>
 <h3>Additional Recipes</h3>
 <p>The rails_apps_composer gem does not offer every option that a Rails developer will want in creating a starter app. That’s why it’s built using recipes. It’s an open source project so it’s up to you to contribute recipes that add functionality you need and other developers may want. Look at the rails_apps_composer source code in the recipes folder. Maybe someone has already contributed a recipe you can use. Otherwise, write a recipe and submit a pull request so we can add it to the project.</p>
@@ -534,7 +542,7 @@ config:
 <p><a href="http://yehudakatz.com/2008/05/12/by-thors-hammer/">Thor</a> is a scripting framework for Ruby written by Yehuda Katz. Thor provides utility methods that are useful in manipulating files. Rails generators (used by the <code>rails new</code> command) use Thor methods.</p>
 <p>You’ll see Thor methods used in the recipes. To learn about the Thor methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://rdoc.info/github/wycats/thor/master/Thor/Actions">Thor::Actions</a>. Here are some Thor methods often used in recipes:</p>
 <ul>
-<li><code>get</code></li>
+	<li><code>get</code></li>
 	<li><code>remove_file</code></li>
 	<li><code>create_file</code></li>
 	<li><code>append_to_file</code></li>
@@ -543,33 +551,38 @@ config:
 	<li><code>gsub_file</code></li>
 	<li><code>comment_lines</code></li>
 	<li><code>uncomment_lines</code></li>
-</ul><p>You’ll also see Rails Generators methods. To learn about the Rails Generators methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a>. You’ll see these methods in the recipes:</p>
+</ul>
+<p>You’ll also see Rails Generators methods. To learn about the Rails Generators methods used in recipes, refer to the <span class="caps">API</span> documentation for <a href="http://api.rubyonrails.org/classes/Rails/Generators/Actions.html">Rails::Generators::Actions</a>. You’ll see these methods in the recipes:</p>
 <ul>
-<li><code>gem</code></li>
+	<li><code>gem</code></li>
 	<li><code>generate</code></li>
 	<li><code>git</code></li>
 	<li><code>route</code></li>
-</ul><h3 id="wizard_methods">Rails Wizard Methods</h3>
+</ul>
+<h3 id="wizard_methods">Rails Wizard Methods</h3>
 <p>The rails_apps_composer gem inherits several methods from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a> gem:</p>
 <h4>Input</h4>
 <ul>
-<li><code>ask_wizard(question)</code></li>
+	<li><code>ask_wizard(question)</code></li>
 	<li><code>yes_wizard?(question)</code></li>
 	<li><code>no_wizard?(question)</code></li>
 	<li><code>multiple_choice(prompt, [ [Label,value], [Label2,value2] ])</code></li>
-</ul><h4>Output</h4>
+</ul>
+<h4>Output</h4>
 <ul>
-<li><code>say_recipe(name)</code></li>
+	<li><code>say_recipe(name)</code></li>
 	<li><code>say_custom(tag, text)</code></li>
 	<li><code>say_wizard(text)</code></li>
-</ul><p>These methods are used to display the prompts that the user sees during the “quiz.”</p>
+</ul>
+<p>These methods are used to display the prompts that the user sees during the “quiz.”</p>
 <p>These methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
 <h3 id="rac_methods">Rails_apps_composer Methods</h3>
 <p>The following methods were introduced in rails_apps_composer 2.0 version:</p>
 <ul>
-<li><code>prefer(key, value)</code></li>
+	<li><code>prefer(key, value)</code></li>
 	<li><code>copy_from_repo(filename, opts = {})</code></li>
-</ul><p>These methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
+</ul>
+<p>These methods are defined in the file <strong>templates/helpers.erb</strong>.</p>
 <p>The first method is used to test if a preference has been selected. Here’s an example:</p>
 <pre>
 if prefer :authentication, 'devise'
@@ -597,10 +610,11 @@ copy_from_repo 'config/database-mysql.yml', :prefs =&gt; 'mysql'
 </pre>
 <p>In this example, the default repository may contain one or more files with similar names:</p>
 <ul>
-<li>config/database.yml</li>
+	<li>config/database.yml</li>
 	<li>config/database-mysql.yml</li>
 	<li>config/database-postgresql.yml</li>
-</ul><p>If the specified preference is present in the <code>prefs{}</code> hash as a value, the designated file is copied from the default repository. Before the file is saved locally, the preference value is stripped from the filename. In this example, if the user has selected “mysql” as a preference, the method will get a file named <strong>config/database-mysql.yml</strong> from the repository and save it locally as <strong>config/database.yml</strong>. This method makes it possible to store similar files as templates and copy only the one that best matches the selected preferences.</p>
+</ul>
+<p>If the specified preference is present in the <code>prefs{}</code> hash as a value, the designated file is copied from the default repository. Before the file is saved locally, the preference value is stripped from the filename. In this example, if the user has selected “mysql” as a preference, the method will get a file named <strong>config/database-mysql.yml</strong> from the repository and save it locally as <strong>config/database.yml</strong>. This method makes it possible to store similar files as templates and copy only the one that best matches the selected preferences.</p>
 <p>Finally, the <code>copy_from_repo</code> method performs tricks to convert <span class="caps">ERB</span> files to Haml or Slim if preferences require it. Here it retrieves an <span class="caps">ERB</span> file:</p>
 <pre>
 copy_from_repo 'app/views/layouts/application.html.erb'
@@ -659,7 +673,7 @@ end
 <p>A Rails application is created in stages. The rails_apps_composer program provides methods to manipulate files at appropriate stages of the creation process.</p>
 <p>Here are the stages of the creation process:</p>
 <ul>
-<li>the rails_apps_composer program assembles an application template</li>
+	<li>the rails_apps_composer program assembles an application template</li>
 	<li>
 <code>rails new</code> creates an application</li>
 	<li>
@@ -671,15 +685,17 @@ end
 <code>after_bundler</code> stage</li>
 	<li>
 <code>after_everything</code> stage</li>
-</ul><p>The rails_apps_composer recipes are not operative during the second stage of the process. Creating a new application is solely handled by the Rails generators.</p>
+</ul>
+<p>The rails_apps_composer recipes are not operative during the second stage of the process. Creating a new application is solely handled by the Rails generators.</p>
 <h4>The Before_config Stage</h4>
 <p>Each recipe can contain code that runs before the user is prompted to express preferences. This code will be run before the “quiz.”</p>
 <p>Recipes supply commands as a block to the <code>before_config</code> method.</p>
 <p>Here are examples of procedures to be executed during the <code>before_config</code> stage:</p>
 <ul>
-<li>raise an exception if required conditions are not met</li>
+	<li>raise an exception if required conditions are not met</li>
 	<li>set preferences that are not optional</li>
-</ul><p>In most recipes, nothing is done during the <code>before_config</code> stage.</p>
+</ul>
+<p>In most recipes, nothing is done during the <code>before_config</code> stage.</p>
 <h4>The Quiz</h4>
 <p>A simple application template executes a stepwise procedure. Complex application templates, such as those assembled by the rails_apps_composer program, can prompt the user for preferences and execute commands conditionally. Each recipe can request preferences.</p>
 <p>The prompt can be driven by inline code. Here’s an example:</p>
@@ -701,11 +717,12 @@ config:
 <p>After obtaining the user’s preferences, the application template will add gems to a Gemfile.</p>
 <p>There are several ways to tell rails_apps_composer to add a gem:</p>
 <ul>
-<li>respond to a prompt and enter the name of a gem</li>
+	<li>respond to a prompt and enter the name of a gem</li>
 	<li>include the name of a gem as a parameter in the defaults file</li>
 	<li>modify the <em>gems</em> recipe to add a gem</li>
 	<li>create a custom recipe that adds a gem</li>
-</ul><p>Here’s a simple example showing how a recipe can add a gem to the Gemfile:</p>
+</ul>
+<p>Here’s a simple example showing how a recipe can add a gem to the Gemfile:</p>
 <pre>
 gem 'foobar'
 </pre>
@@ -720,21 +737,23 @@ gem 'factory_girl_rails', '&gt;= 3.5.0', :group =&gt; [:development, :test] if p
 <p>Most recipes will supply commands (as a block) to the <code>after_bundler</code> method. The application template executes all code in <code>after_bundler</code> blocks immediately after running <code>bundle install</code>.</p>
 <p>Here are examples of procedures to be executed during the <code>after_bundler</code> stage:</p>
 <ul>
-<li>
+	<li>
 <code>generate</code> commands to run generators after a gem is installed</li>
 	<li>code to create models, views, controllers, or views</li>
-</ul><p>Most of your code will execute in the <code>after_bundler</code> stage.</p>
+</ul>
+<p>Most of your code will execute in the <code>after_bundler</code> stage.</p>
 <h4>The After_everything Stage</h4>
 <p>Sometimes you will have code that must execute after everything else is ready.</p>
 <p>The rails_apps_composer program provides an <code>after_everything</code> method that postpones execution of commands until after <code>after_bundler</code> runs.</p>
 <p>Like <code>after_bundler</code>, recipes supply commands as a block to the <code>after_everything</code> method.</p>
 <p>Here are examples of procedures to be executed during the <code>after_everything</code> stage:</p>
 <ul>
-<li>database migrations</li>
+	<li>database migrations</li>
 	<li>seeding a database</li>
 	<li>removing unnecessary files and whitespace</li>
 	<li>final commit to a git repository</li>
-</ul><p>The <code>after_everything</code> stage is the place to clean up and finalize your application.</p>
+</ul>
+<p>The <code>after_everything</code> stage is the place to clean up and finalize your application.</p>
 <h3 id="order">Recipe Order</h3>
 <p>Recipe order is critical to successful execution of an application template. You must give careful thought to order of execution when assembling recipes.</p>
 <p>For example, if a recipe attempts to manipulate a User model but the User model has not yet been created, the application template will fail.</p>
@@ -895,13 +914,14 @@ end
 <h3>Global Variables</h3>
 <p>Three data structures are available to all the recipes:</p>
 <ul>
-<li>
+	<li>
 <code>recipes[]</code> array</li>
 	<li>
 <code>gems[]</code> array</li>
 	<li>
 <code>prefs{}</code> hash</li>
-</ul><h4>Recipes</h4>
+</ul>
+<h4>Recipes</h4>
 <p>The <code>recipes[]</code> array is a list of recipes to include in the application template. It can be set from a defaults file, from the command line (with the <code>-r</code> flag), or from an interactive prompt.</p>
 <p>Test for the presence of a recipe with:</p>
 <pre>
@@ -930,20 +950,22 @@ end
 <h3>Templates</h3>
 <p>Three template files are the basis for generating an application template:</p>
 <ul>
-<li><strong>templates/layout.erb</strong></li>
+	<li><strong>templates/layout.erb</strong></li>
 	<li><strong>templates/recipe.erb</strong></li>
 	<li><strong>templates/helpers.erb</strong></li>
-</ul><h4>Layout for an Application Template</h4>
+</ul>
+<h4>Layout for an Application Template</h4>
 <p>The file <strong>templates/layout.erb</strong> is the “template for an application template.” If you compare the <strong>templates/layout.erb</strong> file with an application template generated by the rails_apps_composer program, you’ll see that the <strong>templates/layout.erb</strong> file contains placeholders and variables that are set by the program at run time.</p>
 <p>The file <strong>templates/layout.erb</strong> provides the structure for the application template. It is organized in sections:</p>
 <ul>
-<li>Initial Setup</li>
+	<li>Initial Setup</li>
 	<li>Autoload Modules/Classes</li>
 	<li>Recipes</li>
 	<li>Run ‘Bundle Install’</li>
 	<li>Run ‘After Bundler’ Callbacks</li>
 	<li>Run ‘After Everything’ Callbacks</li>
-</ul><p>If you wanted to put your own name on every application template generated by the rails_apps_composer program, you’d modify the <strong>templates/layout.erb</strong> file.</p>
+</ul>
+<p>If you wanted to put your own name on every application template generated by the rails_apps_composer program, you’d modify the <strong>templates/layout.erb</strong> file.</p>
 <h4>Recipe Partial for an Application Template</h4>
 <p>The file <strong>templates/recipe.erb</strong> is included in the layout template for each recipe requested by the user.</p>
 <p>Variables in the ‘recipe’ partial are set by a RailsWizard::Recipe instance.</p>
@@ -953,20 +975,23 @@ end
 <p>This file is essential for defining methods that will be used by any recipes.</p>
 <p>These methods are used to display the prompts that the user sees during the “quiz”:</p>
 <ul>
-<li><code>ask_wizard(question)</code></li>
+	<li><code>ask_wizard(question)</code></li>
 	<li><code>yes_wizard?(question)</code></li>
 	<li><code>no_wizard?(question)</code></li>
 	<li><code>multiple_choice(prompt, [ [Label,value], [Label2,value2] ])</code></li>
 	<li><code>say_recipe(name)</code></li>
 	<li><code>say_custom(tag, text)</code></li>
 	<li><code>say_wizard(text)</code></li>
-</ul><p>This method is used to determine if the user has expressed a preference:</p>
+</ul>
+<p>This method is used to determine if the user has expressed a preference:</p>
 <ul>
-<li><code>prefer(key, value)</code></li>
-</ul><p>This method copies a file from a remote repository:</p>
+	<li><code>prefer(key, value)</code></li>
+</ul>
+<p>This method copies a file from a remote repository:</p>
 <ul>
-<li><code>copy_from_repo(filename, opts = {})</code></li>
-</ul><p>These methods are described in more detail above in the sections <a href="#wizard_methods">Rails Wizard Methods</a> and <a href="#rac_methods">Rails_apps_composer Methods</a>.</p>
+	<li><code>copy_from_repo(filename, opts = {})</code></li>
+</ul>
+<p>These methods are described in more detail above in the sections <a href="#wizard_methods">Rails Wizard Methods</a> and <a href="#rac_methods">Rails_apps_composer Methods</a>.</p>
 <h3>Gem Internals</h3>
 <p>The <strong>lib/</strong> directory contains the code that drives the rails_apps_composer program.</p>
 <p>Much of the code that drives the program is duplicated from Michael Bleigh’s <a href="https://github.com/intridea/rails_wizard">RailsWizard</a>.</p>
@@ -1041,7 +1066,11 @@ args:
 <h2 id="AdditionalDocumentation">Additional Documentation</h2>
 <p>This is the primary documentation for the rails_apps_composer gem.</p>
 <h4>About Rails Application Templates</h4>
-<p><a href="http://blog.madebydna.com/all/code/2010/10/11/cooking-up-a-custom-rails3-template.html">Cooking Up A Custom Rails 3 Template (11 Oct 2010) by Andrea Singh</a><br><a href="http://quickleft.com/blog/rails-application-templates">Rails Application Templates (16 Sept 2010) by Collin Schaafsma</a><br><a href="http://benscofield.com/2009/09/application-templates-in-rails-3/">Application templates in Rails 3 (18 Sept 2009) by Ben Scofield</a><br><a href="http://railscasts.com/episodes/148-app-templates-in-rails-2-3">Railscasts: App Templates in Rails 2.3 (9 Feb 2009) by Ryan Bates</a><br><a href="http://m.onkey.org/rails-templates">Rails templates (4 Dec 2008) by Pratik Naik</a></p>
+<p><a href="http://blog.madebydna.com/all/code/2010/10/11/cooking-up-a-custom-rails3-template.html">Cooking Up A Custom Rails 3 Template (11 Oct 2010) by Andrea Singh</a><br>
+<a href="http://quickleft.com/blog/rails-application-templates">Rails Application Templates (16 Sept 2010) by Collin Schaafsma</a><br>
+<a href="http://benscofield.com/2009/09/application-templates-in-rails-3/">Application templates in Rails 3 (18 Sept 2009) by Ben Scofield</a><br>
+<a href="http://railscasts.com/episodes/148-app-templates-in-rails-2-3">Railscasts: App Templates in Rails 2.3 (9 Feb 2009) by Ryan Bates</a><br>
+<a href="http://m.onkey.org/rails-templates">Rails templates (4 Dec 2008) by Pratik Naik</a></p>
 <h2 id="Issues">Issues</h2>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails_apps_composer/issues">issue</a> on GitHub. Reporting issues (and patching!) helps everyone.</p>
 <p>When you generate an application, the application’s <strong><span class="caps">README</span>.textile</strong> file will contain a diagnostics report. Please include the diagnostics report when you create an issue on GitHub.</p>

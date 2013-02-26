@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Rails Tutorial &#183; Devise with MongoDB and Mongoid &#183; RailsApps</title>
+    <title>Rails Tutorial for Devise with Mongoid &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
@@ -51,27 +51,28 @@
 <p><a href="http://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication and user management. <a href="http://mongoid.org/">Mongoid</a> gives access to a MongoDB datastore for quick development without schemas or migrations.  This tutorial also gives you the option of using jQuery, Haml, RSpec and Cucumber, showing how to integrate each option.</p>
 <h4>Similar Examples and Tutorials</h4>
 <table>
-<tr>
-<th>Author </th>
+	<tr>
+		<th>Author </th>
 		<th>Example App </th>
 		<th>Comments </th>
 	</tr>
-<tr>
-<td> Plataformatec </td>
+	<tr>
+		<td> Plataformatec </td>
 		<td> <a href="http://github.com/plataformatec/devise_example">Devise</a> </td>
 		<td> Simple example using SQLite </td>
 	</tr>
-<tr>
-<td> Daniel Kehoe </td>
+	<tr>
+		<td> Daniel Kehoe </td>
 		<td> <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, Cucumber</a> </td>
 		<td> Detailed tutorial, app template, starter app, using SQLite </td>
 	</tr>
-<tr>
-<td> Daniel Kehoe </td>
+	<tr>
+		<td> Daniel Kehoe </td>
 		<td> <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">OmniAuth, Mongoid</a> </td>
 		<td> Detailed tutorial, app template, starter app, using MongoDB </td>
 	</tr>
-</table><p>See a list of additional <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+</table>
+<p>See a list of additional <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <h2>
 <a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
 <p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
@@ -126,10 +127,12 @@ question  Install an example application?
 <h2>Assumptions</h2>
 <p>Before beginning this tutorial, you need to install</p>
 <ul>
-<li>The Ruby language (version 1.9.3 or newer)</li>
+	<li>The Ruby language (version 1.9.3 or newer)</li>
 	<li>Rails 3.2</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
-<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
+</ul>
+<p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
+<p><code>$ ruby -v</code><br>
+<code>$ rails -v</code></p>
 <p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
 <h2>Create the Rails Application</h2>
 <p>Beginning here, we show how to create the application from scratch.</p>
@@ -146,13 +149,15 @@ question  Install an example application?
 <p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
 <h2>Set Up Source Control (Git)</h2>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
-<p><code>$ git init .</code><br><code>$ git add .</code><br><code>$ git commit -m 'Initial commit'</code></p>
+<p><code>$ git init .</code><br>
+<code>$ git add .</code><br>
+<code>$ git commit -m 'Initial commit'</code></p>
 <p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Git and Rails</a>.</p>
 <h2>Set Up Gems</h2>
 <h4>About Required Gems</h4>
 <p>The application uses the following gems:</p>
 <ul>
-<li><a href="http://rubygems.org/gems/rails">rails</a></li>
+	<li><a href="http://rubygems.org/gems/rails">rails</a></li>
 	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
 	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
 	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
@@ -161,7 +166,8 @@ question  Install an example application?
 	<li><a href="http://rubygems.org/gems/mongoid">mongoid</a></li>
 	<li><a href="http://rubygems.org/gems/bson_ext">bson_ext</a></li>
 	<li><a href="http://rubygems.org/gems/devise">devise</a></li>
-</ul><h3>Set up Your Gemfile</h3>
+</ul>
+<h3>Set up Your Gemfile</h3>
 <p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
 <p>See <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
@@ -762,7 +768,8 @@ header nav ul li {
 <p>This concludes the tutorial for creating a Ruby on Rails web application that requires Rails 3 and uses Mongoid for data storage and Devise for user management and authentication.</p>
 <h4>Credits</h4>
 <p>Daniel Kehoe (<a href="http://danielkehoe.com/">http://danielkehoe.com/</a>) implemented the application and wrote the tutorial.</p>
-<p>Was this useful to you? Follow me on Twitter:<br><a href="http://twitter.com/rails_apps">rails_apps</a><br>
+<p>Was this useful to you? Follow me on Twitter:<br>
+<a href="http://twitter.com/rails_apps">rails_apps</a><br>
 and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
 <p>Any issues? Please create an <a href="http://github.com/RailsApps/rails3-mongoid-devise/issues">Issue</a> on GitHub.</p>
 <h4>Contributors</h4>

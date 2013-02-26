@@ -62,10 +62,11 @@
 <p><em>Note:</em> You may have found outdated instructions elsewhere. To clarify: Installing Ruby 1.9.3 on Heroku previously (before March 19, 2012) required installation of the heroku-labs plugin. The heroku-labs plugin is deprecated and its functionality is now incorporated in the heroku client gem. Before May 9, 2012, installing Ruby 1.9.3 on Heroku required the <a href="http://devcenter.heroku.com/articles/labs-user-env-compile">user_env_compile</a> feature; this is now deprecated. Furthermore, it is no longer necessary to set the RUBY_VERSION variable with <code>$ heroku config:add RUBY_VERSION=ruby-1.9.3-p125</code> or to set the Heroku <span class="caps">PATH</span> config variable to include “bin” when you specify the default Ruby 1.9.3 for the Cedar stack. Prior to Rails 3.1.0.rc5, Heroku required an additional gem <code>therubyracer-heroku</code>. This gem is no longer needed for Rails 3.2 and should not be used.</p>
 <p>The following Heroku articles are helpful:</p>
 <ul>
-<li><a href="https://devcenter.heroku.com/articles/ruby-support">Heroku Ruby Support</a></li>
+	<li><a href="https://devcenter.heroku.com/articles/ruby-support">Heroku Ruby Support</a></li>
 	<li><a href="https://devcenter.heroku.com/articles/rails3">Getting Started with Rails 3.x on Heroku/Cedar</a></li>
 	<li><a href="https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar">Rails 3.1+ Asset Pipeline on Heroku Cedar.</a></li>
-</ul><h3>Updating Bundler for Heroku</h3>
+</ul>
+<h3>Updating Bundler for Heroku</h3>
 <p>These instructions assume you are using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>. Bundler and rubygems-bundler are installed in rvm’s “global” gemset.</p>
 <p>First, update to the <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>:</p>
 <pre>
@@ -173,10 +174,11 @@ end
 <p>Rails 3.1 introduced the asset pipeline which enables proper organization of <span class="caps">CSS</span> and JavaScript. Assets must be available as Javascript and <span class="caps">CSS</span> files when anyone visits your website. That means multiple files in various formats (CoffeeScript, <span class="caps">SASS</span>, etc.) must be compiled to simple Javascript and <span class="caps">CSS</span> files. During development, assets are compiled on the fly so you can easily make changes and see the results.</p>
 <p>For deployment on Heroku, you have three options:</p>
 <ul>
-<li>do nothing and allow Heroku to attempt to precompile assets when you deploy to Heroku (slug compilation)</li>
+	<li>do nothing and allow Heroku to attempt to precompile assets when you deploy to Heroku (slug compilation)</li>
 	<li>do nothing and allow Heroku to attempt to compile assets when the app is generated (runtime compilation)</li>
 	<li>precompile the assets before deployment to Heroku</li>
-</ul><p>While runtime asset compilation will work, it should be used as a last resort. Using runtime compilation will require Rails to compile your assets each time a dyno boots up increasing the wait time for a new dyno to become available. If you do nothing and rely on Heroku to perform slug compilation (when you deploy to Heroku), you may find Heroku is unable to compile the assets and will default to runtime compilation. It’s best to precompile the assets before deployment to Heroku.</p>
+</ul>
+<p>While runtime asset compilation will work, it should be used as a last resort. Using runtime compilation will require Rails to compile your assets each time a dyno boots up increasing the wait time for a new dyno to become available. If you do nothing and rely on Heroku to perform slug compilation (when you deploy to Heroku), you may find Heroku is unable to compile the assets and will default to runtime compilation. It’s best to precompile the assets before deployment to Heroku.</p>
 <p>Heroku doesn’t check files in the <strong>config/initializers</strong> folder before attempting to precompile assets. That’s fine if you precompile assets before deploying to Heroku. Or if you don’t use the initializer files to set constants that are used in the assets files. You can avoid these issues by adding this configuration parameter to the <strong>config/application.rb</strong> file:</p>
 <pre>
 # Heroku requires this to be false
