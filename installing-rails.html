@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 February 2013</em></p>
+<p><em>Last updated 1 March 2013</em></p>
 <p>Installing both Rails 4.0 and Rails 3.2.13 on Mac OS X, Ubuntu, or Windows. Up-to-date, detailed instructions show how to install the newest release of Rails. How to get started.</p>
 <p>Here are more than simple instructions for beginners. When installing Rails, developers often neglect all the components needed for Rails to run successfully. This tutorial shows how to update everything needed for real-world Rails development.</p>
 <p>This guide shows how to install Rails 3.2.12, Rails 3.2.13.rc1, and Rails 4.0 so you can easily switch between the most recent stable release, a version of Rails patched for Ruby 2.0, and the newest version of Rails (Rails 4.0.0.beta1). With these versions on your machine, you’ll explore the new features of Rails 4.0 while continuing to develop projects with the most recent stable version.</p>
@@ -90,7 +90,7 @@
 <p>For Mac OS X or Ubuntu Linux, it is best to install <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and Rails. For Windows, you’ll need to use an installation program such as RailsInstaller.</p>
 <h3>Mac</h3>
 <p>Mac OS X provides a pre-installed Ruby 1.8.7 version. You really should install a newer version of Ruby.</p>
-<p>The newest version of <span class="caps">RVM</span> provides almost everything needed to set up the components needed to install Ruby and Rails. You may see advice elsewhere to use an installation program such as RailsInstaller to set up everything. These installation programs are no longer needed as <span class="caps">RVM</span> will set up components needed to install Ruby. RailsInstaller and other installation programs seldom provide the newest versions of Ruby or Rails and are not recommended for experienced developers as they make system-level changes.</p>
+<p>The newest version of <span class="caps">RVM</span> provides almost everything needed to set up the components needed to install Ruby and Rails. You may see advice elsewhere to use an installation program such as RailsInstaller to set up everything. These installation programs are no longer needed as <span class="caps">RVM</span> will set up components needed to install Ruby. I don’t recommend RailsInstaller for experienced developers as it installs <span class="caps">RVM</span> at the system level (for all users, not in your user directory) and seldom provides the newest versions of Ruby or Rails.</p>
 <p>On Mac OS X you will need a C language compiler to install Ruby and gems that require native extensions. Install Apple’s <a href="http://stackoverflow.com/questions/9329243/xcode-4-4-command-line-tools">Xcode Command Line Tools</a> (to get the correct C language compiler) and <a href="http://mxcl.github.com/homebrew/">Homebrew</a> to add additional components needed to build Ruby.</p>
 <p><em>What You Need to Know:</em> Use <span class="caps">RVM</span> to install Ruby and Rails. First install Apple’s Xcode Command Line Tools, then Homebrew. Use the RailsInstaller utility if you have trouble with <span class="caps">RVM</span>.</p>
 <h3>Ubuntu Linux</h3>
@@ -131,11 +131,8 @@ $ rvm --default use ruby-2.0.0
 $ source ~/.rvm/scripts/rvm
 </pre>
 <h4>Troubleshooting</h4>
-<p>If you have problems installing Ruby using <span class="caps">RVM</span>, you can get help directly from the <span class="caps">RVM</span> team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
-<ul>
-	<li><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></li>
-</ul>
-<p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> if you have trouble because the <span class="caps">RVM</span> team is helpful and friendly.</p>
+<p>If you get OpenSSL errors, see the article <a href="http://railsapps.github.com/openssl-certificate-verify-failed.html">OpenSSL Errors and Rails</a>.</p>
+<p>If you get OpenSSL errors after <span class="caps">RVM</span> is installed, you may need to remove and reinstall <span class="caps">RVM</span>. Use <code>rvm implode</code> to remove <span class="caps">RVM</span>. Check that <span class="caps">RVM</span> has been removed with <code>rvm -v</code>. If it’s still there, it may be installed at the system level. This happens if you’ve previously used RailsInstaller (you’ll need to remove RailsInstaller with <code>open /Applications/RailsInstallerOSX-Uninstaller.app</code>).</p>
 <p>If <span class="caps">RVM</span> installs successfully but installation of Ruby fails, try:</p>
 <pre>
 $ rvm requirements
@@ -152,6 +149,11 @@ $ rvm notes
 <pre>
 $ rvm help autolibs
 </pre>
+<p>You can get help directly from the <span class="caps">RVM</span> team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
+<ul>
+	<li><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></li>
+</ul>
+<p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> because the <span class="caps">RVM</span> team is helpful and friendly. <span class="caps">IRC</span> on freenode requires <a href="http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration">registration</a>.</p>
 <h4>RailsInstaller and Alternatives</h4>
 <p>If you have problems installing <span class="caps">RVM</span>, you can try one of the installation programs that provide pre-assembled packages:</p>
 <ul>
@@ -162,7 +164,7 @@ $ rvm help autolibs
 <p>Before using RailsInstaller, be sure to remove <span class="caps">RVM</span> with <code>rvm implode</code> (or else the user version of <span class="caps">RVM</span> will hide the system version of <span class="caps">RVM</span> installed by RailsInstaller).</p>
 <p>If you want to use RailsInstaller on Mac OS X, you should use the newer version available (it contains Ruby 2.0):</p>
 <p><a href="https://rvm.io/src/RailsInstaller-1.0.4-osx-10.7.app.tgz">https://rvm.io/src/RailsInstaller-1.0.4-osx-10.7.app.tgz</a></p>
-<p>See instructions for <a href="http://installfest.railsbridge.org/installfest/">Installing Rails</a> from the <a href="http://railsbridge.org/">Railsbridge Workshops</a> if you use RailsInstaller.</p>
+<p>See instructions for <a href="http://installfest.railsbridge.org/installfest/">Installing Rails</a> from the <a href="http://railsbridge.org/">Railsbridge Workshops</a> if you use RailsInstaller. If you need to remove RailsInstaller, use <code>open /Applications/RailsInstallerOSX-Uninstaller.app</code>.</p>
 <p>If you are a student or hobbyist and you do not intend to release a Rails project to production, you can use older versions of Ruby or Rails. If you have plans to release a Rails project to production (that is, to deploy it where others can use it), you should use <span class="caps">RVM</span> to update to Ruby 2.0 (it is faster) and you <em>must</em> update Rails (versions before 3.2.12 have significant security vulnerabilities).</p>
 <h4>Alternatives to <span class="caps">RVM</span>
 </h4>
