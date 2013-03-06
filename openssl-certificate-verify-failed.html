@@ -46,15 +46,27 @@
     <div class="content wikistyle gollum textile">
       <h1>OpenSSL Errors and Rails – Certificate Verify Failed – Gem::RemoteFetcher::FetchError</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 February 2013</em></p>
+<p><em>Last updated 6 March 2013</em></p>
 <p>Are you getting an error “OpenSSL certificate verify failed” with Ruby?</p>
 <p>Or an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0”?</p>
 <p>You may be seeing Ruby problems with OpenSSL because of conflicts with older versions of OpenSSL or outdated certificate files.</p>
 <p>Here are suggestions.</p>
 <p>This is a note for developers using the example applications and tutorials from the <a href="http://railsapps.github.com/">Rails Apps</a> project. If you’re getting started with Rails, or want an easier way to get started building your applications, see the Rails Apps <a href="http://railsapps.github.com/">example applications and tutorials</a>.</p>
 <h2>Errors with Ruby 2.0</h2>
+<h3>Check RubyGems Version</h3>
+<p>If you get OpenSSL errors with Ruby 2.0, make sure you are using RubyGems 2.0.2 or newer:</p>
+<pre>
+$ gem -v
+</pre>
+<p>Use <code>gem update --system</code> to upgrade the RubyGems system gem if necessary.</p>
+<p>For more help, see the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>.</p>
+<h3>Old Versions of OpenSSL</h3>
 <p>The version of OpenSSL that comes with Mac OS X 10.8 is too old for Ruby 2.0. You need to install a newer one with <a href="https://rvm.io/"><span class="caps">RVM</span></a> or <a href="http://mxcl.github.com/homebrew/">Homebrew</a>.</p>
-<p>If you are using <span class="caps">RVM</span>, the newest version will install OpenSSL automatically. See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>. This may be the easiest solution.</p>
+<p>You should have OpenSSL 1.0.1e or newer installed in your environment:</p>
+<pre>
+$ openssl version
+</pre>
+<p>If you are using <span class="caps">RVM</span>, the newest version of <span class="caps">RVM</span> will install OpenSSL automatically. See the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>. This may be the easiest solution.</p>
 <p>You can also install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and try this:</p>
 <pre>
 $ brew update
