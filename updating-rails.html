@@ -48,8 +48,8 @@
 <h4>by Daniel Kehoe</h4>
 <p><em>Last updated 11 March 2013</em></p>
 <p>Installing Rails 3.2 and Rails 4.0, managing versions, and how to update a Rails application. Instructions and advice.</p>
-<p>If you’re a Rails developer, you really don’t want to replace an old version of Rails with another. Instead, you’ll want to install multiple versions of Rails and switch between them as you step through the process of updating your Rails applications. This article describes how to update a Rails application. Before you start, follow the steps detailed in the “Installing Rails” article to install multiple versions of Rails.</p>
-<p>Read this first:</p>
+<p>If you’re a Rails developer, you really don’t want to replace an old version of Rails with another. Instead, you’ll want to install multiple versions of Rails and switch between them as you step through the process of updating your Rails applications. This article details a process you can use to update any Rails application. I also provide links to address the specifics of <a href="#updating">upgrading from Rails 3.2 to Rails 4.0</a>.</p>
+<p>Before you start, install multiple versions of Rails, as explained in this article:</p>
 <ul>
 	<li><a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a></li>
 </ul>
@@ -65,7 +65,7 @@
 <p>If you’ve just installed Ruby as described in the <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> article, your gems will be up to date.</p>
 <p>You should have:</p>
 <ul>
-	<li>RubyGems 2.0.0 — <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems system gem</a>
+	<li>RubyGems 2.0.2 — <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems system gem</a>
 </li>
 	<li>Rake 10.0.3 — <a href="http://rubygems.org/gems/rake">newest Rake gem</a>
 </li>
@@ -114,7 +114,7 @@ $ bundle update rails
 </pre>
 <p>The Rails gem will be updated by bundler and the Gemfile.lock file will be updated to record the new gem version.</p>
 <p>You’ll see a message showing which version of Rails is running when you start the webserver.</p>
-<p>This approach is simple but doesn’t give you much flexibility to move between Rails versions.</p>
+<p>This approach is simple but doesn’t give you much flexibility to move between Rails versions. If you’re making a major upgrade, for example from Rails 3.2 to Rails 4.0, use <span class="caps">RVM</span> and follow the procedure below.</p>
 <h2>Using <span class="caps">RVM</span> and Updating Rails</h2>
 <p>If you have installed rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you’ll have greater flexibility in maintaining your Rails applications and updating Rails. With rvm, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling and compiling your old gems.</p>
 <p>The article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> shows how to install multiple versions of Ruby and create gemsets for more than one version of Rails.</p>
@@ -236,7 +236,8 @@ $ bundle update
 $ rails -v
 </pre>
 <p>Test the application and make any changes needed to run it with Ruby 2.0 and Rails 4.0.</p>
-<p>I recommend Andy Lindeman’s ebook <a href="http://www.upgradingtorails4.com/">Upgrading to Rails 4</a> as a guide to development with Rails 4.0. You can follow the progress of Rails 4.0 development on the <a href="http://www.edgerails.info/">EdgeRails.info</a> site.</p>
+<p>See the section <a href="#updating">Updating Your Application</a> for links to articles that detail the specifics of upgrading to Rails 4.0.</p>
+<p>You can follow the progress of Rails 4.0 development on the <a href="http://www.edgerails.info/">EdgeRails.info</a> site.</p>
 <h3>Git Workflow</h3>
 <p>If your application is running successfully under Ruby 2.0 and Rails 4.0, commit any changes.</p>
 <pre>
@@ -267,9 +268,19 @@ $ rake rails:update
 <p>You can update any gem by running <code>bundle update gem_name</code>. This installs the newest version of the gem (if the Gemfile entry doesn’t require a specific version) and updates the Gemfile.lock file.</p>
 <p>You can run <code>bundle update</code> to update all gems at once. Bundler will observe the version rules specified in the Gemfile; when a specific version is specified in the Gemfile, running <code>bundle update</code> without changing the Gemfile entry won’t update a gem. Running <code>bundle update</code> installs new gem versions and updates the Gemfile.lock file. As an alternative to running <code>bundle update</code>, you can delete the Gemfile.lock file and run <code>bundle install</code> to replace the Gemfile.lock file.</p>
 <p>If you are using rvm and multiple gemsets, it is best not to run <code>bundle update rails</code>. Instead, create a new gemset for the new Rails version as described above so you can switch gemsets as needed.</p>
-<h2>Updating Your Application</h2>
-<p>After updating Rails or other gems, run your test suite (hopefully, you have tests; this is why you need them!).</p>
-<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you may have to rework parts of your application. After major new Rails releases, many community members offer helpful blog posts (and even some gems) to identify specific code that needs to be updated for a new version of Rails. For example, there’s a Railscast from Ryan Bates titiled <a href="http://railscasts.com/episodes/318-upgrading-to-rails-3-2">Upgrading to Rails 3.2</a>.</p>
+<h2 id="updating">Updating Your Application</h2>
+<p>After updating Rails and other gems, run your test suite (hopefully, you have tests; this is why you need them!).</p>
+<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you will have to rework parts of your application. Here are resources you can use to identify specific code that needs to be updated.</p>
+<h3 id="torails4">Rails 3.2 to Rails 4.0</h3>
+<ul>
+	<li><a href="http://www.upgradingtorails4.com/" title="ebook by Andy Lindeman">Upgrading to Rails 4</a></li>
+	<li><a href="http://blog.crowdint.com/2013/03/07/upgrading-a-rails-application-to-4-0.html" title="blog post by Mario Chavez">Upgrading a Rails application to 4.0</a></li>
+</ul>
+<h3>Rails 3.1 to Rails 3.2</h3>
+<ul>
+	<li>
+<a href="http://railscasts.com/episodes/318-upgrading-to-rails-3-2" title="Railscast">Upgrading to Rails 3.2</a>.</li>
+</ul>
 <h2>Security</h2>
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
