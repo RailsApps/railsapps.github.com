@@ -46,14 +46,14 @@
     <div class="content wikistyle gollum textile">
       <h1>Updating Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 15 March 2013</em></p>
+<p><em>Last updated 18 March 2013</em></p>
 <p>Installing Rails 3.2 and Rails 4.0, how to update Rails versions, and upgrading Rails applications. Instructions and advice.</p>
 <p>If you’re a Rails developer, you really don’t want to replace an old version of Rails with another. Instead, you’ll want to install multiple versions of Rails and switch between them as you step through the process of updating your Rails applications. This article details a process you can use to update any Rails application. I also provide links to address the specifics of <a href="#updating">upgrading from Rails 3.2 to Rails 4.0</a>.</p>
 <p>Before you start, install multiple versions of Rails, as explained in this article:</p>
 <ul>
 	<li><a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a></li>
 </ul>
-<p>The <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> article will show you how to install Rails 3.2.12, Rails 3.2.13.rc2, and Rails 4.0 so you can easily switch between the most recent stable release, a version of Rails patched for Ruby 2.0, and the newest version of Rails (Rails 4.0.0.beta1). With these versions on your machine, you’ll be able to begin updating your Rails applications.</p>
+<p>The <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> article will show you how to install Rails 3.2.13 and Rails 4.0 so you can easily switch between the most recent stable release and the newest version of Rails (Rails 4.0.0.beta1). With these versions on your machine, you’ll be able to begin updating your Rails applications.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h3>From the RailsApps Project</h3>
 <p>The <a href="http://railsapps.github.com/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation” so you can stay up to date. Each is accompanied by a tutorial so there is no mystery code. Maintenance and development of the RailsApps applications is supported by subscriptions to the <a href="https://tutorials.railsapps.org">RailsApps tutorials</a>.</p>
@@ -118,7 +118,7 @@ $ bundle update rails
 <p>If you have installed rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you’ll have greater flexibility in maintaining your Rails applications and updating Rails. With rvm, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling and compiling your old gems.</p>
 <p>The article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> shows how to install multiple versions of Ruby and create gemsets for more than one version of Rails.</p>
 <p>Let’s assume you have an application named “myapp” that runs with Ruby 1.9.3-p392 and Rails 3.2.12.</p>
-<p>First, you’ll update it to Ruby 2.0 and Rails 3.2.13.rc2, a version of Rails patched for Ruby 2.0.</p>
+<p>First, you’ll update it to Ruby 2.0 and Rails 3.2.13, a version of Rails patched for Ruby 2.0.</p>
 <p>Then you’ll upgrade it to Ruby 2.0 and Rails 4.0.</p>
 <p>If you followed the instructions in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>, you installed Ruby 1.9.3-p392 and Ruby 2.0.0-p0.</p>
 <p>Start the upgrade in the application’s root directory:</p>
@@ -144,7 +144,7 @@ $ git checkout -b upgrading
 </pre>
 <p>The command creates a new branch named “upgrading” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
 <h3>Ruby 2.0 and Rails 3.2.13</h3>
-<p>Create a new project-specific gemset for Ruby 2.0 and Rails 3.2.13.rc2:</p>
+<p>Create a new project-specific gemset for Ruby 2.0 and Rails 3.2.13:</p>
 <pre>
 $ rvm use ruby-2.0.0@Rails3.2.13_myapp --create
 $ rvm gemset list
@@ -167,7 +167,7 @@ gem 'rails', '3.2.12'
 .
 .
 </pre>
-<p>Change the Rails version to 3.2.13.rc2 (or a newer one if released).</p>
+<p>Change the Rails version to 3.2.13. (or a newer one if released).</p>
 <p>Then update the gems specified in the Gemfile:</p>
 <pre>
 $ bundle update
@@ -218,7 +218,7 @@ rvm (...)
 <p>Your Gemfile specifies the Rails version used by your application:</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '3.2.13.rc2
+gem 'rails', '3.2.13'
 '
 .
 .
