@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Managing Rails Versions and Gems</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 1 February 2012</em></p>
+<p><em>Last updated 29 March 2013</em></p>
 <p>Learn tips and tricks for managing Rails and Ruby gems. Relieve your headaches when versions collide.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.com/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>Before you install one of the <a href="https://github.com/RailsApps">Rails example apps</a>, there are a few things you should know about managing the pieces of the Rails platform. Often, everything “just works,” but when it doesn’t, here’s what you need to review. Read on if you’d like to know how all the moving parts work together.</p>
@@ -181,13 +181,14 @@ Consider using bundle exec.
 <p>The rvm website explains <a href="https://rvm.beginrescueend.com/rvm/install/">how to install rvm</a>.</p>
 <h4>Create a Gemset for a Project</h4>
 <p>See instructions for <a href="http://railsapps.github.com/installing-rails.html">Installing Rails 3.2</a> to install Rails and create a new gemset using rvm.</p>
-<h4>Using the .rvmrc file for Project-Specific Gemsets</h4>
-<p>After you’ve created an rvm gemset that you’ll use for a project, you can create an <strong>.rvmrc</strong> file in the application’s root directory. <span class="caps">RVM</span> recgonizes an <strong>.rvmrc</strong> file in a directory and loads the gemset specified inside.</p>
-<p>Here’s how to create an <strong>.rvmrc</strong> file if you’re using a gemset named “ruby-1.9.3-p0@rails32”:</p>
+<h4>Setting a Project-Specific Gemset</h4>
+<p><span class="caps">RVM</span> recognizes <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in a directory and loads a specified gemset.</p>
+<p>Here’s how to create <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files if you’re using a gemset named “ruby-2.0.0@myapp”:</p>
 <pre>
-$ echo "rvm ruby-1.9.3-p0@rails32" &gt; .rvmrc
+$ echo "ruby-2.0.0" &gt; .ruby-version
+$ echo "myapp" &gt; .ruby-gemset
 </pre>
-<p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you run your application on your local machine. This works best if you create an rvm gemset specifically for your application.</p>
+<p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you run your application on your local machine. This works best if you create an rvm gemset specifically for your application.</p>
 <h2>Using Pik to Manage Multiple Versions of Rails on Windows</h2>
 <p>For Windows users juggling different versions of Ruby, <a href="https://github.com/vertiginous/pik">pik</a> is a tool similar to <span class="caps">RVM</span>. The pik set of commands for managing multiple rubies is similar to that of <span class="caps">RVM</span>.</p>
 <h4>Install Pik</h4>

@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 March 2013</em></p>
+<p><em>Last updated 29 March 2013</em></p>
 <p>Installing Rails 4.0 and Rails 3.2.13 on Mac OS X, Ubuntu, or Windows. Up-to-date, detailed instructions show how to install Rails newest releases.</p>
 <p>When installing Rails, developers often neglect all the components needed for Rails to run successfully. This tutorial shows how to update everything needed for real-world Rails development.</p>
 <p>This guide shows how to install the most recent stable release (Rails 3.2.13) and the newest version of Rails (Rails 4.0.0.beta1). With these versions on your machine, you’ll explore the new features of Rails 4.0 while continuing to develop projects with the most recent stable version.</p>
@@ -290,7 +290,7 @@ $ gem list
 <pre>
 $ rvm use ruby-2.0.0@Rails3.2.13
 </pre>
-<p>Change the application’s Gemfile to specify <code>gem 'rails', '3.2.13'</code> and run <code>bundle update</code> to test the application with Ruby 2.0 and Rails 3.2.13. If you previously created a <strong>.rvmrc</strong> file for an existing application, you can edit the <strong>.rvmrc</strong> file to specify the ruby-2.0.0@Rails3.2.13 gemset.</p>
+<p>Change the application’s Gemfile to specify <code>gem 'rails', '3.2.13'</code> and run <code>bundle update</code> to test the application with Ruby 2.0 and Rails 3.2.13.</p>
 <p>To begin migrating existing projects to Rails 4.0, you can create another gemset:</p>
 <pre>
 $ rvm use ruby-2.0.0
@@ -307,13 +307,13 @@ $ gem list
 <pre>
 $ mkdir myRails32app
 $ cd myRails32app
-$ rvm use ruby-2.0.0@myRails32app --rvmrc --create
+$ rvm use ruby-2.0.0@myRails32app --ruby-version --create
 $ gem install rails --version=3.2.13
 $ rails new .
 </pre>
 <p>We’ll name the new application “myRails32app.” Obviously, you can give it any name you like.</p>
-<p>With this workflow, you’ll first create a root directory for your application. Then with one command you can create a new project-specific gemset with a matching <strong>.rvmrc</strong> file. With the new gemset in place, you’ll next install Rails and create a new Rails application. Notice that you use the Unix “dot convention” to specify that you want to build the application in the current directory. This lets you build the application from inside the directory where you have already created an <strong>.rvmrc</strong> file.</p>
-<p>The option “—rvmrc” creates an <strong>.rvmrc</strong> file in the root directory. <span class="caps">RVM</span> recognizes an <strong>.rvmrc</strong> file in an application’s root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.</p>
+<p>With this workflow, you’ll first create a root directory for your application. Then with one command you can create a new project-specific gemset. With the new gemset in place, you’ll next install Rails and create a new Rails application. Notice that you use the Unix “dot convention” to specify that you want to build the application in the current directory.</p>
+<p>The option “—ruby-version” creates <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the root directory. <span class="caps">RVM</span> recognizes these files in an application’s root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.</p>
 <p>When we create the gemset, it will be empty (though it inherits use of all the gems in the global gemset). We immediately install Rails. The command <code>gem install rails --version=3.2.13</code> installs the most recent release of Rails patched to work with Ruby 2.0, which was version 3.2.13 at the time this was written.</p>
 <p>Finally we run <code>rails new .</code>. We use the Unix “dot” convention to refer to the current directory. This assigns the name of the directory to the new application.</p>
 <p>This approach is different from the way most beginners are taught to create a Rails application. Most instructions suggest using <code>rails new myRails32app</code> to generate a new application and then enter the directory to begin work. Our approach makes it easy to create a project-specific gemset and install Rails before the application is created.</p>
@@ -322,7 +322,7 @@ $ rails new .
 <pre>
 $ mkdir myRails32app
 $ cd myRails32app
-$ rvm use ruby-2.0.0@myRails32app --rvmrc --create
+$ rvm use ruby-2.0.0@myRails32app --ruby-version --create
 $ gem install rails --version=3.2.13
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -339,7 +339,7 @@ $ rake -T
 <pre>
 $ mkdir myRails4app
 $ cd myRails4app
-$ rvm use ruby-2.0.0@myRails4app --rvmrc --create
+$ rvm use ruby-2.0.0@myRails4app --ruby-version --create
 $ gem install rails --pre
 $ rails new .
 </pre>
@@ -434,22 +434,23 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 	<li><a href="http://railsapps.github.com/rails-git.html">Rails with Git and GitHub</a></li>
 </ul>
 <p>If git is installed on your computer and you’ve used a RailsApps application template to create your starter app, you’ll already have a git repository.</p>
-<h2>Adding a Gemset and .rvmrc File to an Existing Application</h2>
-<p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset and add an <strong>.rvmrc</strong> file. Here’s how to create a gemset for an application named “myapp” and create an <strong>.rvmrc</strong> file in the application’s root directory:</p>
+<h2>Adding a Gemset to an Existing Application</h2>
+<p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm --rvmrc --create ruby-2.0.0@myapp
+$ rvm use ruby-2.0.0@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
 $ gem install rails
 $ bundle install
 </pre>
-<h3>Adding an .rvmrc File to an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not an <strong>.rvmrc</strong> file, here’s how to add an <strong>.rvmrc</strong> file. For example, if you want to use an existing gemset named “ruby-2.0.0@rails32”:</p>
+<h3>Specifying a Gemset for an Existing Application</h3>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.0.0@myapp”:</p>
 <pre>
-$ echo "rvm ruby-2.0.0@rails32 --create" &gt; .rvmrc
+$ echo "ruby-2.0.0" &gt; .ruby-version
+$ echo "myapp" &gt; .ruby-gemset
 </pre>
-<p>Using an <strong>.rvmrc</strong> file means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
+<p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
 <h2>Deployment</h2>
 <p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
 <h3>Hosting</h3>
