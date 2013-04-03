@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Updating Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 25 March 2013</em></p>
+<p><em>Last updated 2 April 2013</em></p>
 <p>Installing Rails 3.2 and Rails 4.0, how to update Rails versions, and upgrading Rails applications. Instructions and advice.</p>
 <p>If you’re a Rails developer, you really don’t want to replace an old version of Rails with another. Instead, you’ll want to install multiple versions of Rails and switch between them as you step through the process of updating your Rails applications. This article details a process you can use to update any Rails application. I also provide links to address the specifics of <a href="#updating">upgrading from Rails 3.2 to Rails 4.0</a>.</p>
 <p>Before you start, install multiple versions of Rails, as explained in this article:</p>
@@ -86,15 +86,18 @@ $ gem list
 <p>Use <code>gem update rubygems-bundler</code> to upgrade Rubygems-Bundler.</p>
 <p>You can track updates to gems by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a> at the RubyGems.org site. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). As an alternative, use the <a href="https://gemnasium.com/">Gemnasium</a> service which surveys your GitHub repo and sends email notifications when gem versions change. Gemnasium is free for public repositories with a premium plan for private repositories.</p>
 <h2>Take Time to Learn What’s Changed</h2>
-<p>Before you update Rails, take time to find out if the default new Rails application has changed. First, create a starter app with the old version of Rails. Then switch gemsets and create a starter app with the new version of Rails.</p>
+<p>Before you update Rails, take time to find out if the default new Rails application has changed.</p>
+<p>You can easily compare the differences between Rails default applications here:</p>
+<ul>
+	<li><a href="http://railsdiff.org/">http://railsdiff.org/</a></li>
+</ul>
+<p>Or do the research yourself. First, create a starter app with the old version of Rails. Then switch gemsets and create a starter app with the new version of Rails.</p>
 <p>Let’s assume you want to compare Rails 3.2.12 and Rails 3.2.13.</p>
 <pre>
 $ rvm use ruby-1.9.3-p392@Rails3.2.12
-$ rails new myapp
-$ mv myapp myapp3.2.12
+$ rails new myapp3.2.12
 $ rvm use ruby-2.0.0@Rails3.2.13
-$ rails new myapp
-$ mv myapp myapp3.2.13
+$ rails new myapp3.2.13
 </pre>
 <p>Compare the two applications with a file compare tool.</p>
 <p>In this case, you’ll find there are no differences in the starter Rails application between versions Rails 3.2.12 and Rails3.2.13. Minor Rails version updates seldom change the default new Rails application.</p>
