@@ -8,11 +8,11 @@
     <meta content='Rails Tutorial, Devise, RSpec, Cucumber' name='keywords'>
 
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/tutorials.css" type="text/css" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/github.css" type="text/css" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/tutorials.css" type="text/css" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/github.css" type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-    <script src="http://railsapps.github.com/javascript/tutorials.js"></script>
+    <script src="http://railsapps.github.io/javascript/tutorials.js"></script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-5109366-14']);
@@ -86,8 +86,8 @@
 <h3 id="is-it-for-you">Is It for You?</h3>
 <p>This tutorial is for experienced Rails developers as well as startup founders or hobbyist coders who are new to Rails.</p>
 <p>Experienced developers will find the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth.</p>
-<p>For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. If you’re new to Rails, see recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a> and resources for getting started with <a href="http://railsapps.github.com/rails.html">Rails</a>.</p>
-<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.com/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
+<p>For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. If you’re new to Rails, see recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a> and resources for getting started with <a href="http://railsapps.github.io/rails.html">Rails</a>.</p>
+<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.io/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
 <p>This example application uses ActiveRecord and a SQLite database. You can use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead, for faster development without schemas or migrations. The <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
 <p>For more complex applications that use Devise, CanCan, and Twitter Bootstrap, see:</p>
 <ul>
@@ -112,7 +112,7 @@
 <p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
 <div class="highlight"><pre><span class="gp">$</span> ruby -v
 <span class="gp">$</span> rails -v
-</pre></div><p>Be sure to read <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
+</pre></div><p>Be sure to read <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
 <p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
 </section>
 <section class='chapter' id='create-the-application'><h2>Create the Application</h2>
@@ -125,14 +125,14 @@
 <h4 id="clone">Clone</h4>
 <p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below). To clone:</p>
 <div class="highlight"><pre><span class="gp">$</span> git clone git://github.com/RailsApps/rails3-devise-rspec-cucumber.git
-</pre></div><p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.com/rails-git.html">Rails and Git</a>.</p>
+</pre></div><p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.io/rails-git.html">Rails and Git</a>.</p>
 <h4 id="generate">Generate</h4>
-<p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
+<p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
 <p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> example application.</p>
 <h3 id="building-from-scratch">Building from Scratch</h3>
 <p>Beginning here, we show how to create the application from scratch.</p>
 <p>Your tools are a terminal application and text editor.</p>
-<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a>. If you are using rvm to manage gemsets, create a new gemset and install Rails:</p>
+<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>. If you are using rvm to manage gemsets, create a new gemset and install Rails:</p>
 <div class="highlight"><pre><span class="gp">$</span> rvm use ruby-2.0.0@rails3-devise-rspec-cucumber --create
 <span class="gp">$</span> gem install rails
 </pre></div><p>The first step will create and make active a new gemset named <code>rails3-devise-rspec-cucumber</code>. You can give the gemset any name but it’ll be easier to recognize if you give it the same name as the application you are going to build. The second step installs the newest stable Rails version.</p>
@@ -148,14 +148,14 @@
 <span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"rails3-devise-rspec-cucumber"</span> &gt; .ruby-gemset
 </pre></div><p>In the future, when you <code>cd</code> into the application root directory, rvm will activate the project-specific gemfile.</p>
 <h4 id="replace-the-readmes">Replace the READMEs</h4>
-<p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.com/">RailsApps project</a>.</p>
+<p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.io/">RailsApps project</a>.</p>
 <h3 id="set-up-source-control-git">Set Up Source Control (Git)</h3>
 <p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
 <div class="highlight"><pre><span class="gp">$</span> git init .
 <span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s1">'Initial commit'</span>
-</pre></div><p>See detailed instructions for <a href="http://railsapps.github.com/rails-git.html">Using Git with Rails</a>.</p>
-<p>If you want to store your application on GitHub, you should now set up your <a href="http://railsapps.github.com/rails-git.html">GitHub repository</a>.</p>
+</pre></div><p>See detailed instructions for <a href="http://railsapps.github.io/rails-git.html">Using Git with Rails</a>.</p>
+<p>If you want to store your application on GitHub, you should now set up your <a href="http://railsapps.github.io/rails-git.html">GitHub repository</a>.</p>
 <h3 id="set-up-gems">Set Up Gems</h3>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
 <div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
@@ -182,7 +182,7 @@
 </pre></div><p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.11'</code> accordingly.</p>
 <p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
 <p>If you want to use PostgreSQL instead of SQLite for your database, replace <code>gem 'sqlite3'</code> with <code>gem 'pg'</code>. SQLite is already running if you are using Mac OS X; if you want to use PostgreSQL, you’ll need to install and launch it.</p>
-<p>For more information about the gems we are using in this Gemfile, see <a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Gemfiles for Rails 3.2</a>.</p>
+<p>For more information about the gems we are using in this Gemfile, see <a href="http://railsapps.github.io/rails-3-2-example-gemfile.html">Gemfiles for Rails 3.2</a>.</p>
 <h3 id="install-the-required-gems">Install the Required Gems</h3>
 <p>Install the required gems on your computer:</p>
 <div class="highlight"><pre><span class="gp">$</span> bundle install
@@ -433,14 +433,14 @@
 </section>
 <section class='chapter' id='configuration'><h2>Configuration</h2>
 <h3 id="configuration-file">Configuration File</h3>
-<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
 <p>The figaro gem uses a generator to set up the necessary files. Run:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails generate figaro:install
 </pre></div><p>This generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
 <p>Credentials for a user’s account are set in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the git repository so your credentials are kept private.</p>
 <p>Modify the file <strong>config/application.yml</strong>:</p>
 <div class="highlight"><pre><span class="c1"># Add account credentials and API keys here.</span>
-<span class="c1"># See http://railsapps.github.com/rails-environment-variables.html</span>
+<span class="c1"># See http://railsapps.github.io/rails-environment-variables.html</span>
 <span class="c1"># This file should be listed in .gitignore to keep your settings secret!</span>
 <span class="c1"># Each entry sets a local environment variable and overrides ENV variables in the Unix shell.</span>
 <span class="c1"># For example, setting:</span>
@@ -458,13 +458,13 @@
 <p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. For example, <code>ENV["GMAIL_USERNAME"]</code> will return the string “Your_Username”.</p>
 <p>If you prefer, you can delete the <strong>config/application.yml</strong> file and set each value as an environment variable in the Unix shell.</p>
 <h3 id="configure-email">Configure Email</h3>
-<p>This example application doesn’t send email messages. However, if you want your application to send email messages (for example, if you plan to install the Devise <code>:confirmable</code> module) you must configure the application for your email account. See the article <a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a>.</p>
+<p>This example application doesn’t send email messages. However, if you want your application to send email messages (for example, if you plan to install the Devise <code>:confirmable</code> module) you must configure the application for your email account. See the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
 </section>
 <section class='chapter' id='layout-and-stylesheets'><h2>Layout and Stylesheets</h2>
 <p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
 <p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
-<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention for the front end that make Rails popular for server-side (“back-end”) development. If you want to use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application, see the article <a href="http://railsapps.github.com/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a>.</p>
-<p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer to use Haml, see the detailed guide <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout for HTML5</a>.</p>
+<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention for the front end that make Rails popular for server-side (“back-end”) development. If you want to use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application, see the article <a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a>.</p>
+<p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer to use Haml, see the detailed guide <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Default Application Layout for HTML5</a>.</p>
 <h3 id="navigation-links">Navigation Links</h3>
 <p>You’ll likely need navigation links on every page of your web application. You’ll want a link for Home. You’ll want links for Login, Logout, and Sign Up.</p>
 <p>You can add navigation links directly to your application layout file but many developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
@@ -535,7 +535,7 @@ ul.nav li {
 <p>“Alert” messages are displayed in red and “notice” messages are displayed in green.</p>
 <h3 id="default-application-layout">Default Application Layout</h3>
 <p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling.</p>
-<p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
+<p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
 <p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
 <div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
@@ -562,7 +562,7 @@ ul.nav li {
 <span class="x">    &lt;/div&gt; &lt;!--! end of #container --&gt;</span>
 <span class="x">  &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
-</pre></div><p>See the article <a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
+</pre></div><p>See the article <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
 <p>Your default application layout defines the look-and-feel of your application. You now have the basics with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling.</p>
 </section>
 <section class='chapter' id='authentication'><h2>Authentication</h2>
@@ -823,7 +823,7 @@ ul.nav li {
 <h3 id="cleanup">Cleanup</h3>
 <p>Several unneeded files are generated in the process of creating a new Rails application.</p>
 <p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
-<p>See instructions for <a href="http://railsapps.github.com/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
+<p>See instructions for <a href="http://railsapps.github.io/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
 <h3 id="test-the-app-5">Test the App</h3>
 <p>You can check that your app runs properly by entering the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
@@ -839,7 +839,7 @@ ul.nav li {
 <p>Run <code>rake spec</code> to run RSpec tests.</p>
 <p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run Cucumber scenarios.</p>
 <h3 id="deploy-to-heroku">Deploy to Heroku</h3>
-<p>For your convenience, here is a <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
+<p>For your convenience, here is a <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
 <p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
 <p>Add this configuration parameter to the <strong>config/application.rb</strong> file:</p>
 <div class="highlight"><pre><span class="c1"># Heroku requires this to be false</span>
@@ -849,7 +849,7 @@ ul.nav li {
 <span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
 <span class="gp">$</span> git push heroku master
-</pre></div><p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+</pre></div><p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
 <p>With the figaro gem, just run:</p>
 <div class="highlight"><pre><span class="gp">$</span> rake figaro:heroku
 </pre></div><p>Alternatively, you can set Heroku environment variables directly.</p>
@@ -860,7 +860,7 @@ ul.nav li {
 </pre></div><p>Complete Heroku deployment with:</p>
 <div class="highlight"><pre><span class="gp">$</span> heroku run rake db:migrate
 <span class="gp">$</span> heroku run rake db:seed
-</pre></div><p>See the <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
+</pre></div><p>See the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
 </section>
 <section class='chapter' id='additional-features'><h2>Additional Features</h2>
 <p>You’ve created a fully functional web application that allows visitors to register and sign in.</p>
@@ -878,12 +878,12 @@ ul.nav li {
   </tr>
   <tr>
     <td> <a href="https://tutorials.railsapps.org/tutorials/rails-stripe-membership-saas">Rails Membership Site with Stripe</a> </td>
-    <td> <a href="http://railsapps.github.com/rails-stripe-membership-saas">rails-stripe-membership-saas</a> </td>
+    <td> <a href="http://railsapps.github.io/rails-stripe-membership-saas">rails-stripe-membership-saas</a> </td>
     <td> Site with subscription billing using Stripe </td>
   </tr>
   <tr>
     <td> <a href="https://tutorials.railsapps.org/tutorials/rails-recurly-subscription-saas.html">Rails Membership Site with Recurly</a> </td>
-    <td> <a href="http://railsapps.github.com/rails-recurly-subscription-saas">rails-recurly-subscription-saas</a> </td>
+    <td> <a href="http://railsapps.github.io/rails-recurly-subscription-saas">rails-recurly-subscription-saas</a> </td>
     <td> Site with subscription billing using Recurly </td>
   </tr>
 </table>
