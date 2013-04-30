@@ -4,16 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Rails Environment Variables &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/bootstrap.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/screen.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/gollum.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/site.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="http://railsapps.github.com/css/syntax.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/bootstrap.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/screen.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/gollum.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/site.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/syntax.css" type="text/css" charset="utf-8" />
     <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
-    <script src="http://railsapps.github.com/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
-    <script src="http://railsapps.github.com/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
-    <script src="http://railsapps.github.com/javascript/jquery.tabs.js" type="text/javascript"></script>
-    <script src="http://railsapps.github.com/javascript/gollum.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.io/javascript/jquery.text_selection-1.0.0.min.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.io/javascript/jquery.previewable_comment_form.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.io/javascript/jquery.tabs.js" type="text/javascript"></script>
+    <script src="http://railsapps.github.io/javascript/gollum.js" type="text/javascript"></script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-5109366-14']);
@@ -30,7 +30,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a href="http://railsapps.github.com/" class="brand">RailsApps Project</a>
+        <a href="http://railsapps.github.io/" class="brand">RailsApps Project</a>
         <ul class="pull-right nav">
           <li><a href="https://tutorials.railsapps.org/" class="google">Tutorials</a></li>
           <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
@@ -47,12 +47,12 @@
       <h1>Rails Environment Variables</h1>
 <h4>by Taylor Mock and Daniel Kehoe</h4>
 <p><em>Last updated 15 December 2012</em></p>
-<p>Setting Rails environment variables. Using <span class="caps">ENV</span> variables in Rails, locally and with Heroku. A guide for developers using the example apps from the <a href="http://railsapps.github.com/">RailsApps</a> project. Others may find it helpful as well.</p>
+<p>Setting Rails environment variables. Using <span class="caps">ENV</span> variables in Rails, locally and with Heroku. A guide for developers using the example apps from the <a href="http://railsapps.github.io/">RailsApps</a> project. Others may find it helpful as well.</p>
 <h2>Environment Variables</h2>
 <p>Many applications require configuration of settings such as email account credentials or <span class="caps">API</span> keys for external services. You can pass local configuration settings to an application using environment variables.</p>
 <p>Operating systems (Linux, Mac OS X, Windows) provide mechanisms to set local <a href="http://en.wikipedia.org/wiki/Environment_variable">environment variables</a>, as does <a href="http://www.heroku.com/">Heroku</a> and other deployment platforms. Here we show how to set local environment variables in the Unix shell. We also show two alternatives to set environment variables in your application without the Unix shell.</p>
 <h2>Keeping Environment Variables Private</h2>
-<p>Remote <a href="http://railsapps.github.com/rails-git.html">git repositories</a> such as <a href="https://github.com/signup/free">GitHub</a> are a place to store and share code. If your project is open source, any developer will have access to your code. You don’t want to share email account credentials or private <span class="caps">API</span> keys with the public. If you’re collaborating on a team with a private git repository, your local settings may not be suitable for all members of the team. In general, you shouldn’t save email account credentials or private <span class="caps">API</span> keys to a shared git repository.</p>
+<p>Remote <a href="http://railsapps.github.io/rails-git.html">git repositories</a> such as <a href="https://github.com/signup/free">GitHub</a> are a place to store and share code. If your project is open source, any developer will have access to your code. You don’t want to share email account credentials or private <span class="caps">API</span> keys with the public. If you’re collaborating on a team with a private git repository, your local settings may not be suitable for all members of the team. In general, you shouldn’t save email account credentials or private <span class="caps">API</span> keys to a shared git repository.</p>
 <h2>Gmail Example</h2>
 <p>Consider an application that uses Gmail to send email messages. Access to Gmail requires a username and password for access to your Gmail account. In your Rails application, you will need to configure these credentials in the file <strong>config/environments/production.rb</strong>. A portion of the file might look like this:</p>
 <pre>
@@ -118,7 +118,7 @@ production:
 <pre>
 rake figaro:heroku
 </pre>
-<p>If you’re using one of the <a href="http://railsapps.github.com/">RailsApps example applications</a> or you have generated a starter application using the <a href="http://railsapps.github.com/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/application.yml</strong>. This file was added by the figaro gem and contains key/value entries for each environment variable you may need. Each entry is commented out. Remove the comment character if you want to override environment variables from the Unix shell or set the environment variables using the <strong>config/application.yml</strong> file.</p>
+<p>If you’re using one of the <a href="http://railsapps.github.io/">RailsApps example applications</a> or you have generated a starter application using the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/application.yml</strong>. This file was added by the figaro gem and contains key/value entries for each environment variable you may need. Each entry is commented out. Remove the comment character if you want to override environment variables from the Unix shell or set the environment variables using the <strong>config/application.yml</strong> file.</p>
 <h2>Option Three: Use a <em>local_env.yml</em> File</h2>
 <p>Like the <a href="https://github.com/laserlemon/figaro">figaro gem</a>, this technique takes advantage of Ruby’s ability to set environment variables as well as read them. The figaro gem has additional features and we recommend it. However, if you want to understand how to set environment variables from within your Rails application, or you don’t want to add the figaro gem to your application, you may want to consider this implementation.</p>
 <p>We’ll create a simple file that contains key/value pairs for each environment variable using the standard <span class="caps">YAML</span> file format. We’ll make sure this file is listed in the <strong>.gitignore</strong> file so it isn’t checked into the git repository. And we’ll add some code to the <strong>config/application.rb</strong> to read the file and set the environment variables before anything else is configured in the Rails application.</p>
@@ -190,7 +190,7 @@ end
 </pre>
 <p>This approach works with either the <strong>config/local_env.yml</strong> file or environment variables obtained from the Unix shell.</p>
 <h2>Setting Environment Variables on Heroku</h2>
-<p><a href="http://www.heroku.com/">Heroku</a> is a popular choice for low cost, easily configured Rails application hosting. See the article <a href="http://railsapps.github.com/rails-heroku-tutorial.html">Heroku and Rails</a> for details.</p>
+<p><a href="http://www.heroku.com/">Heroku</a> is a popular choice for low cost, easily configured Rails application hosting. See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a> for details.</p>
 <p>Heroku provides a simple mechanism for setting environment variables. After creating your Heroku app, set Heroku environment variables to provide the same data your application obtains from your local shell environment.</p>
 <p>For example, for Gmail:</p>
 <pre>
@@ -245,32 +245,32 @@ rake figaro:heroku
       <div class="span4">
       <dl class="footer_nav">
       <dt>RailsApps &#183; Getting Started</dt>
-        <dd><a href="http://railsapps.github.com/ruby-and-rails.html">Ruby and Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/what-is-ruby-rails.html">What is Ruby on Rails?</a></dd>
+        <dd><a href="http://railsapps.github.io/ruby-and-rails.html">Ruby and Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a></dd>
         <dd><a href="https://tutorials.railsapps.org/rails-tutorial">Rails Tutorial</a></dd>
-        <dd><a href="http://railsapps.github.com/installing-rails.html">Installing Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/updating-rails.html">Updating Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-composer/">Rails Composer</a></dd>
-        <dd><a href="http://railsapps.github.com/">Rails Examples</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-examples-tutorials.html">Rails Starter Apps</a></dd>
+        <dd><a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-composer/">Rails Composer</a></dd>
+        <dd><a href="http://railsapps.github.io/">Rails Examples</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails Starter Apps</a></dd>
       </dl>
       </div>
       <div class="span4">
       <dl class="footer_nav">
       <dt>RailsApps &#183; Articles</dt>
-        <dd><a href="http://railsapps.github.com/rails-heroku-tutorial.html">Heroku and Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-javascript-include-external.html">JavaScript and Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-environment-variables.html">Rails Environment Variables</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-git.html">Git and GitHub with Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-send-email.html">Send Email with Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-haml.html">Haml and Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-default-application-layout.html">Rails Application Layout</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-3-2-example-gemfile.html">Example Gemfiles for Rails</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-application-templates.html">Rails Application Templates</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-product-planning.html">Rails Product Planning</a></dd>
-        <dd><a href="http://railsapps.github.com/rails-project-management.html">Rails Project Management</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-javascript-include-external.html">JavaScript and Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-git.html">Git and GitHub with Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-haml.html">Haml and Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Application Layout</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-3-2-example-gemfile.html">Example Gemfiles for Rails</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-application-templates.html">Rails Application Templates</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-product-planning.html">Rails Product Planning</a></dd>
+        <dd><a href="http://railsapps.github.io/rails-project-management.html">Rails Project Management</a></dd>
       </dl>
       </div>
       <div class="span4">
@@ -280,10 +280,10 @@ rake figaro:heroku
         <dd><a href="https://tutorials.railsapps.org/rails-stripe-membership-saas">Rails Membership Site with Stripe</a></dd>
         <dd><a href="https://tutorials.railsapps.org/rails-recurly-subscription-saas">Rails Subscription Site with Recurly</a></dd>
         <dd><a href="https://tutorials.railsapps.org/rails-prelaunch-signup">Startup Prelaunch Signup Application</a></dd>
-        <dd><a href="http://railsapps.github.com/tutorial-rails-devise-rspec-cucumber.html">Devise with RSpec and Cucumber</a></dd>
-        <dd><a href="http://railsapps.github.com/tutorial-rails-mongoid-devise.html">Devise with Mongoid</a></dd>
-        <dd><a href="http://railsapps.github.com/tutorial-rails-mongoid-omniauth.html">OmniAuth with Mongoid</a></dd>
-        <dd><a href="http://railsapps.github.com/tutorial-rails-subdomains.html">Subdomains with Devise</a></dd>
+        <dd><a href="http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html">Devise with RSpec and Cucumber</a></dd>
+        <dd><a href="http://railsapps.github.io/tutorial-rails-mongoid-devise.html">Devise with Mongoid</a></dd>
+        <dd><a href="http://railsapps.github.io/tutorial-rails-mongoid-omniauth.html">OmniAuth with Mongoid</a></dd>
+        <dd><a href="http://railsapps.github.io/tutorial-rails-subdomains.html">Subdomains with Devise</a></dd>
       </dl>
       </div>
       <hr class="footer-divider">
