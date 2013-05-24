@@ -342,7 +342,7 @@ Article: <a href="http://installfest.railsbridge.org/installfest/">RailsBridge I
 <p>Enter these commands:</p>
 <div class="highlight"><pre><span class="gp">$</span> rvm use ruby-2.0.0@railsapps-learning-rails --create
 <span class="gp">$</span> gem install rails
-</pre></div><p>Open a terminal and type:</p>
+</pre></div><p>Enter:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails -v
 </pre></div><p>You should see the message “Rails 3.2.13”.</p>
 </section>
@@ -767,6 +767,11 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <ul>
   <li><a href="https://github.com/laserlemon/figaro">figaro</a> – configuration framework</li>
   <li><a href="https://github.com/thoughtbot/high_voltage">high_voltage</a> – for static pages like “about”</li>
+  <li><a href="https://github.com/plataformatec/simple_form">simple_form</a> – form helpers</li>
+  <li><a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> – Twitter Bootstrap</li>
+  <li><a href="http://github.com/plataformatec/devise">devise</a> – authentication</li>
+  <li><a href="https://github.com/ryanb/cancan">cancan</a> – authorization</li>
+  <li><a href="https://github.com/EppO/rolify">rolify</a> – roles for authorization</li>
 </ul>
 <p>We’ll also add a utility that makes development easier:</p>
 <ul>
@@ -810,11 +815,11 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
   <span class="n">gem</span> <span class="s1">'launchy'</span>
   <span class="n">gem</span> <span class="s1">'capybara'</span>
 <span class="k">end</span>
-</pre></div><p>Each time you edit the Gemfile, run <code>bundle install</code> and restart your web server.</p>
-<h3 id="install-the-gems">Install the Gems</h3>
+</pre></div><h3 id="install-the-gems">Install the Gems</h3>
 <p>Now that you’ve edited the Gemfile, you need to install the required gems on your computer:</p>
 <div class="highlight"><pre><span class="gp">$</span> bundle install
-</pre></div><p>You can check that the gems are installed with:</p>
+</pre></div><p>Each time you edit the Gemfile, run <code>bundle install</code> and restart your web server.</p>
+<p>You can check that the gems are installed with:</p>
 <div class="highlight"><pre><span class="gp">$</span> gem list
 </pre></div><h3 id="git">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
@@ -886,6 +891,9 @@ Article <a href="http://railsapps.github.io/rails-environment-variables.html">Ra
 <h3 id="remove-the-about-page">Remove the About Page</h3>
 <p>Delete the file <strong>public/about.html</strong>:</p>
 <div class="highlight"><pre><span class="gp">$</span> rm public/about.html
+</pre></div><h3 id="remove-the-static-home-page">Remove the Static Home Page</h3>
+<p>Delete the file <strong>public/index.html</strong>:</p>
+<div class="highlight"><pre><span class="gp">$</span> rm public/index.html
 </pre></div>
 </section>
 <section class='chapter' id='dynamic-home-page'><h2>Dynamic Home Page</h2>
@@ -1426,6 +1434,12 @@ Concept: <em>block</em> (delimited by <code>do</code> and <code>end</code> or <c
 <p>The web server may already be running. If not, enter the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<h3 id="git-5">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"update application layout"</span>
+<span class="gp">$</span> git push origin master
+</pre></div>
 </section>
 <section class='chapter' id='stylesheets-and-twitter-bootstrap'><h2>Stylesheets and Twitter Bootstrap</h2>
 <p>Resource: <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a><br />
@@ -1529,6 +1543,15 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <span class="go">config/initializers/simple_form_bootstrap.rb</span>
 <span class="go">config/locales/simple_form.en.yml</span>
 <span class="go">lib/templates/erb/scaffold/_form.html.erb</span>
+</pre></div><h3 id="test-the-application-4">Test the Application</h3>
+<p>Enter the command:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<h3 id="git-6">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"stylesheets"</span>
+<span class="gp">$</span> git push origin master
 </pre></div>
 </section>
 <section class='chapter' id='adding-pages'><h2>Adding Pages</h2>
@@ -1543,11 +1566,17 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 </pre></div><h3 id="contact-page">Contact Page</h3>
 <p>Create a file <strong>app/views/pages/contact.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
-</pre></div><h3 id="test-the-application-4">Test the Application</h3>
+</pre></div><h3 id="test-the-application-5">Test the Application</h3>
 <p>The web server may already be running. If not, enter the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
 <p>Links to the pages “About” and “Contact” should work.</p>
+<h3 id="git-7">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"about and contact"</span>
+<span class="gp">$</span> git push origin master
+</pre></div>
 </section>
 <section class='chapter' id='contact-form'><h2>Contact Form</h2>
 <h3 id="adding-a-form-to-the-contact-page">Adding a Form to the Contact Page</h3>
@@ -1567,23 +1596,28 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">create</span>
-    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: params are'</span> <span class="o">+</span> <span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">]</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: params are'</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">inspect</span>
+    <span class="n">redirect_to</span> <span class="n">root_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s1">'Submitted contact request.'</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><h3 id="route">Route</h3>
-<h3 id="routing-2">Routing</h3>
+</pre></div><h3 id="routing-2">Routing</h3>
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">RailsappsLearningRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">match</span> <span class="s1">'contact'</span> <span class="o">=&gt;</span> <span class="s1">'contact#create'</span>
   <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
 <span class="k">end</span>
 </pre></div><p>Reference: <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a></p>
-<h3 id="sending-mail">Sending Mail</h3>
-<h3 id="test-the-application-5">Test the Application</h3>
+<h3 id="test-the-application-6">Test the Application</h3>
 <p>The web server may already be running. If not, enter the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<h3 id="git-8">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"contact form"</span>
+<span class="gp">$</span> git push origin master
+</pre></div>
 </section>
 <section class='chapter' id='deploy'><h2>Deploy</h2>
 <h3 id="cleanup">Cleanup</h3>
@@ -1630,13 +1664,7 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <h3 id="references-2">References</h3>
 <p>Reference: <a href="http://railsapps.github.io/ruby-and-rails.html">RailsApps top resources for Ruby and Rails</a></p>
 <h4 id="recommended-tutorials">Recommended Tutorials</h4>
-<table>
-  <tr>
-    <td> <a href="https://tutorials.railsapps.org/rails-tutorial">Rails Tutorials</a> </td>
-    <td> recommendations to suit your skill level and learning style </td>
-    <td> RailsApps </td>
-  </tr>
-</table>
+<p>Resource: <a href="https://tutorials.railsapps.org/rails-tutorial">Rails Tutorials</a> recommendations to suit your skill level and learning style</p>
 <h4 id="books">Books</h4>
 <table>
   <tr>
@@ -1667,6 +1695,8 @@ For women: <a href="http://railsgirls.com/">Rails Girls</a></p>
 <p>Resource: <a href="http://www.pairprogramwith.me/">pairprogramwith.me</a><br />
 Resource: <a href="http://rubypair.com/">rubypair.com</a><br />
 Resource: <a href="http://www.letspair.net/">letspair.net</a>.</p>
+<h3 id="thank-you">Thank You</h3>
+<p>Thank you for attending the class!</p>
 </section>
 <div class='comments'>
   <div id="disqus_thread"></div>
