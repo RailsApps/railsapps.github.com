@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <title>Rails Tutorial &#183; Learning Rails &#183; RailsApps</title>
+    <meta content='Workbook for Ruby on Rails workshop.' name='description'>
+    <meta content='Rails Tutorial' name='keywords'>
+
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/tutorials.css" type="text/css" />
+    <link rel="stylesheet" href="http://railsapps.github.io/css/github.css" type="text/css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+    <script src="http://railsapps.github.io/javascript/tutorials.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5109366-14']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body class='tutorials show' data-spy='scroll' data-target='.bs-docs-sidebar'>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="span3 bs-docs-sidebar">
+      <ul class="nav nav-list bs-docs-sidenav">
+        <li>
+          <div class="tutorial-account">
+            <a href="https://tutorials.railsapps.org/plan/portal" class="brand">Tutorials</a><span class="pull-right"><a href="https://tutorials.railsapps.org/logout">Logout</a></span>
+          </div>
+        </li>
+        <li>
+          <ul class="tutorial-links">
+            <li><span class="uppercase repotitle">railsapps-learning-rails</span></li>
+            <li>By Daniel Kehoe</li>
+            <li>Last updated 24 May 2013</li>
+            <li><a href="https://github.com/RailsApps/railsapps-learning-rails">GitHub Repository</a></li>
+            <li><a href="https://github.com/RailsApps/railsapps-learning-rails/issues">GitHub Issues</a></li>
+            <li><a href="#comments">Comments</a></li>
+          </ul>
+        </li>
+        <li class="level2"><a href="#">CONTENTS</a></li>
+        <li class='level2'><a href='#introduction'><i class='icon-chevron-right'></i> Introduction</a></li>
+<li class='level2'><a href='#concepts'><i class='icon-chevron-right'></i> Concepts</a></li>
+<li class='level2'><a href='#getting-help'><i class='icon-chevron-right'></i> Getting Help</a></li>
+<li class='level2'><a href='#product-planning'><i class='icon-chevron-right'></i> Product Planning</a></li>
+<li class='level2'><a href='#project-management'><i class='icon-chevron-right'></i> Project Management</a></li>
+<li class='level2'><a href='#accounts-you-will-need'><i class='icon-chevron-right'></i> Accounts You Will Need</a></li>
+<li class='level2'><a href='#getting-started'><i class='icon-chevron-right'></i> Getting Started</a></li>
+<li class='level2'><a href='#create-the-application'><i class='icon-chevron-right'></i> Create the Application</a></li>
+<li class='level2'><a href='#rails-directory-structure'><i class='icon-chevron-right'></i> Rails Directory Structure</a></li>
+<li class='level2'><a href='#source-control-with-git'><i class='icon-chevron-right'></i> Source Control with Git</a></li>
+<li class='level2'><a href='#gems'><i class='icon-chevron-right'></i> Gems</a></li>
+<li class='level2'><a href='#configuration'><i class='icon-chevron-right'></i> Configuration</a></li>
+<li class='level2'><a href='#static-pages-and-routing'><i class='icon-chevron-right'></i> Static Pages and Routing</a></li>
+<li class='level2'><a href='#dynamic-home-page'><i class='icon-chevron-right'></i> Dynamic Home Page</a></li>
+<li class='level2'><a href='#troubleshooting'><i class='icon-chevron-right'></i> Troubleshooting</a></li>
+<li class='level2'><a href='#layout-and-views'><i class='icon-chevron-right'></i> Layout and Views</a></li>
+<li class='level2'><a href='#stylesheets-and-themes'><i class='icon-chevron-right'></i> Stylesheets and Themes</a></li>
+<li class='level2'><a href='#about-page'><i class='icon-chevron-right'></i> “About” Page</a></li>
+<li class='level2'><a href='#contact-form'><i class='icon-chevron-right'></i> Contact Form</a></li>
+<li class='level2'><a href='#mailing-list'><i class='icon-chevron-right'></i> Mailing List</a></li>
+<li class='level2'><a href='#deploy'><i class='icon-chevron-right'></i> Deploy</a></li>
+<li class='level2'><a href='#customize'><i class='icon-chevron-right'></i> Customize</a></li>
+<li class='level2'><a href='#landing-pages'><i class='icon-chevron-right'></i> Landing Pages</a></li>
+<li class='level2'><a href='#analytics'><i class='icon-chevron-right'></i> Analytics</a></li>
+<li class='level2'><a href='#conversion-testing'><i class='icon-chevron-right'></i> Conversion Testing</a></li>
+<li class='level2'><a href='#traffic'><i class='icon-chevron-right'></i> Traffic</a></li>
+<li class='level2'><a href='#whats-next'><i class='icon-chevron-right'></i> What’s Next?</a></li>
+<li class='level2'><a href='#comments'><i class='icon-chevron-right'></i> Comments</a></li>
+
+      </ul>
+    </div>
+    <div class="span9">
+      <div class="jumbotron subhead">
+        <h1>RailsApps Tutorials</h1>
+        <p class="lead">Ruby and Rails Accelerator Training </p>
+      </div>
+
+  <section class='chapter' id='introduction'><h2>Introduction</h2>
+<p>Welcome. This is the workbook for the <em>Ruby and Rails Accelerator Training</em>.</p>
+<p>The <em>Ruby and Rails Accelerator Training</em> is a weekend workshop taught by Daniel Kehoe.</p>
+<p>This workbook contains code you can copy and paste as you participate in the course.</p>
+<p>You’ll also find links to references we’ll look at it during the course.</p>
+<h3 id="citizen-space">Citizen Space</h3>
+<p>Citizen Space is the organizer and host for the <em>Ruby and Rails Accelerator Training</em>.</p>
+<ul>
+  <li><a href="https://citizenspace.us/">Citizen Space</a></li>
+</ul>
+<h3 id="daniel-kehoe">Daniel Kehoe</h3>
+<p>Daniel Kehoe has been involved with the development of the Web since its beginnings in 1991. He is a former writer and editor at PC <span class="caps">WORLD</span> and NeXTWORLD magazines who has been working with Rails since 2006 as a developer and <span class="caps">CTO</span> in various startups. He now works full time on the RailsApps project, an open source project to build <a href="http://railsapps.github.io/">Rails example applications</a> and <a href="https://tutorials.railsapps.org/">Rails tutorials</a>.</p>
+<ul>
+  <li><a href="https://tutorials.railsapps.org/pages/about">Daniel’s Bio</a></li>
+  <li>Follow <a href="https://twitter.com/rails_apps">@rails_apps</a> on Twitter</li>
+  <li><a href="https://www.facebook.com/daniel.kehoe.sf?ref=tn_tnmn">Daniel on Facebook</a></li>
+  <li><a href="http://www.linkedin.com/in/danielkehoe">Daniel on LinkedIn</a></li>
+</ul>
+<h3 id="railsapps">RailsApps</h3>
+<p>The RailsApps project is an open source project to build Rails example applications, founded in 2010 by Daniel Kehoe. The project is supported by subscriptions to tutorials.</p>
+<ul>
+  <li><a href="http://railsapps.github.io/">Rails example applications</a></li>
+  <li><a href="https://github.com/RailsApps">RailsApps on GitHub</a></li>
+  <li><a href="https://tutorials.railsapps.org/">Rails tutorials</a></li>
+</ul>
+<h3 id="who-is-this-for">Who Is This For?</h3>
+<p>This workshop is ideal if you are:</p>
+<ul>
+  <li>a student</li>
+  <li>a startup founder</li>
+  <li>making a career change</li>
+</ul>
+<p>You’ll learn to build Rails web applications and you’ll become comfortable with the Unix command line interface and the Ruby programming language.</p>
+<h3 id="goals">Goals</h3>
+<p>This workshop is good preparation for:</p>
+<ul>
+  <li>advanced tutorials in the <a href="https://tutorials.railsapps.org/">RailsApps Tutorials</a> series</li>
+  <li>textbooks such as Michael Hartl’s <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book">Ruby on Rails Tutorial</a></li>
+  <li>intensive training such as <a href="http://devbootcamp.com">DevBootcamp</a> or <a href="generalassemb.ly">General Assembly</a></li>
+</ul>
+<p>This workshop gives you the basics while introducing you to the tools and techniques of professional Rails development.</p>
+</section>
+<section class='chapter' id='concepts'><h2>Concepts</h2>
+<p>Article: <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby? And Rails?</a> (a good primer)</p>
+<h3 id="how-rails-works">How Rails Works</h3>
+<p>Why use a web application server?</p>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a></p>
+<h3 id="six-perspectives-on-a-rails-application">Six Perspectives On a Rails Application</h3>
+<ul>
+  <li>perspective of the <strong>web browser</strong></li>
+  <li>perspective of a <strong>programmer</strong></li>
+  <li>perspective of a <strong>software architect</strong></li>
+  <li>perspective of a <strong>time traveler</strong></li>
+  <li>perspective of a <strong>gem hunter</strong></li>
+  <li>perspective of a <strong>tester</strong></li>
+</ul>
+<h4 id="perspective-of-a-software-architect">perspective of a software architect</h4>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/Software_pattern">software design patterns</a><br />
+Concept: <a href="http://en.wikipedia.org/wiki/Model%E2%80%93View%E2%80%93Controller">model–view–controller</a> design pattern<br />
+Reference: <a href="http://api.rubyonrails.org/">Rails <span class="caps">API</span></a></p>
+<h4 id="perspective-of-a-time-traveler">perspective of a time traveler</h4>
+<p>Reference: <a href="http://en.wikipedia.org/wiki/Git_(software)">Git</a><br />
+Reference: <a href="https://github.com/">GitHub</a></p>
+<h3 id="stacks">Stacks</h3>
+<h4 id="lamp-stack"><a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)"><span class="caps">LAMP</span></a> Stack</h4>
+<ul>
+  <li>Linux (operating system)</li>
+  <li>Apache (web server)</li>
+  <li>MySQL (database)</li>
+  <li><span class="caps">PHP</span> (programming language)</li>
+</ul>
+<h4 id="rails-ruby-stack">Rails/Ruby Stack</h4>
+<ul>
+  <li>Mac OS X, Linux, or Windows</li>
+  <li>WEBrick (web server)</li>
+  <li>SQLite (database)</li>
+  <li>Ruby on Rails (language and framework)</li>
+</ul>
+<h4 id="37signals-stack"><a href="http://37signals.com/">37signals</a> Stack</h4>
+<ul>
+  <li><span class="caps">ERB</span> for view templates</li>
+  <li>MySQL for databases</li>
+  <li>MiniTest for testing</li>
+</ul>
+<h4 id="alternative-stack">Alternative Stack</h4>
+<ul>
+  <li>Haml for view templates</li>
+  <li>PostgreSQL for databases</li>
+  <li>Rspec for testing</li>
+</ul>
+</section>
+<section class='chapter' id='getting-help'><h2>Getting Help</h2>
+<h3 id="references">References</h3>
+<p>Reference: <a href="http://railsapps.github.io/ruby-and-rails.html">RailsApps top resources for Ruby and Rails</a></p>
+<h4 id="railsguides">RailsGuides</h4>
+<p>Reference: <a href="http://guides.rubyonrails.org/">Rails Guides</a> official documentation</p>
+<h4 id="cheatsheets">Cheatsheets</h4>
+<p>Reference: <a href="http://pragtob.github.io/rails-beginner-cheatsheet/index.html">Rails Beginner Cheat Sheet</a></p>
+<h4 id="api-documentation"><span class="caps">API</span> Documentation</h4>
+<ul>
+  <li><a href="http://api.rubyonrails.org/">Rails Documentation</a> – official <span class="caps">API</span> docs</li>
+  <li><a href="http://railsapi.com/">Rails Searchable <span class="caps">API</span> Doc</a> – alternative interface for the <span class="caps">API</span> docs</li>
+  <li><a href="http://apidock.com/rails">apidock.com/rails</a> – Rails <span class="caps">API</span> docs with usage note</li>
+  <li><a href="http://apidock.com/ruby">apidock.com/ruby</a> – Ruby <span class="caps">API</span> docs with usage notes</li>
+</ul>
+<h3 id="getting-help-2">Getting Help</h3>
+<p>Reference: Google<br />
+Reference: <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a><br />
+Reference: <a href="http://www.railshotline.com/">Rails Hotline</a></p>
+<h3 id="meetups-hack-nights-and-workshops">Meetups, Hack Nights, and Workshops</h3>
+<p>Reference: <a href="http://www.meetup.com/">Meetup.com</a><br />
+Concept: <a href="http://en.wikipedia.org/wiki/Hackathon">hackathons</a><br />
+For women: <a href="http://workshops.railsbridge.org/">RailsBridge</a><br />
+For women: <a href="http://railsgirls.com/">Rails Girls</a></p>
+<h3 id="pair-programming">Pair Programming</h3>
+<p>Resource: <a href="http://www.pairprogramwith.me/">pairprogramwith.me</a><br />
+Resource: <a href="http://rubypair.com/">rubypair.com</a><br />
+Resource: <a href="http://www.letspair.net/">letspair.net</a>.</p>
+</section>
+<section class='chapter' id='product-planning'><h2>Product Planning</h2>
+<p>Article: <a href="http://railsapps.github.io/rails-project-management.html">Rails and Product Planning</a></p>
+<h3 id="product-owner">Product Owner</h3>
+<p>Concept: <em>product owner</em></p>
+<h3 id="user-stories">User Stories</h3>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/User_story">User stories</a></p>
+<p>User stories are often expressed in the following format:</p>
+<div class="highlight"><pre><span class="nf">As a </span><span class="nv">&lt;role&gt;</span><span class="nf"></span>
+<span class="k">I </span><span class="nf">want </span><span class="nv">&lt;goal&gt;</span><span class="nf"></span>
+<span class="nf">so that </span><span class="nv">&lt;benefit&gt;</span><span class="nf"></span>
+</pre></div><p>Here is an example:</p>
+<div class="highlight"><pre><span class="nf">*Join Mailing List*</span>
+<span class="nf">As a visitor to the website</span>
+<span class="k">I </span><span class="nf">want to join a mailing list</span>
+<span class="nf">so I can receive news and announcements</span>
+</pre></div><h3 id="wireframes-and-mockups">Wireframes and Mockups</h3>
+<p>Concept: <em>wireframe</em><br />
+Concept: <em>mockup</em></p>
+<h3 id="graphic-design">Graphic Design</h3>
+<p>Concept: <em>user experience</em> (UX) <em>designer</em><br />
+Concept: <em>interaction designer</em> (IxD)</p>
+<p>Concept: <em>moodboard</em><br />
+Concept: <em>design brief</em></p>
+<p>Concept: Photoshop <span class="caps">PSD</span> to <span class="caps">HTML</span>/<span class="caps">CSS</span></p>
+<p>Concept: Rails <em>view</em> files in <em><span class="caps">ERB</span></em> or <em>Haml</em></p>
+<p>Resource: <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a><br />
+Resource: <a href="http://foundation.zurb.com/">Zurb Foundation</a></p>
+<h3 id="behavior-driven-development">Behavior-Driven Development</h3>
+<p>Concept: <em>Behavior-Driven Development</em> (<span class="caps">BDD</span>)<br />
+Concept: <em>acceptance testing</em><br />
+Concept: <em>integration testing</em></p>
+</section>
+<section class='chapter' id='project-management'><h2>Project Management</h2>
+<p>Article: <a href="http://railsapps.github.io/rails-project-management.html">Rails and Project Management</a></p>
+<h3 id="to-do-list">To-Do List</h3>
+<p>Reference: <a href="http://en.wikipedia.org/wiki/Getting_Things_Done">Getting Things Done</a></p>
+<p>Resource: <a href="http://www.priacta.com/Articles/Comparison_of_GTD_Software.php">150+ <span class="caps">GTD</span> and to-do list applications</a></p>
+<h4 id="personal-task-management">Personal Task Management</h4>
+<ul>
+  <li><a href="http://www.toodledo.com/">Toodledo</a></li>
+  <li><a href="http://culturedcode.com/things/">Things</a></li>
+  <li><a href="http://todoist.com/">Todoist</a></li>
+  <li><a href="http://www.rememberthemilk.com/">Remember The Milk</a></li>
+  <li><a href="http://www.omnigroup.com/products/omnifocus/">Omnifocus</a></li>
+  <li><a href="http://www.6wunderkinder.com/wunderlist/">Wunderlist</a></li>
+</ul>
+<h4 id="team-task-management">Team Task Management</h4>
+<ul>
+  <li><a href="https://trello.com/">Trello</a></li>
+  <li><a href="http://asana.com/">Asana</a></li>
+  <li><a href="http://basecamp.com/">Basecamp</a></li>
+  <li><a href="http://www.producteev.com/">Producteev</a></li>
+  <li><a href="http://getflow.com/">Flow</a></li>
+</ul>
+<h3 id="kanban">Kanban</h3>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/Kanban_(development)">Kanban</a><br />
+Reference: <a href="http://en.wikipedia.org/wiki/Lean_manufacturing">lean manufacturing</a></p>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/Swim_lane">swimlanes</a></p>
+<p>Swimlanes: Backlog, Ready, Coding, Testing, Done</p>
+<ul>
+  <li><a href="https://trello.com/">Trello</a></li>
+  <li><a href="https://kanbanery.com/">Kanbanery</a></li>
+  <li><a href="http://leankit.com/">LeanKit</a></li>
+</ul>
+<p>Resource: <a href="http://www.quora.com/Lean-Software-Development/What-is-the-best-online-tool-for-Agile-development-using-Kanban">online kanban applications</a></p>
+<h3 id="agile-methodologies">Agile Methodologies</h3>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/Agile_software_development">Agile software development</a> methodologies</p>
+<p>Resource: <a href="http://www.pivotaltracker.com/">Pivotal Tracker</a><br />
+Resource: <a href="http://agilescout.com/best-agile-scrum-tools/">agile tools</a></p>
+<p>Concept: <a href="http://en.wikipedia.org/wiki/Waterfall_model">waterfall process</a></p>
+<h3 id="project-management-in-startups">Project Management in Startups</h3>
+<p>Article: <a href="http://community.uservoice.com/blog/trello-google-docs-product-management/">How we use Trello &amp; Google Docs to make UserVoice better every day</a><br />
+Article: <a href="http://www.skroutz.gr/blog/posts/76-how-we-manage-to-manage">How we manage to manage</a></p>
+</section>
+<section class='chapter' id='accounts-you-will-need'><h2>Accounts You Will Need</h2>
+<p><a href="https://github.com/signup/free">free personal GitHub account</a></p>
+</section>
+<section class='chapter' id='getting-started'><h2>Getting Started</h2>
+<h3 id="your-computer">Your Computer</h3>
+<h4 id="mac-os-x">Mac OS X</h4>
+<h4 id="linux">Linux</h4>
+<h4 id="windows">Windows</h4>
+<h4 id="hosted-computing">Hosted Computing</h4>
+<p>Resource: <a href="https://www.nitrous.io/">Nitrous.io</a></p>
+<h3 id="text-editor">Text Editor</h3>
+<p>Resource: <a href="http://www.sublimetext.com/">Sublime Text 2</a><br />
+Video: <a href="http://www.youtube.com/watch?v=TZ-bgcJ6fQo">Perfect Workflow in Sublime Text 2</a></p>
+<h3 id="terminal">Terminal</h3>
+<p>Resource: <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> (Mac)<br />
+Resource: <a href="http://www.iterm2.com/#/section/home">iTerm2</a> (Mac)<br />
+Resource: <a href="http://en.wikipedia.org/wiki/Windows_PowerShell">PowerShell</a> (Windows)</p>
+<p>Article: <a href="http://cli.learncodethehardway.org/book/ex1.html">How to launch a terminal application</a></p>
+<p>Book: <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a></p>
+<div class="highlight"><pre><span class="gp">$</span> whoami
+</pre></div><p>Don’t type the <code>$</code> prompt.</p>
+<p>You might see:</p>
+<div class="highlight"><pre><span class="go">command not found: $</span>
+</pre></div><p>which indicates you typed the <code>$</code> character by mistake.</p>
+<h4 id="getting-fancy">Getting Fancy</h4>
+<p>Reference: <a href="http://en.wikipedia.org/wiki/Bash_(Unix_shell)">Bash shell</a><br />
+Resource: <a href="https://github.com/revans/bash-it">Bash-it</a> utility</p>
+<p>Resource: <a href="http://en.wikipedia.org/wiki/Z_shell">Z shell</a><br />
+Resource: <a href="https://github.com/robbyrussell/oh-my-zsh">Oh-my-zsh</a> utility</p>
+<h3 id="installing-ruby">Installing Ruby</h3>
+<p>Three options:</p>
+<p><em>1)</em> Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a><br />
+Article: <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a></p>
+<p><em>2)</em> Use the <a href="http://railsinstaller.org/">RailsInstaller</a> pre-assembled installation package<br />
+Article: <a href="http://installfest.railsbridge.org/installfest/">RailsBridge Installfest</a></p>
+<p><em>3)</em> <a href="https://www.nitrous.io/">Nitrous.io</a> browser-based development environment</p>
+<h3 id="ruby-2-0-and-rails-4-0">Ruby 2.0 and Rails 4.0</h3>
+<p>You’ll need:</p>
+<ul>
+  <li>The Ruby language (version 2.0.0 or newer)</li>
+  <li>The Rails gem (version 3.2)</li>
+</ul>
+<p>Concept: <em>semantic versioning</em></p>
+<p>Open your terminal application and enter:</p>
+<div class="highlight"><pre><span class="gp">$</span> ruby -v
+</pre></div><p>You might see:</p>
+<div class="highlight"><pre><span class="go">ruby 2.0.0p0 (...)</span>
+</pre></div><p>Try:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails -v
+</pre></div><p>You might see:</p>
+<div class="highlight"><pre><span class="go">Rails 3.2.13</span>
+</pre></div><p>Versions such as <code>4.0.0.beta1</code> or <code>4.0.0.rc1</code> are beta versions or “release candidates.”</p>
+<p>Resource: <a href="http://rubygems.org/gems/rails">current version of Rails</a></p>
+<h3 id="rvm"><span class="caps">RVM</span></h3>
+<p>You can see a list of available Ruby versions:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm list
+</pre></div><p>Concept: <em><span class="caps">RVM</span> gemsets</em></p>
+<p>You can see a list of available gemsets associated with the default Ruby version:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm gemset list
+</pre></div><h4 id="alternatives-to-rvm">Alternatives to <span class="caps">RVM</span></h4>
+<ul>
+  <li><a href="https://github.com/postmodern/chruby">Chruby</a></li>
+  <li><a href="https://github.com/sstephenson/rbenv">rbenv</a></li>
+  <li><a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">others</a></li>
+</ul>
+<h3 id="project-specific-gemset">Project-Specific Gemset</h3>
+<p>Enter these commands:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm use ruby-2.0.0@railsapps-learning-rails --create
+<span class="gp">$</span> gem install rails
+</pre></div><p>Open a terminal and type:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails -v
+</pre></div><p>You should see the message “Rails 3.2.13”.</p>
+</section>
+<section class='chapter' id='create-the-application'><h2>Create the Application</h2>
+<h3 id="frameworks-and-starter-applications">Frameworks and Starter Applications</h3>
+<p>Concept: <em>framework</em><br />
+Concept: <em>starter application</em><br />
+Resource: <a href="http://railsapps.github.io/">RailsApps project</a></p>
+<h3 id="rails-new-command">“Rails New” Command</h3>
+<p>We already created a project-specific gemset using <span class="caps">RVM</span>. Make sure it’s ready to use:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm use ruby-2.0.0@railsapps-learning-rails
+</pre></div><p>Now type:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails new --help
+</pre></div><p>You’ll see a help message that shows all the options for the “rails new” command.</p>
+<p>You’ll see a summary of the command syntax:</p>
+<div class="highlight"><pre><span class="go">Usage:</span>
+<span class="go">  rails new APP_PATH [options]</span>
+</pre></div><p>You’ll see a list of command options and an explanation of what the “rails new” command will do:</p>
+<div class="highlight"><pre><span class="go">The 'rails new' command creates a new Rails application with a default</span>
+<span class="go">directory structure and configuration at the path you specify.</span>
+</pre></div><h3 id="building-the-application">Building the Application</h3>
+<p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails new railsapps-learning-rails -T
+</pre></div><p>Use the <code>-T</code> flag to skip Test::Unit files.</p>
+<p>After you create the application, switch to its folder to continue work directly in the application:</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>railsapps-learning-rails
+</pre></div><p>Enter this command to create <span class="caps">RVM</span> hidden files:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm use ruby-2.0.0@railsapps-learning-rails --ruby-version
+</pre></div><p>The command creates two files, <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong>, that set <span class="caps">RVM</span> every time we <code>cd</code> to the project directory.</p>
+<h3 id="test-the-application">Test the Application</h3>
+<h4 id="launching-the-web-server">Launching the Web Server</h4>
+<p>You can launch the application by entering the command:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>You’ll see:</p>
+<div class="highlight"><pre><span class="go">=&gt; Booting WEBrick</span>
+<span class="go">=&gt; Rails 3.2.13 application starting in development on http://0.0.0.0:3000</span>
+<span class="go">=&gt; Run `rails server -h` for more startup options</span>
+<span class="go">=&gt; Ctrl-C to shutdown server</span>
+<span class="go">[...] INFO  WEBrick 1.3.1</span>
+<span class="go">[...] INFO  ruby 2.0.0 (2013-02-24) [x86_64-darwin12.2.0]</span>
+<span class="go">[...] INFO  WEBrick::HTTPServer#start: pid=38534 port=3000</span>
+</pre></div><p>The <code>rails server</code> command launches the default <a href="http://en.wikipedia.org/wiki/WEBrick">WEBrick web server</a> that is provided with Ruby.</p>
+<h4 id="web-browser">Web Browser</h4>
+<p>To see your application in action, open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see the Rails default information page.</p>
+<h4 id="log-messages">Log Messages</h4>
+<p>Notice that messages scroll in the console window when your browser requests the Rails default web page.</p>
+<p>Open the file <strong>log/development.log</strong> and you’ll see the same messages.</p>
+<h4 id="stopping-the-web-server">Stopping the Web Server</h4>
+<p>You can stop the server with Control-C to return to the command prompt.</p>
+<p><em>Note:</em> Most of the time you’ll keep the web server running as you add or edit files in your project. Changes will automatically appear when you refresh the browser or request a new page. There is a tricky exception, however. If you make changes to the Gemfile, or changes to configuration files, the web server must be shut down and relaunched for changes to be activated.</p>
+<h3 id="getting-organized-for-efficiency">Getting Organized for Efficiency</h3>
+<ul>
+  <li>terminal application</li>
+  <li>text editor</li>
+  <li>web browser window</li>
+</ul>
+</section>
+<section class='chapter' id='rails-directory-structure'><h2>Rails Directory Structure</h2>
+<p>Use the Unix <code>ls</code> command to list the contents of the project directory. For a one-column list that shows each subdirectory (marked with a slash), we’ll add the <code>-1p</code> option to the command.</p>
+<div class="highlight"><pre><span class="gp">$</span> ls -1p
+</pre></div><p>You’ll see:</p>
+<div class="highlight"><pre><span class="go">Gemfile</span>
+<span class="go">Gemfile.lock</span>
+<span class="go">README.rdoc</span>
+<span class="go">Rakefile</span>
+<span class="go">app/</span>
+<span class="go">bin/</span>
+<span class="go">config/</span>
+<span class="go">config.ru</span>
+<span class="go">db/</span>
+<span class="go">lib/</span>
+<span class="go">log/</span>
+<span class="go">public/</span>
+<span class="go">tmp/</span>
+<span class="go">vendor/</span>
+</pre></div><p><em>Note:</em> On the Mac, there’s a command you can use to open the graphical file browser from the console. If you’re in the project directory, type <code>open .</code>. The period (or “dot”) is a Unix symbol that means “the directory I’m in.”</p>
+<div class="highlight"><pre><span class="gp">$</span> open .
+</pre></div><h3 id="important-folders-and-files">Important Folders and Files</h3>
+<table>
+  <tr>
+    <td> Gemfile </td>
+    <td> Lists all the gems used by the application. </td>
+  </tr>
+  <tr>
+    <td> Gemfile.lock </td>
+    <td> Lists gem versions and dependencies. </td>
+  </tr>
+  <tr>
+    <td> <span class="caps">README</span>.rdoc </td>
+    <td> A page for documentation. </td>
+  </tr>
+  <tr>
+    <td> app/ </td>
+    <td> Application folders and files. </td>
+  </tr>
+  <tr>
+    <td> config/ </td>
+    <td> Configuration folders and files. </td>
+  </tr>
+  <tr>
+    <td> db/ </td>
+    <td> Database folders and files. </td>
+  </tr>
+  <tr>
+    <td> public/ </td>
+    <td> Files for web pages that do not contain Ruby code, such as error pages. </td>
+  </tr>
+</table>
+<h3 id="not-so-important-folders-and-files">Not-So-Important Folders and Files</h3>
+<table>
+  <tr>
+    <td> Rakefile </td>
+    <td> Directives for the Rake utility program. </td>
+  </tr>
+  <tr>
+    <td> bin/ </td>
+    <td> Folder for binary (executable) programs. </td>
+  </tr>
+  <tr>
+    <td> config.ru </td>
+    <td> Configuration file for Rack (a software library for web servers). </td>
+  </tr>
+  <tr>
+    <td> lib/ </td>
+    <td> Folder for miscellaneous Ruby code. </td>
+  </tr>
+  <tr>
+    <td> log/ </td>
+    <td> Folder for application server logfiles. </td>
+  </tr>
+  <tr>
+    <td> tmp/ </td>
+    <td> Temporary files created when your application is running. </td>
+  </tr>
+  <tr>
+    <td> vendor/ </td>
+    <td> Folder for Ruby software libraries that are not gems. </td>
+  </tr>
+</table>
+<h3 id="the-app-directory">The App Directory</h3>
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>app
+<span class="gp">$</span> ls -1p
+<span class="go">assets/</span>
+<span class="go">controllers/</span>
+<span class="go">helpers/</span>
+<span class="go">mailers/</span>
+<span class="go">models/</span>
+<span class="go">views/</span>
+<span class="gp">$</span> <span class="nb">cd</span> ..
+</pre></div>
+</section>
+<section class='chapter' id='source-control-with-git'><h2>Source Control with Git</h2>
+<p>Reference: <a href="http://en.wikipedia.org/wiki/Git_(software)">Git</a><br />
+Reference: <a href="https://github.com/">GitHub</a><br />
+Reference: <a href="http://en.wikipedia.org/wiki/Apache_Subversion">svn</a>.</p>
+<p>Resource: <a href="http://www.git-tower.com/">Git Tower</a><br />
+Resource: <a href="http://list.ly/list/FO-mac-git-clients">Mac Git clients</a></p>
+<h3 id="is-git-installed">Is Git Installed?</h3>
+<p>As a first step, make sure Git is installed on your computer:</p>
+<div class="highlight"><pre><span class="gp">$</span> which git
+<span class="go">/usr/local/bin/git</span>
+<span class="gp">$</span> git version
+<span class="go">git version ...</span>
+</pre></div><p>If Git is not found, install Git. GitHub provides instructions to <a href="https://help.github.com/articles/set-up-git">Set Up Git</a>. For Mac OS X, I recommend using <a href="http://mxcl.github.io/homebrew/">Homebrew</a> to install Git. See <a href="http://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/">How to Install Xcode, Homebrew, Git…</a> from Moncef Belyamani.</p>
+<h3 id="is-git-configured">Is Git Configured?</h3>
+<p>Make sure Git knows who you are. Every time you update your Git repository with the <code>git commit</code> command, Git will identify you as the author of the changes.</p>
+<div class="highlight"><pre><span class="gp">$</span> git config --get user.name
+<span class="gp">$</span> git config --get user.email
+</pre></div><p>You should see your name and email address. If not, configure Git:</p>
+<div class="highlight"><pre><span class="gp">$</span> git config --global user.name <span class="s2">"Real Name"</span>
+<span class="gp">$</span> git config --global user.email <span class="s2">"me@example.com@"</span>
+</pre></div><p><em>Note:</em> Use the same email address for Git, your GitHub account, and Heroku to avoid headaches.</p>
+<h3 id="create-a-repository">Create a Repository</h3>
+<p>The <code>git init</code> command sets up a Git repository (a “repo”) in the project directory. We add the Unix symbol that indicates Git should be initialized in the current directory (git init dot):</p>
+<div class="highlight"><pre><span class="gp">$</span> git init .
+<span class="go">Initialized empty Git repository in ...</span>
+</pre></div><p>It creates a hidden folder named <strong>.git/</strong> in the project directory. You can peek at the contents:</p>
+<div class="highlight"><pre><span class="go">ls -1p .git</span>
+<span class="go">HEAD</span>
+<span class="go">config</span>
+<span class="go">description</span>
+<span class="go">hooks/</span>
+<span class="go">info/</span>
+<span class="go">objects/</span>
+<span class="go">refs/</span>
+</pre></div><h3 id="gitignore">GitIgnore</h3>
+<p>Files that should be ignored:</p>
+<ul>
+  <li>log files created by the web server</li>
+  <li>database files</li>
+  <li>configuration files that include passwords or <span class="caps">API</span> keys</li>
+</ul>
+<p>Take a look at the contents of the <strong>.gitignore</strong> file. We use the Unix <code>cat</code> command to display the contents of the file:</p>
+<div class="highlight"><pre><span class="gp">$</span> cat .gitignore
+<span class="gp">#</span> See http://help.github.com/ignore-files/ <span class="k">for </span>more about ignoring files.
+<span class="gp">#</span>
+<span class="gp">#</span> If you find yourself ignoring temporary files generated by your text editor
+<span class="gp">#</span> or operating system, you probably want to add a global ignore instead:
+<span class="gp">#</span>   git config --global core.excludesfile <span class="s1">'~/.gitignore_global'</span>
+
+<span class="gp">#</span> Ignore bundler config.
+<span class="go">/.bundle</span>
+
+<span class="gp">#</span> Ignore the default SQLite database.
+<span class="go">/db/*.sqlite3</span>
+<span class="go">/db/*.sqlite3-journal</span>
+
+<span class="gp">#</span> Ignore all logfiles and tempfiles.
+<span class="go">/log/*.log</span>
+<span class="go">/tmp</span>
+</pre></div><p>For a <strong>.gitignore</strong> file that ignores more, see an <a href="https://github.com/RailsApps/rails-composer/blob/master/files/gitignore.txt">example .gitignore file</a> from the RailsApps project.</p>
+<h3 id="git-workflow">Git Workflow</h3>
+<h4 id="untracked-files">Untracked Files</h4>
+<p>The <code>git status</code> command lists all folders or files that are not checked into the repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git status
+<span class="gp">#</span> On branch master
+<span class="gp">#</span>
+<span class="gp">#</span> Initial commit
+<span class="gp">#</span>
+<span class="gp">#</span> Untracked files:
+<span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git add &lt;file&gt;..."</span> to include in what will be committed<span class="o">)</span>
+<span class="gp">#</span>
+<span class="gp">#</span> .gitignore
+<span class="gp">#</span> Gemfile
+<span class="gp">#</span> Gemfile.lock
+<span class="gp">#</span> README.rdoc
+<span class="gp">#</span> Rakefile
+<span class="gp">#</span> app/
+<span class="gp">#</span> bin/
+<span class="gp">#</span> config.ru
+<span class="gp">#</span> config/
+<span class="gp">#</span> db/
+<span class="gp">#</span> lib/
+<span class="gp">#</span> log/
+<span class="gp">#</span> public/
+<span class="gp">#</span> vendor/
+<span class="go">nothing added to commit but untracked files present (use "git add" to track)</span>
+</pre></div><h4 id="staging">Staging</h4>
+<p>Mark individual files to be staged:</p>
+<div class="highlight"><pre><span class="gp">$</span> git add Gemfile
+</pre></div><p>Mark all the files to be staged:</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git status
+</pre></div><p>There are three forms of the <code>git add</code> command:</p>
+<ul>
+  <li><code>git add foo.txt</code> adds a file named <strong>foo.txt</strong></li>
+  <li><code>git add .</code> adds all new files and changed files, except deleted files</li>
+  <li><code>git add -A</code> adds everything, including deletions</li>
+</ul>
+<h4 id="committing">Committing</h4>
+<p>Commit your project to the repository:</p>
+<div class="highlight"><pre><span class="gp">$</span> git commit -m <span class="s2">"Initial commit"</span>
+<span class="gp">$</span> git status
+</pre></div><p>The -m flag lets you add a message for the commit.</p>
+<p>You can use the <code>git log</code> command to see your project history:</p>
+<div class="highlight"><pre><span class="gp">$</span> git log
+</pre></div><p>If you get “stuck” in <code>git log</code>, type <code>q</code> to return to the command prompt.</p>
+<h4 id="pushing-to-github">Pushing to GitHub</h4>
+<p>Go to GitHub and <a href="https://github.com/repositories/new">create a new empty repository</a>.</p>
+<p>Name the repository “railsapps-learning-rails”.</p>
+<div class="highlight"><pre><span class="gp">$</span> git remote add origin git@github.com:YOUR_GITHUB_ACCOUNT/railsapps-learning-rails.git
+<span class="go">git push -u origin master</span>
+</pre></div><p>Now you can view your project repository on GitHub at:</p>
+<ul>
+  <li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/railsapps-learning-rails">https://github.com/YOUR_GITHUB_ACCOUNT/railsapps-learning-rails</a></li>
+</ul>
+<h3 id="the-readme">The <span class="caps">README</span></h3>
+<p>In your text editor, open the file <strong><span class="caps">README</span>.rdoc</strong> and replace the contents:</p>
+<div class="highlight"><pre>Railsapps Learning Rails
+==
+
+Learning Rails with help from the RailsApps project.
+</pre></div><p>GitHub lets you add formatting using your choice of markup syntax, depending on the file extension you add to the filename:</p>
+<ul>
+  <li><span class="caps">README</span>.rdoc uses the <a href="http://rdoc.rubyforge.org/RDoc.html">rdoc</a> syntax</li>
+  <li><span class="caps">README</span>.md uses the <a href="https://help.github.com/articles/github-flavored-markdown">GitHub Flavored Markdown</a> syntax</li>
+  <li><span class="caps">README</span>.textile uses the <a href="http://redcloth.org/hobix.com/textile/">Textile</a> syntax</li>
+</ul>
+<p>We’ll use Markdown syntax by adding the <code>==</code> characters after the first line of text to force a headline.</p>
+<p>Rename the file to <strong><span class="caps">README</span>.md</strong> and save it.</p>
+<div class="highlight"><pre><span class="gp">$</span> mv README.rdoc README.md
+</pre></div><p>Use <code>git status</code> to see what has changed:</p>
+<div class="highlight"><pre><span class="gp">$</span> git status
+<span class="gp">#</span> On branch master
+<span class="gp">#</span> Changes not staged <span class="k">for </span>commit:
+<span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git add/rm &lt;file&gt;..."</span> to update what will be committed<span class="o">)</span>
+<span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git checkout -- &lt;file&gt;..."</span> to discard changes in working directory<span class="o">)</span>
+<span class="gp">#</span>
+<span class="gp">#</span> deleted:    README.rdoc
+<span class="gp">#</span>
+<span class="gp">#</span> Untracked files:
+<span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git add &lt;file&gt;..."</span> to include in what will be committed<span class="o">)</span>
+<span class="gp">#</span>
+<span class="gp">#</span> README.md
+<span class="go">no changes added to commit (use "git add" and/or "git commit -a")</span>
+</pre></div><p>Stage, commit, and push the change to GitHub:</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"update README"</span>
+<span class="gp">$</span> git push origin master
+</pre></div><p>Take a look at your GitHub repository (refresh the web page).</p>
+<p>The <code>git log</code> command will display your project history:</p>
+<div class="highlight"><pre><span class="gp">$</span> git log
+</pre></div><p>Article: <a href="http://railsapps.github.io/rails-git.html">Git and Rails</a></p>
+</section>
+<section class='chapter' id='gems'><h2>Gems</h2>
+<p>Reference: <a href="https://rubygems.org/">rubygems.org</a><br />
+Resource: <a href="http://ruby-toolbox.com/">Ruby Toolbox</a></p>
+<h4 id="evaluating-gems">Evaluating Gems</h4>
+<p>Ask:</p>
+<ul>
+  <li>how many issues are open?</li>
+  <li>how recent are the commits of patches or updates?</li>
+  <li>is there a <span class="caps">CHANGELOG</span> file?</li>
+  <li>is the gem well-documented?</li>
+  <li>how many “stars” (people watching) or “forks” (people hacking)?</li>
+</ul>
+<h3 id="rails-gems">Rails Gems</h3>
+<p>Reference: <a href="https://rubygems.org/gems/rails">summary page for Rails</a></p>
+<ul>
+  <li><a href="https://github.com/rails/rails/tree/master/actionmailer">actionmailer</a> – framework for email delivery and testing</li>
+  <li><a href="https://github.com/rails/rails/tree/master/actionpack">actionpack</a> – framework for routing and responding to web requests</li>
+  <li><a href="https://github.com/rails/rails/tree/master/activerecord">activerecord</a> – framework for connections to databases</li>
+  <li><a href="https://github.com/rails/activeresource">activeresource</a> – framework for manipulating data</li>
+  <li><a href="https://github.com/rails/rails/tree/master/activesupport">activesupport</a> – utility classes and Ruby library extensions</li>
+  <li><a href="http://gembundler.com/">bundler</a> – utility to manage gems</li>
+  <li><a href="https://github.com/rails/rails/tree/master/railties">railties</a> – console commands and generators</li>
+</ul>
+<h3 id="gems-for-a-rails-default-application">Gems for a Rails Default Application</h3>
+<ul>
+  <li><a href="https://github.com/luislavena/sqlite3-ruby">sqlite3</a> – adapter for the SQLite database</li>
+  <li><a href="https://github.com/rails/sass-rails">sass-rails</a> – enables use of the <span class="caps">SCSS</span> syntax for stylesheets</li>
+  <li><a href="https://github.com/lautis/uglifier">uglifier</a> – JavaScript compressor</li>
+  <li><a href="https://github.com/rails/coffee-rails">coffee-rails</a> – enables use of the CoffeeScript syntax for JavaScript</li>
+  <li><a href="https://github.com/rails/jquery-rails">jquery-rails</a> – adds the <a href="http://jquery.com/">jQuery</a> JavaScript library</li>
+  <li><a href="https://github.com/rails/turbolinks">turbolinks</a> – faster loading of webpages</li>
+  <li><a href="https://github.com/rails/jbuilder">jbuilder</a> – utility for encoding <span class="caps">JSON</span> data</li>
+</ul>
+<h3 id="where-do-gems-live">Where Do Gems Live?</h3>
+<p>Run the <code>gem which</code> command and you’ll see:</p>
+<div class="highlight"><pre><span class="gp">$</span> gem which bundler
+<span class="go">/Users/me/.rvm/gems/ruby-2.0.0-p0@global/gems/bundler-1.3.5/lib/bundler.rb</span>
+<span class="gp">$</span> gem which rails
+<span class="go">/Users/me/.rvm/gems/ruby-2.0.0-p0@railsapps-learning-rails/gems/railties-4.0.0.rc1/lib/rails.rb</span>
+</pre></div><p>Gems are files saved to the computer’s disk storage. If you use <span class="caps">RVM</span>, they are saved to a hidden <strong>.rvm</strong> folder in your user directory. A <strong>global</strong> subfolder contains the Bundler gem. A project-specific <strong>railsapps-learning-rails</strong> subfolder contains the Rails gem. If you use Chruby or Rbenv instead of <span class="caps">RVM</span>, your gems will stored in a different location.</p>
+<p>If “railsapps-learning-rails” is not in the filepath displayed by <code>gem which rails</code>, you may need to reset your <span class="caps">RVM</span> gemset:</p>
+<div class="highlight"><pre><span class="gp">$</span> rvm gemset use railsapps-learning-rails
+</pre></div><p>Reference: <a href="http://gembundler.com/">Bundler</a> utility</p>
+<h3 id="gemfile">Gemfile</h3>
+<p>Concept: <strong>Gemfile.lock</strong> file</p>
+<h4 id="gem-versioning">Gem Versioning</h4>
+<ul>
+  <li><code>gem 'rails', '4.0.0'</code> ia “absolute”, only version 4.0.0 will be used</li>
+  <li><code>gem 'rails', '&gt;= 4.0.0'</code> is “optimistic”, any version newer than 4.0.0 will be used</li>
+  <li><code>gem 'rails', '~&gt; 4.0.0'</code> is “pessimistic”</li>
+</ul>
+<p>“Pessimistic” versioning needs some explanation. <code>~&gt; 4.0.0</code> means use<br />
+any version greater than 4.0.0 and less than 4.1 (any patch version can be used). <code>~&gt; 4.0</code> means use any version greater than 4.0 and less than 5.0 (any minor version can be used).</p>
+<h3 id="gemfile-for-a-rails-default-application">Gemfile for a Rails Default Application</h3>
+<p>Open the <strong>Gemfile</strong> with your text editor:</p>
+<div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
+
+<span class="c1"># Bundle edge Rails instead: gem 'rails', github: 'rails/rails'</span>
+<span class="n">gem</span> <span class="s1">'rails'</span><span class="p">,</span> <span class="s1">'4.0.0.rc1'</span>
+
+<span class="c1"># Use sqlite3 as the database for Active Record</span>
+<span class="n">gem</span> <span class="s1">'sqlite3'</span>
+
+<span class="c1"># Use SCSS for stylesheets</span>
+<span class="n">gem</span> <span class="s1">'sass-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0.rc1'</span>
+
+<span class="c1"># Use Uglifier as compressor for JavaScript assets</span>
+<span class="n">gem</span> <span class="s1">'uglifier'</span><span class="p">,</span> <span class="s1">'&gt;= 1.3.0'</span>
+
+<span class="c1"># Use CoffeeScript for .js.coffee assets and views</span>
+<span class="n">gem</span> <span class="s1">'coffee-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0'</span>
+
+<span class="c1"># See https://github.com/sstephenson/execjs#readme for more supported runtimes</span>
+<span class="c1"># gem 'therubyracer', platforms: :ruby</span>
+
+<span class="c1"># Use jquery as the JavaScript library</span>
+<span class="n">gem</span> <span class="s1">'jquery-rails'</span>
+
+<span class="c1"># Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks</span>
+<span class="n">gem</span> <span class="s1">'turbolinks'</span>
+
+<span class="c1"># Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder</span>
+<span class="n">gem</span> <span class="s1">'jbuilder'</span><span class="p">,</span> <span class="s1">'~&gt; 1.0.1'</span>
+
+<span class="n">group</span> <span class="ss">:doc</span> <span class="k">do</span>
+  <span class="c1"># bundle exec rake doc:rails generates the API under doc/api.</span>
+  <span class="n">gem</span> <span class="s1">'sdoc'</span><span class="p">,</span> <span class="nb">require</span><span class="p">:</span> <span class="kp">false</span>
+<span class="k">end</span>
+
+<span class="c1"># Use ActiveModel has_secure_password</span>
+<span class="c1"># gem 'bcrypt-ruby', '~&gt; 3.0.0'</span>
+
+<span class="c1"># Use unicorn as the app server</span>
+<span class="c1"># gem 'unicorn'</span>
+
+<span class="c1"># Use Capistrano for deployment</span>
+<span class="c1"># gem 'capistrano', group: :development</span>
+
+<span class="c1"># Use debugger</span>
+<span class="c1"># gem 'debugger', group: [:development, :test]</span>
+</pre></div><p>Add to the Gemfile:</p>
+<div class="highlight"><pre><span class="go">ruby '2.0.0'</span>
+</pre></div><p><em>Note:</em> If you are developing your application on a computer using the Linux operating system, you may need to uncomment and use the statement <code>gem 'therubyracer', platforms: :ruby</code>. Linux doesn’t have a built-in JavaScript interpreter so you must install Node.js in your environment or else add the therubyracer gem to each project Gemfile.</p>
+<p>Edit the the <strong>Gemfile</strong> and save:</p>
+<div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
+<span class="n">ruby</span> <span class="s1">'2.0.0'</span>
+<span class="n">gem</span> <span class="s1">'rails'</span><span class="p">,</span> <span class="s1">'4.0.0.rc1'</span>
+
+<span class="c1"># Rails defaults</span>
+<span class="n">gem</span> <span class="s1">'sass-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0.rc1'</span>
+<span class="n">gem</span> <span class="s1">'uglifier'</span><span class="p">,</span> <span class="s1">'&gt;= 1.3.0'</span>
+<span class="n">gem</span> <span class="s1">'coffee-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0'</span>
+<span class="n">gem</span> <span class="s1">'jquery-rails'</span>
+<span class="n">gem</span> <span class="s1">'turbolinks'</span>
+<span class="n">gem</span> <span class="s1">'jbuilder'</span><span class="p">,</span> <span class="s1">'~&gt; 1.0.1'</span>
+</pre></div><p>Run <code>bundle install</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> bundle install
+<span class="go">Resolving dependencies...</span>
+<span class="go">Using rake (10.0.4)</span>
+<span class="go">Using i18n (0.6.4)</span>
+<span class="go">Using minitest (4.7.4)</span>
+<span class="go">Using multi_json (1.7.3)</span>
+<span class="go">Using atomic (1.1.9)</span>
+<span class="go">Using thread_safe (0.1.0)</span>
+<span class="go">Using tzinfo (0.3.37)</span>
+<span class="go">Using activesupport (4.0.0.rc1)</span>
+<span class="go">Using builder (3.1.4)</span>
+<span class="go">Using erubis (2.7.0)</span>
+<span class="go">Using rack (1.5.2)</span>
+<span class="go">Using rack-test (0.6.2)</span>
+<span class="go">Using actionpack (4.0.0.rc1)</span>
+<span class="go">Using mime-types (1.23)</span>
+<span class="go">Using polyglot (0.3.3)</span>
+<span class="go">Using treetop (1.4.12)</span>
+<span class="go">Using mail (2.5.3)</span>
+<span class="go">Using actionmailer (4.0.0.rc1)</span>
+<span class="go">Using activemodel (4.0.0.rc1)</span>
+<span class="go">Using activerecord-deprecated_finders (1.0.2)</span>
+<span class="go">Using arel (4.0.0)</span>
+<span class="go">Using activerecord (4.0.0.rc1)</span>
+<span class="go">Using bundler (1.3.5)</span>
+<span class="go">Using coffee-script-source (1.6.2)</span>
+<span class="go">Using execjs (1.4.0)</span>
+<span class="go">Using coffee-script (2.2.0)</span>
+<span class="go">Using thor (0.18.1)</span>
+<span class="go">Using railties (4.0.0.rc1)</span>
+<span class="go">Using coffee-rails (4.0.0)</span>
+<span class="go">Using hike (1.2.2)</span>
+<span class="go">Using jbuilder (1.0.2)</span>
+<span class="go">Using jquery-rails (2.2.1)</span>
+<span class="go">Using tilt (1.4.1)</span>
+<span class="go">Using sprockets (2.9.3)</span>
+<span class="go">Using sprockets-rails (2.0.0.rc4)</span>
+<span class="go">Using rails (4.0.0.rc1)</span>
+<span class="go">Using sass (3.2.8)</span>
+<span class="go">Using sass-rails (4.0.0.rc1)</span>
+<span class="go">Using sqlite3 (1.3.7)</span>
+<span class="go">Using turbolinks (1.1.1)</span>
+<span class="go">Using uglifier (2.1.0)</span>
+<span class="go">Your bundle is complete!</span>
+<span class="go">Use `bundle show [gemname]` to see where a bundled gem is installed.</span>
+</pre></div><p>Use your text editor to view the contents of <strong>Gemfile.lock</strong> file.</p>
+<p>Run <code>gem list</code> to see all the gems that are loaded into the development environment:</p>
+<div class="highlight"><pre><span class="gp">$</span> gem list
+</pre></div><p>The list of gems loaded in the environment and specified in the <strong>Gemfile.lock</strong> will be the same.</p>
+<p><span class="caps">RVM</span> makes a place for the gems to be stored (the <span class="caps">RVM</span> gemset); the <strong>Gemfile</strong> lists the gems you want to use; the <strong>Gemfile.lock</strong> file records dependencies and version numbers; <code>bundle install</code> reads the Gemfile and installs the gems into the <span class="caps">RVM</span> gemset; and <code>gem list</code> shows you the gems that are loaded into memory and available for use.</p>
+<h3 id="adding-gems">Adding Gems</h3>
+<p>Here are the gems we’ll add to the Gemfile:</p>
+<ul>
+  <li><a href="https://github.com/laserlemon/figaro">figaro</a> – configuration framework</li>
+  <li><a href="https://github.com/thoughtbot/high_voltage">high_voltage</a> – for static pages like “about”</li>
+</ul>
+<p>We’ll also add a utility that makes development easier:</p>
+<ul>
+  <li><a href="https://github.com/charliesome/better_errors">better_errors</a> – helps when things go wrong</li>
+</ul>
+<p>Plus we’ll add a set of gems for a testing framework.</p>
+<p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
+<p><strong>Gemfile</strong></p>
+<div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
+<span class="n">ruby</span> <span class="s1">'2.0.0'</span>
+<span class="n">gem</span> <span class="s1">'rails'</span><span class="p">,</span> <span class="s1">'4.0.0.rc1'</span>
+
+<span class="c1"># Rails defaults</span>
+<span class="n">gem</span> <span class="s1">'sass-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0.rc1'</span>
+<span class="n">gem</span> <span class="s1">'uglifier'</span><span class="p">,</span> <span class="s1">'&gt;= 1.3.0'</span>
+<span class="n">gem</span> <span class="s1">'coffee-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0'</span>
+<span class="n">gem</span> <span class="s1">'jquery-rails'</span>
+<span class="n">gem</span> <span class="s1">'turbolinks'</span>
+<span class="n">gem</span> <span class="s1">'jbuilder'</span><span class="p">,</span> <span class="s1">'~&gt; 1.0.1'</span>
+
+<span class="c1"># railsapps-learning-rails</span>
+<span class="n">gem</span> <span class="s1">'figaro'</span>
+<span class="n">gem</span> <span class="s2">"high_voltage"</span>
+<span class="n">gem</span> <span class="s1">'simple_form'</span>
+<span class="n">gem</span> <span class="s2">"gibbon"</span>
+<span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'better_errors'</span>
+<span class="k">end</span>
+<span class="n">group</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'rspec-rails'</span>
+  <span class="n">gem</span> <span class="s1">'factory_girl_rails'</span>
+<span class="k">end</span>
+<span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'database_cleaner'</span>
+  <span class="n">gem</span> <span class="s1">'email_spec'</span>
+  <span class="n">gem</span> <span class="s1">'launchy'</span>
+  <span class="n">gem</span> <span class="s1">'capybara'</span>
+<span class="k">end</span>
+</pre></div><p>Each time you edit the Gemfile, run <code>bundle install</code> and restart your web server.</p>
+<h3 id="install-the-gems">Install the Gems</h3>
+<p>Now that you’ve edited the Gemfile, you need to install the required gems on your computer:</p>
+<div class="highlight"><pre><span class="gp">$</span> bundle install
+</pre></div><p>You can check that the gems are installed with:</p>
+<div class="highlight"><pre><span class="gp">$</span> gem list
+</pre></div><h3 id="git">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"add gems"</span>
+<span class="gp">$</span> git push origin master
+</pre></div><p>We’re ready to configure the application.</p>
+</section>
+<section class='chapter' id='configuration'><h2>Configuration</h2>
+<p>In our tutorial application, we’ll need an <span class="caps">API</span> key to access MailChimp, which we’ll use to add visitors’ email addresses to a mailing list.</p>
+<p>Rails is known for its “convention over configuration” guiding principle. As applied, the principle reduces the need for many configuration files (for example, we don’t need files to map database fields to model attributes). It’s not possible to eliminate all configuration files, however. Many applications require configuration of settings such as email account credentials or <span class="caps">API</span> keys for external services.</p>
+<p>Remote Git repositories such as GitHub are a place to store and share code. But you shouldn’t save email account credentials or private <span class="caps">API</span> keys to a shared Git repository where others can see them. Operating systems (Linux, Mac OS X, Windows) provide mechanisms to set local <a href="http://en.wikipedia.org/wiki/Environment_variable">environment variables</a>, as does Heroku and other deployment platforms. Environment variables can be accessed from Rails applications and provide an ideal place to set configuration settings that must remain private. With a bit of Unix skill, most developers can set environment variables using the Unix shell. For applications from the RailsApps project, we take a hybrid approach and use the <a href="https://github.com/laserlemon/figaro">figaro gem</a> that lets us set environment variables from the Unix shell or from a simple configuration file.</p>
+<p>For our tutorial, we’ll show how to set up configuration settings using the <a href="https://github.com/laserlemon/figaro">figaro gem</a>. You can read the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> if you’d like learn about the figaro gem or explore other approaches.</p>
+<h3 id="configuration-file">Configuration File</h3>
+<p>The tutorial application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. We’ve already installed the figaro gem in the Gemfile and run <code>bundle install</code>.</p>
+<p>The figaro gem uses a generator to set up the necessary files. Run:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails generate figaro:install
+</pre></div><p>This generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
+<p>We’ll set credentials for your MailChimp account in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the Git repository so your credentials are kept private.</p>
+<p>Use your text editor to replace the file <strong>config/application.yml</strong> with this:</p>
+<div class="highlight"><pre><span class="c1"># Add account credentials and API keys here.</span>
+<span class="c1"># See http://railsapps.github.io/rails-environment-variables.html</span>
+<span class="c1"># This file should be listed in .gitignore to keep your settings secret!</span>
+<span class="c1"># Each entry sets a local environment variable and overrides ENV variables in the Unix shell.</span>
+<span class="l-Scalar-Plain">MAILCHIMP_API_KEY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_MailChimp_API_Key</span>
+<span class="l-Scalar-Plain">MAILCHIMP_LIST_ID</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_List_ID</span>
+</pre></div><p>When visitors sign up to receive a newsletter, we’ll add them to a MailChimp list. Add an environment variable for the MailChimp <span class="caps">API</span> key: <code>MAILCHIMP_API_KEY</code>. <a href="https://admin.mailchimp.com/">Log in to MailChimp</a> and find the MailChimp <span class="caps">API</span> key under the tab for “Account” on the MailChimp website. Look for the “API Keys and Authorized Apps” menu item.</p>
+<p>We’ll add <code>MAILCHIMP_LIST_ID</code> for the ID of the mailing list we’ll set up in MailChimp. To find the list ID, <a href="https://admin.mailchimp.com/">log in to MailChimp</a> and on the MailChimp “Lists” page, look for the dropdown “gear” menu for the mailing list you’ve created and click “List Settings and Unique ID.” At the bottom of the List Settings page, you’ll find the unique ID for the mailing list.</p>
+<p>Replace the placeholders in the <strong>config/application.yml</strong> file with the values you obtain from the MailChimp site.</p>
+<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. Later in the tutorial we’ll see the variable <code>ENV["MAILCHIMP_API_KEY"]</code> will return the <span class="caps">API</span> key.</p>
+<h3 id="git-2">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"add configuration file"</span>
+<span class="gp">$</span> git push origin master
+</pre></div><p>We’re ready to create a home page for the application.</p>
+</section>
+<section class='chapter' id='static-pages-and-routing'><h2>Static Pages and Routing</h2>
+<p>A Rails application can deliver static web pages just like any ordinary web server. The pages are delivered fast and no Ruby code is required. We’ll look at simple static pages and learn about Rails routing before we explore the complexities of dynamic web pages in Rails.</p>
+<h3 id="add-a-home-page">Add a Home Page</h3>
+<p>Make sure you are in your project directory.</p>
+<p>Start the application server:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see the Rails default information page.</p>
+<p>Use your text editor to create and save a file <strong>public/index.html</strong>:</p>
+<div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>Hello World<span class="nt">&lt;/h1&gt;</span>
+</pre></div><p>Refresh the browser window and you’ll see the “Hello World” message.</p>
+<p>The Rails application server looks for any pages in the <strong>public</strong> folder by default.</p>
+<p>Like other web servers, if no filename is specified, the server will try to respond with a file named <strong>index.html</strong>.</p>
+<h3 id="routing-error">Routing Error</h3>
+<p>What happens when no file matches the requested web address?</p>
+<p>Enter the <span class="caps">URL</span> <a href="http://localhost:3000/about.html">http://localhost:3000/about.html</a> in your browser.</p>
+<p>You’ll see an error page that shows a routing error.</p>
+<h3 id="add-an-about-page">Add an About Page</h3>
+<p>Use your text editor to create and save a file <strong>public/about.html</strong>:</p>
+<div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>About<span class="nt">&lt;/h1&gt;</span>
+</pre></div><p>Visit the <span class="caps">URL</span> <a href="http://localhost:3000/about.html">http://localhost:3000/about.html</a> in your browser. You’ll see the new “About” page.</p>
+<p>By the way, you’ve just done test-driven development. You’ve tested behavior before implementing a feature and seen an error condition. Then you’ve implemented the feature and seen a successful result to your test. Test-driven development with Ruby code is more complex (because you’ll write tests in Ruby) but the principle is the same.</p>
+<h3 id="introducing-routes">Introducing Routes</h3>
+<p>The guiding principle of “convention over configuration” governs Rails routing. If the web browser requests a page named “index.html”, Rails will deliver the page from the <strong>public</strong> folder by default. No configuration is required. But what if you want to override the default behavior? Rails provides a configuration file to control web request routing.</p>
+<p>Remove the <strong>public/index.html</strong> file:</p>
+<div class="highlight"><pre><span class="gp">$</span> rm public/index.html
+</pre></div><p>Now let’s set the “About” page as the home page.</p>
+<p>Open the file <strong>config/routes.rb</strong>. Remove all the comments and replace the file with this:</p>
+<div class="highlight"><pre><span class="ss">RailsappsLearningRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">'/about.html'</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div><p>Notice the name of the application <code>RailsappsLearningRails</code> is included in the file. When  you created the application, I suggested you use the name <code>railsapps-learning-rails</code>. If you gave the project a different name, you’ll have to modify the <strong>config/routes.rb</strong> file accordingly.</p>
+<p>This snippet of Rails routing code takes any request to the application root (<a href="http://localhost:3000/">http://localhost:3000/</a>) and redirects it to the <strong>about.html</strong> file (which is expected to be found in the <strong>public</strong> folder).</p>
+<p>When you change the <strong>config/routes.rb</strong> file, you must restart your application server to see the new behavior. Use Control-C to stop the server and restart it:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Visit the page <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see the “About” page.</p>
+<p>You’ve just seen an example of Rails magic. Some developers complain that the “convention over configuration” principle is black magic. It’s not obvious why pages are delivered from the <strong>public</strong> folder; it just happens. If you don’t know the convention, you could be left scratching your head and looking for the code that maps <a href="http://localhost:3000/">http://localhost:3000/</a> to the <strong>public/index.html</strong> file. The code is buried deep in the Rails framework. However, if you know the convention and the technique for overriding it, you have both convenience and power at your disposal.</p>
+<h3 id="remove-the-about-page">Remove the About Page</h3>
+<p>In the next chapter we’ll look at ways to implement the home page using the full power of Rails.</p>
+<p>For now, delete the file <strong>public/about.html</strong>:</p>
+<div class="highlight"><pre><span class="gp">$</span> rm public/about.html
+</pre></div>
+</section>
+<section class='chapter' id='dynamic-home-page'><h2>Dynamic Home Page</h2>
+<p>In the last chapter, we saw how Rails can deliver simple static web pages.</p>
+<p>Here we’ll build a dynamic home page, illustrating basic concepts you’ll need to understand Rails.</p>
+<h3 id="user-story">User Story</h3>
+<p>We’ll plan our work with a user story:</p>
+<div class="highlight"><pre><span class="nf">*Birthday Countdown*</span>
+<span class="nf">As a visitor to the website</span>
+<span class="k">I </span><span class="nf">want to see the owner's name</span>
+<span class="k">I </span><span class="nf">want to see the owner's birthdate</span>
+<span class="k">I </span><span class="nf">want to see how many days until the owner's next birthday</span>
+<span class="nf">so I can send birthday greetings</span>
+</pre></div><p>It will be a silly home page but it will help us explore the power of Rails.</p>
+<h3 id="model-view-controller">Model View Controller</h3>
+<p>When you read about basic concepts, you learned that from the perspective of a software architect, Rails is organized to conform to the <a href="http://en.wikipedia.org/wiki/Model%E2%80%93View%E2%80%93Controller">model–view–controller</a> software design pattern. The <span class="caps">MVC</span> design pattern originated in the design of desktop applications. “Model” classes manipulated data; “view” classes created the user interface; and a “controller” class responded to user interaction. This design pattern enforces “separation of concerns” to keep code manageable and organized. The <span class="caps">MVC</span> design pattern is useful for web applications and a central organizing principle for Rails.</p>
+<p><img src="https://tutorials.railsapps.org/assets/mvc-stack.png" title="Model–View–Controller in Rails" alt="Model–View–Controller in Rails" /></p>
+<p>When the web broswer makes a request, a <em>router</em> component will check the <strong>config/routes.rb</strong> file and determine which <em>controller</em> should handle the request, based on the web address and <span class="caps">HTTP</span> protocol. The controller will obtain any needed data from a <em>model</em>. After obtaining data, the controller will render a response combining data from the model with a <em>view</em> component that provides markup and layout. The response is an <span class="caps">HTML</span> file that the controller has assembled for the browser to display.</p>
+<p>The model, view, and controller you create are all just files containing Ruby code. Each file has a certain structure and syntax based on foundation model, view, and controller classes defined in the Rails framework. The model, view, and controller classes you create will <em>inherit</em> behavior from parent classes that are part of the framework, so you will have less code to write yourself.</p>
+<p>Looking at the process in more detail, the controller can obtain data from any number of models. In most Rails applications, a model obtains data from a database, though some models obtain data from a remote connection to another server. For example, a User model might retrieve a user name and email address from a local database. With permission, a User model could also obtain a user’s recent tweets from Twitter or a user’s hometown from Facebook.</p>
+<p>A controller can have more than one <em>action</em>. For example, a User controller might have actions to display a list of users, or add or delete a user from a list. The <strong>config/routes.rb</strong> file analyzes the web request to determine which controller action is approriate. In the software architects’ terminology, each action is a <em>method</em> of the controller <em>class</em>. In practice, Rails developers try to limit controllers to seven standard actions: <code>index</code>, <code>show</code>, <code>new</code>, <code>edit</code>, <code>create</code>, <code>update</code> and <code>destroy</code> actions. A controller that offers these seven actions is said to be “RESTful” (a term that refers to <em>Representational State Transfer</em>, another software design abstraction).</p>
+<p>A view file combines Ruby code with <span class="caps">HTML</span> markup. Typically there will be a view file associated with each controller action. An index view might show a list of users. A “show” view might provide details of a user’s profile. View files look much like ordinary <span class="caps">HTML</span> files but typically contain data in the form of Ruby variables. Often you’ll see Ruby statements such as blocks that iterate through lists to create tables. Following the “separation of concerns” principle, it is considered good practice to limit Ruby code in view files to only displaying data; anything else belongs in the model.</p>
+<p>This conceptual overview will be easier to grasp when you actually see the code for a model, view, and controller.</p>
+<h3 id="naming-the-model-and-controller">Naming the Model and Controller</h3>
+<p>Much of the art of programming lies in choosing suitable names for things. I’ve chosen two names that should be obvious:</p>
+<ul>
+  <li>HomeController – the file will be <strong>app/controllers/home_controller.rb</strong></li>
+  <li>Owner – the file will be <strong>app/models/owner.rb</strong></li>
+</ul>
+<p>The Home controller will render our home page.</p>
+<p>The Owner model will be the source for data about the site owner.</p>
+<h3 id="routing">Routing</h3>
+<p>We’ll create the route before we implement the model and controller.</p>
+<p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
+<div class="highlight"><pre><span class="ss">RailsappsLearningRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
+<span class="k">end</span>
+</pre></div><p>Any request to the application root (<a href="http://localhost:3000/">http://localhost:3000/</a>) will be directed to the HomeController <code>index</code> action.</p>
+<p>Don’t be overly concerned about understanding the exact syntax of the code. It will be become familiar soon and you can always look up the details in the reference documentation, <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a>.</p>
+<p>You’ve changed a configuration file so you must restart your application server to set the new route. Use Control-C to stop the server and restart it:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Visit the page <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see an error message because we haven’t implemented the controller.</p>
+<h3 id="model">Model</h3>
+<p>Most Rails models obtain data from a database. When you use a database, you can use the <code>rails generate model</code> command to create a model that inherits from the ActiveRecord class and knows how to connect to a database.</p>
+<p>Our tutorial application doesn’t need a database (our other tutorials introduce Rails applications that use databases). Instead of inheriting from ActiveRecord, we create a Ruby class with methods that return the owner’s name, birthdate, and days remaining until his birthday. This simple class provides an easy introduction to Ruby code.</p>
+<p>Create a file <strong>app/models/owner.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Owner</span>
+
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="nb">name</span> <span class="o">=</span> <span class="s1">'Foobar Kadigan'</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">birthdate</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">countdown</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span>
+    <span class="n">birthday</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">birthdate</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">birthdate</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+    <span class="n">countdown</span> <span class="o">=</span> <span class="p">(</span><span class="n">birthday</span> <span class="o">-</span> <span class="n">today</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>This is your first close look at Ruby code. The oddest thing you’ll see is the owner’s name, “Foobar Kadigan.” Everything else will make sense with a bit of explanation.</p>
+<p>Keep in mind that we’re using a text file to create an abstraction that we can manipulate in the computer’s memory. Software architects call these abstractions <em>objects</em>. In Ruby, everything we create and manipulate is an <em>object</em>. To distinguish one object from another, we define it as a <em>class</em>, give it a <em>class name</em>, and program behavior in the form of <em>methods</em>.</p>
+<p>The first line <code>class Owner</code> defines the class and assigns a name. The last <code>end</code> line completes the class definition.</p>
+<p>We define three methods, starting with <code>def</code> (for “method definition”) and ending with <code>end</code>.</p>
+<ul>
+  <li><code>def name</code> … <code>end</code></li>
+  <li><code>def birthdate</code> … <code>end</code></li>
+  <li><code>def countdown</code> … <code>end</code></li>
+</ul>
+<p>Each method contains simple Ruby code that assigns data to a variable. Later, we’ll retreive the data for use in our view file by <em>instantiating</em> the class and <em>calling</em> a method. Ruby makes it easy for a method to <em>return</em> data when called; whatever variable was last assigned will be delivered when the method is called. Don’t be discouraged by the software architects’ terminology; the concepts are simple and we’ll soon see everything in action.</p>
+<p>Looking more closely at the Ruby code inside the method definitions, you’ll see Ruby uses the <code>=</code> sign to assign values to a variable. The variable is named on the left side of the equals sign; a value is assigned on the right side. We call the equals sign an <em>assignment operator</em>.</p>
+<p>We can assign any value to a variable, including a <em>string</em> (a series of characters that can be a word or name) such as “Foobar Kadigan.” Ruby recognizes a string when characters are enclosed in single or double quotes. Not surprisingly, a variable also can be assigned a number, either a whole number (an <em>integer</em>) or a decimal fraction (a <em>float</em>).</p>
+<p>More interestingly, any Ruby object can be assigned to a variable. That helps us “move around” any object very easily, giving us access to the object’s class methods anywhere we use the variable. We can create our own objects, as we have by creating the Owner class. Or we can use the library of objects that are supplied with Ruby. Ruby’s prefabricated objects are defined by the Ruby <span class="caps">API</span> (<em>application programming interface</em>); essentially the <span class="caps">API</span> is a catalog of prebuilt classes that are building blocks for any application. The Rails <span class="caps">API</span> gives us additional classes that are useful for web applications. Learning the syntax of Ruby code gets you started with Ruby programming; getting to know the <span class="caps">API</span> classes and when to use them leads to mastery of Ruby.</p>
+<p>The <code>Date</code> object is provided by the Ruby <span class="caps">API</span>. It is described in the <a href="http://apidock.com/ruby/Date">Ruby <span class="caps">API</span> reference documentation</a>. The <code>Date</code> object has a <code>Date.new</code> method which <em>instantiates</em> (creates) a new date when supplied with year, month, and day <em>parameters</em>. You can see this syntax when we assign <code>Date.new(1990, 9, 22)</code> to the <code>birthdate</code> variable.</p>
+<p>Looking at the <code>Owner.countdown</code> method, we see a <code>Date.now</code> method that creates an object that represents the current date. When the <code>Date.now</code> method is called, Ruby gets the current date from the computer’s system clock and assigns it to the <code>today</code> variable. We also create a <code>birthday</code> by creating a new date that combines today’s year with the month and day of the <code>birthdate</code>.</p>
+<p>If we were to look at the code for the <code>Date</code> object (it’s buried deep in the GitHub repository for the Ruby language), we’d see it is far more complex than the simple Owner class we’ve just defined. Among other behaviors, the <code>Date</code> class can perform complex calendar arithmetic. The variables <code>birthdate</code> and <code>today</code> are <em>instances</em> of the <code>Date</code> class. If we subtract <code>today</code> from <code>birthdate</code>, the <code>Date</code> class calculates the number of days remaining until the owner’s birthday. The result might be fractional so we use the utility method <code>to_i</code> to convert the result to a whole number (integer) before assigning it to the <code>countdown</code> variable.</p>
+<p>This is an example of the power of progamming in Ruby. Notice that I needed eleven paragraphs and over 600 words to explain nine short lines of code. We used only six Ruby abstractions (class definition, method definition, variable assignment, String class, Date class, and integer conversion) but they represent thousands of lines of code in the Ruby language implementation. With knowledge of Ruby syntax and the Ruby <span class="caps">API</span>, a few short lines of code in a text file gives us amazing ability.</p>
+<p>If you want more help with programming concepts and terminology, I recommend the book <a href="http://pine.fm/LearnToProgram/">Learn to Program</a> by Chris Pine.</p>
+<p>Let’s see how we can put this functionality to use on a web page.</p>
+<h3 id="view">View</h3>
+<p>The Owner model provides the data we want to see on the Home page.</p>
+<p>We’ll create the markup and layout in a View file and add variables that present the data.</p>
+<p>Create a file <strong>app/views/home/index.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;h3&gt;Home&lt;/h3&gt;</span>
+<span class="x">&lt;p&gt;Welcome to the home of </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;I was born on </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">birthdate</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Only </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">countdown</span> <span class="cp">%&gt;</span><span class="x"> days until my birthday!&lt;/p&gt;</span>
+</pre></div><p>Notice that we create a <strong>home/</strong> directory within the <strong>app/views/</strong> folder. This directory is for any views associated with the Home controller. We have only a single <code>index</code> view but if had more views, they’d go in the <strong>app/views/home/</strong> folder.</p>
+<p>By convention, if there’s only one default page in a directory, it’s named <strong>index.html</strong>. We name our View file <strong>index.html.erb</strong>, adding the <strong>.erb</strong> file extension so that Rails will use the <span class="caps">ERB</span> templating engine to interpret the markup.</p>
+<p>There are several syntaxes that can be used for a view file. In this tutorial, we’ll use the <span class="caps">ERB</span> syntax that is most commonly used by beginners. Some experienced developers prefer to add gems that provide the <a href="http://railsapps.github.io/rails-haml.html">Haml</a> and <a href="http://slim-lang.com/">Slim</a> templating engines. As you might guess, a View that uses the Haml templating syntax would be named <strong>index.html.haml</strong>.</p>
+<p>Our <span class="caps">HTML</span> markup is minimal, using only the <code>&lt;h3&gt;</code> and <code>&lt;p&gt;</code> tags. The only <span class="caps">ERB</span> markup we add are the <code>&lt;%= ... %&gt;</code> delimiters. This markup allows us to insert Ruby code which will be replaced by the result of evaluating the code. In other words, <code>&lt;%= @owner.name %&gt;</code> will appear on the page as Foobar Kadigan.</p>
+<p>You may have noticed that we refer to the Owner model with the variable <code>@owner</code>. It will be clear when we create the Home controller why we use this syntax (a variable name that begins with the @ character is called an <em>instance variable</em>).</p>
+<p>Obviously, if all we wanted to do was include the owner’s name on the page, it would be easier to simply write the text. The Rails implementation becomes useful if the name is retrieved from a database or created programmatically.</p>
+<p>We can better see the usefulness of the Owner model when we look at the use of <code>&lt;%= @owner.countdown %&gt;</code>. There is no way to display a calculation using only static <span class="caps">HTML</span>, so Rails gives us a way to display the birthday countdown calculation.</p>
+<p>If you’re a programmer, you might wonder why we only output the variable on the page. Since we can use <span class="caps">ERB</span> to embed any Ruby code, we could perform the calculation right on the page by embedding <code>&lt;%= (Date.new(today.year, @owner.birthdate.month, @owner.birthdate.day) - DateTime.now).to_i %&gt;</code>. If you’ve used JavaScript or <span class="caps">PHP</span>, you may have performed calculations like this, right on the page. Rails would allow us to do so, but the practice violates the “separation of concerns” principle that encourages us to perform complex calculations in the model and only display data in the view.</p>
+<p>Before we can display the Home page, we need to create the Home controller.</p>
+<h3 id="controller">Controller</h3>
+<p>The Home controller is the glue that binds the Owner model with the Home#Index view.</p>
+<p>Create a file <strong>app/controllers/home_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>We define the class and name it <code>class HomeController</code>, inheriting behavior from the ApplicationController class which is defined in the Rails <span class="caps">API</span>.</p>
+<p>We only need to define the <code>index</code> method. We create an <em>instance variable</em> named <code>@owner</code> and assign an instance of the Owner model. Any instance variables (variables named with the @ character) will be available in the corresponding view file.</p>
+<p>Controller actions render a template in the <strong>app/views</strong> directory corresponding to the name of the controller and action after executing code in the action. Here the index action of the HomeController renders the template <strong>app/views/home/index.html.erb</strong> after creating the <code>@owner</code> instance variable.</p>
+<p>The <code>index</code> method is deceptively simple. Hidden behavior inherited from the ApplicationController does all the work of rendering the view. We can make the hidden code explicit if we wish to. It would look something like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">render</span> <span class="s1">'home/index'</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Revealing the hidden code, we see that invoking the <code>index</code> method calls a <code>render</code> method supplied by the ApplicationController parent class. The <code>render</code> method searches in the <strong>app/views/home</strong> directory for a view file named <strong>index</strong> (the file extension <strong>.html.erb</strong> is assumed by default). The code underlying the <code>render</code> method is complex. Fortunately, all we need to do is define the method and instantiate the Owner model. Rails takes care of the rest.</p>
+<h3 id="test-the-application-2">Test the Application</h3>
+<p>We’ve created a model, view, and controller. Now let’s run the application.</p>
+<p>Enter the command:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see our new home page.</p>
+<p><img src="https://tutorials.railsapps.org/assets/railsapps-learning-rails-42-home.png" title="Home Page" alt="Home Page" /></p>
+<p>It’s a very simple web page but it uses Ruby to calculate the countdown to the birthday. And the underlying code conforms to the conventions and stucture of Rails.</p>
+<h3 id="git-3">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"dynamic home page"</span>
+<span class="gp">$</span> git push origin master
+</pre></div><p>Now let’s take a look at troubleshooting.</p>
+</section>
+<section class='chapter' id='troubleshooting'><h2>Troubleshooting</h2>
+<p>In the last chapter, we built a dynamic home page and learned about the model–view–controller architecture of Rails. There was a lot to learn, but the code was simple, and I hope it worked the first time you tried it.</p>
+<p>Before we do any more work on our tutorial application, we need to learn about troubleshooting and debugging. As a software developer, you’ll spend a lot of time with code that doesn’t work. You’ll need tools and techniques to diagnose problems.</p>
+<h3 id="interactive-ruby-shell">Interactive Ruby Shell</h3>
+<p>There will be times when you want to try a snippet of Ruby code just to see if it works. Your tool will be <span class="caps">IRB</span>, the Interactive Ruby Shell.</p>
+<p><span class="caps">IRB</span> is a Ruby interpreter that runs from the command line. It executes any Ruby code and provides an immediate response, allowing you to experiment in real-time.</p>
+<p>Let’s try it.</p>
+<div class="highlight"><pre><span class="gp">$</span> irb
+<span class="go">2.0.0p0 :001 &gt;</span>
+</pre></div><p>The command <code>irb</code> launches the program and displays a prompt that show your Ruby version, a line number, and an arrow. If you enter a valid Ruby expression, the interpreter will display the result of evaluting the expression.</p>
+<p>Try simple arithmetic:</p>
+<div class="highlight"><pre><span class="go">2.0.0p0 :001 &gt; n = 2</span>
+<span class="go"> =&gt; 2</span>
+<span class="go">2.0.0p0 :002 &gt; n + 2</span>
+<span class="go"> =&gt; 4</span>
+</pre></div><p>Wow! You are using your computer for simple math. Maybe you can delete the calculator app from your phone.</p>
+<p><span class="caps">IRB</span> will evaluate any Ruby expression and helps you quickly determine if syntax and logic is correct.</p>
+<p>It can be very frustrating to find you are stuck inside <span class="caps">IRB</span>. Unlike most shell commands, you can’t quit with Control-C. Enter Control-D or type <code>exit</code> to quit <span class="caps">IRB</span>:</p>
+<div class="highlight"><pre><span class="gp">$</span> irb
+<span class="go">2.0.0p0 :001 &gt; exit</span>
+</pre></div><p>Here’s a fun way to learn about <span class="caps">IRB</span>:</p>
+<ul>
+  <li><a href="http://mislav.uniqpath.com/poignant-guide/book/expansion-pak-1.html" title="with a Basic Introduction to IRB">Why’s (Poignant) Guide to Ruby</a></li>
+</ul>
+<p>Here’s a boring way to learn about <span class="caps">IRB</span>:</p>
+<ul>
+  <li><a href="http://ruby-doc.org/docs/ProgrammingRuby/html/irb.html">The Pragmatic Programmer’s Guide</a></li>
+</ul>
+<h3 id="rails-console">Rails Console</h3>
+<p><span class="caps">IRB</span> only evaluates expressions that are defined in the Ruby <span class="caps">API</span>. <span class="caps">IRB</span> doesn’t know Rails.</p>
+<p>It’d be great to have a tool like <span class="caps">IRB</span> that evaluates any expression defined in the Rails <span class="caps">API</span>. The tool exists; it’s called the Rails console. It is particularly useful because it loads your entire Rails application. Your application will be running as if the application was waiting to respond to a web request. Then you can expose behavior of any pieces of the web application.</p>
+<div class="highlight"><pre><span class="gp">$</span> rails console
+<span class="go">Loading development environment (Rails 4.0.0.rc1)</span>
+<span class="go">2.0.0p0 :001 &gt;</span>
+</pre></div><p>The Rails console behaves like <span class="caps">IRB</span> but loads your Rails development environment. The prompt shows it is ready to evaluate an expression.</p>
+<p>Let’s use the Rails console to examine our Owner model:</p>
+<div class="highlight"><pre><span class="go">2.0.0p0 :001 &gt; myboss = Owner.new</span>
+<span class="go"> =&gt; #&lt;Owner:0x007fe885163aa8&gt;</span>
+</pre></div><p>We’ve created a variable named <code>myboss</code> and created a new instance of the Owner class. The Rails console responds by displaying the unique identifier it uses to track the object. The identifier is not particularly useful, except to show that something was created.</p>
+<p>If you’re unsure about the difference between an <em>instance</em> and a <em>class definition</em>, we’ve just seen that we can make one or more instances of an object by calling the <code>Owner.new</code> method. When we start the Rails console, the <code>Owner</code> class definition is loaded into the computer’s working memory (our development environment) from the class definition file on disk. Then we can use the <code>Owner.new</code> method to make one or more instances of the <code>Owner</code> class.</p>
+<p>Let’s assign the name of our boss to a variable called <code>name</code>:</p>
+<div class="highlight"><pre><span class="go">2.0.0p0 :002 &gt; name = myboss.name</span>
+<span class="go"> =&gt; "Foobar Kadigan"</span>
+</pre></div><p>Our variable <code>myboss</code> is an instance of an <code>Owner</code> class so it responds to the method  <code>Owner.name</code> by returning the owner’s name.</p>
+<p>The boss likes to be treated with respect so we’ll perform some <em>string manipulation</em>:</p>
+<div class="highlight"><pre><span class="go">2.0.0p0 :003 &gt; name = 'Mr. ' + name</span>
+<span class="go"> =&gt; "Mr. Foobar Kadigan"</span>
+</pre></div><p>We’re done for now. When we quit the Rails console or shut down the computer the <code>Owner</code> class definition remains stored on disk but the instances disappear. The bits that were organized to create the variable <code>name</code> will evaporate (or whatever happens to unused bits).</p>
+<p>Enter Control-D or type <code>exit</code> to quit the Rails console.</p>
+<p>You won’t use the Rails console often but it is important to know it is available.</p>
+<h3 id="rails-logger">Rails Logger</h3>
+<p>As you know, a Rails application sends output to the browser that makes a web request. On every request, it also sends diagnostic output to the <em>server log file</em>. Depending on whether the application is running in the development environment or in production, the log file is here:</p>
+<ul>
+  <li><strong>log/development.log</strong></li>
+  <li><strong>log/production.log</strong></li>
+</ul>
+<p>In development, everything written to the log file appears in the console window after you run the <code>rails server</code> command. Scrolling the console window is a good way to see diagnostics for every request.</p>
+<p>Here’s what you see when you visit the application home page:</p>
+<div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
+<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">  Rendered home/index.html.erb within layouts/application (48.8ms)</span>
+<span class="go">Completed 200 OK in 233ms (Views: 211.5ms | ActiveRecord: 0.0ms)</span>
+</pre></div><p>Here’s the best part. You can add your own messages to the log output by using the Rails logger. Let’s try it out.</p>
+<p>Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: Owner name is '</span> <span class="o">+</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Visit the home page again and you’ll see this in the console output:</p>
+<div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
+<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">DEBUG: entering index method</span>
+<span class="go">DEBUG: Owner name is Foobar Kadigan</span>
+<span class="go">  Rendered home/index.html.erb within layouts/application (0.2ms)</span>
+<span class="go">Completed 200 OK in 8ms (Views: 4.6ms | ActiveRecord: 0.0ms)</span>
+</pre></div><p>If you really needed to do so, you could add a logger statement at every step in the application. You could see how the application behaves, step by step. And you could “print” the value of every variable at every step. You’ll never need diagnostics at this level of detail in Rails, but the logger is extremely useful when you are trying to understand unexpected behavior.</p>
+<p>Let’s add logger statements to the <code>Owner</code> model. Modify the file <strong>app/models/owner.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Owner</span>
+
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="nb">name</span> <span class="o">=</span> <span class="s2">"Foobar Kadigan"</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">birthdate</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">countdown</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering Owner countdown method'</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span>
+    <span class="n">birthday</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">birthdate</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">birthdate</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+    <span class="n">countdown</span> <span class="o">=</span> <span class="p">(</span><span class="n">birthday</span> <span class="o">-</span> <span class="n">today</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>We added the <code>Rails.logger.debug</code> statement to the <code>Owner.countdown</code> method.</p>
+<p>Visit the home page and here’s what you’ll see in the console output:</p>
+<div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
+<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">DEBUG: entering index method</span>
+<span class="go">DEBUG: Owner name is Foobar Kadigan</span>
+<span class="go">DEBUG: entering Owner countdown method</span>
+<span class="go">  Rendered home/index.html.erb within layouts/application (0.3ms)</span>
+<span class="go">Completed 200 OK in 7ms (Views: 4.2ms | ActiveRecord: 0.0ms)</span>
+</pre></div><p>You’ll often need to “get inside” the model or controller to see what’s happening. The Rails logger is the best tool for the job.</p>
+<p>Here are some tricks for the Rails logger.</p>
+<p>In a controller, you can use the method <code>logger</code> on its own. In a model, you have to write <code>Rails.logger</code> (both class and method).</p>
+<p>You can use any of the methods <code>logger.debug</code>, <code>logger.info</code>, <code>logger.warn</code>, <code>logger.error</code>, or <code>logger.fatal</code> to write log messages. By default, you’ll see any of these messages in the development log. Log messages written with the <code>logger.debug</code> method will not be recorded in a production log file.</p>
+<p>If you want your log messages to stand out, you can add formating code for color:</p>
+<div class="highlight"><pre><span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[1;34;40m[DEBUG]</span><span class="se">\033</span><span class="s2">[0m "</span> <span class="o">+</span> <span class="s1">'will appear in bold blue'</span>
+</pre></div><p>For more about the Rails logger, see the <a href="http://guides.rubyonrails.org/debugging_rails_applications.html">RailsGuide: Debugging Rails Applications</a>.</p>
+<h3 id="the-stack-trace">The Stack Trace</h3>
+<p>The Rails logger is extremely useful if you want to insert messages to show program flow or display variables. But there will be times when program flow halts and the console displays a <em>stack trace</em>.</p>
+<p>Let’s deliberately create an error condition and see an error page and stack trace.</p>
+<p>Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: Owner name is '</span> <span class="o">+</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span>
+    <span class="no">DISASTER</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Visit the home page and you’ll see an error page:</p>
+<p><img src="https://tutorials.railsapps.org/assets/railsapps-learning-rails-43-error.png" title="Error Page" alt="Error Page" /></p>
+<p>You’ll see this error page because we’ve installed the <a href="https://github.com/charliesome/better_errors">better_errors</a> gem. Without the better_errors gem, you’d see the default Rails error page which is quite similar.</p>
+<p>In the console log, you’ll many lines from a stack trace that shows everything that happens before Rails encounters the error.</p>
+<div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
+<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">DEBUG: entering index method</span>
+<span class="go">DEBUG: Owner name is Foobar Kadigan</span>
+<span class="go">Completed 500 Internal Server Error in 10ms</span>
+
+<span class="go">NameError - uninitialized constant HomeController::DISASTER:</span>
+<span class="go">  app/controllers/home_controller.rb:7:in `index'</span>
+<span class="go">  .</span>
+<span class="go">  .</span>
+<span class="go">  .</span>
+</pre></div><p>To save space, I’m only showing the first line of the stack trace. I’ve eliminated about sixty lines from the stack trace.</p>
+<p>Don’t feel bad if your reaction to a stack trace is an immediate, “<span class="caps">TMI</span>!” Indeed, it is usually Too Much Information. There are times when it pays to carefully read through the stack trace line by line, but most often, only the first line of the stack trace is important.</p>
+<p>In this case, both the error page and the first line of the stack trace show the application failed (“barfed”) when it encountered an “uninitialized constant” at line 7 of the <strong>app/controllers/home_controller.rb</strong> file in the <code>index</code> method. It’s easy to find line 7 in the file and see that is exactly where we added a string that Rails doesn’t understand.</p>
+<p>The point of this exercise is to encourage you to read the first line of the stack trace and use it to diagnose the problem. I’m always surprised how many developers ignore the stack trace, probably because it looks intimidating.</p>
+<h3 id="raising-an-exception">Raising an Exception</h3>
+<p>As you just saw, you can purposefully break your application by adding characters that Rails doesn’t understand. However, there is a better way to force your program to halt, called <em>raising an exception</em>.</p>
+<p>Let’s try it. Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: Owner name is '</span> <span class="o">+</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">raise</span> <span class="s1">'Deliberate Failure'</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>You can throw an error by using the <code>raise</code> keyword from the Ruby <span class="caps">API</span>. You can provide any error message you’d like in quotes following <code>raise</code>.</p>
+<p>Here’s the console log after you try to visit the home page:</p>
+<div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
+<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">DEBUG: entering index method</span>
+<span class="go">DEBUG: Owner name is Foobar Kadigan</span>
+<span class="go">Completed 500 Internal Server Error in 22ms</span>
+
+<span class="go">RuntimeError - Deliberate Failure:</span>
+<span class="go">  app/controllers/home_controller.rb:7:in `index'</span>
+<span class="go">  .</span>
+<span class="go">  .</span>
+<span class="go">  .</span>
+</pre></div><p>Before we continue, let’s remove the deliberate failure. Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: Owner name is '</span> <span class="o">+</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Rails and the Ruby <span class="caps">API</span> provide a rich library of classes and methods to raise and handle exceptions. For example, you might want to display an error if Foobar Kadigan’s birthdate is in the future. Rails gives you various exception handlers to display errors in production so users will see a helpful web page explaining the error.</p>
+<h3 id="investigating-the-request-response-cycle">Investigating the Request Response Cycle</h3>
+<p>We’ll conclude our introduction to troubleshooting by looking at the tools we have available for investigating the entire request-response cycle.</p>
+<p>Everything that happens in a web application takes place within the program flow of the request-response cycle. If a web application is not responding to a request, it sits idle. Let’s take a look at the request-response cycle.</p>
+<p><img src="https://tutorials.railsapps.org/assets/mvc-flow.png" title="Model–View–Controller in Rails" alt="Model–View–Controller in Rails" /></p>
+<h4 id="the-browser-side">The Browser Side</h4>
+<p>Developers use various web browsers during development. Google Chrome is the most popular but developers also use Mozilla Firefox and Apple Safari. I’ll provide instructions for Chrome so, even if you prefer one of the others, try this in Chrome.</p>
+<p>In Chrome on Mac OS X, press Command-Option-I to open the <em>Developer Tools View</em> at the bottom of the browser window. Alternatively, you can find the menu item under View/Developer/Developer Tools. The Developer Tools View is your primary diagnostic tool for front-end (browser-based) development, including <span class="caps">CSS</span> and JavaScript.</p>
+<p>We’ll use the diagnostic tools built into your web browser to see the actual data sent as a request and received as a response.</p>
+<p>Select the Network tab in the Developer Tools View.</p>
+<p>Begin the request-response cycle by visiting the home page at <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
+<p>In the Developer Tools View, you’ll see a list of files received by the browser from the web server. There are three types of files: <span class="caps">HTML</span> (labelled “localhost”), <span class="caps">CSS</span>, and JavaScript. These are the files that the browser evaulates to display a web page.</p>
+<p>Click the “localhost” file icon. Then click the tab “Headers.” The diagnostic window shows the entire request sent to the server and the entire response received by the browser.</p>
+<p>The request is composed of:</p>
+<ul>
+  <li>request <span class="caps">URL</span> (http://localhost:3000/)</li>
+  <li>request method (<span class="caps">GET</span>)</li>
+  <li>request headers (including cookies and User Agent identifer)</li>
+</ul>
+<p>The response is composed of</p>
+<ul>
+  <li>status code (200 OK or 304 Not Modified)</li>
+  <li>response headers (including date/time and server identifier)</li>
+  <li><span class="caps">HTML</span></li>
+</ul>
+<p>You can see the <span class="caps">HTML</span> sent to the browser by clicking the Preview or Response tabs in the diagnostic view.</p>
+<p>Here’s the point of the exercise: The browser’s diagnostic view shows all the data exchanged between the browser and server. You’re looking at everything that passes through the plumbing.</p>
+<h4 id="the-server-side">The Server Side</h4>
+<p>The browser’s diagnostic view doesn’t show you want happens on the server. For that, go to the server logs or the console window.</p>
+<div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
+<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">DEBUG: entering index method</span>
+<span class="go">DEBUG: Owner name is Foobar Kadigan</span>
+<span class="go">DEBUG: entering Owner countdown method</span>
+<span class="go">  Rendered home/index.html.erb within layouts/application (0.3ms)</span>
+<span class="go">Completed 200 OK in 5ms (Views: 4.2ms | ActiveRecord: 0.0ms)</span>
+<span class="go">Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at ...</span>
+<span class="go">Started GET "/assets/application.js?body=1" for 127.0.0.1 at ...</span>
+<span class="go">Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at ...</span>
+<span class="go">Started GET "/assets/application.css?body=1" for 127.0.0.1 at ...</span>
+<span class="go">Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at ...</span>
+</pre></div><p>Notice how the diagnostic messages in the console window match the headers in the browser diagnostic view. The broswer’s “Request Method:<span class="caps">GET</span>” matches the server’s “Started <span class="caps">GET</span>.” The broswer’s “Request <span class="caps">URL</span>:http://localhost:3000/” matches the server’s “‘/’ for 127.0.0.1” (localhost is at IP address 127.0.0.1). The browser’s “Status Code: 200” matches the server’s “Completed 200 OK” (you might have to clear the browser’s cache if the browser is showing “304 Not Modified”).</p>
+<p>Of course the console log shows what happens on the server side. “Processing by HomeController#index” shows the program flow entering the controller. Our debug statements show we enter the index method and reveal the value of the Owner name. The next debug statement reveals the flow has passed to the Owner model. A diagnostic message shows the controller has rendered the <strong>home/index.html.erb</strong> view file. Finally, the “Completed 200 OK” message indicates the response has been sent to the browser, followed by a sequence of <span class="caps">CSS</span> and JavaScript files.</p>
+<p>It’s wonky but we’re able to trace the entire request-response cycle, including the server’s traverse of the model-view-controller architecture.</p>
+<h3 id="git-4">Git</h3>
+<p>There’s no need to save any of the changes we made for troubleshooting.</p>
+<p>You could go to each file and carefully remove the debugging code you added. But there’s an easier way. Use Git to revert your project to the most recent commit.</p>
+<div class="highlight"><pre><span class="gp">$</span> git status
+<span class="gp">#</span> Changes not staged <span class="k">for </span>commit:
+<span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git add &lt;file&gt;..."</span> to update what will be committed<span class="o">)</span>
+<span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git checkout -- &lt;file&gt;..."</span> to discard changes in working directory<span class="o">)</span>
+<span class="gp">#</span>
+<span class="gp">#</span> modified:   app/controllers/home_controller.rb
+<span class="gp">#</span> modified:   app/models/owner.rb
+<span class="gp">#</span>
+<span class="go">no changes added to commit (use "git add" and/or "git commit -a")</span>
+<span class="gp">$</span> git reset --hard HEAD
+<span class="gp">$</span> git status
+<span class="go">nothing to commit (working directory clean)</span>
+</pre></div><p>The Git command <code>git reset --hard HEAD</code> discards any changes you’ve made since the most recent commit.</p>
+</section>
+<section class='chapter' id='layout-and-views'><h2>Layout and Views</h2>
+<p>In previous chapters we created a dynamic home page and learned techniques for troubleshooting.</p>
+<p>In this chapter we’ll look closely at view files, particularly the application layout, so we can organize the design of our web pages. In the next chapter we’ll learn how to add <span class="caps">CSS</span> stylesheets to complete the graphic design of our web pages.</p>
+<h3 id="application-layout">Application Layout</h3>
+<p>We’ve already created the view file for our home page.</p>
+<p>The file <strong>app/views/home/index.html.erb</strong> looks like this:</p>
+<div class="highlight"><pre><span class="x">&lt;h3&gt;Home&lt;/h3&gt;</span>
+<span class="x">&lt;p&gt;Welcome to the home of </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;I was born on </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">birthdate</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Only </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">countdown</span> <span class="cp">%&gt;</span><span class="x"> days until my birthday!&lt;/p&gt;</span>
+</pre></div><p>The first line in the file contains an <span class="caps">HTML</span> heading tag, <code>&lt;h3&gt;</code>, with headline text, “Home.”</p>
+<p>When you used the browser diagnostic view to see the <span class="caps">HTML</span> file received by the server, you saw this:</p>
+<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>RailsappsLearningRails<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">href=</span><span class="s">"/assets/application.css?body=1"</span> <span class="na">media=</span><span class="s">"all"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/jquery.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/jquery_ujs.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/turbolinks.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/application.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">"authenticity_token"</span> <span class="na">name=</span><span class="s">"csrf-param"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">"NRPrgfuj5GAyylNpNxQaMHDypcOsu6dmh5DT1yET6hQ="</span> <span class="na">name=</span><span class="s">"csrf-token"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;h3&gt;</span>Home<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;p&gt;</span>Welcome to the home of Foobar Kadigan.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>I was born on 1990-09-22.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>Only 126 days until my birthday!<span class="nt">&lt;/p&gt;</span>
+
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div><p>The <span class="caps">HTML</span> file is more than twice the size of the view file. Where did all the extra <span class="caps">HTML</span> come from?</p>
+<p>If you’ve built websites before, you’ll recognize the <span class="caps">HTML</span> file conforms to the HTML5 specification, with a <code>DOCTYPE</code>, <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code> tags, and miscellaneous tags in the <span class="caps">HEAD</span> section, including a title and various <span class="caps">CSS</span> and JavaScript assets.</p>
+<p>The additional tags come from the default application layout file.</p>
+<p>Open the file <strong>app/views/layouts/application.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">  &lt;title&gt;RailsappsLearningRails&lt;/title&gt;</span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div><p>You’ll see that Rails has combined the Home#Index view with the default application layout file.</p>
+<p>Static pages delivered from the <strong>public</strong> folder do not use the default application layout. But every page generated by the model-view-controller architecture in the <strong>app/</strong> folder incorporates the default application layout, unless you specify otherwise.</p>
+<p>The default application layout is where you put <span class="caps">HTML</span> that you want to include on every page of your website.</p>
+<p>Remember when we looked at the hidden code in the controller that renders a view? The controller uses the <code>render</code> method to combine the view file with the application layout:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">render</span> <span class="s1">'home/index'</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Here the <code>render</code> method combines the <strong>app/views/home/index.html.erb</strong> view file with the <strong>app/views/layouts/application.html.erb</strong>: application layout.</p>
+<p>You could tell the controller to render the view without any application layout:</p>
+<div class="highlight"><pre><span class="n">render</span> <span class="s1">'home/index'</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+</pre></div><p>Or you could specify an alternative layout file, for example <strong>app/views/layouts/special.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="n">render</span> <span class="s1">'home/index'</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="s1">'special'</span>
+</pre></div><p>An alternative layout can be useful for special categories of pages, such as administrative pages or landing pages.</p>
+<p>The reference <a href="http://guides.rubyonrails.org/layouts_and_rendering.html">RailsGuides: Layouts and Rendering in Rails</a> explains more about using alternative layouts.</p>
+<h3 id="yield">Yield</h3>
+<p>How does the <code>render</code> method insert the view file in the application layout?</p>
+<p>Notice that the default application layout contains the Ruby keyword <code>yield</code>.</p>
+<p>The <code>yield</code> keyword is replaced with a view file that is specific to the controller and action, in this case, the <strong>app/views/home/index.html.erb</strong> view file.</p>
+<p>The content from the view is inserted where you place the <code>yield</code> keyword.</p>
+<p>Rails provides other ways to insert content into a layout file. For example, the <code>content_for</code> method is helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content.</p>
+<p>For example, you could create an application layout that includes a sidebar. This is just an example, so don’t add it to the application you are building:</p>
+<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">  &lt;title&gt;RailsappsLearningRails&lt;/title&gt;</span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">  &lt;div class="main"&gt;</span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  &lt;/div&gt;</span>
+<span class="x">  &lt;div class="sidebar"&gt;</span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sidebar</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  &lt;/div&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div><p>This view file provides both the main content and a sidebar:</p>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:sidebar</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  &lt;h3&gt;Contact Info&lt;/h3&gt;</span>
+<span class="x">  &lt;p&gt;Email: me@example.com&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;h3&gt;Main&lt;/h3&gt;</span>
+<span class="x">&lt;p&gt;Welcome!&lt;/p&gt;</span>
+</pre></div><p>The reference <a href="http://guides.rubyonrails.org/layouts_and_rendering.html">RailsGuides: Layouts and Rendering in Rails</a> explains more about using <code>yield</code> and <code>content_for</code>.</p>
+<h3 id="basic-boilerplate">Basic Boilerplate</h3>
+<p>What is in the default application layout?</p>
+<p>We’ve seen the standard <span class="caps">HTML</span> <code>DOCTYPE</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags.</p>
+<p>We’ve seen the <code>yield</code> keyword.</p>
+<p>Take a look and you’ll see the <code>&lt;%= ... %&gt;</code> delimiters surround Rails helper methods:</p>
+<ul>
+  <li><code>stylesheet_link_tag</code> – generates an <span class="caps">HTML</span> <code>&lt;link&gt;</code> tag for <span class="caps">CSS</span></li>
+  <li><code>javascript_include_tag</code> – generates an <span class="caps">HTML</span> <code>&lt;script&gt;</code> tag for JavaScript</li>
+  <li><code>csrf_meta_tags</code> – generates <code>&lt;meta&gt;</code> tags that prevent <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">cross-site request forgery</a></li>
+</ul>
+<p>Later in this chapter, we’ll take a closer look at the tags that add <span class="caps">CSS</span> and JavaScript.</p>
+<h3 id="adding-boilerplate">Adding Boilerplate</h3>
+<p>Webmasters who build static websites are accustomed to setting up web pages with “boilerplate,” or basic templates for a standard web page. The well-known <a href="http://html5boilerplate.com/">HTML5 Boilerplate</a> project has been recommending “best practice” tweaks to web pages since 2010. Very few of the HTML5 Boilerplate recommendations are relevant for Rails developers, as Rails already provides almost everything required. There is only one boilerplate item you should add: the <code>viewport</code> metatag.</p>
+<p>If you want to learn more, the article <a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> looks at the recommendations.</p>
+<h4 id="viewport">Viewport</h4>
+<p>The <code>viewport</code> metatag improves the presentation of web pages on mobile devices. Setting a viewport tells the browser how content should fit on the device’s screen. Apple’s developer documentation on <a href="http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html">Configuring the Viewport</a> provides details.</p>
+<p>The <code>viewport</code> metatag looks like this:</p>
+<div class="highlight"><pre><span class="x">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span>
+</pre></div><h4 id="title-and-description">Title and Description</h4>
+<p>If you want to maximize traffic to your website, you should make your web pages search-engine friendly. That means adding <em>title</em> and <em>description</em> metatags. Google uses contents of the title tag to display titles in search results. And it will sometimes use the content of a description metatag in search results snippets. See Google’s explanation of how it uses <a href="http://support.google.com/webmasters/bin/answer.py?hl=en&amp;answer=35624">Site Title and Description</a>. Good titles and descriptions improve clickthrough from Google searches. Later in the tutorial, we’ll see how to use a <code>content_for</code> statement to set a title and description for a page.</p>
+<p>Adding title and description looks like this:</p>
+<div class="highlight"><pre><span class="x">&lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">&lt;meta name="description" content="</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
+</pre></div><p>The code is complex if you haven’t see Ruby before. It uses the Ruby <a href="http://ruby.about.com/od/beginningruby/a/The-Ternary-Or-Conditional-Operator.htm">ternary operator</a> which maximizes compactness at the price of introducing obscurity. It’s a fancy conditional statement that says, “if <code>content_for?(:title)</code> is present in the view file, use <code>yield(:title)</code> to include it, otherwise just display ‘Learning Rails’.”</p>
+<p>We’ll add the <code>viewport</code> metatag, title, and description to the application layout at the end of this chapter.</p>
+<h3 id="asset-pipeline">Asset Pipeline</h3>
+<p>When building static websites, webmasters add JavaScript to a page using the <code>&lt;script&gt;</code> tag. For every JavaScript file, they add an additional <code>&lt;script&gt;</code> tag, so a page <span class="caps">HEAD</span> section looks like this:</p>
+<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">  &lt;title&gt;Page that uses multiple JavaScript files&lt;/title&gt;</span>
+<span class="x">  &lt;script src="jquery.js" type="text/javascript"&gt;&lt;/script&gt;</span>
+<span class="x">  &lt;script src="jquery.plugin.js" type="text/javascript"&gt;&lt;/script&gt;</span>
+<span class="x">  &lt;script src="custom.js" type="text/javascript"&gt;&lt;/script&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+</pre></div><p>The same is true for <span class="caps">CSS</span> files. When you organize stylesheets in multiple files, you add a <code>&lt;link&gt;</code> tag for each one.</p>
+<p>There’s a drawback to using multiple files. Requesting files from the server is a time-consuming operation for a web browser, so every extra file request slows down the browser.</p>
+<p>Rails improves website performance by providing the <em>asset pipeline</em> utility. The Rails asset pipeline improves website performance by concatenating multiple JavaScript or <span class="caps">CSS</span> files into a single script, allowing the developer to organize code in separate files, but eliminating the performance penalty of multiple <code>&lt;script&gt;</code> or <code>&lt;link&gt;</code> tags. The Rails asset pipeline also compresses JavaScript and <span class="caps">CSS</span> files for faster page loads.</p>
+<p>The asset pipeline is an example of a Rails convention that helps organize complex websites. It is not needed for a simple website that uses a few JavaScript or <span class="caps">CSS</span> files. But it is beneficial on bigger projects.</p>
+<p>You’ll use the <strong>app/assets/</strong> directory to fill the asset pipeline. The directory contains two folders:</p>
+<ul>
+  <li><strong>app/assets/javascripts/</strong></li>
+  <li><strong>app/assets/stylesheets/</strong></li>
+</ul>
+<p>For now, just note that any JavaScript and <span class="caps">CSS</span> files you add to these folders will be automatically added to every page. We’ve already seen the tags that perform this service:</p>
+<div class="highlight"><pre><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><p>Later in the tutorial, we’ll use the asset pipeline to add <span class="caps">CSS</span> and JavaScript to our application.</p>
+<h3 id="navigation-links">Navigation Links</h3>
+<p>Every website needs navigation links. For our application, we’ll want links for Home, About, and Contact.</p>
+<p>You can add navigation links directly to your application layout but many Rails developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
+<p>A <em>partial</em> is similar to any view file, except the filename begins with an underscore character. Save the file in any view folder and use the <code>render</code> keyword to insert the partial. Here’s an example of using the <code>render</code> keyword with a hypothetical file named <strong>app/views/layouts/_footer.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/footer'</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><p>Notice that you specify the folder within the <strong>app/views/</strong> directory with a truncated version of the filename. The <code>render</code> method doesn’t want the <code>_</code> underscore character or the <code>.html.erb</code> file extension. That can be confusing; it makes sense when you remember that Rails likes “convention over configuration” and economizes on extra characters when possible.</p>
+<p>There’s no rule against using raw <span class="caps">HTML</span> in our view files, so we could create a partial for navigation links that uses the <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag like this:</p>
+<div class="highlight"><pre><span class="x">&lt;ul class="nav"&gt;</span>
+<span class="x">  &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">  &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">  &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">&lt;/ul&gt;</span>
+</pre></div><p>Rails gives us another option, however. We can use the Rails <code>link_to</code> view helper instead of the <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag. The Rails <code>link_to</code> helper eliminates the crufty <code>&lt;&gt;</code> angle brackets and the unnecessary <code>href=""</code>. More importantly, it adds a layer of abstraction, using the routing configuration file to form links. This is advantageous if we make changes to the location of the link destinations. Earlier, when we created a static “About” page, we first set the <strong>config/routes.rb</strong> file with a route to the “About” page: <code>root :to =&gt; redirect('/about.html')</code>. Later we removed the static “About” page and set the <strong>config/routes.rb</strong> file with a route to the dynamic home page: <code>root :to =&gt; 'home#index'</code>. If we used the raw <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag, we’d have to change the raw <span class="caps">HTML</span> everywhere we had a link to the home page. Using the Rails <code>link_to</code> helper, we name a route and make any changes once, in the <strong>config/routes.rb</strong> file.</p>
+<p>When you use the Rails <code>link_to</code> helper, you’ll avoid the problem of link maintenance that webmasters face on static websites. Some webmasters like to use <em>absolute</em> URLs, specifying a host name in the link, for example <code>http://www.example.com/about.html</code>. Absolute URLs are a headache when moving the site, for example from <code>staging.example.com</code> to <code>www.example.com</code>. The problem is avoided by using <em>relative</em> URLs,  such as <code>/about.html</code>, <code>about.html</code>, or even <code>../about.html</code>. But relative URLs are fragile, and moving files or directories often results in overlooked and broken links. Instead, with the Rails <code>link_to</code> helper, you always get the destination location specified in the <strong>config/routes.rb</strong> file.</p>
+<p>Using the <code>link_to</code> helper, create a file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;ul class="nav"&gt;</span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Home'</span><span class="p">,</span> <span class="n">root_path</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'About'</span><span class="p">,</span> <span class="n">page_path</span><span class="p">(</span><span class="s1">'about'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Contact'</span><span class="p">,</span> <span class="n">page_path</span><span class="p">(</span><span class="s1">'contact'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;/ul&gt;</span>
+</pre></div><p>Here the <code>link_to</code> helper takes two parameters. The first parameter is the string displayed as the anchor text (<code>'Home'</code>). The second parameter is the route. In this case, the route <code>root_path</code> has been set in the <strong>config/routes.rb</strong> file. The two other routes, <code>page_path('about')</code> and <code>page_path('contact')</code>, are not set. We’ll add them to the <strong>config/routes.rb</strong> file later.</p>
+<p>We can add the navigation links partial to our application layout with the expression:</p>
+<div class="highlight"><pre><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/navigation'</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><p>We’ll add this to the application layout at the end of this chapter.</p>
+<h3 id="flash-messages">Flash Messages</h3>
+<p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a <em>flash message</em>. The name comes from the term “flash memory” and should not be confused with the “Adobe Flash” web development platform that was once popular for animated websites.</p>
+<p>Here’s a flash message you might see after logging it to an application:</p>
+<p><img src="https://tutorials.railsapps.org/assets/railsapps-learning-rails-44-flash.png" title="Flash Message in Rails" alt="Flash Message in Rails" /></p>
+<p>It is called a “flash message” because it appears on a page temporarily. When the page is reloaded or another page is visited, the message disappears.</p>
+<p>Flash messages are created in a controller. For example, we could add messages to the home page by modifying the HomeController like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s1">'Welcome!'</span>
+    <span class="n">flash</span><span class="o">[</span><span class="ss">:alert</span><span class="o">]</span> <span class="o">=</span> <span class="s1">'My birthday is soon.'</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Rails provides the <code>flash</code> object so that messages can be created in the controller and displayed on the rendered web page. The <code>flash</code> object is a Ruby <em>hash</em> (also known as an <em>associative array</em>). A hash is a data structure that associates a key to some value. You retrieve the value based upon its key. This construct is called a <em>dictionary</em> in other languages, which is appropriate because you use the key to “look up” a value, as you would look up a definition for a word in a dictionary.</p>
+<p>In this example, we create a flash message by associating the key <code>flash[:notice]</code> with the string <code>'Welcome!'</code>. We can assign other messages, such as <code>flash[:alert]</code> or even <code>flash[:warning]</code>. In practice, Rails uses only <code>:notice</code> and <code>:alert</code> as flash message keys so it is wise to stick with just these.</p>
+<p>Hash is a type of <em>collection</em>. In Ruby, all collections support an <em>iterator</em> method named <code>each</code>. Iterators return all the elements of a collection, one after the other. The iterator returns each key-value pair, item by item, to a <em>block</em>. In Ruby, a block is delimited by <code>do</code> and <code>end</code> or <code>{ }</code> braces. You can add any code to a block to process each item from the collection.</p>
+<p>Here is simple Ruby code to iterate through a <code>flash</code> object, outputting each flash message in an <span class="caps">HTML</span> <code>div</code> tag and applying a <span class="caps">CSS</span> class for styling:</p>
+<div class="highlight"><pre><span class="n">flash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="s1">'&lt;div class="'</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">'"&gt;'</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s1">'&lt;/div&gt;'</span>
+<span class="k">end</span>
+</pre></div><p>In this simple example, we use <code>each</code> to iterate through the flash hash, retrieving a <code>key</code> and <code>value</code> that are passed to a block to be output as a string. We’ve chosen the variable names <code>key</code> and <code>value</code> but the names are arbitrary. In the next example, we’ll use <code>name</code> and <code>msg</code> as variables for the key-value pair. The output string will appear as <span class="caps">HTML</span> like this:</p>
+<div class="highlight"><pre><span class="x">&lt;div class="notice"&gt;Welcome!&lt;/div&gt;</span>
+<span class="x">&lt;div class="alert"&gt;My birthday is soon.&lt;/div&gt;</span>
+</pre></div><p>Flash messages are a very useful feature for a dynamic website and could be used on any page. We’ll add code to output flash messages within the application layout.</p>
+<p>Code for flash messages can go directly in your application layout file or you can create a partial.</p>
+<p>Add a partial for flash messages by creating a file <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">flash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">"flash_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><p>We’ve improved on our simple Ruby example in several ways. First, we’ve added <code>if msg.is_a?(String)</code> as a test to make sure we only display messages that are strings. Second, we’ve used the Rails <code>content_tag</code> view helper to create the <span class="caps">HTML</span> <code>div</code>. The <code>content_tag</code> helper eliminates the messy soup of angle brackets and quote marks we used to create the <span class="caps">HTML</span> output in the example above. Finally, instead of applying a <span class="caps">CSS</span> <code>class</code> for styling, we’ve applied a <span class="caps">CSS</span> <code>id</code> and combined the word “flash” with “notice” or “alert” to make the <span class="caps">CSS</span> ID. It’s appropriate to apply an ID instead of a class because there should be only be a single flash message on the page (classes are used for multiple elements).</p>
+<p>We’ll add the partial to the application layout at the end of this chapter.</p>
+<h3 id="html5-elements">HTML5 Elements</h3>
+<p>To complete our application layout, we’ll add a few structural elements to make it easy to apply <span class="caps">CSS</span> styling. These elements are not unique to a Rails application and will be familiar to anyone who has done front-end development.</p>
+<p>We’ll add a container div to the page. This is a common technique among front-end designers, particularly useful for adding margins or borders to the page layout.</p>
+<p>The HTML5 specification provides <code>&lt;header&gt;</code> and <code>&lt;footer&gt;</code> elements that add structure to a web page. The tags don’t add any new behavior but make it easier to determine the structure of the page and apply <span class="caps">CSS</span> styles. The <code>&lt;header&gt;</code> tag is typically used for branding or navigation and the <code>&lt;footer&gt;</code> tag typically contains links to copyright information, legal disclaimers, or contact information.</p>
+<p>Finally we’ll wrap our <code>yield</code> in a <code>&lt;main role="main"&gt;</code> element. The <code>&lt;main&gt;</code> tag is among the newest HTML5 elements (see the <a href="http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-main-element">W3C specification</a> for details). From the specification: “The main content area of a document includes content that is unique to that document and excludes content that is repeated across a set of documents such as site navigation links, copyright information, site logos.” The specification recommends, “Authors are advised to use <span class="caps">ARIA</span> @role=”main"@ attribute on the main element until user agents implement the required role mapping." We’ll follow the advice of the specification and wrap our unique content in the <code>&lt;main&gt;</code> tag.</p>
+<p>Let’s put this all together for our updated application layout.</p>
+<h3 id="updated-application-layout">Updated Application Layout</h3>
+<p>Modify the file <strong>app/views/layouts/application.html.erb</strong> to include everything we’ve discussed in this chapter:</p>
+<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span>
+<span class="x">  &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">  &lt;meta name="description" content="</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">  &lt;div id="container"&gt;</span>
+<span class="x">    &lt;header&gt;</span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/navigation'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/messages'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    &lt;/header&gt;</span>
+<span class="x">    &lt;main role="main"&gt;</span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    &lt;/main&gt;</span>
+<span class="x">    &lt;footer&gt;</span>
+<span class="x">    &lt;/footer&gt;</span>
+<span class="x">  &lt;/div&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div><p>We’ve added the <code>viewport</code> metatag, replaced the title, and added a description.</p>
+<p>We’ve added the partials for navigation links and flash messages.</p>
+<p>Finally we’ve added HTML5 structural elements.</p>
+<p>Our application layout is complete.</p>
+<h3 id="test-the-application-3">Test the Application</h3>
+<p>Let’s run the application to see how it looks with the new application layout. The web server may already be running. If not, enter the command:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<p>Our home page now has navigation links. The links are broken because we haven’t yet created “About” and "Contact"pages. We’ll add those soon.</p>
+<p>Next we’ll add <span class="caps">CSS</span> to improve the design.</p>
+</section>
+<section class='chapter' id='stylesheets-and-themes'><h2>Stylesheets and Themes</h2>
+<p>This chapter touches on front-end development and design using <span class="caps">CSS</span>. I’ll show you how to add <span class="caps">CSS</span> to a Rails application but I won’t do much more, as front-end design is more art than engineering.</p>
+<p>There are three approaches to front-end design for your Rails application.</p>
+<p>The first approach is to implement a unique design, building it from the ground up using <span class="caps">CSS</span>. If you’ve got strong design skills, or can partner with an experienced web designer, this is often the most satisfying approach.</p>
+<p>A second approach is to use <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> or <a href="http://foundation.zurb.com/">Zurb Foundation</a>. You can use these front-end frameworks to quickly add attractive <span class="caps">CSS</span> styling to your application. Ideally, you’ll use these frameworks only as a foundation, customizing your design to be unique and compelling. Many developers don’t have the skill or resources to customize the design. Consequently, sites that use Twitter Bootstrap or Zurb Foundation look very similar. If that’s your situation, it’s okay, really! It’s better to have a decent site with the clean look of Twitter Bootstrap than leak ugliness onto the web.</p>
+<p>A third approach is to purchase a pre-designed theme for your website. If you’ve built websites with WordPress, Tumblr, or <span class="caps">CMS</span> applications such as Drupal or Joomla, you’ve encountered huge galleries such as “ThemeForest:”http://themeforest.net/ that offer thousands of pre-built themes for a few dollars each. These huge commercial galleries don’t have themes for Rails and it can be troublesome to adapt one of their themes for a Rails application. However, there are a few small commercial sites offering themes pre-built for Rails applications. I’ll provide more details at the end of the chapter.</p>
+<h3 id="asset-pipeline-for-css">Asset Pipeline for <span class="caps">CSS</span></h3>
+<p>In the previous chapter, I introduced the Rails <em>asset pipeline</em>.</p>
+<p>Your <span class="caps">CSS</span> stylesheets get concatenated and compacted when you add them to this directory:</p>
+<ul>
+  <li><strong>app/assets/stylesheets/</strong></li>
+</ul>
+<p>The default Rails starter application contains one file in the directory:</p>
+<ul>
+  <li><strong>app/assets/stylesheets/application.css</strong></li>
+</ul>
+<p>Open the file in your text editor and you’ll see this:</p>
+<div class="highlight"><pre><span class="cm">/*</span>
+ <span class="cm">* This is a manifest file that'll be compiled into application.css, which will include all the files</span>
+ <span class="cm">* listed below.</span>
+ <span class="cm">*</span>
+ <span class="cm">* Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,</span>
+ <span class="cm">* or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.</span>
+ <span class="cm">*</span>
+ <span class="cm">* You're free to add application-wide styles to this file and they'll appear at the top of the</span>
+ <span class="cm">* compiled file, but it's generally better to create a new file per style scope.</span>
+ <span class="cm">*</span>
+ <span class="cm">*= require_self</span>
+ <span class="cm">*= require_tree .</span>
+ <span class="cm">*/</span>
+</pre></div><h3 id="css-styling-with-sass"><span class="caps">CSS</span> Styling with <span class="caps">SASS</span></h3>
+<p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
+<p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
+<h3 id="css-styling-with-twitter-bootstrap"><span class="caps">CSS</span> Styling with Twitter Bootstrap</h3>
+<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that make Rails popular for server-side (“back-end”) development. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application.</p>
+<p>Several options are available for installing Twitter Bootstrap in a Rails application. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/"><span class="caps">SASS</span></a> language that is the default for <span class="caps">CSS</span> files in Rails. See the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>. <span class="caps">SASS</span> is a default for <span class="caps">CSS</span> development in Rails so I recommend you install Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
+<p>In your <strong>Gemfile</strong>, you’ve already added:</p>
+<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'bootstrap-sass'</span>
+</pre></div><p>and previously run <code>$ bundle install</code>.</p>
+<p>Include the Twitter Bootstrap Javascript files by modifying the file <strong>app/assets/javascripts/application.js</strong>:</p>
+<div class="highlight"><pre><span class="c1">//= require jquery</span>
+<span class="c1">//= require jquery_ujs</span>
+<span class="c1">//= require bootstrap</span>
+<span class="c1">//= require_tree .</span>
+</pre></div><p>Next, import the Twitter Bootstrap <span class="caps">CSS</span> files. You can modify the  <strong>app/assets/stylesheets/application.css.scss</strong> file to import Bootstrap. However, I recommend adding a new file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> file. You may wish to modify the Twitter Bootstrap <span class="caps">CSS</span> rules; you can do so in the <strong>application.css.scss</strong> file but placing changes to Twitter Bootstrap <span class="caps">CSS</span> rules in the <strong>bootstrap_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
+<p>The file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> is automatically included and compiled into your Rails application.css file by the <code>*= require_tree .</code> statement in the <strong>app/assets/stylesheets/application.css.scss</strong> file.</p>
+<p>Add the file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong>:</p>
+<div class="highlight"><pre><span class="k">@import</span> <span class="s2">"bootstrap"</span><span class="p">;</span>
+<span class="nt">body</span> <span class="p">{</span> <span class="na">padding-top</span><span class="o">:</span> <span class="mi">60</span><span class="kt">px</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">@import</span> <span class="s2">"bootstrap-responsive"</span><span class="p">;</span>
+</pre></div><p>The file will import both basic Bootstrap <span class="caps">CSS</span> rules and the Bootstrap rules for responsive design (allowing the layout to resize for various devices and secreen sizes).</p>
+<p>The <span class="caps">CSS</span> rule <code>body { padding-top: 60px; }</code> applies an additional <span class="caps">CSS</span> rule to accommodate the “Bootstrap navigation bar” heading created by the <code>navbar-fixed-top class</code> in the <code>header</code> tag in the layout below.</p>
+<p>Finally, to provide an example of adding a <span class="caps">CSS</span> rule that will be used on every page of your application, the following code creates a nice gray box as a background to page content.</p>
+<p>Add this to your <strong>app/assets/stylesheets/application.css.scss</strong> file for a gray background:</p>
+<div class="highlight"><pre><span class="nc">.content</span> <span class="p">{</span>
+  <span class="na">background-color</span><span class="o">:</span> <span class="mh">#eee</span><span class="p">;</span>
+  <span class="na">padding</span><span class="o">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+  <span class="na">margin</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">-20</span><span class="kt">px</span><span class="p">;</span> <span class="cm">/* negative indent the amount of the padding to maintain the grid system */</span>
+  <span class="na">-webkit-border-radius</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">6</span><span class="kt">px</span> <span class="mi">6</span><span class="kt">px</span><span class="p">;</span>
+  <span class="na">-moz-border-radius</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">6</span><span class="kt">px</span> <span class="mi">6</span><span class="kt">px</span><span class="p">;</span>
+  <span class="na">border-radius</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">6</span><span class="kt">px</span> <span class="mi">6</span><span class="kt">px</span><span class="p">;</span>
+  <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">1</span><span class="kt">px</span> <span class="mi">2</span><span class="kt">px</span> <span class="nf">rgba</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,.</span><span class="mi">15</span><span class="p">);</span>
+  <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">1</span><span class="kt">px</span> <span class="mi">2</span><span class="kt">px</span> <span class="nf">rgba</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,.</span><span class="mi">15</span><span class="p">);</span>
+  <span class="na">box-shadow</span><span class="o">:</span> <span class="mi">0</span> <span class="mi">1</span><span class="kt">px</span> <span class="mi">2</span><span class="kt">px</span> <span class="nf">rgba</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,.</span><span class="mi">15</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</section>
+<section class='chapter' id='about-page'><h2>“About” Page</h2>
+<h3 id="introducing-a-rails-engine">Introducing a Rails Engine</h3>
+<h3 id="highvoltage-eliminate-controller">HighVoltage (eliminate controller)</h3>
+<h3 id="about-contact-legal">About, Contact, Legal</h3>
+<h3 id="caching">Caching</h3>
+</section>
+<section class='chapter' id='contact-form'><h2>Contact Form</h2>
+<h3 id="simpleform">SimpleForm</h3>
+<h3 id="sending-mail">Sending Mail</h3>
+</section>
+<section class='chapter' id='mailing-list'><h2>Mailing List</h2>
+<h3 id="introducing-forms">Introducing Forms</h3>
+<h3 id="modify-controller">Modify Controller</h3>
+<h3 id="flash-message">Flash Message</h3>
+</section>
+<section class='chapter' id='deploy'><h2>Deploy</h2>
+<h3 id="cleanup">Cleanup</h3>
+<p>Several unneeded files are generated in the process of creating a new Rails application.</p>
+<p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
+<p>See instructions for <a href="http://railsapps.github.io/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
+<h3 id="test-the-app">Test the App</h3>
+<p>You can check that your app runs properly by entering the command</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
+<p>To sign in as the first user (the administrator), (unless you’ve changed it) use</p>
+<ul>
+  <li>email: user@example.com</li>
+  <li>password: changeme</li>
+</ul>
+<p>You’ll see a navigation link for Admin. Clicking the link will display a page with a list of users at<br />
+<a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+<p>As an administrator, you can change any user’s role or delete a user.</p>
+<p>To sign in as the second user, (unless you’ve changed it) use</p>
+<ul>
+  <li>email: user2@example.com</li>
+  <li>password: changeme</li>
+</ul>
+<p>The second user will not see the Admin navigation link and will not be able to access the page at<br />
+<a href="http://localhost:3000/users">http://localhost:3000/users</a>.</p>
+<p>Stop the server with Control-C.</p>
+<h3 id="testing">Testing</h3>
+<p>If you’ve copied the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/railsapps-learning-rails/">railsapps-learning-rails</a> example application, and set up RSpec and Cucumber, you can run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available.</p>
+<p>Run <code>rake spec</code> to run RSpec tests.</p>
+<p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run Cucumber scenarios.</p>
+<h3 id="deploy-to-heroku">Deploy to Heroku</h3>
+<p>For your convenience, here is a <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
+<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
+<p>Add this configuration parameter to the <strong>config/application.rb</strong> file:</p>
+<div class="highlight"><pre><span class="c1"># Heroku requires this to be false</span>
+<span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">initialize_on_precompile</span><span class="o">=</span><span class="kp">false</span>
+</pre></div><p>Then precompile assets, commit to git, and push to Heroku:</p>
+<div class="highlight"><pre><span class="gp">$</span> rake assets:precompile
+<span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
+<span class="gp">$</span> git push heroku master
+</pre></div><p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+<p>With the figaro gem, just run:</p>
+<div class="highlight"><pre><span class="gp">$</span> rake figaro:heroku
+</pre></div><p>Alternatively, you can set Heroku environment variables directly.</p>
+<p>Here’s how to set environment variables directly on Heroku with <code>heroku config:add</code>.</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku config:add <span class="nv">GMAIL_USERNAME</span><span class="o">=</span><span class="s1">'myname@gmail.com'</span> <span class="nv">GMAIL_PASSWORD</span><span class="o">=</span><span class="s1">'secret'</span>
+<span class="gp">$</span> heroku config:add <span class="s1">'ROLES=[admin, user, VIP]'</span>
+<span class="gp">$</span> heroku config:add <span class="nv">ADMIN_NAME</span><span class="o">=</span><span class="s1">'First User'</span> <span class="nv">ADMIN_EMAIL</span><span class="o">=</span><span class="s1">'user@example.com'</span> <span class="nv">ADMIN_PASSWORD</span><span class="o">=</span><span class="s1">'changeme'</span>
+</pre></div><p>Complete Heroku deployment with:</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku run rake db:migrate
+<span class="gp">$</span> heroku run rake db:seed
+</pre></div><p>See the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
+</section>
+<section class='chapter' id='customize'><h2>Customize</h2>
+</section>
+<section class='chapter' id='landing-pages'><h2>Landing Pages</h2>
+</section>
+<section class='chapter' id='analytics'><h2>Analytics</h2>
+<h3 id="introducing-javascript">Introducing JavaScript</h3>
+<h3 id="google-analytics">Google Analytics</h3>
+<h3 id="segment-io">segment.io</h3>
+<h3 id="tracking-user-actions">tracking user actions</h3>
+</section>
+<section class='chapter' id='conversion-testing'><h2>Conversion Testing</h2>
+</section>
+<section class='chapter' id='traffic'><h2>Traffic</h2>
+<h3 id="marketing-plan">marketing plan</h3>
+<h3 id="advertising">advertising</h3>
+
+    <ul>
+      <li>AdWords</li>
+    </ul><h3 id="search-engine-marketing">search engine marketing</h3>
+
+    <ul>
+      <li>keywords</li>
+    </ul>
+    <ul>
+      <li>landing pages</li>
+    </ul>
+    <ul>
+      <li>link building</li>
+    </ul><h3 id="social-marketing">social marketing</h3>
+</section>
+<section class='chapter' id='whats-next'><h2>What’s Next?</h2>
+</section>
+<section class='chapter' id='comments'><h2>Comments</h2>
+<h3 id="credits">Credits</h3>
+<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
+<h3 id="did-you-like-the-tutorial">Did You Like the Tutorial?</h3>
+<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
+<p>Any issues? Please create an <a href="http://github.com/RailsApps/railsapps-learning-rails/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
+</section>
+<div class='comments'>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">Comments disabled.</a>
+</div><!-- class="comments" -->
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="footer-constrain">
+    <p>Code licensed under the <a href="http://www.opensource.org/licenses/mit-license" target="_blank">MIT License</a>.<br />Use of the tutorials is restricted to registered users of the RailsApps Tutorials website.</p>
+    <ul class="footer-links">
+      <li><a href="https://tutorials.railsapps.org/pages/support#Privacy">Privacy</a></li>
+      <li class="muted">&middot;</li>
+      <li><a href="https://tutorials.railsapps.org/pages/support#Legal">Legal</a></li>
+      <li class="muted">&middot;</li>
+      <li><a href="https://tutorials.railsapps.org/pages/support">Support</a></li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>
