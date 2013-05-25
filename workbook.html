@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">workbook</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 24 May 2013</li>
+            <li>Last updated 25 May 2013</li>
             <li><a href="https://github.com/RailsApps/workbook">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/workbook/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -65,6 +65,7 @@
 <li class='level2'><a href='#static-pages-and-routing'><i class='icon-chevron-right'></i> Static Pages and Routing</a></li>
 <li class='level2'><a href='#dynamic-home-page'><i class='icon-chevron-right'></i> Dynamic Home Page</a></li>
 <li class='level2'><a href='#troubleshooting'><i class='icon-chevron-right'></i> Troubleshooting</a></li>
+<li class='level2'><a href='#just-enough-ruby'><i class='icon-chevron-right'></i> Just Enough Ruby</a></li>
 <li class='level2'><a href='#layout-and-views'><i class='icon-chevron-right'></i> Layout and Views</a></li>
 <li class='level2'><a href='#stylesheets-and-twitter-bootstrap'><i class='icon-chevron-right'></i> Stylesheets and Twitter Bootstrap</a></li>
 <li class='level2'><a href='#adding-pages'><i class='icon-chevron-right'></i> Adding Pages</a></li>
@@ -206,11 +207,11 @@ Resource: <a href="http://www.letspair.net/">letspair.net</a>.</p>
 <h3 id="user-stories">User Stories</h3>
 <p>Concept: <a href="http://en.wikipedia.org/wiki/User_story">User stories</a></p>
 <p>User stories are often expressed in the following format:</p>
-<div class="highlight"><pre><span class="nf">As a </span><span class="nv">&lt;role&gt;</span><span class="nf"></span>
-<span class="k">I </span><span class="nf">want </span><span class="nv">&lt;goal&gt;</span><span class="nf"></span>
-<span class="nf">so that </span><span class="nv">&lt;benefit&gt;</span><span class="nf"></span>
-</pre></div><p>Here is an example:</p>
-<div class="highlight"><pre><span class="nf">*Join Mailing List*</span>
+
+
+Here is an example:
+
+<notextile><div class="highlight"><pre><span class="nf">*Join Mailing List*</span>
 <span class="nf">As a visitor to the website</span>
 <span class="k">I </span><span class="nf">want to join a mailing list</span>
 <span class="nf">so I can receive news and announcements</span>
@@ -230,8 +231,9 @@ Resource: <a href="http://foundation.zurb.com/">Zurb Foundation</a></p>
 <p>Concept: <em>Behavior-Driven Development</em> (<span class="caps">BDD</span>)<br />
 Concept: <em>acceptance testing</em><br />
 Concept: <em>integration testing</em></p>
-</section>
-<section class='chapter' id='project-management'><h2>Project Management</h2>
+
+</notextile></div>
+  <section class='chapter' id='project-management'><h2>Project Management</h2>
 <p>Article: <a href="http://railsapps.github.io/rails-project-management.html">Rails and Project Management</a></p>
 <h3 id="to-do-list">To-Do List</h3>
 <p>Reference: <a href="http://en.wikipedia.org/wiki/Getting_Things_Done">Getting Things Done</a></p>
@@ -274,7 +276,10 @@ Resource: <a href="http://agilescout.com/best-agile-scrum-tools/">agile tools</a
 Article: <a href="http://www.skroutz.gr/blog/posts/76-how-we-manage-to-manage">How we manage to manage</a></p>
 </section>
 <section class='chapter' id='accounts-you-will-need'><h2>Accounts You Will Need</h2>
+<h3 id="github">GitHub</h3>
 <p><a href="https://github.com/signup/free">free personal GitHub account</a></p>
+<h3 id="mailchimp">MailChimp</h3>
+<p><a href="http://mailchimp.com/">MailChimp</a></p>
 </section>
 <section class='chapter' id='getting-started'><h2>Getting Started</h2>
 <h3 id="your-computer">Your Computer</h3>
@@ -762,22 +767,39 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <div class="highlight"><pre><span class="gp">$</span> gem list
 </pre></div><p>The list of gems loaded in the environment and specified in the <strong>Gemfile.lock</strong> will be the same.</p>
 <p><span class="caps">RVM</span> makes a place for the gems to be stored (the <span class="caps">RVM</span> gemset); the <strong>Gemfile</strong> lists the gems you want to use; the <strong>Gemfile.lock</strong> file records dependencies and version numbers; <code>bundle install</code> reads the Gemfile and installs the gems into the <span class="caps">RVM</span> gemset; and <code>gem list</code> shows you the gems that are loaded into memory and available for use.</p>
-<h3 id="adding-gems">Adding Gems</h3>
+<h3 id="gems-we-need-today">Gems We Need Today</h3>
 <p>Here are the gems we’ll add to the Gemfile:</p>
 <ul>
   <li><a href="https://github.com/laserlemon/figaro">figaro</a> – configuration framework</li>
   <li><a href="https://github.com/thoughtbot/high_voltage">high_voltage</a> – for static pages like “about”</li>
   <li><a href="https://github.com/plataformatec/simple_form">simple_form</a> – form helpers</li>
   <li><a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> – Twitter Bootstrap</li>
-  <li><a href="http://github.com/plataformatec/devise">devise</a> – authentication</li>
-  <li><a href="https://github.com/ryanb/cancan">cancan</a> – authorization</li>
-  <li><a href="https://github.com/EppO/rolify">rolify</a> – roles for authorization</li>
+  <li><a href="https://github.com/amro/gibbon">gibbon</a> – access to the MailChimp <span class="caps">API</span></li>
 </ul>
 <p>We’ll also add a utility that makes development easier:</p>
 <ul>
   <li><a href="https://github.com/charliesome/better_errors">better_errors</a> – helps when things go wrong</li>
 </ul>
-<p>Plus we’ll add a set of gems for a testing framework.</p>
+<h3 id="gems-for-testing">Gems for Testing</h3>
+<p>These gems are used for <em>test-driven development</em>:</p>
+<div class="highlight"><pre><span class="n">group</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'rspec-rails'</span>
+  <span class="n">gem</span> <span class="s1">'factory_girl_rails'</span>
+<span class="k">end</span>
+<span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'database_cleaner'</span>
+  <span class="n">gem</span> <span class="s1">'email_spec'</span>
+  <span class="n">gem</span> <span class="s1">'launchy'</span>
+  <span class="n">gem</span> <span class="s1">'capybara'</span>
+<span class="k">end</span>
+</pre></div><h3 id="other-gems">Other Gems</h3>
+<p>Gems we’ll use for a more advanced application:</p>
+<ul>
+  <li><a href="http://github.com/plataformatec/devise">devise</a> – authentication</li>
+  <li><a href="https://github.com/ryanb/cancan">cancan</a> – authorization</li>
+  <li><a href="https://github.com/EppO/rolify">rolify</a> – roles for authorization</li>
+</ul>
+<h3 id="adding-gems">Adding Gems</h3>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
 <p><strong>Gemfile</strong></p>
 <div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
@@ -797,10 +819,8 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="n">gem</span> <span class="s1">'figaro'</span>
 <span class="n">gem</span> <span class="s1">'high_voltage'</span>
 <span class="n">gem</span> <span class="s1">'bootstrap-sass'</span>
-<span class="n">gem</span> <span class="s1">'devise'</span>
-<span class="n">gem</span> <span class="s1">'cancan'</span>
-<span class="n">gem</span> <span class="s1">'rolify'</span>
 <span class="n">gem</span> <span class="s1">'simple_form'</span>
+<span class="n">gem</span> <span class="s2">"gibbon"</span>
 <span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
   <span class="n">gem</span> <span class="s1">'better_errors'</span>
   <span class="n">gem</span> <span class="s1">'quiet_assets'</span>
@@ -1216,6 +1236,20 @@ Concept: <em>class definition</em></p>
 <span class="go">nothing to commit (working directory clean)</span>
 </pre></div><p>The Git command <code>git reset --hard HEAD</code> discards any changes you’ve made since the most recent commit.</p>
 </section>
+<section class='chapter' id='just-enough-ruby'><h2>Just Enough Ruby</h2>
+<h3 id="learn-to-program">Learn to Program</h3>
+<p>Book (free): <a href="http://pine.fm/LearnToProgram/">Learn To Program</a> by Chris Pine<br />
+Book ($18.50 ebook): <a href="http://pragprog.com/book/ltp2/learn-to-program">Learn To Program</a> by Chris Pine</p>
+<h3 id="do-you-need-to-know-ruby-to-learn-rails">Do You Need to Know Ruby to Learn Rails?</h3>
+<p>Tutorial: <a href="http://rubymonk.com/">RubyMonk</a> – free browser-based interactive tutorial<br />
+Tutorial: <a href="http://tryruby.org/levels/1/challenges/0">Try Ruby</a> – free browser-based interactive tutorial<br />
+Tutorial: <a href="http://rubykoans.com/">Ruby Koans</a> – free browser-based interactive exercises<br />
+Videos: <a href="https://github.com/JoshCheek/ruby-kickstart">Ruby Kickstart</a> – free</p>
+<h3 id="ruby-basics">Ruby Basics</h3>
+<p>Tutorial: <a href="http://curriculum.railsbridge.org/ruby/ruby">RailsBridge Ruby</a><br />
+Reference: <a href="http://pragtob.github.io/rails-beginner-cheatsheet/index.html">Rails Beginner Cheat Sheet</a><br />
+Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> docs with usage notes</a></p>
+</section>
 <section class='chapter' id='layout-and-views'><h2>Layout and Views</h2>
 <h3 id="application-layout">Application Layout</h3>
 <p>The file <strong>app/views/home/index.html.erb</strong> looks like this:</p>
@@ -1228,11 +1262,11 @@ Concept: <em>class definition</em></p>
 <span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
   <span class="nt">&lt;title&gt;</span>RailsappsLearningRails<span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">href=</span><span class="s">"/assets/application.css?body=1"</span> <span class="na">media=</span><span class="s">"all"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/jquery.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/jquery_ujs.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/turbolinks.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">data-turbolinks-track=</span><span class="s">"true"</span> <span class="na">src=</span><span class="s">"/assets/application.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"/assets/application.css?body=1"</span> <span class="na">media=</span><span class="s">"all"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/jquery.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/jquery_ujs.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/turbolinks.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/application.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
   <span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">"authenticity_token"</span> <span class="na">name=</span><span class="s">"csrf-param"</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">"NRPrgfuj5GAyylNpNxQaMHDypcOsu6dmh5DT1yET6hQ="</span> <span class="na">name=</span><span class="s">"csrf-token"</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
@@ -1252,8 +1286,8 @@ Concept: <em>class definition</em></p>
 <span class="x">&lt;html&gt;</span>
 <span class="x">&lt;head&gt;</span>
 <span class="x">  &lt;title&gt;RailsappsLearningRails&lt;/title&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span>    <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">&lt;/head&gt;</span>
 <span class="x">&lt;body&gt;</span>
@@ -1592,19 +1626,20 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
 </pre></div><h3 id="controller-2">Controller</h3>
-<p>Create a file <strong>app/controllers/contact_controller.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<p>Create a file <strong>app/controllers/contacts_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
-  <span class="k">def</span> <span class="nf">create</span>
+  <span class="k">def</span> <span class="nf">process_form</span>
     <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: params are'</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">inspect</span>
-    <span class="n">redirect_to</span> <span class="n">root_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="s1">'Submitted contact request.'</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">"Received request from </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">redirect_to</span> <span class="n">root_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="n">message</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
 </pre></div><h3 id="routing-2">Routing</h3>
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">RailsappsLearningRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
-  <span class="n">match</span> <span class="s1">'contact'</span> <span class="o">=&gt;</span> <span class="s1">'contact#create'</span>
+  <span class="n">match</span> <span class="s1">'contact'</span> <span class="o">=&gt;</span> <span class="s1">'contacts#process_form'</span>
   <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
 <span class="k">end</span>
 </pre></div><p>Reference: <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a></p>
@@ -1612,6 +1647,92 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <p>The web server may already be running. If not, enter the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<p>Click the “Contact” link and fill out the form.</p>
+<p>Notice the flash message that appears on the home page.</p>
+<p>Notice what appears in the console log:</p>
+<div class="highlight"><pre><span class="go">Started POST "/contact" for 127.0.0.1 at 2013-05-25 05:24:59 -0700</span>
+<span class="go">Processing by ContactsController#process_form as HTML</span>
+<span class="go">  Parameters: {"utf8"=&gt;"✓", "authenticity_token"=&gt;"rQJfWNurHbEI3RBj/myfUkcbkeX5cgQ06y4y91Jqthw=", "contact"=&gt;{"name"=&gt;"Daniel Kehoe", "email"=&gt;"daniel@danielkehoe.com", "content"=&gt;"Looking forward to your birthday!"}, "commit"=&gt;"Submit"}</span>
+<span class="go">DEBUG: params are{"utf8"=&gt;"✓", "authenticity_token"=&gt;"rQJfWNurHbEI3RBj/myfUkcbkeX5cgQ06y4y91Jqthw=", "contact"=&gt;{"name"=&gt;"Daniel Kehoe", "email"=&gt;"daniel@danielkehoe.com", "content"=&gt;"Looking forward to your birthday!"}, "commit"=&gt;"Submit", "action"=&gt;"process_form", "controller"=&gt;"contacts"}</span>
+<span class="go">Redirected to http://lvh.me:3000/</span>
+<span class="go">Completed 302 Found in 0ms (ActiveRecord: 0.0ms)</span>
+</pre></div><h3 id="model-2">Model</h3>
+<p>Reference: <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: Active Model</a></p>
+<p>Create a file <strong>app/models/contact.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Contact</span>
+  <span class="kp">include</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Validations</span>
+  <span class="kp">include</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Conversion</span>
+  <span class="kp">extend</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Naming</span>
+
+  <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:content</span>
+
+  <span class="n">validates_presence_of</span> <span class="ss">:name</span>
+  <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i</span>
+  <span class="n">validates_length_of</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:maximum</span> <span class="o">=&gt;</span> <span class="mi">500</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+      <span class="nb">send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">persisted?</span>
+    <span class="kp">false</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div><h3 id="controller-3">Controller</h3>
+<p>Replace the contents of the file <strong>app/controllers/contacts_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">]</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">valid?</span>
+      <span class="c1"># TODO send message here</span>
+      <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Message sent from </span><span class="si">#{</span><span class="vi">@contact</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">."</span>
+      <span class="n">redirect_to</span> <span class="n">root_path</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">'new'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div><h3 id="routing-3">Routing</h3>
+<p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
+<div class="highlight"><pre><span class="ss">RailsappsLearningRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:contacts</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
+<span class="k">end</span>
+</pre></div><h3 id="navigation-links-2">Navigation Links</h3>
+<p>Change the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;ul class="nav"&gt;</span>
+<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Home'</span><span class="p">,</span> <span class="n">root_path</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
+<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'About'</span><span class="p">,</span> <span class="n">page_path</span><span class="p">(</span><span class="s1">'about'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
+<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Contact'</span><span class="p">,</span> <span class="n">new_contact_path</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
+<span class="x">&lt;/ul&gt;</span>
+</pre></div><h3 id="update-the-contact-form">Update the Contact Form</h3>
+<p>Resource: <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a><br />
+Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm and Twitter Bootstrap demo app</a></p>
+<p>Remove the file <strong>app/views/pages/contact.html.erb</strong>.</p>
+<p>Create a file <strong>app/views/contacts/new.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@contact</span><span class="p">,</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'form-vertical'</span> <span class="p">}</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:autofocus</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:required</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"span6"</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><h3 id="test-the-application-7">Test the Application</h3>
+<p>Stop the web server with Control-c and restart:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<p>Click the “Contact” link and fill out the form.</p>
+<p>Notice the flash message that appears on the home page.</p>
+<p>Try submitting the form with a blank name or invalid email address.</p>
+<p>You’ll see a form validation error message.</p>
 <h3 id="git-8">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
