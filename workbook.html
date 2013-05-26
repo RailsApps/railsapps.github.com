@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">workbook</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 25 May 2013</li>
+            <li>Last updated 26 May 2013</li>
             <li><a href="https://github.com/RailsApps/workbook">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/workbook/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -70,6 +70,7 @@
 <li class='level2'><a href='#stylesheets-and-twitter-bootstrap'><i class='icon-chevron-right'></i> Stylesheets and Twitter Bootstrap</a></li>
 <li class='level2'><a href='#adding-pages'><i class='icon-chevron-right'></i> Adding Pages</a></li>
 <li class='level2'><a href='#contact-form'><i class='icon-chevron-right'></i> Contact Form</a></li>
+<li class='level2'><a href='#sending-mail'><i class='icon-chevron-right'></i> Sending Mail</a></li>
 <li class='level2'><a href='#deploy'><i class='icon-chevron-right'></i> Deploy</a></li>
 <li class='level2'><a href='#whats-next'><i class='icon-chevron-right'></i> What’s Next?</a></li>
 
@@ -1736,6 +1737,103 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"contact form"</span>
+<span class="gp">$</span> git push origin master
+</pre></div>
+</section>
+<section class='chapter' id='sending-mail'><h2>Sending Mail</h2>
+<p>Article: <a href="http://guides.rubyonrails.org/action_mailer_basics.html">RailsGuides: Action Mailer Basics</a></p>
+<h3 id="create-email-message">Create Email Message</h3>
+<p>Generate a mailer with accompanying views:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails generate mailer UserMailer
+</pre></div><p>Add a <code>contact_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span>
+  <span class="n">default</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="s2">"notifications@example.com"</span>
+
+  <span class="k">def</span> <span class="nf">contact_email</span><span class="p">(</span><span class="n">contact</span><span class="p">)</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="n">contact</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"notifications@example.com"</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">"Website Contact"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div><p>Replace the “notifications@example.com” string with your email address. You’ll need to <strong>replace it in <span class="caps">TWO</span> places</strong>.</p>
+<p>Create a mailer view by creating a file <strong>app/views/user_mailer/contact_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
+<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">  &lt;head&gt;</span>
+<span class="x">    &lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;</span>
+<span class="x">  &lt;/head&gt;</span>
+<span class="x">  &lt;body&gt;</span>
+<span class="x">    &lt;h1&gt;Website Contact&lt;/h1&gt;</span>
+<span class="x">    &lt;p&gt;</span>
+<span class="x">      This visitor requested contact:</span>
+<span class="x">    &lt;/p&gt;</span>
+<span class="x">    &lt;p&gt;</span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">&lt;br/&gt;</span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span> <span class="cp">%&gt;</span><span class="x">&lt;br/&gt;</span>
+<span class="x">    &lt;/p&gt;</span>
+<span class="x">    &lt;p&gt;</span>
+<span class="x">      The visitor said:</span>
+<span class="x">    &lt;/p&gt;</span>
+<span class="x">    &lt;p&gt;</span>
+<span class="x">      "</span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">content</span> <span class="cp">%&gt;</span><span class="x">"</span>
+<span class="x">    &lt;/p&gt;</span>
+<span class="x">  &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div><h3 id="modify-controller">Modify Controller</h3>
+<p>Replace the contents of the file <strong>app/controllers/contacts_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">]</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">valid?</span>
+      <span class="c1"># send message here</span>
+      <span class="no">UserMailer</span><span class="o">.</span><span class="n">contact_email</span><span class="p">(</span><span class="vi">@contact</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
+      <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Message sent from </span><span class="si">#{</span><span class="vi">@contact</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">."</span>
+      <span class="n">redirect_to</span> <span class="n">root_path</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">'new'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div><h3 id="update-configuration-file">Update Configuration File</h3>
+<p>You’ll need a Gmail account if you want to try sending real email.</p>
+<p>If you don’t have a Gmail account, you can sign up for an account with <a href="http://mandrill.com/">Mandrill</a> instead and follow instructions in the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
+<p>You’ll need to add your Gmail username and password to the file <strong>config/application.yml</strong>. Change this to your real username and password:</p>
+<div class="highlight"><pre><span class="l-Scalar-Plain">GMAIL_USERNAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Username</span>
+<span class="l-Scalar-Plain">GMAIL_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Password</span>
+</pre></div><h3 id="configure-email">Configure Email</h3>
+<p>Article: <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a></p>
+<p>Email messages are visible in the console and the log file when you test the application.</p>
+<p>If you want to send real messages when you test the application in development mode, modify the file <strong>config/environments/development.rb</strong>.</p>
+<p>Add this:</p>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">address</span><span class="p">:</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>
+  <span class="ss">port</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span>
+  <span class="ss">domain</span><span class="p">:</span> <span class="s2">"example.com"</span><span class="p">,</span>
+  <span class="ss">authentication</span><span class="p">:</span> <span class="s2">"plain"</span><span class="p">,</span>
+  <span class="n">enable_starttls_auto</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+  <span class="n">user_name</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_USERNAME"</span><span class="o">]</span><span class="p">,</span>
+  <span class="ss">password</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_PASSWORD"</span><span class="o">]</span>
+<span class="p">}</span>
+</pre></div><p>Change the statement:</p>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">false</span>
+</pre></div><p>to:</p>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
+</pre></div><p>and when you try the application, a real message will be sent.</p>
+<h3 id="test-the-application-8">Test the Application</h3>
+<p>If your web server is not running, restart it:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<p>Click the “Contact” link try submitting the form.</p>
+<p>The email message should be visible in the console.</p>
+<p>You’ll should get a real email message in your inbox if you set up your <strong>config/environments/development.rb</strong> file to perform deliveries.</p>
+<h3 id="git-9">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"sending mail"</span>
 <span class="gp">$</span> git push origin master
 </pre></div>
 </section>
