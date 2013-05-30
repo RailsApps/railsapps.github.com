@@ -1674,9 +1674,10 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <section class='chapter' id='stylesheets-and-themes'><h2>Stylesheets and Themes</h2>
 <p>This chapter touches on front-end development and design using <span class="caps">CSS</span>. I’ll show you how to add <span class="caps">CSS</span> to a Rails application, including Twitter Bootstrap for a simple theme.</p>
 <p>There are three approaches to front-end design for your Rails application.</p>
-<p>One approach is to purchase a pre-designed theme for your website. If you’ve built websites with WordPress, Tumblr, or <span class="caps">CMS</span> applications such as Drupal or Joomla, you may have visited <a href="http://themeforest.net/">ThemeForest</a> or other theme galleries that offer pre-built themes for a few dollars each. These huge commercial galleries don’t have themes for Rails and it is not easy to adapt one of their themes for a Rails application. However, I’ll provide links to a few small commercial sites offering themes pre-built for Rails applications.</p>
-<p>A second approach is to use <a href="http://twitter.github.io/bootstrap/">Twitter Bootstrap</a> or <a href="http://foundation.zurb.com/">Zurb Foundation</a>. (Which one? See <a href="http://designshack.net/articles/css/framework-fight-zurb-foundation-vs-twitter-bootstrap/">Framework Fight</a>. You can use these front-end frameworks to quickly add attractive <span class="caps">CSS</span> styling to your application. Many developers don’t have the skill or resources to customize the design. Consequently, sites that use Twitter Bootstrap or Zurb Foundation look very similar. If that’s your situation, it’s okay, really! It’s better to have a decent site with the clean look of Twitter Bootstrap than leak ugliness onto the web.</p>
+<p>One approach is to purchase a pre-designed theme for your website. You may have visited <a href="http://themeforest.net/">ThemeForest</a> or other theme galleries that offer pre-built themes for a few dollars each. These huge commercial galleries offer themes for WordPress, Tumblr, or <span class="caps">CMS</span> applications such as Drupal or Joomla. They don’t offer themes for Rails and it is not easy to adapt one of their themes for a Rails application. However, I’ll provide links to a few small commercial sites offering themes pre-built for Rails applications.</p>
+<p>A second approach is to use <a href="http://twitter.github.io/bootstrap/">Twitter Bootstrap</a> or <a href="http://foundation.zurb.com/">Zurb Foundation</a>. (Which one? See <a href="http://designshack.net/articles/css/framework-fight-zurb-foundation-vs-twitter-bootstrap/">Framework Fight</a>). You can use these front-end frameworks to quickly add attractive <span class="caps">CSS</span> styling to your application. Many developers don’t have the skill or resources to customize the design. Consequently, sites that use Twitter Bootstrap or Zurb Foundation look very similar. If that’s your situation, it’s okay, really! It’s better to have a decent site with the clean look of Twitter Bootstrap than leak ugliness onto the web.</p>
 <p>A third approach is to implement a unique design, built from scratch using <span class="caps">CSS</span> or customized from a framework such as Twitter Bootstrap or Zurb Foundation. If you’ve got strong design skills, or can partner with an experienced web designer, this gives you a custom design that expresses the purpose and motif of your website.</p>
+<p>I’ll give you some links for theme galleries and then we’ll add Twitter Bootstrap to our tutorial application.</p>
 <h3 id="themes">Themes</h3>
 <p>Rails developers are not a large market for commercial theme galleries because many Rails projects can afford custom design. And unlike WordPress, Rails projects implement such a great variety of sites that no theme can be prepackaged to accommodate all Rails projects. That said, a few consultants recently have introduced themes that can be used on Rails projects.</p>
 <ul>
@@ -1684,11 +1685,11 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <li><a href="http://dresssed.com/">Dressed Rails Themes</a> from Marc-André Cournoyer</li>
   <li><a href="http://railsview.com/">Railsview.com</a> from Richardson Dackam</li>
 </ul>
-<p>The <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace offers a theme that is packaged as a Rails gem and built on Twitter Bootstrap:</p>
+<p>The <a href="https://wrapbootstrap.com/">WrapBootstrap</a> marketplace offers themes that can be adapted for Rails. One offering built on Twitter Bootstrap is packaged as a Rails gem:</p>
 <ul>
   <li><a href="https://wrapbootstrap.com/theme/rails-strap-ruby-ready-theme-WB00952P7">railsstrap</a> by Leon Touroutoglou</li>
 </ul>
-<p>Other themes from <a href="https://wrapbootstrap.com/">WrapBootstrap</a> can be adapted for Rails. <a href="http://bootswatch.com/">Bootswatch</a> offers free themes for Twitter Bootstrap.</p>
+<p>The <a href="http://bootswatch.com/">Bootswatch</a> site offers free themes for Twitter Bootstrap that can be adapted for Rails.</p>
 <p>If you want the retro look of the 1990s web, use:</p>
 <ul>
   <li><a href="http://divshot.github.io/geo-bootstrap/">Geo for Bootstrap</a></li>
@@ -1836,18 +1837,59 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div>
 </section>
 <section class='chapter' id='adding-pages'><h2>Adding Pages</h2>
+<p>Let’s begin adding pages to our web application.</p>
+<p>There are three types of web pages in a Rails application. We’ve looked at two types so far:</p>
+<ul>
+  <li>static pages in the <strong>public/</strong> folder that contain no Ruby code</li>
+  <li>dynamic pages such as our home page that use the application layout</li>
+</ul>
+<p>There’s another type of web page that is required on many websites. It has static content; that is, no dynamic data is needed on the page. But it uses the default application layout to maintain consistency in the website look and feel. We can classify this type of page as:</p>
+<ul>
+  <li>static views that use the application layout</li>
+</ul>
+<p>Examples include:</p>
+<ul>
+  <li>“About” page</li>
+  <li>Legal page</li>
+  <li><span class="caps">FAQ</span> page</li>
+</ul>
+<p>It’s possible to place these pages in the <strong>public/</strong> folder and copy the <span class="caps">HTML</span> and <span class="caps">CSS</span> from the default application layout but this leads to duplicated code and maintenance headaches. And dynamic elements such as navigation links can’t be included. For these reasons, developers seldom create static pages in the <strong>public/</strong> folder.</p>
+<p>Alternatively, a dynamic page can be created that has no model, a nearly-empty controller, and a view that contains no instance variables. This solution is quite common for static views that use the application layout.</p>
+<p>As you might imagine, this solution is implemented so often that many developers create a gem to encapsulate the functionality. We’re going to use the best-known of these gems, the <a href="https://github.com/thoughtbot/high_voltage">high_voltage gem</a> created by the <a href="http://www.thoughtbot.com/">Thoughtbot</a> consulting firm.</p>
+<p>First we’ll use the HighVoltage gem to create an “About” Page. Then we’ll begin an exercise to create a Contact page. Initially we’ll use the HighVoltage gem. Then we’ll add a controller to process the form. And finally we’ll discard the page we created with the HighVoltage gem and replace it with a full model-view-controller implementation. The process will introduce the concept of <em>RESTful architecture</em> and show the difference between an older form of web application architecture and the newer “Rails way.”</p>
 <h3 id="highvoltage-gem">HighVoltage Gem</h3>
-<p>Resource: <a href="https://github.com/thoughtbot/high_voltage">high_voltage gem</a></p>
+<p>We can add a page using the HighVoltage gem almost effortlessly. The gem implements Rails “convention over configuration” so well that there is nothing to configure. There are alternatives to its defaults which can be useful but we won’t need them; visit the GitHub home page for the <a href="https://github.com/thoughtbot/high_voltage">high_voltage gem</a> if you want to explore the options.</p>
+<p>In your <strong>Gemfile</strong>, you’ve already added:</p>
+<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'high_voltage'</span>
+</pre></div><p>and previously run <code>$ bundle install</code>.</p>
 <p>Create a folder <strong>app/views/pages</strong>:</p>
 <div class="highlight"><pre><span class="gp">$</span> mkdir app/views/pages
-</pre></div><h3 id="about-page">“About” Page</h3>
+</pre></div><p>Any view files we add to this directory will automatically use the default application layout and appear when we use a <span class="caps">URL</span> that contains the filename.</p>
+<p>The HighVoltage gem contains all the controller and routing magic required for this to happen.</p>
+<p>Let’s try it out.</p>
+<h3 id="about-page">“About” Page</h3>
 <p>Create a file <strong>app/views/pages/about.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;h3&gt;About Foobar Kadigan&lt;/h3&gt;</span>
-<span class="x">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;</span>
-</pre></div><h3 id="contact-page">Contact Page</h3>
-<p>Create a file <strong>app/views/pages/contact.html.erb</strong>:</p>
+<span class="x">&lt;p&gt;He was born in Waikikamukau, New Zealand. He left New Zealand for England, excelled at the University of Mopery, and served in the Royal Loamshire Regiment. While in service, he invented the kanuten valve used in the processing of unobtainium for industrial use. He founded Acme Manfacturing, later acquired by the Advent Corporation, to commercialize the product. Mr. Kadigan is now retired and lives in Middlehampton where he raises Griadium frieda.&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;His favorite quotation is:&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.&lt;/p&gt;</span>
+</pre></div><p>Our simple “About” view will be combined with the default application layout by the HighVoltage gem.</p>
+<h3 id="contact-page">Contact Page</h3>
+<p>For the initial version of the Contact page, create a file <strong>app/views/pages/contact.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
-</pre></div><h3 id="test-the-application-5">Test the Application</h3>
+</pre></div><p>This is a placeholder page we’ll use to test the navigation link we’ve already created.</p>
+<h3 id="routing-for-the-highvoltage-gem">Routing for the HighVoltage Gem</h3>
+<p>In addition to providing a controller, the HighVoltage gem provides default routing so any <span class="caps">URL</span> with the form <a href="http://localhost:3000/pages/about">http://localhost:3000/pages/about</a> will obtain a view from the <strong>app/views/pages</strong> directory.</p>
+<p>Like the PagesController, the route is packaged inside the gem where we don’t see it. If we wanted to add the route explicitly to the file <strong>config/routes.rb</strong>, it would look like this:</p>
+<div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s2">"/pages/*id"</span> <span class="o">=&gt;</span> <span class="s1">'pages#show'</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
+<span class="k">end</span>
+</pre></div><p>You can see all the available routes by running the utility command <code>rake routes</code>.</p>
+<p>You can use a Rails route helper to create a link to any view in the <strong>app/views/pages</strong> directory like this:</p>
+<div class="highlight"><pre><span class="x">link_to 'About', page_path('about')</span>
+</pre></div><p>We already have links to the “About” and Contact pages in the navigation partial so we can test the application immediately.</p>
+<h3 id="test-the-application-5">Test the Application</h3>
 <p>The web server may already be running. If not, enter the command:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
@@ -1857,7 +1899,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"add 'about' and 'contact' pages"</span>
 <span class="gp">$</span> git push origin master
-</pre></div>
+</pre></div><p>There is nothing more we need for our “About” page.</p>
+<p>In the next chapter, we’ll explore two different implementations for the Contact page.</p>
 </section>
 <section class='chapter' id='contact-form'><h2>Contact Form</h2>
 <h3 id="adding-a-form-to-the-contact-page">Adding a Form to the Contact Page</h3>
