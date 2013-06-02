@@ -2004,7 +2004,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Earlier we learned about the Ruby <em>hash</em> object. It is a data structure for key/value pairs and it is ideal for storing form data. Each field on the form can be mapped as <em>label</em> and <em>data</em>, or key and value, and stored in a hash.</p>
 <p>Rails does all the work of extracting the form data from the browser’s <span class="caps">POST</span> request. Rails creates a hash with the form field data mapped to the form field labels and gives the hash the name of the form. Here’s the hash as pure Ruby code:</p>
 <div class="highlight"><pre><span class="n">contact</span> <span class="o">=</span> <span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">'Daniel'</span> <span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="s1">'daniel@danielkehoe.com@'</span><span class="p">,</span> <span class="ss">contents</span><span class="p">:</span> <span class="s1">'hi!'</span><span class="p">}</span>
-</pre></div><p>Rails goes a step further and stuffs the form hash inside another hash named <code>params</code>.</p>
+</pre></div><p>Rails goes a step further and nests the form hash inside another hash named <code>params</code>.</p>
 <p>As pure Ruby code, the <code>params</code> hash looks like this:</p>
 <div class="highlight"><pre><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="ss">controller</span><span class="p">:</span> <span class="s1">'contacts'</span><span class="p">,</span>
           <span class="ss">action</span><span class="p">:</span> <span class="s1">'process_form'</span><span class="p">,</span>
@@ -2061,6 +2061,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <li><em>in 0ms</em> – time required to process the request</li>
 </ul>
 <p>That’s a lot of data. For now, we really only care about the form data buried in the <code>params</code> hash.</p>
+<p>You can see that we really don’t need the debug message because the console log shows us the contents of the <code>params</code> hash.</p>
 <h3 id="the-validation-problem">The Validation Problem</h3>
 <p>It looks like we’ve got everything we need to handle a form submission. As a next step, we could implement code to send an email message using form data extracted from the <code>params</code> hash.</p>
 <p>But consider a potential problem. What if the email address is poorly formed? The visitor will think the message has been sent but it will never be delivered.</p>
@@ -2090,9 +2091,44 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <h3 id="the-old-way-or-the-rails-way">The Old Way Or the Rails Way</h3>
 <p>Our initial implementation of the contact form is consistent with the earliest approach to web application development, an approach that originated in 1993 with a specification for <span class="caps">CGI</span>, the <a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">Common Gateway Interface</a>. Before <span class="caps">CGI</span>, every page on the web existed only as a static <span class="caps">HTML</span> file. <span class="caps">CGI</span> made it possible to run a program, or <span class="caps">CGI</span> script, that dynamically generated <span class="caps">HTML</span>. In the early years of the web, every web <span class="caps">URL</span> matched either an <span class="caps">HTML</span> file or a <span class="caps">CGI</span> script. This is the “page model” of the web.</p>
 <p>So far, we’re following the “page model.” Our Contact page hosts the form. Clicking the submit button makes a request to another page that is actually a program that returns <span class="caps">HTML</span>. Until the late 1990s, this is how the web worked. But soon after the introduction of <span class="caps">CGI</span>, developers began exploring the possibility of running a single program (an application server) that responds to any <span class="caps">URL</span>, parsing the <span class="caps">URL</span> to establish routing, and generating pages dynamically. This was the genesis of the “web application model.” It’s how Rails works.</p>
-<p>The web application model makes it possible to use the model-view-controller architecture. Instead of looking at the web as URLs that return pages, we see requests that are routed to controllers that render views.</p>
+<p>The web application model frees us from a one-to-one correspondence of a <span class="caps">URL</span> with a single file or script. When there is code that is used on more than one page, we can refactor our code into object-oriented classes and methods that can be inherited rather than duplicated.</p>
+<p>The web application model makes it possible to use the model-view-controller architecture. Instead of looking at the web as URLs that return pages, we see requests that are routed to controllers that render views. Instead of a single script that mixes <span class="caps">HTML</span> with data manipulation, we can use a model to segregate any code that manipulates data.</p>
+<p>It turns out that many requests require similar types of data manipulation. Connecting to a database is one example. Validation of form data is another example. If we follow the “page model,” we’ll duplicate common validation code every time we need to process a form. Instead, using the “web application model,” we consolidate our validation functions in a parent class that any model can inherit.</p>
+<p>Consider our <code>process_form</code> method again:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">process_form</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">][</span><span class="ss">:name</span><span class="o">].</span><span class="n">blank?</span>
+      <span class="k">raise</span> <span class="s1">'Name is blank!'</span>
+    <span class="k">end</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">][</span><span class="ss">:email</span><span class="o">].</span><span class="n">blank?</span>
+      <span class="k">raise</span> <span class="s1">'Email is blank!'</span>
+    <span class="k">end</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">][</span><span class="ss">:content</span><span class="o">].</span><span class="n">blank?</span>
+      <span class="k">raise</span> <span class="s1">'Message is blank!'</span>
+    <span class="k">end</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">"Received request from </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">redirect_to</span> <span class="n">root_path</span><span class="p">,</span> <span class="ss">:notice</span> <span class="o">=&gt;</span> <span class="n">message</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><p>Validation tests don’t belong in the controller. An ideal controller only instantiates a model and renders a view. Our “segregation of concern” philosophy suggests that validation belongs in a model, since validation is a type of data manipulation (strictly speaking, a test of data integrity). Furthermore, it would be nice to make the validation tests generic so they could be used to validate data submitted from any form.</p>
+<p>Rails, as a framework, provides all this for us.</p>
+<h3 id="activemodel">ActiveModel</h3>
+<p>Rails extracts and generalizes common code that every website requires. The code that websites need for data manipulation is abstracted into the Rails <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class.</p>
+<p>The ActiveModel class interfaces with SimpleForm to provide sophisticated validation and error handling. We can inherit behavior from the ActiveModel class to add validation and error handling to any model we create.</p>
+<p>SimpleForm will recognize ActiveModel methods if we provide a model as an argument to the SimpleForm view helper. SimpleForm will give the form a name that matches the model name. And SimpleForm will automatically generate a destination <span class="caps">URL</span> for the form based on the model name.</p>
+<p>More significantly, SimpleForm will include sophisticated error handling in the form. If a visitor submits a form with a blank name or invalid email address, and we declare we require validation in our model, SimpleForm will highlight the invalid field and display an inline message indicating the problem. Compared to what we’ve implemented so far, this kind of error handling provides a vsatly superior user experience. Instead of displaying a message that the application failed, the form will be redisplayed with the problem marked and annotated.</p>
+<p>Now that we’ve seen the advantages of the “Rails way,” let’s re-implement our contact form using the model-view-controller architecture.</p>
 <h3 id="model-2">Model</h3>
-<p>Reference: <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: Active Model</a></p>
+<p>When we build database-backed applications with Rails, we base our models on a parent class named ActiveRecord. It gives us all the benefits of ActiveModel plus an interface to databases.</p>
+<p>We are not using a database for our tutorial application, so we’ll use ActiveModel directly without ActiveRecord. Unfortunately, “convention over configuration” only takes us partway when we create a new model. To use ActiveModel we have to:</p>
+<ul>
+  <li>inform the model we want to include ActiveModel methods</li>
+  <li>we have initialize the instance with the form data</li>
+  <li>we have to indicate we are not using a database</li>
+</ul>
+<p>Let’s set up a model that inherits from ActiveModel.</p>
 <p>Create a file <strong>app/models/contact.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Contact</span>
   <span class="kp">include</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Validations</span>
@@ -2105,17 +2141,26 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i</span>
   <span class="n">validates_length_of</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:maximum</span> <span class="o">=&gt;</span> <span class="mi">500</span>
 
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
-    <span class="n">attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-      <span class="nb">send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-    <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@email</span> <span class="o">=</span> <span class="n">email</span>
+    <span class="vi">@content</span> <span class="o">=</span> <span class="n">content</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">persisted?</span>
     <span class="kp">false</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></div><h3 id="controller-3">Controller</h3>
+</pre></div><p>We give the model the name “Contact.”</p>
+<p>We include <em>modules</em> from ActiveModel for validations, conversion, and naming.</p>
+<p>We use the Ruby <code>attr_accessor</code> keyword so we can set and retrieve attributes (data fields).</p>
+<p>ActiveModel gives us validation methods named <code>validates_presence_of</code>, <code>validates_format_of</code>, and <code>validates_length_of</code>. We check that <code>name</code> exists (it can’t be blank). We provide a complex <em>regex</em>, or <em>regular expression</em>, to test if the email address is valid. Finally, we declare that the message content cannot exceed 500 characters.</p>
+<p>When the model is instantiated, we’ll need to provide arguments for the name, email, and content attributes. An <code>initialize</code> method sets the values.</p>
+<p>A <code>persisted?</code> method informs SimpleForm that our model is not backed by a database.</p>
+<p>Don’t worry. You’re not expected to figure all this out on your own as a Rails developer. In this case, the challenge of implementing a model with validations but without a database is described on several blog posts and shown in detail on the <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: ActiveModel</a> screencast.</p>
+<p>Now that we have a model, we’ll need a controller, routing, and views. But before we complete our model-view-controller architecture, we’ll learn about <em>RESTful resources</em>.</p>
+<h3 id="restful-resources">RESTful Resources</h3>
+<h3 id="controller-3">Controller</h3>
 <p>Replace the contents of the file <strong>app/controllers/contacts_controller.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
@@ -2130,14 +2175,14 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
       <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Message sent from </span><span class="si">#{</span><span class="vi">@contact</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">."</span>
       <span class="n">redirect_to</span> <span class="n">root_path</span>
     <span class="k">else</span>
-      <span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">'new'</span>
+      <span class="n">render</span> <span class="ss">:new</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </pre></div><h3 id="routing-3">Routing</h3>
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
-  <span class="n">resources</span> <span class="ss">:contacts</span>
+  <span class="n">resources</span> <span class="ss">:contacts</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
   <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
 <span class="k">end</span>
 </pre></div><h3 id="navigation-links-2">Navigation Links</h3>
