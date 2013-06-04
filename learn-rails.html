@@ -2082,7 +2082,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="k">end</span>
 </pre></div><p>We would need additional code to test for invalid email addresses (it will be a complex <em>regex</em>, or <em>regular expression</em>). And we would need a nicer way of showing the error to the visitor (right now, raising the exception displays an error message that makes it appear the application is broken). If we were implementing this on another web application platform, we might go further down this path, googling for code examples, and implementing a lengthy but bulletproof validation function.</p>
 <p>Rails offers a better way.</p>
-<h3 id="the-old-way-or-the-rails-way">The Old Way Or the Rails Way</h3>
+<h3 id="the-old-way-or-the-rails-way">The Old Way or the Rails Way</h3>
 <p>Our initial implementation of the contact form is consistent with the earliest approach to web application development, an approach that originated in 1993 with a specification for <span class="caps">CGI</span>, the <a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">Common Gateway Interface</a>. Before <span class="caps">CGI</span>, every page on the web existed only as a static <span class="caps">HTML</span> file. <span class="caps">CGI</span> made it possible to run a program, or <span class="caps">CGI</span> script, that dynamically generated <span class="caps">HTML</span>. In the early years of the web, every web <span class="caps">URL</span> matched either an <span class="caps">HTML</span> file or a <span class="caps">CGI</span> script. This is the “page paradigm” of the web.</p>
 <p>So far, we’re following the “page paradigm.” Our Contact page hosts the form. Clicking the submit button makes a request to another page that is actually a program that returns <span class="caps">HTML</span>. Until the late 1990s, this is how the web worked. But soon after the introduction of <span class="caps">CGI</span>, developers began exploring the possibility of running a single program (an application server) that responds to any <span class="caps">URL</span>, parsing the <span class="caps">URL</span> to establish routing, and generating pages dynamically. This was the genesis of the “web application paradigm.” It’s how Rails works.</p>
 <p>The web application paradigm frees us from one-to-one correspondence of a <span class="caps">URL</span> with a single file or script. It allows us to refactor our code into object-oriented classes and methods that can be inherited rather than duplicated, which means we don’t repeat the same code on every page that processes a form.</p>
@@ -2186,11 +2186,11 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </ul>
 <p>But seven basic actions are all you need for managing any list of items.</p>
 <p>The “Rails way” is about taking advantage of structure and convention to leverage the power of the framework.</p>
-<p>The ApplicationController contains code to implement each of the seven standard actions. When we create a controller that inherits from the ApplicationController, we get these standard actions “for free.” That’s why we our <code>index</code> method in our HomeController was so simple. The controller knew to render a view file named <strong>index.html.erb</strong> from the <strong>views/home/</strong> folder because of behavior inherited from the ApplicationController.</p>
-<p>Just like the Rails directory structure provides consistency to make it easy for any Rails developer to collaborate with other Rails developers, relying on the seven standard controller actions makes it easy for other team members to understand how your controllers work. To the extent you can, use the seven standard controller actions.</p>
-<p>When necessary, you will add other controller actions. For example, imagine you’ve built a subscription website. When a user’s subscription ends, you may not want to <code>destroy</code> the subscriber record. Instead you might add a controller <code>expire</code> or <code>suspend</code> action that marks the subscriber record as expired so you can continue to access the subscriber’s contact information for customer service or renewal offers.</p>
+<p>The ApplicationController contains code to implement each of the seven standard actions. When we create a controller that inherits from the ApplicationController, we get these standard actions “for free.” That’s why our <code>index</code> method in our HomeController was so simple. The controller knew to render a view file named <strong>index.html.erb</strong> from the <strong>views/home/</strong> folder because of behavior inherited from the ApplicationController.</p>
+<p>Just like the Rails directory structure provides consistency to make it easy for any Rails developer to collaborate with other Rails developers, relying on the seven standard controller actions makes it easy for other team members to understand how your controllers work.</p>
+<p>When necessary, you will add other controller actions. For example, imagine you’ve built a subscription website. When a user’s subscription ends, you may not want to <code>destroy</code> the subscriber record. Instead you might add a controller <code>expire</code> or <code>suspend</code> action that marks the subscriber record as expired so you can continue to access the subscriber’s contact information for customer service or renewal offers. To the extent you can, use the seven standard controller actions and be cautious about adding more.</p>
 <p>Earlier, I said our ContactsController <code>process_form</code> method isn’t suitable for the “Rails way.” With our model-view-controller architecture, we can piggyback on the ApplicationController to display our empty contact form and process the form when it is submitted.</p>
-<p>We’ll use two of the seven standard controller actions:</p>
+<p>We’ll use only two of the seven standard controller actions:</p>
 <ul>
   <li><em>new</em> – display the empty contact form</li>
   <li><em>create</em> – validate and process the submitted form</li>
@@ -2257,8 +2257,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="go">new_contact GET   /contacts/new(.:format) contacts#new</span>
 <span class="go">root              /                       home#index</span>
 <span class="go">page        GET   /pages/*id              high_voltage/pages#show</span>
-</pre></div><p>The output of the <code>rake routes</code> command is somewhat cryptic but confirms we’ve created the rutes we need.</p>
-<p>We’re ready to test our model-view-controller implementation of the Contact feature.</p>
+</pre></div><p>The output of the <code>rake routes</code> command is somewhat cryptic but confirms we’ve created the routes we need.</p>
+<p>We’re ready to test the model-view-controller implementation of the Contact feature.</p>
 <h3 id="test-the-application-7">Test the Application</h3>
 <p>Stop the web server with Control-c and restart:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
@@ -2372,7 +2372,6 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div>
 </section>
 <section class='chapter' id='mailing-list'><h2>Mailing List</h2>
-<h3 id="introducing-forms">Introducing Forms</h3>
 <h3 id="modify-controller-2">Modify Controller</h3>
 <h3 id="flash-message">Flash Message</h3>
 </section>
