@@ -884,16 +884,17 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <h3 id="adding-gems">Adding Gems</h3>
 <p>In the process of planning the tutorial application and reviewing the requirements, I’ve identified several gems which will be useful. I’ve used these gems on previous projects and I know they are popular, so I can recommend them. Here are the gems we’ll add to the Gemfile:</p>
 <ul>
+  <li><a href="https://github.com/softace/activerecord-tableless">activerecord-tableless</a> – use Rails without a database</li>
   <li><a href="https://github.com/laserlemon/figaro">figaro</a> – configuration framework</li>
-  <li><a href="https://github.com/thoughtbot/high_voltage">high_voltage</a> – for static pages like “about”</li>
+  <li><a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> – Twitter Bootstrap for <span class="caps">CSS</span> and JavaScript</li>
   <li><a href="http://simple-form.plataformatec.com.br/">simple_form</a> – forms made easy</li>
+  <li><a href="https://github.com/thoughtbot/high_voltage">high_voltage</a> – for static pages like “about”</li>
   <li><a href="https://github.com/amro/gibbon">gibbon</a> – access to the MailChimp <span class="caps">API</span></li>
 </ul>
 <p>We’ll also add a utility that makes development easier:</p>
 <ul>
   <li><a href="https://github.com/charliesome/better_errors">better_errors</a> – helps when things go wrong</li>
 </ul>
-<p>Finally, we’ll add a set of gems for a testing framework. Though I will not show you how to do test-driven development (that’s an advanced tutorial), you can download and run my test suite.</p>
 <p>Notice that we have grouped the gems we use only in development or testing. Specifying development or testing groups insures the gems are not loaded in production, reducing the application’s memory footprint.</p>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
 <p><strong>Gemfile</strong></p>
@@ -910,22 +911,14 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="n">gem</span> <span class="s1">'jbuilder'</span><span class="p">,</span> <span class="s1">'~&gt; 1.0.1'</span>
 
 <span class="c1"># learn-rails</span>
+<span class="n">gem</span> <span class="s1">'activerecord-tableless'</span>
 <span class="n">gem</span> <span class="s1">'figaro'</span>
-<span class="n">gem</span> <span class="s2">"high_voltage"</span>
+<span class="n">gem</span> <span class="s1">'bootstrap-sass'</span>
 <span class="n">gem</span> <span class="s1">'simple_form'</span>
-<span class="n">gem</span> <span class="s2">"gibbon"</span>
+<span class="n">gem</span> <span class="s1">'high_voltage'</span>
+<span class="n">gem</span> <span class="s1">'gibbon'</span>
 <span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
   <span class="n">gem</span> <span class="s1">'better_errors'</span>
-<span class="k">end</span>
-<span class="n">group</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span> <span class="k">do</span>
-  <span class="n">gem</span> <span class="s1">'rspec-rails'</span>
-  <span class="n">gem</span> <span class="s1">'factory_girl_rails'</span>
-<span class="k">end</span>
-<span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
-  <span class="n">gem</span> <span class="s1">'database_cleaner'</span>
-  <span class="n">gem</span> <span class="s1">'email_spec'</span>
-  <span class="n">gem</span> <span class="s1">'launchy'</span>
-  <span class="n">gem</span> <span class="s1">'capybara'</span>
 <span class="k">end</span>
 </pre></div><p>We’re adding these gems at the beginning of our development process. In real life, it is common to add gems to the Gemfile during the ongoing process of development as you find new gems you want to use. Each time you edit the Gemfile, run <code>bundle install</code> and restart your web server.</p>
 <h3 id="install-the-gems">Install the Gems</h3>
@@ -1873,7 +1866,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>It’s possible to place these pages in the <strong>public/</strong> folder and copy the <span class="caps">HTML</span> and <span class="caps">CSS</span> from the default application layout but this leads to duplicated code and maintenance headaches. And dynamic elements such as navigation links can’t be included. For these reasons, developers seldom create static pages in the <strong>public/</strong> folder.</p>
 <p>Alternatively, a dynamic page can be created that has no model, a nearly-empty controller, and a view that contains no instance variables. This solution is quite common for static views that use the application layout.</p>
 <p>This solution is implemented so frequently that many developers create a gem to encapsulate the functionality. We’re going to use the best-known of these gems, the <a href="https://github.com/thoughtbot/high_voltage">high_voltage gem</a> created by the <a href="http://www.thoughtbot.com/">Thoughtbot</a> consulting firm.</p>
-<p>First we’ll use the HighVoltage gem to create an “About” Page. Then we’ll begin an exercise to create a Contact page. Initially we’ll use the HighVoltage gem. Then we’ll add a controller to process the form. And finally we’ll discard the page we created with the HighVoltage gem and replace it with a full model-view-controller implementation. The process will introduce the concept of <em>RESTful architecture</em> and show the difference between an older form of web application architecture and a newer “Rails way.”</p>
+<p>First we’ll use the HighVoltage gem to create an “About” Page. Then we’ll begin an exercise to create a Contact page. Initially we’ll use the HighVoltage gem. Then we’ll add a controller to process the form. And finally we’ll discard the page we created with the HighVoltage gem and replace it with a full model-view-controller implementation. The process will show the difference between an older form of web application architecture and a newer “Rails way.”</p>
 <h3 id="highvoltage-gem">HighVoltage Gem</h3>
 <p>We can add a page using the HighVoltage gem almost effortlessly. The gem implements Rails “convention over configuration” so well that there is nothing to configure. There are alternatives to its defaults which can be useful but we won’t need them; visit the GitHub home page for the <a href="https://github.com/thoughtbot/high_voltage">high_voltage gem</a> if you want to explore all the options.</p>
 <p>In your <strong>Gemfile</strong>, you’ve already added:</p>
@@ -2090,10 +2083,10 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div><p>We would need additional code to test for invalid email addresses (it will be a complex <em>regex</em>, or <em>regular expression</em>). And we would need a nicer way of showing the error to the visitor (right now, raising the exception displays an error message that makes it appear the application is broken). If we were implementing this on another web application platform, we might go further down this path, googling for code examples, and implementing a lengthy but bulletproof validation function.</p>
 <p>Rails offers a better way.</p>
 <h3 id="the-old-way-or-the-rails-way">The Old Way Or the Rails Way</h3>
-<p>Our initial implementation of the contact form is consistent with the earliest approach to web application development, an approach that originated in 1993 with a specification for <span class="caps">CGI</span>, the <a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">Common Gateway Interface</a>. Before <span class="caps">CGI</span>, every page on the web existed only as a static <span class="caps">HTML</span> file. <span class="caps">CGI</span> made it possible to run a program, or <span class="caps">CGI</span> script, that dynamically generated <span class="caps">HTML</span>. In the early years of the web, every web <span class="caps">URL</span> matched either an <span class="caps">HTML</span> file or a <span class="caps">CGI</span> script. This is the “page approach” of the web.</p>
-<p>So far, we’re following the “page approach.” Our Contact page hosts the form. Clicking the submit button makes a request to another page that is actually a program that returns <span class="caps">HTML</span>. Until the late 1990s, this is how the web worked. But soon after the introduction of <span class="caps">CGI</span>, developers began exploring the possibility of running a single program (an application server) that responds to any <span class="caps">URL</span>, parsing the <span class="caps">URL</span> to establish routing, and generating pages dynamically. This was the genesis of the “web application approach.” It’s how Rails works.</p>
-<p>The web application approach frees us from one-to-one correspondence of a <span class="caps">URL</span> with a single file or script. It allows us to refactor our code into object-oriented classes and methods that can be inherited rather than duplicated, which means we don’t repeat the same code on every page that processes a form.</p>
-<p>The web application approach makes it possible to use the model-view-controller architecture. Instead of looking at the web as URLs that return pages, we see requests that are routed to controllers that render views. We can segregate any code that manipulates data into a model class, instead of mixing <span class="caps">HTML</span> with data manipulation in a single script. With the “web application approach,” we can create a model parent class that isolates the code that connects to a database or validates form data. Then we can inherit the parent class behavior in any model and get a database connection or validation “for free.” Unlike the “page approach,” we’ll avoid duplicating validation code every time we need to process a form.</p>
+<p>Our initial implementation of the contact form is consistent with the earliest approach to web application development, an approach that originated in 1993 with a specification for <span class="caps">CGI</span>, the <a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">Common Gateway Interface</a>. Before <span class="caps">CGI</span>, every page on the web existed only as a static <span class="caps">HTML</span> file. <span class="caps">CGI</span> made it possible to run a program, or <span class="caps">CGI</span> script, that dynamically generated <span class="caps">HTML</span>. In the early years of the web, every web <span class="caps">URL</span> matched either an <span class="caps">HTML</span> file or a <span class="caps">CGI</span> script. This is the “page paradigm” of the web.</p>
+<p>So far, we’re following the “page paradigm.” Our Contact page hosts the form. Clicking the submit button makes a request to another page that is actually a program that returns <span class="caps">HTML</span>. Until the late 1990s, this is how the web worked. But soon after the introduction of <span class="caps">CGI</span>, developers began exploring the possibility of running a single program (an application server) that responds to any <span class="caps">URL</span>, parsing the <span class="caps">URL</span> to establish routing, and generating pages dynamically. This was the genesis of the “web application paradigm.” It’s how Rails works.</p>
+<p>The web application paradigm frees us from one-to-one correspondence of a <span class="caps">URL</span> with a single file or script. It allows us to refactor our code into object-oriented classes and methods that can be inherited rather than duplicated, which means we don’t repeat the same code on every page that processes a form.</p>
+<p>The web application paradigm makes it possible to use the model-view-controller architecture. Instead of looking at the web as URLs that return pages, we see requests that are routed to controllers that render views. We can segregate any code that manipulates data into a model class, instead of mixing <span class="caps">HTML</span> with data manipulation in a single script. With the “web application paradigm,” we can have a generic model class that isolates the code that connects to a database or validates form data. We can create models that inherit the generic behavior from a parent class and get a database connection or validation “for free.” Unlike the “page paradigm,” we’ll avoid duplicating validation code every time we need to process a form.</p>
 <p>Consider our <code>process_form</code> method again:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
@@ -2112,54 +2105,98 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><p>Validation tests don’t belong in the controller. An ideal controller only instantiates a model and renders a view. Our “segregation of concern” philosophy suggests that validation belongs in a model, since validation is a type of data manipulation (strictly speaking, a test of data integrity). Furthermore, it would be nice to make the validation tests generic so they could be used to validate data submitted from any form.</p>
+</pre></div><p>Our “segregation of concern” philosophy suggests that validation belongs in a model, since validation is a type of data manipulation (strictly speaking, a test of data integrity). Furthermore, it would be nice to make the validation tests generic so they could be used to validate data submitted from any form.</p>
 <p>Rails, as a framework, provides all this for us.</p>
-<h3 id="activemodel">ActiveModel</h3>
-<p>Rails extracts and generalizes common code that every website requires. The code that websites need for data manipulation is abstracted into the Rails <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class.</p>
-<p>The ActiveModel class interfaces with SimpleForm to provide sophisticated validation and error handling. We can inherit behavior from the ActiveModel class to add validation and error handling to any model we create.</p>
-<p>SimpleForm will recognize ActiveModel methods if we provide a model as an argument to the SimpleForm view helper. SimpleForm will give the form a name that matches the model name. And SimpleForm will automatically generate a destination <span class="caps">URL</span> for the form based on the model name.</p>
+<h3 id="activerecord">ActiveRecord</h3>
+<p>Rails extracts and generalizes common code that every website requires. The code that websites need for access to databases is abstracted into the Rails <a href="https://github.com/rails/rails/tree/master/activerecord">ActiveRecord</a> class. ActiveRecord includes code from the <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class that handles interaction with forms and data validation.</p>
+<p>The ActiveRecord class interfaces with SimpleForm to provide sophisticated validation and error handling. We can inherit behavior from the ActiveRecord class to add validation and error handling to any model we create.</p>
+<p>SimpleForm will recognize ActiveRecord methods if we provide a model as an argument to the SimpleForm view helper. SimpleForm will give the form a name that matches the model name. And SimpleForm will automatically generate a destination <span class="caps">URL</span> for the form based on the model name.</p>
 <p>More significantly, SimpleForm will add sophisticated error handling to the form. If a visitor submits a form with a blank name or invalid email address, and we declare in our model that we require validation, SimpleForm will highlight the invalid field and display an inline message indicating the problem. Compared to what we’ve implemented so far, this kind of error handling provides a vastly superior user experience. Instead of displaying a message that the application failed, the form will be redisplayed with the problem marked and noted.</p>
 <p>Now that we’ve seen the advantages of the “Rails way,” let’s re-implement our contact form using the model-view-controller architecture.</p>
 <h3 id="model-2">Model</h3>
-<p>When we build database-backed applications with Rails, we base our models on a parent class named ActiveRecord. It gives us all the benefits of ActiveModel plus an interface to databases.</p>
-<p>We are not using a database for our tutorial application, so we’ll use ActiveModel directly without ActiveRecord. Unfortunately, “convention over configuration” only takes us partway when we create a new model. To use ActiveModel we have to:</p>
-<ul>
-  <li>inform the model we want to include ActiveModel methods</li>
-  <li>initialize the instance with the form data</li>
-  <li>indicate we are not using a database</li>
-</ul>
-<p>Let’s set up a model that inherits from ActiveModel.</p>
+<p>When we build database-backed applications with Rails, we base our models on a parent class named ActiveRecord. We are not using a database for our tutorial application, so we’ll use the <a href="https://github.com/softace/activerecord-tableless">activerecord-tableless</a> gem to disable the database features of ActiveRecord.</p>
+<p><em>Note:</em> There’s a way to create a model without a database using only the <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class, described in the <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: ActiveModel</a> screencast. Either approach is fine; we’re using the activerecord-tableless gem because it is easier to explain.</p>
+<p>Let’s set up a model that inherits from ActiveRecord.</p>
 <p>Create a file <strong>app/models/contact.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Contact</span>
-  <span class="kp">include</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Validations</span>
-  <span class="kp">include</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Conversion</span>
-  <span class="kp">extend</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Naming</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Contact</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+  <span class="n">has_no_table</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:content</span>
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="n">column</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="n">column</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:string</span>
 
   <span class="n">validates_presence_of</span> <span class="ss">:name</span>
   <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i</span>
   <span class="n">validates_length_of</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:maximum</span> <span class="o">=&gt;</span> <span class="mi">500</span>
 
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-    <span class="vi">@email</span> <span class="o">=</span> <span class="n">email</span>
-    <span class="vi">@content</span> <span class="o">=</span> <span class="n">content</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">persisted?</span>
-    <span class="kp">false</span>
-  <span class="k">end</span>
 <span class="k">end</span>
-</pre></div><p>We give the model the name “Contact.”</p>
-<p>We include <em>modules</em> from ActiveModel for validations, conversion, and naming.</p>
-<p>We use the Ruby <code>attr_accessor</code> keyword so we can set and retrieve attributes (data fields).</p>
-<p>ActiveModel gives us validation methods named <code>validates_presence_of</code>, <code>validates_format_of</code>, and <code>validates_length_of</code>. We check that <code>name</code> exists (it can’t be blank). We provide a complex <em>regex</em>, or <em>regular expression</em>, to test if the email address is valid. Finally, we declare that the message content cannot exceed 500 characters.</p>
-<p>When the model is instantiated, we’ll need to provide arguments for the name, email, and content attributes. An <code>initialize</code> method sets the values.</p>
-<p>A <code>persisted?</code> method informs SimpleForm that our model is not backed by a database.</p>
-<p>Don’t worry. You’re not expected to figure all this out on your own as a Rails developer. In this case, the challenge of implementing a model with validations but without a database is described on several blog posts and shown in detail on the <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: ActiveModel</a> screencast.</p>
-<p>Now that we have a model, we’ll need a controller, routing, and views. But before we complete our model-view-controller architecture, we’ll learn about <em>RESTful resources</em>.</p>
-<h3 id="restful-resources">RESTful Resources</h3>
+</pre></div><p>We give the model the name “Contact” and inherit from the ActiveRecord class.</p>
+<p>We use the <code>has_no_table</code> directive from the activerecord-tableless gem to disable database features of ActiveRecord.</p>
+<p>We specify attributes (data fields) for the model by using the <code>column</code> keyword from the activerecord-tableless gem. These match the fields in the contact form.</p>
+<p>ActiveRecord gives us validation methods named <code>validates_presence_of</code>, <code>validates_format_of</code>, and <code>validates_length_of</code>. We check that <code>name</code> exists (it can’t be blank). We provide a complex <em>regex</em>, or <em>regular expression</em>, to test if the email address is valid. Finally, we declare that the message content cannot exceed 500 characters.</p>
+<p>The model is elegant. We describe the fields we need and state our validation requirements. ActiveRecord does all the rest.</p>
+<p>Let’s change our contact form to use our new model.</p>
+<h3 id="remove-the-contact-page">Remove the Contact Page</h3>
+<p>We’re implementing a model-view-controller architecture for our Contact feature. That means we have a Contact model, a ContactsController, and we’ll need view files in the <strong>app/views/contacts/</strong> folder.</p>
+<p>Start by removing the file <strong>app/views/pages/contact.html.erb</strong>.</p>
+<p>In a minute, we’ll replace it with a file in the <strong>app/views/contacts/</strong> folder.</p>
+<h3 id="change-navigation-links">Change Navigation Links</h3>
+<p>Now that we’ve removed the file <strong>app/views/pages/contact.html.erb</strong>, we’ll change the navigation links.</p>
+<p>Change the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;ul class="nav"&gt;</span>
+<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Home'</span><span class="p">,</span> <span class="n">root_path</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
+<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'About'</span><span class="p">,</span> <span class="n">page_path</span><span class="p">(</span><span class="s1">'about'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
+<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Contact'</span><span class="p">,</span> <span class="n">new_contact_path</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
+<span class="x">&lt;/ul&gt;</span>
+</pre></div><p>Our new route <code>new_contact_path</code> doesn’t yet exist. We’ll complete our move to the model-view-controller architecture by adding the appropriate routes.</p>
+<p>Next we’ll add a new Contact page.</p>
+<h3 id="create-a-new-contact-page">Create a New Contact Page</h3>
+<p>Earlier, I said SimpleForm configures itself if we provide a model that inherits from ActiveRecord. SimpleForm gives the form a name that matches the model name. And SimpleForm generates a destination <span class="caps">URL</span> based on the model name.</p>
+<p>We’ll soon create a controller that assigns the Contact model to the <code>@contact</code> instance variable. We’ll use that as an argument for the SimpleForm view helper: <code>simple_form_for @contact do |form| ... end</code>.</p>
+<p>We’ll also add an <code>error_notification</code> method provided by the form object.</p>
+<p>Create a file <strong>app/views/contacts/new.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@contact</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:autofocus</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:required</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"span6"</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><p>We’re now providing only one argument, the <code>@contact</code> instance variable, to the SimpleForm view helper. That’s enough to generate the form name and destination <span class="caps">URL</span>.</p>
+<p>We’ve added the <code>error_notification</code> method which provides all the error handling. The method call is very simple but the results will be impressive.</p>
+<p>We’ll need a controller and routing to complete our model-view-controller architecture. But first, we’ll detour to learn about seven standard controller actions.</p>
+<h3 id="seven-controller-actions">Seven Controller Actions</h3>
+<p>Consider all the possibilities for managing a list. It’s a list of anything: users, inventory, thingamajigs. We use a web application to manage the list, so we’ll fill out a form to record each item in our list.</p>
+<p>The web application offers seven features to help us manage our records:</p>
+<ul>
+  <li><em>index</em> – display a list of all items</li>
+  <li><em>show</em> – display a record of one item</li>
+  <li><em>new</em> – display an empty form</li>
+  <li><em>create</em> – save a record of a new item</li>
+  <li><em>edit</em> – display a record for editing</li>
+  <li><em>update</em> – save an edited record</li>
+  <li><em>destroy</em> – delete a record</li>
+</ul>
+<p>You can manage any list using these seven actions. There are a few extra actions that are helpful, such as:</p>
+<ul>
+  <li><em>pagination</em> – displaying a portion of a list</li>
+  <li><em>sorting</em> – displaying the list in a different order</li>
+  <li><em>bulk edit</em> – changing multiple items at once</li>
+</ul>
+<p>But seven basic actions are all you need for managing any list of items.</p>
+<p>The “Rails way” is about taking advantage of structure and convention to leverage the power of the framework.</p>
+<p>The ApplicationController contains code to implement each of the seven standard actions. When we create a controller that inherits from the ApplicationController, we get these standard actions “for free.” That’s why we our <code>index</code> method in our HomeController was so simple. The controller knew to render a view file named <strong>index.html.erb</strong> from the <strong>views/home/</strong> folder because of behavior inherited from the ApplicationController.</p>
+<p>Just like the Rails directory structure provides consistency to make it easy for any Rails developer to collaborate with other Rails developers, relying on the seven standard controller actions makes it easy for other team members to understand how your controllers work. To the extent you can, use the seven standard controller actions.</p>
+<p>When necessary, you will add other controller actions. For example, imagine you’ve built a subscription website. When a user’s subscription ends, you may not want to <code>destroy</code> the subscriber record. Instead you might add a controller <code>expire</code> or <code>suspend</code> action that marks the subscriber record as expired so you can continue to access the subscriber’s contact information for customer service or renewal offers.</p>
+<p>Earlier, I said our ContactsController <code>process_form</code> method isn’t suitable for the “Rails way.” With our model-view-controller architecture, we can piggyback on the ApplicationController to display our empty contact form and process the form when it is submitted.</p>
+<p>We’ll use two of the seven standard controller actions:</p>
+<ul>
+  <li><em>new</em> – display the empty contact form</li>
+  <li><em>create</em> – validate and process the submitted form</li>
+</ul>
+<p>Our ContactsController will know to render a view from the <strong>app/views/contacts/new.html.erb</strong> file when we call the controller <code>new</code> method.</p>
+<p>We won’t piggyback on behavior from the ApplicationController <code>create</code> method. But we’ll implement a <code>create</code> method because, by convention, the form will submit the data to the controller’s <code>create</code> method. SimpleForm will create a destination <span class="caps">URL</span> that corresponds to the ContactsController#create action.</p>
 <h3 id="controller-3">Controller</h3>
 <p>Replace the contents of the file <strong>app/controllers/contacts_controller.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
@@ -2179,33 +2216,50 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></div><h3 id="routing-3">Routing</h3>
+</pre></div><p>We’ve dropped the “old school” <code>process_form</code> method and added the “Rails way” <code>new</code> and <code>create</code> methods.</p>
+<p>The controller <code>new</code> action will instantiate an empty Contact model, assign it to the <code>@contact</code> instance variable, and render the <strong>app/views/contacts/new.html.erb</strong> view. We’ve already created the view file containing the form.</p>
+<p>SimpleForm will set a destination <span class="caps">URL</span> that corresponds to the ContactsController#create action. The <code>create</code> method will instantiate a new Contact model and pass the <code>params[:contact]</code> hash to the model. We don’t need any code in the Contact model to retrieve parameters from the hash; the ActiveRecord parent class provides the code “for free.”</p>
+<p>The ActiveRecord parent class also provides a method <code>valid?</code> which we can call on the Contact model. Our conditional statement <code>if @contact.valid?</code> checks each of the validation requirements we’ve set in the model.</p>
+<p>If all the Contact fields are valid, we can send a message (not yet implemented), prepare a flash message, and redirect to the home page. Notice that we don’t need to dig into the <code>params</code> hash for the visitor’s name; it is now available as <code>@contact.name</code> directly from the model.</p>
+<p>If any validation fails, the controller <code>create</code> action will render the <strong>app/views/contacts/new.html.erb</strong> view. This time, appropriate error messages are set and the form object’s <code>error_notification</code> method will highlight the invalid field and display a matching prompt.</p>
+<p>You’re looking at the tightly bound interaction of the “Rails way” model, view, and controller.</p>
+<p>The only element we are missing is routing.</p>
+<h3 id="routing-3">Routing</h3>
+<p>Rails routing is aware of the seven standard controller actions.</p>
+<p>In fact, it takes only one keyword (with one parameter) to generate seven different routes for any controller.</p>
+<p>The keyword is <code>resources</code> and supplying a name that matches model and controller provides all seven routes.</p>
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">resources</span> <span class="ss">:contacts</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
   <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
 <span class="k">end</span>
-</pre></div><h3 id="navigation-links-2">Navigation Links</h3>
-<p>Change the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;ul class="nav"&gt;</span>
-<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Home'</span><span class="p">,</span> <span class="n">root_path</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
-<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'About'</span><span class="p">,</span> <span class="n">page_path</span><span class="p">(</span><span class="s1">'about'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
-<span class="x">  &lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Contact'</span><span class="p">,</span> <span class="n">new_contact_path</span> <span class="cp">%&gt;</span><span class="x">&lt;/li&gt;</span>
-<span class="x">&lt;/ul&gt;</span>
-</pre></div><h3 id="update-the-contact-form">Update the Contact Form</h3>
-<p>Resource: <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a><br />
-Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm and Twitter Bootstrap demo app</a></p>
-<p>Remove the file <strong>app/views/pages/contact.html.erb</strong>.</p>
-<p>Create a file <strong>app/views/contacts/new.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@contact</span><span class="p">,</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'form-vertical'</span> <span class="p">}</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:autofocus</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:required</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"span6"</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><h3 id="test-the-application-7">Test the Application</h3>
+</pre></div><p>Here we’ve added <code>resources :contacts, only: [:new, :create]</code>.</p>
+<p>We only want two routes so we’ve added the restriction <code>only: [:new, :create]</code>.</p>
+<p>The <code>new</code> route has these properties:</p>
+<ul>
+  <li><code>new_contact_path</code> – route helper</li>
+  <li><code>contacts</code> – name of the controller (ContactsController)</li>
+  <li><code>new</code> – controller action</li>
+  <li><a href="http://localhost:3000/contacts/new">http://localhost:3000/contacts/new</a> – <span class="caps">URL</span> generated by the route helper</li>
+  <li><code>GET</code> – <span class="caps">HTTP</span> method to display a page</li>
+</ul>
+<p>The <code>create</code> route has these properties:</p>
+<ul>
+  <li><code>contacts_path</code> – route helper</li>
+  <li><code>contacts</code> – name of the controller (ContactsController)</li>
+  <li><code>create</code> – controller action</li>
+  <li><a href="http://localhost:3000/contacts">http://localhost:3000/contacts</a> – <span class="caps">URL</span> generated by the route helper</li>
+  <li><code>POST</code> – <span class="caps">HTTP</span> method to submit form data</li>
+</ul>
+<p>You can run the <code>rake routes</code> command to see these in the console:</p>
+<div class="highlight"><pre><span class="gp">$</span> rake routes
+<span class="go">contacts    POST  /contacts(.:format)     contacts#create</span>
+<span class="go">new_contact GET   /contacts/new(.:format) contacts#new</span>
+<span class="go">root              /                       home#index</span>
+<span class="go">page        GET   /pages/*id              high_voltage/pages#show</span>
+</pre></div><p>The output of the <code>rake routes</code> command is somewhat cryptic but confirms we’ve created the rutes we need.</p>
+<p>We’re ready to test our model-view-controller implementation of the Contact feature.</p>
+<h3 id="test-the-application-7">Test the Application</h3>
 <p>Stop the web server with Control-c and restart:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
@@ -2218,7 +2272,7 @@ Resource: <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleFor
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"contact form"</span>
 <span class="gp">$</span> git push origin master
-</pre></div>
+</pre></div><p>We’ve built a sophisticated Contact form. Now let’s add the code to email the form data to our client.</p>
 </section>
 <section class='chapter' id='sending-mail'><h2>Sending Mail</h2>
 <p>Article: <a href="http://guides.rubyonrails.org/action_mailer_basics.html">RailsGuides: Action Mailer Basics</a></p>
