@@ -108,7 +108,7 @@
 <p>Tutorials from <a href="http://twitter.com/rails_apps">@rails_apps</a> take you on a guided path starting with absolute basics (this tutorial). You’ll progress to intermediate-level tutorials and soon be using our in-depth guides for professional Rails developers.</p>
 <p>I believe it is important to feel satisfaction and accomplishment as you learn. That’s why each tutorial introduces Rails in stages. With each tutorial you will build a real-world Rails application. As you deploy and use your own Rails application you will have confirmation of your accomplishment and feel your success. Hands-on learning with real Rails applications is the key to absorbing and retaining knowledge.</p>
 <p>The applications you’ll build in the tutorials are not classroom exercises. The primary purpose of the RailsApps project is to provide starter applications for Rails developers. You’ll be building real applications that you can customize and adapt for your startup, at your job, or for clients.</p>
-<p>When you’ve completed this tutorial, you will be ready for more advanced self-study, including other tutorials from the RailsApps project, textbook introductions to Rails, or workshops and developer bootcamps that provide intensive training in Ruby on Rails. Other curriculums often skip the basics but this tutorial will give you a good grounding in foundation concepts so you won’t feel overwhelmed or frustrated as you continue yoru studies.</p>
+<p>When you’ve completed this tutorial, you will be ready for more advanced self-study, including other tutorials from the RailsApps project, textbook introductions to Rails, or workshops and developer bootcamps that provide intensive training in Ruby on Rails. Other curriculums often skip the basics but this tutorial will give you a good grounding in foundation concepts so you won’t feel overwhelmed or frustrated as you continue your studies.</p>
 <p>This tutorial is good preparation for:</p>
 <ul>
   <li>advanced tutorials in the <a href="https://tutorials.railsapps.org/">RailsApps Tutorials</a> series</li>
@@ -2021,7 +2021,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
 <span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="ss">:contact</span><span class="p">,</span> <span class="ss">url</span><span class="p">:</span> <span class="n">contact_path</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">autofocus</span><span class="p">:</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">required</span><span class="p">:</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">as</span><span class="p">:</span> <span class="ss">:text</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"span6"</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
@@ -2047,7 +2047,6 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Each of the form methods takes various parameters, such as:</p>
 <ul>
   <li><code>autofocus</code> – displays the cursor in the field</li>
-  <li><code>required</code> – indicates the field cannot be blank</li>
   <li><code>as: :text</code> – displays a multiline text area</li>
   <li><code>input_html</code> – adds any <span class="caps">HTML</span> such as a <span class="caps">CSS</span> class</li>
   <li><code>class</code> – applies a <span class="caps">CSS</span> class to modify a button’s appearance</li>
@@ -2190,11 +2189,11 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Rails extracts and generalizes common code that every website requires. The code that websites need for access to databases is abstracted into the Rails <a href="https://github.com/rails/rails/tree/master/activerecord">ActiveRecord</a> class. ActiveRecord includes code from the <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class that handles interaction with forms and data validation.</p>
 <p>The ActiveRecord class interfaces with SimpleForm to provide sophisticated validation and error handling. We can inherit behavior from the ActiveRecord class to add validation and error handling to any model we create.</p>
 <p>SimpleForm will recognize ActiveRecord methods if we provide a model as an argument to the SimpleForm view helper. SimpleForm will give the form a name that matches the model name. And SimpleForm will automatically generate a destination <span class="caps">URL</span> for the form based on the model name.</p>
-<p>More significantly, SimpleForm will add sophisticated error handling to the form. If a visitor submits a form with a blank name or invalid email address, and we declare in our model that we require validation, SimpleForm will highlight the invalid field and display an inline message indicating the problem. Compared to what we’ve implemented so far, this kind of error handling provides a vastly superior user experience. Instead of displaying a message that the application failed, the form will be redisplayed with the problem marked and noted.</p>
+<p>More significantly, SimpleForm will add sophisticated error handling to the form. If a visitor doesn’t enter a name or submits an invalid email address, and we declare in our model that we require validation, SimpleForm will highlight the invalid field and display an inline message indicating the problem. Compared to what we’ve implemented so far, this kind of error handling provides a vastly superior user experience. Instead of displaying a message that the application failed, the form will be redisplayed with the problem marked and noted.</p>
 <p>Now that we’ve seen the advantages of the “Rails way,” let’s re-implement our contact form using the model-view-controller architecture.</p>
 <h3 id="model-2">Model</h3>
 <p>When we build database-backed applications with Rails, we base our models on a parent class named ActiveRecord. We are not using a database for our tutorial application, so we’ll use the <a href="https://github.com/softace/activerecord-tableless">activerecord-tableless</a> gem to disable the database features of ActiveRecord.</p>
-<p><em>Note:</em> There’s a way to create a model without a database using only the <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class, described in the <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: ActiveModel</a> screencast. Either approach is fine; we’re using the activerecord-tableless gem because it is easier to explain.</p>
+<p><em>Note:</em> There’s another way to create a model without a database using only the <a href="https://github.com/rails/rails/tree/master/activemodel">ActiveModel</a> class, described in the <a href="http://railscasts.com/episodes/219-active-model">RailsCasts: ActiveModel</a> screencast. Either approach is fine; we’re using the activerecord-tableless gem because it is easier to explain.</p>
 <p>Let’s set up a model that inherits from ActiveRecord.</p>
 <p>Create a file <strong>app/models/contact.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Contact</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
@@ -2205,14 +2204,16 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="n">column</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:string</span>
 
   <span class="n">validates_presence_of</span> <span class="ss">:name</span>
-  <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i</span>
+  <span class="n">validates_presence_of</span> <span class="ss">:email</span>
+  <span class="n">validates_presence_of</span> <span class="ss">:content</span>
+  <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i</span>
   <span class="n">validates_length_of</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:maximum</span> <span class="o">=&gt;</span> <span class="mi">500</span>
 
 <span class="k">end</span>
 </pre></div><p>We give the model the name “Contact” and inherit from the ActiveRecord class.</p>
 <p>We use the <code>has_no_table</code> directive from the activerecord-tableless gem to disable database features of ActiveRecord.</p>
 <p>We specify attributes (data fields) for the model by using the <code>column</code> keyword from the activerecord-tableless gem. These match the fields in the contact form.</p>
-<p>ActiveRecord gives us validation methods named <code>validates_presence_of</code>, <code>validates_format_of</code>, and <code>validates_length_of</code>. We check that <code>name</code> exists (it can’t be blank). We provide a complex <em>regex</em>, or <em>regular expression</em>, to test if the email address is valid. Finally, we declare that the message content cannot exceed 500 characters.</p>
+<p>ActiveRecord gives us validation methods named <code>validates_presence_of</code>, <code>validates_format_of</code>, and <code>validates_length_of</code>. We check that <code>name</code>, <code>email</code>, and <code>content</code> exist (no blanks are allowed). We provide a complex <em>regex</em>, or <em>regular expression</em>, to test if the email address is valid. Finally, we declare that the message content cannot exceed 500 characters.</p>
 <p>The model is elegant. We describe the fields we need and state our validation requirements. ActiveRecord does all the rest.</p>
 <p>Let’s change our contact form to use our new model.</p>
 <h3 id="remove-the-contact-page">Remove the Contact Page</h3>
@@ -2238,10 +2239,10 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>We’ll also add an <code>error_notification</code> method provided by the form object.</p>
 <p>Create a file <strong>app/views/contacts/new.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@contact</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@contact</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">autofocus</span><span class="p">:</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">required</span><span class="p">:</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">as</span><span class="p">:</span> <span class="ss">:text</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"span6"</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
@@ -2288,7 +2289,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">]</span><span class="p">)</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secure_params</span><span class="p">)</span>
     <span class="k">if</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">valid?</span>
       <span class="c1"># TODO send message here</span>
       <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Message sent from </span><span class="si">#{</span><span class="vi">@contact</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">."</span>
@@ -2298,15 +2299,30 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
     <span class="k">end</span>
   <span class="k">end</span>
 
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">secure_params</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:contact</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:content</span><span class="p">)</span>
+  <span class="k">end</span>
+
 <span class="k">end</span>
 </pre></div><p>We’ve dropped the “old school” <code>process_form</code> method and added the “Rails way” <code>new</code> and <code>create</code> methods.</p>
 <p>The controller <code>new</code> action will instantiate an empty Contact model, assign it to the <code>@contact</code> instance variable, and render the <strong>app/views/contacts/new.html.erb</strong> view. We’ve already created the view file containing the form.</p>
-<p>SimpleForm will set a destination <span class="caps">URL</span> that corresponds to the ContactsController#create action. The <code>create</code> method will instantiate a new Contact model and pass the <code>params[:contact]</code> hash to the model. We don’t need any code in the Contact model to retrieve parameters from the hash; the ActiveRecord parent class provides the code “for free.”</p>
-<p>The ActiveRecord parent class also provides a method <code>valid?</code> which we can call on the Contact model. Our conditional statement <code>if @contact.valid?</code> checks each of the validation requirements we’ve set in the model.</p>
+<p>SimpleForm will set a destination <span class="caps">URL</span> that corresponds to the ContactsController#create action. The <code>create</code> method will instantiate a new Contact model using the data from the form (we take steps to avoid security vulnerabilities first—more on that later).</p>
+<p>The ActiveRecord parent class provides a method <code>valid?</code> which we can call on the Contact model. Our conditional statement <code>if @contact.valid?</code> checks each of the validation requirements we’ve set in the model.</p>
 <p>If all the Contact fields are valid, we can send a message (not yet implemented), prepare a flash message, and redirect to the home page. Notice that we don’t need to dig into the <code>params</code> hash for the visitor’s name; it is now available as <code>@contact.name</code> directly from the model.</p>
 <p>If any validation fails, the controller <code>create</code> action will render the <strong>app/views/contacts/new.html.erb</strong> view. This time, appropriate error messages are set and the form object’s <code>error_notification</code> method will highlight the invalid field and display a matching prompt.</p>
 <p>You’re looking at the tightly bound interaction of the “Rails way” model, view, and controller.</p>
-<p>The only element we are missing is routing.</p>
+<p>The only element we are missing is routing. But first, let’s look closer at the steps we take to avoid security exploits.</p>
+<h4 id="mass-assignment-vulnerabilities">Mass-Assignment Vulnerabilities</h4>
+<p>Rails protects us from a class of security exploits called “mass-assignment vulnerabilities.” Rails won’t let us initialize a model with just any parameters submitted on a form. Suppose we were creating a new user and one of the user attributes was a flag allowing administrator access. A malicious hacker could create a fake form that provides a user name and sets the administrator status to “true.” Rails forces us to “white list” each of the parameters used to initialize the model.</p>
+<p>We create a private method named <code>secure_params</code> to screen the parameters sent from the browser. The <code>params</code> hash contains two useful methods we use for our screening:</p>
+<ul>
+  <li><code>require(:contact)</code> – makes sure that <code>params[:contact]</code> is present</li>
+  <li><code>permit(:name, :email, :content)</code> – our “white list”</li>
+</ul>
+<p>With this code, we make sure that <code>params[:contact]</code> only contains <code>:name, :email, :content)</code>. If other parameters are present, they are stripped out. Rails will raise an error if a controller attempts to pass params to a model method without explicitly permitting attributes via permit.</p>
+<p>Now let’s look at routing for controllers that are built the “Rails way.”</p>
 <h3 id="routing-3">Routing</h3>
 <p>Rails routing is aware of the seven standard controller actions.</p>
 <p>In fact, it takes only one keyword (with one parameter) to generate seven different routes for any controller.</p>
@@ -2349,8 +2365,9 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
 <p>Click the “Contact” link and fill out the form.</p>
 <p>Notice the flash message that appears on the home page.</p>
-<p>Try submitting the form with a blank name or invalid email address.</p>
-<p>You’ll see a form validation error message.</p>
+<p>Try submitting the form with a blank name. You’ll see a popup message, “Please fill out this field” pointing to the name field.</p>
+<p>Try submitting the form with an invalid email address such as “me@foo”. The form will re-display with a message, “Some errors were found, please take a look” and next to the email field, “is invalid.”</p>
+<p>Combining SimpleForm error handling with ActiveModel validation is powerful. If a field is required but blank, SimpleForm will use JavaScript to point to the error before the form is submitted. If validation fails after the form is submitted, the page will redisplay and SimpleForm will display an appropriate error message.</p>
 <h3 id="git-8">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
