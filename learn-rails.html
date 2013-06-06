@@ -2441,7 +2441,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="nf">As the owner of the website</span>
 <span class="k">I </span><span class="nf">want to receive email messages with a visitor's name, email address, and some text</span>
 <span class="nf">so visitors can communicate with me</span>
-</pre></div><p>Let’s implement a feature that sends the contact data as an email message.</p>
+</pre></div><p>To implement the user story, let’s create a feature that sends the contact data as an email message.</p>
 <h3 id="create-view-folder-and-mailer">Create View Folder and Mailer</h3>
 <p>Use the <code>rails generate</code> command to create a mailer with a folder for views:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails generate mailer UserMailer
@@ -2462,15 +2462,18 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
     <span class="n">mail</span><span class="p">(</span><span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"to@example.com"</span><span class="p">,</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">"Website Contact"</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></div><p>The name of the method isn’t important; it can be anything obvious. We’ll use it in the ContactsController to trigger mail delivery.</p>
+</pre></div><p>The <code>UserMailer</code> class inherits behavior from the <code>ActionMailer</code> class. We’ll create a method definition that assigns the <code>contact</code> argument to the instance variable <code>@contact</code>. Like a controller that combines a model with a view, our mailer class makes the instance variable available in the view.</p>
+<p>The name of the method isn’t important; it can be anything obvious. We’ll use it in the ContactsController to trigger mail delivery.</p>
+<p>Like the <code>render</code> method in a web page controller, the ActionMailer parent class has a <code>mail</code> method that renders the view and initiates mail delivery.</p>
 <p>You’ll need to insert your email address in the mailer.</p>
 <p>Replace the “to@example.com” string with your email address. By inserting your email address after <code>:to =&gt;</code>, your inbox will receive the message. If Foobar Kadigan was a real person, we’d insert his email address here.</p>
 <p>We need to insert a “from” address in two places. First there is a default, for all messages that do not set a “from” address. We will use “do-not-reply@example.com” for the default “from” address. The email is originating from a web application that does not receive email, so this indicates the email address should not be used for replies. For emails going to website visitors, it would be best to provide a default email address for a customer service representative on the “from” line, so the recipient can easily reply. We’re not sending email messages to visitors so we can ignore this nicety.</p>
 <p>For our <code>contact_email</code> method, we’ll insert the email address of the visitor as the “from” address since we are sending a message to the site owner. This makes it easy for Foobar Kadigan to click “reply” when he is reading the contact messages in his inbox. You can see our use of the email attribute from the Contact model in the expression <code>:from =&gt; @contact.email</code>.</p>
 <p>That’s all we need for mailer class. Next we’ll create a view containing the message.</p>
 <h3 id="create-mailer-view">Create Mailer View</h3>
-<p>Create a mailer view by creating a file <strong>app/views/user_mailer/contact_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>.</p>
-<p>Creating a file <strong>app/views/user_mailer/contact_email.html.erb</strong>:</p>
+<p>There are two types of mailer views. One contains plain text, for recipients who don’t like formatted email (some people still read email from the Unix command line). The other type contains <span class="caps">HTML</span> markup to provide formatting. It’s good to create a message of both types, though most recipients will benefit from <span class="caps">HTML</span> formatting.</p>
+<p>The mailer view for formatted email looks very similar to a web page view file. It contains <span class="caps">HTML</span> markup plus Ruby expressions embedded in <code>&lt;%= ... %&gt;</code> delimiters. In the <code>UserMailer</code> class, we’ve assigned the Contact model to the instance variable <code>@contact</code> so any attributes are available for use in the message.</p>
+<p>Create a file <strong>app/views/user_mailer/contact_email.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
 <span class="x">  &lt;head&gt;</span>
@@ -2493,8 +2496,20 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">    &lt;/p&gt;</span>
 <span class="x">  &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
-</pre></div><h3 id="modify-controller">Modify Controller</h3>
-<p>Replace the contents of the file <strong>app/controllers/contacts_controller.rb</strong>:</p>
+</pre></div><p>You can easily imagine how this view would look as a web page. You’ll soon see it as an email message in your inbox.</p>
+<p>For those recipients who like plain text, create a view without <span class="caps">HTML</span> markup.</p>
+<p>Create a file <strong>app/views/user_mailer/contact_email.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">You received a message from </span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x"> with email address </span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span> <span class="cp">%&gt;</span><span class="x">.</span>
+
+<span class="x">The visitor said:</span>
+
+<span class="x">"</span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">content</span> <span class="cp">%&gt;</span><span class="x">"</span>
+</pre></div><p>You’ve created views for the email message.</p>
+<p>Now we can integrate our email feature with the ContactsController.</p>
+<h3 id="modify-controller">Modify Controller</h3>
+<p>We’ll add code to the ContactsController:</p>
+<div class="highlight"><pre><span class="no">UserMailer</span><span class="o">.</span><span class="n">contact_email</span><span class="p">(</span><span class="vi">@contact</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
+</pre></div><p>Replace the contents of the file <strong>app/controllers/contacts_controller.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">new</span>
@@ -2520,20 +2535,22 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><p>Article: <a href="http://guides.rubyonrails.org/action_mailer_basics.html">RailsGuides: Action Mailer Basics</a></p>
+</pre></div><p>The <code>UserMailer</code> class is available to any controller in the application. We call the <code>contact_email</code> method we’ve created, passing the <code>@contact</code> instance variable as an argument, which renders the email message. Finally, the <code>deliver</code> method initiates delivery.</p>
+<p>For more on sending email from a Rails application, see <a href="http://guides.rubyonrails.org/action_mailer_basics.html">RailsGuides: Action Mailer Basics</a>.</p>
 <h3 id="test-the-application-8">Test the Application</h3>
 <p>If your web server is not running, restart it:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
-<p>Click the “Contact” link try submitting the form.</p>
+<p>Click the “Contact” link and try submitting the form.</p>
 <p>The email message should be visible in the console.</p>
-<p>You’ll should get a real email message in your inbox if you set up your <strong>config/environments/development.rb</strong> file to perform deliveries.</p>
+<p>You will get a real email message in your inbox if you set your <strong>config/environments/development.rb</strong> file to perform deliveries (described in the tutorial “Configuration” chapter).</p>
 <h3 id="git-9">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"sending mail"</span>
 <span class="gp">$</span> git push origin master
-</pre></div>
+</pre></div><p>You’ve created a Rails application that handles a form and sends email to the site owner.</p>
+<p>Mail is a practical way to connect with site visitors. Let’s implement a feature that collects email addresses for mass mailing of a newsletter.</p>
 </section>
 <section class='chapter' id='mailing-list'><h2>Mailing List</h2>
 <p>Not everyone likes email (do you prefer to communicate with an <span class="caps">SMS</span> text message or a Facebook message?). But email remains the best way to maintain a connection with a website visitor. There may be no reason to contact a visitor after they’ve been to your site. But if you have a legitimate reason to follow up with visitors, you’ll want to encourage them to provide an email address so you can contact them.</p>
