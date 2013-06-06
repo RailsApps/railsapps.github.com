@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 04 Jun 2013</li>
+            <li>Last updated 05 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -214,11 +214,11 @@
 <p>A product owner’s principal tool for product planning is the <em>user story</em>.</p>
 <p><a href="http://en.wikipedia.org/wiki/User_story">User stories</a> are a way to discuss and describe the requirements for a software application. The process of writing user stories helps a product owner identify all the features that are needed for an application. Breaking down the application’s functionality into discrete user stories helps organize the work and track progress toward completion.</p>
 <p>User stories are often expressed in the following format:</p>
-<div class="highlight"><pre><span class="nf">As a </span><span class="nv">&lt;role&gt;</span><span class="nf"></span>
-<span class="k">I </span><span class="nf">want </span><span class="nv">&lt;goal&gt;</span><span class="nf"></span>
-<span class="nf">so that </span><span class="nv">&lt;benefit&gt;</span><span class="nf"></span>
-</pre></div><p>Here is an example:</p>
-<div class="highlight"><pre><span class="nf">*Join Mailing List*</span>
+
+
+Here is an example:
+
+<notextile><div class="highlight"><pre><span class="nf">*Join Mailing List*</span>
 <span class="nf">As a visitor to the website</span>
 <span class="k">I </span><span class="nf">want to join a mailing list</span>
 <span class="nf">so I can receive news and announcements</span>
@@ -236,8 +236,9 @@
 <h3 id="behavior-driven-development">Behavior-Driven Development</h3>
 <p>Behavior-Driven Development (<span class="caps">BDD</span>) is a software development methodology that uses user stories as a basis for automated testing. User stories are turned into scenarios that are accompanied by tests. With automated tests, a product owner can determine if developers have succeeded in implementing the required features. This process is called <em>acceptance testing</em>. Automated tests also make it easy for developers to determine if the application still works as they add features, fix bugs, or reorganize code. This process is called <em>integration testing</em>.</p>
 <p>The article <a href="http://railsapps.github.io/rails-project-management.html">Rails and Product Planning</a> goes into greater detail about these topics.</p>
-</section>
-<section class='chapter' id='project-management'><h2>Project Management</h2>
+
+</notextile></div>
+  <section class='chapter' id='project-management'><h2>Project Management</h2>
 <p>How do you know you’re making progress? Are you taking care of everything that needs to be done? These questions are at the center of project management. Whether you are working alone or as part of a team, you need to define your tasks and track progress toward your goal.</p>
 <p>The previous chapter on product planning showed how <em>user stories</em> can be used to break down an application into discrete features. User stories can be the basis for a list of tasks.</p>
 <h3 id="to-do-list">To-Do List</h3>
@@ -998,8 +999,8 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>The tutorial application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. We’ve already installed the figaro gem in the Gemfile and run <code>bundle install</code>.</p>
 <p>The figaro gem uses a generator to set up the necessary files. Run:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails generate figaro:install
-</pre></div><p>This generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
-<p>Take a look at the <code>rails generate</code> command. Some gems need to modify Rails files or install configuration files. The <code>rails generate</code> command can be used with any gem to install or modify files.</p>
+</pre></div><p>Rails provides the <code>rails generate</code> command to be used by gems that need to modify Rails files or install configuration files.</p>
+<p>Using the <code>rails generate</code> command, the figaro gem generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
 <p>We’ll set credentials for your Gmail and MailChimp accounts in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the Git repository so your credentials are kept private.</p>
 <p>Use your text editor to replace the file <strong>config/application.yml</strong> with this:</p>
 <div class="highlight"><pre><span class="c1"># Add account credentials and API keys here.</span>
@@ -1011,14 +1012,45 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="l-Scalar-Plain">MAILCHIMP_API_KEY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_MailChimp_API_Key</span>
 <span class="l-Scalar-Plain">MAILCHIMP_LIST_ID</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_List_ID</span>
 </pre></div><p>Replace the placeholders in the <strong>config/application.yml</strong> file with real credentials.</p>
-<p>The Gmail username and password are the same credentials you use to log in to Gmail when you check your inbox.</p>
+<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. We’ll use the environment variables to configure the tutorial application to send email.</p>
+<h4 id="gmail-2">Gmail</h4>
+<p>For the Gmail username and password, enter the credentials you use to log in to Gmail when you check your inbox.</p>
+<p>If you don’t have a Gmail account, you can sign up for an account with <a href="http://mandrill.com/">Mandrill</a> instead and follow instructions in the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
+<h4 id="mailchimp-2">MailChimp</h4>
 <p>When visitors sign up to receive a newsletter, we’ll add them to a MailChimp list. Add an environment variable for the MailChimp <span class="caps">API</span> key: <code>MAILCHIMP_API_KEY</code>. <a href="https://admin.mailchimp.com/">Log in to MailChimp</a> and find the MailChimp <span class="caps">API</span> key under the tab for “Account” on the MailChimp website. Look for the “API Keys and Authorized Apps” menu item.</p>
 <p>We’ll add <code>MAILCHIMP_LIST_ID</code> for the ID of the mailing list we’ll set up in MailChimp. To find the list ID, <a href="https://admin.mailchimp.com/">log in to MailChimp</a> and on the MailChimp “Lists” page, look for the dropdown “gear” menu for the mailing list you’ve created and click “List Settings and Unique ID.” At the bottom of the List Settings page, you’ll find the unique ID for the mailing list.</p>
-<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. Later in the tutorial we’ll see how we use the environment variables.</p>
+<h3 id="configure-email">Configure Email</h3>
+<p>Email messages are visible in the console and the log file when you test the application. If you don’t want to actually send email, you can skip this step. But it’s more fun when your application can actually send email.</p>
+<p>If you want to send real messages when you test the application in development mode, modify the file <strong>config/environments/development.rb</strong>.</p>
+<h4 id="perform-deliveries-in-development">Perform Deliveries in Development</h4>
+<p>In the file <strong>config/environments/development.rb</strong>, find the statement:</p>
+<div class="highlight"><pre><span class="c1"># Don't care if the mailer can't send.</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">raise_delivery_errors</span> <span class="o">=</span> <span class="kp">false</span>
+</pre></div><p>Immediately following, add the statement:</p>
+<div class="highlight"><pre><span class="c1"># Send email in development mode.</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
+</pre></div><p>This changes the configuration to send email when you’re working on the application.</p>
+<h4 id="connect-to-an-email-server">Connect to an Email Server</h4>
+<p>Web servers don’t send email. Our Rails application has to connect to an email server (also known as a <a href="http://en.wikipedia.org/wiki/Email_server">mail transfer agent</a> or “mail relay”). In the early days of the Internet, an experienced system adminstrator could set up an <a href="http://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol"><span class="caps">SMTP</span> server</a> to distribute email. Now, because of efforts to reduce spam, it is necessary to use an established email service to insure deliverability. For high volume <em>transactional email</em> and improved deliverability, it’s best to use a service such as <a href="http://mandrill.com/">Mandrill</a> or <a href="http://sendgrid.com/pricing.html">SendGrid</a>. For our tutorial application, we can connect to Gmail to send email.</p>
+<p>We need to configure Rails so the application can connect with an email server.</p>
+<p>Immediately following the statement we just added, add this:</p>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">address</span><span class="p">:</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>
+  <span class="ss">port</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span>
+  <span class="ss">domain</span><span class="p">:</span> <span class="s2">"example.com"</span><span class="p">,</span>
+  <span class="ss">authentication</span><span class="p">:</span> <span class="s2">"plain"</span><span class="p">,</span>
+  <span class="n">enable_starttls_auto</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+  <span class="n">user_name</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_USERNAME"</span><span class="o">]</span><span class="p">,</span>
+  <span class="ss">password</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_PASSWORD"</span><span class="o">]</span>
+<span class="p">}</span>
+</pre></div><p>It’s important to add these changes in the body of the configuration file, before the <code>end</code> keyword. The order isn’t important but don’t add the configuration statements after the <code>end</code> keyword.</p>
+<p>Notice that we are using the <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> environment variables that we set in the <strong>config/application.yml</strong> file. We could “hard code” a username and password here but that would expose confidential data if your GutHub repository is public. Using environment variables from the <strong>config/application.yml</strong> file keeps your secrets safe.</p>
+<p>Later, after we add a contact form to the tutorial application, the application will be ready to send email messages.</p>
+<p>You can learn more in the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
 <h3 id="git-2">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
-<span class="gp">$</span> git commit -m <span class="s2">"add configuration file"</span>
+<span class="gp">$</span> git commit -m <span class="s2">"add configuration"</span>
 <span class="gp">$</span> git push origin master
 </pre></div><p>We’re ready to create a home page for the application.</p>
 </section>
@@ -1697,7 +1729,10 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Add a partial for flash messages by creating a file <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
 <div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">flash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">"flash_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    &lt;div class="alert alert-</span><span class="cp">&lt;%=</span> <span class="nb">name</span> <span class="o">==</span> <span class="ss">:notice</span> <span class="p">?</span> <span class="s2">"success"</span> <span class="p">:</span> <span class="s2">"error"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
+<span class="x">      &lt;a class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/a&gt;</span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">"flash_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
 <span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
 </pre></div><p>We’ve improved on our simple Ruby example in several ways. First, we’ve added <code>if msg.is_a?(String)</code> as a test to make sure we only display messages that are strings. Second, we’ve used the Rails <code>content_tag</code> view helper to create the <span class="caps">HTML</span> <code>div</code>. The <code>content_tag</code> helper eliminates the messy soup of angle brackets and quote marks we used to create the <span class="caps">HTML</span> output in the example above. Finally, instead of applying a <span class="caps">CSS</span> <code>class</code> for styling, we’ve applied a <span class="caps">CSS</span> <code>id</code> and combined the word “flash” with “notice” or “alert” to make the <span class="caps">CSS</span> ID. It’s appropriate to apply an ID instead of a class because there should be only be a single flash message on the page (classes are used for multiple elements).</p>
@@ -2422,43 +2457,25 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:contact</span><span class="o">]</span><span class="p">)</span>
+    <span class="vi">@contact</span> <span class="o">=</span> <span class="no">Contact</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secure_params</span><span class="p">)</span>
     <span class="k">if</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">valid?</span>
       <span class="c1"># send message here</span>
       <span class="no">UserMailer</span><span class="o">.</span><span class="n">contact_email</span><span class="p">(</span><span class="vi">@contact</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
       <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Message sent from </span><span class="si">#{</span><span class="vi">@contact</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">."</span>
       <span class="n">redirect_to</span> <span class="n">root_path</span>
     <span class="k">else</span>
-      <span class="n">render</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">'new'</span>
+      <span class="n">render</span> <span class="ss">:new</span>
     <span class="k">end</span>
   <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">secure_params</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:contact</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:content</span><span class="p">)</span>
+  <span class="k">end</span>
+
 <span class="k">end</span>
-</pre></div><h3 id="update-configuration-file">Update Configuration File</h3>
-<p>You’ll need a Gmail account if you want to try sending real email.</p>
-<p>If you don’t have a Gmail account, you can sign up for an account with <a href="http://mandrill.com/">Mandrill</a> instead and follow instructions in the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
-<p>You’ll need to add your Gmail username and password to the file <strong>config/application.yml</strong>. Change this to your real username and password:</p>
-<div class="highlight"><pre><span class="l-Scalar-Plain">GMAIL_USERNAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Username</span>
-<span class="l-Scalar-Plain">GMAIL_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Password</span>
-</pre></div><h3 id="configure-email">Configure Email</h3>
-<p>Article: <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a></p>
-<p>Email messages are visible in the console and the log file when you test the application.</p>
-<p>If you want to send real messages when you test the application in development mode, modify the file <strong>config/environments/development.rb</strong>.</p>
-<p>Add this:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="ss">address</span><span class="p">:</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>
-  <span class="ss">port</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span>
-  <span class="ss">domain</span><span class="p">:</span> <span class="s2">"example.com"</span><span class="p">,</span>
-  <span class="ss">authentication</span><span class="p">:</span> <span class="s2">"plain"</span><span class="p">,</span>
-  <span class="n">enable_starttls_auto</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-  <span class="n">user_name</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_USERNAME"</span><span class="o">]</span><span class="p">,</span>
-  <span class="ss">password</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_PASSWORD"</span><span class="o">]</span>
-<span class="p">}</span>
-</pre></div><p>Change the statement:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">false</span>
-</pre></div><p>to:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
-</pre></div><p>and when you try the application, a real message will be sent.</p>
-<h3 id="test-the-application-8">Test the Application</h3>
+</pre></div><h3 id="test-the-application-8">Test the Application</h3>
 <p>If your web server is not running, restart it:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
