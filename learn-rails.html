@@ -101,16 +101,16 @@
   <li>a startup founder</li>
   <li>making a career change</li>
 </ul>
-<p>People who are working in social media or graphic design will find the tutorial useful as an introduction to development with Rails. If you’ve built simple websites using <span class="caps">HTML</span> or used applications such as WordPress, you’ll easily progress to working with Rails. If you’ve used <span class="caps">PHP</span> or Java, this tutorial will introduce you to the Rails framework.</p>
+<p>People who are working in social media or graphic design will find the tutorial useful as an introduction to development with Rails. If you’ve built simple websites using <span class="caps">HTML</span> or applications such as WordPress, you’ll easily progress to working with Rails. If you’ve used <span class="caps">PHP</span> or Java to build web applications, this tutorial will introduce you to the Rails framework.</p>
 <p>For people who have never encountered <span class="caps">HTML</span>, <span class="caps">CSS</span>, or JavaScript, it’s best to start elsewhere with an “Introduction to Web Design” course or online tutorial. There are thousands of such tutorials; I especially like the <a href="http://curriculum.railsbridge.org/frontend/">RailsBridge Frontend Curriculum</a>.</p>
 <h3 id="what-to-expect">What To Expect</h3>
 <p>This is the foundation for a series of tutorials that accompany example applications from the <a href="http://railsapps.github.io/">RailsApps project</a>.</p>
 <h4 id="railsapps-examples-and-tutorials">RailsApps Examples and Tutorials</h4>
-<p>Tutorials from <a href="http://twitter.com/rails_apps">@rails_apps</a> take you on a guided path starting with absolute basics (this tutorial). You’ll progress to intermediate-level tutorials and soon be using our in-depth guides for professional Rails developers.</p>
-<p>I believe it is important to feel satisfaction and accomplishment as you learn. That’s why each tutorial introduces Rails in stages. With each tutorial you will build a real-world Rails application. As you deploy your Rails application your accomplishment is confirmed and you’ll feel the satisfaction of building a useful application. Hands-on learning with real Rails applications is the key to absorbing and retaining knowledge.</p>
+<p>Tutorials from <a href="http://twitter.com/rails_apps">@rails_apps</a> take you on a guided path starting with absolute basics (this tutorial). You’ll progress to intermediate-level tutorials and soon be using the <a href="http://railsapps.github.io/">RailsApps</a> in-depth guides for professional Rails developers.</p>
+<p>I believe it is important to feel satisfaction and accomplishment as you learn. That’s why each tutorial introduces Rails in stages. With each tutorial you will build a real-world Rails application. Your accomplishment is confirmed and you’ll feel genuine satisfaction as you deploy your Rails application. Hands-on learning with real Rails applications is the key to absorbing and retaining knowledge.</p>
 <p>The applications you’ll build in the tutorials are not classroom exercises. The primary purpose of the RailsApps project is to provide starter applications for Rails developers. You’ll be building real applications that you can customize and adapt for your startup, at your job, or for clients.</p>
 <h4 id="your-first-step">Your First Step</h4>
-<p>When you’ve completed this tutorial, you will be ready for more advanced self-study, including other tutorials from the RailsApps project, textbook introductions to Rails, or workshops and developer bootcamps that provide intensive training in Ruby on Rails. Other curriculums often skip the basics but this tutorial will give you a good grounding in foundation concepts. You won’t feel overwhelmed or frustrated as you continue your studies.</p>
+<p>When you’ve completed this tutorial, you will be ready for more advanced self-study, including other tutorials from the RailsApps project, textbook introductions to Rails, or workshops and developer bootcamps that provide intensive training in Ruby on Rails. Other curriculums often skip the basics but this tutorial will give you a solid grounding in key concepts. You won’t feel overwhelmed or frustrated as you continue your studies.</p>
 <p>This tutorial is good preparation for:</p>
 <ul>
   <li>advanced tutorials in the <a href="https://tutorials.railsapps.org/">RailsApps Tutorials</a> series</li>
@@ -118,7 +118,7 @@
   <li>introductory workshops from <a href="http://workshops.railsbridge.org/">RailsBridge</a> or <a href="http://railsgirls.com/">Rails Girls</a></li>
   <li>intensive training such as <a href="http://devbootcamp.com">DevBootcamp</a> or <a href="generalassemb.ly">General Assembly</a></li>
 </ul>
-<p>I know there are many textbooks, workshops, and classroom programs that teach Ruby on Rails. I believe this tutorial is unique in covering the basics while introducing the tools and techniques of professional Rails development.</p>
+<p>There are many textbooks, workshops, and classroom programs that teach Ruby on Rails. I believe this tutorial is unique in covering the basics while introducing the tools and techniques of professional Rails development.</p>
 <h3 id="the-application">The Application</h3>
 <p>We’ll build a basic web application that can be used by a typical small business. The website will include a home page, “about” page, contact form, and option to sign up for a mailing list.</p>
 <p>You’ll find the complete <a href="http://github.com/RailsApps/learn-rails/">learn-rails</a> application on GitHub. It is a working application that is maintained by a team of experienced developers so you can always check the “reference implementation” if you have problems.</p>
@@ -2415,21 +2415,62 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div><p>We’ve built a sophisticated Contact form. Now let’s add the code to email the form data to our client.</p>
 </section>
 <section class='chapter' id='sending-mail'><h2>Sending Mail</h2>
-<p>Article: <a href="http://guides.rubyonrails.org/action_mailer_basics.html">RailsGuides: Action Mailer Basics</a></p>
-<h3 id="create-email-message">Create Email Message</h3>
-<p>Generate a mailer with accompanying views:</p>
+<p>Email sent from a web application is called <a href="http://blog.mailchimp.com/what-is-transactional-email/">transactional email</a>. As a website visitor, you’ve probably seen transactional email such as these messages:</p>
+<ul>
+  <li>sign up confirmation email</li>
+  <li>response to a password reset request</li>
+  <li>acknowledgement of a purchase</li>
+  <li>notice of a change to a user profile setting</li>
+</ul>
+<p>A web application can send email to its owner or webmaster. On large active sites, email notices can be impractical (an admin interface is better) but for our small-volume tutorial application, it makes sense to send the contact request directly to the site owner by email (our pretend site owner, Foobar Kadigan, is retired and will enjoy an occasional visitor email).</p>
+<p>Rails makes it easy to send email. The <a href="https://github.com/rails/rails/tree/master/actionmailer">ActionMailer</a> gem is part of any Rails installation.</p>
+<p>Implementation of email closely follows the model-view-controller architecture. To implement email, you’ll need:</p>
+<ul>
+  <li>model</li>
+  <li>view</li>
+  <li>mailer</li>
+</ul>
+<p>The “mailer” is similar to a controller, combining data attributes from a model with a view file. Any methods we add to the mailer class can be called from a controller, triggering delivery of an email message.</p>
+<p>The model can be any we’ve already created. In this case, we’ll use the Contact model, since it gives us access to the visitor’s name, email address, and message.</p>
+<p>We’ll create a mail-specific view file in the <strong>app/views/user_mailer/</strong> folder. Our folder for mail-specific views will go in the <strong>app/views/</strong> directory as a sibling of the <strong>app/views/layouts</strong> folder.</p>
+<p>The Rails directory structure already gives us a folder <strong>app/mailers/</strong> for the mailer class and, not surprisingly, it is a sibling of the <strong>app/controllers/</strong> folder.</p>
+<p>We don’t have to create the necessary folders and files manually, as the <code>rails generate</code> command runs a utility to create what we need.</p>
+<h3 id="user-story-3">User Story</h3>
+<p>Let’s plan our work with a user story:</p>
+<div class="highlight"><pre><span class="nf">*Send Contact Message*</span>
+<span class="nf">As the owner of the website</span>
+<span class="k">I </span><span class="nf">want to receive email messages with a visitor's name, email address, and some text</span>
+<span class="nf">so visitors can communicate with me</span>
+</pre></div><p>Let’s implement a feature that sends the contact data as an email message.</p>
+<h3 id="create-view-folder-and-mailer">Create View Folder and Mailer</h3>
+<p>Use the <code>rails generate</code> command to create a mailer with a folder for views:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails generate mailer UserMailer
-</pre></div><p>Add a <code>contact_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
+</pre></div><p>The name of the mailer isn’t important; we’ll use <code>UserMailer</code> because it is obvious.</p>
+<p>The <code>rails generate</code> command will create one file and one folder:</p>
+<ul>
+  <li><strong>app/mailers/user_mailer.rb</strong></li>
+  <li><strong>app/views/user_mailer</strong></li>
+</ul>
+<p>This implements our model-view-mailer architecture.</p>
+<h3 id="edit-the-mailer">Edit the Mailer</h3>
+<p>Add a <code>contact_email</code> method to the mailer by editing the file <strong>app/mailers/user_mailer.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span>
-  <span class="n">default</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="s2">"notifications@example.com"</span>
+  <span class="n">default</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="s2">"do-not-reply@example.com"</span>
 
   <span class="k">def</span> <span class="nf">contact_email</span><span class="p">(</span><span class="n">contact</span><span class="p">)</span>
     <span class="vi">@contact</span> <span class="o">=</span> <span class="n">contact</span>
-    <span class="n">mail</span><span class="p">(</span><span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"notifications@example.com"</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">"Website Contact"</span><span class="p">)</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"to@example.com"</span><span class="p">,</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">"Website Contact"</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></div><p>Replace the “notifications@example.com” string with your email address. You’ll need to <strong>replace it in <span class="caps">TWO</span> places</strong>.</p>
-<p>Create a mailer view by creating a file <strong>app/views/user_mailer/contact_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>:</p>
+</pre></div><p>The name of the method isn’t important; it can be anything obvious. We’ll use it in the ContactsController to trigger mail delivery.</p>
+<p>You’ll need to insert your email address in the mailer.</p>
+<p>Replace the “to@example.com” string with your email address. By inserting your email address after <code>:to =&gt;</code>, your inbox will receive the message. If Foobar Kadigan was a real person, we’d insert his email address here.</p>
+<p>We need to insert a “from” address in two places. First there is a default, for all messages that do not set a “from” address. We will use “do-not-reply@example.com” for the default “from” address. The email is originating from a web application that does not receive email, so this indicates the email address should not be used for replies. For emails going to website visitors, it would be best to provide a default email address for a customer service representative on the “from” line, so the recipient can easily reply. We’re not sending email messages to visitors so we can ignore this nicety.</p>
+<p>For our <code>contact_email</code> method, we’ll insert the email address of the visitor as the “from” address since we are sending a message to the site owner. This makes it easy for Foobar Kadigan to click “reply” when he is reading the contact messages in his inbox. You can see our use of the email attribute from the Contact model in the expression <code>:from =&gt; @contact.email</code>.</p>
+<p>That’s all we need for mailer class. Next we’ll create a view containing the message.</p>
+<h3 id="create-mailer-view">Create Mailer View</h3>
+<p>Create a mailer view by creating a file <strong>app/views/user_mailer/contact_email.html.erb</strong>. This will be the template used for the email, formatted in <span class="caps">HTML</span>.</p>
+<p>Creating a file <strong>app/views/user_mailer/contact_email.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
 <span class="x">  &lt;head&gt;</span>
@@ -2479,7 +2520,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><h3 id="test-the-application-8">Test the Application</h3>
+</pre></div><p>Article: <a href="http://guides.rubyonrails.org/action_mailer_basics.html">RailsGuides: Action Mailer Basics</a></p>
+<h3 id="test-the-application-8">Test the Application</h3>
 <p>If your web server is not running, restart it:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
@@ -2494,6 +2536,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div>
 </section>
 <section class='chapter' id='mailing-list'><h2>Mailing List</h2>
+<p>Not everyone likes email (do you prefer to communicate with an <span class="caps">SMS</span> text message or a Facebook message?). But email remains the best way to maintain a connection with a website visitor. There may be no reason to contact a visitor after they’ve been to your site. But if you have a legitimate reason to follow up with visitors, you’ll want to encourage them to provide an email address so you can contact them.</p>
 <h3 id="modify-controller-2">Modify Controller</h3>
 <h3 id="flash-message">Flash Message</h3>
 </section>
