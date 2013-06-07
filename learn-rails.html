@@ -2412,7 +2412,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"contact form"</span>
 <span class="gp">$</span> git push origin master
-</pre></div><p>We’ve built a sophisticated Contact form. Now let’s add the code to email the form data to our client.</p>
+</pre></div><p>We’ve built a sophisticated Contact form. Now let’s add the code to email the form data to the site owner.</p>
 </section>
 <section class='chapter' id='sending-mail'><h2>Sending Mail</h2>
 <p>Email sent from a web application is called <a href="http://blog.mailchimp.com/what-is-transactional-email/">transactional email</a>. As a website visitor, you’ve probably seen transactional email such as these messages:</p>
@@ -2422,7 +2422,15 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <li>acknowledgement of a purchase</li>
   <li>notice of a change to a user profile setting</li>
 </ul>
-<p>A web application can send email to its owner or webmaster. On large active sites, email notices can be impractical (an admin interface is better) but for our small-volume tutorial application, it makes sense to send the contact request directly to the site owner by email (our pretend site owner, Foobar Kadigan, is retired and will enjoy an occasional visitor email).</p>
+<p>A web application can send email to a visitor. It can also send messages to its owner or webmaster. On large active sites, email notices can be impractical (an admin interface is better) but for our small-volume tutorial application, it makes sense to email the contact request directly to the site owner (Foobar Kadigan is retired and enjoys receiving email).</p>
+<h3 id="user-story-3">User Story</h3>
+<p>Let’s plan our work with a user story:</p>
+<div class="highlight"><pre><span class="nf">*Send Contact Message*</span>
+<span class="nf">As the owner of the website</span>
+<span class="k">I </span><span class="nf">want to receive email messages with a visitor's name, email address, and some text</span>
+<span class="nf">so visitors can communicate with me</span>
+</pre></div><p>To implement the user story, let’s create a feature that sends the contact data as an email message.</p>
+<h3 id="implementation">Implementation</h3>
 <p>Rails makes it easy to send email. The <a href="https://github.com/rails/rails/tree/master/actionmailer">ActionMailer</a> gem is part of any Rails installation.</p>
 <p>Implementation of email closely follows the model-view-controller architecture. To implement email, you’ll need:</p>
 <ul>
@@ -2435,13 +2443,6 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>We’ll create a mail-specific view file in the <strong>app/views/user_mailer/</strong> folder. Our folder for mail-specific views will go in the <strong>app/views/</strong> directory as a sibling of the <strong>app/views/layouts</strong> folder.</p>
 <p>The Rails directory structure already gives us a folder <strong>app/mailers/</strong> for the mailer class and, not surprisingly, it is a sibling of the <strong>app/controllers/</strong> folder.</p>
 <p>We don’t have to create the necessary folders and files manually, as the <code>rails generate</code> command runs a utility to create what we need.</p>
-<h3 id="user-story-3">User Story</h3>
-<p>Let’s plan our work with a user story:</p>
-<div class="highlight"><pre><span class="nf">*Send Contact Message*</span>
-<span class="nf">As the owner of the website</span>
-<span class="k">I </span><span class="nf">want to receive email messages with a visitor's name, email address, and some text</span>
-<span class="nf">so visitors can communicate with me</span>
-</pre></div><p>To implement the user story, let’s create a feature that sends the contact data as an email message.</p>
 <h3 id="create-view-folder-and-mailer">Create View Folder and Mailer</h3>
 <p>Use the <code>rails generate</code> command to create a mailer with a folder for views:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails generate mailer UserMailer
@@ -2464,7 +2465,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="k">end</span>
 </pre></div><p>The <code>UserMailer</code> class inherits behavior from the <code>ActionMailer</code> class. We’ll create a method definition that assigns the <code>contact</code> argument to the instance variable <code>@contact</code>. Like a controller that combines a model with a view, our mailer class makes the instance variable available in the view.</p>
 <p>The name of the method isn’t important; it can be anything obvious. We’ll use it in the ContactsController to trigger mail delivery.</p>
-<p>Like the <code>render</code> method in a web page controller, the ActionMailer parent class has a <code>mail</code> method that renders the view and initiates mail delivery.</p>
+<p>Like the <code>render</code> method in a web page controller, the ActionMailer parent class has a <code>mail</code> method that renders the view.</p>
 <p>You’ll need to insert your email address in the mailer.</p>
 <p>Replace the “to@example.com” string with your email address. By inserting your email address after <code>:to =&gt;</code>, your inbox will receive the message. If Foobar Kadigan was a real person, we’d insert his email address here.</p>
 <p>We need to insert a “from” address in two places. First there is a default, for all messages that do not set a “from” address. We will use “do-not-reply@example.com” for the default “from” address. The email is originating from a web application that does not receive email, so this indicates the email address should not be used for replies. For emails going to website visitors, it would be best to provide a default email address for a customer service representative on the “from” line, so the recipient can easily reply. We’re not sending email messages to visitors so we can ignore this nicety.</p>
@@ -2498,7 +2499,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">&lt;/html&gt;</span>
 </pre></div><p>You can easily imagine how this view would look as a web page. You’ll soon see it as an email message in your inbox.</p>
 <p>For those recipients who like plain text, create a view without <span class="caps">HTML</span> markup.</p>
-<p>Create a file <strong>app/views/user_mailer/contact_email.html.erb</strong>:</p>
+<p>Create a file <strong>app/views/user_mailer/contact_email.text.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">You received a message from </span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x"> with email address </span><span class="cp">&lt;%=</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span> <span class="cp">%&gt;</span><span class="x">.</span>
 
 <span class="x">The visitor said:</span>
@@ -2543,7 +2544,14 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
 <p>Click the “Contact” link and try submitting the form.</p>
 <p>The email message should be visible in the console.</p>
-<p>You will get a real email message in your inbox if you set your <strong>config/environments/development.rb</strong> file to perform deliveries (described in the tutorial “Configuration” chapter).</p>
+<p>If you didn’t get an email massage in your inbox, make sure you set your <strong>config/environments/development.rb</strong> file to perform deliveries as described in the tutorial “Configuration” chapter. Be sure to restart your server if you change the configuration file.</p>
+<p>You may see a warning message when you log into your Gmail account, indicating that someone used your credentials to send email. You can dismiss the warning as you know it was you.</p>
+<h3 id="asynchronous-mailing">Asynchronous Mailing</h3>
+<p>You may notice a delay in the responsiveness of the Contact form after adding the email feature. Unfortunately, there’s a performance penalty with our new feature. Our controller code connects to the Gmail server and waits for a response before it renders the home page and displays the acknowledgement message.</p>
+<p>The performance penalty can be avoided by changing the implementation so that the controller doesn’t wait for a response from the Gmail server. We call this <em>asynchronous</em> behavior because sending email does not need to be “in sync” with displaying the acknowledgement. Eliminating a delay improves the user experience and makes the site feel more responsive.</p>
+<p>Unfortunately, asynchronous mailing, which requires a <em>queueing system</em>, is an advanced topic for Rails developers.</p>
+<p>Earlier I wrote that Rails, as a framework, is not complete. This is an example. The developer community has explored the possibility of implementing a standard queueing system for Rails. In fact, an early version of Rails 4.0 contained a queueing system but it was dropped because it did not fully address several complicated issues (see <a href="https://blog.engineyard.com/2013/rails-4-queue-api">What happened to the Rails 4 Queue <span class="caps">API</span>?</a>).</p>
+<p>For our tutorial application, and for a typical small business website, the delay caused by lack of queueing is no big deal. Keep in mind, though, as you tackle bigger projects in Rails, you may need to learn how to implement a queueing system.</p>
 <h3 id="git-9">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
