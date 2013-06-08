@@ -73,7 +73,6 @@
 <li class='level2'><a href='#sending-mail'><i class='icon-chevron-right'></i> Sending Mail</a></li>
 <li class='level2'><a href='#mailing-list'><i class='icon-chevron-right'></i> Mailing List</a></li>
 <li class='level2'><a href='#deploy'><i class='icon-chevron-right'></i> Deploy</a></li>
-<li class='level2'><a href='#landing-pages'><i class='icon-chevron-right'></i> Landing Pages</a></li>
 <li class='level2'><a href='#analytics'><i class='icon-chevron-right'></i> Analytics</a></li>
 <li class='level2'><a href='#traffic'><i class='icon-chevron-right'></i> Traffic</a></li>
 <li class='level2'><a href='#whats-next'><i class='icon-chevron-right'></i> What’s Next?</a></li>
@@ -1985,6 +1984,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>In your <strong>Gemfile</strong>, you’ve already added:</p>
 <div class="highlight"><pre><span class="n">gem</span> <span class="s1">'high_voltage'</span>
 </pre></div><p>and previously run <code>$ bundle install</code>.</p>
+<h3 id="views-folder">Views Folder</h3>
 <p>Create a folder <strong>app/views/pages</strong>:</p>
 <div class="highlight"><pre><span class="gp">$</span> mkdir app/views/pages
 </pre></div><p>Any view files we add to this directory will automatically use the default application layout and appear when we use a <span class="caps">URL</span> that contains the filename.</p>
@@ -2571,6 +2571,12 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Mail is a practical way to connect with site visitors. Let’s implement a feature that collects email addresses for mass mailing of a newsletter.</p>
 </section>
 <section class='chapter' id='mailing-list'><h2>Mailing List</h2>
+<p>Even as other messaging avenues become increasingly popular, such as <span class="caps">SMS</span> text or Facebook messages, email remains the most practical way to stay in touch with website visitors. Encouraging a visitor to provide an email address means offering an invitation to a dialog and a relationship beyond a single visit.</p>
+<p>If you have a legitimate reason to stay in touch, and you’ve motivated the visitor to leave an email address, you’ll need a mailing list service. You’ve seen how Rails can send an email message. From what you’ve seen so far, you can imagine it would not take much code to loop through a list of email addresses from a database, sending a message to each. In the early days of the web, it was easy for any system administrator to write a script for mass mailings. Since there is negligible cost to sending bulk email, unscrupulous and ignorant operators sent email to any address they could scrape, borrow, or steal. The resulting flood of spam made checking one’s inbox an icky experience and destroyed much of the early culture of the Internet. Fortunately, services such as Gmail arose to filter email. There is now a thick (but leaky) layer of screening protocols that redirect spam to a junk folder. One reason you won’t use a Rails application to send bulk email is that a web application server is not the most efficient tool for sending email. More significantly, there’s a good chance your email won’t go through or, if it does (and someone complains), you’ll quickly see your IP address blacklisted. That’s why we use mailing list services to send bulk email such as newsletters or promotional offers.</p>
+<p>Considerable expertise is required to keep email from being filtered as spam (see MailChimp’s article <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Email service providers increase reliability of delivery. These services track deliveries and show how well your email is being delivered. You’ll also get features such as management of “unsubscribe” requests and templates to design attractive messages.</p>
+<p>There are at least a dozen well-established email service providers that allow a Rails application to programmatically connect to the service (via an <span class="caps">API</span>) to add or remove email addresses. For a list, see the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>. For this tutorial application, we’ll use <a href="http://mailchimp.com/pricing/">MailChimp</a> because there is no cost to open an account and you can send up to 12,000 emails/month to list of 2000 or fewer subscribers for free.</p>
+<p>Spam is unsolicited email. Don’t ever send spam, whether for yourself, a client, or an employer. If recipients complain, your IP address and domain name will be blacklisted. So be very careful to only send to subscribers who signed up, send what subscribers expect, and be sure to offer value. If you get complaints, or the unsubscribe rate is high, stop.</p>
+<p>We’ll assume we’ve discussed the rules with Foobar Kadigan and he is eager to offer a newsletter to his visitors that will be genuinely appreciated.</p>
 <h3 id="user-story-4">User Story</h3>
 <p>Let’s plan our work with a user story:</p>
 <div class="highlight"><pre><span class="nf">*Subscribe to Mailing List*</span>
@@ -2578,11 +2584,25 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="k">I </span><span class="nf">want to sign up for a mailing list</span>
 <span class="nf">so I can receive news and announcements</span>
 </pre></div><p>To implement the user story, we’ll add a mailing list feature.</p>
-<h3 id="views-folder">Views Folder</h3>
-<p>Create the <strong>app/views/visitors/</strong> folder:</p>
-<div class="highlight"><pre><span class="gp">$</span> mkdir app/views/visitors/
-</pre></div><h3 id="new-home-page">New Home Page</h3>
-<p>Add a file <strong>app/views/visitors/new.html.erb</strong>:</p>
+<h3 id="implementation-2">Implementation</h3>
+<p>We’ll use the Rails model-view-controller architecture. We’ll need:</p>
+<ul>
+  <li>Visitors model</li>
+  <li>view for Visitors#new</li>
+  <li>Visitors controller with <code>new</code> and <code>create</code> methods</li>
+  <li>routing for Visitors#new and Visitors#create</li>
+</ul>
+<p>We’ll add a Visitor model that has a data attribute for an email address. We already have a Visitors controller that renders the home page using the a file in the <strong>app/views/visitors/</strong> folder. We’ll replace the contents of the view file with a nice photo, a marketing message, and a form.</p>
+<p>Our Visitors controller <code>new</code> and <code>create</code> methods will be very similar to what we created for the Contacts controller. Instead of connecting to Gmail to send a message, we’ll use methods from the MailChimp <span class="caps">API</span> to save the visitor’s email address to a MailChimp mailing list.</p>
+<h3 id="gibbon-gem">Gibbon Gem</h3>
+<p>The <a href="https://github.com/amro/gibbon">Gibbon gem</a>" is a convenient wrapper for the <a href="http://apidocs.mailchimp.com/">MailChimp <span class="caps">API</span></a>. We could connect to the MailChimp <span class="caps">API</span> using other gems that provide low-level plumbing such as <span class="caps">HTTP</span> connections (<a href="http://johnnunemaker.com/httparty/">httparty</a>) and data parsing (<a href="https://github.com/intridea/multi_json">multi_json</a>"), but other developers have already done the work of wrapping the plumbing in a higher-level abstraction that easily fits into a Rails application. Amro Mousa’s Gibbon gem is popular and actively maintained.</p>
+<p>In your <strong>Gemfile</strong>, you’ve already added:</p>
+<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'gibbon'</span>
+</pre></div><p>and previously run <code>$ bundle install</code>.</p>
+<h3 id="home-page">Home Page</h3>
+<p>Earlier we built a home page that provided a simple demonstration of the Ruby language. We’ll discard it and replace it with a page that you could adapt for a typical small-business website.</p>
+<p>We want a nice photo, space for a marketing message, and the “sign up” form.</p>
+<p>Replace the contents of the file <strong>app/views/visitors/new.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;img src="http://lorempixel.com/1170/600/cats/1"&gt;</span>
 <span class="x">&lt;div style="text-align: center; margin-top: 20px"&gt;</span>
 <span class="x">  &lt;div class="span4 offset2"&gt;</span>
@@ -2599,7 +2619,20 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">    &lt;/div&gt;</span>
 <span class="x">  &lt;/div&gt;</span>
 <span class="x">&lt;/div&gt;</span>
-</pre></div><h3 id="visitor-model">Visitor Model</h3>
+</pre></div><p>The first line adds a photo to the page. We’re taking a shortcut and using a placeholder photo from the <a href="http://lorempixel.com/">lorempixel.com</a> service.</p>
+<p>Much of the markup is divs to create layout. The first div creates a container with centered text, offset from the photo by 20 pixels. If we were being strict about separation of concerns, we’d specify this rule in a <span class="caps">CSS</span> stylesheet instead of using a <code>style</code> attribute.</p>
+<p>The next two divs apply layout rules from Twitter Bootstrap to create two columsn, one for our marketing message, and one for the form.</p>
+<p>Our marketing message is merely a placeholder. For a real website, you’d likely craft a stronger call to action than merely “Stay in touch.”</p>
+<p>The form is very similar to the form on the Contact page, except we initialize it with the <code>@visitor</code> instance variable and only need a field for an email address. We suppress display of the email field label with the argument <code>label: false</code> and use the <code>:placeholder</code> parameter to create a hint in the empty input field.</p>
+<p>A submit button will contain the text, “Sign up for the newsletter,” and we apply Twitter Bootstrap button styling.</p>
+<h4 id="photo-options">Photo Options</h4>
+<p>You’re free to modify this page as you wish, as long as keep the form intact.</p>
+<p>You might wish to modify the placeholder photo. If you don’t like cats, try <a href="http://lorempixel.com/1170/600/business/1">http://lorempixel.com/1170/600/nightlife/1</a> or any other categories from the lorempixel service. You can change the size by modifying the dimensions from 1170 (pixel width) by 600 (pixel height).</p>
+<p>You can replace the placeholder photo with your own by creating an <strong>app/assets/images</strong> folder and adding an image. Instead of the <span class="caps">HTML</span> <code>&lt;img&gt;</code> tag, use the Rails <code>image_tag</code> view helper, like this:</p>
+<div class="highlight"><pre><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="s2">"myphoto.jpg"</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div><p>We’ll need a Visitor model to initialize the form.</p>
+<h3 id="visitor-model">Visitor Model</h3>
+<p>The Visitor model is almost identical to the Contact model we created earlier, except there is just one data attribute for the email field.</p>
 <p>Create a file <strong>app/models/visitor.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Visitor</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
   <span class="n">has_no_table</span>
@@ -2607,8 +2640,11 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="n">validates_presence_of</span> <span class="ss">:email</span>
   <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i</span>
 <span class="k">end</span>
-</pre></div><h3 id="visitors-controller">Visitors Controller</h3>
-<p>Repalce the contents of the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+</pre></div><p>Once again, we inherit behavior from the ActiveRecord parent class and use the <code>has_no_table</code> keyword from the activerecord-tableless gem to disable ActiveRecord’s database functionality.</p>
+<p>We create the email attribute and set validation requirements.</p>
+<h3 id="visitors-controller">Visitors Controller</h3>
+<p>We already have a Visitors controller that contains a simple <code>new</code> method. We’ll change the <code>new</code> method, add a <code>create</code> method, and provide a <code>secure_params</code> private method to secure the controller from mass assignment exploits.</p>
+<p>Replace the contents of the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">new</span>
@@ -2633,37 +2669,44 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><h3 id="routing-4">Routing</h3>
+</pre></div><p>Our <code>new</code> method now assigns the Visitor model to an instance variable instead of the Owner model.</p>
+<p>The <code>create</code> method is almost identical to the Contacts controller <code>create</code> method. We instantiate the Visitor model with scrubbed parameters from the submitted form, run a validation check, and connect to MailChimp.</p>
+<h3 id="clean-up">Clean Up</h3>
+<p>We no longer use the Owner model, so we can delete the file <strong>app/models/owner.rb</strong>:</p>
+<div class="highlight"><pre><span class="gp">$</span> rm app/models/owner.rb
+</pre></div><p>There’s no harm if it remains but it is good practice to remove code that is no longer used.</p>
+<h3 id="routing-4">Routing</h3>
+<p>Our routing is now more complex. In addition to rendering the Visitors#new view as the application root (the home page), we need to handle the <code>create</code> action. We can use a “resourceful route” as we did with the Contacts controller.</p>
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">resources</span> <span class="ss">:contacts</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
   <span class="n">resources</span> <span class="ss">:visitors</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
   <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors#new'</span>
 <span class="k">end</span>
-</pre></div><p>We’ve changed the root path to <code>visitors#new</code>.</p>
+</pre></div><p>The root path remains <code>visitors#new</code>. Order is significant in the <strong>config/routes.rb</strong> file. As the final designated route, the root path will only be active if nothing above it matches the route.</p>
 <p>We’ve added <code>visitors :contacts, only: [:new, :create]</code>.</p>
 <p>We only want two routes so we’ve added the restriction <code>only: [:new, :create]</code>.</p>
 <p>The <code>new</code> route has these properties:</p>
 <ul>
-  <li><code>new_contact_path</code> – route helper</li>
-  <li><code>contacts</code> – name of the controller (ContactsController)</li>
+  <li><code>new_visitor_path</code> – route helper</li>
+  <li><code>visitors</code> – name of the controller (VisitorsController)</li>
   <li><code>new</code> – controller action</li>
-  <li><a href="http://localhost:3000/contacts/new">http://localhost:3000/contacts/new</a> – <span class="caps">URL</span> generated by the route helper</li>
+  <li><a href="http://localhost:3000/visitors/new">http://localhost:3000/visitors/new</a> – <span class="caps">URL</span> generated by the route helper</li>
   <li><code>GET</code> – <span class="caps">HTTP</span> method to display a page</li>
 </ul>
 <p>The <code>create</code> route has these properties:</p>
 <ul>
-  <li><code>contacts_path</code> – route helper</li>
-  <li><code>contacts</code> – name of the controller (ContactsController)</li>
+  <li><code>visitors_path</code> – route helper</li>
+  <li><code>visitors</code> – name of the controller (VisitorsController)</li>
   <li><code>create</code> – controller action</li>
-  <li><a href="http://localhost:3000/contacts">http://localhost:3000/contacts</a> – <span class="caps">URL</span> generated by the route helper</li>
+  <li><a href="http://localhost:3000/visitors">http://localhost:3000/visitors</a> – <span class="caps">URL</span> generated by the route helper</li>
   <li><code>POST</code> – <span class="caps">HTTP</span> method to submit form data</li>
 </ul>
 <p>You can run the <code>rake routes</code> command to see these in the console:</p>
 <div class="highlight"><pre><span class="gp">$</span> rake routes
 <span class="go">     Prefix Verb URI Pattern             Controller#Action</span>
-<span class="go">   contacts POST /contacts(.:format)     contacts#create</span>
-<span class="go">new_contact GET  /contacts/new(.:format) contacts#new</span>
+<span class="go">   visitors POST /visitors(.:format)     visitors#create</span>
+<span class="go">new_visitor GET  /visitors/new(.:format) visitors#new</span>
 <span class="go">       root GET  /                       home#index</span>
 <span class="go">       page GET  /pages/*id              high_voltage/pages#show</span>
 </pre></div><p>The output of the <code>rake routes</code> command shows we’ve created the routes we need.</p>
@@ -2671,12 +2714,17 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Stop the web server with Control-c and restart:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<p>You’ll see our new home page with the placeholder photo and the “sign up” form.</p>
+<p>Enter your email address and click the “sign up” button. You should see the page redisplay with an acknowledgement message. Try entering an invalid email address such as “me@foo@”, or click the submit button without entering an email address, and you should see an error message.</p>
+<p>You’ll have to <a href="https://admin.mailchimp.com/">log in to MailChimp</a> and check your mailing list to see if the new email address was added successfully.</p>
+<p>MailChimp provides extensive documentation. You might look at the option to send a welcome email when a new user is subscribed to the mailing list. It’s a bit difficult to find the MailChimp option to create a welcome message. Look for the button “Design Signup Forms” or the “Forms” menu item under the settings “gear” associated with each list. You might not think a welcome email is a form, but that’s what MailChimp names it. In the dropdown list of “Forms &amp; Response Emails” it is named “Final ‘Welcome’ Email”. Use the welcome message to inform the visitor that they’ll successfully subscribed to the mailing list and will receive the next newsletter email.</p>
 <h3 id="git-10">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"mailing list"</span>
 <span class="gp">$</span> git push origin master
-</pre></div>
+</pre></div><p>Our tutorial application is feature complete.</p>
+<p>Let’s deploy it so we can see it running as a real website.</p>
 </section>
 <section class='chapter' id='deploy'><h2>Deploy</h2>
 <h3 id="cleanup">Cleanup</h3>
@@ -2715,8 +2763,6 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <div class="highlight"><pre><span class="gp">$</span> heroku run rake db:migrate
 <span class="gp">$</span> heroku run rake db:seed
 </pre></div><p>See the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
-</section>
-<section class='chapter' id='landing-pages'><h2>Landing Pages</h2>
 </section>
 <section class='chapter' id='analytics'><h2>Analytics</h2>
 <h3 id="introducing-javascript">Introducing JavaScript</h3>
