@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 06 Jun 2013</li>
+            <li>Last updated 07 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -2561,9 +2561,115 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Mail is a practical way to connect with site visitors. Let’s implement a feature that collects email addresses for mass mailing of a newsletter.</p>
 </section>
 <section class='chapter' id='mailing-list'><h2>Mailing List</h2>
-<p>Not everyone likes email (do you prefer to communicate with an <span class="caps">SMS</span> text message or a Facebook message?). But email remains the best way to maintain a connection with a website visitor. There may be no reason to contact a visitor after they’ve been to your site. But if you have a legitimate reason to follow up with visitors, you’ll want to encourage them to provide an email address so you can contact them.</p>
-<h3 id="modify-controller-2">Modify Controller</h3>
-<h3 id="flash-message">Flash Message</h3>
+<h3 id="user-story-4">User Story</h3>
+<p>Let’s plan our work with a user story:</p>
+<div class="highlight"><pre><span class="nf">*Subscribe to Mailing List*</span>
+<span class="nf">As a visitor to the website</span>
+<span class="k">I </span><span class="nf">want to sign up for a mailing list</span>
+<span class="nf">so I can receive news and announcements</span>
+</pre></div><p>To implement the user story, we’ll add a mailing list feature.</p>
+<h3 id="remove-home-model-view-and-controller">Remove Home Model, View, and Controller</h3>
+<p>Remove the file <strong>app/views/home/index.html.erb</strong>.</p>
+<p>Remove the file <strong>app/controllers/home_controller.rb</strong>.</p>
+<h3 id="views-folder">Views Folder</h3>
+<p>Create the <strong>app/views/visitors/</strong> folder:</p>
+<div class="highlight"><pre><span class="gp">$</span> mkdir app/views/visitors/
+</pre></div><h3 id="new-home-page">New Home Page</h3>
+<p>Add a file <strong>app/views/visitors/new.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="x">&lt;img src="http://lorempixel.com/1170/600/cats/1"&gt;</span>
+<span class="x">&lt;div style="text-align: center; margin-top: 20px"&gt;</span>
+<span class="x">  &lt;div class="span4 offset2"&gt;</span>
+<span class="x">    &lt;h2&gt;Stay in touch.&lt;/h2&gt;</span>
+<span class="x">  &lt;/div&gt;</span>
+<span class="x">  &lt;div class="span4"&gt;</span>
+<span class="x">    &lt;div&gt;</span>
+<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@visitor</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">        </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">        </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">label</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:placeholder</span> <span class="o">=&gt;</span> <span class="s1">'Your email address...'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">        &lt;br/&gt;</span>
+<span class="x">        </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">submit</span> <span class="s2">"Sign up for the newsletter"</span><span class="p">,</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"btn btn-primary"</span><span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">      </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">  &lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+</pre></div><h3 id="visitor-model">Visitor Model</h3>
+<p>Create a file <strong>app/models/visitor.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Visitor</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+  <span class="n">has_no_table</span>
+  <span class="n">column</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="n">validates_presence_of</span> <span class="ss">:email</span>
+  <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i</span>
+<span class="k">end</span>
+</pre></div><h3 id="visitors-controller">Visitors Controller</h3>
+<p>Add a file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@visitor</span> <span class="o">=</span> <span class="no">Visitor</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@visitor</span> <span class="o">=</span> <span class="no">Visitor</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secure_params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@visitor</span><span class="o">.</span><span class="n">valid?</span>
+      <span class="c1"># TODO MailChimp API here</span>
+      <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Signed up </span><span class="si">#{</span><span class="vi">@visitor</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">."</span>
+      <span class="n">redirect_to</span> <span class="n">root_path</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">secure_params</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:visitor</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:email</span><span class="p">)</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div><h3 id="routing-4">Routing</h3>
+<p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
+<div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:contacts</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
+  <span class="n">resources</span> <span class="ss">:visitors</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors#new'</span>
+<span class="k">end</span>
+</pre></div><p>We’ve changed the root path to <code>visitors#new</code>.</p>
+<p>We’ve added <code>visitors :contacts, only: [:new, :create]</code>.</p>
+<p>We only want two routes so we’ve added the restriction <code>only: [:new, :create]</code>.</p>
+<p>The <code>new</code> route has these properties:</p>
+<ul>
+  <li><code>new_contact_path</code> – route helper</li>
+  <li><code>contacts</code> – name of the controller (ContactsController)</li>
+  <li><code>new</code> – controller action</li>
+  <li><a href="http://localhost:3000/contacts/new">http://localhost:3000/contacts/new</a> – <span class="caps">URL</span> generated by the route helper</li>
+  <li><code>GET</code> – <span class="caps">HTTP</span> method to display a page</li>
+</ul>
+<p>The <code>create</code> route has these properties:</p>
+<ul>
+  <li><code>contacts_path</code> – route helper</li>
+  <li><code>contacts</code> – name of the controller (ContactsController)</li>
+  <li><code>create</code> – controller action</li>
+  <li><a href="http://localhost:3000/contacts">http://localhost:3000/contacts</a> – <span class="caps">URL</span> generated by the route helper</li>
+  <li><code>POST</code> – <span class="caps">HTTP</span> method to submit form data</li>
+</ul>
+<p>You can run the <code>rake routes</code> command to see these in the console:</p>
+<div class="highlight"><pre><span class="gp">$</span> rake routes
+<span class="go">     Prefix Verb URI Pattern             Controller#Action</span>
+<span class="go">   contacts POST /contacts(.:format)     contacts#create</span>
+<span class="go">new_contact GET  /contacts/new(.:format) contacts#new</span>
+<span class="go">       root GET  /                       home#index</span>
+<span class="go">       page GET  /pages/*id              high_voltage/pages#show</span>
+</pre></div><p>The output of the <code>rake routes</code> command shows we’ve created the routes we need.</p>
+<h3 id="test-the-application-9">Test the Application</h3>
+<p>Stop the web server with Control-c and restart:</p>
+<div class="highlight"><pre><span class="gp">$</span> rails server
+</pre></div><p>Open a web browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
+<h3 id="git-10">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"mailing list"</span>
+<span class="gp">$</span> git push origin master
+</pre></div>
 </section>
 <section class='chapter' id='deploy'><h2>Deploy</h2>
 <h3 id="cleanup">Cleanup</h3>
