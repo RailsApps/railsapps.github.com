@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 07 Jun 2013</li>
+            <li>Last updated 08 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -1090,14 +1090,17 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="k">end</span>
 </pre></div><p>Notice the name of the application <code>LearnRails</code> is included in the file. When  you created the application, I suggested you use the name <code>learn-rails</code>. If you gave the project a different name, you’ll have to modify the <strong>config/routes.rb</strong> file accordingly.</p>
 <p>This snippet of Rails routing code takes any request to the application root (<a href="http://localhost:3000/">http://localhost:3000/</a>) and redirects it to the <strong>about.html</strong> file (which is expected to be found in the <strong>public</strong> folder).</p>
-<p>When you change the <strong>config/routes.rb</strong> file, you must restart your application server to see the new behavior. Use Control-C to stop the server and restart it:</p>
+<p>When you change the <strong>config/routes.rb</strong> file, you must restart your application server to see the new behavior. Use Control-c to stop the server and restart it:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Visit the page <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see the “About” page.</p>
 <p>You’ve just seen an example of Rails magic. Some developers complain that the “convention over configuration” principle is black magic. It’s not obvious why pages are delivered from the <strong>public</strong> folder; it just happens. If you don’t know the convention, you could be left scratching your head and looking for the code that maps <a href="http://localhost:3000/">http://localhost:3000/</a> to the <strong>public/index.html</strong> file. The code is buried deep in the Rails framework. However, if you know the convention and the technique for overriding it, you have both convenience and power at your disposal.</p>
 <h3 id="remove-the-about-page">Remove the About Page</h3>
 <p>In the next chapter we’ll look at ways to implement the home page using the full power of Rails.</p>
+<p>Later we’ll create a new “About” page using a different approach.</p>
 <p>For now, delete the file <strong>public/about.html</strong>:</p>
 <div class="highlight"><pre><span class="gp">$</span> rm public/about.html
+</pre></div><p>Make sure you’ve removed the <strong>public/index.html</strong> file as suggested earlier:</p>
+<div class="highlight"><pre><span class="gp">$</span> rm public/index.html
 </pre></div><p>Now we’ll build a dynamic home page.</p>
 </section>
 <section class='chapter' id='dynamic-home-page'><h2>Dynamic Home Page</h2>
@@ -1111,33 +1114,40 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="k">I </span><span class="nf">want to see the owner's birthdate</span>
 <span class="k">I </span><span class="nf">want to see how many days until the owner's next birthday</span>
 <span class="nf">so I can send birthday greetings</span>
-</pre></div><p>It will be a silly home page but it will help us explore the power of Rails.</p>
+</pre></div><p>I admit it will be a silly home page but it will help us explore Rails and learn about the Ruby language. Later we’ll replace it with a home page that encourages visitors to sign up for a mailing list.</p>
 <h3 id="model-view-controller">Model View Controller</h3>
-<p>When you read about basic concepts, you learned that from the perspective of a software architect, Rails is organized to conform to the <a href="http://en.wikipedia.org/wiki/Model%E2%80%93View%E2%80%93Controller">model–view–controller</a> software design pattern. The <span class="caps">MVC</span> design pattern originated in the design of desktop applications. “Model” classes manipulated data; “view” classes created the user interface; and a “controller” class responded to user interaction. This design pattern enforces “separation of concerns” to keep code manageable and organized. The <span class="caps">MVC</span> design pattern is useful for web applications and a central organizing principle for Rails.</p>
+<p>You’ll need to understand the model–view–controller concept before we build a dynamic home page.</p>
+<p>You learned earlier that, from the perspective of a software architect, Rails is organized to conform to the <a href="http://en.wikipedia.org/wiki/Model%E2%80%93View%E2%80%93Controller">model–view–controller</a> software design pattern. This enforces “separation of concerns” to keep code manageable and organized. The <span class="caps">MVC</span> design pattern is appropriate for web applications and a central organizing principle for Rails.</p>
+<p>The <span class="caps">MVC</span> design pattern originated in the design of desktop applications. “Model” classes manipulated data; “view” classes created the user interface; and a “controller” class responded to user interaction.</p>
 <p><img src="https://tutorials.railsapps.org/assets/mvc-stack.png" title="Model–View–Controller in Rails" alt="Model–View–Controller in Rails" /></p>
-<p>When the web broswer makes a request, a <em>router</em> component will check the <strong>config/routes.rb</strong> file and determine which <em>controller</em> should handle the request, based on the web address and <span class="caps">HTTP</span> protocol. The controller will obtain any needed data from a <em>model</em>. After obtaining data, the controller will render a response combining data from the model with a <em>view</em> component that provides markup and layout. The response is an <span class="caps">HTML</span> file that the controller has assembled for the browser to display.</p>
-<p>The model, view, and controller you create are all just files containing Ruby code. Each file has a certain structure and syntax based on foundation model, view, and controller classes defined in the Rails framework. The model, view, and controller classes you create will <em>inherit</em> behavior from parent classes that are part of the framework, so you will have less code to write yourself.</p>
-<p>Looking at the process in more detail, the controller can obtain data from any number of models. In most Rails applications, a model obtains data from a database, though some models obtain data from a remote connection to another server. For example, a User model might retrieve a user name and email address from a local database. With permission, a User model could also obtain a user’s recent tweets from Twitter or a user’s hometown from Facebook.</p>
-<p>A controller can have more than one <em>action</em>. For example, a User controller might have actions to display a list of users, or add or delete a user from a list. The <strong>config/routes.rb</strong> file analyzes the web request to determine which controller action is approriate. In the software architects’ terminology, each action is a <em>method</em> of the controller <em>class</em>. In practice, Rails developers try to limit controllers to seven standard actions: <code>index</code>, <code>show</code>, <code>new</code>, <code>edit</code>, <code>create</code>, <code>update</code> and <code>destroy</code> actions. A controller that offers these seven actions is said to be “RESTful” (a term that refers to <em>Representational State Transfer</em>, another software design abstraction).</p>
-<p>A view file combines Ruby code with <span class="caps">HTML</span> markup. Typically there will be a view file associated with each controller action. An index view might show a list of users. A “show” view might provide details of a user’s profile. View files look much like ordinary <span class="caps">HTML</span> files but typically contain data in the form of Ruby variables. Often you’ll see Ruby statements such as blocks that iterate through lists to create tables. Following the “separation of concerns” principle, it is considered good practice to limit Ruby code in view files to only displaying data; anything else belongs in the model.</p>
+<p>There is a minor debate about whether the adaptation of this pattern for web applications should really be called <span class="caps">MVC</span>; perhaps it is more accurately a Routing-Controller-Model-View pattern. Despite the debate over nomenclature, the concept is well understood by experienced Rails developers.</p>
+<p>When the web browser makes a request, a <em>router</em> component will check the <strong>config/routes.rb</strong> file and determine which <em>controller</em> should handle the request, based on the web address and <span class="caps">HTTP</span> protocol. The controller will obtain any needed data from a <em>model</em>. After obtaining data, the controller will render a response combining data from the model with a <em>view</em> component that provides markup and layout. The response is an <span class="caps">HTML</span> file that the controller assembles for the browser to display.</p>
+<p>The model, view, and controller you create are files containing Ruby code. Each file has a certain structure and syntax based on foundation model, view, and controller classes defined in the Rails framework. The model, view, and controller classes you create will <em>inherit</em> behavior from parent classes that are part of the framework, so you will have less code to write yourself.</p>
+<p>In most Rails applications, a <strong>model</strong> obtains data from a database, though some models obtain data from a remote connection to another server. For example, a User model might retrieve a user name and email address from a local database. With permission, a User model could also obtain a user’s recent tweets from Twitter or a user’s hometown from Facebook. The controller can obtain data from more than one model if necessary.</p>
+<p>A <strong>controller</strong> can have more than one <em>action</em>. For example, a User controller might have actions to display a list of users, or add or delete a user from a list. The <strong>config/routes.rb</strong> file matches a web request to a controller action. In the software architects’ terminology, each action is a <em>method</em> of the controller <em>class</em>. We use the terms <em>action</em> and <em>method</em> interchangeably when we talk about a Rails contoller; to be precise, controller actions are implemented as methods.</p>
+<p>In practice, Rails developers try to limit controllers to seven standard actions: <code>index</code>, <code>show</code>, <code>new</code>, <code>create</code>, <code>edit</code>, <code>update</code> and <code>destroy</code> actions. A controller that offers these seven actions is said to be “RESTful” (a term that refers to <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">representational state transfer</a>, another software design abstraction). It’s not important to understand the abstract principles of RESTful design; recognizing the term and knowing that Rails controllers have seven standard actions is sufficient for beginners.</p>
+<p>A <strong>view</strong> file combines Ruby code with <span class="caps">HTML</span> markup. Typically there will be a view file associated with each controller action. An index view might show a list of users. A “show” view might provide details of a user’s profile. View files look much like ordinary <span class="caps">HTML</span> files but typically contain data in the form of Ruby variables. Often you’ll see Ruby statements such as blocks that iterate through lists to create tables. Following the “separation of concerns” principle, it is considered good practice to limit Ruby code in view files to only displaying data; anything else belongs in the model.</p>
 <p>This conceptual overview will be easier to grasp when you actually see the code for a model, view, and controller.</p>
-<h3 id="naming-the-model-and-controller">Naming the Model and Controller</h3>
-<p>Much of the art of programming lies in choosing suitable names for things. I’ve chosen two names that should be obvious:</p>
+<h3 id="the-name-game">The Name Game</h3>
+<p>Much of the art of programming lies in choosing suitable names for our creations.</p>
+<p>We’ll need a model as a source for data about the site owner. Choosing the most obvious name, we’ll call it the Owner model:</p>
 <ul>
-  <li>HomeController – the file will be <strong>app/controllers/home_controller.rb</strong></li>
   <li>Owner – the file will be <strong>app/models/owner.rb</strong></li>
 </ul>
-<p>The Home controller will render our home page.</p>
-<p>The Owner model will be the source for data about the site owner.</p>
+<p>It is more challenging to choose the name for the controller that will render our home page. We could call it the Home controller or the Welcome controller, but let’s refer to the user story that is guiding development of this feature. In our story, a visitor is making a request for information. It might not be obvious, but we could say a Visitors controller is appropriate:</p>
+<ul>
+  <li>VisitorsController – the file will be <strong>app/controllers/visitors_controller.rb</strong></li>
+</ul>
+<p>Later we’ll see this is a good choice because we’ll create a Visitor model to handle data about the website visitor. In Rails, though a controller can use data from more than one model, there is often a model with the same name as a controller.</p>
 <h3 id="routing">Routing</h3>
 <p>We’ll create the route before we implement the model and controller.</p>
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
-  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors#new'</span>
 <span class="k">end</span>
-</pre></div><p>Any request to the application root (<a href="http://localhost:3000/">http://localhost:3000/</a>) will be directed to the HomeController <code>index</code> action.</p>
-<p>Don’t be overly concerned about understanding the exact syntax of the code. It will be become familiar soon and you can always look up the details in the reference documentation, <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a>.</p>
-<p>You’ve changed a configuration file so you must restart your application server to set the new route. Use Control-C to stop the server and restart it:</p>
+</pre></div><p>Any request to the application root (<a href="http://localhost:3000/">http://localhost:3000/</a>) will be directed to the VisitorsController <code>new</code> action.</p>
+<p>Don’t be overly concerned about understanding the exact syntax of the code. It will be become familiar soon and you can look up the details in the reference documentation, <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a>.</p>
+<p>You’ve changed a configuration file so you must restart your application server to set the new route. Use Control-c to stop the server and restart it:</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>Visit the page <a href="http://localhost:3000">http://localhost:3000/</a>. You’ll see an error message because we haven’t implemented the controller.</p>
 <h3 id="model">Model</h3>
@@ -1184,13 +1194,13 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>The Owner model provides the data we want to see on the Home page.</p>
 <p>We’ll create the markup and layout in a View file and add variables that present the data.</p>
 <p>View files go in folders in the <strong>app/views/</strong> directory. In a typical application, one controller can render multiple views, so we make a folder to match each controller. You can make a new folder using your file browser or text editor. Or use the Unix <code>mkdir</code> command:</p>
-<div class="highlight"><pre><span class="gp">$</span> mkdir app/views/home
-</pre></div><p>Create a file <strong>app/views/home/index.html.erb</strong>:</p>
+<div class="highlight"><pre><span class="gp">$</span> mkdir app/views/visitors
+</pre></div><p>Create a file <strong>app/views/visitors/new.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;h3&gt;Home&lt;/h3&gt;</span>
 <span class="x">&lt;p&gt;Welcome to the home of </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
 <span class="x">&lt;p&gt;I was born on </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">birthdate</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
 <span class="x">&lt;p&gt;Only </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">countdown</span> <span class="cp">%&gt;</span><span class="x"> days until my birthday!&lt;/p&gt;</span>
-</pre></div><p>We’ve created a <strong>home/</strong> folder within the <strong>app/views/</strong> directory. This directory is for any views associated with the Home controller. We have only a single <code>index</code> view but if had more views, they’d go in the <strong>app/views/home/</strong> folder.</p>
+</pre></div><p>We’ve created a <strong>home/</strong> folder within the <strong>app/views/</strong> directory. This directory is for any views associated with the Home controller. We have only a single <code>index</code> view but if had more views, they’d go in the <strong>app/views/visitors/</strong> folder.</p>
 <p>By convention, if there’s only one default page in a directory, it’s named <strong>index.html</strong>. We name our View file <strong>index.html.erb</strong>, adding the <strong>.erb</strong> file extension so that Rails will use the <span class="caps">ERB</span> templating engine to interpret the markup.</p>
 <p>There are several syntaxes that can be used for a view file. In this tutorial, we’ll use the <span class="caps">ERB</span> syntax that is most commonly used by beginners. Some experienced developers prefer to add gems that provide the <a href="http://railsapps.github.io/rails-haml.html">Haml</a> and <a href="http://slim-lang.com/">Slim</a> templating engines. As you might guess, a View that uses the Haml templating syntax would be named <strong>index.html.haml</strong>.</p>
 <p>Our <span class="caps">HTML</span> markup is minimal, using only the <code>&lt;h3&gt;</code> and <code>&lt;p&gt;</code> tags. The only <span class="caps">ERB</span> markup we add are the <code>&lt;%= ... %&gt;</code> delimiters. This markup allows us to insert Ruby code which will be replaced by the result of evaluating the code. In other words, <code>&lt;%= @owner.name %&gt;</code> will appear on the page as Foobar Kadigan.</p>
@@ -1200,30 +1210,30 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>If you’re a programmer, you might wonder why we only output the variable on the page. Since we can use <span class="caps">ERB</span> to embed any Ruby code, we could perform the calculation right on the page by embedding <code>&lt;%= (Date.new(today.year, @owner.birthdate.month, @owner.birthdate.day) - DateTime.now).to_i %&gt;</code>. If you’ve used JavaScript or <span class="caps">PHP</span>, you may have performed calculations like this, right on the page. Rails would allow us to do so, but the practice violates the “separation of concerns” principle that encourages us to perform complex calculations in the model and only display data in the view.</p>
 <p>Before we can display the Home page, we need to create the Home controller.</p>
 <h3 id="controller">Controller</h3>
-<p>The Home controller is the glue that binds the Owner model with the HomeController#Index view.</p>
-<p><em>Note:</em> When we refer to a controller action, we use the notation “HomeController#Index,” joining the controller class name with the action (method) that renders a page. The “#” character is only a documentation convention.</p>
-<p><em>Note:</em> <code>HomeController</code> will be the class name and <strong>home_controller.rb</strong> will be the filename. The class name is written in <a href="http://en.wikipedia.org/wiki/CamelCase">camelCase</a> (with a hump in the middle, like a camel) so we can combine two words without a space. Operating systems don’t like filenames to include spaces and some operating systems don’t like capital letters in filenames, so we create a filename that combines two words with an underscore.</p>
-<p>Create a file <strong>app/controllers/home_controller.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<p>The Home controller is the glue that binds the Owner model with the VisitorsController#New view.</p>
+<p><em>Note:</em> When we refer to a controller action, we use the notation “VisitorsController#New,” joining the controller class name with the action (method) that renders a page. The “#” character is only a documentation convention.</p>
+<p><em>Note:</em> <code>VisitorsController</code> will be the class name and <strong>visitors_controller.rb</strong> will be the filename. The class name is written in <a href="http://en.wikipedia.org/wiki/CamelCase">camelCase</a> (with a hump in the middle, like a camel) so we can combine two words without a space. Operating systems don’t like filenames to include spaces and some operating systems don’t like capital letters in filenames, so we create a filename that combines two words with an underscore.</p>
+<p>Create a file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><p>We define the class and name it <code>class HomeController</code>, inheriting behavior from the ApplicationController class which is defined in the Rails <span class="caps">API</span>.</p>
+</pre></div><p>We define the class and name it <code>class VisitorsController</code>, inheriting behavior from the ApplicationController class which is defined in the Rails <span class="caps">API</span>.</p>
 <p>We only need to define the <code>index</code> method. We create an <em>instance variable</em> named <code>@owner</code> and assign an instance of the Owner model. Any instance variables (variables named with the @ character) will be available in the corresponding view file.</p>
-<p>Controller actions render a template in the <strong>app/views</strong> directory corresponding to the name of the controller and action after executing code in the action. Here the index action of the HomeController renders the template <strong>app/views/home/index.html.erb</strong> after creating the <code>@owner</code> instance variable.</p>
+<p>Controller actions render a template in the <strong>app/views</strong> directory corresponding to the name of the controller and action after executing code in the action. Here the index action of the VisitorsController renders the template <strong>app/views/visitors/new.html.erb</strong> after creating the <code>@owner</code> instance variable.</p>
 <p>The <code>index</code> method is deceptively simple. Hidden behavior inherited from the ApplicationController does all the work of rendering the view. We can make the hidden code explicit if we wish to. It would look something like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
-    <span class="n">render</span> <span class="s1">'home/index'</span>
+    <span class="n">render</span> <span class="s1">'visitors/new'</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><p>Revealing the hidden code, we see that invoking the <code>index</code> method calls a <code>render</code> method supplied by the ApplicationController parent class. The <code>render</code> method searches in the <strong>app/views/home</strong> directory for a view file named <strong>index</strong> (the file extension <strong>.html.erb</strong> is assumed by default). The code underlying the <code>render</code> method is complex. Fortunately, all we need to do is define the method and instantiate the Owner model. Rails takes care of the rest.</p>
+</pre></div><p>Revealing the hidden code, we see that invoking the <code>index</code> method calls a <code>render</code> method supplied by the ApplicationController parent class. The <code>render</code> method searches in the <strong>app/views/visitors</strong> directory for a view file named <strong>index</strong> (the file extension <strong>.html.erb</strong> is assumed by default). The code underlying the <code>render</code> method is complex. Fortunately, all we need to do is define the method and instantiate the Owner model. Rails takes care of the rest.</p>
 <h3 id="test-the-application-2">Test the Application</h3>
 <p>We’ve created a model, view, and controller. Now let’s run the application.</p>
 <p>Enter the command:</p>
@@ -1263,7 +1273,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="go"> =&gt; 4</span>
 </pre></div><p>Wow! You are using your computer for simple math. Maybe you can delete the calculator app from your phone.</p>
 <p><span class="caps">IRB</span> will evaluate any Ruby expression and helps you quickly determine if syntax and logic is correct.</p>
-<p>It can be very frustrating to find you are stuck inside <span class="caps">IRB</span>. Unlike most shell commands, you can’t quit with Control-C. Enter Control-D or type <code>exit</code> to quit <span class="caps">IRB</span>:</p>
+<p>It can be very frustrating to find you are stuck inside <span class="caps">IRB</span>. Unlike most shell commands, you can’t quit with Control-c. Enter Control-D or type <code>exit</code> to quit <span class="caps">IRB</span>:</p>
 <div class="highlight"><pre><span class="gp">$</span> irb
 <span class="go">2.0.0p0 :001 &gt; exit</span>
 </pre></div><p>Here’s a fun way to learn about <span class="caps">IRB</span>:</p>
@@ -1305,12 +1315,12 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>In development, everything written to the log file appears in the console window after you run the <code>rails server</code> command. Scrolling the console window is a good way to see diagnostics for every request.</p>
 <p>Here’s what you see when you visit the application home page:</p>
 <div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
-<span class="go">Processing by HomeController#index as HTML</span>
-<span class="go">  Rendered home/index.html.erb within layouts/application (48.8ms)</span>
+<span class="go">Processing by VisitorsController#new as HTML</span>
+<span class="go">  Rendered visitors/new.html.erb within layouts/application (48.8ms)</span>
 <span class="go">Completed 200 OK in 233ms (Views: 211.5ms | ActiveRecord: 0.0ms)</span>
 </pre></div><p>Here’s the best part. You can add your own messages to the log output by using the Rails logger. Let’s try it out.</p>
-<p>Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<p>Modify the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
@@ -1321,10 +1331,10 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="k">end</span>
 </pre></div><p>Visit the home page again and you’ll see this in the console output:</p>
 <div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
-<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">Processing by VisitorsController#new as HTML</span>
 <span class="go">DEBUG: entering index method</span>
 <span class="go">DEBUG: Owner name is Foobar Kadigan</span>
-<span class="go">  Rendered home/index.html.erb within layouts/application (0.2ms)</span>
+<span class="go">  Rendered visitors/new.html.erb within layouts/application (0.2ms)</span>
 <span class="go">Completed 200 OK in 8ms (Views: 4.6ms | ActiveRecord: 0.0ms)</span>
 </pre></div><p>If you really needed to do so, you could add a logger statement at every step in the application. You could see how the application behaves, step by step. And you could “print” the value of every variable at every step. You’ll never need diagnostics at this level of detail in Rails, but the logger is extremely useful when you are trying to understand unexpected behavior.</p>
 <p>Let’s add logger statements to the <code>Owner</code> model. Modify the file <strong>app/models/owner.rb</strong>:</p>
@@ -1349,11 +1359,11 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 </pre></div><p>We added the <code>Rails.logger.debug</code> statement to the <code>Owner.countdown</code> method.</p>
 <p>Visit the home page and here’s what you’ll see in the console output:</p>
 <div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
-<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">Processing by VisitorsController#new as HTML</span>
 <span class="go">DEBUG: entering index method</span>
 <span class="go">DEBUG: Owner name is Foobar Kadigan</span>
 <span class="go">DEBUG: entering Owner countdown method</span>
-<span class="go">  Rendered home/index.html.erb within layouts/application (0.3ms)</span>
+<span class="go">  Rendered visitors/new.html.erb within layouts/application (0.3ms)</span>
 <span class="go">Completed 200 OK in 7ms (Views: 4.2ms | ActiveRecord: 0.0ms)</span>
 </pre></div><p>You’ll often need to “get inside” the model or controller to see what’s happening. The Rails logger is the best tool for the job.</p>
 <p>Here are some tricks for the Rails logger.</p>
@@ -1365,8 +1375,8 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <h3 id="the-stack-trace">The Stack Trace</h3>
 <p>The Rails logger is extremely useful if you want to insert messages to show program flow or display variables. But there will be times when program flow halts and the console displays a <em>stack trace</em>.</p>
 <p>Let’s deliberately create an error condition and see an error page and stack trace.</p>
-<p>Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<p>Modify the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
@@ -1381,24 +1391,24 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>You’ll see this error page because we’ve installed the <a href="https://github.com/charliesome/better_errors">better_errors</a> gem. Without the better_errors gem, you’d see the default Rails error page which is quite similar.</p>
 <p>In the console log, you’ll many lines from a stack trace that shows everything that happens before Rails encounters the error.</p>
 <div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
-<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">Processing by VisitorsController#new as HTML</span>
 <span class="go">DEBUG: entering index method</span>
 <span class="go">DEBUG: Owner name is Foobar Kadigan</span>
 <span class="go">Completed 500 Internal Server Error in 10ms</span>
 
-<span class="go">NameError - uninitialized constant HomeController::DISASTER:</span>
-<span class="go">  app/controllers/home_controller.rb:7:in `index'</span>
+<span class="go">NameError - uninitialized constant VisitorsController::DISASTER:</span>
+<span class="go">  app/controllers/visitors_controller.rb:7:in `index'</span>
 <span class="go">  .</span>
 <span class="go">  .</span>
 <span class="go">  .</span>
 </pre></div><p>To save space, I’m only showing the first line of the stack trace. I’ve eliminated about sixty lines from the stack trace.</p>
 <p>Don’t feel bad if your reaction to a stack trace is an immediate, “<span class="caps">TMI</span>!” Indeed, it is usually Too Much Information. There are times when it pays to carefully read through the stack trace line by line, but most often, only the first line of the stack trace is important.</p>
-<p>In this case, both the error page and the first line of the stack trace show the application failed (“barfed”) when it encountered an “uninitialized constant” at line 7 of the <strong>app/controllers/home_controller.rb</strong> file in the <code>index</code> method. It’s easy to find line 7 in the file and see that is exactly where we added a string that Rails doesn’t understand.</p>
+<p>In this case, both the error page and the first line of the stack trace show the application failed (“barfed”) when it encountered an “uninitialized constant” at line 7 of the <strong>app/controllers/visitors_controller.rb</strong> file in the <code>index</code> method. It’s easy to find line 7 in the file and see that is exactly where we added a string that Rails doesn’t understand.</p>
 <p>The point of this exercise is to encourage you to read the first line of the stack trace and use it to diagnose the problem. I’m always surprised how many developers ignore the stack trace, probably because it looks intimidating.</p>
 <h3 id="raising-an-exception">Raising an Exception</h3>
 <p>As you just saw, you can purposefully break your application by adding characters that Rails doesn’t understand. However, there is a better way to force your program to halt, called <em>raising an exception</em>.</p>
-<p>Let’s try it. Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<p>Let’s try it. Modify the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
@@ -1411,18 +1421,18 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 </pre></div><p>You can throw an error by using the <code>raise</code> keyword from the Ruby <span class="caps">API</span>. You can provide any error message you’d like in quotes following <code>raise</code>.</p>
 <p>Here’s the console log after you try to visit the home page:</p>
 <div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
-<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">Processing by VisitorsController#new as HTML</span>
 <span class="go">DEBUG: entering index method</span>
 <span class="go">DEBUG: Owner name is Foobar Kadigan</span>
 <span class="go">Completed 500 Internal Server Error in 22ms</span>
 
 <span class="go">RuntimeError - Deliberate Failure:</span>
-<span class="go">  app/controllers/home_controller.rb:7:in `index'</span>
+<span class="go">  app/controllers/visitors_controller.rb:7:in `index'</span>
 <span class="go">  .</span>
 <span class="go">  .</span>
 <span class="go">  .</span>
-</pre></div><p>Before we continue, let’s remove the deliberate failure. Modify the file <strong>app/controllers/home_controller.rb</strong>:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</pre></div><p>Before we continue, let’s remove the deliberate failure. Modify the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s1">'DEBUG: entering index method'</span>
@@ -1461,19 +1471,19 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <h4 id="the-server-side">The Server Side</h4>
 <p>The browser’s diagnostic view doesn’t show you want happens on the server. For that, go to the server logs or the console window.</p>
 <div class="highlight"><pre><span class="go">Started GET "/" for 127.0.0.1 at ...</span>
-<span class="go">Processing by HomeController#index as HTML</span>
+<span class="go">Processing by VisitorsController#new as HTML</span>
 <span class="go">DEBUG: entering index method</span>
 <span class="go">DEBUG: Owner name is Foobar Kadigan</span>
 <span class="go">DEBUG: entering Owner countdown method</span>
-<span class="go">  Rendered home/index.html.erb within layouts/application (0.3ms)</span>
+<span class="go">  Rendered visitors/new.html.erb within layouts/application (0.3ms)</span>
 <span class="go">Completed 200 OK in 5ms (Views: 4.2ms | ActiveRecord: 0.0ms)</span>
 <span class="go">Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at ...</span>
 <span class="go">Started GET "/assets/application.js?body=1" for 127.0.0.1 at ...</span>
 <span class="go">Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at ...</span>
 <span class="go">Started GET "/assets/application.css?body=1" for 127.0.0.1 at ...</span>
 <span class="go">Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at ...</span>
-</pre></div><p>Notice how the diagnostic messages in the console window match the headers in the browser diagnostic view. The broswer’s “Request Method:<span class="caps">GET</span>” matches the server’s “Started <span class="caps">GET</span>.” The broswer’s “Request <span class="caps">URL</span>:http://localhost:3000/” matches the server’s “‘/’ for 127.0.0.1” (localhost is at IP address 127.0.0.1). The browser’s “Status Code: 200” matches the server’s “Completed 200 OK” (you might have to clear the browser’s cache if the browser is showing “304 Not Modified”).</p>
-<p>Of course the console log shows what happens on the server side. “Processing by HomeController#index” shows the program flow entering the controller. Our debug statements show we enter the index method and reveal the value of the Owner name. The next debug statement reveals the flow has passed to the Owner model. A diagnostic message shows the controller has rendered the <strong>home/index.html.erb</strong> view file. Finally, the “Completed 200 OK” message indicates the response has been sent to the browser, followed by a sequence of <span class="caps">CSS</span> and JavaScript files.</p>
+</pre></div><p>Notice how the diagnostic messages in the console window match the headers in the browser diagnostic view. The browser’s “Request Method:<span class="caps">GET</span>” matches the server’s “Started <span class="caps">GET</span>.” The browser’s “Request <span class="caps">URL</span>:http://localhost:3000/” matches the server’s “‘/’ for 127.0.0.1” (localhost is at IP address 127.0.0.1). The browser’s “Status Code: 200” matches the server’s “Completed 200 OK” (you might have to clear the browser’s cache if the browser is showing “304 Not Modified”).</p>
+<p>Of course the console log shows what happens on the server side. “Processing by VisitorsController#new” shows the program flow entering the controller. Our debug statements show we enter the index method and reveal the value of the Owner name. The next debug statement reveals the flow has passed to the Owner model. A diagnostic message shows the controller has rendered the <strong>visitors/new.html.erb</strong> view file. Finally, the “Completed 200 OK” message indicates the response has been sent to the browser, followed by a sequence of <span class="caps">CSS</span> and JavaScript files.</p>
 <p>It’s wonky but we’re able to trace the entire request-response cycle, including the server’s traverse of the model-view-controller architecture.</p>
 <h3 id="git-5">Git</h3>
 <p>There’s no need to save any of the changes we made for troubleshooting.</p>
@@ -1484,7 +1494,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git add &lt;file&gt;..."</span> to update what will be committed<span class="o">)</span>
 <span class="gp">#</span>   <span class="o">(</span>use <span class="s2">"git checkout -- &lt;file&gt;..."</span> to discard changes in working directory<span class="o">)</span>
 <span class="gp">#</span>
-<span class="gp">#</span> modified:   app/controllers/home_controller.rb
+<span class="gp">#</span> modified:   app/controllers/visitors_controller.rb
 <span class="gp">#</span> modified:   app/models/owner.rb
 <span class="gp">#</span>
 <span class="go">no changes added to commit (use "git add" and/or "git commit -a")</span>
@@ -1519,7 +1529,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>In this chapter we’ll look closely at view files, particularly the application layout, so we can organize the design of our web pages. In the next chapter we’ll learn how to add <span class="caps">CSS</span> stylesheets to complete the graphic design of our web pages.</p>
 <h3 id="application-layout">Application Layout</h3>
 <p>We’ve already created the view file for our home page.</p>
-<p>The file <strong>app/views/home/index.html.erb</strong> looks like this:</p>
+<p>The file <strong>app/views/visitors/new.html.erb</strong> looks like this:</p>
 <div class="highlight"><pre><span class="x">&lt;h3&gt;Home&lt;/h3&gt;</span>
 <span class="x">&lt;p&gt;Welcome to the home of </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
 <span class="x">&lt;p&gt;I was born on </span><span class="cp">&lt;%=</span> <span class="vi">@owner</span><span class="o">.</span><span class="n">birthdate</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
@@ -1570,25 +1580,25 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Static pages delivered from the <strong>public</strong> folder do not use the default application layout. But every page generated by the model-view-controller architecture in the <strong>app/</strong> folder incorporates the default application layout, unless you specify otherwise.</p>
 <p>The default application layout is where you put <span class="caps">HTML</span> that you want to include on every page of your website.</p>
 <p>Remember when we looked at the hidden code in the controller that renders a view? The controller uses the <code>render</code> method to combine the view file with the application layout:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
-    <span class="n">render</span> <span class="s1">'home/index'</span>
+    <span class="n">render</span> <span class="s1">'visitors/new'</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
-</pre></div><p>Here the <code>render</code> method combines the <strong>app/views/home/index.html.erb</strong> view file with the <strong>app/views/layouts/application.html.erb</strong>: application layout.</p>
+</pre></div><p>Here the <code>render</code> method combines the <strong>app/views/visitors/new.html.erb</strong> view file with the <strong>app/views/layouts/application.html.erb</strong>: application layout.</p>
 <p>You could tell the controller to render the view without any application layout:</p>
-<div class="highlight"><pre><span class="n">render</span> <span class="s1">'home/index'</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+<div class="highlight"><pre><span class="n">render</span> <span class="s1">'visitors/new'</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="kp">false</span>
 </pre></div><p>Or you could specify an alternative layout file, for example <strong>app/views/layouts/special.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="n">render</span> <span class="s1">'home/index'</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="s1">'special'</span>
+<div class="highlight"><pre><span class="n">render</span> <span class="s1">'visitors/new'</span><span class="p">,</span> <span class="ss">:layout</span> <span class="o">=&gt;</span> <span class="s1">'special'</span>
 </pre></div><p>An alternative layout can be useful for special categories of pages, such as administrative pages or landing pages.</p>
 <p>The reference <a href="http://guides.rubyonrails.org/layouts_and_rendering.html">RailsGuides: Layouts and Rendering in Rails</a> explains more about using alternative layouts.</p>
 <h3 id="yield">Yield</h3>
 <p>How does the <code>render</code> method insert the view file in the application layout?</p>
 <p>Notice that the default application layout contains the Ruby keyword <code>yield</code>.</p>
-<p>The <code>yield</code> keyword is replaced with a view file that is specific to the controller and action, in this case, the <strong>app/views/home/index.html.erb</strong> view file.</p>
+<p>The <code>yield</code> keyword is replaced with a view file that is specific to the controller and action, in this case, the <strong>app/views/visitors/new.html.erb</strong> view file.</p>
 <p>The content from the view is inserted where you place the <code>yield</code> keyword.</p>
 <p>Rails provides other ways to insert content into a layout file. For example, the <code>content_for</code> method is helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content.</p>
 <p>For example, you could create an application layout that includes a sidebar. This is just an example, so don’t add it to the application you are building:</p>
@@ -1708,8 +1718,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Here’s a flash message you might see after logging it to an application:</p>
 <p><img src="https://tutorials.railsapps.org/assets/learn-rails-44-flash.png" title="Flash Message in Rails" alt="Flash Message in Rails" /></p>
 <p>It is called a “flash message” because it appears on a page temporarily. When the page is reloaded or another page is visited, the message disappears.</p>
-<p>Flash messages are created in a controller. For example, we could add messages to the home page by modifying the HomeController like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<p>Flash messages are created in a controller. For example, we could add messages to the home page by modifying the VisitorsController like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="vi">@owner</span> <span class="o">=</span> <span class="no">Owner</span><span class="o">.</span><span class="n">new</span>
@@ -2308,7 +2318,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </ul>
 <p>But seven basic actions are all you need for managing any list of items.</p>
 <p>The “Rails way” is about taking advantage of structure and convention to leverage the power of the framework.</p>
-<p>The ApplicationController contains code to implement each of the seven standard actions. When we create a controller that inherits from the ApplicationController, we get these standard actions “for free.” That’s why our <code>index</code> method in our HomeController was so simple. The controller knew to render a view file named <strong>index.html.erb</strong> from the <strong>views/home/</strong> folder because of behavior inherited from the ApplicationController.</p>
+<p>The ApplicationController contains code to implement each of the seven standard actions. When we create a controller that inherits from the ApplicationController, we get these standard actions “for free.” That’s why our <code>new</code> method in our VisitorsController was so simple. The controller knew to render a view file named <strong>new.html.erb</strong> from the <strong>views/visitors/</strong> folder because of behavior inherited from the ApplicationController.</p>
 <p>Just like the Rails directory structure provides consistency to make it easy for any Rails developer to collaborate with other Rails developers, relying on the seven standard controller actions makes it easy for other team members to understand how your controllers work.</p>
 <p>When necessary, you will add other controller actions. For example, imagine you’ve built a subscription website. When a user’s subscription ends, you may not want to <code>destroy</code> the subscriber record. Instead you might add a controller <code>expire</code> or <code>suspend</code> action that marks the subscriber record as expired so you can continue to access the subscriber’s contact information for customer service or renewal offers. To the extent you can, use the seven standard controller actions and be cautious about adding more.</p>
 <p>Earlier, I said our ContactsController <code>process_form</code> method isn’t suitable for the “Rails way.” With our model-view-controller architecture, we can piggyback on the ApplicationController to display our empty contact form and process the form when it is submitted.</p>
@@ -2568,9 +2578,6 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="k">I </span><span class="nf">want to sign up for a mailing list</span>
 <span class="nf">so I can receive news and announcements</span>
 </pre></div><p>To implement the user story, we’ll add a mailing list feature.</p>
-<h3 id="remove-home-model-view-and-controller">Remove Home Model, View, and Controller</h3>
-<p>Remove the file <strong>app/views/home/index.html.erb</strong>.</p>
-<p>Remove the file <strong>app/controllers/home_controller.rb</strong>.</p>
 <h3 id="views-folder">Views Folder</h3>
 <p>Create the <strong>app/views/visitors/</strong> folder:</p>
 <div class="highlight"><pre><span class="gp">$</span> mkdir app/views/visitors/
@@ -2601,7 +2608,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i</span>
 <span class="k">end</span>
 </pre></div><h3 id="visitors-controller">Visitors Controller</h3>
-<p>Add a file <strong>app/controllers/visitors_controller.rb</strong>:</p>
+<p>Repalce the contents of the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">new</span>
@@ -2680,7 +2687,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>You can check that your app runs properly by entering the command</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
-<p>Stop the server with Control-C.</p>
+<p>Stop the server with Control-c.</p>
 <h3 id="testing">Testing</h3>
 <p>If you’ve copied the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/learn-rails/">learn-rails</a> example application, and set up RSpec and Cucumber, you can run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available.</p>
 <p>Run <code>rake spec</code> to run RSpec tests.</p>
