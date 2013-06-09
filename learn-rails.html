@@ -1701,7 +1701,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">  &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;</span>
 <span class="x">  &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;</span>
 <span class="x">&lt;/ul&gt;</span>
-</pre></div><p>Rails gives us another option, however. We can use the Rails <code>link_to</code> view helper instead of the <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag. The Rails <code>link_to</code> helper eliminates the crufty <code>&lt;&gt;</code> angle brackets and the unnecessary <code>href=""</code>. More importantly, it adds a layer of abstraction, using the routing configuration file to form links. This is advantageous if we make changes to the location of the link destinations. Earlier, when we created a static “About” page, we first set the <strong>config/routes.rb</strong> file with a route to the “About” page: <code>root :to =&gt; redirect('/about.html')</code>. Later we removed the static “About” page and set the <strong>config/routes.rb</strong> file with a route to the dynamic home page: <code>root :to =&gt; 'visitors/new'</code>. If we used the raw <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag, we’d have to change the raw <span class="caps">HTML</span> everywhere we had a link to the home page. Using the Rails <code>link_to</code> helper, we name a route and make any changes once, in the <strong>config/routes.rb</strong> file.</p>
+</pre></div><p>Rails gives us another option, however. We can use the Rails <code>link_to</code> view helper instead of the <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag. The Rails <code>link_to</code> helper eliminates the crufty <code>&lt;&gt;</code> angle brackets and the unnecessary <code>href=""</code>. More importantly, it adds a layer of abstraction, using the routing configuration file to form links. This is advantageous if we make changes to the location of the link destinations. Earlier, when we created a static “About” page, we first set the <strong>config/routes.rb</strong> file with a route to the “About” page: <code>root :to =&gt; redirect('/about.html')</code>. Later we removed the static “About” page and set the <strong>config/routes.rb</strong> file with a route to the dynamic home page: <code>root :to =&gt; 'visitors#new'</code>. If we used the raw <span class="caps">HTML</span> <code>&lt;a&gt;</code> anchor tag, we’d have to change the raw <span class="caps">HTML</span> everywhere we had a link to the home page. Using the Rails <code>link_to</code> helper, we name a route and make any changes once, in the <strong>config/routes.rb</strong> file.</p>
 <p>When you use the Rails <code>link_to</code> helper, you’ll avoid the problem of link maintenance that webmasters face on static websites. Some webmasters like to use <em>absolute</em> URLs, specifying a host name in the link, for example <code>http://www.example.com/about.html</code>. Absolute URLs are a headache when moving the site, for example from <code>staging.example.com</code> to <code>www.example.com</code>. The problem is avoided by using <em>relative</em> URLs,  such as <code>/about.html</code>, <code>about.html</code>, or even <code>../about.html</code>. But relative URLs are fragile, and moving files or directories often results in overlooked and broken links. Instead, with the Rails <code>link_to</code> helper, you always get the destination location specified in the <strong>config/routes.rb</strong> file.</p>
 <p>Using the <code>link_to</code> helper, create a file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="x">&lt;ul class="nav"&gt;</span>
@@ -2008,7 +2008,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Like the PagesController, the code that sets up the route is packaged inside the gem. If we wanted to add the route explicitly to the file <strong>config/routes.rb</strong>, the file would look like this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">get</span> <span class="s2">"/pages/*id"</span> <span class="o">=&gt;</span> <span class="s1">'pages#show'</span>
-  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors/new'</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors#new'</span>
 <span class="k">end</span>
 </pre></div><p>Again, you don’t need to add the code above because the HighVoltage gem already provides the route.</p>
 <p>For details about the syntax of routing directives, refer to <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a>.</p>
@@ -2045,7 +2045,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">post</span> <span class="s1">'contact'</span> <span class="o">=&gt;</span> <span class="s1">'contacts#process_form'</span>
-  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors/new'</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors#new'</span>
 <span class="k">end</span>
 </pre></div><p>The route <code>post 'contact' =&gt; 'contacts#process_form'</code> will create a route helper that generates a <span class="caps">URL</span> and hands off the request to a controller:</p>
 <ul>
@@ -2059,7 +2059,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <div class="highlight"><pre><span class="gp">$</span> rake routes
 <span class="go"> Prefix Verb URI Pattern        Controller#Action</span>
 <span class="go">contact POST /contact(.:format) contacts#process_form</span>
-<span class="go">   root GET  /                  visitors/new</span>
+<span class="go">   root GET  /                  visitors#new</span>
 <span class="go">   page GET  /pages/*id         high_voltage/pages#show</span>
 </pre></div><p>The output of the <code>rake routes</code> command is somewhat cryptic but confirms we’ve created the routes we need.</p>
 <p>For details about the syntax of routing directives, refer to <a href="http://guides.rubyonrails.org/routing.html">RailsGuides: Routing from the Outside In</a>.</p>
@@ -2380,7 +2380,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Open the file <strong>config/routes.rb</strong>. Replace the contents with this:</p>
 <div class="highlight"><pre><span class="ss">LearnRails</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">resources</span> <span class="ss">:contacts</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="o">]</span>
-  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors/new'</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'visitors#new'</span>
 <span class="k">end</span>
 </pre></div><p>Here we’ve added <code>resources :contacts, only: [:new, :create]</code>.</p>
 <p>We only want two routes so we’ve added the restriction <code>only: [:new, :create]</code>.</p>
@@ -2405,7 +2405,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="go">     Prefix Verb URI Pattern             Controller#Action</span>
 <span class="go">   contacts POST /contacts(.:format)     contacts#create</span>
 <span class="go">new_contact GET  /contacts/new(.:format) contacts#new</span>
-<span class="go">       root GET  /                       visitors/new</span>
+<span class="go">       root GET  /                       visitors#new</span>
 <span class="go">       page GET  /pages/*id              high_voltage/pages#show</span>
 </pre></div><p>The output of the <code>rake routes</code> command shows we’ve created the routes we need.</p>
 <p>We’re ready to test the model-view-controller implementation of the Contact feature.</p>
@@ -2724,7 +2724,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="go">     Prefix Verb URI Pattern             Controller#Action</span>
 <span class="go">   visitors POST /visitors(.:format)     visitors#create</span>
 <span class="go">new_visitor GET  /visitors/new(.:format) visitors#new</span>
-<span class="go">       root GET  /                       visitors/new</span>
+<span class="go">       root GET  /                       visitors#new</span>
 <span class="go">       page GET  /pages/*id              high_voltage/pages#show</span>
 </pre></div><p>The output of the <code>rake routes</code> command shows we’ve created the routes we need.</p>
 <h3 id="test-the-application-9">Test the Application</h3>
