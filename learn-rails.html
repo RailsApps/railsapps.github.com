@@ -2633,12 +2633,28 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div><p>We’ll need a Visitor model to initialize the form.</p>
 <h3 id="visitor-model">Visitor Model</h3>
 <p>The Visitor model is almost identical to the Contact model we created earlier, except there is just one data attribute for the email field.</p>
+<p>We’ll also add a <code>subscribe</code> method that subscribes a visitor to a MailChimp list. We’ll call this method from the controller when we process the submitted form.</p>
 <p>Create a file <strong>app/models/visitor.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Visitor</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
   <span class="n">has_no_table</span>
   <span class="n">column</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:string</span>
   <span class="n">validates_presence_of</span> <span class="ss">:email</span>
   <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="sr">/\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i</span>
+
+  <span class="k">def</span> <span class="nf">subscribe</span>
+    <span class="n">mailchimp</span> <span class="o">=</span> <span class="no">Gibbon</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">mailchimp</span><span class="o">.</span><span class="n">list_subscribe</span><span class="p">({</span>
+      <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'MAILCHIMP_LIST_ID'</span><span class="o">]</span><span class="p">,</span>
+      <span class="ss">:email_address</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+      <span class="ss">:double_optin</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span>
+      <span class="ss">:update_existing</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+      <span class="ss">:send_welcome</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+    <span class="p">})</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Subscribed </span><span class="si">#{</span><span class="nb">self</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2"> to MailChimp"</span><span class="p">)</span> <span class="k">if</span> <span class="n">result</span>
+  <span class="k">rescue</span> <span class="ss">Gibbon</span><span class="p">:</span><span class="ss">:MailChimpError</span> <span class="o">=&gt;</span> <span class="n">e</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"MailChimp subscribe failed for </span><span class="si">#{</span><span class="nb">self</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+  <span class="k">end</span>
+
 <span class="k">end</span>
 </pre></div><p>Once again, we inherit behavior from the ActiveRecord parent class and use the <code>has_no_table</code> keyword from the activerecord-tableless gem to disable ActiveRecord’s database functionality.</p>
 <p>We create the email attribute and set validation requirements.</p>
@@ -2654,7 +2670,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <span class="k">def</span> <span class="nf">create</span>
     <span class="vi">@visitor</span> <span class="o">=</span> <span class="no">Visitor</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secure_params</span><span class="p">)</span>
     <span class="k">if</span> <span class="vi">@visitor</span><span class="o">.</span><span class="n">valid?</span>
-      <span class="c1"># TODO MailChimp API here</span>
+      <span class="vi">@visitor</span><span class="o">.</span><span class="n">subscribe</span>
       <span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Signed up </span><span class="si">#{</span><span class="vi">@visitor</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">."</span>
       <span class="n">redirect_to</span> <span class="n">root_path</span>
     <span class="k">else</span>
@@ -2670,7 +2686,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 
 <span class="k">end</span>
 </pre></div><p>Our <code>new</code> method now assigns the Visitor model to an instance variable instead of the Owner model.</p>
-<p>The <code>create</code> method is almost identical to the Contacts controller <code>create</code> method. We instantiate the Visitor model with scrubbed parameters from the submitted form, run a validation check, and connect to MailChimp.</p>
+<p>The <code>create</code> method is almost identical to the Contacts controller <code>create</code> method. We instantiate the Visitor model with scrubbed parameters from the submitted form, run a validation check, and subscribe the visitor to the MailChimp mailing list.</p>
 <h3 id="clean-up">Clean Up</h3>
 <p>We no longer use the Owner model, so we can delete the file <strong>app/models/owner.rb</strong>:</p>
 <div class="highlight"><pre><span class="gp">$</span> rm app/models/owner.rb
