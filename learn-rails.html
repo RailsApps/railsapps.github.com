@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 09 Jun 2013</li>
+            <li>Last updated 10 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -2594,9 +2594,15 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
   <li>routing for Visitors#new and Visitors#create</li>
 </ul>
 <p>We’ll add a Visitor model that has a data attribute for an email address. We already have a Visitors controller that renders the home page using the a file in the <strong>app/views/visitors/</strong> folder. We’ll replace the contents of the view file with a nice photo, a marketing message, and a form.</p>
-<p>Our Visitors controller <code>new</code> and <code>create</code> methods will be very similar to what we created for the Contacts controller. Instead of connecting to Gmail to send a message, we’ll use methods from the MailChimp <span class="caps">API</span> to save the visitor’s email address to a MailChimp mailing list.</p>
+<p>Our Visitors controller <code>new</code> and <code>create</code> methods will be very similar to what we created for the Contacts controller. Instead of connecting to Gmail to send a message, we’ll call a method to save the visitor’s email address to a MailChimp mailing list.</p>
+<h4 id="skinny-controller-fat-model">Skinny Controller, Fat Model</h4>
+<p>Rails is opinionated, which means there is often a “Rails way” that’s preferred to other approaches. We face such a choice here, in deciding how to implement the mailing list feature.</p>
+<p>The code that connects to MailChimp could be added to either the controller or the model. At first encounter, it looks like we should add the MailChimp code to the controller. After all, the form data is received by the controller. It would be a small extra step to use the Visitors controller <code>create</code> method to connect to MailChimp to add the visitor’s email address. There’s no harm done if you take this path. The code will work, though seasoned Rails developers will raise an eyebrow.</p>
+<p>One of the slogans of the “Rails way” is “skinny controller, fat model.” Controllers should contain only enough code to instantiate a model and handle rendering. If you think about it, adding a subscriber to the MailChimp database is a data operation, and all data manipulation should be handled by a model.</p>
+<p>Consequently, we’ll add a method to the Visitors model named <code>subscribe</code> that will use the <a href="https://github.com/amro/gibbon">Gibbon gem</a> to connect to MailChimp and add the visitor’s email address to our mailing list. We’ll call the <code>@visitor.subscribe</code> method from the Visitors controller <code>create</code> method.</p>
+<p>Either approach will work, but the “fat model” implementation is considered a “best practice.”</p>
 <h3 id="gibbon-gem">Gibbon Gem</h3>
-<p>The <a href="https://github.com/amro/gibbon">Gibbon gem</a>" is a convenient wrapper for the <a href="http://apidocs.mailchimp.com/">MailChimp <span class="caps">API</span></a>. We could connect to the MailChimp <span class="caps">API</span> using other gems that provide low-level plumbing such as <span class="caps">HTTP</span> connections (<a href="http://johnnunemaker.com/httparty/">httparty</a>) and data parsing (<a href="https://github.com/intridea/multi_json">multi_json</a>"), but other developers have already done the work of wrapping the plumbing in a higher-level abstraction that easily fits into a Rails application. Amro Mousa’s Gibbon gem is popular and actively maintained.</p>
+<p>The <a href="https://github.com/amro/gibbon">Gibbon gem</a> is a convenient wrapper for the <a href="http://apidocs.mailchimp.com/">MailChimp <span class="caps">API</span></a>. We could connect to the MailChimp <span class="caps">API</span> using other gems that provide low-level plumbing such as <span class="caps">HTTP</span> connections (<a href="http://johnnunemaker.com/httparty/">httparty</a>) and data parsing (<a href="https://github.com/intridea/multi_json">multi_json</a>), but other developers have already done the work of wrapping the plumbing in a higher-level abstraction that easily fits into a Rails application. Amro Mousa’s Gibbon gem is popular and actively maintained.</p>
 <p>In your <strong>Gemfile</strong>, you’ve already added:</p>
 <div class="highlight"><pre><span class="n">gem</span> <span class="s1">'gibbon'</span>
 </pre></div><p>and previously run <code>$ bundle install</code>.</p>
@@ -2622,19 +2628,19 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">&lt;/div&gt;</span>
 </pre></div><p>The first line adds a photo to the page. We’re taking a shortcut and using a placeholder photo from the <a href="http://lorempixel.com/">lorempixel.com</a> service.</p>
 <p>Much of the markup is divs to create layout. The first div creates a container with centered text, offset from the photo by 20 pixels. If we were being strict about separation of concerns, we’d specify this rule in a <span class="caps">CSS</span> stylesheet instead of using a <code>style</code> attribute.</p>
-<p>The next two divs apply layout rules from Twitter Bootstrap to create two columsn, one for our marketing message, and one for the form.</p>
+<p>The next two divs apply layout rules from Twitter Bootstrap to create two columns, one for our marketing message, and one for the form.</p>
 <p>Our marketing message is merely a placeholder. For a real website, you’d likely craft a stronger call to action than merely “Stay in touch.”</p>
 <p>The form is very similar to the form on the Contact page, except we initialize it with the <code>@visitor</code> instance variable and only need a field for an email address. We suppress display of the email field label with the argument <code>label: false</code> and use the <code>:placeholder</code> parameter to create a hint in the empty input field.</p>
 <p>A submit button will contain the text, “Sign up for the newsletter,” and we apply Twitter Bootstrap button styling.</p>
 <h4 id="photo-options">Photo Options</h4>
-<p>You’re free to modify this page as you wish, as long as keep the form intact.</p>
+<p>You’re free to modify this page as you wish, as long as you keep the form intact.</p>
 <p>You might wish to modify the placeholder photo. If you don’t like cats, try <a href="http://lorempixel.com/1170/600/business/1">http://lorempixel.com/1170/600/nightlife/1</a> or any other categories from the lorempixel service. You can change the size by modifying the dimensions from 1170 (pixel width) by 600 (pixel height).</p>
 <p>You can replace the placeholder photo with your own by creating an <strong>app/assets/images</strong> folder and adding an image. Instead of the <span class="caps">HTML</span> <code>&lt;img&gt;</code> tag, use the Rails <code>image_tag</code> view helper, like this:</p>
 <div class="highlight"><pre><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="s2">"myphoto.jpg"</span> <span class="cp">%&gt;</span><span class="x"></span>
 </pre></div><p>We’ll need a Visitor model to initialize the form.</p>
 <h3 id="visitor-model">Visitor Model</h3>
 <p>The Visitor model is almost identical to the Contact model we created earlier, except there is just one data attribute for the email field.</p>
-<p>We’ll also add a <code>subscribe</code> method that subscribes a visitor to a MailChimp list. We’ll call this method from the controller when we process the submitted form.</p>
+<p>We’ll also add a <code>subscribe</code> method to add a visitor to a MailChimp list. We’ll call this method from the controller when we process the submitted form.</p>
 <p>Create a file <strong>app/models/visitor.rb</strong>:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Visitor</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
   <span class="n">has_no_table</span>
@@ -2659,6 +2665,18 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="k">end</span>
 </pre></div><p>Once again, we inherit behavior from the ActiveRecord parent class and use the <code>has_no_table</code> keyword from the activerecord-tableless gem to disable ActiveRecord’s database functionality.</p>
 <p>We create the email attribute and set validation requirements.</p>
+<p>Our <code>subscribe</code> method does the work of connecting to the MailChimp server to add the visitor to the mailing list. We instantiate the Gibbon object which provides all the connectivity. The Gibbon gem looks in the environment variables for the <code>MAILCHIMP_API_KEY</code> value so we don’t need to specify it here. We assign the Gibbon object to the <code>mailchimp</code> variable (we could name it anything).</p>
+<p>Gibbon offers a <code>list_subscribe</code> method which takes five parameters:</p>
+<ul>
+  <li>list id – environment variable to identify the MailChimp list</li>
+  <li>email – address of the visitor</li>
+  <li>double_optin – setting <code>true</code> sends a double opt-in confirmation message</li>
+  <li>update_existing – updates a subscriber record if it already exists</li>
+  <li>send_welcome – sends a “Welcome Email” to the new subscriber</li>
+</ul>
+<p>The parameters are described further in the MailChimp <a href="http://apidocs.mailchimp.com/api/1.3/listsubscribe.func.php"><span class="caps">API</span> Documentation for listSubscribe</a>.</p>
+<p>If the application successfully adds the new subscriber, we write a message to the logger.</p>
+<p>If we get an error when trying to add the subscriber, we handle the exception by writing a message to the logger.</p>
 <h3 id="visitors-controller">Visitors Controller</h3>
 <p>We already have a Visitors controller that contains a simple <code>new</code> method. We’ll change the <code>new</code> method, add a <code>create</code> method, and provide a <code>secure_params</code> private method to secure the controller from mass assignment exploits.</p>
 <p>Replace the contents of the file <strong>app/controllers/visitors_controller.rb</strong>:</p>
@@ -2687,7 +2705,9 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 
 <span class="k">end</span>
 </pre></div><p>Our <code>new</code> method now assigns the Visitor model to an instance variable instead of the Owner model.</p>
-<p>The <code>create</code> method is almost identical to the Contacts controller <code>create</code> method. We instantiate the Visitor model with scrubbed parameters from the submitted form, run a validation check, and subscribe the visitor to the MailChimp mailing list.</p>
+<p>The <code>create</code> method is almost identical to the Contacts controller <code>create</code> method. We instantiate the Visitor model with scrubbed parameters from the submitted form.</p>
+<p>If the validation check succeeds, we subscribe the visitor to the MailChimp mailing list with the <code>@visitor.subscribe</code> method. All the work of connecting to MailChimp happens in the Visitor model.</p>
+<p>If the the validation check fails, we redisplay the home page (the <code>new</code> action).</p>
 <h3 id="clean-up">Clean Up</h3>
 <p>We no longer use the Owner model, so we can delete the file <strong>app/models/owner.rb</strong>:</p>
 <div class="highlight"><pre><span class="gp">$</span> rm app/models/owner.rb
