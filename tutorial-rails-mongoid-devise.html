@@ -84,11 +84,16 @@
 <p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="https://github.com/RailsApps/rails3-mongoid-devise/issues">GitHub issue</a>.</p>
 <p>To improve this tutorial, please leave comments below.</p>
 <h2>Installing MongoDB</h2>
-<p>If you don’t have MongoDB installed on your computer, you’ll need to install it and set it up to be always running on your computer (run at launch). On Mac OS X, the easiest way to install MongoDB is to install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then run the following:</p>
+<p>If you don’t have MongoDB installed on your computer, you’ll need to install it and set it up to be always running on your computer (run at launch).</p>
+<p>On Mac OS X, the easiest way to install MongoDB is to install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then run the following:</p>
 <pre>
 brew install mongodb
 </pre>
 <p>Homebrew will provide post-installation instructions to get MongoDB running. The last line of the installation output shows you the MongoDB install location (for example, <strong>/usr/local/Cellar/mongodb/1.8.0-x86_64</strong>). You’ll find the MongoDB configuration file there. After an installation using Homebrew, the default data directory will be <strong>/usr/local/var/mongodb</strong>.</p>
+<p>On the Debian <span class="caps">GNU</span>/Linux operating system, as of March 2013, the latest stable version is MongoDB 2.0.0. With MongoDB 2.0.0, the Mongoid gem must be version 3.0.×. See the <a href="http://mongoid.org/en/mongoid/docs/installation.html#installation">Mongoid installation instructions</a>. Change your Gemfile to use an earlier Mongoid version:</p>
+<pre>
+gem 'mongoid', '~&gt; 3.0.1'
+</pre>
 <h2>Creating the Application</h2>
 <p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
 <h3>Copy from the Tutorial</h3>
@@ -574,7 +579,7 @@ attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 <blockquote>
 <p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
 </blockquote>
-<p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
+<p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add <code>users = User.all</code> to the <code>index</code> method:</p>
 <pre>
 def index
   @users = User.all
