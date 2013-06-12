@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 10 Jun 2013</li>
+            <li>Last updated 11 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -259,7 +259,8 @@
 <section class='chapter' id='accounts-you-may-need'><h2>Accounts You May Need</h2>
 <p>This tutorial will show you how to save your work using <a href="https://github.com/">GitHub</a>. You can sign up for a GitHub account for free.</p>
 <p>We’ll also send email from the application, which will require a <a href="https://accounts.google.com/SignUp?service=mail">Gmail</a> account. A Gmail account is free.</p>
-<p>Finally, we’ll create a form that allows website visitors to “opt-in” to a mailing list. You’ll need a <a href="http://mailchimp.com/">MailChimp</a> account, which is free.</p>
+<p>We’ll create a form that allows website visitors to “opt-in” to a mailing list. You’ll need a <a href="http://mailchimp.com/">MailChimp</a> account, which is free.</p>
+<p>Finally, we’ll deploy the tutorial application to <a href="https://www.heroku.com/">Heroku</a> which provides Rails application hosting. It costs nothing to set up a Heroku account and deploy as many applications as you want.</p>
 <h3 id="github">GitHub</h3>
 <p>Rails developers use <a href="https://github.com/">GitHub</a> for collaboration and remote backup of projects.</p>
 <p>For this tutorial, I suggest you get a <a href="https://github.com/signup/free">free personal GitHub account</a> if you don’t already have one. As a developer, your GitHub account establishes your reputation in the open source community. If you’re seeking a job as a developer, employers will look at your GitHub account. When you work with other developers, they may check to see what you’ve worked on recently. Don’t be reluctant to set up a GitHub account, even if you’re a beginner. It shows you are serious about learning Rails.</p>
@@ -273,6 +274,10 @@
 <h3 id="mailchimp">MailChimp</h3>
 <p>This tutorial shows how website visitors who want to receive a newsletter can be assigned to a <a href="http://mailchimp.com/">MailChimp</a> mailing list. MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free. There is no cost to set up an account. After you sign up for a MailChimp account, get your <span class="caps">API</span> key. Look under “Account” for “<span class="caps">API</span> Keys and Authorized Apps.” Make a note of the <span class="caps">API</span> key for later.</p>
 <p>After you have set up a MailChimp account, create a new mailing list where you can collect email addresses of visitors who have asked to subscribe to a newsletter. The MailChimp “Lists” page has a button for “Create List.” The list name and other details are up to you. You’ll need to obtain the list ID for use later in the tutorial when we add code to subscribe visitors to the MailChimp list. To find the list ID, on the MailChimp “Lists” page, look for the dropdown “gear” menu and click “List Settings and Unique ID.” At the bottom of the List Settings page, you’ll find the unique ID for the mailing list. Make a note of the list ID for later.</p>
+<h3 id="heroku">Heroku</h3>
+<p>We’ll use <a href="https://www.heroku.com/">Heroku</a> to host the tutorial application so anyone can reach it.</p>
+<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="https://id.heroku.com/signup/devcenter">https://id.heroku.com/signup/devcenter</a> to set up an account.</p>
+<p>Be sure to use the same email address you used to register for GitHub. It’s very important that you use the same email address for GitHub and Heroku accounts.</p>
 </section>
 <section class='chapter' id='getting-started'><h2>Getting Started</h2>
 <h3 id="before-you-start">Before You Start</h3>
@@ -2764,42 +2769,193 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Let’s deploy it so we can see it running as a real website.</p>
 </section>
 <section class='chapter' id='deploy'><h2>Deploy</h2>
-<h3 id="cleanup">Cleanup</h3>
-<p>Several unneeded files are generated in the process of creating a new Rails application.</p>
-<p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
-<p>See instructions for <a href="http://railsapps.github.io/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
-<h3 id="test-the-app">Test the App</h3>
-<p>You can check that your app runs properly by entering the command</p>
+<p>You’ve been running the default Ruby WEBrick server on your local machine. If you wanted, you could leave your computer running, set up a <a href="http://en.wikipedia.org/wiki/List_of_managed_DNS_providers">managed <span class="caps">DNS</span> service</a>, and your web application would be accessible to anyone. But even if you wanted to leave your computer running 24 hours a day, you’re probably not a security expert, WEBrick isn’t tuned to handle much traffic, and your computer is distant from the interconnection hubs near where most websites are hosted. For these reasons, when we move a web application from <em>development</em> to <em>production_, we deploy it to a <a href="http://en.wikipedia.org/wiki/Web_hosting_service">web hosting service</a> that provides a hosting platform on a server located in a strategically-located <a href="http://en.wikipedia.org/wiki/Data">data center</a></em>center.</p>
+<p>In the early days of the web, data centers offered colocation services, renting rack-mounted computers with fast Internet connections that could be configured as web servers. Deploying a web application required Linux <a href="http://en.wikipedia.org/wiki/System_administration">system administration</a> skills to configure and maintain a web server. Today, some developers like to set up their web servers “from bare metal” using virtual servers from Linode, Slicehost, Rackspace, Amazon EC2, or others. With sufficent skills and study, they say there is a feeling of satisfaction from doing it yourself. If you don’t want to be a system administrator, you can use a hosted <a href="http://en.wikipedia.org/wiki/Platform_as_a_service">platform as a service</a> (PaaS) provider.</p>
+<p>There are thousands of web hosting services that host static websites or applications such as WordPress (you might already be using GoDaddy, DreamHost, or others). Be skeptical if a <a href="http://en.wikipedia.org/wiki/Shared_web_hosting_service">shared web hosting</a> service such as GoDaddy or DreamHost claims to support Rails applications; most do so badly. Rails developers prefer PaaS providers such as <a href="https://www.heroku.com/">Heroku</a>, <a href="https://www.engineyard.com/">EngineYard</a>, <a href="https://www.openshift.com/">OpenShift</a>, <a href="http://www.cloudfoundry.com/">Cloud Foundry</a>, or <a href="https://shellycloud.com/">Shelly Cloud</a> (unless they deploy to their own virtual servers).</p>
+<p><a href="https://www.heroku.com/">Heroku</a> is the best known and most popular Rails hosting platform and we’ll use it to deploy the tutorial application. Using Heroku or another PaaS provider means you don’t need skills as a system administrator to manage your web server. Instead, you’ll have experts maintaining the production environment and tuning system performance. It is their responsibility to keep the servers running.</p>
+<h3 id="heroku-costs">Heroku Costs</h3>
+<p>It costs nothing to set up a Heroku account and deploy as many applications as you want.</p>
+<p>Heroku pricing is based on a measure of computing resources they call a “dyno.” You can think of a dyno as a virtual server (though it is not). Heroku provides one dyno for every web application for free. For personal projects, you can run your Rails application on a single dyno and never incur a charge.</p>
+<p>A single dyno idles after one hour of inactivity, “going to sleep” until it receives a new web request. For a personal project, this means your web application will respond with a few seconds delay if it hasn’t received a web request in over an hour. After it wakes up, it will respond quickly to every browser request.</p>
+<p>If you want your web application to respond to every request without delay, you can run two dynos. Heroku charges $35 per month for a second dyno running full time (a dyno is billed at $0.05/hour).</p>
+<p>A single dyno can serve thousands of requests per second, but performance depends greatly on your application. With the Ruby WEBrick server, Rails can process only one request at a time. Heroku doesn’t support WEBrick, but as a default it supports <a href="http://code.macournoyer.com/thin/">Thin</a>, a similar “single-threaded, non-concurrent” web server. Serving a typical Rails application that takes 100ms on average to process each request, Thin can accommodate about 10 requests per second per dyno, which is adequate for a personal project.</p>
+<p>If traffic surges on your website and exceeds 10 requests per second, you can scale up. First, you can replace the default Thin web server with the <a href="http://unicorn.bogomips.org/">Unicorn</a> web server which handles <em>concurrent</em> requests. Configuring Unicorn requires more expertise than Thin, but Heroku recommends it. Second, you can double the size of Heroku’s dynos to handle more requests with a concurrent server such as Unicorn. Finally, you can scale up, adding as many dynos as you need to handle traffic. This is where convenience comes at a price. You won’t need system administration expertise to deploy a website on Heroku but you’ll pay a premium to host a high-traffic site.</p>
+<p>For this tutorial application, we won’t concern ourselves with the possibility that the website may get a lot of traffic. Heroku is ideal for hosting our application:</p>
+<ul>
+  <li>no system administration expertise is required</li>
+  <li>hosting is free</li>
+  <li>performance is excellent for a low-traffic website</li>
+</ul>
+<p>Let’s deploy!</p>
+<h3 id="test-the-application-10">Test the Application</h3>
+<p>Before deploying an application to production, a profesional Rails developer runs <em>integration</em> or <em>acceptance</em> tests. If the developer has applied the discipline of <em>test-driven development</em>, he or she will have a complete test suite that confirms the application runs as expected. Often the developer uses a <em>continuous integration</em> server which automatically runs the test suite each time the code is checked into the GitHub repository.</p>
+<p>We haven’t used test-driven development to build this application so no test suite is available. You’ve tested the application manually at each stage.</p>
+<p>If you didn’t test the application after completing the most recent feature, you can check that your app runs properly by entering the command</p>
 <div class="highlight"><pre><span class="gp">$</span> rails server
 </pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
 <p>Stop the server with Control-c.</p>
-<h3 id="testing">Testing</h3>
-<p>If you’ve copied the RSpec unit tests and Cucumber integration tests from the  <a href="http://github.com/RailsApps/learn-rails/">learn-rails</a> example application, and set up RSpec and Cucumber, you can run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available.</p>
-<p>Run <code>rake spec</code> to run RSpec tests.</p>
-<p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run Cucumber scenarios.</p>
-<h3 id="deploy-to-heroku">Deploy to Heroku</h3>
-<p>For your convenience, here is a <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
-<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
-<p>Add this configuration parameter to the <strong>config/application.rb</strong> file:</p>
-<div class="highlight"><pre><span class="c1"># Heroku requires this to be false</span>
-<span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">initialize_on_precompile</span><span class="o">=</span><span class="kp">false</span>
-</pre></div><p>Then precompile assets, commit to git, and push to Heroku:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake assets:precompile
+<h3 id="preparing-for-heroku">Preparing for Heroku</h3>
+<p>You’ll need to prepare your Rails application for deployment to Heroku.</p>
+<h4 id="gemfile-2">Gemfile</h4>
+<p>We need to modify the Gemfile for Heroku.</p>
+<p>We need to specify the <a href="https://rubygems.org/gems/sqlite3">sqlite3</a> gem is only used in development because Heroku doesn’t support the SQLite database. Heroku provides a PostgreSQL database. Though we won’t need it for our tutorial application, we must include the PostgreSQL gem for Heroku.</p>
+<p>We add a <code>group :production</code> block for gems that Heroku needs:</p>
+<ul>
+  <li><a href="https://rubygems.org/gems/pg">pg</a> – PostgreSQL gem</li>
+  <li><a href="http://code.macournoyer.com/thin/">thin</a> – web server</li>
+  <li><a href="https://github.com/heroku/rails_stdout_logging">rails_stdout_logging</a> – logging for production</li>
+  <li><a href="https://github.com/heroku/rails_serve_static_assets">rails_serve_static_assets</a> – enables serving of static assets</li>
+</ul>
+<p>The <a href="http://code.macournoyer.com/thin/">Thin</a> web server is easy to use and requires no configuration. Note that <a href="https://blog.heroku.com/archives/2013/2/27/unicorn_rails">Heroku recommends Unicorn</a> for handling higher levels of traffic efficiently. Unicorn can be difficult to setup and configure, so we’re using Thin for our tutorial application.</p>
+<p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
+<p><strong>Gemfile</strong></p>
+<div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
+<span class="n">ruby</span> <span class="s1">'2.0.0'</span>
+<span class="n">gem</span> <span class="s1">'rails'</span><span class="p">,</span> <span class="s1">'4.0.0.rc1'</span>
+
+<span class="c1"># Rails defaults</span>
+<span class="n">gem</span> <span class="s1">'sass-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0.rc1'</span>
+<span class="n">gem</span> <span class="s1">'uglifier'</span><span class="p">,</span> <span class="s1">'&gt;= 1.3.0'</span>
+<span class="n">gem</span> <span class="s1">'coffee-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 4.0.0'</span>
+<span class="n">gem</span> <span class="s1">'jquery-rails'</span>
+<span class="n">gem</span> <span class="s1">'turbolinks'</span>
+<span class="n">gem</span> <span class="s1">'jbuilder'</span><span class="p">,</span> <span class="s1">'~&gt; 1.0.1'</span>
+
+<span class="c1"># learn-rails</span>
+<span class="n">gem</span> <span class="s1">'activerecord-tableless'</span>
+<span class="n">gem</span> <span class="s1">'figaro'</span>
+<span class="n">gem</span> <span class="s1">'bootstrap-sass'</span>
+<span class="n">gem</span> <span class="s1">'simple_form'</span>
+<span class="n">gem</span> <span class="s1">'high_voltage'</span>
+<span class="n">gem</span> <span class="s1">'gibbon'</span>
+<span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'sqlite3'</span>
+  <span class="n">gem</span> <span class="s1">'better_errors'</span>
+<span class="k">end</span>
+<span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'pg'</span>
+  <span class="n">gem</span> <span class="s1">'thin'</span>
+  <span class="n">gem</span> <span class="s1">'rails_stdout_logging'</span>
+  <span class="n">gem</span> <span class="s1">'rails_serve_static_assets'</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">'heroku/rails_serve_static_assets'</span>
+<span class="k">end</span>
+</pre></div><p>We’ve changed the Gemfile so we have to run <code>bundle install</code>. The gems we’ve added are only needed in production so we don’t have to install them on our local machine. When we deploy, Heroku will read the Gemfile and install the gems in the production environment. We’ll run <code>bundle install</code> with the <code>--without production</code> argument so we don’t install the new gems locally:</p>
+<div class="highlight"><pre><span class="gp">$</span> bundle install --without production
+</pre></div><p>Commit your changes to the Git repository:</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"gems for Heroku"</span>
+<span class="gp">$</span> git push origin master
+</pre></div><h4 id="precompile-assets">Precompile Assets</h4>
+<p>In development mode, the Rails asset pipeline “live compiles” all <span class="caps">CSS</span> and JavaScript files and makes them available for use. Compiling assets adds processing overhead. In production, a web application would be slowed unneccesarily if assets were compiled for every web request. Consequently, we must precompile assets before we deploy our application to production.</p>
+<p>When you precompile assets for production, the Rails asset pipeline will automatically produce concatenated and minified <strong>application.js</strong> and <strong>application.css</strong> files from files listed in the manifest files <strong>app/assets/javascripts/application.js</strong> and <strong>app/assets/stylesheets/application.css.scss</strong>. You must commit the compiled files to your git repository before deploying.</p>
+<p>Here’s how to precompile assets and commit to the git repo:</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="nv">RAILS_ENV</span><span class="o">=</span>production rake assets:precompile
 <span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
-<span class="gp">$</span> git push heroku master
-</pre></div><p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
+</pre></div><p>The result will be several files added to the <strong>public/assets/</strong> folder. The filenames will contain a long unique identifier that serves to prevent caching when you change the application <span class="caps">CSS</span> or JavaScript.</p>
+<p>If you don’t precompile assets for production, you’ll see an error when your application is deployed in production. All web pages will look strange without <span class="caps">CSS</span> styling.</p>
+<h4 id="option-to-ban-spiders">Option to Ban Spiders</h4>
+<p>Do you want your website to show up in Google search results? If there’s a link anywhere on the web to your site, within a few days (sometimes hours) the Googlebot spider will visit your site and add it to the database for the Google search engine. Most webmasters want their sites to be found in Google search results. If that’s not what you want, you may want to add the file <strong>public/robots.txt</strong> to prevent indexing by search engines.</p>
+<p>Only add this file if you want to prevent your website from appearing in search engine listings:</p>
+<div class="highlight"><pre># public/robots.txt
+# To allow spiders to visit the entire site comment out the next two lines:
+User-Agent: *
+Disallow: /
+</pre></div><p>You can learn more about the format of the <a href="http://en.wikipedia.org/wiki/Robots_exclusion_standard">robots exclusion standard</a>.</p>
+<h4 id="humans-txt">Humans.txt</h4>
+<p>Many websites include a <strong>robots.txt</strong> file for nosy bots so it’s only fair that you offer a <strong>humans.txt</strong> file for nosy people. Few people will look for it but you can add a file <strong>public/humans.txt</strong> to credit and identify the creators and software behind the website. The HTML5 Boilerplate project offers an <a href="http://html5boilerplate.com/humans.txt">example file</a> or you can <a href="https://tutorials.railsapps.org/humans.txt">borrow from RailsApps</a>.</p>
+<h3 id="sign-up-for-a-heroku-account">Sign Up for a Heroku Account</h3>
+<p>In the chapter, “Accounts You May Need,” I suggested you sign up for a Heroku account.</p>
+<p>To deploy an app to Heroku, you must have a Heroku account. Visit <a href="https://id.heroku.com/signup/devcenter">https://id.heroku.com/signup/devcenter</a> to set up an account.</p>
+<p>Be sure to use the same email address you used to configure Git locally. You can check the email address you used for Git with:</p>
+<div class="highlight"><pre><span class="gp">$</span> git config --get user.email
+</pre></div><p>You’ll use a <code>git push</code> command to deploy your application to Heroku.</p>
+<h3 id="heroku-toolbelt">Heroku Toolbelt</h3>
+<p>Heroku provides a command line utility for creating and managing Heroku apps.</p>
+<p>Visit <a href="https://toolbelt.heroku.com/">https://toolbelt.heroku.com/</a> to install the Heroku Toolbelt. A one-click installer is available for Mac OS X, Windows, and Linux.</p>
+<p>The installation process will install the Heroku command line utility. It also installs the <a href="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">Foreman</a> gem which is useful for duplicating the Heroku production environment on a local machine. The installation process will also make sure Git is installed.</p>
+<p>To make sure the Heroku command line utility is installed, try:</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku version
+<span class="go">heroku-toolbelt/...</span>
+</pre></div><p>You’ll see the heroku-toolbelt version number.</p>
+<p>You should be able to login using the email address and password you used when creating your Heroku account:</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku login
+<span class="go">Enter your Heroku credentials.</span>
+<span class="go">Email: adam@example.com</span>
+<span class="go">Password:</span>
+<span class="go">Could not find an existing public key.</span>
+<span class="go">Would you like to generate one? [Yn]</span>
+<span class="go">Generating new SSH public key.</span>
+<span class="go">Uploading ssh public key /Users/adam/.ssh/id_rsa.pub</span>
+</pre></div><p>The Heroku command line utility will create <span class="caps">SSH</span> keys if necessary to guarantee a secure connection to Heroku.</p>
+<h3 id="heroku-create">Heroku Create</h3>
+<p>Be sure you are in your application root directory and you’ve committed the tutorial application to your Git repository.</p>
+<p>Use the Heroku create command to create and name your application.</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku create myapp
+</pre></div><p>Replace <code>myapp</code> with something unique. Heroku demands a unique name for every hosted application. If it is not unique, you’ll see an error, “name is already taken.” Chances are, “learn-rails” is already taken.</p>
+<p>If you don’t specify your app name (<code>myapp</code> in the example above), Heroku will supply a placeholder name. You can easily change Heroku’s placeholder name to a name of your choice with the <code>heroku apps:rename command</code> (see <a href="https://devcenter.heroku.com/articles/renaming-apps">Renaming Apps from the <span class="caps">CLI</span></a>).</p>
+<p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name. You’ll just use the name for access to the instance of your app running on the Heroku servers; later, you’ll set up <span class="caps">DNS</span> to point your domain name to the app running on Heroku.</p>
+<h3 id="enable-email">Enable Email</h3>
+<p>Unless you enable email on Heroku, you’ll get errors when your application tries to send email from Heroku.</p>
+<p>To use Gmail from Heroku, add the following to your <em>config/environments/production.rb</em> file:</p>
+<pre>
+config.action_mailer.default_url_options = { :host =&gt; 'myapp.herokuapp.com' }
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = false
+config.action_mailer.default :charset =&gt; "utf-8"
+config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "myapp.herokuapp.com",
+  authentication: "plain",
+  enable_starttls_auto: true,
+  user_name: ENV["GMAIL_USERNAME"],
+  password: ENV["GMAIL_PASSWORD"]
+}
+</pre>
+<p>Be sure to add the new settings before the <code>end</code> keyword in the file. The settings can be added anywhere, as long as they precede the <code>end</code> keyword.</p>
+<p>You’ll need to specify the unique name you’ve selected for your hosted application. Change <code>myapp.herokuapp.com</code> in <strong>two places</strong> in the file.</p>
+<p>Next we’ll set Heroku environment variables.</p>
+<h3 id="set-heroku-environment-variables">Set Heroku Environment Variables</h3>
+<p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
 <p>With the figaro gem, just run:</p>
 <div class="highlight"><pre><span class="gp">$</span> rake figaro:heroku
 </pre></div><p>Alternatively, you can set Heroku environment variables directly.</p>
 <p>Here’s how to set environment variables directly on Heroku with <code>heroku config:add</code>.</p>
 <div class="highlight"><pre><span class="gp">$</span> heroku config:add <span class="nv">GMAIL_USERNAME</span><span class="o">=</span><span class="s1">'myname@gmail.com'</span> <span class="nv">GMAIL_PASSWORD</span><span class="o">=</span><span class="s1">'secret'</span>
-<span class="gp">$</span> heroku config:add <span class="s1">'ROLES=[admin, user, VIP]'</span>
-<span class="gp">$</span> heroku config:add <span class="nv">ADMIN_NAME</span><span class="o">=</span><span class="s1">'First User'</span> <span class="nv">ADMIN_EMAIL</span><span class="o">=</span><span class="s1">'user@example.com'</span> <span class="nv">ADMIN_PASSWORD</span><span class="o">=</span><span class="s1">'changeme'</span>
-</pre></div><p>Complete Heroku deployment with:</p>
-<div class="highlight"><pre><span class="gp">$</span> heroku run rake db:migrate
-<span class="gp">$</span> heroku run rake db:seed
-</pre></div><p>See the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
+<span class="gp">$</span> heroku config:add <span class="nv">MAILCHIMP_API_KEY</span><span class="o">=</span><span class="s1">'mykey'</span> <span class="nv">MAILCHIMP_LIST_ID</span><span class="o">=</span><span class="s1">'mylistid'</span>
+</pre></div><p>See the Heroku documentation on <a href="https://devcenter.heroku.com/articles/config-vars">Configuration and Config Vars</a> for more details.</p>
+<h3 id="push-to-heroku">Push to Heroku</h3>
+<p>After all this preparation, you can finally push your application to Heroku.</p>
+<p>Be sure you’ve run <code>RAILS_ENV=production rake assets:precompile</code>. Run it each time you change your <span class="caps">CSS</span> or JavaScript files.</p>
+<p>You commit your code to Heroku just like you push your code to GitHub. In fact, the <code>heroku create</code> command sets your Heroku application as a Git remote repository. Be sure to commit your code to the Git local repository before you push to Heroku.</p>
+<p>Here’s how to push to Heroku:</p>
+<div class="highlight"><pre><span class="gp">$</span> git push heroku master
+</pre></div><p>The push to Heroku takes several minutes. You’ll see a sequence of diagnostic messages in the console, beginning with:</p>
+<div class="highlight"><pre><span class="go">-----&gt; Ruby/Rails app detected</span>
+</pre></div><p>and finishing with:</p>
+<div class="highlight"><pre><span class="go">-----&gt; Launching... done</span>
+</pre></div><h3 id="visit-your-site">Visit Your Site</h3>
+<p>Open your Heroku site in your default web browser:</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku open
+</pre></div><p>Your application will be running at <a href="http://my-app-name.herokuapp.com/">http://my-app-name.herokuapp.com/</a>.</p>
+<p>If you’ve configured everything correctly, you should be able to sign for the newsletter mailing list and sent a contact request that is delivered by email.</p>
+<h3 id="troubleshooting-2">Troubleshooting</h3>
+<p>When you get errors, troubleshoot by reviewing the log files:</p>
+<pre>
+$ heroku logs
+</pre>
+<p>If necessary, use the Unix tail flag to monitor your log files. Open a new terminal window and enter:</p>
+<pre>
+$ heroku logs -t
+</pre>
+<p>to watch the server logs in real time.</p>
+<h3 id="where-to-get-help">Where to Get Help</h3>
+<p>Your best source for help with Heroku is <a href="http://stackoverflow.com/questions/tagged/heroku">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<p>You can also check the <a href="http://devcenter.heroku.com/">Heroku Dev Center</a> or the <a href="http://groups.google.com/group/heroku/">Heroku Google Group</a>.</p>
+<h3 id="your-own-domain">Your Own Domain</h3>
+<p>For a real application, you’ll likely want to use your own domain name for your app.</p>
+<p>See <a href="https://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for instructions.</p>
 </section>
 <section class='chapter' id='analytics'><h2>Analytics</h2>
 <h3 id="introducing-javascript">Introducing JavaScript</h3>
