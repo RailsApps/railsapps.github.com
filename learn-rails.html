@@ -2773,6 +2773,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Data centers offer <a href="http://en.wikipedia.org/wiki/Colocation_centre">colocation services</a>, renting rack-mounted computers with fast Internet connections that can be configured as web servers. In the early days of the web, deploying a web application required <a href="http://en.wikipedia.org/wiki/System_administration">system administration</a> skills to configure and maintain a web server. Today, some developers like to set up their web servers “from bare metal” using <a href="http://en.wikipedia.org/wiki/Virtual_private_server">virtual private servers</a> from Linode, Slicehost, Rackspace, Amazon EC2, or others. With sufficent skills and study, they say there is a feeling of satisfaction from doing it yourself. But not everyone wants to be a system administrator. Most Rails developers simply use a hosted <a href="http://en.wikipedia.org/wiki/Platform_as_a_service">platform as a service</a> (PaaS) provider such as <a href="https://www.heroku.com/">Heroku</a>, <a href="https://www.engineyard.com/">EngineYard</a>, <a href="https://www.openshift.com/">OpenShift</a>, <a href="http://www.cloudfoundry.com/">Cloud Foundry</a>, or <a href="https://shellycloud.com/">Shelly Cloud</a>.</p>
 <p>You may aleady be using a <a href="http://en.wikipedia.org/wiki/Shared_web_hosting_service">shared web hosting</a> service such as GoDaddy or DreamHost for a static website or WordPress site. Be skeptical if a shared web hosting service claims to support Rails applications; most do so badly. Shared hosting services offer file space for static websites on servers that are shared by thousands of websites. A Rails application requires considerably greater computing resources and specialized expertise. A PaaS platform provides a hardware and software stack optimized for application performance and developer convenience.</p>
 <p><a href="https://www.heroku.com/">Heroku</a> is the best known and most popular PaaS provider and we’ll use it to deploy the tutorial application. Using Heroku or another PaaS provider means you don’t need skills as a system administrator to manage your web server. Instead, you’ll have experts maintaining the production environment, tuning system performance, and keeping the servers running.</p>
+<p>Our <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails Heroku Tutorial</a> goes into more detail.</p>
 <h3 id="heroku-costs">Heroku Costs</h3>
 <p>It costs nothing to set up a Heroku account and deploy as many applications as you want.</p>
 <p>Heroku pricing is based on a measure of computing resources the company calls a “dyno.” Think of a dyno as a virtual server (though it is not). Heroku provides one dyno for every web application for free. For personal projects, you can run your Rails application on a single dyno and never incur a charge.</p>
@@ -2784,7 +2785,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <ul>
   <li>no system administration expertise is required</li>
   <li>hosting is free</li>
-  <li>performance is excellent for a low-traffic website</li>
+  <li>performance is excellent</li>
 </ul>
 <p>For this tutorial application, we won’t concern ourselves with the possibility that the website may get a lot of traffic. I’m sure you’ll join me in offering hearty thanks to Heroku for providing a convenient service that beginners can use for free.</p>
 <p>Let’s deploy!</p>
@@ -2803,7 +2804,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </ul>
 <p>Heroku doesn’t support the SQLite database; the company provides a PostgreSQL database. Though we won’t need it for our tutorial application, we must include the PostgreSQL gem for Heroku. We’ll mark the <a href="https://rubygems.org/gems/sqlite3">sqlite3</a> gem to be used in development only.</p>
 <p>The <a href="http://code.macournoyer.com/thin/">Thin</a> web server is easy to use and requires no configuration. Note that <a href="https://blog.heroku.com/archives/2013/2/27/unicorn_rails">Heroku recommends Unicorn</a> for handling higher levels of traffic efficiently. Unicorn can be difficult to setup and configure, so we’re using Thin for our tutorial application.</p>
-<p>On Heroku, Rails 4.0 needs an extra gem to handle logging and serve <span class="caps">CSS</span> and JavaScript assets. The <a href="https://github.com/heroku/rails_on_heroku">rails_on_heroku</a> provides these services.</p>
+<p>On Heroku, Rails 4.0 needs an extra gem to handle logging and serve <span class="caps">CSS</span> and JavaScript assets. The <a href="https://github.com/heroku/rails_on_heroku">rails_on_heroku</a> gem provides these services.</p>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
 <p><strong>Gemfile</strong></p>
 <div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
@@ -2940,9 +2941,16 @@ config.action_mailer.smtp_settings = {
 <div class="highlight"><pre><span class="gp">$</span> heroku open
 </pre></div><p>Your application will be running at <a href="http://my-app-name.herokuapp.com/">http://my-app-name.herokuapp.com/</a>.</p>
 <p>If you’ve configured everything correctly, you should be able to sign up for the newsletter and send a contact request.</p>
-<h3 id="your-own-domain">Your Own Domain</h3>
+<h3 id="customizing">Customizing</h3>
 <p>For a real application, you’ll likely want to use your own domain name for your app.</p>
 <p>See <a href="https://devcenter.heroku.com/articles/custom-domains">Heroku’s article about custom domains</a> for instructions.</p>
+<p>You may also want to improve website responsiveness by adding apge caching with a content delivery network such as <a href="http://cloudflare.com/">CloudFlare</a>. CloudFlare can also provide an <span class="caps">SSL</span> connection for secure connections between the browser and server.</p>
+<p>Heroku offers many <a href="https://addons.heroku.com/">add-on services</a>. These are particularly noteworthy:</p>
+<ul>
+  <li><a href="http://www.adeptscale.com/">Adept Scale</a> – automated scaling of Heroku dynos</li>
+  <li><a href="http://newrelic.com/">New Relic</a> – performance monitoring</li>
+</ul>
+<p>For an in-depth look at your options, see the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails Heroku Tutorial</a>.</p>
 <h3 id="troubleshooting-2">Troubleshooting</h3>
 <p>When you get errors, troubleshoot by reviewing the log files:</p>
 <pre>
