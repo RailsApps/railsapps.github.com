@@ -74,8 +74,6 @@
 <li class='level2'><a href='#mailing-list'><i class='icon-chevron-right'></i> Mailing List</a></li>
 <li class='level2'><a href='#deploy'><i class='icon-chevron-right'></i> Deploy</a></li>
 <li class='level2'><a href='#analytics'><i class='icon-chevron-right'></i> Analytics</a></li>
-<li class='level2'><a href='#how-google-analytics-works'><i class='icon-chevron-right'></i> How Google Analytics Works</a></li>
-<li class='level2'><a href='#google-analytics-for-rails-4-0'><i class='icon-chevron-right'></i> Google Analytics for Rails 4.0</a></li>
 <li class='level2'><a href='#traffic'><i class='icon-chevron-right'></i> Traffic</a></li>
 <li class='level2'><a href='#whats-next'><i class='icon-chevron-right'></i> What’s Next?</a></li>
 <li class='level2'><a href='#comments'><i class='icon-chevron-right'></i> Comments</a></li>
@@ -2000,15 +1998,19 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Let’s try it out.</p>
 <h3 id="about-page">“About” Page</h3>
 <p>Create a file <strong>app/views/pages/about.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;About Foobar Kadigan&lt;/h3&gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:title</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x">About</span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;h3&gt;About Foobar Kadigan&lt;/h3&gt;</span>
 <span class="x">&lt;p&gt;He was born in Waikikamukau, New Zealand. He left New Zealand for England, excelled at the University of Mopery, and served in the Royal Loamshire Regiment. While in service, he invented the kanuten valve used in the processing of unobtainium for industrial use. He founded Acme Manfacturing, later acquired by the Advent Corporation, to commercialize the product. Mr. Kadigan is now retired and lives in Middlehampton where he raises Griadium frieda.&lt;/p&gt;</span>
 <span class="x">&lt;p&gt;His favorite quotation is:&lt;/p&gt;</span>
 <span class="x">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.&lt;/p&gt;</span>
 </pre></div><p>Our simple “About” view will be combined with the default application layout by the HighVoltage gem.</p>
+<p>We include a <code>content_for</code> Rails view helper that passes a page title to the application layout.</p>
 <h3 id="contact-page">Contact Page</h3>
 <p>For the initial version of the Contact page, create a file <strong>app/views/pages/contact.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:title</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x">Contact</span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
 </pre></div><p>This is a placeholder page we’ll use to test the navigation link we’ve already created.</p>
+<p>We include a <code>content_for</code> Rails view helper that passes a page title to the application layout.</p>
 <h3 id="routing-for-the-highvoltage-gem">Routing for the HighVoltage Gem</h3>
 <p>The HighVoltage gem provides a PagesController. You’ll never see it; it is packaged inside the gem.</p>
 <p>In addition to providing a controller, the HighVoltage gem provides default routing so any <span class="caps">URL</span> with the form <a href="http://localhost:3000/pages/about">http://localhost:3000/pages/about</a> will obtain a view from the <strong>app/views/pages</strong> directory.</p>
@@ -2075,7 +2077,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>You’ll recall that we set up the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a> when we added Twitter Bootstrap to our application. The SimpleForm gem provides Rails view helpers for forms. You’ll remember that we described Rails view helpers as “macros to generate <span class="caps">HTML</span>.” The SimpleForm gem gives us view helpers to generate all the <span class="caps">HTML</span> required by complex forms. Forms require some of the most complex <span class="caps">HTML</span> a developer will encounter, so the SimpleForm gem is truly worthwhile. You can see a demonstration of <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm and Twitter Bootstrap</a> for all the possible form elements.</p>
 <p>Let’s add the code for a contact form to the Contact page.</p>
 <p>Replace the contents of the file <strong>app/views/pages/contact.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:title</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x">Contact</span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
 <span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="ss">:contact</span><span class="p">,</span> <span class="ss">url</span><span class="p">:</span> <span class="n">contact_path</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">autofocus</span><span class="p">:</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x"></span>
@@ -2084,7 +2087,10 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
 </pre></div><p>The code is compact but complex. We see several elements:</p>
 <ul>
-  <li><code>simple_form_for</code> is the view helper</li>
+  <li><code>content_for</code> is a view helper that passes a page title to the application layout</li>
+</ul>
+<ul>
+  <li><code>simple_form_for</code> is the view helper for the form</li>
 </ul>
 <p>The <code>simple_form_for</code> view helper instantiates a form object which we assign to a variable named <code>form</code>. SimpleForm offers many standard form elements, such as text fields and submit buttons. Each element is available as a method call on the form object.</p>
 <p>The view helper <code>simple_form_for</code> requires <em>parameters</em> and a <em>block</em>.</p>
@@ -2295,7 +2301,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>We’ll soon create a controller that assigns the Contact model to the <code>@contact</code> instance variable. We’ll use that as an argument for the SimpleForm view helper: <code>simple_form_for @contact do |form| ... end</code>.</p>
 <p>We’ll also add an <code>error_notification</code> method provided by the form object.</p>
 <p>Create a file <strong>app/views/contacts/new.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:title</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x">Contact</span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;h3&gt;Contact&lt;/h3&gt;</span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">simple_form_for</span> <span class="vi">@contact</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">error_notification</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">autofocus</span><span class="p">:</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
@@ -2303,7 +2310,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">as</span><span class="p">:</span> <span class="ss">:text</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s2">"span6"</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">button</span> <span class="ss">:submit</span><span class="p">,</span> <span class="s1">'Submit'</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span> <span class="s1">'btn-primary'</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><p>We’re now providing only one argument, the <code>@contact</code> instance variable, to the SimpleForm view helper. That’s enough to generate the form name and destination <span class="caps">URL</span>.</p>
+</pre></div><p>The form is the same as we used before, but we’re now providing only one argument, the <code>@contact</code> instance variable, to the SimpleForm view helper. That’s enough to generate the form name and destination <span class="caps">URL</span>.</p>
 <p>We’ve added the <code>error_notification</code> method which provides all the error handling. The method call is very simple but the results will be impressive.</p>
 <p>We’ll need a controller and routing to complete our model-view-controller architecture. But first, we’ll detour to learn about seven standard controller actions.</p>
 <h3 id="seven-controller-actions">Seven Controller Actions</h3>
@@ -2617,7 +2624,9 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <p>Earlier we built a home page that provided a simple demonstration of the Ruby language. We’ll discard it and replace it with a page that you could adapt for a typical small-business website.</p>
 <p>We want a nice photo, space for a marketing message, and the “sign up” form.</p>
 <p>Replace the contents of the file <strong>app/views/visitors/new.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="x">&lt;img src="http://lorempixel.com/1170/600/cats/1"&gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:title</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x">Foobar Kadigan</span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span> <span class="n">content_for</span> <span class="ss">:description</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x">Website of Foobar Kadigan</span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">&lt;img src="http://lorempixel.com/1170/600/cats/1"&gt;</span>
 <span class="x">&lt;div style="text-align: center; margin-top: 20px"&gt;</span>
 <span class="x">  &lt;div class="span4 offset2"&gt;</span>
 <span class="x">    &lt;h2&gt;Stay in touch.&lt;/h2&gt;</span>
@@ -2633,7 +2642,8 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 <span class="x">    &lt;/div&gt;</span>
 <span class="x">  &lt;/div&gt;</span>
 <span class="x">&lt;/div&gt;</span>
-</pre></div><p>The first line adds a photo to the page. We’re taking a shortcut and using a placeholder photo from the <a href="http://lorempixel.com/">lorempixel.com</a> service.</p>
+</pre></div><p>We include <code>content_for</code> view helpers that pass a title and description to the application layout.</p>
+<p>We add a photo to the page with an <code>&lt;img&gt;&lt;code&gt; tag. We're taking a shortcut and using a placeholder photo from the "lorempixel.com":http://lorempixel.com/ service.</code></p>
 <p>Much of the markup is divs to create layout. The first div creates a container with centered text, offset from the photo by 20 pixels. If we were being strict about separation of concerns, we’d specify this rule in a <span class="caps">CSS</span> stylesheet instead of using a <code>style</code> attribute.</p>
 <p>The next two divs apply layout rules from Twitter Bootstrap to create two columns, one for our marketing message, and one for the form.</p>
 <p>Our marketing message is merely a placeholder. For a real website, you’d likely craft a stronger call to action than merely “Stay in touch.”</p>
@@ -2964,15 +2974,15 @@ Disallow: /
 <section class='chapter' id='analytics'><h2>Analytics</h2>
 <p>In earlier chapters, we’ve built the tutorial application and deployed it for hosting on Heroku.</p>
 <p>We’ve left something out. Though not obvious, it’s very important.</p>
-<p>We need analytics for site traffic and usage. There’s almost no point to building a website if you don’t gather data to improve the site and increase visits.</p>
-<p>Tracking data closes the communication loop with your users; your website puts out a message and analytics data shows how visitors respond. Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this chapter we’ll integrate Google Analytics with the tutorial application.</p>
-<h2 id="how-google-analytics-works">How Google Analytics Works</h2>
+<p>Analytics data tracks site traffic and usage. You’ll use it to increase visits and improve your site. Analytics close the communication loop with your users; your website puts out a message and analytics reports show how visitors respond.</p>
+<p>Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this chapter we’ll integrate Google Analytics with the tutorial application.</p>
+<h3 id="how-google-analytics-works">How Google Analytics Works</h3>
 <p>To collect usage and traffic data, every web page must contain a snippet of JavaScript code, referred to as the Google Analytics Tracking Code. The tracking code snippet includes a unique website identifier named the Google Analytics Tracking ID, which looks like this: <code>UA-XXXXXXX-XX</code>. You will obtain the JavaScript snippet and Tracking ID from the <a href="http://www.google.com/analytics/">Google Analytics website</a> when you set up an account for your website.</p>
-<p>The tracking code snippet loads a larger JavaScript file (an 18KB file named <strong>ga.js</strong>) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The <strong>ga.js</strong> file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
-<p>Before December 2009, Google’s JavaScript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the <strong>ga.js</strong> file downloads in parallel with other page assets. Page rendering can begin before the <strong>ga.js</strong> file is delivered. In practice, the <strong>ga.js</strong> file is often already cached.</p>
+<p>The tracking code snippet loads a larger JavaScript file (a 20KB file named <strong>analytics.js</strong>) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The <strong>analytics.js</strong> file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
+<p>Before December 2009, Google’s JavaScript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the <strong>analytics.js</strong> file downloads in parallel with other page assets. Page rendering can begin before the <strong>analytics.js</strong> file is delivered. In practice, the <strong>analytics.js</strong> file is often already cached.</p>
 <p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final <code>&lt;/body&gt;</code> close tag because it could delay page loading. Now, Google recommends placing the new (asynchronous JavaScript) snippet immediately before the closing <code>&lt;/head&gt;</code> tag because it has little effect on page loading.</p>
 <p>Each time the browser displays a new page, the JavaScript code sends data to the Google Analytics service. The data includes the <span class="caps">URL</span> of the requested page, the referring (previous) page, and information about the visitor’s browser, language, and location.</p>
-<h2 id="google-analytics-for-rails-4-0">Google Analytics for Rails 4.0</h2>
+<h3 id="google-analytics-for-rails-4-0">Google Analytics for Rails 4.0</h3>
 <p>There is just one problem with Google Analytics for a Rails 4.0 web application: it won’t work. To be more precise, it won’t work for all pages.</p>
 <p>Rails 4.0 introduced a feature named <a href="https://github.com/rails/turbolinks/">Turbolinks</a> to increase the perceived speed of a website.</p>
 <p>Turbolinks makes our application appear faster by only updating the body and the title of a page when a link is followed. By not reloading the full page, Turbolinks reduces browser rendering time and trips to the server.</p>
@@ -2984,7 +2994,7 @@ Disallow: /
 <p>You’ll check your Google Analytics account later to verify that Google is collecting data.</p>
 <h3 id="page-layout">Page Layout</h3>
 <p>The Google Analytics JavaScript snippet must be included on every page.</p>
-<p>Ordinarily, JavaScript for every page goes in the <strong>app/assets/javascripts/application.js</strong> file. But we want the Google Analytics JavaScript snippet to load after Turbolinks, so we’ll add it to the default application layput with a partial in the footer.</p>
+<p>Ordinarily, JavaScript for every page goes in the <strong>app/assets/javascripts/application.js</strong> file. But we want the Google Analytics JavaScript snippet to load after Turbolinks, so we’ll add it to the default application layout with a partial in the footer.</p>
 <p>Create a file <strong>app/views/layouts/_footer.html.erb</strong>:</p>
 <div class="highlight"><pre><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
   <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="nx">s</span><span class="p">,</span><span class="nx">o</span><span class="p">,</span><span class="nx">g</span><span class="p">,</span><span class="nx">r</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">m</span><span class="p">){</span><span class="nx">i</span><span class="p">[</span><span class="s1">'GoogleAnalyticsObject'</span><span class="p">]</span><span class="o">=</span><span class="nx">r</span><span class="p">;</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span><span class="o">=</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span><span class="o">||</span><span class="kd">function</span><span class="p">(){</span>
@@ -2997,35 +3007,45 @@ Disallow: /
 
 <span class="o">&lt;</span><span class="err">/script&gt;</span>
 </pre></div><p>You’ll need to replace <code>UA-XXXXXXX-XX</code> with your tracking ID.</p>
-<p>This tracking code specifies the herokuapp.com domain but can be used on any herokuapp.com sub-domain such as myapp.herokuapp.com. Change the domain if you are using a custom domain.</p>
+<p>This tracking code specifies the herokuapp.com domain but can be used on any herokuapp.com subdomain such as myapp.herokuapp.com. Change the domain if you are using a custom domain.</p>
 <p>Modify the file <strong>app/views/layouts/application.html.erb</strong> to include the footer partial:</p>
 <div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
-<span class="x">&lt;head&gt;</span>
-<span class="x">  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span>
-<span class="x">  &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
-<span class="x">  &lt;meta name="description" content="</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">&lt;/head&gt;</span>
-<span class="x">&lt;body&gt;</span>
-<span class="x">  &lt;div id="container"&gt;</span>
-<span class="x">    &lt;header&gt;</span>
-<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/navigation'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/messages'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  &lt;head&gt;</span>
+<span class="x">    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">    &lt;meta name="description" content="</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  &lt;/head&gt;</span>
+<span class="x">  &lt;body&gt;</span>
+<span class="x">    &lt;header class="navbar navbar-fixed-top"&gt;</span>
+<span class="x">      &lt;nav class="navbar-inner"&gt;</span>
+<span class="x">        &lt;div class="container"&gt;</span>
+<span class="x">          </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/navigation'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">      &lt;/nav&gt;</span>
 <span class="x">    &lt;/header&gt;</span>
 <span class="x">    &lt;main role="main"&gt;</span>
-<span class="x">      </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">      &lt;div class="container"&gt;</span>
+<span class="x">        &lt;div class="content"&gt;</span>
+<span class="x">           &lt;div class="row"&gt;</span>
+<span class="x">            &lt;div class="span12"&gt;</span>
+<span class="x">              </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/messages'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">              </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">          &lt;/div&gt;</span>
+<span class="x">          &lt;footer&gt;</span>
+<span class="x">            </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/footer'</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">          &lt;/footer&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">      &lt;/div&gt;</span>
 <span class="x">    &lt;/main&gt;</span>
-<span class="x">    &lt;footer&gt;</span>
-<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/footer'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;/footer&gt;</span>
-<span class="x">  &lt;/div&gt;</span>
-<span class="x">&lt;/body&gt;</span>
+<span class="x">  &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
 </pre></div><p>Now the Google Analytics JavaScript snippet will be added on every page.</p>
-<p>Ordinarily, that’s all you need to send tracking data to Google Analytics. But we have to add a Turbolinks workaround for Rails 4.0</p>
+<p>Ordinarily, that’s all you need to send tracking data to Google Analytics. But we have to add a Turbolinks workaround for Rails 4.0.</p>
 <h3 id="turbolinks-workaround">Turbolinks Workaround</h3>
 <p>With Turbolinks, the Google Analytics JavaScript snippet is not sufficient to record a page visit for every page update. We’ll add a Turbolinks workaround.</p>
 <p>The workaround should be loaded on every page and it can be included as an application-wide asset (it will load before Turbolinks).</p>
@@ -3037,7 +3057,12 @@ Disallow: /
     <span class="nx">pageTracker</span><span class="p">.</span><span class="nx">_trackPageview</span><span class="p">()</span>
 </pre></div><p>The manifest directive <code>//= require_tree .</code> in the file <strong>app/assets/javascripts/application.js</strong> insures that the Turbolinks workaround is included in the concatenated application JavaScript file. If you’ve removed the <code>//= require_tree .</code> directive, you’ll have to add a directive to include the Turbolinks workaround file.</p>
 <p>The file contains Coffeescript, a programming language that adds brevity and readability to JavaScript. Turbolinks fires events to provide hooks into the lifecycle of the page. The <code>page:change</code> event fires when a page has been parsed and changed to the new version by Turbolinks. The code listens for the <code>page:change</code> event and calls either of two Google Analytics JavaScript methods that send data to Google Analytics.</p>
-<h3 id="deploy-2">Deploy</h3>
+<h3 id="git-11">Git</h3>
+<p>Let’s commit our changes to the Git repository.</p>
+<div class="highlight"><pre><span class="gp">$</span> git add -A
+<span class="gp">$</span> git commit -m <span class="s2">"analytics"</span>
+<span class="gp">$</span> git push origin master
+</pre></div><h3 id="deploy-2">Deploy</h3>
 <p>Before you deploy to Heroku, you must recompile assets and commit to the Git repo:</p>
 <div class="highlight"><pre><span class="gp">$</span> <span class="nv">RAILS_ENV</span><span class="o">=</span>production rake assets:precompile
 <span class="gp">$</span> git add -A
