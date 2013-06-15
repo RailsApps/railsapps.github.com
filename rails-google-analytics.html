@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Rails and Google Analytics &#183; RailsApps</title>
+    <title>Analytics for Rails: Google Analytics and Beyond &#183; RailsApps</title>
     <link href="https://plus.google.com/u/0/b/117374718581973393536/117374718581973393536/posts/" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.io/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.io/css/screen.css" type="text/css" charset="utf-8" />
@@ -44,20 +44,148 @@
   <div class="container">
 
     <div class="content wikistyle gollum textile">
-      <h1>Rails and Google Analytics</h1>
+      <h1>Analytics for Rails: Google Analytics and Beyond</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 22 June 2012</em></p>
-<p>Guide to using Google Analytics with Rails. Current best practices for Rails 3.2. Google Analytics is a free service that provides detailed data about website traffic and usage.</p>
-<h3>RailsApps Examples and Tutorials</h3>
-<p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.io/">RailsApps</a> repository. The RailsApps project provides open source apps and detailed tutorials for Rails developers. Next time you build an app, check the <a href="http://railsapps.github.io/">RailsApps</a> project to see if we can save you some time with a starter app.</p>
+<p><em>Last updated 15 June 2013</em></p>
+<p>Guide to website analytics for Rails applications, including Google Analytics and recommended alternatives. How to install Google Analytics with Rails 4.0 Turbolinks. Analytics services provide reports about website traffic and usage.</p>
+<h2>If You Are New to Rails</h2>
+<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>,  recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>, and a list of top resources for <a href="http://railsapps.github.io/ruby-and-rails.html">Ruby and Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
-<h2>Importance of Google Analytics</h2>
-<p>If you don’t track usage of your web app and the source of traffic, you won’t have data to improve the site and you won’t know which traffic-building strategies are worthwhile. Tracking data closes the communication loop with your users; your website puts out a message and Google Analytics data shows how visitors respond. There are other services that help you track visitors and website usage but Google Analytics is free, easy to use, and familiar to most web developers.</p>
-<h2>How It Works</h2>
-<p>To collect usage and traffic data, every web page must contain a snippet of JavaScript code, referred to as the Google Analytics Tracking Code. The tracking code snippet includes a unique website identifier named the Google Analytics Tracking ID, which looks like this: <code>UA-XXXXXXX-XX</code>. You will obtain the JavaScript snippet and Tracking ID from the <a href="http://www.google.com/analytics/">Google Analytics website</a> when you set up an account for your website. You can set up an account for your website at any time. It’s advisable to set up the account before you deploy your app so you can obtain the Tracking ID and set up your app to use it. You’ll check your Google Analytics account later to verify that Google is collecting data.</p>
-<p>The tracking code snippet loads a larger Javascript file (an 18KB file named ga.js) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The ga.js file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
-<p>Before December 2009, Google’s Javascript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the ga.js file downloads in parallel with other page assets. Page rendering can begin before the ga.js file is delivered. In practice, the ga.js file is often already cached.</p>
-<p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final </p>
+<h2>From the RailsApps Project</h2>
+<p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides open source applications and detailed tutorials for Rails developers.</p>
+<h2>Importance of Analytics</h2>
+<p>Analytics data tracks site traffic and usage. You’ll use it to increase visits and improve your site. Analytics close the communication loop with your users; your website puts out a message and analytics reports show how visitors respond.</p>
+<p>Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this article you’ll learn how to add Google Analytics to a Rails application, specifically addressing a known problem with the Rails 4.0 Turbolinks feature.</p>
+<h2>How Google Analytics Works</h2>
+<p>To collect usage and traffic data, every web page must contain a snippet of JavaScript code, referred to as the Google Analytics Tracking Code. The tracking code snippet includes a unique website identifier named the Google Analytics Tracking ID, which looks like this: <code>UA-XXXXXXX-XX</code>. You will obtain the JavaScript snippet and Tracking ID from the <a href="http://www.google.com/analytics/">Google Analytics website</a> when you set up an account for your website.</p>
+<p>The tracking code snippet loads a larger JavaScript file (a 20KB file named <strong>analytics.js</strong>) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The <strong>analytics.js</strong> file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
+<p>Before December 2009, Google’s JavaScript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the <strong>analytics.js</strong> file downloads in parallel with other page assets. Page rendering can begin before the <strong>analytics.js</strong> file is delivered. In practice, the <strong>analytics.js</strong> file is often already cached.</p>
+<p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final <code>&lt;/body&gt;</code> close tag because it could delay page loading. Now, Google recommends placing the new (asynchronous JavaScript) snippet immediately before the closing <code>&lt;/head&gt;</code> tag because it has little effect on page loading.</p>
+<p>Each time the browser displays a new page, the JavaScript code sends data to the Google Analytics service. The data includes the <span class="caps">URL</span> of the requested page, the referring (previous) page, and information about the visitor’s browser, language, and location.</p>
+<h2>Adding Google Analytics Tracking Code</h2>
+<p>There are five approaches to adding the Google Analytics tracking code to a Rails application:</p>
+<ol>
+	<li>add the Google tracking code to the application layout</li>
+	<li>add a partial included in the application layout</li>
+	<li>use view helpers such as Benoit Garret’s <a href="https://github.com/bgarret/google-analytics-rails">google-analytics-rails</a> gem</li>
+	<li>use Rack middleware such as Lee Hambley’s <a href="https://github.com/leehambley/rack-google-analytics">rack-google-analytics</a> gem</li>
+	<li>add the Google tracking code to the asset pipeline</li>
+</ol>
+<p>All these approaches work for Rails 3.2. It doesn’t matter to Google how the script gets injected.</p>
+<h2>Google Analytics for Rails 4.0</h2>
+<p>Google Analytics doesn’t work for a Rails 4.0 web application. To be more precise, it won’t work for all pages. It can be made to work with a workaround.</p>
+<p>Rails 4.0 introduced a feature named <a href="https://github.com/rails/turbolinks/">Turbolinks</a> to increase the perceived speed of a website.</p>
+<p>Turbolinks makes an application appear faster by only updating the body and the title of a page when a link is followed. By not reloading the full page, Turbolinks reduces browser rendering time and trips to the server.</p>
+<p>With Turbolinks, the user follows a link and sees a new page but Google Analytics thinks the page hasn’t changed because a new page has not been loaded.</p>
+<p>You can disable Turbolinks by removing the turbolinks gem from the Gemfile. However, it’s nice to have both the speed of Turbolinks and Google Analytics tracking data. This article details a workaround for the Turbolinks problem.</p>
+<h2>Google Analytics Account</h2>
+<p>Viist the <a href="http://www.google.com/analytics/">Google Analytics website</a> to obtain a Tracking ID for your website. You’ll need to know the domain name of your website before you set up a Google Analytics account for your website.</p>
+<p><a href="https://www.heroku.com/">Heroku</a> is a popular hosting platform for Rails applications. If you’ve deployed to Heroku without a custom domain, your domain name will look like “myapp.herokuapp.com”. When you set up your account, use it for fields for “Website Name,” “Web Site <span class="caps">URL</span>,” and “Account Name.”</p>
+<p>Accept the defaults when you create your Google Analytics account and click “Get Tracking ID.” Your tracking ID will look like this: <code>UA-XXXXXXX-XX</code>. You won’t need the tracking code snippet as it is provided below. But take a minute to compare the code that Google provides to make sure it hasn’t changed from what’s provided here.</p>
+<p>You’ll check your Google Analytics account later to verify that Google is collecting data.</p>
+<h2>Add a Partial</h2>
+<p>The Google Analytics JavaScript snippet must be included on every page.</p>
+<p>Ordinarily, JavaScript for every page goes in the <strong>app/assets/javascripts/application.js</strong> file. To resolve the Turbolinks problem, we want the Google Analytics JavaScript snippet to load after Turbolinks, so we’ll add it to the default application layout with a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a>.</p>
+<p>A <em>partial</em> is similar to any view file, except the filename begins with an underscore character. We’ll save the file in a view folder and use the <code>render</code> keyword to insert the partial in the default application layout.</p>
+<p>Create a file <strong>app/views/layouts/_footer.html.erb</strong>:</p>
+<pre>
+&lt;script&gt;
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-XXXXXXX-XX', 'herokuapp.com');
+  ga('send', 'pageview');
+
+&lt;/script&gt;
+</pre>
+<p>This code should be identical to the tracking code snippet you were offered when you created your Google Analytics account (but check it to be sure).</p>
+<p>You <strong>must replace</strong> <code>UA-XXXXXXX-XX</code> with your tracking ID.</p>
+<p>This example was created for a website hosted on Heroku. The tracking code specifies the herokuapp.com domain but can be used on any herokuapp.com subdomain such as myapp.herokuapp.com. Change the domain if you are using a custom domain.</p>
+<h2>Modify the Application Layout</h2>
+<p>You may have one or more application layout files. You must add the partial to each application layout if you want to track all pages.</p>
+<p>The default application layout is the file <strong>app/views/layouts/application.html.erb</strong>.</p>
+<p>Add the partial to an application layout by including:</p>
+<pre>
+&lt;%= render 'layouts/footer' %&gt;
+</pre>
+<p>Note the underscore and file extension are dropped from the filename <strong>_footer.html.erb</strong>.</p>
+<p>Here is a typical default application layout found in the file <strong>app/views/layouts/application.html.erb</strong>. This application layout is set up to use Twitter Bootstrap and includes a footer partial.</p>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Learning Rails" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Learning Rails" %&gt;"&gt;
+    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
+    &lt;%= javascript_include_tag "application" %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header class="navbar navbar-fixed-top"&gt;
+      &lt;nav class="navbar-inner"&gt;
+        &lt;div class="container"&gt;
+          &lt;%= render 'layouts/navigation' %&gt;
+        &lt;/div&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;main role="main"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="content"&gt;
+           &lt;div class="row"&gt;
+            &lt;div class="span12"&gt;
+              &lt;%= render 'layouts/messages' %&gt;
+              &lt;%= yield %&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;footer&gt;
+            &lt;%= render 'layouts/footer' %&gt;
+          &lt;/footer&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>You can learn more about the default application layout in an article about the <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Default Application Layout</a>.</p>
+<p>With the footer partial in place, the Google Analytics JavaScript snippet will be added on every page.</p>
+<p>Ordinarily, that’s all you need to send tracking data to Google Analytics. But we have to add a Turbolinks workaround for Rails 4.0.</p>
+<h2>Turbolinks Workaround</h2>
+<p>With Turbolinks, the Google Analytics JavaScript snippet is not sufficient to record a page visit for every page update. We’ll add a Turbolinks workaround.</p>
+<p>The workaround should be loaded on every page and it can be included as an application-wide asset (it will load before Turbolinks).</p>
+<p>Add the file <strong>app/assets/javascripts/analytics.js.coffee</strong> to include the Turbolinks workaround:</p>
+<pre>
+$(document).on 'page:change', -&gt;
+  if window._gaq?
+    _gaq.push ['_trackPageview']
+  else if window.pageTracker?
+    pageTracker._trackPageview()
+</pre>
+<p>The manifest directive <code>//= require_tree .</code> in the file <strong>app/assets/javascripts/application.js</strong> insures that the Turbolinks workaround is included in the concatenated application JavaScript file. If you’ve removed the <code>//= require_tree .</code> directive, you’ll have to add a directive to include the Turbolinks workaround file.</p>
+<p>The file contains Coffeescript, a programming language that adds brevity and readability to JavaScript. Turbolinks fires events to provide hooks into the lifecycle of the page. The <code>page:change</code> event fires when a page has been parsed and changed to the new version by Turbolinks. The code listens for the <code>page:change</code> event and calls either of two Google Analytics JavaScript methods that send data to Google Analytics.</p>
+<p>This version of the workaround was initially suggested by <a href="https://github.com/shukydvir">Shuky Dvir</a> on Nick Reed’s site <a href="http://reed.github.io/turbolinks-compatibility/">Turbolinks Compatibility</a>.</p>
+<h2>Deploy</h2>
+<p>If you wish to deploy to Heroku, you must recompile assets and commit to the Git repo:</p>
+<p><code>@</code> console<br>
+$ git add -A<br>
+$ git commit -m “analytics”<br>
+$ RAILS_ENV=production rake assets:precompile<br>
+$ git add -A<br>
+$ git commit -m “assets compiled for Heroku”<br>
+<code>@</code></p>
+<p>Then you can deploy to Heroku:</p>
+<p><code>@</code> console<br>
+$ git push heroku master<br>
+<code>@</code></p>
+<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku.</p>
+<p>Log into your Google Analytics account to see real-time tracking of visits to your website. Under “Standard Reports” see “Real-Time Overview.” You’ll see data within seconds after visiting any page.</p>
+<h2>Credits</h2>
+<p>Daniel Kehoe wrote the article.</p>
+<h2 id="comment">Did You Like the Article?</h2>
+<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
+<p>Any issues? Please leave a comment below.</p>
     </div><!-- class="content" -->
 
     <div class="comments" id="comments">
@@ -97,6 +225,7 @@
       <div class="span4">
       <dl class="footer_nav">
       <dt>RailsApps &#183; Articles</dt>
+        <dd><a href="http://railsapps.github.io/rails-google-analytics.html">Analytics for Rails</a></dd>
         <dd><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a></dd>
         <dd><a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a></dd>
         <dd><a href="http://railsapps.github.io/rails-javascript-include-external.html">JavaScript and Rails</a></dd>
