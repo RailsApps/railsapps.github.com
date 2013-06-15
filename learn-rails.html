@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 12 Jun 2013</li>
+            <li>Last updated 14 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -74,9 +74,7 @@
 <li class='level2'><a href='#mailing-list'><i class='icon-chevron-right'></i> Mailing List</a></li>
 <li class='level2'><a href='#deploy'><i class='icon-chevron-right'></i> Deploy</a></li>
 <li class='level2'><a href='#analytics'><i class='icon-chevron-right'></i> Analytics</a></li>
-<li class='level2'><a href='#traffic'><i class='icon-chevron-right'></i> Traffic</a></li>
-<li class='level2'><a href='#whats-next'><i class='icon-chevron-right'></i> What’s Next?</a></li>
-<li class='level2'><a href='#comments'><i class='icon-chevron-right'></i> Comments</a></li>
+<li class='level2'><a href='#how-google-analytics-works'><i class='icon-chevron-right'></i> How Google Analytics Works</a></li>
 
       </ul>
     </div>
@@ -88,7 +86,7 @@
 
   <section class='chapter' id='introduction'><h2>Introduction</h2>
 <p>Welcome. This tutorial is a first step on your path to learn Ruby on Rails.</p>
-<p>It covers key concepts so you’ll have a solid foundation for continued study.</p>
+<p>It introduces key concepts so you’ll have a solid foundation for continued study.</p>
 <p>You’ll build a working web application so you’ll gain hands-on experience. Along the way, you’ll learn techniques used by professional Rails developers and you’ll understand why Rails has become a popular choice for web development.</p>
 <h3 id="screenshot">Screenshot</h3>
 <p><img src="https://tutorials.railsapps.org/assets/learn-rails.png" title="Rails with Twitter Bootstrap" alt="Rails with Twitter Bootstrap" /></p>
@@ -2844,7 +2842,7 @@ Reference: <a href="http://apidock.com/ruby">Ruby <span class="caps">API</span> 
 </pre></div><h4 id="precompile-assets">Precompile Assets</h4>
 <p>In development mode, the Rails asset pipeline “live compiles” all <span class="caps">CSS</span> and JavaScript files and makes them available for use. Compiling assets adds processing overhead. In production, a web application would be slowed unneccesarily if assets were compiled for every web request. Consequently, we must precompile assets before we deploy our application to production.</p>
 <p>When you precompile assets for production, the Rails asset pipeline will automatically produce concatenated and minified <strong>application.js</strong> and <strong>application.css</strong> files from files listed in the manifest files <strong>app/assets/javascripts/application.js</strong> and <strong>app/assets/stylesheets/application.css.scss</strong>. You must commit the compiled files to your git repository before deploying.</p>
-<p>Here’s how to precompile assets and commit to the git repo:</p>
+<p>Here’s how to precompile assets and commit to the Git repo:</p>
 <div class="highlight"><pre><span class="gp">$</span> <span class="nv">RAILS_ENV</span><span class="o">=</span>production rake assets:precompile
 <span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
@@ -2895,23 +2893,21 @@ Disallow: /
 <h3 id="enable-email">Enable Email</h3>
 <p>You’ll need to enable email for production or else you’ll get errors when your application tries to send email from Heroku.</p>
 <p>To use Gmail from Heroku, add the following to your <strong>config/environments/production.rb</strong> file:</p>
-<pre>
-config.action_mailer.default_url_options = { :host =&gt; 'myapp.herokuapp.com' }
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.perform_deliveries = true
-config.action_mailer.raise_delivery_errors = false
-config.action_mailer.default :charset =&gt; "utf-8"
-config.action_mailer.smtp_settings = {
-  address: "smtp.gmail.com",
-  port: 587,
-  domain: "myapp.herokuapp.com",
-  authentication: "plain",
-  enable_starttls_auto: true,
-  user_name: ENV["GMAIL_USERNAME"],
-  password: ENV["GMAIL_PASSWORD"]
-}
-</pre>
-<p>You’ll need to specify the unique name you’ve selected for your hosted application. Change <code>myapp.herokuapp.com</code> in <strong>two places</strong> in the file.</p>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:host</span> <span class="o">=&gt;</span> <span class="s1">'myapp.herokuapp.com'</span> <span class="p">}</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">delivery_method</span> <span class="o">=</span> <span class="ss">:smtp</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">raise_delivery_errors</span> <span class="o">=</span> <span class="kp">false</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">default</span> <span class="ss">:charset</span> <span class="o">=&gt;</span> <span class="s2">"utf-8"</span>
+<span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">address</span><span class="p">:</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>
+  <span class="ss">port</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span>
+  <span class="ss">domain</span><span class="p">:</span> <span class="s2">"myapp.herokuapp.com"</span><span class="p">,</span>
+  <span class="ss">authentication</span><span class="p">:</span> <span class="s2">"plain"</span><span class="p">,</span>
+  <span class="n">enable_starttls_auto</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+  <span class="n">user_name</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_USERNAME"</span><span class="o">]</span><span class="p">,</span>
+  <span class="ss">password</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_PASSWORD"</span><span class="o">]</span>
+<span class="p">}</span>
+</pre></div><p>You’ll need to specify the unique name you’ve selected for your hosted application. Change <code>myapp.herokuapp.com</code> in <strong>two places</strong> in the file.</p>
 <p>Be sure to add the new settings before the <code>end</code> keyword in the file. The settings can be added anywhere, as long as they precede the <code>end</code> keyword!</p>
 <p>Next we’ll set Heroku environment variables.</p>
 <h3 id="set-heroku-environment-variables">Set Heroku Environment Variables</h3>
@@ -2953,52 +2949,24 @@ config.action_mailer.smtp_settings = {
 <p>For an in-depth look at your options, see the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails Heroku Tutorial</a>.</p>
 <h3 id="troubleshooting-2">Troubleshooting</h3>
 <p>When you get errors, troubleshoot by reviewing the log files:</p>
-<pre>
-$ heroku logs
-</pre>
-<p>If necessary, use the Unix <code>tail</code> flag to monitor your log files. Open a new terminal window and enter:</p>
-<pre>
-$ heroku logs -t
-</pre>
-<p>to watch the server logs in real time.</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku logs
+</pre></div><p>If necessary, use the Unix <code>tail</code> flag to monitor your log files. Open a new terminal window and enter:</p>
+<div class="highlight"><pre><span class="gp">$</span> heroku logs -t
+</pre></div><p>to watch the server logs in real time.</p>
 <h3 id="where-to-get-help">Where to Get Help</h3>
 <p>Your best source for help with Heroku is <a href="http://stackoverflow.com/questions/tagged/heroku">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
 <p>You can also check the <a href="http://devcenter.heroku.com/">Heroku Dev Center</a> or the <a href="http://groups.google.com/group/heroku/">Heroku Google Group</a>.</p>
 </section>
 <section class='chapter' id='analytics'><h2>Analytics</h2>
-<h3 id="introducing-javascript">Introducing JavaScript</h3>
-<h3 id="google-analytics">Google Analytics</h3>
-<h3 id="segment-io">segment.io</h3>
-<h3 id="tracking-user-actions">tracking user actions</h3>
-<h3 id="conversion-testing">Conversion Testing</h3>
-</section>
-<section class='chapter' id='traffic'><h2>Traffic</h2>
-<h3 id="marketing-plan">marketing plan</h3>
-<h3 id="advertising">advertising</h3>
-
-    <ul>
-      <li>AdWords</li>
-    </ul><h3 id="search-engine-marketing">search engine marketing</h3>
-
-    <ul>
-      <li>keywords</li>
-    </ul>
-    <ul>
-      <li>landing pages</li>
-    </ul>
-    <ul>
-      <li>link building</li>
-    </ul><h3 id="social-marketing">social marketing</h3>
-</section>
-<section class='chapter' id='whats-next'><h2>What’s Next?</h2>
-</section>
-<section class='chapter' id='comments'><h2>Comments</h2>
-<h3 id="credits">Credits</h3>
-<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
-<h3 id="did-you-like-the-tutorial">Did You Like the Tutorial?</h3>
-<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please create an <a href="http://github.com/RailsApps/learn-rails/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
-</section>
+<p>In earlier chapters, we’ve built the tutorial application and deployed it for hosting on Heroku.</p>
+<p>We’ve left something out. Though not obvious, it’s very important.</p>
+<p>We need analytics for site traffic and usage. There’s almost no point to building a website if you don’t gather data to improve the site and increase visits.</p>
+<p>Tracking data closes the communication loop with your users; your website puts out a message and analytics data shows how visitors respond. Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this chapter we’ll integrate Google Analytics with the tutorial application.</p>
+<h2 id="how-google-analytics-works">How Google Analytics Works</h2>
+<p>To collect usage and traffic data, every web page must contain a snippet of JavaScript code, referred to as the Google Analytics Tracking Code. The tracking code snippet includes a unique website identifier named the Google Analytics Tracking ID, which looks like this: <code>UA-XXXXXXX-XX</code>. You will obtain the JavaScript snippet and Tracking ID from the <a href="http://www.google.com/analytics/">Google Analytics website</a> when you set up an account for your website.</p>
+<p>The tracking code snippet loads a larger JavaScript file (an 18KB file named ga.js) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The ga.js file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
+<p>Before December 2009, Google’s JavaScript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the ga.js file downloads in parallel with other page assets. Page rendering can begin before the ga.js file is delivered. In practice, the ga.js file is often already cached.</p>
+<p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final </p></section>
 <div class='comments'>
   <div id="disqus_thread"></div>
   <script type="text/javascript">
