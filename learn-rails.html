@@ -43,7 +43,7 @@
           <ul class="tutorial-links">
             <li><span class="uppercase repotitle">learn-rails</span></li>
             <li>By Daniel Kehoe</li>
-            <li>Last updated 15 Jun 2013</li>
+            <li>Last updated 16 Jun 2013</li>
             <li><a href="https://github.com/RailsApps/learn-rails">GitHub Repository</a></li>
             <li><a href="https://github.com/RailsApps/learn-rails/issues">GitHub Issues</a></li>
             <li><a href="#comments">Comments</a></li>
@@ -2974,105 +2974,59 @@ Disallow: /
 <section class='chapter' id='analytics'><h2>Analytics</h2>
 <p>In earlier chapters, we’ve built the tutorial application and deployed it for hosting on Heroku.</p>
 <p>We’ve left something out. Though not obvious, it’s very important.</p>
-<p>Analytics data tracks site traffic and usage. You’ll use it to increase visits and improve your site. Analytics close the communication loop with your users; your website puts out a message and analytics reports show how visitors respond.</p>
+<p>Analytics services provide reports about website traffic and usage.</p>
+<p>You’ll use the data to increase visits and improve your site. Analytics close the communication loop with your users; your website puts out a message and analytics reports show how visitors respond.</p>
 <p>Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this chapter we’ll integrate Google Analytics with the tutorial application.</p>
-<h3 id="how-google-analytics-works">How Google Analytics Works</h3>
-<p>To collect usage and traffic data, every web page must contain a snippet of JavaScript code, referred to as the Google Analytics Tracking Code. The tracking code snippet includes a unique website identifier named the Google Analytics Tracking ID, which looks like this: <code>UA-XXXXXXX-XX</code>. You will obtain the JavaScript snippet and Tracking ID from the <a href="http://www.google.com/analytics/">Google Analytics website</a> when you set up an account for your website.</p>
-<p>The tracking code snippet loads a larger JavaScript file (a 20KB file named <strong>analytics.js</strong>) from the Google webserver that serves as a <a href="http://en.wikipedia.org/wiki/Web_beacon">web beacon</a>. The <strong>analytics.js</strong> file is downloaded once and cached for the remainder of the session; often, it is already cached and doesn’t need to be downloaded because a visitor has (very likely) visited another website that cached the file.</p>
-<p>Before December 2009, Google’s JavaScript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the <strong>analytics.js</strong> file downloads in parallel with other page assets. Page rendering can begin before the <strong>analytics.js</strong> file is delivered. In practice, the <strong>analytics.js</strong> file is often already cached.</p>
-<p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final <code>&lt;/body&gt;</code> close tag because it could delay page loading. Now, Google recommends placing the new (asynchronous JavaScript) snippet immediately before the closing <code>&lt;/head&gt;</code> tag because it has little effect on page loading.</p>
-<p>Each time the browser displays a new page, the JavaScript code sends data to the Google Analytics service. The data includes the <span class="caps">URL</span> of the requested page, the referring (previous) page, and information about the visitor’s browser, language, and location.</p>
-<h3 id="google-analytics-for-rails-4-0">Google Analytics for Rails 4.0</h3>
-<p>There is just one problem with Google Analytics for a Rails 4.0 web application: it won’t work. To be more precise, it won’t work for all pages.</p>
-<p>Rails 4.0 introduced a feature named <a href="https://github.com/rails/turbolinks/">Turbolinks</a> to increase the perceived speed of a website.</p>
-<p>Turbolinks makes our application appear faster by only updating the body and the title of a page when a link is followed. By not reloading the full page, Turbolinks reduces browser rendering time and trips to the server.</p>
-<p>With Turbolinks, the user follows a link and sees a new page but Google Analytics thinks the page hasn’t changed because a new page has not been loaded.</p>
-<p>You can disable Turbolinks by removing the turbolinks gem from the Gemfile. However, it’s nice to have both the speed of Turbolinks and Google Analytics tracking data so we’ll introduce a workaround for the Turbolinks problem.</p>
-<h3 id="google-analytics-account">Google Analytics Account</h3>
-<p>Viist the <a href="http://www.google.com/analytics/">Google Analytics website</a> to obtain the Tracking ID for your website. You’ll need to know the domain name of your website to get an account for your website. If you’ve deployed to Heroku without a custom domain, use the domain that looks like “myapp.herokuapp.com”. Or use your custom domain if you have one. Use it for fields for “Website Name,” “Web Site <span class="caps">URL</span>,” and “Account Name.”</p>
+<p>There are several ways to install Google Analytics for Rails 4.0. The article on <a href="http://railsapps.github.io/rails-google-analytics.html">Analytics for Rails</a> looks at various approaches and explains how Google Analytics works.</p>
+<p>For this tutorial, we’ll use the <a href="https://segment.io/">Segment.io</a> service. The service provides an <span class="caps">API</span> to send analytics data to dozens of different services, including Google Analytics.</p>
+<h3 id="segment-io">Segment.io</h3>
+<p><a href="https://segment.io/">Segment.io</a> is a subscription service that gathers analytics data from your application and sends it to dozens of different services, including Google Analytics. The service is free for low- and medium- volume websites, providing one million <span class="caps">API</span> calls (page views or events) per month at no cost. There is no charge to sign up for the service.</p>
+<p>Using Segment.io means you install one JavaScript library and get access to reports from dozens of analytics services. You can <a href="https://segment.io/docs/integrations">see a list of supported services</a>. The company offers helpful advice about <a href="https://segment.io/academy/">which analytics tools to choose from</a>. For low-volume sites, many of the analytics services are free, so Segment.io makes it easy to experiment and learn about the available analytics tools. The service is fast and reliable, so there’s no downside to trying it.</p>
+<h3 id="accounts-you-will-need">Accounts You Will Need</h3>
+<p>You will need an account with Segment.io. <a href="https://segment.io/signup">Sign up for Segment.io</a>.</p>
+<p>You will need accounts with each of the services that you’ll use via Segment.io.</p>
+<p>You’ll likely want to start with Google Analytics, so you’ll need a Google Analytics account and tracking ID.</p>
+<p>Visit the <a href="http://www.google.com/analytics/">Google Analytics website</a> to obtain the Tracking ID for your website. You’ll need to know the domain name of your website to get an account for your website. If you’ve deployed to Heroku without a custom domain, use the domain that looks like “myapp.herokuapp.com”. Or use your custom domain if you have one. Use it for fields for “Website Name,” “Web Site <span class="caps">URL</span>,” and “Account Name.”</p>
 <p>Choose the defaults when you create your Google Analytics account and click “Get Tracking ID.” Your tracking ID will look like this: <code>UA-XXXXXXX-XX</code>. You won’t need the tracking code snippet as it is provided below. But take a minute to compare the code that Google provides to make sure it hasn’t changed from what’s provided here.</p>
 <p>You’ll check your Google Analytics account later to verify that Google is collecting data.</p>
-<h3 id="page-layout">Page Layout</h3>
-<p>The Google Analytics JavaScript snippet must be included on every page.</p>
-<p>Ordinarily, JavaScript for every page goes in the <strong>app/assets/javascripts/application.js</strong> file. But we want the Google Analytics JavaScript snippet to load after Turbolinks, so we’ll add it to the default application layout with a partial in the footer.</p>
-<p>Create a file <strong>app/views/layouts/_footer.html.erb</strong>:</p>
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
-  <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="nx">s</span><span class="p">,</span><span class="nx">o</span><span class="p">,</span><span class="nx">g</span><span class="p">,</span><span class="nx">r</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">m</span><span class="p">){</span><span class="nx">i</span><span class="p">[</span><span class="s1">'GoogleAnalyticsObject'</span><span class="p">]</span><span class="o">=</span><span class="nx">r</span><span class="p">;</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span><span class="o">=</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span><span class="o">||</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="p">(</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">].</span><span class="nx">q</span><span class="o">=</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">].</span><span class="nx">q</span><span class="o">||</span><span class="p">[]).</span><span class="nx">push</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)},</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">].</span><span class="nx">l</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="k">new</span> <span class="nb">Date</span><span class="p">();</span><span class="nx">a</span><span class="o">=</span><span class="nx">s</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">o</span><span class="p">),</span>
-  <span class="nx">m</span><span class="o">=</span><span class="nx">s</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="nx">o</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span><span class="nx">a</span><span class="p">.</span><span class="nx">async</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nx">a</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="nx">g</span><span class="p">;</span><span class="nx">m</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">m</span><span class="p">)</span>
-  <span class="p">})(</span><span class="nb">window</span><span class="p">,</span><span class="nb">document</span><span class="p">,</span><span class="s1">'script'</span><span class="p">,</span><span class="s1">'//www.google-analytics.com/analytics.js'</span><span class="p">,</span><span class="s1">'ga'</span><span class="p">);</span>
-
-  <span class="nx">ga</span><span class="p">(</span><span class="s1">'create'</span><span class="p">,</span> <span class="s1">'UA-XXXXXXX-XX'</span><span class="p">,</span> <span class="s1">'herokuapp.com'</span><span class="p">);</span>
-  <span class="nx">ga</span><span class="p">(</span><span class="s1">'send'</span><span class="p">,</span> <span class="s1">'pageview'</span><span class="p">);</span>
-
-<span class="o">&lt;</span><span class="err">/script&gt;</span>
-</pre></div><p>You’ll need to replace <code>UA-XXXXXXX-XX</code> with your tracking ID.</p>
-<p>This tracking code specifies the herokuapp.com domain but can be used on any herokuapp.com subdomain such as myapp.herokuapp.com. Change the domain if you are using a custom domain.</p>
-<p>Modify the file <strong>app/views/layouts/application.html.erb</strong> to include the footer partial:</p>
-<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
-<span class="x">&lt;html&gt;</span>
-<span class="x">  &lt;head&gt;</span>
-<span class="x">    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span>
-<span class="x">    &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
-<span class="x">    &lt;meta name="description" content="</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Learning Rails"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  &lt;/head&gt;</span>
-<span class="x">  &lt;body&gt;</span>
-<span class="x">    &lt;header class="navbar navbar-fixed-top"&gt;</span>
-<span class="x">      &lt;nav class="navbar-inner"&gt;</span>
-<span class="x">        &lt;div class="container"&gt;</span>
-<span class="x">          </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/navigation'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">        &lt;/div&gt;</span>
-<span class="x">      &lt;/nav&gt;</span>
-<span class="x">    &lt;/header&gt;</span>
-<span class="x">    &lt;main role="main"&gt;</span>
-<span class="x">      &lt;div class="container"&gt;</span>
-<span class="x">        &lt;div class="content"&gt;</span>
-<span class="x">           &lt;div class="row"&gt;</span>
-<span class="x">            &lt;div class="span12"&gt;</span>
-<span class="x">              </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/messages'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">              </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">            &lt;/div&gt;</span>
-<span class="x">          &lt;/div&gt;</span>
-<span class="x">          &lt;footer&gt;</span>
-<span class="x">            </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/footer'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">          &lt;/footer&gt;</span>
-<span class="x">        &lt;/div&gt;</span>
-<span class="x">      &lt;/div&gt;</span>
-<span class="x">    &lt;/main&gt;</span>
-<span class="x">  &lt;/body&gt;</span>
-<span class="x">&lt;/html&gt;</span>
-</pre></div><p>Now the Google Analytics JavaScript snippet will be added on every page.</p>
-<p>Ordinarily, that’s all you need to send tracking data to Google Analytics. But we have to add a Turbolinks workaround for Rails 4.0.</p>
-<h3 id="turbolinks-workaround">Turbolinks Workaround</h3>
-<p>With Turbolinks, the Google Analytics JavaScript snippet is not sufficient to record a page visit for every page update. We’ll add a Turbolinks workaround.</p>
-<p>The workaround should be loaded on every page and it can be included as an application-wide asset (it will load before Turbolinks).</p>
-<p>Add the file <strong>app/assets/javascripts/analytics.js.coffee</strong> to include the Turbolinks workaround:</p>
-<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span> <span class="s">'page:change'</span><span class="p">,</span> <span class="nf">-&gt;</span>
-  <span class="k">if</span> <span class="nb">window</span><span class="p">.</span><span class="nx">_gaq</span><span class="o">?</span>
-    <span class="nx">_gaq</span><span class="p">.</span><span class="nx">push</span> <span class="p">[</span><span class="s">'_trackPageview'</span><span class="p">]</span>
-  <span class="k">else</span> <span class="k">if</span> <span class="nb">window</span><span class="p">.</span><span class="nx">pageTracker</span><span class="o">?</span>
-    <span class="nx">pageTracker</span><span class="p">.</span><span class="nx">_trackPageview</span><span class="p">()</span>
-</pre></div><p>The manifest directive <code>//= require_tree .</code> in the file <strong>app/assets/javascripts/application.js</strong> insures that the Turbolinks workaround is included in the concatenated application JavaScript file. If you’ve removed the <code>//= require_tree .</code> directive, you’ll have to add a directive to include the Turbolinks workaround file.</p>
-<p>The file contains Coffeescript, a programming language that adds brevity and readability to JavaScript. Turbolinks fires events to provide hooks into the lifecycle of the page. The <code>page:change</code> event fires when a page has been parsed and changed to the new version by Turbolinks. The code listens for the <code>page:change</code> event and calls either of two Google Analytics JavaScript methods that send data to Google Analytics.</p>
-<h3 id="git-11">Git</h3>
-<p>Let’s commit our changes to the Git repository.</p>
+<h3 id="installing-the-javascript-library">Installing the JavaScript Library</h3>
+<p>Segment.io provides a JavaScript snippet that sets an <span class="caps">API</span> token to identify your account and installs a library named <strong>analytics.js</strong>. This is similar to how Google Analytics works. The Segment.io library loads asynchronously, so it won’t affect page load speed.</p>
+<p>The Segment.io JavaScript snippet should be loaded on every page and it can be included as an application-wide asset using the Rails asset pipeline.</p>
+<p>Add the file <strong>app/assets/javascripts/segmentio.js</strong> to include the Segment.io JavaScript snippet:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">analytics</span><span class="o">=</span><span class="nx">analytics</span><span class="o">||</span><span class="p">[];(</span><span class="kd">function</span><span class="p">(){</span><span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="p">[</span><span class="s2">"identify"</span><span class="p">,</span><span class="s2">"track"</span><span class="p">,</span><span class="s2">"trackLink"</span><span class="p">,</span><span class="s2">"trackForm"</span><span class="p">,</span><span class="s2">"trackClick"</span><span class="p">,</span><span class="s2">"trackSubmit"</span><span class="p">,</span><span class="s2">"page"</span><span class="p">,</span><span class="s2">"pageview"</span><span class="p">,</span><span class="s2">"ab"</span><span class="p">,</span><span class="s2">"alias"</span><span class="p">,</span><span class="s2">"ready"</span><span class="p">,</span><span class="s2">"group"</span><span class="p">],</span><span class="nx">t</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="k">return</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="nx">e</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span><span class="mi">0</span><span class="p">)))}};</span><span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">n</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">n</span><span class="o">++</span><span class="p">)</span><span class="nx">analytics</span><span class="p">[</span><span class="nx">e</span><span class="p">[</span><span class="nx">n</span><span class="p">]]</span><span class="o">=</span><span class="nx">t</span><span class="p">(</span><span class="nx">e</span><span class="p">[</span><span class="nx">n</span><span class="p">])})(),</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">load</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="kd">var</span> <span class="nx">t</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"script"</span><span class="p">);</span><span class="nx">t</span><span class="p">.</span><span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="p">,</span><span class="nx">t</span><span class="p">.</span><span class="nx">async</span><span class="o">=!</span><span class="mi">0</span><span class="p">,</span><span class="nx">t</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="p">(</span><span class="s2">"https:"</span><span class="o">===</span><span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="o">?</span><span class="s2">"https://"</span><span class="o">:</span><span class="s2">"http://"</span><span class="p">)</span><span class="o">+</span><span class="s2">"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"</span><span class="o">+</span><span class="nx">e</span><span class="o">+</span><span class="s2">"/analytics.min.js"</span><span class="p">;</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">"script"</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span><span class="nx">n</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span><span class="nx">n</span><span class="p">)};</span>
+<span class="nx">analytics</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'YOUR_API_TOKEN'</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'page:change'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">analytics</span><span class="p">.</span><span class="nx">pageview</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div><p>The Segment.io website offers a minified version of the snippet for faster page loads. We’ll use it here for convenience. You can look at the non-minified version on the Segment.io website if you want to read the code and comments.</p>
+<p>You <strong>must replace</strong> <code>YOUR_API_TOKEN</code> with your Segment.io <span class="caps">API</span> token. You can find the <span class="caps">API</span> token on your “Settings” page when you <a href="https://segment.io/">log in to Segment.io</a> (it is labelled “Your <span class="caps">API</span> Key”).</p>
+<p>The manifest directive <code>//= require_tree .</code> in the file <strong>app/assets/javascripts/application.js</strong> insures that the Segment.io JavaScript snippet is included in the concatenated application JavaScript file. If you’ve removed the <code>//= require_tree .</code> directive, you’ll have to add a directive to include the <strong>app/assets/javascripts/segmentio.js</strong> file.</p>
+<h3 id="page-view-tracking-with-turbolinks">Page View Tracking with Turbolinks</h3>
+<p>Rails 4.0 introduced a feature named <a href="https://github.com/rails/turbolinks/">Turbolinks</a> to increase the perceived speed of a website.</p>
+<p>Turbolinks makes an application appear faster by only updating the body and the title of a page when a link is followed. By not reloading the full page, Turbolinks reduces browser rendering time and trips to the server.</p>
+<p>With Turbolinks, the user follows a link and sees a new page but Segment.io or Google Analytics thinks the page hasn’t changed because a new page has not been loaded. You can disable Turbolinks by removing the turbolinks gem from the Gemfile. However, it’s nice to have both the speed of Turbolinks and tracking data.</p>
+<p>To make sure every page is tracked when Rails 4.0 Turbolinks is used, we’ve already appended the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'page:change'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">analytics</span><span class="p">.</span><span class="nx">pageview</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div><p>This code follows the <code>analytics.load('YOUR_API_TOKEN');</code> statement at the end of the file.</p>
+<p>Turbolinks fires a <code>page:change</code> event when a page has been replaced. The code listens for the <code>page:change</code> event and calls the Segment.io <code>pageview()</code> method.</p>
+<h3 id="segment-io-integrations">Segment.io Integrations</h3>
+<p>After installing the Segment.io JavaScript snippet in your application, visit the Segment.io integrations page to select the services that will receive your data. When you <a href="https://segment.io/">log in to Segment.io</a> you will see a link to “Integrations” in the navigation bar.</p>
+<p>Each service requires a different configuration information. At a minimum, you’ll have to provide an account identifier or <span class="caps">API</span> key that you obstained when you signed up for the service.</p>
+<p>For Google Analytics, enter your Google Analytics tracking id. It looks like <code>UA-XXXXXXX-XX</code>. Check the box to “Enable Client-Side Universal Analytics.” Accept the other defaults.</p>
+<p>Click “Dashboard” in the navigation bar so you can monitor data sent to Segment.io from your application.</p>
+<h3 id="deploy-2">Deploy</h3>
+<p>When you are ready to deploy to Heroku, you must recompile assets and commit to the Git repo:</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"analytics"</span>
-<span class="gp">$</span> git push origin master
-</pre></div><h3 id="deploy-2">Deploy</h3>
-<p>Before you deploy to Heroku, you must recompile assets and commit to the Git repo:</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="nv">RAILS_ENV</span><span class="o">=</span>production rake assets:precompile
+<span class="gp">$</span> <span class="nv">RAILS_ENV</span><span class="o">=</span>production rake assets:precompile
 <span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
 </pre></div><p>Then you can deploy to Heroku:</p>
 <div class="highlight"><pre><span class="gp">$</span> git push heroku master
-</pre></div><p>We’ve implemented Google Analytics tracking. Log into your Google Analytics account to see real-time tracking of visits to your website.</p>
-<h3 id="segment-io">segment.io</h3>
-<h3 id="tracking-user-actions">tracking user actions</h3>
-<h3 id="conversion-testing">Conversion Testing</h3>
+</pre></div><p>When you visit the site, you should see real-time tracking of data sent to Segment.io in the Segment.io dashboard.</p>
+<p>Log into your Google Analytics account to see real-time tracking of visits to your website. Under “Standard Reports” see “Real-Time Overview.” You’ll see data within seconds after visiting any page.</p>
 </section>
 <section class='chapter' id='traffic'><h2>Traffic</h2>
 <h3 id="marketing-plan">marketing plan</h3>
