@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Analytics for Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 15 June 2013</em></p>
+<p><em>Last updated 18 June 2013</em></p>
 <p>Website analytics for Rails applications. Google Analytics and alternatives. How to install Google Analytics with Rails 4.0 Turbolinks. Event tracking and more with Segment.io, Mixpanel, KISSmetrics and others.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>,  recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>, and a list of top resources for <a href="http://railsapps.github.io/ruby-and-rails.html">Ruby and Rails</a>.</p>
@@ -67,8 +67,8 @@
 <p>Before December 2009, Google’s JavaScript code could slow the loading of a page because page rendering could be blocked until the Google code finished downloading. Google introduced asynchronous JavaScript code to improve page performance. Now, the <strong>analytics.js</strong> file downloads in parallel with other page assets. Page rendering can begin before the <strong>analytics.js</strong> file is delivered. In practice, the <strong>analytics.js</strong> file is often already cached.</p>
 <p>Google recommended placing the original (synchronous JavaScript) snippet immediately before the final <code>&lt;/body&gt;</code> close tag because it could delay page loading. Now, Google recommends placing the new (asynchronous JavaScript) snippet immediately before the closing <code>&lt;/head&gt;</code> tag because it has little effect on page loading.</p>
 <p>Each time the browser displays a new page, the JavaScript code sends data to the Google Analytics service. The data includes the <span class="caps">URL</span> of the requested page, the referring (previous) page, and information about the visitor’s browser, language, and location.</p>
-<h3>Adding Google Analytics Tracking Code</h3>
-<p>There are five approaches to adding the Google Analytics tracking code to a Rails application:</p>
+<h3>Google Analytics for Rails 3.2</h3>
+<p>There are five approaches to adding the Google Analytics tracking code to a Rails 3.2 application:</p>
 <ol>
 	<li>add the Google tracking code to the application layout</li>
 	<li>add a partial included in the application layout</li>
@@ -82,7 +82,7 @@
 <p>Rails 4.0 introduced a feature named <a href="https://github.com/rails/turbolinks/">Turbolinks</a> to increase the perceived speed of a website.</p>
 <p>Turbolinks makes an application appear faster by only updating the body and the title of a page when a link is followed. By not reloading the full page, Turbolinks reduces browser rendering time and trips to the server.</p>
 <p>With Turbolinks, the user follows a link and sees a new page but Google Analytics thinks the page hasn’t changed because a new page has not been loaded.</p>
-<p>You can disable Turbolinks by removing the turbolinks gem from the Gemfile. However, it’s nice to have both the speed of Turbolinks and Google Analytics tracking data. This article details a workaround for the Turbolinks problem.</p>
+<p>You can disable Turbolinks by removing the turbolinks gem from the Gemfile and removing the reference in the <strong>app/assets/javascripts/application.js</strong> file. However, it’s nice to have both the speed of Turbolinks and Google Analytics tracking data. This article details a workaround for the Turbolinks problem.</p>
 <h3 id="googleaccount">Google Analytics Account</h3>
 <p>Viist the <a href="http://www.google.com/analytics/">Google Analytics website</a> to obtain a Tracking ID for your website. You’ll need to know the domain name of your website before you set up a Google Analytics account for your website.</p>
 <p><a href="https://www.heroku.com/">Heroku</a> is a popular hosting platform for Rails applications. If you’ve deployed to Heroku without a custom domain, your domain name will look like “myapp.herokuapp.com”. When you set up your account, use it for fields for “Website Name,” “Web Site <span class="caps">URL</span>,” and “Account Name.”</p>
@@ -196,7 +196,7 @@ $ git push heroku master
 <p>You’ll likely want to start with Google Analytics, so get a Google Analytics account and tracking ID as described in the section <a href="#googleaccount">Google Analytics Account</a> above.</p>
 <h3>Installing the JavaScript Library</h3>
 <p>Segment.io provides a JavaScript snippet that sets an <span class="caps">API</span> token to identify your account and installs a library named <strong>analytics.js</strong>. This is similar to how Google Analytics works. Like Google Analytics, the Segment.io library loads asynchronously, so it won’t affect page load speed.</p>
-<p>The Segment.io JavaScript snippet should be loaded on every page and it can be included as an application-wide asset.</p>
+<p>The Segment.io JavaScript snippet should be loaded on every page and it can be included as an application-wide asset using the Rails asset pipeline.</p>
 <p>Add the file <strong>app/assets/javascripts/segmentio.js</strong> to include the Segment.io JavaScript snippet:</p>
 <pre>
 // Create a queue, but don't obliterate an existing one!
@@ -249,8 +249,8 @@ analytics.load('YOUR_API_TOKEN');
 <p>The Segment.io website offers a minified version of the snippet for faster page loads. You can use it if you wish; the non-minified version is provided above so you can read the code and comments.</p>
 <p>You <strong>must replace</strong> <code>YOUR_API_TOKEN</code> with your Segment.io <span class="caps">API</span> token. You can find the <span class="caps">API</span> token on your “Settings” page when you <a href="https://segment.io/">log in to Segment.io</a> (it is labelled “Your <span class="caps">API</span> Key”).</p>
 <p>The manifest directive <code>//= require_tree .</code> in the file <strong>app/assets/javascripts/application.js</strong> insures that the Segment.io JavaScript snippet is included in the concatenated application JavaScript file. If you’ve removed the <code>//= require_tree .</code> directive, you’ll have to add a directive to include the <strong>app/assets/javascripts/segmentio.js</strong> file.</p>
-<h3>Turbolinks Workaround</h3>
-<p>To make sure every page is tracked when Rails 4.0 Turbolinks are used, append the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
+<h3>Page View Tracking with Turbolinks</h3>
+<p>To make sure every page is tracked when Rails 4.0 Turbolinks is used, append the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
 <pre>
 $(document).on('page:change', function() {
   analytics.pageview();
@@ -258,6 +258,22 @@ $(document).on('page:change', function() {
 </pre>
 <p>This code should follow the <code>analytics.load('YOUR_API_TOKEN');</code> statement at the end of the file.</p>
 <p>Turbolinks fires a <code>page:change</code> event when a page has been replaced. The code listens for the <code>page:change</code> event and calls the Segment.io <code>pageview()</code> method.</p>
+<h3>Event Tracking</h3>
+<p>Segment.io gives us a convenient method to track page views. Page view tracking gives us data about our website traffic, showing visits to the site and information about our visitors.</p>
+<p>It’s also important to learn about a visitor’s activity on the site. Site usage data helps us improve the site and determine whether we are meeting our business goals. This requires tracking events as well as page views.</p>
+<p>The Segment.io JavaScript library gives us two methods to track events:</p>
+<ul>
+	<li><code>trackLink</code></li>
+	<li><code>trackForm</code></li>
+</ul>
+<p>Link tracking can be used to send data to Segment.io whenever a visitor clicks a link. It can be useful if you add links to external sites and want to track click-throughs. The method can also be used to track clicks that don’t result in a new page view, such as changing elements on a page.</p>
+<p>The <code>trackForm</code> method is very useful for event tracking as many of the significant events on a website are the result of form submissions. Append it to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
+<p><code>@</code> js<br>
+analytics.trackForm($(‘#new_visitor’), ‘Signed Up’);<br>
+<code>@</code></p>
+<p>The <code>trackForm</code> method takes two parameters, the ID attribute of a form and a name given to the event. Here we assume we have a form with the ID attribute “new_visitor” and we want to identify the event as “Signed Up.”</p>
+<p>With Google Analytics enabled as a Segment.io integration, you’ll see form submissions appear in the Google Analytics Real-Time report, under the “Events” heading.</p>
+<p>You can read more about the Segment.io JavaScript library in the <a href="https://segment.io/libraries/analytics.js">Segment.io documentation</a>.</p>
 <h3>Segment.io Integrations</h3>
 <p>After installing the Segment.io JavaScript snippet in your application, visit the Segment.io integrations page to select the services that will receive your data. When you <a href="https://segment.io/">log in to Segment.io</a> you will see a link to “Integrations” in the navigation bar.</p>
 <p>Each service requires a different configuration information. At a minimum, you’ll have to provide an account identifier or <span class="caps">API</span> key that you obstained when you signed up for the service.</p>
@@ -282,7 +298,7 @@ $ git push heroku master
 <h2>Credits</h2>
 <p>Daniel Kehoe wrote the article.</p>
 <h2 id="comment">Did You Like the Article?</h2>
-<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
+<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
 <p>Any issues? Please leave a comment below.</p>
     </div><!-- class="content" -->
 
