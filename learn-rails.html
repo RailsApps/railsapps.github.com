@@ -720,7 +720,7 @@
 <p>Go to GitHub and <a href="https://github.com/repositories/new">create a new empty repository</a> for your project. Name the repository “learn-rails” and give it a description. If the repository is public, hosting on GitHub is free. Don’t be reluctant to go public with an unfinished or half-baked project; everyone expects projects on GitHub to be works in progress.</p>
 <p>Add GitHub as a remote repository for your project and push your local project to GitHub. Before you copy and paste the command, notice that you need to insert your own GitHub account name:</p>
 <div class="highlight"><pre><span class="gp">$</span> git remote add origin git@github.com:YOUR_GITHUB_ACCOUNT/learn-rails.git
-<span class="go">git push -u origin master</span>
+<span class="gp">$</span> git push -u origin master
 </pre></div><p>Now you can view your project repository on GitHub at:</p>
 <ul>
   <li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/learn-rails">https://github.com/YOUR_GITHUB_ACCOUNT/learn-rails</a></li>
@@ -906,7 +906,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <h3 id="adding-gems">Adding Gems</h3>
 <p>I’ve identified several gems that will be useful for our tutorial application. I’ve used these gems on previous projects and I recommend them.</p>
 <p>We’re adding these gems at the beginning of our development process since we already know which gems we’ll need. On a real project, you’ll often discover useful gems and add them to the Gemfile during the ongoing process of development.</p>
-<p>Here are the gems we’ll add to the Gemfile:</p>
+<p>Here are gems we’ll add to the Gemfile:</p>
 <ul>
   <li><a href="https://github.com/softace/activerecord-tableless">activerecord-tableless</a> – helps to use Rails without a database</li>
   <li><a href="https://github.com/laserlemon/figaro">figaro</a> – configuration framework</li>
@@ -915,9 +915,10 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
   <li><a href="https://github.com/thoughtbot/high_voltage">high_voltage</a> – for static pages like “about”</li>
   <li><a href="https://github.com/amro/gibbon">gibbon</a> – access to the MailChimp <span class="caps">API</span></li>
 </ul>
-<p>We’ll also add a utility that makes development easier:</p>
+<p>We’ll also add utilities that make development easier:</p>
 <ul>
   <li><a href="https://github.com/charliesome/better_errors">better_errors</a> – helps when things go wrong</li>
+  <li><a href="https://github.com/evrone/quiet_assets">quiet_assets</a> – suppresses distracting messages in the log</li>
 </ul>
 <p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
 <p><strong>Gemfile</strong></p>
@@ -943,8 +944,9 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="n">gem</span> <span class="s1">'gibbon'</span>
 <span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
   <span class="n">gem</span> <span class="s1">'better_errors'</span>
+  <span class="n">gem</span> <span class="s1">'quiet_assets'</span>
 <span class="k">end</span>
-</pre></div><p>Notice that we’ve placed the better_errors gem inside a “group.” Specifying a group for development or testing insures a gem isnot loaded in production, reducing the application’s memory footprint.</p>
+</pre></div><p>Notice that we’ve placed the better_errors and quiet_assets gems inside a “group.” Specifying a group for development or testing insures a gem is not loaded in production, reducing the application’s memory footprint.</p>
 <p>Each time you edit the Gemfile, run <code>bundle install</code> and restart your web server.</p>
 <h3 id="install-the-gems">Install the Gems</h3>
 <p>Now that you’ve edited the Gemfile, you need to install the required gems on your computer:</p>
@@ -956,54 +958,13 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="go">Using rake (10.0.4)</span>
 <span class="go">Using i18n (0.6.4)</span>
 <span class="go">Installing minitest (4.7.4)</span>
-<span class="go">Using multi_json (1.7.6)</span>
-<span class="go">Using atomic (1.1.9)</span>
-<span class="go">Using thread_safe (0.1.0)</span>
-<span class="go">Using tzinfo (0.3.37)</span>
-<span class="go">Using activesupport (4.0.0.rc2)</span>
-<span class="go">Using builder (3.1.4)</span>
-<span class="go">Using erubis (2.7.0)</span>
-<span class="go">Using rack (1.5.2)</span>
-<span class="go">Using rack-test (0.6.2)</span>
-<span class="go">Using actionpack (4.0.0.rc2)</span>
-<span class="go">Using mime-types (1.23)</span>
-<span class="go">Using polyglot (0.3.3)</span>
-<span class="go">Using treetop (1.4.14)</span>
-<span class="go">Using mail (2.5.4)</span>
-<span class="go">Using actionmailer (4.0.0.rc2)</span>
-<span class="go">Using activemodel (4.0.0.rc2)</span>
-<span class="go">Using activerecord-deprecated_finders (1.0.2)</span>
-<span class="go">Using arel (4.0.0)</span>
-<span class="go">Using activerecord (4.0.0.rc2)</span>
-<span class="go">Installing activerecord-tableless (1.2.0)</span>
-<span class="go">Installing coderay (1.0.9)</span>
-<span class="go">Installing better_errors (0.9.0)</span>
-<span class="go">Installing sass (3.2.9)</span>
-<span class="go">Installing bootstrap-sass (2.3.1.3)</span>
-<span class="go">Using bundler (1.3.5)</span>
-<span class="go">Installing coffee-script-source (1.6.2)</span>
-<span class="go">Installing execjs (1.4.0)</span>
-<span class="go">Installing coffee-script (2.2.0)</span>
-<span class="go">Using thor (0.18.1)</span>
-<span class="go">Using railties (4.0.0.rc2)</span>
-<span class="go">Installing coffee-rails (4.0.0)</span>
-<span class="go">Using hike (1.2.2)</span>
-<span class="go">Using tilt (1.4.1)</span>
-<span class="go">Using sprockets (2.10.0)</span>
-<span class="go">Using sprockets-rails (2.0.0.rc4)</span>
-<span class="go">Using rails (4.0.0.rc2)</span>
-<span class="go">Installing figaro (0.6.4)</span>
-<span class="go">Installing multi_xml (0.5.4)</span>
-<span class="go">Installing httparty (0.11.0)</span>
-<span class="go">Installing gibbon (0.4.6)</span>
-<span class="go">Installing high_voltage (1.2.2)</span>
-<span class="go">Installing jbuilder (1.0.2)</span>
-<span class="go">Installing jquery-rails (3.0.0)</span>
-<span class="go">Installing sass-rails (4.0.0.rc2)</span>
-<span class="go">Installing simple_form (1.4.1)</span>
-<span class="go">Installing sqlite3 (1.3.7)</span>
-<span class="go">Installing turbolinks (1.2.0)</span>
-<span class="go">Installing uglifier (2.1.1)</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">(many more gems not shown... you get the idea)</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">.</span>
 <span class="go">Your bundle is complete!</span>
 <span class="go">Use `bundle show [gemname]` to see where a bundled gem is installed.</span>
 </pre></div><p>You can use your text editor to view the contents of <strong>Gemfile.lock</strong> and you will see a detailed listing of every gem and each dependency, with version numbers. There’s no reason to edit a <strong>Gemfile.lock</strong> file; if it is ever in error, delete it and run <code>bundle install</code> to recreate it.</p>
@@ -1063,7 +1024,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
 </pre></div><p>This changes the configuration to send email when you’re working on the application.</p>
 <h4 id="connect-to-an-email-server">Connect to an Email Server</h4>
-<p>Web servers don’t send email. Our Rails application has to connect to an email server (also known as a <a href="http://en.wikipedia.org/wiki/Email_server">mail transfer agent</a> or “mail relay”). In the early days of the Internet, an experienced system adminstrator could set up an <a href="http://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol"><span class="caps">SMTP</span> server</a> to distribute email. Now, because of efforts to reduce spam, it is necessary to use an established email service to insure deliverability. For high volume <em>transactional email</em> and improved deliverability, it’s best to use a service such as <a href="http://mandrill.com/">Mandrill</a> or <a href="http://sendgrid.com/pricing.html">SendGrid</a>. For our tutorial application, we can connect to Gmail to send email.</p>
+<p>Web servers don’t send email. Our Rails application has to connect to an email server (also known as a <a href="http://en.wikipedia.org/wiki/Email_server">mail transfer agent</a> or “mail relay”). In the early days of the Internet, an experienced system adminstrator could set up an <a href="http://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol"><span class="caps">SMTP</span> server</a> to distribute email. Now, because of efforts to reduce spam, it is necessary to use an established email service to insure deliverability. For high volume <em>transactional email</em> and improved deliverability, it’s best to use a service such as <a href="http://mandrill.com/">Mandrill</a> or <a href="http://mailgun.net/pricing">Mailgun</a>. For our tutorial application, we can connect to Gmail to send email.</p>
 <p>We need to configure Rails so the application can connect with an email server.</p>
 <p>Immediately following the statement we just added, add this:</p>
 <div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
@@ -1275,6 +1236,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p><img src="https://tutorials.railsapps.org/assets/learn-rails-42-home.png" title="Home Page" alt="Home Page" /></p>
 <p>It’s a very simple web page but it uses Ruby to calculate the countdown to the birthday. And the underlying code conforms to the conventions and stucture of Rails.</p>
 <h3 id="git-3">Git</h3>
+<p>At this point, you might have the Rails server running in your console window. We’re going to run a git command in the console now. You might think you have to enter Control-c to shut down the server and get the command prompt. Stop to think for a minute. You can have more than one console window open. Your terminal application lets you open multiple tabs so you can easily switch between windows without using a lot of screen real estate. If you haven’t tried it, now is a good time. It is much more convenient to have a console window open for the server and another for various Unix commands.</p>
 <p>Let’s commit our changes to the Git repository.</p>
 <div class="highlight"><pre><span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"dynamic home page"</span>
@@ -1862,8 +1824,11 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>It’s bad practice to place all your <span class="caps">CSS</span> in the <strong>app/assets/stylesheets/application.css</strong> file (unless your <span class="caps">CSS</span> is very limited). Instead, structure your <span class="caps">CSS</span> in multiple files. <span class="caps">CSS</span> that is used on only a single page can go in a file with a name that matches the page. Or, if sections of the website share common elements, such as themes for landing pages or administrative pages, make a file for each theme. How you organize your <span class="caps">CSS</span> is up to you; the asset pipeline lets you organize your <span class="caps">CSS</span> so it is easier to develop and maintain. Just add the files to the <strong>app/assets/stylesheets/</strong> folder.</p>
 <p>It’s not obvious from the name of the <strong>app/assets/stylesheets/application.css</strong> file that it serves as a <em>manifest file</em> as well as a location for miscellaneous <span class="caps">CSS</span> rules. For most websites, you can ignore its role as a manifest file. In the comments at the top of the file, the <code>*= require_self</code> directive indicates that any <span class="caps">CSS</span> in the file should be delivered to the browser. The <code>*= require_tree .</code> directive (note the Unix “dot operator”) indicates any files in the same folder, including files in subfolders, should be combined into a single file for delivery to the browser.</p>
 <p>If your website is large and complex, you can remove the <code>*= require_tree .</code> directive and specify individual files to be included in the file that is generated by the asset pipeline. This gives you the option of reducing the size of the application-wide <span class="caps">CSS</span> file that is delivered to the browser. For example, you might segregate a file that includes <span class="caps">CSS</span> that is used only in the site’s administrative section. In general, only large and complex sites need this optimization. The speed of rendering a single large <span class="caps">CSS</span> file is faster than fetching multiple files.</p>
-<h3 id="css-styling-with-sass"><span class="caps">CSS</span> Styling with Sass</h3>
+<h3 id="rename-the-application-css-file">Rename the application.css File</h3>
 <p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>. You’ll add the <strong>.scss</strong> file extension. This will allow you to use the advantages of the <a href="http://sass-lang.com/">Sass</a> syntax for your application stylesheet.</p>
+<p>Rename the file now:</p>
+<div class="highlight"><pre><span class="gp">$</span> mv app/assets/stylesheets/application.css app/assets/stylesheets/application.css.scss
+</pre></div><h3 id="css-styling-with-sass"><span class="caps">CSS</span> Styling with Sass</h3>
 <p>Ordinary <span class="caps">CSS</span> is not a programming language so <span class="caps">CSS</span> rules are verbose and often repetitive. <a href="http://sass-lang.com/">Sass</a> is a preprocessor for <span class="caps">CSS</span> so your stylesheets can use variables, <em>mixins</em>, and nesting of <span class="caps">CSS</span> rules. You can create a variable such as <code>$blue: #3bbfce</code> and specify colors anywhere using the variable, for example, <code>border-color: $blue</code>. Mixins are like variables that let you use snippets of reusable <span class="caps">CSS</span>. Nesting eliminates repetition by layering <span class="caps">CSS</span> selectors.</p>
 <p>You can use Sass in any file by adding the file extension <strong>.scss</strong>. The asset pipeline will preprocess the file and expand it as standard <span class="caps">CSS</span>.</p>
 <p>For more on the advantages of Sass and how to use it, see the the <a href="http://sass-lang.com/">Sass</a> website or the <a href="http://railscasts.com/episodes/268-sass-basics">Sass Basics RailsCast</a> from Ryan Bates.</p>
@@ -1893,7 +1858,8 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="c1">//= require turbolinks</span>
 <span class="c1">//= require bootstrap</span>
 <span class="c1">//= require_tree .</span>
-</pre></div><p>Like the <strong>application.css.scss</strong> file, the <strong>application.js</strong> file is a manifest that allows a developer to designate the JavaScript files that will be combined for delivery to the browser.</p>
+</pre></div><p>You’ll see you need to add the directive <code>//= require bootstrap</code> before <code>//= require_tree .</code>.</p>
+<p>Like the <strong>application.css.scss</strong> file, the <strong>application.js</strong> file is a manifest that allows a developer to designate the JavaScript files that will be combined for delivery to the browser.</p>
 <h3 id="css-example"><span class="caps">CSS</span> Example</h3>
 <p>We’ll add a nice gray box as a background to page content. This gives us an example of adding a <span class="caps">CSS</span> rule that will be used on every page of the application.</p>
 <p>Add this to your <strong>app/assets/stylesheets/application.css.scss</strong> file for a gray background:</p>
@@ -2851,6 +2817,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
   <span class="n">gem</span> <span class="s1">'sqlite3'</span>
   <span class="n">gem</span> <span class="s1">'better_errors'</span>
+  <span class="n">gem</span> <span class="s1">'quiet_assets'</span>
 <span class="k">end</span>
 <span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
   <span class="n">gem</span> <span class="s1">'pg'</span>
