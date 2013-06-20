@@ -297,6 +297,7 @@
 <p>Other services, such as <a href="http://mandrill.com/">Mandrill</a>, can be used to send email from the application. Or you can connect directly to an <span class="caps">SMTP</span> mail server to send email. The tutorial won’t show the details but I’ll provide links for more information if you don’t want to use Gmail.</p>
 <h3 id="mailchimp">MailChimp</h3>
 <p>This tutorial shows how website visitors who want to receive a newsletter can be assigned to a <a href="http://mailchimp.com/">MailChimp</a> mailing list. MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free. There is no cost to set up an account. After you sign up for a MailChimp account, get your <span class="caps">API</span> key. Look under “Account” for “<span class="caps">API</span> Keys and Authorized Apps.” Make a note of the <span class="caps">API</span> key for later.</p>
+<p><em>Note:</em> MailChimp recently revised its user interface. These instructions may not be accurate.</p>
 <p>After you have set up a MailChimp account, create a new mailing list where you can collect email addresses of visitors who have asked to subscribe to a newsletter. The MailChimp “Lists” page has a button for “Create List.” The list name and other details are up to you. You’ll need to obtain the list ID for use later in the tutorial when we add code to subscribe visitors to the MailChimp list. To find the list ID, on the MailChimp “Lists” page, look for the dropdown “gear” menu and click “List Settings and Unique ID.” At the bottom of the List Settings page, you’ll find the unique ID for the mailing list. Make a note of the list ID for later.</p>
 <h3 id="heroku">Heroku</h3>
 <p>We’ll use <a href="https://www.heroku.com/">Heroku</a> to host the tutorial application so anyone can reach it.</p>
@@ -1004,14 +1005,21 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="l-Scalar-Plain">GMAIL_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Password</span>
 <span class="l-Scalar-Plain">MAILCHIMP_API_KEY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_MailChimp_API_Key</span>
 <span class="l-Scalar-Plain">MAILCHIMP_LIST_ID</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_List_ID</span>
+<span class="l-Scalar-Plain">DOMAIN_NAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example.com</span>
+<span class="l-Scalar-Plain">OWNER_EMAIL</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">me@example.com</span>
 </pre></div><p>Replace the placeholders in the <strong>config/application.yml</strong> file with real credentials.</p>
 <p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. We’ll use the environment variables to configure the tutorial application to send email.</p>
 <h4 id="gmail-2">Gmail</h4>
 <p>For the Gmail username and password, enter the credentials you use to log in to Gmail when you check your inbox.</p>
 <p>If you don’t have a Gmail account, you can sign up for an account with <a href="http://mandrill.com/">Mandrill</a> instead and follow instructions in the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
 <h4 id="mailchimp-2">MailChimp</h4>
+<p><em>Note:</em> MailChimp recently revised its user interface. These instructions may not be accurate.</p>
 <p>When visitors sign up to receive a newsletter, we’ll add them to a MailChimp list. Add an environment variable for the MailChimp <span class="caps">API</span> key: <code>MAILCHIMP_API_KEY</code>. <a href="https://admin.mailchimp.com/">Log in to MailChimp</a> and find the MailChimp <span class="caps">API</span> key under the tab for “Account” on the MailChimp website. Look for the “API Keys and Authorized Apps” menu item.</p>
 <p>We’ll add <code>MAILCHIMP_LIST_ID</code> for the ID of the mailing list we’ll set up in MailChimp. To find the list ID, <a href="https://admin.mailchimp.com/">log in to MailChimp</a> and on the MailChimp “Lists” page, look for the dropdown “gear” menu for the mailing list you’ve created and click “List Settings and Unique ID.” At the bottom of the List Settings page, you’ll find the unique ID for the mailing list.</p>
+<h4 id="domain-name">Domain Name</h4>
+<p>If you already have a custom domain name you’ll use when you deploy the application, you can replace <code>example.com</code> now. If not, leave <code>example.com</code> in place for now. Later, if you follow the tutorial to deploy the application to Heroku, you’ll replace <code>example.com</code> with the unique name you’ve given your application on Heroku. You’ll have to wait until you deploy to know the name you’ll use on Heroku.</p>
+<h4 id="owner-email">Owner Email</h4>
+<p>You’ll send email messages to this address when a visitor submits a contact request form. Replace @me@example.com@ with an email address where you receive mail.</p>
 <h3 id="configure-email">Configure Email</h3>
 <p>Email messages are visible in the console and the log file when you test the application. If you don’t want to actually send email, you can skip this step. But it’s more fun when your application can actually send email.</p>
 <p>If you want to send real messages when you test the application in development mode, modify the file <strong>config/environments/development.rb</strong>.</p>
@@ -1030,7 +1038,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
   <span class="ss">address</span><span class="p">:</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>
   <span class="ss">port</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span>
-  <span class="ss">domain</span><span class="p">:</span> <span class="s2">"example.com"</span><span class="p">,</span>
+  <span class="ss">domain</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"DOMAIN_NAME"</span><span class="o">]</span><span class="p">,</span>
   <span class="ss">authentication</span><span class="p">:</span> <span class="s2">"plain"</span><span class="p">,</span>
   <span class="n">enable_starttls_auto</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
   <span class="n">user_name</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_USERNAME"</span><span class="o">]</span><span class="p">,</span>
@@ -2461,14 +2469,13 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 
   <span class="k">def</span> <span class="nf">contact_email</span><span class="p">(</span><span class="n">contact</span><span class="p">)</span>
     <span class="vi">@contact</span> <span class="o">=</span> <span class="n">contact</span>
-    <span class="n">mail</span><span class="p">(</span><span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"to@example.com"</span><span class="p">,</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">"Website Contact"</span><span class="p">)</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">:to</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"OWNER_EMAIL"</span><span class="o">]</span><span class="p">,</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="vi">@contact</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">"Website Contact"</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </pre></div><p>The <code>UserMailer</code> class inherits behavior from the <code>ActionMailer</code> class. We’ll create a method definition that assigns the <code>contact</code> argument to the instance variable <code>@contact</code>. Like a controller that combines a model with a view, our mailer class makes the instance variable available in the view.</p>
 <p>The name of the method isn’t important; it can be anything obvious. We’ll use it in the ContactsController to trigger mail delivery.</p>
 <p>Like the <code>render</code> method in a web page controller, the ActionMailer parent class has a <code>mail</code> method that renders the view.</p>
-<p>You’ll need to insert your email address in the mailer.</p>
-<p>Replace the “to@example.com” string with your email address. By inserting your email address after <code>:to =&gt;</code>, your inbox will receive the message. If Foobar Kadigan was a real person, we’d insert his email address here.</p>
+<p>You’ll need to use your email address in the mailer. You should have already set an environment variable for your email address in the file <strong>config/application.yml</strong>. If you haven’t done so, do it now. By inserting the environment variable with your email address after <code>:to =&gt;</code>, your inbox will receive the message. If Foobar Kadigan was a real person, we’d supply his email address here.</p>
 <p>We need to insert a “from” address in two places. First there is a default, for all messages that do not set a “from” address. We will use “do-not-reply@example.com” for the default “from” address. The email is originating from a web application that does not receive email, so this indicates the email address should not be used for replies. For emails going to website visitors, it would be best to provide a default email address for a customer service representative on the “from” line, so the recipient can easily reply. We’re not sending email messages to visitors so we can ignore this nicety.</p>
 <p>For our <code>contact_email</code> method, we’ll insert the email address of the visitor as the “from” address since we are sending a message to the site owner. This makes it easy for Foobar Kadigan to click “reply” when he is reading the contact messages in his inbox. You can see our use of the email attribute from the Contact model in the expression <code>:from =&gt; @contact.email</code>.</p>
 <p>That’s all we need for mailer class. Next we’ll create a view containing the message.</p>
@@ -2619,7 +2626,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <span class="x">  &lt;/div&gt;</span>
 <span class="x">&lt;/div&gt;</span>
 </pre></div><p>We include <code>content_for</code> view helpers that pass a title and description to the application layout.</p>
-<p>We add a photo to the page with an <code>&lt;img&gt;&lt;code&gt; tag. We're taking a shortcut and using a placeholder photo from the "lorempixel.com":http://lorempixel.com/ service.</code></p>
+<p>We add a photo to the page with an <code>&lt;img&gt;</code> tag. We’re taking a shortcut and using a placeholder photo from the <a href="http://lorempixel.com/">lorempixel.com</a> service.</p>
 <p>Much of the markup is divs to create layout. The first div creates a container with centered text, offset from the photo by 20 pixels. If we were being strict about separation of concerns, we’d specify this rule in a <span class="caps">CSS</span> stylesheet instead of using a <code>style</code> attribute.</p>
 <p>The next two divs apply layout rules from Twitter Bootstrap to create two columns, one for our marketing message, and one for the form.</p>
 <p>Our marketing message is merely a placeholder. For a real website, you’d likely craft a stronger call to action than merely “Stay in touch.”</p>
@@ -2747,6 +2754,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <p>You’ll see our new home page with the placeholder photo and the “sign up” form.</p>
 <p>Enter your email address and click the “sign up” button. You should see the page redisplay with an acknowledgement message. Try entering an invalid email address such as “me@foo@”, or click the submit button without entering an email address, and you should see an error message.</p>
 <p>You’ll have to <a href="https://admin.mailchimp.com/">log in to MailChimp</a> and check your mailing list to see if the new email address was added successfully.</p>
+<p><em>Note:</em> MailChimp recently revised its user interface. These instructions may not be accurate.</p>
 <p>MailChimp provides extensive documentation. You might look at the option to send a welcome email when a new user is subscribed to the mailing list. It’s a bit difficult to find the MailChimp option to create a welcome message. Look for the button “Design Signup Forms” or the “Forms” menu item under the settings “gear” associated with each list. You might not think a welcome email is a form, but that’s what MailChimp names it. In the dropdown list of “Forms &amp; Response Emails” it is named “Final ‘Welcome’ Email”. Use the welcome message to inform the visitor that they’ll successfully subscribed to the mailing list and will receive the next newsletter email.</p>
 <h3 id="git-10">Git</h3>
 <p>Let’s commit our changes to the Git repository.</p>
@@ -2837,6 +2845,7 @@ any version greater than 4.0.0 and less than 4.1 (any patch version can be used)
 <div class="highlight"><pre><span class="gp">$</span> <span class="nv">RAILS_ENV</span><span class="o">=</span>production rake assets:precompile
 <span class="gp">$</span> git add -A
 <span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
+<span class="gp">$</span> git push origin master
 </pre></div><p>The result will be several files added to the <strong>public/assets/</strong> folder. The filenames will contain a long unique identifier that prevents caching when you change the application <span class="caps">CSS</span> or JavaScript.</p>
 <p>If you don’t precompile assets for production, all web pages will look strange. They won’t have <span class="caps">CSS</span> styling.</p>
 <h4 id="option-to-ban-spiders">Option to Ban Spiders</h4>
@@ -2879,12 +2888,27 @@ Disallow: /
 <div class="highlight"><pre><span class="gp">$</span> heroku create myapp
 </pre></div><p>Replace <code>myapp</code> with something unique. Heroku demands a unique name for every hosted application. If it is not unique, you’ll see an error, “name is already taken.” Chances are, “learn-rails” is already taken.</p>
 <p>If you don’t specify your app name (<code>myapp</code> in the example above), Heroku will supply a placeholder name. You can easily change Heroku’s placeholder name to a name of your choice with the <code>heroku apps:rename command</code> (see <a href="https://devcenter.heroku.com/articles/renaming-apps">Renaming Apps from the <span class="caps">CLI</span></a>).</p>
-<p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name. You’ll just use the name for access to the instance of your app running on the Heroku servers; later, you’ll set up <span class="caps">DNS</span> to point your domain name to the app running on Heroku.</p>
+<p>Don’t worry too much about getting the “perfect name” for your Heroku app. The name of your Heroku app won’t matter if you plan to set up your Heroku app to use your own domain name. You’ll just use the name for access to the instance of your app running on the Heroku servers; if you have a custom domain name, you’ll set up <span class="caps">DNS</span> (<em>domain name service</em>) to point your domain name to the app running on Heroku.</p>
 <p>The <code>heroku create</code> command sets your Heroku application as a Git remote repository. That means you’ll use the <code>git push</code> command to deploy your application to Heroku.</p>
+<h3 id="set-a-domain-name">Set a Domain Name</h3>
+<p>Earlier, when we created the <strong>config/application.yml</strong> file and set environment variables, we left a placeholder for a domain name in the file. Now we can replace the placeholder.</p>
+<p>Open the file <strong>config/application.yml</strong>:</p>
+<div class="highlight"><pre><span class="c1"># Add account credentials and API keys here.</span>
+<span class="c1"># See http://railsapps.github.io/rails-environment-variables.html</span>
+<span class="c1"># This file should be listed in .gitignore to keep your settings secret!</span>
+<span class="c1"># Each entry sets a local environment variable and overrides ENV variables in the Unix shell.</span>
+<span class="l-Scalar-Plain">GMAIL_USERNAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Username</span>
+<span class="l-Scalar-Plain">GMAIL_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Password</span>
+<span class="l-Scalar-Plain">MAILCHIMP_API_KEY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_MailChimp_API_Key</span>
+<span class="l-Scalar-Plain">MAILCHIMP_LIST_ID</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_List_ID</span>
+<span class="l-Scalar-Plain">DOMAIN_NAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example.com</span>
+<span class="l-Scalar-Plain">OWNER_EMAIL</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">me@example.com</span>
+</pre></div><p>If you don’t have a custom domain name, use the domain name you’ve chosen for deployment on Heroku. Replace <code>example.com</code> with <code>myapp.herokuapp.com</code>, replacing <code>myapp</code> with the name that Heroku has accepted for your application.</p>
+<p>If you already have a custom domain name in the file, you don’t have to change anything, but you will have to set up Heroku to use your custom domain name. That involves setting up <span class="caps">DNS</span>, which we won’t cover in this tutorial.</p>
 <h3 id="enable-email">Enable Email</h3>
 <p>You’ll need to enable email for production or else you’ll get errors when your application tries to send email from Heroku.</p>
 <p>To use Gmail from Heroku, add the following to your <strong>config/environments/production.rb</strong> file:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:host</span> <span class="o">=&gt;</span> <span class="s1">'myapp.herokuapp.com'</span> <span class="p">}</span>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:host</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"DOMAIN_NAME"</span><span class="o">]</span> <span class="p">}</span>
 <span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">delivery_method</span> <span class="o">=</span> <span class="ss">:smtp</span>
 <span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
 <span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">raise_delivery_errors</span> <span class="o">=</span> <span class="kp">false</span>
@@ -2892,13 +2916,13 @@ Disallow: /
 <span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
   <span class="ss">address</span><span class="p">:</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>
   <span class="ss">port</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span>
-  <span class="ss">domain</span><span class="p">:</span> <span class="s2">"myapp.herokuapp.com"</span><span class="p">,</span>
+  <span class="ss">domain</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"DOMAIN_NAME"</span><span class="o">]</span><span class="p">,</span>
   <span class="ss">authentication</span><span class="p">:</span> <span class="s2">"plain"</span><span class="p">,</span>
   <span class="n">enable_starttls_auto</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
   <span class="n">user_name</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_USERNAME"</span><span class="o">]</span><span class="p">,</span>
   <span class="ss">password</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"GMAIL_PASSWORD"</span><span class="o">]</span>
 <span class="p">}</span>
-</pre></div><p>You’ll need to specify the unique name you’ve selected for your hosted application. Change <code>myapp.herokuapp.com</code> in <strong>two places</strong> in the file.</p>
+</pre></div><p>You’ll need to specify the unique name you’ve selected for your hosted application. We’re using an environment variable <code>ENV["DOMAIN_NAME"]</code> in two places in the file. Be sure you set the environment variable for the domain name in the file <strong>config/application.yml</strong> in the previous step.</p>
 <p>Be sure to add the new settings before the <code>end</code> keyword in the file. The settings can be added anywhere, as long as they precede the <code>end</code> keyword!</p>
 <p>Next we’ll set Heroku environment variables.</p>
 <h3 id="set-heroku-environment-variables">Set Heroku Environment Variables</h3>
@@ -2909,6 +2933,7 @@ Disallow: /
 <p>Here’s how to set environment variables directly on Heroku with <code>heroku config:add</code>.</p>
 <div class="highlight"><pre><span class="gp">$</span> heroku config:add <span class="nv">GMAIL_USERNAME</span><span class="o">=</span><span class="s1">'myname@gmail.com'</span> <span class="nv">GMAIL_PASSWORD</span><span class="o">=</span><span class="s1">'secret'</span>
 <span class="gp">$</span> heroku config:add <span class="nv">MAILCHIMP_API_KEY</span><span class="o">=</span><span class="s1">'mykey'</span> <span class="nv">MAILCHIMP_LIST_ID</span><span class="o">=</span><span class="s1">'mylistid'</span>
+<span class="gp">$</span> heroku config:add <span class="nv">OWNER_EMAIL</span><span class="o">=</span><span class="s1">'me@example.com'</span> <span class="nv">DOMAIN_NAME</span><span class="o">=</span><span class="s1">'myapp.herokuapp.com'</span>
 </pre></div><p>You can check that the environment variables are set with:</p>
 <div class="highlight"><pre><span class="gp">$</span> heroku config
 </pre></div><p>See the Heroku documentation on <a href="https://devcenter.heroku.com/articles/config-vars">Configuration and Config Vars</a> and the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
