@@ -49,15 +49,15 @@
 <p><em>Last updated 26 June 2013</em></p>
 <p>Installing Rails 4.0 on Mac OS X, Ubuntu, or Windows. Up-to-date, detailed instructions on how to install Rails newest release. 4.0.0 is the newest version of Rails.</p>
 <p>The article doesn’t offer shortcuts for beginners. Expect details! This is an in-depth installation guide that professional developers use to configure their working environment for real-world Rails development.</p>
-<h3>If You Are New to Rails</h3>
+<h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>, and a list of top resources for <a href="http://railsapps.github.io/ruby-and-rails.html">Ruby and Rails</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
-<h3>What is the RailsApps Project?</h3>
+<h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation” so you can stay up to date. Each is accompanied by a tutorial so there is no mystery code. Maintenance and development of the RailsApps applications is supported when you purchase a subscription to the <a href="https://tutorials.railsapps.org">RailsApps Tutorials</a>. Please support the project if you can.</p>
-<h3>Updating Rails Applications</h3>
+<h4>Updating Rails Applications</h4>
 <p>The article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a> offers instructions and advice. See the article if you already have Rails installed. It’s best to update each of your Rails applications when a new version of Rails is released. Occasionally a critical security fix is released. If you don’t update regularly, upgrading several versions at once may require considerable effort, making it difficult to resolve security vulnerabilities quickly.</p>
 <h2>Before You Start: What’s New in Rails</h2>
-<p>If you have not been closely following the evolution of the Rails platform, here’s a summary of recent developments. To stay informed of new releases, subscribe to Peter Cooper’s <a href="http://rubyweekly.com/">Ruby Weekly</a> newsletter and follow <a href="http://twitter.com/ruby_news">@ruby_news</a> and <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter.</p>
+<p>To stay informed of new releases, subscribe to Peter Cooper’s <a href="http://rubyweekly.com/">Ruby Weekly</a> newsletter and follow <a href="http://twitter.com/ruby_news">@ruby_news</a> and <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter.</p>
 <h4>Rails 4.0</h4>
 <p>Rails 4.0 was released June 25, 2013. The <a href="http://weblog.rubyonrails.org/2013/2/25/Rails-4-0-beta1/">Rails 4.0: Beta 1 release</a> announcement offers an overview of new features.</p>
 <p>You can learn more about Rails 4.0:</p>
@@ -75,9 +75,11 @@
 	<li>Article: RailsGuides <a href="http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0">Upgrading from Rails 3.2 to Rails 4.0</a> (work-in-progress document)</li>
 </ul>
 <p>The <a href="http://railsdiff.org/">railsdiff.org</a> site shows differences between versions of the Rails default application. You can follow the progress of Rails development on the <a href="http://www.edgerails.info/">EdgeRails.info</a> site.</p>
-<p><em>What You Need to Know:</em> Rails 4.0.0 final is out. Start new projects with Rails 4.0 and begin upgrading older projects now.</p>
+<p><em>What You Need to Know:</em> Rails 4.0.0 final is out. Start new projects with Rails 4.0 and begin upgrading older projects now. The biggest changes are the use of <em>strong parameters</em>, which requires rewriting controller methods that process forms, and <em>Turbolinks</em>, which requires rewriting JavaScript code that depends on page loading.</p>
 <h4>Rails 4.0 Release History</h4>
 <p>Rails 4.0.0 was released June 25, 2013. See <a href="http://weblog.rubyonrails.org/2013/6/25/Rails-4-0-final/">Rails 4.0: Final version released!</a>.</p>
+<h4>Earlier Releases</h4>
+<p>For an overview of earlier releases, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a> article.</p>
 <h2>Getting Started</h2>
 <p>You can use a hosted development environment (“in the cloud”) or install Ruby on your personal computer.</p>
 <h3>Hosted Development</h3>
@@ -115,7 +117,7 @@ gem 'therubyracer'
 </h4>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s how:</p>
 <pre>
-$ \curl -L https://get.rvm.io | bash -s stable --autolibs=enable --ruby
+$ \curl -L https://get.rvm.io | bash -s stable --ruby
 </pre>
 <p>Note the backslash before “curl” (this avoids potential version conflicts).</p>
 <p>The “—ruby” flag will install the newest version of Ruby. Ruby 2.0.0-p195 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
@@ -127,66 +129,13 @@ $ rvm get stable --autolibs=enable
 $ rvm install ruby-2.0.0
 $ rvm --default use ruby-2.0.0
 </pre>
-<h2>Installation Troubleshooting and Advice</h2>
-<p>To start using <span class="caps">RVM</span>, you can either close and reopen your terminal windows or run:</p>
-<pre>
-$ source ~/.rvm/scripts/rvm
-</pre>
-<p>If you get OpenSSL errors, make sure you are using RubyGems 2.0.3 or newer:</p>
-<pre>
-$ gem -v
-</pre>
-<p>Use <code>gem update --system</code> to upgrade the RubyGems system gem if necessary.</p>
-<p>For more help, see the article <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL Errors and Rails</a>.</p>
-<p>If you get OpenSSL errors after <span class="caps">RVM</span> is installed, you may need to remove and reinstall <span class="caps">RVM</span>. Use <code>rvm implode</code> to remove <span class="caps">RVM</span>. Check that <span class="caps">RVM</span> has been removed with <code>rvm -v</code>. If it’s still there, it may be installed at the system level for multiple users. This happens if you’ve previously used RailsInstaller (on Mac OS X you’ll need to remove RailsInstaller with <code>open /Applications/RailsInstallerOSX-Uninstaller.app</code>).</p>
-<p>If <span class="caps">RVM</span> installs successfully but installation of Ruby fails, try:</p>
-<pre>
-$ rvm requirements
-</pre>
-<p>If Ruby installation succeeds but Ruby 2.0 is not the default when you open a new terminal window, try updating the <span class="caps">RVM</span> loading code:</p>
-<pre>
-$ rvm get stable --auto-dotfiles
-</pre>
-<p>It is also helpful to check <span class="caps">RVM</span> notes:</p>
-<pre>
-$ rvm notes
-</pre>
-<p>For more information about RVM’s automatic detection and installation of system components, see:</p>
-<pre>
-$ rvm help autolibs
-</pre>
-<p>You can get help directly from the <span class="caps">RVM</span> team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
-<ul>
-	<li><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></li>
-</ul>
-<p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> because the <span class="caps">RVM</span> team is helpful and friendly. <span class="caps">IRC</span> on freenode requires registration (see <a href="http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration">how to register</a>).</p>
+<h4>Installation Troubleshooting and Advice</h4>
+<p>If you have trouble installing Ruby with <span class="caps">RVM</span>, see the article “Installing Ruby” for <a href="http://railsapps.github.io/install-ruby.html#troubleshooting">Installation Troubleshooting and Advice</a>.</p>
 <h4>RailsInstaller and Alternatives</h4>
-<p>You may hear about installation programs that provide pre-assembled packages:</p>
-<ul>
-	<li><a href="http://railsinstaller.org/">RailsInstaller.org</a></li>
-	<li><a href="http://www.atmos.org/cinderella/">Cinderella</a></li>
-	<li><a href="http://bitnami.org/stack/rubystack">BitNami RubyStack</a></li>
-</ul>
-<p>I don’t advise using these installer programs as they are frequently outdated. If you have problems installing <span class="caps">RVM</span>, use <a href="https://www.nitrous.io/">Nitrous.io</a>.</p>
-<p>That said, if you want to use RailsInstaller on Mac OS X, you should use the newer version available (it contains Ruby 2.0):</p>
-<p><a href="http://railsinstaller.s3.amazonaws.com/list.html">http://railsinstaller.s3.amazonaws.com/list.html</a></p>
-<p>See instructions for <a href="http://installfest.railsbridge.org/installfest/">Installing Rails</a> from the <a href="http://railsbridge.org/">Railsbridge Workshops</a> if you use RailsInstaller. Before using RailsInstaller, be sure to remove <span class="caps">RVM</span> with <code>rvm implode</code> (or else the single-user version of <span class="caps">RVM</span> will hide the multi-user version of <span class="caps">RVM</span> installed by RailsInstaller). If you need to remove RailsInstaller, use <code>open /Applications/RailsInstallerOSX-Uninstaller.app</code>. It is important to remove RailsInstaller before installing <span class="caps">RVM</span> because RailsInstaller installs an older version of <span class="caps">RVM</span> at the system level and (by default) a new install of <span class="caps">RVM</span> will install at the user level.</p>
+<p>You may hear about installation programs that provide pre-assembled packages, such as <a href="http://railsinstaller.org/">RailsInstaller.org</a>, <a href="http://www.atmos.org/cinderella/">Cinderella</a>, and <a href="http://bitnami.org/stack/rubystack">BitNami RubyStack</a>. I don’t advise using these installer programs as they are frequently outdated. If you have problems installing <span class="caps">RVM</span>, use <a href="https://www.nitrous.io/">Nitrous.io</a>.</p>
 <h4>Alternatives to <span class="caps">RVM</span>
 </h4>
-<p>There are alternatives to <span class="caps">RVM</span> for switching between versions of Ruby. <span class="caps">RVM</span> is popular, well-supported, and full-featured but if you are an experienced Unix administrator, you may prefer one of the many alternatives to <span class="caps">RVM</span>.</p>
-<p><a href="https://github.com/postmodern/chruby">Chruby</a> provides a streamlined utility for switching between Ruby versions.</p>
-<p>Sam Stephenson offers an alternative to <span class="caps">RVM</span> named <a href="https://github.com/sstephenson/rbenv">rbenv</a>. With rbenv, use Jamis Buck’s <a href="https://github.com/jamis">rbenv-gemset</a> to switch between gemsets. The utilities rbenv and rbenv-gemset are less “magic” than <span class="caps">RVM</span> and can be useful if you encounter issues with <span class="caps">RVM</span>. If you want to try rbenv, see notes for <a href="https://gist.github.com/1859298">installing Ruby on MacOS X 10.7.3 with XCode 4.3 and rbenv</a>.</p>
-<p>There are many more alternatives to <span class="caps">RVM</span> <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
-<h4>Alternative Rubies</h4>
-<p><span class="caps">MRI</span>, <a href="http://en.wikipedia.org/wiki/Ruby_MRI">Matz’s Ruby Interpreter</a>, is the reference implementation. It is the default when you install Ruby 2.0 using <span class="caps">RVM</span>. There are other Ruby interpreters available for specialized use:</p>
-<ul>
-	<li><a href="http://jruby.org/">JRuby</a></li>
-	<li><a href="http://www.rubyenterpriseedition.com/"><span class="caps">REE</span></a></li>
-	<li><a href="http://rubini.us/">Rubinius</a></li>
-	<li><a href="http://maglev.github.com/">MagLev</a></li>
-	<li><a href="http://www.macruby.org/">MacRuby</a></li>
-</ul>
-<p>Run <code>rvm list known</code> for a full list. Any can be installed using <span class="caps">RVM</span>.</p>
+<p>There are alternatives to <span class="caps">RVM</span> for switching between versions of Ruby. <span class="caps">RVM</span> is popular, well-supported, and full-featured but if you are an experienced Unix administrator, you may prefer one of the many alternatives to <span class="caps">RVM</span>, such as <a href="https://github.com/postmodern/chruby">Chruby</a> or Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>. There are many more alternatives to <span class="caps">RVM</span> <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
 <h2>RVM’s Global Gemset</h2>
 <p>Installing Ruby with <span class="caps">RVM</span> creates a default “global” gemset.</p>
 <p>To see a list of the gemsets you have installed:</p>
