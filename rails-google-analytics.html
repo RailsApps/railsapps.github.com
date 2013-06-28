@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Analytics for Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 18 June 2013</em></p>
+<p><em>Last updated 27 June 2013</em></p>
 <p>Website analytics for Rails applications. Google Analytics and alternatives. How to install Google Analytics with Rails 4.0 Turbolinks. Event tracking and more with Segment.io, Mixpanel, KISSmetrics and others.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>,  recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>, and a list of top resources for <a href="http://railsapps.github.io/ruby-and-rails.html">Ruby and Rails</a>.</p>
@@ -252,12 +252,12 @@ analytics.load('YOUR_API_TOKEN');
 <h3>Page View Tracking with Turbolinks</h3>
 <p>To make sure every page is tracked when Rails 4.0 Turbolinks is used, append the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
 <pre>
-$(document).on('page:change', function() {
+$(document).on('page:load', function() {
   analytics.pageview();
 });
 </pre>
 <p>This code should follow the <code>analytics.load('YOUR_API_TOKEN');</code> statement at the end of the file.</p>
-<p>Turbolinks fires a <code>page:change</code> event when a page has been replaced. The code listens for the <code>page:change</code> event and calls the Segment.io <code>pageview()</code> method.</p>
+<p>Turbolinks fires a <code>page:load</code> event when a page has been replaced. The code listens for the <code>page:load</code> event and calls the Segment.io <code>pageview()</code> method.</p>
 <h3>Event Tracking</h3>
 <p>Segment.io gives us a convenient method to track page views. Page view tracking gives us data about our website traffic, showing visits to the site and information about our visitors.</p>
 <p>It’s also important to learn about a visitor’s activity on the site. Site usage data helps us improve the site and determine whether we are meeting our business goals. This requires tracking events as well as page views.</p>
@@ -268,9 +268,11 @@ $(document).on('page:change', function() {
 </ul>
 <p>Link tracking can be used to send data to Segment.io whenever a visitor clicks a link. It can be useful if you add links to external sites and want to track click-throughs. The method can also be used to track clicks that don’t result in a new page view, such as changing elements on a page.</p>
 <p>The <code>trackForm</code> method is very useful for event tracking as many of the significant events on a website are the result of form submissions. Append it to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
-<p><code>@</code> js<br>
-analytics.trackForm($(‘#new_visitor’), ‘Signed Up’);<br>
-<code>@</code></p>
+<pre>
+$(document).on('page:load', function() {
+  analytics.trackForm($('#new_visitor'), 'Signed Up');
+})
+</pre>
 <p>The <code>trackForm</code> method takes two parameters, the ID attribute of a form and a name given to the event. Here we assume we have a form with the ID attribute “new_visitor” and we want to identify the event as “Signed Up.”</p>
 <p>With Google Analytics enabled as a Segment.io integration, you’ll see form submissions appear in the Google Analytics Real-Time report, under the “Events” heading.</p>
 <p>You can read more about the Segment.io JavaScript library in the <a href="https://segment.io/libraries/analytics.js">Segment.io documentation</a>.</p>
