@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 June 2013</em></p>
+<p><em>Last updated 1 July 2013</em></p>
 <p>Installing Rails 4.0 on Mac OS X, Ubuntu, or Windows. Up-to-date, detailed instructions on how to install Rails newest release. 4.0.0 is the newest version of Rails.</p>
 <p>Expect details! The article doesn’t offer shortcuts for beginners. This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <h4>If You Are New to Rails</h4>
@@ -75,7 +75,7 @@
 	<li>Article: RailsGuides <a href="http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0">Upgrading from Rails 3.2 to Rails 4.0</a> (work-in-progress document)</li>
 </ul>
 <p>The <a href="http://railsdiff.org/">railsdiff.org</a> site shows differences between versions of the Rails default application. You can follow the progress of Rails development on the <a href="http://www.edgerails.info/">EdgeRails.info</a> site.</p>
-<p><em>What You Need to Know:</em> Rails 4.0.0 final is out. Start new projects with Rails 4.0 and begin upgrading older projects now. The biggest changes are the use of <em>strong parameters</em>, which requires rewriting controller methods that process forms, and <em>Turbolinks</em>, which requires rewriting JavaScript code that depends on page loading.</p>
+<p><em>What You Need to Know:</em> Rails 4.0.0 final is out. Start new projects with Rails 4.0 and begin upgrading older projects now. The biggest changes are the use of <em>strong parameters</em>, which requires rewriting controller methods that process forms, and <em>Turbolinks</em>, which requires rewriting JavaScript code that depends on page loading. For advice about migrating an application from Rails 3.2 to Rails 4.0, see the article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a>. Use the website <a href="http://ready4rails4.net/">ready4rails4.net/</a> to find if the gems you need are ready for Rails 4.0.</p>
 <h4>Rails 4.0 Release History</h4>
 <p>Rails 4.0.0 was released June 25, 2013. See <a href="http://weblog.rubyonrails.org/2013/6/25/Rails-4-0-final/">Rails 4.0: Final version released!</a>.</p>
 <h4>Earlier Releases</h4>
@@ -118,7 +118,7 @@ gem 'therubyracer'
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p>If you have an older version of Ruby installed on your computer, there’s no need to remove it. <span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.0.0-p195 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
+<p>Ruby 2.0.0-p247 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
 <h4>Install <span class="caps">RVM</span>
 </h4>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
@@ -162,43 +162,48 @@ $ rvm gemset list
 $ rvm gemset use global
 $ gem list
 </pre>
+<p>A trouble-free development environment requires the newest versions of the system gems.</p>
 <p>Several gems are installed with Ruby:</p>
 <ul>
-	<li>bigdecimal</li>
-	<li>bundler</li>
-	<li>io-console</li>
-	<li>json</li>
-	<li>minitest</li>
-	<li>psych</li>
-	<li>rake</li>
-	<li>rdoc</li>
-	<li>test-unit</li>
+	<li>bigdecimal (1.2.0) <a href="http://rubygems.org/gems/bigdecimal">check for newer version</a>
+</li>
+	<li>bundler (1.3.5) <a href="https://rubygems.org/gems/bundler">check for newer version</a>
+</li>
+	<li>bundler-unload (1.0.1) <a href="http://rubygems.org/gems/bundler-unload">check for newer version</a>
+</li>
+	<li>io-console (0.4.2) <a href="http://rubygems.org/gems/io-console">check for newer version</a>
+</li>
+	<li>json (1.8.0) <a href="http://rubygems.org/gems/json">check for newer version</a>
+</li>
+	<li>minitest (5.0.6) <a href="http://rubygems.org/gems/minitest">check for newer version</a>
+</li>
+	<li>psych (2.0.0) <a href="http://rubygems.org/gems/psych">check for newer version</a>
+</li>
+	<li>rake (10.1.0) <a href="http://rubygems.org/gems/rake">check for newer version</a>
+</li>
+	<li>rdoc (4.0.1) <a href="http://rubygems.org/gems/rdoc">check for newer version</a>
+</li>
+	<li>test-unit (2.5.5) <a href="http://rubygems.org/gems/test-unit">check for newer version</a>
+</li>
 </ul>
 <p><span class="caps">RVM</span> installs two additional gems:</p>
 <ul>
-	<li>rubygems-bundler</li>
-	<li>rvm</li>
-</ul>
-<p>A trouble-free development environment requires the newest versions of the system gems.</p>
-<ul>
-	<li>Rake 10.1.0 — <a href="http://rubygems.org/gems/rake">newest Rake gem</a>
+	<li>rubygems-bundler (1.2.0) <a href="http://rubygems.org/gems/rubygems-bundler">check for newer version</a>
 </li>
-	<li>Bundler 1.3.5 — <a href="https://rubygems.org/gems/bundler">newest Bundler gem</a>
-</li>
-	<li>Rubygems-Bundler 1.2.0 — <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>
+	<li>rvm (1.11.3.8) <a href="http://rubygems.org/gems/rvm">check for newer version</a>
 </li>
 </ul>
-<p>Update all the system gems:</p>
+<p>Here’s how to update all the system gems:</p>
 <pre>
 $ gem update
 </pre>
-<h4>Staying Up to Date</h4>
-<p>You can monitor gem updates by creating an account at RubyGems.org and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard).</p>
-<p>After you’ve built an application and set up a GitHub repository, you can stay up to date with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
+<h4>Staying Informed</h4>
+<p>You can stay informed of new gem versions by creating an account at RubyGems.org and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard).</p>
+<p>After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
 <h2>Rails Installation Options</h2>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.0 was current when this was written.</p>
-<p>If you want, you can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets. It’s advisable to create a new gemset for each application you build.</p>
-<p>Before we do that, let’s consider the options you have for installing Rails.</p>
+<p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
+<p>Let’s consider the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
 <pre>
 $ gem install rails
@@ -209,25 +214,12 @@ $ rails -v
 $ gem install rails --pre
 $ rails -v
 </pre>
-<p>Or you can get a specific version (just in case the newest version is broken).</p>
-<p>For example, if you want the Rails 4.0.0.rc2 release:</p>
+<p>Or you can get a specific version.</p>
+<p>For example, if you want the Rails 3.2.13 release:</p>
 <pre>
-$ gem install rails --version=4.0.0.rc2
+$ gem install rails --version=3.2.13
 $ rails -v
 </pre>
-<h2>Create Gemsets for Older Applications</h2>
-<p>If you have older Rails applications running under Ruby 1.9.3, you’ll need an <span class="caps">RVM</span> Ruby and gemset for Ruby 1.9.3 and Rails 3.2.13, the most recent release before Rails 4.0. Ruby 1.9.3 patch level 392 was the most recent secure release before Ruby 2.0.</p>
-<pre>
-$ rvm install ruby-1.9.3-p392
-$ rvm use ruby-1.9.3-p392@Rails3.2.13 --create
-$ gem install rails --version=3.2.13
-$ rvm gemset list
-</pre>
-<p>When you want to work with an older Rails application, switch to the ruby-1.9.3-p392@Rails3.2.13 gemset:</p>
-<pre>
-$ rvm use ruby-1.9.3-p392@Rails3.2.13
-</pre>
-<p>For advice about migrating an application from Rails 3.2 to Rails 4.0, see the article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a>.</p>
 <h2>New Rails 4.0 Application</h2>
 <p>Here’s how to create a project-specific gemset, installing the current version of Rails 4.0, and creating a new application.</p>
 <pre>
@@ -280,8 +272,8 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 	</tr>
 	<tr>
 		<td> <a href="https://github.com/RailsApps/learn-rails">Learn Rails</a> </td>
-		<td> <em>coming soon</em> </td>
-		<td> typical small business website </td>
+		<td> <a href="http://learn-rails.com/">Tutorial</a> </td>
+		<td> simple example website </td>
 	</tr>
 </table>
 <table>
