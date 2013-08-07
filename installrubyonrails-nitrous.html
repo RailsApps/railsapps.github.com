@@ -58,9 +58,9 @@
 <p><a href="https://www.nitrous.io">Nitrous.io</a> provides a hosted development environment. Simply put, you get access to a remote computer from your web browser.</p>
 <p>The Nitrous computer runs Ubuntu Linux, one of the most popular operating systems for Rails development. The online computer is instantly created with everything in place to immediately begin working on projects in Rails. This guide will orient you and provide additional details so you can get started quickly.</p>
 <h3>Costs</h3>
-<p>There is no cost to set up an account. Nitrous.io will only charge if you decide to add extra storage or computing power.</p>
+<p>There is no cost to set up an account. Nitrous.io will charge you only if you decide to add extra storage or computing power.</p>
 <p>For ordinary Rails development, you won’t need extra storage or computing power. For typical small projects, the Nitrous.io service is free.</p>
-<p>Like other companies that offer basic services for free (such as Heroku for Rails hosting), Nitrous.io hopes that full-featured free service will make the company popular and lead to revenues from upgrades. This approach greatly benefits anyone who needs to keep expenses low, especially startups, students, and developers in the world’s emerging economies.</p>
+<p>Like other companies that offer basic services for free (such as Heroku for Rails hosting), Nitrous.io hopes that full-featured free service will make the company popular and lead to revenues from upgrades. This approach greatly benefits anyone who needs to keep expenses low, especially startup founders, students, and developers in the world’s emerging economies.</p>
 <h3>The Service</h3>
 <p>The Nitrous.io service gives you everything you need for Rails development, including:</p>
 <ul>
@@ -71,7 +71,7 @@
 </ul><p>For pair programming or other collaboration:</p>
 <ul>
 <li>text chat for conversation</li>
-	<li>shared development environment</li>
+	<li>shared text editor</li>
 	<li>collaborate remotely</li>
 </ul><p>If you want to use your own Terminal application:</p>
 <ul>
@@ -84,7 +84,7 @@
 <p>The Nitrous.io service offers enormous value. However, these limitations may make it unsuitable for you:</p>
 <ul>
 <li>requires a fast broadband Internet connection</li>
-	<li>no root access to the server (no <code>sodu</code> or system administration)</li>
+	<li>no root access to the server (no <code>sudo</code> or superuser access)</li>
 </ul><p>In principle, Nitrous.io allows you to do Rails development from any device that runs a web browser, including a tablet or smartphone. However, to be productive:</p>
 <ul>
 <li>you need a decent-sized screen</li>
@@ -99,7 +99,7 @@
 <li>enables complete “cloud-based” development so no files are stored locally</li>
 	<li>provides an “extra computer” or alternative development environment</li>
 	<li>an alternative if you encounter difficulties installing Ruby on your own computer</li>
-</ul><p>Developers who travel frequently, or work at multiple sites, like “cloud-based” development because any computer provides access to a fully-configured, productive development environment. Additionally, “cloud-based” development means you will remain productive if your laptop is lost, stolen, or fails.</p>
+</ul><p>Developers who travel frequently, or work at multiple sites, like cloud-based development because any computer provides access to a fully-configured, productive development environment. Additionally, cloud-based development means you will remain productive if your laptop is lost, stolen, or fails in service.</p>
 <h4>Mac OS X</h4>
 <p>Most Macintosh users will prefer to <a href="http://railsapps.github.io/installrubyonrails-macosx.html">install Ruby on Rails on Mac OS X</a> directly. However, Nitrous.io can be beneficial for the reasons listed above. You can use your favorite Mac OS X text editor such as Sublime Text or Textmate to edit files on the Nitrous servers so Nitrous.io primarily gives you a cloud-based shell and file storage.</p>
 <h4>Linux</h4>
@@ -127,7 +127,7 @@
 <h2>Create a Box</h2>
 <p>A Nitrous “box” is a virtual computer. You get one for free, with 384MB of memory and 750MB of storage, which is enough to build and run one or more Rails applications.</p>
 <p>To create a box, click the “Boxes” link in the navigation bar. Then click the “New Box” button.</p>
-<p>(installing-nitrous-newbox.png)</p>
+<p><img src="http://railsapps.github.io/images/installing-nitrous-newbox.png" title="Installing Rails on Nitrous - New Box" alt="Installing Rails on Nitrous - New Box"></p>
 <p>Make sure you’ve selected “Ruby/Rails”.</p>
 <p>Enter a name for your box. Call it “ruby-uswest” or something else that shows the region and development enviornment you’ll use. Of course, if you prefer, you can give your box a clever pet name like “dragons-be-here.”</p>
 <p>Select a region. For maximum speed and reduced network latency, use the region that is geographically closest to your Internet Service Provider.</p>
@@ -140,13 +140,14 @@
 <p>You can find your way back to the Web <span class="caps">IDE</span> by visiting the “Boxes” page, clicking the box name, and clicking the “<span class="caps">IDE</span>” button.</p>
 <p>The Nitrous.io website has a simple, obvious user interface with just a few menu items. The Web <span class="caps">IDE</span> is much more complex, because it is a full development environment that does the duty of a console, a file browser, a text editor, and a chat room.</p>
 <p>Here’s the Web <span class="caps">IDE</span> for a new box.</p>
-<p>()</p>
+<p><img src="http://railsapps.github.io/images/installing-nitrous-webide.png" title="Installing Rails on Nitrous - Web IDE" alt="Installing Rails on Nitrous - Web IDE"></p>
 <p>Get familiar with the interface.</p>
 <p>Close the chat window (unless you are going to collaborate).</p>
 <p>Drag the bar at the top of the console window to resize it. You’ll often need a bigger console window.</p>
 <p>Click the icon to expand or minimize the console window. You’ll often need a full console window.</p>
 <p>Click the “plus” icon to open a tab for a second console window. You’ll often need multiple console windows. For example, you might leave a Rails server running in one console while entering Rails commands in another.</p>
 <p>See the Nitrous <a href="http://help.nitrous.io/ide-general/">Getting Started with the WebIDE</a> for more.</p>
+<p>Let’s use the console to explore the Nitrous workspace and create a Rails application.</p>
 <h2>Directory Structure</h2>
 <p>Expand the console window and use Unix commands to explore the directory structure:</p>
 <pre>
@@ -212,8 +213,13 @@ $ ruby -v
 ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-linux]                                    
 </pre>
 <p>Ruby 2.0.0-p247 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. If Nitrous.io is not up to date, contact support and nag them to update the Ruby version. Or use <span class="caps">RVM</span> to install a newer version yourself.</p>
+<p>If you need an older version of Ruby, you can install it with <span class="caps">RVM</span>:</p>
+<pre>
+$ rvm install 1.9.3                             
+</pre>
+<p>As new versions of Ruby are released, you’ll need an easy way to switch between versions. More importantly, installing gems into the system environment creates a dependency nightmare. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage your Ruby versions because it is popular, well-supported, and full-featured. If you are an experienced Unix user, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a>, Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>, or others <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
 <h2><span class="caps">RVM</span></h2>
-<p>“<span class="caps">RVM</span>:”https://rvm.io/, the Ruby Version Manager, is pre-installed.</p>
+<p><a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager, is pre-installed.</p>
 <p>Check which Ruby versions are installed:</p>
 <pre>
 $ rvm list                                                                                               
@@ -226,11 +232,7 @@ rvm rubies
 # =* - current &amp;&amp; default                                                                                                          
 #  * - default                              
 </pre>
-<p>If you need an older version of Ruby, you can install it with <span class="caps">RVM</span>:</p>
-<pre>
-$ rvm install 1.9.3                             
-</pre>
-<p>If you have trouble installing Ruby with <span class="caps">RVM</span>, see the article “Installing Ruby” for <a href="http://railsapps.github.io/install-ruby.html#troubleshooting">Installation Troubleshooting and Advice</a>.</p>
+<p>If you have trouble installing Ruby with <span class="caps">RVM</span>, see the article <a href="http://railsapps.github.io/install-ruby.html#troubleshooting">Installing Ruby</a> for installation troubleshooting and advice.</p>
 <h2>Rails</h2>
 <p>A recent version of Rails is pre-installed at the system level:</p>
 <pre>
@@ -238,6 +240,7 @@ $ rails -v
 Rails 4.0.0                                 
 </pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.0 was current when this was written. If you need a newer version of Rails, you can install it in an <span class="caps">RVM</span> gemset (no need to nag support on this). Details below.</p>
+<p>When a new version of Rails is released, you can update the system-level Rails gem, or you can install Rails into an <span class="caps">RVM</span> gemset. It is best to install Rails into project-specific gemsets, so each project has the appropriate version of Rails and its dependencies.</p>
 <h2>Check the Gem Manager</h2>
 <p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the gem manager in Ruby.</p>
 <p>Check the installed gem manager version:</p>
@@ -247,21 +250,21 @@ $ gem -v
 </pre>
 <p>You should have:</p>
 <ul>
-<li>RubyGems 2.0.3 — <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems release</a>
+<li>RubyGems 2.0.3 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
 </li>
 </ul><p>Use <code>gem update --system</code> to upgrade the Ruby gem manager if necessary.</p>
 <h2>System Gems</h2>
 <p>You can see a list of all the gems that are pre-installed at the system level:</p>
 <pre>
 $ gem list        
-### not shown for brevity               
+### list not shown for brevity               
 </pre>
 <p>You can see the location in the file system where these gems are stored:</p>
 <pre>
 $ gem which rails                                                                                        
 /home/action/.rvm/gems/ruby-2.0.0-p247/gems/railties-4.0.0/lib/rails.rb                 
 </pre>
-<p>You’ll never directly move or remove the gem files but it is useful to know that they are being managed by <span class="caps">RVM</span>.</p>
+<p>You’ll never directly move or remove the gem files but it is helpful to know that they are being managed by <span class="caps">RVM</span>.</p>
 <h2>Updating System Gems</h2>
 <p>A trouble-free development environment requires the newest versions of the system gems.</p>
 <p>Several gems are installed with Ruby:</p>
@@ -290,16 +293,16 @@ $ gem which rails
 <p>To get a list of gems that are outdated:</p>
 <pre>
 $ gem outdated
-### not shown for brevity           
+### list not shown for brevity           
 </pre>
 <p>To update all stale gems:</p>
 <pre>
 $ gem update 
-### not shown for brevity           
+### list not shown for brevity           
 </pre>
 <h2>
 <span class="caps">RVM</span> Gemsets</h2>
-<p>Not all Rails developers use <span class="caps">RVM</span> to manage gems, but many do.</p>
+<p>Not all Rails developers use <span class="caps">RVM</span> to manage gems, but many recommend it.</p>
 <p>Display a list of gemsets:</p>
 <pre>
 $ rvm gemset list                                                                                        
@@ -308,9 +311,10 @@ gemsets for ruby-2.0.0-p247 (found in /home/action/.rvm/gems/ruby-2.0.0-p247)
 =&gt; (default)                                                                                                                       
    global                              
 </pre>
+<p>Only the “default” and “global” gemsets are pre-installed.</p>
 <h2>
 <span class="caps">RVM</span> Default Gems</h2>
-<p>Installing Ruby with <span class="caps">RVM</span> creates just one gemset, the default “global” gemset.</p>
+<p>Installing Ruby with <span class="caps">RVM</span> creates just two gemsets, the default  and global gemsets.</p>
 <p>Display a list of gems installed in the default gemset:</p>
 <pre>
 $ rvm gemset use global                                                                                  
@@ -341,22 +345,20 @@ rvm (1.11.3.8)
 </ul><p>To get a list of gems that are outdated:</p>
 <pre>
 $ gem outdated
-### not shown for brevity           
+### list not shown for brevity           
 </pre>
 <p>To update all stale gems:</p>
 <pre>
 $ gem update 
-### not shown for brevity           
+### list not shown for brevity           
 </pre>
 <h2>Staying Informed</h2>
 <p>You can stay informed of new gem versions by creating an account at RubyGems.org and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard).</p>
 <p>After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
 <h2>Create a New Gemset</h2>
-<p>Here’s how to create a new gemset:</p>
-<pre>
-$ rvm use ruby-2.0.0@myapp --create                                                                      
-Using /home/action/.rvm/gems/ruby-2.0.0-p247 with gemset myapp                                 
-</pre>
+<p>Here’s how to create a new gemset for a project named “myapp”:<br></p><pre><br>
+$ rvm use ruby-2.0.0@myapp —create                                                                      <br>
+Using /home/action/.rvm/gems/ruby-2.0.0-p247 with gemset myapp                                 <br></pre>
 <p>You’ll see it in the list:</p>
 <pre>
 $ rvm gemset list                                                                                        
@@ -387,15 +389,15 @@ $ gem install rails --version=3.2.13
 $ rails -v
 </pre>
 <h2>New Rails 4.0 Application</h2>
-<p>Change directory into the <strong>workspace/</strong> folder:</p>
+<p>To create a new Rails application using the default starter app, change directory into the <strong>workspace/</strong> folder:</p>
 <pre>
-action@ruby-uswest-21609:~$ cd ~                                                                                                    
-action@ruby-uswest-21609:~$ pwd                                                                                                    
+$ cd ~                                                                                                    
+$ pwd                                                                                                    
 /home/action                                                                                                                       
-action@ruby-uswest-21609:~$ cd workspace                                                                                           
-action@ruby-uswest-21609:~/workspace$                                                                                                     
+$ cd workspace                                                                                           
+$                                                                                                     
 </pre>
-<p>You’ll see the Unix command prompt changes to show you the current directory.</p>
+<p>The Unix command prompt changes to show you the current directory.</p>
 <p>Here’s how to create a project-specific gemset, installing the current version of Rails 4.0, and creating a new application.</p>
 <pre>
 $ mkdir myapp
@@ -406,9 +408,8 @@ $ rails new .
 </pre>
 <p>We’ll name the new application “myapp.” Obviously, you can give it any name you like.</p>
 <p>With this workflow, you’ll first create a root directory for your application, then move into the new directory.</p>
-<p>With one command you’ll create a new project-specific gemset. The option “—ruby-version” creates <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the root directory. <span class="caps">RVM</span> recognizes these files in an application’s root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.<br>
-rails <br>
-When we create the gemset, it will be empty (though it inherits use of all the gems in the global gemset). We immediately install Rails. The command <code>gem install rails</code> installs the most recent release of Rails.</p>
+<p>With one command you’ll create a new project-specific gemset. The option “—ruby-version” creates <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the root directory. <span class="caps">RVM</span> recognizes these files in an application’s root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.</p>
+<p>When we create the gemset, it will be empty (though it inherits use of all the gems in the global gemset). We immediately install Rails. The command <code>gem install rails</code> installs the most recent release of Rails.</p>
 <p>Finally we run <code>rails new .</code>. We use the Unix “dot” convention to refer to the current directory. This assigns the name of the directory to the new application.</p>
 <p>This approach is different from the way most beginners are taught to create a Rails application. Most instructions suggest using <code>rails new myapp</code> to generate a new application and then enter the directory to begin work. Our approach makes it easy to create a project-specific gemset and install Rails before the application is created.</p>
 <p>The <code>rails new</code> command generates the default Rails starter app. If you wish, you can use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate a starter application with a choice of basic features and popular gems.</p>
@@ -421,9 +422,10 @@ $ rake -T
 <pre>
 $ rails server
 </pre>
+<p>Let’s take a closer look at the Web <span class="caps">IDE</span> now that we have created a Rails application.</p>
 <h2>Using the Web <span class="caps">IDE</span> with Rails</h2>
 <p>Here’s the Web <span class="caps">IDE</span> after we’ve created a Rails application and launched the Rails server.</p>
-<p>(installing-nitrous-rails.png)</p>
+<p><img src="http://railsapps.github.io/images/installing-nitrous-rails.png" title="Installing Rails on Nitrous - Rails Application in the Web IDE" alt="Installing Rails on Nitrous - Rails Application in the Web IDE"></p>
 <p>A single console window is open, running the Rails server, and showing server log messages.</p>
 <p>In the file browser, we’ve expanded the folder hierarchy and selected the application Gemfile.</p>
 <p>The Gemfile is open in the text editor.</p>
@@ -432,7 +434,7 @@ $ rails server
 <p>Select “Preview” in the navigation bar.</p>
 <p>Select “Port 3000” in the Preview menu.</p>
 <p>A new browser tab will open displaying the application.</p>
-<p>(installing-nitrous-application.png)</p>
+<p><img src="http://railsapps.github.io/images/installing-nitrous-application.png" title="Installing Rails on Nitrous - Rails Application Preview" alt="Installing Rails on Nitrous - Rails Application Preview"></p>
 <p>This is the default Rails starter application.</p>
 <h2>Configure Git</h2>
 <p>Git is an essential tool for developing with Rails. With Git, you can roll back code changes as needed, collaborate on code with others, and deploy your application for hosting on Heroku. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more information.</p>
@@ -446,8 +448,7 @@ git version 1.8.3.4
 $ git config --global user.name "Real Name"
 $ git config --global user.email "me@example.com"
 </pre>
-<p>Use your real name so people will associate you with your work when they meet you in real life. There’s no reason to use a clever name unless you have something to hide.<br>
-Also, life will be easier if you use the same email address for Git, your GitHub account, and Heroku.</p>
+<p>Use your real name so people will associate you with your work when they meet you in real life. There’s no reason to use a clever name unless you have something to hide. Here’s another tip: Life will be easier if you use the same email address for Git, your GitHub account, and Heroku.</p>
 <p>Check that Git is configured correctly:</p>
 <pre>
 $ git config -l --global
@@ -467,7 +468,7 @@ user.email=daniel@me@example.com
 $ cat ~/.ssh/id_rsa.pub                                                                                  
 ssh-rsa 094fa31ab0 ... deafdc0d== action@usw1.actionbox.io
 </pre>
-<p>Carefully copy the entire string.</p>
+<p>Carefully copy the entire string (it’s longer than the example shown here).</p>
 <p>Log in to your GitHub and go to “Account Settings” (the tiny wrench and screwdriver at the upper right corner of any page).</p>
 <p>Select “<span class="caps">SSH</span> Keys” in the left sidebar. Click “Add <span class="caps">SSH</span> key”.</p>
 <p>Enter any helpful name in the “Title” field, such as “nitrous-ruby-uswest”.</p>
@@ -483,7 +484,7 @@ Warning: Permanently added '[ssh.github.com]:443,[192.30.252.149]:443' (RSA) to 
 Hi DanielKehoe! You've successfully authenticated, but GitHub does not provide shell access.  
 </pre>
 <p>The command establishes a secure <span class="caps">SSH</span> connection from your Nitrous box to port 443 on the GitHub server. The first time you connect, your Nitrous box will warn you that it has never connected to the server and can’t be sure the host is legitimate and secure. Unless you are a target of a sophisticated hacking scheme, you can safely answer “yes” when prompted.</p>
-<p>If your <span class="caps">SSH</span> key is set at your GitHub account, the GitHub server will confirm you’ve successfully connected and inform you that “GitHub does not provide shell access.” That just means you can’t log in to GitHub and use their servers the way you are using your Nitrous box as your personal console.</p>
+<p>If your <span class="caps">SSH</span> key is set at your GitHub account, the GitHub server will confirm you’ve successfully connected and inform you that “GitHub does not provide shell access.” That just means you can’t log in to GitHub and use their servers the way you are using your Nitrous box as your personal console. That’s fine; GitHub is not used for remote shell services.</p>
 <p>With <span class="caps">SSH</span> keys saved to your GitHub account, you can use GitHub without entering your username and password every time you push.</p>
 <h2>Text Editing on Mac OS X</h2>
 <p>Nitrous provides a fully functional text editor within the Web <span class="caps">IDE</span> browser. You can use it from any computer, whether Mac, Linux, Windows. If you prefer the Vim text editor, or Emacs, you can use your console to edit text.</p>
@@ -516,6 +517,150 @@ $ ~/.bash_it/install.sh
 <p>If you are physically present with your partner, at a shared desk or in the same room, Nitrous is a good way to edit a project using two keyboards and two displays.</p>
 <p>For remote collaboration, open a browser window for video chat (such as Google Hangouts) or use Skype for conversation. You can screenshare with video chat if your partner needs to see your console.</p>
 <p>See the Nitrous <a href="http://help.nitrous.io/collab">Getting Started with Collaboration</a> for more information.</p>
+<h2>Rails Starter Apps</h2>
+<p>The starter application you create with <code>rails new</code> is very basic.</p>
+<p>Use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to build a full-featured Rails starter app.</p>
+<p>You’ll get a choice of starter applications with basic features and popular gems.</p>
+<p>Here’s how to generate a new Rails application using the Rails Composer tool:</p>
+<p>Using the conventional approach:</p>
+<pre>
+$ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
+</pre>
+<p>Or, first creating an empty application root directory:</p>
+<pre>
+$ mkdir myapp
+$ cd myapp
+$ rvm use ruby-2.0.0@myapp --ruby-version --create
+$ gem install rails
+$ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
+</pre>
+<p>You can add the <code>-T</code> flags to skip Test::Unit if you are using RSpec for testing.</p>
+<p>You can add the <code>-O</code> flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.</p>
+<h4>Rails Tutorials and Example Applications</h4>
+<p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. There is a tutorial for each one so there is no mystery code. Purchasing a <a href="https://tutorials.railsapps.org/">subscription for the tutorials</a> gives the project financial support.</p>
+<table>
+<tr>
+<th>Example Applications for Rails 4.0 </th>
+		<th>Tutorial </th>
+		<th>Comments </th>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/learn-rails">Learn Rails</a> </td>
+		<td> <em>coming soon</em> </td>
+		<td> introduction to Rails for beginners </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.io/rails-bootstrap/">Rails and Bootstrap</a> </td>
+		<td> <a href="https://tutorials.railsapps.org/rails-bootstrap">Tutorial</a> </td>
+		<td> starter app for Rails and Twitter Bootstrap </td>
+	</tr>
+</table><table>
+<tr>
+<th>Example Applications for Rails 3.2 </th>
+		<th>Tutorial </th>
+		<th>Comments </th>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">Twitter Bootstrap, Devise, CanCan</a> </td>
+		<td> <a href="https://tutorials.railsapps.org/rails3-bootstrap-devise-cancan">Tutorial</a> </td>
+		<td> Devise for authentication, CanCan for authorization, Twitter Bootstrap for <span class="caps">CSS</span> </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.io/rails-stripe-membership-saas/">Rails Membership Site with Stripe</a> </td>
+		<td> <a href="https://tutorials.railsapps.org/rails-stripe-membership-saas">Tutorial</a> </td>
+		<td> Site with subscription billing using Stripe </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.io/rails-recurly-subscription-saas/">Rails Membership Site with Recurly</a> </td>
+		<td> <a href="https://tutorials.railsapps.org/rails-recurly-subscription-saas">Tutorial</a> </td>
+		<td> Site with subscription billing using Recurly </td>
+	</tr>
+<tr>
+<td> <a href="http://railsapps.github.io/rails-prelaunch-signup/">Startup Prelaunch Signup App</a> </td>
+		<td> <a href="https://tutorials.railsapps.org/rails-prelaunch-signup">Tutorial</a> </td>
+		<td> For a startup prelaunch signup site </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, Cucumber</a> </td>
+		<td> <a href="http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html">Tutorial</a> </td>
+		<td> Devise for authentication with ActiveRecord and SQLite for a database</td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails3-mongoid-devise">Devise, Mongoid</a> </td>
+		<td> <a href="http://railsapps.github.io/tutorial-rails-mongoid-devise.html">Tutorial</a> </td>
+		<td>  Devise for authentication with a MongoDB datastore </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails3-mongoid-omniauth">OmniAuth, Mongoid</a> </td>
+		<td> <a href="http://railsapps.github.io/tutorial-rails-mongoid-omniauth.html">Tutorial</a> </td>
+		<td>  OmniAuth for authentication with a MongoDB datastore </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails3-subdomains">Subdomains, Devise, Mongoid</a> </td>
+		<td> <a href="http://railsapps.github.io/tutorial-rails-subdomains.html">Tutorial</a> </td>
+		<td>  Basecamp-style subdomains with Devise and MongoDB </td>
+	</tr>
+</table><h2>Adding a Gemset to an Existing Application</h2>
+<p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
+<pre>
+$ rvm use ruby-2.0.0@myapp --ruby-version --create
+</pre>
+<p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
+<pre>
+$ gem install rails
+$ bundle install
+</pre>
+<h3>Specifying a Gemset for an Existing Application</h3>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.0.0@myapp”:</p>
+<pre>
+$ echo "ruby-2.0.0" &gt; .ruby-version
+$ echo "myapp" &gt; .ruby-gemset
+</pre>
+<p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
+<h2>Databases</h2>
+<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Your Nitrous box comes with SQLite pre-installed and there’s nothing to configure.</p>
+<p>Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command <code>rails new myapp --database=</code> will show you a list of supported databases.</p>
+<pre>
+Supported for preconfiguration are: mysql, oracle, postgresql, sqlite3, frontbase, ibm_db, sqlserver, jdbcmysql, jdbcsqlite3, jdbcpostgresql, jdbc.
+</pre>
+<p>For example, to create a new Rails application to use <a href="http://www.postgresql.org/">PostgreSQL</a>:</p>
+<pre>
+$ rails new myapp --database=postgresql
+</pre>
+<p>The <code>--database=postgresql</code> parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file.</p>
+<p>Don’t use the <code>--database=</code> argument with the Rails Composer tool. You’ll select a database from a menu instead.</p>
+<p>Nitrous doesn’t host any database systems other than SQLite. However, Nitrous provides connections to hosted database services. At this time you can choose:</p>
+<ul>
+<li>MongoDB hosted by <a href="https://mongolab.com/welcome/">MongoLab</a>
+</li>
+	<li>PostgreSQL hosted by <a href="https://postgres.heroku.com/">Heroku</a>
+</li>
+	<li>Redis hosted by <a href="http://redis-cloud.com/">RedisCloud</a>
+</li>
+	<li>
+<span class="caps">RDS</span> hosted by <a href="http://aws.amazon.com/rds/">Amazon Web Services</a>
+</li>
+</ul><p>See the Nitrous <a href="http://help.nitrous.io/categories/databases/">Databases</a> documentation to set up database connections for your application.</p>
+<h2>Deployment</h2>
+<p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
+<h3>Hosting</h3>
+<p>For easy deployment, use a “platform as a service” provider such as:</p>
+<ul>
+<li><a href="http://www.heroku.com/">Heroku</a></li>
+	<li><a href="http://www.cloudfoundry.com/">CloudFoundry</a></li>
+	<li><a href="http://www.engineyard.com/">EngineYard</a></li>
+	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
+</ul><p>For deployment on Heroku, see the article:</p>
+<ul>
+<li><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails on Heroku</a></li>
+</ul><h2>Security</h2>
+<p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
+<h3>Your Application’s Secret Token</h3>
+<p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
+<h2>Where to Get Help</h2>
+<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<h2>Credits</h2>
+<p>Daniel Kehoe wrote the article. Thank you to Erik Trautman of the <a href="http://www.theodinproject.com/">Odin Project</a> for editing and review.</p>
     </div><!-- class="content" -->
 
     <div class="comments" id="comments">
