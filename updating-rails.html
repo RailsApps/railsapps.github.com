@@ -51,9 +51,8 @@
 <p>If you’re a Rails developer, you really don’t want to replace an old version of Rails with another. Instead, you’ll want to install multiple versions of Rails and switch between them as you step through the process of updating your Rails applications. This article details a process you can use to update any Rails application. I also provide links to address the specifics of <a href="#updating">upgrading from Rails 3.2 to Rails 4.0</a>.</p>
 <p>Before you start, install multiple versions of Rails, as explained in this article:</p>
 <ul>
-	<li><a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a></li>
-</ul>
-<p>The <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> article will show you how to install Rails 3.2.13 and Rails 4.0 so you can easily switch between the previous release and the newest version of Rails. With these versions on your machine, you’ll be able to begin updating your Rails applications.</p>
+<li><a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a></li>
+</ul><p>The <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> article will show you how to install Rails 3.2.13 and Rails 4.0 so you can easily switch between the previous release and the newest version of Rails. With these versions on your machine, you’ll be able to begin updating your Rails applications.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
 <h3>From the RailsApps Project</h3>
 <p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation” so you can stay up to date. Each is accompanied by a tutorial so there is no mystery code. Maintenance and development of the RailsApps applications is supported by subscriptions to the <a href="https://tutorials.railsapps.org">RailsApps tutorials</a>.</p>
@@ -64,7 +63,7 @@
 <p>If you’ve just installed Ruby as described in the <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> article, your gems will be up to date.</p>
 <p>You should have:</p>
 <ul>
-	<li>RubyGems 2.0.3 — <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems system gem</a>
+<li>RubyGems 2.0.3 — <a href="https://rubygems.org/gems/rubygems-update">newest RubyGems system gem</a>
 </li>
 	<li>Rake 10.0.4 — <a href="http://rubygems.org/gems/rake">newest Rake gem</a>
 </li>
@@ -72,8 +71,7 @@
 </li>
 	<li>Rubygems-Bundler 1.1.1 — <a href="http://rubygems.org/gems/rubygems-bundler">newest version of Rubygems-Bundler</a>
 </li>
-</ul>
-<p>Check the gem versions:</p>
+</ul><p>Check the gem versions:</p>
 <pre>
 $ gem -v
 </pre>
@@ -272,7 +270,7 @@ $ rake rails:update
 <p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you will have to rework parts of your application. Here are resources you can use to identify specific code that needs to be updated.</p>
 <h3 id="torails4">Rails 3.2 to Rails 4.0</h3>
 <ul>
-	<li>Ebook: Andy Lindeman <a href="http://www.upgradingtorails4.com/">Upgrading to Rails 4</a>
+<li>Ebook: Andy Lindeman <a href="http://www.upgradingtorails4.com/">Upgrading to Rails 4</a>
 </li>
 	<li>Ebook: Philip De Smedt <a href="http://upgradetorails4.com/">Upgrade to Rails 4</a>
 </li>
@@ -285,13 +283,11 @@ $ rake rails:update
 	<li>Video: Code School <a href="http://rails4.codeschool.com/videos">Rails 4: Zombie Outlaws</a>
 </li>
 	<li>Article: RailsGuides <a href="http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-3-2-to-rails-4-0">Upgrading from Rails 3.2 to Rails 4.0</a> (work-in-progress document)</li>
-</ul>
-<h3>Rails 3.1 to Rails 3.2</h3>
+</ul><h3>Rails 3.1 to Rails 3.2</h3>
 <ul>
-	<li>Railscast by Ryan Bates <a href="http://railscasts.com/episodes/318-upgrading-to-rails-3-2">Upgrading to Rails 3.2</a>
+<li>Railscast by Ryan Bates <a href="http://railscasts.com/episodes/318-upgrading-to-rails-3-2">Upgrading to Rails 3.2</a>
 </li>
-</ul>
-<h2>Security</h2>
+</ul><h2>Security</h2>
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
 <p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
