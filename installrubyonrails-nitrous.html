@@ -438,6 +438,23 @@ $ rails server
 <p>A new browser tab will open displaying the application.</p>
 <p><img src="http://railsapps.github.io/images/installing-nitrous-application.png" title="Installing Rails on Nitrous - Rails Application Preview" alt="Installing Rails on Nitrous - Rails Application Preview"></p>
 <p>This is the default Rails starter application.</p>
+<h2>Stopping the Rails Server</h2>
+<p>You can stop the server with Control-c to return to the command prompt.</p>
+<p>Most of the time you’ll keep the web server running as you add or edit files in your project. This a reason to open multiple console windows.</p>
+<p>Changes will automatically appear when you refresh the browser or request a new page. There is a tricky exception, however. If you make changes to the Gemfile, or changes to configuration files, the web server must be shut down and relaunched for changes to be activated.</p>
+<p>Working on a remote server means you can lose a connection (or close your console window) while the server is still running. If that happens, you may find you cannot start the server because you get an error, “A server is already running.” Use the provided <span class="caps">PID</span> file to find the Unix process ID and then stop the server with the Unix <code>kill -9 PID</code> command.</p>
+<pre>
+$ rails server
+.
+.
+.                                                                                                                           
+A server is already running. Check /home/action/workspace/myapp/tmp/pids/server.pid.                                                  
+Exiting
+$ cat /home/action/workspace/myapp/tmp/pids/server.pid                                     
+4640
+$ kill -9 4640
+</pre>
+<p>The Unix <code>kill -9</code> command will stop the abandoned server process. If not, go to “Boxes” in the Web <span class="caps">IDE</span> and use the button to restart your Nitrous box.</p>
 <h2>Configure Git</h2>
 <p>Git is an essential tool for developing with Rails. With Git, you can roll back code changes as needed, collaborate on code with others, and deploy your application for hosting on Heroku. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more information.</p>
 <p>Git is pre-installed on your Nitrous box. Check that Git is installed:</p>
