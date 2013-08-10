@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Ruby on Rails on Nitrous.io</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 8 August 2013</em></p>
+<p><em>Last updated 9 August 2013</em></p>
 <p>How to install Ruby on Rails 4.0 on the Nitrous.io hosted development environment.</p>
 <p>Detailed instructions for getting started with Rails on Nitrous.io with up-to-date advice to get you fully productive.</p>
 <h4>If You Are New to Rails</h4>
@@ -672,10 +672,23 @@ $ rails new myapp --database=postgresql
 	<li><a href="http://www.cloudfoundry.com/">CloudFoundry</a></li>
 	<li><a href="http://www.engineyard.com/">EngineYard</a></li>
 	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
-</ul><p>For deployment on Heroku, see the article:</p>
+</ul><h4>Deploy to Heroku</h4>
+<p>For deployment on Heroku, see the article:</p>
 <ul>
 <li><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails on Heroku</a></li>
-</ul><h2>Security</h2>
+</ul><p>If you’ve cloned an application from GitHub that you’ve deployed previously, you’ll need to add a <a href="http://git-scm.com/book/ch2-5.html">git remote</a> to deploy it from your Nitrous box:</p>
+<pre>
+$ heroku git:remote -a myapp
+Git remote heroku added.
+</pre>
+<p>To push your code to Heroku, you’ll need to add <span class="caps">SSH</span> keys for your Nitrous box to Heroku:</p>
+<pre>
+$ heroku keys:add
+Found existing public key: /home/action/.ssh/id_rsa.pub
+Uploading SSH public key /home/action/.ssh/id_rsa.pub... done
+</pre>
+<p>You can learn more about <a href="https://devcenter.heroku.com/articles/keys">Managing Your <span class="caps">SSH</span> Keys</a> on Heroku.</p>
+<h2>Security</h2>
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
 <p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
