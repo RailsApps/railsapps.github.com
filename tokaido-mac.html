@@ -46,12 +46,12 @@
     <div class="content wikistyle gollum textile">
       <h1>Installing Ruby on Rails with Tokaido</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 13 August 2013</em></p>
+<p><em>Last updated 14 August 2013</em></p>
 <p>Installing Ruby on Rails 4.0 using Tokaido, a Mac OS X application.</p>
 <p>Detailed instructions for getting started on Tokaido with Rails including advice to get you fully productive.</p>
 <p><a href="https://github.com/tokaido/tokaidoapp/releases">Tokaido</a> is currently available in prerelease. That means you may encounter issues, which you can <a href="https://github.com/tokaido/tokaidoapp/issues">review and report on GitHub</a>.</p>
 <p>Tokaido is a Mac OS X application you can download and install almost as easily as any other Mac application. Launching the application gives you a fully configured Ruby on Rails development environment. You’ll still use the Terminal application for many Rails commands, and you’ll use a text editor to write code. But Tokaido gives you a point-and-click interface for launching the application and monitoring the development logs.</p>
-<p>The goals of the Tokaido project are described in an April 2012 blog post by Yehuda Katz, <a href="http://yehudakatz.com/2012/04/13/tokaido-my-hopes-and-dreams/">Tokaido: My Hopes and Dreams</a>, and progress is documented on the <a href="http://www.kickstarter.com/projects/1397300529/railsapp">Kickstarter Tokaido campaign</a> pages.</p>
+<p>The goal of the Tokaido project is described in an April 2012 blog post by Yehuda Katz, <a href="http://yehudakatz.com/2012/04/13/tokaido-my-hopes-and-dreams/">Tokaido: My Hopes and Dreams</a>, and progress is documented on the <a href="http://www.kickstarter.com/projects/1397300529/railsapp">Kickstarter Tokaido campaign</a> pages.</p>
 <p>Tokaido is a free, open source application developed by <a href="https://twitter.com/wycats">Yehuda Katz</a> and a team of volunteers.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a> and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
@@ -73,17 +73,16 @@
 <p>Similarly, Rails 4.0 was released June 25, 2013 but the Tokaido prerelease version of July 16, 2013 shipped with Rails 3.2.13. See the instructions below to update Rails after installing Tokaido.</p>
 <p>At the present time (the first prerelease version), Tokaido doesn’t support <span class="caps">RVM</span> so it is not possible to use <span class="caps">RVM</span> to manage Ruby versions or create and manage gemsets.</p>
 <p>In summary, Tokaido is suitable for a casual or hobbyist Rails developer. Given that you must install a C language compiler and Git before using Tokaido, and that installing Ruby on Rails using <span class="caps">RVM</span> is not particularly difficult, Tokaido may not have much advantage over installing Ruby on Rails using <span class="caps">RVM</span>, unless you have encountered problems installing Ruby on Rails using <span class="caps">RVM</span> on your Mac.</p>
-<h2>Upgrade Mac OS X</h2>
-<p>If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system. To install the newest Apple Xcode, you’ll need the latest version of Mac OS X.</p>
-<p>If you use an older version of the operating system, you may be able to use the <span class="caps">OSX</span> <span class="caps">GCC</span> Installer (see below) but you could face obstacles.</p>
+<p>Before installing Tokaido, install the Xcode Command Line Tools and Git.</p>
 <h2>Install a C Language Compiler</h2>
 <p>You will need a C language compiler to add updated versions of Ruby or Rails. Also, many gems use native extensions and require a C language compiler for installation.</p>
-<p>You can use the <a href="https://github.com/downloads/kennethreitz/osx-gcc-installer/GCC-10.7-v2.pkg"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a>, which you can download and install directly. Once you’ve installed it, Tokaido will recognize the installed C language compiler.</p>
-<p>Alternatively, you can install Apple’s <a href="http://stackoverflow.com/questions/9329243/xcode-4-4-command-line-tools">Xcode Command Line Tools</a> to get a C language compiler.</p>
+<p>It is best to install Apple’s Xcode Command Line Tools to get a C language compiler. See the article:</p>
+<p><a href="http://railsapps.github.io/xcode-command-line-tools.html"><strong>Xcode Command Line Tools</strong></a></p>
+<p>for complete instructions.</p>
 <h2>Install Git</h2>
 <p><a href="http://git-scm.com/">Git</a> provides a source control repository. Developers use Git to roll back code changes as needed, to collaborate with others, and deploy applications for hosting with a service such as Heroku. As a Rails developer, you’ll use Git with a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration.</p>
 <p>See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more information.</p>
-<p>If you are building a throw-away app for your own education you may decide not to use Git, but sooner or later you will need to use Git in Rails development.</p>
+<p>If you are building a throw-away app for your own education you may decide not to use Git immediately, but sooner or later you will need to use Git in Rails development.</p>
 <p>The easiest way to install Git is with <a href="http://mac.github.com/">GitHub for Mac</a>.</p>
 <p>Before you download GitHub for Mac, get a <a href="https://github.com/signup/free">free GitHub account</a>. When you register, use your real name. Your GitHub account is as important as a résumé or a business card so use the name by which you are known professionally.</p>
 <p>Download the <a href="http://mac.github.com/">GitHub for Mac</a> application. Drag the application into your Applications folder. Launch the GitHub application to begin installation. You’ll be asked for your GitHub account username and password. The GitHub application will generate and install a <em>public key</em>. The public key is used to encrypt connections between your computer and GitHub. You’ll get an email message from GitHub informing you that a new public key was added to your GitHub account.</p>
@@ -174,12 +173,21 @@ ruby 2.0.0p195 (2013-05-14 revision 40731) [x86_64-darwin12.3.0]
 </pre>
 <p>Ruby 2.0.0-p247 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. It’s not easy to install a newer version of Ruby so it is best to wait for a Tokaido update.</p>
 <h2>Rails 4.0</h2>
+<p>A recent version of Rails is pre-installed:</p>
+<pre>
+$ rails -v
+Rails 3.2.13
+</pre>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.0 was current when this was written.</p>
-<p>Let’s consider the options you have for installing Rails.</p>
+<p>It’s best to update to the newest version of Rails.</p>
 <p>If you want the most recent stable release:</p>
 <pre>
-$ gem install rails
+$ gem update rails
+.
+.
+.
 $ rails -v
+Rails 4.0.0
 </pre>
 <p>If you want the newest beta version or release candidate, you can install with <code>--pre</code>.</p>
 <pre>
