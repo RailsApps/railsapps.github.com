@@ -272,6 +272,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </pre>
 <p>You can add the <code>-T</code> flags to skip Test::Unit if you are using RSpec for testing.</p>
 <p>You can add the <code>-O</code> flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.</p>
+<p>If you get an error “OpenSSL certificate verify failed” when you try to generate a new Rails app, see the article <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <h4>Rails Tutorials and Example Applications</h4>
 <p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. There is a tutorial for each one so there is no mystery code. Purchasing a <a href="https://tutorials.railsapps.org/">subscription for the tutorials</a> gives the project financial support.</p>
 <table>
@@ -354,23 +355,19 @@ $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
 <h2>Databases for Rails</h2>
-<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Mac OS X come with SQLite pre-installed and there’s nothing to configure. On Windows, if you use a pre-assembled package to install Rails, it will likely have SQLite pre-installed.</p>
-<p>On Ubuntu Linux, install SQLite with:</p>
-<pre>
-$ sudo apt-get install sqlite3 libsqlite3-dev
-</pre>
+<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Mac OS X come with SQLite pre-installed and there’s nothing to configure.</p>
 <p>Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command <code>rails new myapp --database=</code> will show you a list of supported databases.</p>
 <pre>
 Supported for preconfiguration are: mysql, oracle, postgresql, sqlite3, frontbase, ibm_db, sqlserver, jdbcmysql, jdbcsqlite3, jdbcpostgresql, jdbc.
 </pre>
-<p>For example, to create a new Rails application to use <a href="http://www.postgresql.org/">PostgreSQL</a>:</p>
+<h3>PostgreSQL</h3>
+<p>Use the easy-to-install Max OS X <a href="http://postgresapp.com/">Postgres.app</a> if you’d like to use PostgreSQL.</p>
+<p>To create a new Rails application to use <a href="http://www.postgresql.org/">PostgreSQL</a>:</p>
 <pre>
 $ rails new myapp --database=postgresql
 </pre>
-<p>The <code>--database=postgresql</code> parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file. Here’s an article that explains how to install PostgreSQL on Mac OS X:</p>
-<ul>
-<li><a href="http://russbrooks.com/2010/11/25/install-postgresql-9-on-os-x">Install PostgreSQL 9 on OS X</a></li>
-</ul><p>Don’t use the <code>--database=</code> argument with the Rails Composer tool. You’ll select a database from a menu instead.</p>
+<p>The <code>--database=postgresql</code> parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file.</p>
+<p>Don’t use the <code>--database=</code> argument with the Rails Composer tool. You’ll select a database from a menu instead.</p>
 <h2>Deployment</h2>
 <p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
 <h3>Hosting</h3>

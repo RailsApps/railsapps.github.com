@@ -46,7 +46,7 @@
     <div class="content wikistyle gollum textile">
       <h1>OpenSSL Errors and Rails – Certificate Verify Failed</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 9 April 2013</em></p>
+<p><em>Last updated 15 August 2013</em></p>
 <p>Are you getting an error “OpenSSL certificate verify failed” with Ruby? You may be seeing Ruby errors with OpenSSL because of outdated <span class="caps">SSL</span> certificate files. These problems are most common with Ruby 2.0 on Mac OS X. For problems with Windows or Ubuntu, see the end of the article.</p>
 <p>This is a note for developers using the example applications and tutorials from the <a href="http://railsapps.github.io/">RailsApps</a> project. If you’re getting started with Rails, or want an easier way to get started building your applications, see the RailsApps <a href="http://railsapps.github.io/">example applications and tutorials</a>.</p>
 <h2>Errors</h2>
@@ -59,19 +59,17 @@ openssl::ssl::sslerror: ssl_connect returned=1 errno=0 state=sslv3 read server c
 could not load openssl. you must recompile ruby with openssl support or change the sources in your gemfile from 'https' to 'http'. instructions for compiling with openssl using rvm are available at rvm.io/packages/openssl.
 </pre>
 <h2>Use <span class="caps">RVM</span> to Fix <span class="caps">SSL</span> Certificates</h2>
-<p>The newest (unreleased) version of <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, includes a utility to diagnose and resolve errors caused by outdated certificate files. See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> for instructions and advice. The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>.</p>
+<p>Recent versions of <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, include a utility to diagnose and resolve errors caused by outdated certificate files. See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> for instructions and advice. The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>.</p>
 <p>If you’ve installed <span class="caps">RVM</span>, try this:</p>
 <pre>
 $ rvm -v
-$ rvm get head
-$ rvm -v
-# rvm 1.19.1 (master)
+# rvm 1.19.1 (stable)
 $ rvm osx-ssl-certs status all
 # Certificates for...
 $ rvm osx-ssl-certs update all
 # Updating certificates...
 </pre>
-<p>That’s all that is needed to resolve the issue if you are using <span class="caps">RVM</span>.</p>
+<p>That’s all that is needed to resolve the issue if you are using <span class="caps">RVM</span> (you must be using <span class="caps">RVM</span> version 1.19.1 or newer).</p>
 <p>For more on the issue, see a discussion at <a href="https://github.com/wayneeseguin/rvm/pull/1764">add rvm osx-ssl-certs</a> on GitHub.</p>
 <p><em>Let me know if this resolves the issue. Please add to the <a href="#comments">comments</a> below.</em></p>
 <h4>Staying Healthy</h4>
