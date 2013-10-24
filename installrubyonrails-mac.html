@@ -44,81 +44,97 @@
   <div class="container">
 
     <div class="content wikistyle gollum textile">
-      <h1>Install Ruby on Rails · Mac OS X</h1>
+      <h1>Install Ruby on Rails · Mac OS X Mavericks</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 10 September 2013</em></p>
-<p>Installing Ruby on Rails 4.0 on Mac OS X. Up-to-date, detailed instructions on how to install Rails newest release. 4.0.0 is the newest version of Rails on Mac OS X.</p>
+<p><em>Last updated 24 October 2013</em></p>
+<p>Installing Ruby on Rails 4.0 on Mac OS X Mavericks. Up-to-date, detailed instructions on how to install Rails newest release. Use Rails 4.0.0, the newest version of Rails, on Mac OS X 10.9 Mavericks.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
+<h3>
+<a href="http://learn-rails.com/learn-ruby-on-rails.html"><img src="http://railsapps.github.io/images/learn-rails-cover-130x161.jpg" title="Learn Ruby on Rails" alt="Learn Ruby on Rails"></a> Get the Book</h3>
+<p>New to Rails? Get the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>.</p>
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation” so you can stay up to date. Each is accompanied by a tutorial so there is no mystery code. Support for the project, including the example applications and the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool, comes from subscribers to the <a href="https://tutorials.railsapps.org">RailsApps tutorials</a>.</p>
 <h4>Updating Rails Applications</h4>
 <p>See the article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a> if you already have Rails installed.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
-<h2>Ruby on Rails on Mac OS X</h2>
-<p>Before installing Ruby, you’ll need to prepare your computer by installing Apple’s <a href="http://railsapps.github.io/xcode-command-line-tools.html">Xcode Command Line Tools</a>.</p>
-<p>Mac OS X comes with a “system Ruby” pre-installed. Ruby 2.0.0 comes with Mavericks (Mac OS X 10.9). Earlier versions of Mac OS X have Ruby 1.8.7.</p>
-<p>You have several options for Ruby. Here’s our recommendations.</p>
-<p>First, do not use the system Ruby (for details, see the article <a href="http://robots.thoughtbot.com/post/54109839209/psa-do-not-use-system-ruby">Do Not Use the System Ruby!</a>). You should use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
+<h2>Ruby on Rails for Mac OS X Mavericks</h2>
+<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Mavericks includes the current Ruby version Ruby 2.0.0p247.</p>
+<p>It is likely you will need to use Ruby 1.9.3 if you are maintaining or updating older Rails applications. And in the future, you are likely to need more than one version of Ruby, as new Ruby versions are released. Even if you are a student and only building new Rails applications, you should be prepared to manage multiple versions of Ruby.</p>
+<p>For these reasons, do not use the system Ruby. Instead, use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
 <h3>Use a Ruby Version Manager</h3>
-<p>As new versions of Ruby are released, you’ll need an easy way to switch between versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a>, Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>, or others <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
+<p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a>, Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>, or others <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
 <p>Conveniently, you can use <span class="caps">RVM</span> to install Ruby.</p>
 <h3>Don’t Use a One-Click Installer</h3>
-<p>A Mac OS X application named <a href="https://github.com/tokaido/tokaidoapp/releases">Tokaido</a> promises a simple download of a special package that installs and runs Ruby on Rails in a isolated “sandboxed” environment. At this time, the application is in prerelease and doesn’t yet offer a significant advantage over installation using <span class="caps">RVM</span>. For now, use <span class="caps">RVM</span>, not Tokaido.</p>
-<p>You may hear about other one-click installation programs such as <a href="http://railsinstaller.org/">RailsInstaller.org</a>, <a href="http://www.atmos.org/cinderella/">Cinderella</a>, and <a href="http://bitnami.org/stack/rubystack">BitNami RubyStack</a>. These installation programs are often outdated and they are no longer needed as <span class="caps">RVM</span> will set up almost everything needed to install Ruby. In particular, I don’t recommend RailsInstaller for experienced developers as it installs <span class="caps">RVM</span> at the system level creating potential conflicts.</p>
-<h3>Hosted Development on Nitrous.io</h3>
+<p>You may hear about one-click installation programs such as <a href="http://railsinstaller.org/">RailsInstaller</a>, <a href="http://www.atmos.org/cinderella/">Cinderella</a>, and <a href="http://bitnami.org/stack/rubystack">BitNami RubyStack</a>. These installation programs are often outdated and they are no longer needed as <span class="caps">RVM</span> will set up almost everything needed to install Ruby. In particular, I don’t recommend RailsInstaller for experienced developers as it installs <span class="caps">RVM</span> at the system level creating potential conflicts.</p>
+<p>A new Mac OS X application named <a href="https://github.com/tokaido/tokaidoapp/releases">Tokaido</a> promises a simple download of a special package that installs and runs Ruby on Rails in a isolated “sandboxed” environment. At this time, the application is in prerelease and doesn’t yet offer a significant advantage over installation using <span class="caps">RVM</span>. For now, use <span class="caps">RVM</span>, not Tokaido.</p>
+<h3>A Hosted Development Alternative</h3>
 <p>You can use Ruby on Rails without actually installing it on your computer. Hosted development, using a service such as <a href="https://www.nitrous.io/">Nitrous.io</a>, means you get a computer “in the cloud” that you use from your web browser. Any computer can access the hosted development environment, though you’ll need a broadband connection. Nitrous.io is free for small projects.</p>
 <p>Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to “work in the cloud” using Nitrous.io. For more on Nitrous.io, see the article <a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Ruby on Rails with Nitrous.io</a>. Nitrous.io is a good option if you have trouble installing Ruby on Rails on your Mac.</p>
-<h2>Prepare Your System</h2>
-<p>You’ll need to prepare your computer with the Xcode Command Line Tools before installing Ruby on Rails.</p>
-<h3>Upgrade Mac OS X</h3>
-<p>To install the newest Xcode Command Line Tools, you’ll need the latest version of Mac OS X. If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system.</p>
-<p>See Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to OS X Mountain Lion</a>. You can install Mac OS X 10.8 (Mountain Lion) from the Mac App Store for $19.99 (US). The upgrade is not available in Apple retail stores. Allow plenty of time for the download and installation, especially if you are several versions behind the current release.</p>
-<h3>Install a C Language Compiler</h3>
-<p>The Xcode Command Line Tools provide a C language compiler needed to install Ruby.</p>
-<p>For many Rails projects, you will need the C language compiler to install gems that use native extensions.</p>
-<p>Install Apple’s Xcode Command Line Tools to get a C language compiler. See this article for complete instructions:</p>
-<p><a href="http://railsapps.github.io/xcode-command-line-tools.html"><strong>Install Xcode Command Line Tools</strong></a></p>
-<p>You must install the Xcode Command Line Tools before you continue.</p>
-<h2>Install Git</h2>
-<p>Before installing Ruby on Rails, you should install Git. Optionally, you can install it later, but it’s convenient to install it at this point.</p>
-<p><a href="http://git-scm.com/">Git</a> provides a source control repository. Developers use Git to roll back code changes as needed, to collaborate with others, and deploy applications for hosting with a service such as Heroku. As a Rails developer, you’ll use Git with a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration.</p>
-<p>See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more background.</p>
-<p>If you are building a throw-away app for your own education you may decide not to use Git immediately, but sooner or later you will need to use Git in Rails development.</p>
-<p>The easiest way to install Git is with <a href="http://mac.github.com/">GitHub for Mac</a>.</p>
-<p>Before you download GitHub for Mac, get a <a href="https://github.com/signup/free">free GitHub account</a>. When you register, use your real name. Your GitHub account is as important as a résumé or a business card so use the name by which you are known professionally.</p>
-<p>Download the <a href="http://mac.github.com/">GitHub for Mac</a> application. Drag the application into your Applications folder. Launch the GitHub application to begin installation. You’ll be asked for your GitHub account username and password. The GitHub application will generate and install a <em>public key</em>. The public key is used to encrypt connections between your computer and GitHub. You’ll get an email message from GitHub informing you that a new public key was added to your GitHub account.</p>
-<p>In the GitHub application, you’ll see this screen next:</p>
-<p><img src="http://railsapps.github.io/images/installing-git.png" title="Installing Git" alt="Installing Git"></p>
-<p>Before continuing, click the button to “Install Command Line Tools.”</p>
-<p>The application will install the Git executable into the hidden <strong>/usr/local/bin/</strong> system folder. You’ll be prompted for your Mac login password to make the addition to your system files (the button is labeled “Install Helper”). The application will inform you that installation is complete. Clicking “Continue” will give you an option to identify local repositories (folders on your laptop that you want to back up to GitHub). Skip this step and select “Done.” You’ll see the GitHub for Mac main window.</p>
-<p>You can quit GitHub for Mac. It is a graphical front-end for Git that you can use to become familiar with Git. Very few Rails developers use the GitHub for Mac application; since you will be using the Terminal to build Rails applications, it is easier to use Git from the command line. Installing GitHub for Mac is just the easiest way to install the Git executable.</p>
-<h2>Terminal Application</h2>
-<p>You’ll use the Mac OS X <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> to install <span class="caps">RVM</span> and Ruby. You’ll also use the Terminal frequently while developing applications with Ruby on Rails.</p>
+<h2>Prepare Your Computer</h2>
+<p>You’ll need to prepare your computer before installing Ruby on Rails.</p>
+<h3>Upgrade Mac OS X to 10.9</h3>
+<p>Make sure you have the latest version of Mac OS X. Under the Apple menu, check “About This Mac.” It should show “Version 10.9” or newer. If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system.</p>
+<p>If you need to upgrade, see Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to OS X Mavericks</a>. You can install Mac OS X 10.9 (Mavericks) from the Mac App Store for free. Allow plenty of time for the download and installation (it may take several hours).</p>
+<h3>Terminal Application</h3>
+<p>You’ll need to use the Terminal application to install Ruby and develop Rails applications.</p>
+<p>The <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> or <em>console</em> gives us access to the Unix command line, or <em>shell</em>. We call the command line the shell because it is the outer layer of the operating system’s internal mechanisms (which we call the kernel).</p>
 <p>Find the Mac OS X Terminal application by using the Command-Spacebar combination and searching for “Terminal.” It’s in the <strong>Applications/Utilities/</strong> folder.</p>
-<p>Launch the Terminal application. You’ll be using it a lot, so stretch the window vertically to the full height of your display.</p>
-<h3>Unix Commands</h3>
-<p>We call the command line the <em>shell</em> because it is the outer layer of the operating system’s internal mechanisms (which we call the <em>kernel</em>).</p>
-<p>If you haven’t used the computer’s command line interface (<span class="caps">CLI</span>) before, you can spend some time with <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> to become comfortable with Unix shell commands.</p>
-<p>Try out the terminal application by entering a shell command.</p>
+<p>Try out the terminal application by entering a shell command:</p>
 <pre>
 $ whoami
 </pre>
-<p>Don’t type the <code>$</code> character. The <code>$</code> character is a cue that you should enter a shell command. This is a longtime convention that indicates you should enter a command in the terminal application or console.</p>
-<p>The Unix shell command <code>whoami</code> returns your username.</p>
-<p>Don’t type the <code>$</code> prompt.</p>
-<p>You might see:</p>
+<p>Don’t type the <code>$</code> character. The <code>$</code> character is a cue that you should enter a shell command. This is a longtime convention that indicates you should enter a command in the terminal application. The Unix shell command <code>whoami</code> returns your username.</p>
+<p>If you haven’t used the computer’s command line interface (<span class="caps">CLI</span>) before, you can spend some time with <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> to become comfortable with Unix shell commands.</p>
+<h3>Install Xcode Command Line Tools</h3>
+<p>Before installing Ruby, you’ll need to prepare your computer by installing Apple’s <a href="http://railsapps.github.io/xcode-command-line-tools.html">Xcode Command Line Tools</a>.</p>
+<p>The Xcode Command Line Tools provide a C language compiler needed to install Ruby. For many Rails projects, you will need the C language compiler to install gems that use native extensions.</p>
+<p>Mac OS X Mavericks will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code>, <code>git</code>, or <code>make</code>.</p>
+<p>Try it. Enter:</p>
 <pre>
--bash: $: command not found
+$ gcc
 </pre>
-<p>which indicates you typed the <code>$</code> character by mistake.</p>
+<p>You’ll see an alert box:</p>
+<p><img src="http://railsapps.github.io/images/installing-mavericks-popup.png" title="alert Xcode Command Line Tools is required" alt="alert Xcode Command Line Tools is required"></p>
+<p>Click “Install” to download and install Xcode Command Line Tools.</p>
+<p>The instructions in the alert box are confusing. You don’t need to “Get Xcode” from the App Store. Just click “Install” for the Xcode Command Line Tools.</p>
+<p><img src="http://railsapps.github.io/images/installing-mavericks-download.png" title="downloading Xcode Command Line Tools" alt="downloading Xcode Command Line Tools"></p>
+<p><img src="http://railsapps.github.io/images/imstalling-mavericks-installed.png" title="installed Xcode Command Line Tools" alt="installed Xcode Command Line Tools"></p>
+<p>Verify that you’ve successfully installed Xcode Command Line Tools:</p>
+<pre>
+$ xcode-select -p
+/Library/Developer/CommandLineTools
+</pre>
+<p>Just to be certain, verify that <code>gcc</code> and <code>git</code> are installed:</p>
+<pre>
+$ gcc --version
+Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
+Apple LLVM version 5.0 (clang-500.2.79) (based on LLVM 3.3svn)
+Target: x86_64-apple-darwin13.0.0
+Thread model: posix
+$ git version
+git version 1.8.3.4 (Apple Git-47)
+</pre>
+<p>On earlier versions of Mac OS X, more work was required to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X Mavericks makes installation of Xcode Command Line Tools much simpler.</p>
+<h3>Alternatives</h3>
+<p>The <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> is an open source project to provide the <span class="caps">GCC</span> compiler and related tools. In a recent blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, <span class="caps">GCC</span>, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
+<h2>Configure Git</h2>
+<p>Before installing Ruby on Rails, you should configure Git. You’ve already installed it by installing Xcode Command Line Tools.</p>
+<p><a href="http://git-scm.com/">Git</a> provides a source control repository. Developers use Git to roll back code changes as needed, to collaborate with others, and deploy applications for hosting with a service such as Heroku. As a Rails developer, you’ll use Git with a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more background.</p>
+<pre>
+$ git config -l --global
+fatal: unable to read config file '/Users/.../.gitconfig': No such file or directory
+$ git config --global user.name "Your Real Name"
+$ git config --global user.email me@example.com
+$ git config -l --global
+user.name=Your Real Name
+user.email=me@example.com
+</pre>
+<p>Now you’ll be ready to use Git when you need it.</p>
 <h2>Install Ruby Using <span class="caps">RVM</span>
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
-<p>If you have an older version of Ruby installed on your computer, there’s no need to remove it. <span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
+<p><span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove it. The “system Ruby” will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
 <p>Ruby 2.0.0-p247 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
