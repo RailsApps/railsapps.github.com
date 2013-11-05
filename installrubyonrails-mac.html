@@ -40,7 +40,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Install Ruby on Rails · Mac OS X Mavericks</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 29 October 2013</em></p>
+<p><em>Last updated 5 November 2013</em></p>
 <p>Installing Ruby on Rails 4.0 on Mac OS X Mavericks. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.0, the newest version of Rails, on a new install of Mac OS X 10.9 Mavericks.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
@@ -82,7 +82,19 @@
 $ whoami
 </pre>
 <p>Don’t type the <code>$</code> character. The <code>$</code> character is a cue that you should enter a shell command. This is a longtime convention that indicates you should enter a command in the terminal application. The Unix shell command <code>whoami</code> returns your username.</p>
-<p>If you haven’t used the computer’s command line interface (<span class="caps">CLI</span>) before, you can spend some time with <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> to become comfortable with Unix shell commands.</p>
+<p>To learn more about Unix shell commands, read <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a>.</p>
+<h3>Is Xcode Already Installed?</h3>
+<p>Check if the full Xcode package is already installed:</p>
+<pre>
+$ xcode-select -p
+</pre>
+<p>If you see:</p>
+<pre>
+/Applications/Xcode.app/Contents/Developer
+</pre>
+<p>the full Xcode package is already installed.</p>
+<p>You will need to update Xcode to the newest version (Xcode 5.01 or newer). Go to the App Store application and check “Updates.” After updating Xcode, be sure to launch the Xcode application and accept the Apple license terms.</p>
+<p>You don’t need the full Xcode package to get the Xcode Command Line Tools. You only need the full Xcode package if you are doing development of applications for the Apple operating systems.</p>
 <h3>Install Xcode Command Line Tools</h3>
 <p>Before installing Ruby, you’ll need to prepare your computer by installing Apple’s <a href="http://railsapps.github.io/xcode-command-line-tools.html">Xcode Command Line Tools</a>.</p>
 <p>The Xcode Command Line Tools provide a C language compiler needed to install Ruby. For many Rails projects, you will need the C language compiler to install gems that use native extensions.</p>
@@ -102,22 +114,27 @@ $ gcc
 $ xcode-select -p
 /Library/Developer/CommandLineTools
 </pre>
-<p>Just to be certain, verify that <code>gcc</code> and <code>git</code> are installed:</p>
+<p>Just to be certain, verify that <code>gcc</code> is installed:</p>
 <pre>
 $ gcc --version
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
 Apple LLVM version 5.0 (clang-500.2.79) (based on LLVM 3.3svn)
 Target: x86_64-apple-darwin13.0.0
 Thread model: posix
-$ git version
-git version 1.8.3.4 (Apple Git-47)
 </pre>
-<p>On earlier versions of Mac OS X, more work was required to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X Mavericks makes installation of Xcode Command Line Tools much simpler.</p>
+<p>On earlier versions of Mac OS X, it was more difficult to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X Mavericks makes installation of Xcode Command Line Tools much simpler.</p>
 <h3>Alternatives</h3>
 <p>The <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> is an open source project to provide the <span class="caps">GCC</span> compiler and related tools. In a recent blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, <span class="caps">GCC</span>, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
 <h2>Configure Git</h2>
-<p>Before installing Ruby on Rails, you should configure Git. You’ve already installed it by installing Xcode Command Line Tools.</p>
+<p>Before installing Ruby on Rails, you should configure Git.</p>
 <p><a href="http://git-scm.com/">Git</a> provides a source control repository. Developers use Git to roll back code changes as needed, to collaborate with others, and deploy applications for hosting with a service such as Heroku. As a Rails developer, you’ll use Git with a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more background.</p>
+<p>Check that Git is installed:</p>
+<pre>
+$ git version
+git version 1.8.3.4 (Apple Git-47)
+</pre>
+<p>Git is automatically installed as part of the Xcode Command Line Tools. Or, if you updated from a previous version of Mac OS X, you may have installed Git previously.</p>
+<p>Configure Git if you haven’t used it before. First, list the current settings with the <code>git config -l --global</code> command. Then set <code>user.name</code> and <code>user.email</code> if necessary:</p>
 <pre>
 $ git config -l --global
 fatal: unable to read config file '/Users/.../.gitconfig': No such file or directory

@@ -40,9 +40,9 @@
     <div class="content wikistyle gollum textile">
       <h1>Xcode Command Line Tools for Mac OS X 10.9 Mavericks</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 29 October 2013</em></p>
+<p><em>Last updated 5 November 2013</em></p>
 <p>How to install Apple Xcode Command Line Tools for Mac OS X 10.9 Mavericks.</p>
-<p>A C language compiler is not provided as part of the standard consumer installation of Mac OS X. Installation of many common Unix-based tools requires the <a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection"><span class="caps">GCC</span> compiler</a>. Xcode is a large suite of software development tools and libraries from Apple. Part of XCode, the Xcode Command Line Tools, includes a <span class="caps">GCC</span> compiler. This article shows how to install Xcode Command Line Tools.</p>
+<p>Xcode is a large suite of software development tools and libraries from Apple. The Xcode Command Line Tools are part of XCode. Installation of many common Unix-based tools requires the <a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection"><span class="caps">GCC</span> compiler</a>. The Xcode Command Line Tools include a <span class="caps">GCC</span> compiler. This article shows how to install Xcode Command Line Tools to use the <span class="caps">GCC</span> compiler and more.</p>
 <h3><a href="http://learn-rails.com/learn-ruby-on-rails.html"><img src="http://railsapps.github.io/images/learn-rails-cover-130x161.jpg" title="Learn Ruby on Rails" alt="Learn Ruby on Rails"></a></h3>
 <p>Is this article helpful? Support the Kickstarter campaign for the book <a href="http://www.kickstarter.com/projects/909377477/learn-ruby-on-rails">Learn Ruby on Rails</a>.</p>
 <h4>What is the RailsApps Project?</h4>
@@ -61,8 +61,21 @@
 $ whoami
 </pre>
 <p>Don’t type the <code>$</code> character. The <code>$</code> character is a cue that you should enter a shell command. This is a longtime convention that indicates you should enter a command in the terminal application. The Unix shell command <code>whoami</code> returns your username.</p>
+<p>To learn more about Unix shell commands, read <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a>.</p>
+<h2>Is Xcode Already Installed?</h2>
+<p>Check if the full Xcode package is already installed:</p>
+<pre>
+$ xcode-select -p
+</pre>
+<p>If you see:</p>
+<pre>
+/Applications/Xcode.app/Contents/Developer
+</pre>
+<p>the full Xcode package is already installed.</p>
+<p>You will need to update Xcode to the newest version (Xcode 5.01 or newer). Go to the App Store application and check “Updates.” After updating Xcode, be sure to launch the Xcode application and accept the Apple license terms.</p>
+<p>You don’t need the full Xcode package to get the Xcode Command Line Tools. You only need the full Xcode package if you are doing development of applications for the Apple operating systems.</p>
 <h2>Install Xcode Command Line Tools</h2>
-<p>Mac OS X Mavericks will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code>, <code>git</code>, or <code>make</code>.</p>
+<p>Mac OS X Mavericks will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code> or <code>make</code>.</p>
 <p>Try it. Enter:</p>
 <pre>
 $ gcc
@@ -78,29 +91,25 @@ $ gcc
 $ xcode-select -p
 /Library/Developer/CommandLineTools
 </pre>
-<p>Just to be certain, verify that <code>gcc</code> and <code>git</code> are installed:</p>
+<p>Just to be certain, verify that <code>gcc</code> is installed:</p>
 <pre>
 $ gcc --version
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
 Apple LLVM version 5.0 (clang-500.2.79) (based on LLVM 3.3svn)
 Target: x86_64-apple-darwin13.0.0
 Thread model: posix
-$ git version
-git version 1.8.3.4 (Apple Git-47)
 </pre>
-<p>On earlier versions of Mac OS X, more work was required to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X Mavericks makes installation of Xcode Command Line Tools much simpler.</p>
+<p>On earlier versions of Mac OS X, it was more difficult to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X Mavericks makes installation of Xcode Command Line Tools much simpler.</p>
 <h3>Alternatives</h3>
 <p>The <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> is an open source project to provide the <span class="caps">GCC</span> compiler and related tools. In a recent blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, <span class="caps">GCC</span>, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
 <h2>Start Coding!</h2>
 <p>With the <span class="caps">GCC</span> compiler installed, you can install any Unix system tools you need for software development.</p>
-<p>To learn more about Unix shell commands, read <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a>.</p>
-<p>For an introduction to programming, read Chris Pine’s book <a href="http://pine.fm/LearnToProgram/">Learn to Program</a>.</p>
-<p>Want to learn Ruby on Rails? See <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
 <p>To install Rails, see the article <a href="http://railsapps.github.io/installrubyonrails-mac.html">Install Ruby on Rails – Mac OS X</a>.</p>
-<h2>Credits</h2>
-<p>Daniel Kehoe wrote the article.</p>
+<p>Want to learn Ruby on Rails? See <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
 <h3><a href="http://learn-rails.com/learn-ruby-on-rails.html"><img src="http://railsapps.github.io/images/learn-rails-cover-130x161.jpg" title="Learn Ruby on Rails" alt="Learn Ruby on Rails"></a></h3>
 <p>Was the article helpful? Support the Kickstarter campaign for the book <a href="http://www.kickstarter.com/projects/909377477/learn-ruby-on-rails">Learn Ruby on Rails</a>.</p>
+<h2>Credits</h2>
+<p>Daniel Kehoe wrote the article.</p>
     </div><!-- class="content" -->
 
     <div class="comments" id="comments">
