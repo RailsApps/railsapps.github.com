@@ -40,7 +40,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Install Ruby on Rails · Mac OS X Mavericks</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 5 November 2013</em></p>
+<p><em>Last updated 23 November 2013</em></p>
 <p>Installing Ruby on Rails 4.0 on Mac OS X Mavericks. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.0, the newest version of Rails, on a new install of Mac OS X 10.9 Mavericks.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
@@ -52,8 +52,8 @@
 <p>See the article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a> if you already have Rails installed.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
 <h2>Ruby on Rails for Mac OS X Mavericks</h2>
-<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Mavericks includes the current Ruby version Ruby 2.0.0p247.</p>
-<p>It is likely you will need to use Ruby 1.9.3 if you are maintaining or updating older Rails applications. And in the future, you are likely to need more than one version of Ruby, as new Ruby versions are released. Even if you are a student and only building new Rails applications, you should be prepared to manage multiple versions of Ruby.</p>
+<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Mavericks includes the Ruby version Ruby 2.0.0p247 which has a known security vulnerability.</p>
+<p>It is likely you will need to use Ruby 1.9.3 if you are maintaining older Rails applications. And in the future, you are likely to need Ruby 2.1.0 or other versions, as new Ruby versions are released. Even if you are a student and only building new Rails applications, you should be prepared to manage multiple versions of Ruby.</p>
 <p>For these reasons, do not use the system Ruby. Instead, use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
 <h3>If You Updated to Mac OS X Mavericks</h3>
 <p>This guide covers installing Ruby and Rails on a Mac with no previous installation of a Rails development environment.</p>
@@ -149,7 +149,7 @@ user.email=me@example.com
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p><span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove it. The “system Ruby” will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.0.0-p247 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.0.0-p353 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
@@ -163,7 +163,7 @@ $ \curl -L https://get.rvm.io | bash -s stable --ruby
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.0.0-p247
+$ rvm --default use ruby-2.0.0-p353
 </pre>
 <h4>Installation Troubleshooting and Advice</h4>
 <p>If you have trouble installing Ruby with <span class="caps">RVM</span>, see the article “Installing Ruby” for <a href="http://railsapps.github.io/install-ruby.html#troubleshooting">Installation Troubleshooting and Advice</a>. If you have problems installing <span class="caps">RVM</span>, use <a href="https://www.nitrous.io/">Nitrous.io</a>.</p>
@@ -172,11 +172,11 @@ $ rvm --default use ruby-2.0.0-p247
 <p>Check the installed gem manager version:</p>
 <pre>
 $ gem -v
-2.1.9
+2.1.10
 </pre>
 <p>You should have:</p>
 <ul>
-<li>RubyGems 2.1.9 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
+<li>RubyGems 2.1.10 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
 </li>
 </ul><p>Use <code>gem update --system</code> to upgrade the Ruby gem manager if necessary.</p>
 <h2>
@@ -186,7 +186,7 @@ $ gem -v
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.0.0-p247
+gemsets for ruby-2.0.0-p353
 =&gt; (default)
    global
 </pre>
@@ -301,6 +301,7 @@ $ rvm use ruby-2.0.0@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
+<p>The <code>-m</code> option loads an application template that is hosted on GitHub.</p>
 <p>You can add the <code>-T</code> flags to skip Test::Unit if you are using RSpec for testing.</p>
 <p>You can add the <code>-O</code> flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.</p>
 <p>If you get an error “OpenSSL certificate verify failed” when you try to generate a new Rails app, see the article <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
