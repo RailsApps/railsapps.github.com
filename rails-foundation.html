@@ -107,7 +107,7 @@ $ rails generate layout foundation5 --force
 <p>Sass has two syntaxes. The most commonly used syntax is known as “<span class="caps">SCSS</span>” (for “Sassy <span class="caps">CSS</span>”), and is a superset of the <span class="caps">CSS</span> syntax. This means that every valid <span class="caps">CSS</span> stylesheet is valid <span class="caps">SCSS</span> as well. You can use Sass in any file by adding the file extension <strong>.scss</strong>. The asset pipeline will preprocess any <strong>.scss</strong> file and expand it as standard <span class="caps">CSS</span>.</p>
 <p>Before you continue, make sure that the rails_layout gem renamed the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>. Otherwise you won’t see the <span class="caps">CSS</span> styling we will apply.</p>
 <h2>The application.css.scss File</h2>
-<p>The Rails <em>asset pipeline</em> will concatenate and compact <span class="caps">CSS</span> stylesheets for delivery to the browser when you add them to this directory:</p>
+<p>The Rails asset pipeline will concatenate and compact <span class="caps">CSS</span> stylesheets for delivery to the browser when you add them to this directory:</p>
 <ul>
 <li><strong>app/assets/stylesheets/</strong></li>
 </ul><p>The asset pipeline helps web pages display faster in the browser by combining all <span class="caps">CSS</span> files into a single file (it does the same for JavaScript).</p>
@@ -171,7 +171,7 @@ $(function() {
 <p>You could add the Foundation <code>@import</code> code to the <strong>app/assets/stylesheets/application.css.scss</strong> file. However, it is better to have a separate <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file. You may wish to modify the Foundation <span class="caps">CSS</span> rules; placing changes to Foundation <span class="caps">CSS</span> rules in the <strong>framework_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
 <h4>Using Sass Mixins with Foundation</h4>
 <p>In addition to the simple <code>@import "foundation";</code> directive, the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> contains a collection of Sass mixins. These are examples that you can remove.</p>
-<p>You can use Sass mixins to map Foundation class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply <span class="caps">CSS</span> style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with either Twitter Bootstrap or Zurb Foundation. The book <a href="http://www.kickstarter.com/projects/909377477/learn-ruby-on-rails">Learn Ruby on Rails</a> explains how to use Sass mixins with Foundation.</p>
+<p>You can use Sass mixins to map Foundation class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply <span class="caps">CSS</span> style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with either Twitter Bootstrap or Zurb Foundation. The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> explains how to use Sass mixins with Foundation.</p>
 <h2>Using Foundation <span class="caps">CSS</span> Classes</h2>
 <p>Now that you’ve installed Zurb Foundation, you have a rich library of interactive effects you can add to your pages.</p>
 <p>Take a look at the <a href="http://foundation.zurb.com/docs/">Foundation documentation</a> to see your options. Here are just a few examples:</p>
@@ -226,7 +226,7 @@ $(function() {
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-<p>The book <a href="http://www.kickstarter.com/projects/909377477/learn-ruby-on-rails">Learn Ruby on Rails</a> covers the application layout file in detail.</p>
+<p>The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> covers the application layout file in detail.</p>
 <p>If you use the Sass mixins provided by the rails_layout gem in the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file, there’s no need to use Foundation classes directly in the application layout (Foundation classes will be applied to the <span class="caps">HTML</span> element <code>main</code>).</p>
 <p>If you don’t use Sass mixins, you can add Foundation classes directly to the application layout. For example, you might set the <code>main</code> element to be twelve columns wide using Foundation classes:</p>
 <pre>
@@ -291,7 +291,7 @@ $(function() {
 <p>The navigation partial includes layout and Foundation classes needed to produce a responsive navigation bar.</p>
 <p>The responsive navigation bar adjusts to different browser widths. At small sizes, the navigation links will disappear and be replaced by an icon labeled “Menu.” Clicking the icon will reveal a vertical menu of navigation links. The navigation menu is a great demonstration of the ability of Zurb Foundation to adjust to the small screen size of a tablet or smartphone.</p>
 <p>If you’d like to add a site name or logo to the tutorial application, you can replace the link helper <code>&lt;%= link_to 'Home', root_path %&gt;</code>. It is important to preserve the enclosing layout and classes, even if you don’t want to display a site name or logo. The enclosing layout is used to generate the navigation menu when the browser window shrinks to accommodate a tablet or smartphone.</p>
-<p>You’ll see we wrap the nested partial <code>render 'layouts/navigation_links'</code> with a Foundation class to complete the navigation bar.</p>
+<p>We wrap the nested partial <code>render 'layouts/navigation_links'</code> with a Foundation class to complete the navigation bar.</p>
 <h2>Navigation Links Partial</h2>
 <p>The file <strong>app/views/layouts/_navigation_links.html.erb</strong> is very simple:</p>
 <pre>
@@ -324,7 +324,7 @@ lib/templates/erb/scaffold/_form.html.erb
 </pre>
 <p>Here the SimpleForm gem uses the <code>rails generate</code> command to create files for initialization and localization (language translation). SimpleForm can be customized with settings in the initialization file.</p>
 <h2>Themes for Zurb Foundation</h2>
-<p>Frameworks such as Foundation are intended to provide the building blocks for a custom website design. If you’ve got strong design skills, or can partner with an experienced web designer, you can develop a custom design that expresses the purpose and motif of your website. If you don’t have the skill or resources to customize the design, you can use the generic Foundation design (it’s better than nothing).</p>
+<p>Frameworks such as Foundation are intended to provide the building blocks for a custom website design. If you’ve got strong design skills, or can partner with an experienced web designer, you can develop a custom design that expresses the purpose and motif of your website. If you don’t have the skill or resources to customize the design, you can use the generic Foundation design.</p>
 <p>An alternative is to purchase a pre-designed theme for your website. Here are sites that offer pre-built themes for sale:</p>
 <ul>
 <li><a href="https://railsthemes.com/">RailsThemes</a></li>
@@ -344,7 +344,7 @@ lib/templates/erb/scaffold/_form.html.erb
 <p>Zurb has a community forum for questions and answers:</p>
 <ul>
 <li><a href="http://foundation.zurb.com/forum">Foundation Forum</a></li>
-</ul><p><a href="http://stackoverflow.com/questions/tagged/zurb-foundation">Stack Overflow</a> is a popular site for questions and answers.</p>
+</ul><p><a href="http://stackoverflow.com/questions/tagged/zurb-foundation">Stack Overflow</a> is a popular site for questions and answers about Zurb Foundation.</p>
 <h2>Did You Like the Article?</h2>
 <p>Was the article useful to you? Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
 <p>You can also find me on <a href="https://www.facebook.com/daniel.kehoe.sf">Facebook</a> or <a href="https://plus.google.com/+DanielKehoe/">Google+</a>.</p>
