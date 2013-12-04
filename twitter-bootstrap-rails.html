@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Twitter Bootstrap and Rails &#183; RailsApps</title>
+    <title>Bootstrap and Rails &#183; RailsApps</title>
     <link href="https://plus.google.com/117374718581973393536" rel="publisher" />
     <link rel="stylesheet" href="http://railsapps.github.io/css/bootstrap.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="http://railsapps.github.io/css/screen.css" type="text/css" charset="utf-8" />
@@ -38,261 +38,306 @@
   <div class="container">
 
     <div class="content wikistyle gollum textile">
-      <h1>Twitter Bootstrap and Rails</h1>
+      <h1>Bootstrap and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 11 October 2012</em></p>
-<p>Twitter Bootstrap and Rails. Shows how to set up a Rails 4.0 application to use Twitter Bootstrap. You can use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling and JavaScript effects to your application. <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> “front-end” frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention that have made Rails popular for server-side (“back-end”) development. Twitter Bootstrap is the most popular of the various <span class="caps">CSS</span> front-end frameworks.</p>
-<p>The <a href="http://railsapps.github.io/rails-bootstrap/">Rails and Bootstrap</a> example application from the RailsApps project is available on GitHub.</p>
-<h2>Tutorial</h2>
-<p><a href="https://tutorials.railsapps.org/rails-bootstrap"><img src="http://railsapps.github.io/images/rails-bootstrap-cover-250px.png" title="Rails Bootstrap" alt="Rails Bootstrap"></a></p>
-<p>For greater depth, purchase the full-length <a href="https://tutorials.railsapps.org/rails-bootstrap">Rails and Bootstrap</a> tutorial. This article is an excerpt.</p>
+<p><em>Last updated 3 December 2013</em></p>
+<p>Twitter Bootstrap 3.0 and Rails 4.0. Shows how to set up a Rails application to use Bootstrap (formerly Twitter Bootstrap). <a href="http://getbootstrap.com/">Bootstrap</a> provides <span class="caps">CSS</span> stylesheets and JavaScript code for the visual design of websites. <span class="caps">CSS</span> stylesheets are used for design and layout. JavaScript code combines user interaction elements and visual effects for features such as tabs, modal windows, and image carousels. Bootstrap is a framework for client-side (browser-based or “front end”) development, much like Ruby on Rails is a framework for server-side development.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
 <h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation” so you can stay up to date. Each is accompanied by a tutorial so there is no mystery code. Support for the project, including all the example applications and free articles, comes from subscribers. Please purchase a subscription to the <a href="https://tutorials.railsapps.org">RailsApps tutorials</a> if you can.</p>
+<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation” so you can stay up to date. Each is accompanied by a tutorial so there is no mystery code. Support for the project, including the example applications and the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool, comes from subscribers to the <a href="https://tutorials.railsapps.org">RailsApps tutorials</a>.</p>
 <h2>What’s Here</h2>
+<p>This article covers:</p>
 <ul>
-<li>Installation</li>
+<li>Installation of Bootstrap</li>
 	<li>Application Layout</li>
+	<li>Flash Messages</li>
 	<li>Navigation Links</li>
-	<li>Rails Flash Messages</li>
 	<li>Form Builders</li>
-</ul><h2>Installing Twitter Bootstrap</h2>
-<p>There are four steps to adding Twitter Bootstrap to a Rails application:</p>
+</ul><p>In summary, here are the steps for adding Bootstrap to a Rails application:</p>
 <ul>
 <li>add a gem to the <strong>Gemfile</strong>
 </li>
 	<li>modify the file <strong>app/assets/javascripts/application.js</strong> to add Bootstrap’s Javascript files</li>
-	<li>add the file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> to add Bootstrap’s <span class="caps">CSS</span> files</li>
+	<li>add the file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> to add Bootstrap’s <span class="caps">CSS</span> files</li>
 	<li>modify the file <strong>app/views/layouts/application.html.erb</strong> to change the application layout</li>
-	<li>include Twitter Bootstrap <span class="caps">CSS</span> styling in Rails flash messages</li>
-</ul><h3>Choose a Twitter Bootstrap Gem</h3>
-<p>Twitter Bootstrap is best installed using one of several Ruby gems. Twitter Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/">Sass</a> language. Learn more from the article <a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Twitter Bootstrap, Less, and Sass: Understanding Your Options for Rails 3.1</a>.</p>
-<table>
-<tr>
-<th>Gem </th>
-		<th>Author </th>
-		<th>Comments </th>
-	</tr>
-<tr>
-<td> <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> </td>
-		<td> Thomas McDonald </td>
-		<td> <strong><span class="caps">RECOMMENDED</span></strong> </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/jlong/sass-twitter-bootstrap">sass-twitter-bootstrap</a> </td>
-		<td> John W. Long and others </td>
-		<td> Sass </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/metaskills/less-rails-bootstrap">less-rails-bootstrap</a> </td>
-		<td> Ken Collins </td>
-		<td> <span class="caps">LESS</span> </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/seyhunak/twitter-bootstrap-rails">twitter-bootstrap-rails</a> </td>
-		<td> Seyhun Akyürek </td>
-		<td> <span class="caps">LESS</span> </td>
-	</tr>
-</table><h3>Install the Bootstrap-Sass Gem</h3>
-<p>Sass is a default for <span class="caps">CSS</span> development in Rails so I recommend installing Thomas McDonald’s <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> gem.</p>
+</ul><p>Complete instructions are below.</p>
+<h2>Choose a Bootstrap Gem</h2>
+<p><a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Several Ruby gems</a> offer Bootstrap packaged for the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>. Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/">Sass</a> language. Sass is a default for Rails, so I recommended using the gem <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> from Thomas McDonald.</p>
+<p>We’ll add the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to generate files for an application layout, navigation links, and flash messages styled with Bootstrap <span class="caps">CSS</span> classes and layout.</p>
 <p>In your <strong>Gemfile</strong>, add:</p>
 <pre>
 gem 'bootstrap-sass'
+group :development do
+  gem 'rails_layout'
+end
 </pre>
-<p>and run <code>$ bundle install</code>.</p>
-<h3>Include the Twitter Bootstrap Javascript</h3>
-<p>Include the Twitter Bootstrap Javascript files by modifying the file <strong>app/assets/javascripts/application.js</strong>:</p>
+<p>You don’t need the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem deployed to production, so put it in the <code>development</code> group.</p>
+<p>Run <code>$ bundle install</code> in the Terminal.</p>
+<p>We’ll use the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to set up Bootstrap and create the files we need.</p>
+<h2>Rails Layout Gem</h2>
+<p>The generator provided by the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem will set up Bootstrap and add the necessary files. Run:</p>
+<pre>
+$ rails generate layout bootstrap3 --force
+</pre>
+<p>With the <code>--force</code> argument, the rails_layout gem will replace existing files.</p>
+<p>The rails_layout gem will rename the file:</p>
+<ul>
+<li><strong>app/assets/stylesheets/application.css</strong></li>
+</ul><p>to:</p>
+<ul>
+<li><strong>app/assets/stylesheets/application.css.scss</strong></li>
+</ul><p>It will create the file:</p>
+<ul>
+<li><strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong></li>
+</ul><p>and modify the file:</p>
+<ul>
+<li><strong>app/assets/javascripts/application.js</strong></li>
+</ul><p>The gem will create or replace four files:</p>
+<ul>
+<li><strong>app/views/layouts/application.html.erb</strong></li>
+	<li><strong>app/views/layouts/_messages.html.erb</strong></li>
+	<li><strong>app/views/layouts/_navigation.html.erb</strong></li>
+	<li><strong>app/views/layouts/_navigation_links.html.erb</strong></li>
+</ul><p>Let’s examine the files to see how our application is configured to use Bootstrap.</p>
+<h2>Renaming the application.css File</h2>
+<p>The rails_layout gem renamed the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>. Note the <strong>.scss</strong> file extension. This will allow you to use the advantages of the Sass syntax for your application stylesheet. Stylesheets can use variables, mixins, and nesting of <span class="caps">CSS</span> rules when you use Sass. For more on the advantages of Sass and how to use it, see the <a href="http://sass-lang.com/">Sass</a> website or the <a href="http://railscasts.com/episodes/268-sass-basics">Sass Basics RailsCast</a> from Ryan Bates.</p>
+<p>Sass has two syntaxes. The most commonly used syntax is known as “<span class="caps">SCSS</span>” (for “Sassy <span class="caps">CSS</span>”), and is a superset of the <span class="caps">CSS</span> syntax. This means that every valid <span class="caps">CSS</span> stylesheet is valid <span class="caps">SCSS</span> as well. You can use Sass in any file by adding the file extension <strong>.scss</strong>. The asset pipeline will preprocess any <strong>.scss</strong> file and expand it as standard <span class="caps">CSS</span>.</p>
+<p>Before you continue, make sure that the rails_layout gem renamed the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>. Otherwise you won’t see the <span class="caps">CSS</span> styling we will apply.</p>
+<h2>The application.css.scss File</h2>
+<p>The Rails asset pipeline will concatenate and compact <span class="caps">CSS</span> stylesheets for delivery to the browser when you add them to this directory:</p>
+<ul>
+<li><strong>app/assets/stylesheets/</strong></li>
+</ul><p>The asset pipeline helps web pages display faster in the browser by combining all <span class="caps">CSS</span> files into a single file (it does the same for JavaScript).</p>
+<p>Let’s examine the file <strong>app/assets/stylesheets/application.css.scss</strong>:</p>
+<pre>
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+</pre>
+<p>The <strong>app/assets/stylesheets/application.css.scss</strong> file serves two purposes.</p>
+<p>First, you can add any <span class="caps">CSS</span> rules to the file that you want to use anywhere on your website. Second, the file serves as a <em>manifest</em>, providing a list of files that should be concatenated and included in the single <span class="caps">CSS</span> file that is delivered to the browser.</p>
+<h4>A Global <span class="caps">CSS</span> File</h4>
+<p>Any <span class="caps">CSS</span> style rules that you add to the <strong>app/assets/stylesheets/application.css.scss</strong> file will be available to any view in the application. You could use this file for any style rules that are used on every page, particularly simple utility rules such as highlighting or resetting the appearance of links. However, in practice, you are more likely to modify the style rules provided by Bootstrap. These modifications don’t belong in the <strong>app/assets/stylesheets/application.css.scss</strong> file; they will go in the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file.</p>
+<p>In general, it’s bad practice to place a lot of <span class="caps">CSS</span> in the <strong>app/assets/stylesheets/application.css.scss</strong> file (unless your <span class="caps">CSS</span> is very limited). Instead, structure your <span class="caps">CSS</span> in multiple files. <span class="caps">CSS</span> that is used on only a single page can go in a file with a name that matches the page. Or, if sections of the website share common elements, such as themes for landing pages or administrative pages, make a file for each theme. How you organize your <span class="caps">CSS</span> is up to you; the asset pipeline lets you organize your <span class="caps">CSS</span> so it is easier to develop and maintain. Just add the files to the <strong>app/assets/stylesheets/</strong> folder.</p>
+<h4>A Manifest File</h4>
+<p>It’s not obvious from the name of the <strong>app/assets/stylesheets/application.css.scss</strong> file that it serves as a <em>manifest file</em> as well as a location for miscellaneous <span class="caps">CSS</span> rules. For most websites, you can ignore its role as a manifest file. In the comments at the top of the file, the <code>*= require_self</code> directive indicates that any <span class="caps">CSS</span> in the file should be delivered to the browser. The <code>*= require_tree .</code> directive (note the Unix “dot operator”) indicates any files in the same folder, including files in subfolders, should be combined into a single file for delivery to the browser.</p>
+<p>If your website is large and complex, you can remove the <code>*= require_tree .</code> directive and specify individual files to be included in the file that is generated by the asset pipeline. This gives you the option of reducing the size of the application-wide <span class="caps">CSS</span> file that is delivered to the browser. For example, you might segregate a file that includes <span class="caps">CSS</span> that is used only in the site’s administrative section. In general, only large and complex sites need this optimization. The speed of rendering a single large <span class="caps">CSS</span> file is faster than fetching multiple files.</p>
+<h2>Bootstrap JavaScript</h2>
+<p>Bootstrap provides both <span class="caps">CSS</span> and JavaScript libraries.</p>
+<p>Like the <strong>application.css.scss</strong> file, the <strong>application.js</strong> file is a manifest that allows a developer to designate the JavaScript files that will be combined for delivery to the browser.</p>
+<p>The rails_layout gem modified the file <strong>app/assets/javascripts/application.js</strong> to include the Bootstrap JavaScript libraries:</p>
 <pre>
 //= require jquery
 //= require jquery_ujs
+//= require turbolinks
 //= require bootstrap
 //= require_tree .
 </pre>
-<h3>Using Sass</h3>
-<p>The <a href="http://sass-lang.com/">Sass</a> language is the default for <span class="caps">CSS</span> development in Rails.</p>
-<p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
-<p>This will allow you to use the advantages of the Sass syntax and features for your application stylesheet. For more on the advantages of Sass and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics">Sass Basics</a> RailsCast from Ryan Bates.</p>
-<h3>Import the Twitter Bootstrap <span class="caps">CSS</span>
-</h3>
-<p>Next, import the Twitter Bootstrap <span class="caps">CSS</span> files. You can modify the  <strong>app/assets/stylesheets/application.css.scss</strong> file to import Bootstrap. However, I recommend adding a new file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> file. You may wish to modify the Twitter Bootstrap <span class="caps">CSS</span> rules; you can do so in the <strong>application.css.scss</strong> file but placing changes to Twitter Bootstrap <span class="caps">CSS</span> rules in the <strong>bootstrap_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
-<p>The file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong> is automatically included and compiled into your Rails application.css file by the <code>*= require_tree .</code> statement in the <strong>app/assets/stylesheets/application.css.scss</strong> file.</p>
-<p>Add the file <strong>app/assets/stylesheets/bootstrap_and_overrides.css.scss</strong>:</p>
+<p>It added the directive <code>//= require bootstrap</code> before <code>//= require_tree .</code>.</p>
+<h2>Bootstrap <span class="caps">CSS</span>
+</h2>
+<p>The rails_layout gem added a file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> containing:</p>
 <pre>
+// import the CSS framework
 @import "bootstrap";
-body { padding-top: 60px; }
-@import "bootstrap-responsive";
+.
+.
+.
 </pre>
-<p>The file will import both basic Bootstrap <span class="caps">CSS</span> rules and the Bootstrap rules for responsive design (allowing the layout to resize for various devices and screen sizes).</p>
-<p>The <span class="caps">CSS</span> rule <code>body { padding-top: 60px; }</code> applies an additional <span class="caps">CSS</span> rule to accommodate the “Bootstrap Navigation Bar” heading created by the <code>navbar-fixed-top class</code> in the <code>header</code> tag in the layout below.</p>
-<h2>Default Application Layout</h2>
-<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout. Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. If you are using Haml, the file will be <strong>app/views/layouts/application.html.haml</strong>.</p>
-<p>You’ll want to add navigation links, flash messages for errors and notifications, and <span class="caps">CSS</span> styling using Twitter Bootstrap.</p>
-<p>See the article <a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> for an explanation of what should be included in the default application layout.</p>
-<h3>Default Application Layout with Twitter Bootstrap</h3>
-<p>Twitter Bootstrap provides additional elements for a more complex page layout.</p>
-<p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
+<p>The file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> is automatically included and compiled into your Rails application.css file by the <code>*= require_tree .</code> statement in the <strong>app/assets/stylesheets/application.css.scss</strong> file.</p>
+<p>The <code>@import "bootstrap";</code> directive will import the Bootstrap <span class="caps">CSS</span> rules from the Bootstrap gem.</p>
+<p>You could add the Bootstrap <code>@import</code> code to the <strong>app/assets/stylesheets/application.css.scss</strong> file. However, it is better to have a separate <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file. You may wish to modify the Bootstrap <span class="caps">CSS</span> rules; placing changes to Bootstrap <span class="caps">CSS</span> rules in the <strong>framework_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
+<h4>Overriding Bootstrap Classes</h4>
+<p>The file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> shows how to customize Bootstrap classes.</p>
+<pre>
+// make all images responsive by default
+img {
+  @extend .img-responsive;
+  margin: 0 auto;
+  }
+// override for the 'Home' navigation link
+.navbar-brand {
+  font-size: inherit;
+  }
+</pre>
+<p>The first style rule make all images responsive by default. With this rule, all images will resize to accommodate browser windows of varying widths. We use the Sass <code>@extend</code> directive to add the Bootstrap class <code>img-responsive</code> to the <span class="caps">HTML</span> <code>img</code> element.</p>
+<p>The second style rule will force the font size of a <code>navbar-brand</code> navigation link to be the same size as the fonts specified in an enclosing container.</p>
+<h4>Using Sass Mixins with Bootstrap</h4>
+<p>In addition to the simple <code>@import "bootstrap";</code> directive, the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> contains a collection of Sass mixins. These are examples that you can remove.</p>
+<p>You can use Sass mixins to map Bootstrap class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply <span class="caps">CSS</span> style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with Bootstrap, Zurb Foundation, or other front-end frameworks. The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> explains how to use Sass mixins.</p>
+<h2>Using Bootstrap <span class="caps">CSS</span> Classes</h2>
+<p>Now that you’ve installed Bootstrap, you have a rich library of interactive effects you can add to your pages.</p>
+<p>Take a look at the <a href="http://getbootstrap.com/">Bootstrap documentation</a> to see your options. Here are just a few examples:</p>
+<ul>
+<li><a href="http://getbootstrap.com/css/#buttons">buttons</a></li>
+	<li><a href="http://getbootstrap.com/javascript/#modals">modal dialogs</a></li>
+	<li><a href="http://getbootstrap.com/javascript/#carousel">carousel</a></li>
+</ul><p>At a simpler level, Bootstrap provides a collection of carefully-crafted styling rules in the form of <span class="caps">CSS</span> classes. These are building blocks you use for page layout and typographic styling. For example, Bootstrap gives you <span class="caps">CSS</span> classes to set up rows and columns in a grid system.</p>
+<p>Let’s take a closer look at the Bootstrap grid system.</p>
+<h4>Bootstrap Grid</h4>
+<p>By default, the Bootstrap grid is 940 pixels wide. Two grids are available; “small” for browsers less than 768 pixels in width, and “large” for all others. Start by designing for the small screen with the classes prefixed “small”; then add classes prefixed “large” to change the layout for a large screen. The layout will change when the browser width is less than 768 pixels wide.</p>
+<p>The grid gives you 12 columns by default. You can organize your layout in horizontal and vertical sections using <code>row</code> and <code>columns</code> classes.</p>
+<p>For example, you could use Bootstrap grid classes to set up an application layout with a footer as a row with two sections:</p>
+<pre>
+&lt;footer class="row"&gt;
+  &lt;section class="col-md-4"&gt;
+    Copyright 2013
+  &lt;/section&gt;
+  &lt;section class="col-md-8"&gt;
+    All rights reserved.
+  &lt;/section&gt;
+&lt;/footer&gt;
+</pre>
+<p>The Bootstrap <code>row</code> class will create a horizontal break. The footer will contain two side-by-side sections. The first will be four columns wide; the second will be eight columns wide.</p>
+<p>To better understand the grid system with all its options, see the <a href="http://getbootstrap.com/css/#grid">documentation for the Bootstrap Grid</a>.</p>
+<h2>Application Layout with Bootstrap</h2>
+<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout. Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
+<p>Let’s look at the application layout file created by the rails_layout gem:</p>
+<p>Examine the contents of the file <strong>app/views/layouts/application.html.erb</strong>:</p>
 <pre>
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Rails Bootstrap" %&gt;&lt;/title&gt;
-    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Rails Bootstrap" %&gt;"&gt;
-    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
-    &lt;%= javascript_include_tag "application" %&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Learn Rails" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Learn Rails" %&gt;"&gt;
+    &lt;%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" =&gt; true %&gt;
+    &lt;%= javascript_include_tag "application", "data-turbolinks-track" =&gt; true %&gt;
     &lt;%= csrf_meta_tags %&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;header class="navbar navbar-fixed-top"&gt;
-      &lt;nav class="navbar-inner"&gt;
-        &lt;div class="container"&gt;
-          &lt;%= render 'layouts/navigation' %&gt;
-        &lt;/div&gt;
-      &lt;/nav&gt;
+    &lt;header&gt;
+      &lt;%= render 'layouts/navigation' %&gt;
     &lt;/header&gt;
     &lt;main role="main"&gt;
-      &lt;div class="container"&gt;
-        &lt;div class="content"&gt;
-           &lt;div class="row"&gt;
-            &lt;div class="span12"&gt;
-              &lt;%= render 'layouts/messages' %&gt;
-              &lt;%= yield %&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;footer&gt;
-          &lt;/footer&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+       &lt;%= render 'layouts/messages' %&gt;
+       &lt;%= yield %&gt;
     &lt;/main&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-<h2>Navigation Links</h2>
-<p>You’ll likely need navigation links on every page of your web application. You’ll want a link for Home. If you’ve implemented authentication using <a href="https://github.com/plataformatec/devise">Devise</a> you’ll want links for Login, Logout, and Sign Up. If you’re using <a href="https://github.com/intridea/omniauth">OmniAuth</a> for authentication, you’ll want links for Login and Logout. If you’ve got pages for an administrator, you may want a link for Admin.</p>
-<p>You can add navigation links directly to your application layout file but many developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
-<h3>Example Navigation Links for Devise</h3>
-<p>Create the file <strong>app/views/layouts/_navigation.html.erb</strong> for the navigation links.</p>
-<p>If you’re using Devise, use these navigation links:</p>
+<p>The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> covers the application layout file in detail.</p>
+<p>If you use the Sass mixins provided by the rails_layout gem in the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file, there’s no need to use Bootstrap classes directly in the application layout (Bootstrap classes will be applied to the <span class="caps">HTML</span> element <code>main</code>).</p>
+<p>If you don’t use Sass mixins, you can add Bootstrap classes directly to the application layout. For example, you might set the <code>main</code> element to be twelve columns wide using a Bootstrap class:</p>
 <pre>
-&lt;%= link_to "Home", root_path, :class =&gt; 'brand' %&gt;
-&lt;ul class="nav"&gt;
-  &lt;% if user_signed_in? %&gt;
-    &lt;li&gt;
-    &lt;%= link_to('Logout', destroy_user_session_path, :method=&gt;'delete') %&gt;
-    &lt;/li&gt;
-  &lt;% else %&gt;
-    &lt;li&gt;
-    &lt;%= link_to('Login', new_user_session_path)  %&gt;
-    &lt;/li&gt;
-  &lt;% end %&gt;
-  &lt;% if user_signed_in? %&gt;
-    &lt;li&gt;
-    &lt;%= link_to('Edit account', edit_user_registration_path) %&gt;
-    &lt;/li&gt;
-  &lt;% else %&gt;
-    &lt;li&gt;
-    &lt;%= link_to('Sign up', new_user_registration_path)  %&gt;
-    &lt;/li&gt;
-  &lt;% end %&gt;
-&lt;/ul&gt;
+&lt;main role="main" class="col-md-12"&gt;
 </pre>
-<h2>Flash Messages with Twitter Bootstrap</h2>
+<p>See the <a href="http://foundation.zurb.com/docs/components/grid.html">documentation for the Bootstrap Grid</a>.</p>
+<h2>Flash Messages with Bootstrap</h2>
 <p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a <em>flash message</em>. The name comes from the term “flash memory” and should not be confused with the “Adobe Flash” web development platform that was once popular for animated websites.</p>
-<p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Twitter Bootstrap provides a base class <code>.alert</code> with additional classes <code>.alert-success</code> and <code>.alert-error</code> (see the <a href="http://twitter.github.com/bootstrap/components.html#alerts">Bootstrap documentation on alerts</a>). A bit of parsing is required to get a Rails “notice” message to be styled with the Twitter Bootstrap “alert-success” style. Any other message, including a Rails “alert” message, will be styled with the Twitter Bootstrap “alert-error” style.</p>
-<p>By default, Twitter Bootstrap applies a green background to <code>.alert-success</code> and a red background to <code>.alert-error</code>. Twitter Bootstrap provides a third class <code>.alert-info</code> with a blue background. With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>.alert-info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
-<p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
-<p>For <span class="caps">CSS</span> styling with Twitter Bootstrap, create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
+<p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Bootstrap provides a base class <code>alert</code> with additional classes <code>alert-success</code> and <code>alert-danger</code>. A bit of parsing is required to get a Rails “notice” message to be styled with the Bootstrap <code>alert-success</code> style. Any other message, including a Rails “alert” message, will be styled with the Bootstrap <code>alert-danger</code> style.</p>
+<p>By default, Bootstrap applies a green background to <code>alert-success</code> and a red background to <code>alert-danger</code>. Bootstrap provides additional classes <code>alert-info</code> (blue) and <code>alert-warning</code> (yellow). With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Bootstrap <code>info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
+<p>You can include code to display flash messages directly in your application layout file or you can create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
+<p>The application layout file includes a messages partial:</p>
 <pre>
+&lt;%= render 'layouts/messages' %&gt;
+</pre>
+<p>Examine the file <strong>app/views/layouts/_messages.html.erb</strong>:</p>
+<pre>
+&lt;%# Rails flash messages styled for Twitter Bootstrap 3.0 %&gt;
 &lt;% flash.each do |name, msg| %&gt;
   &lt;% if msg.is_a?(String) %&gt;
-    &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "error" %&gt;"&gt;
-      &lt;a class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/a&gt;
+    &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "danger" %&gt;"&gt;
+      &lt;button type="button" class="close" data-dismiss="alert" aria-hidden="true"&gt;&amp;times;&lt;/button&gt;
       &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
     &lt;/div&gt;
   &lt;% end %&gt;
 &lt;% end %&gt;
 </pre>
-<p>For an alternative that accommodates four different flash message types (success, error, alert, notice), see an example of <a href="https://gist.github.com/3344628">Rails Flash Messages using Twitter Bootstrap</a>.</p>
-<p>Twitter Bootstrap provides a jQuery plugin named bootstrap-alert that makes it easy to dismiss flash messages with a click. The data-dismiss property displays an “x” that enables the close functionality. Note that Twitter Bootstrap uses the <span class="caps">HTML</span> entity “&amp;#215;” instead of the keyboard letter “x”.</p>
-<h2>Form Builders</h2>
-<p>Most Rails applications use forms; most Rails developers use a form builder gem to simplify and improve upon the default Rails form helpers. Twitter Bootstrap provides styling for forms. Two popular form builder gems offer options to generate the markup required to display the Twitter Bootstrap form styling:</p>
-<table>
-<tr>
-<th>Gem </th>
-		<th>Author </th>
-	</tr>
-<tr>
-<td> <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm</a> </td>
-		<td> Plataformatec </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/justinfrench/formtastic">Formtastic</a> </td>
-		<td> Justin French </td>
-	</tr>
-</table><h3>Installing SimpleForm with Twitter Bootstrap</h3>
-<p>I recommend <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm</a>.</p>
-<p>You’ll need the following gem in your Gemfile:</p>
+<p>We use <code>each</code> to iterate through the flash hash, retrieving a <code>name</code> and <code>msg</code> that are passed to a block to be output as a string. The expression <code>if msg.is_a?(String)</code> serves as a test to make sure we only display messages that are strings. We construct a div that applies Bootstrap <span class="caps">CSS</span> styling around the message. Bootstrap recognizes a class <code>alert</code> to construct an alert box. A class of either <code>alert-success</code> or <code>alert-danger</code> styles the message. Rails <code>notice</code> messages will get styled with the Bootstrap <code>alert-success</code> class. Any other Rails messages, including <code>alert</code> messages, will get styled with the Bootstrap <code>alert-danger</code> class.</p>
+<p>We use the Rails <code>content_tag</code> view helper to create a div containing the message.</p>
+<p>Finally, we create a “close” icon by applying the class <code>close</code> to a link. We use the <span class="caps">HTML</span> entity <code>&amp;times;</code> (a big “X” character) for the link; it could be the word “close” or anything else we like. Bootstrap’s integrated JavaScript library will hide the alert box when the “close” link is clicked.</p>
+<p>Bootstrap provides <a href="http://foundation.zurb.com/docs/components/alert-boxes.html">detailed documentation</a> if you want to change the styling of the alert boxes.</p>
+<h2>Navigation Partial with Bootstrap</h2>
+<p>You’ll likely need navigation links on every page of your web application.</p>
+<p>The layout and styling required for the Bootstrap navigation bar are in the navigation partial file.</p>
+<p>The application layout file includes a navigation partial:</p>
 <pre>
-gem 'simple_form', '&gt;= 3.0.0.rc'
+&lt;%= render 'layouts/navigation' %&gt;
 </pre>
-<p>If you haven’t already, run:</p>
+<p>Examine the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
 <pre>
-$ bundle install
-</pre>
-<p>Run the generator to install SimpleForm with a Twitter Bootstrap option:</p>
-<pre>
-$ rails generate simple_form:install --bootstrap
-</pre>
-<p>which installs several configuration files:</p>
-<pre>
-config/initializers/simple_form.rb
-config/initializers/simple_form_bootstrap.rb
-config/locales/simple_form.en.yml
-lib/templates/erb/scaffold/_form.html.erb
-</pre>
-<p>SimpleForm can be customized with settings in the initialization file.</p>
-<h3>Base Errors Helper for SimpleForm</h3>
-<p>SimpleForm provides excellent handling of validation errors for any attributes of a model. However, some applications set model errors that are not matched to a specific form field. These are called “base errors.” For example, a model might set an error like this: <code>errors.add :base, "Credit card declined"</code>. SimpleForm does not provide a helper to display base errors; if your application sets base errors, you’ll need to add the following view helper.</p>
-<p>Add this view helper to <strong>app/helpers/application_helper.rb</strong>:</p>
-<pre>
-module ApplicationHelper
-
-  def display_base_errors resource
-    return '' if (resource.errors.empty?) or (resource.errors[:base].empty?)
-    messages = resource.errors[:base].map { |msg| content_tag(:p, msg) }.join
-    html = &lt;&lt;-HTML
-    &lt;div class="alert alert-error alert-block"&gt;
-      &lt;button type="button" class="close" data-dismiss="alert"&gt;&amp;#215;&lt;/button&gt;
-      #{messages}
+&lt;%# navigation styled for Twitter Bootstrap 3.0 %&gt;
+&lt;nav class="navbar navbar-inverse navbar-fixed-top"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="navbar-header"&gt;
+      &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"&gt;
+        &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;%= link_to 'Home', root_path, class: 'navbar-brand' %&gt;
     &lt;/div&gt;
-    HTML
-    html.html_safe
-  end
-
-end
+    &lt;div class="collapse navbar-collapse"&gt;
+      &lt;ul class="nav navbar-nav"&gt;
+        &lt;%= render 'layouts/navigation_links' %&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
 </pre>
-<p>Use the view helper in a form like this:</p>
+<p>The navigation partial includes layout and Bootstrap classes needed to produce a responsive navigation bar.</p>
+<p>The responsive navigation bar adjusts to different browser widths. At small sizes, the navigation links will disappear and be replaced by a menu icon. Clicking the icon will reveal a vertical menu of navigation links. The navigation menu is a great demonstration of the ability of Bootstrap to adjust to the small screen size of a tablet or smartphone.</p>
+<p>If you’d like to add a site name or logo to the tutorial application, you can replace the link helper <code>&lt;%= link_to 'Home', root_path, class: 'navbar-brand' %&gt;</code>.</p>
+<p>We wrap the nested partial <code>render 'layouts/navigation_links'</code> with Bootstrap layout and classes to complete the navigation bar.</p>
+<h2>Navigation Links Partial</h2>
+<p>The file <strong>app/views/layouts/_navigation_links.html.erb</strong> is very simple:</p>
 <pre>
-&lt;%= simple_form_for ... %&gt;
-  &lt;%= f.error_notification %&gt;
-  &lt;%= display_base_errors resource %&gt;
-.
-.
-.
-&lt;% end %&gt;
+&lt;%# add navigation links to this file %&gt;
 </pre>
-<p>This extra helper is not needed in most applications; however, it can save time-consuming debugging for applications that use the <code>errors.add :base</code> method.</p>
-<h2>Options and Improvements</h2>
-<p>This introduction gives you the basics of Twitter Bootstrap with Rails, including messages for alerts and notices, a navigation bar, and an application layout using Twitter Bootstrap.</p>
-<p>There’s much more you can do with Twitter Bootstrap. The in-depth <a href="https://tutorials.railsapps.org/rails-bootstrap">Rails and Bootstrap</a> tutorial shows how you can use a variety of design elements from Twitter Bootstrap.</p>
-<p>Additional features implemented in the tutorial include:</p>
+<p>You can add links to this file, for example:</p>
+<pre>
+&lt;%# add navigation links to this file %&gt;
+&lt;li&gt;&lt;%= link_to 'About', page_path('about') %&gt;&lt;/li&gt;
+&lt;li&gt;&lt;%= link_to 'Contact', new_contact_path %&gt;&lt;/li&gt;
+</pre>
+<p>The navigation links partial is simply a list of navigation links. It doesn’t require additional <span class="caps">CSS</span> styling. By separating the links from the styling that creates the navigation bar, we segregate the code that is unique to Bootstrap. In the future, if the Bootstrap layout or <span class="caps">CSS</span> classes change, we can make changes without touching the navigation links.</p>
+<h2>SimpleForm with Bootstrap</h2>
+<p>Rails provides a set of view helpers for forms. They are described in the <a href="http://guides.rubyonrails.org/form_helpers.html">RailsGuides: Rails Form Helpers</a> document. Many developers use an alternative set of form helpers named SimpleForm, provided by the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>. The SimpleForm helpers are more powerful, easier to use, and offer an option for styling with Bootstrap 2.3.</p>
+<p>As of early December 2013, SimpleForm 3.0 does not fully support Bootstrap 3.0. See the SimpleForm issue <a href="https://github.com/rafaelfranca/simple_form-bootstrap/pull/28">Bootstrap 3 support</a>.</p>
+<h2>Themes for Bootstrap</h2>
+<p>Frameworks such as Bootstrap are intended to provide the building blocks for a custom website design. If you’ve got strong design skills, or can partner with an experienced web designer, you can develop a custom design that expresses the purpose and motif of your website. If you don’t have the skill or resources to customize the design, you can use the generic Bootstrap design.</p>
+<p>An alternative is to find or purchase a pre-designed theme for your website. <a href="http://www.themesforbootstrap.com/">Themes for Bootstrap</a> aggregates themes from many sites.</p>
+<p>You can adapt free themes from sites such as:</p>
 <ul>
-<li>Image carousel</li>
-	<li>Survey form</li>
-	<li>Google spreadsheet datastore</li>
-	<li>Modal window</li>
-</ul><p>With the <a href="https://tutorials.railsapps.org/rails-bootstrap">Rails and Bootstrap</a> tutorial, you’ll build a real-world application using Rails and Twitter Bootstrap.</p>
+<li><a href="http://code.divshot.com/themestrap/">Themestrap</a></li>
+	<li><a href="http://startbootstrap.com/">Start Bootstrap</a></li>
+	<li><a href="http://bootswatch.com/">Bootswatch</a></li>
+</ul><p>You can adapt themes that you purchase on marketplaces such as:</p>
+<ul>
+<li><a href="https://wrapbootstrap.com/">WrapBootstrap</a></li>
+</ul><p>Here’s more on <a href="http://pnthr.com/integrating-a-wrapbootstrap-theme-into-a-rails-app/">How to integrate a WrapBootstrap theme into a Rails app</a>.</p>
+<p>A few consultants offer Bootstrap themes that are specifically designed for Rails projects:</p>
+<ul>
+<li>
+<a href="http://dresssed.com/">Dressed Rails Themes</a> from Marc-André Cournoyer</li>
+	<li>
+<a href="http://railsview.com/">Railsview.com</a> from Richardson Dackam</li>
+</ul><p>You can design your own themes with drag-and-drop design tools such as:</p>
+<ul>
+<li><a href="http://www.divshot.com/">Divshot</a></li>
+	<li><a href="https://jetstrap.com/">Jetstrap</a></li>
+	<li><a href="http://www.layoutit.com/">LayoutIt</a></li>
+</ul><h2>Resources for Bootstrap</h2>
+<p>The <a href="http://bootsnipp.com/">Bootsnipp</a> gallery offers dozens of Bootstrap-based design elements and code examples.</p>
+<p>You can find many more resources for Bootstrap on the <a href="http://www.bootstraphero.com/the-big-badass-list-of-twitter-bootstrap-resources/">Big Badass List of Useful Twitter Bootstrap Resources</a> at the Bootstrap Hero site.</p>
+<h2>Getting Help for Bootstrap</h2>
+<p><a href="http://stackoverflow.com/questions/tagged/twitter-bootstrap">Stack Overflow</a> is a popular site for questions and answers about Bootstrap.</p>
+<h2>Did You Like the Article?</h2>
+<p>Was the article useful to you? Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
+<p>You can also find me on <a href="https://www.facebook.com/daniel.kehoe.sf">Facebook</a> or <a href="https://plus.google.com/+DanielKehoe/">Google+</a>.</p>
     </div><!-- class="content" -->
 
     <div class="comments" id="comments">

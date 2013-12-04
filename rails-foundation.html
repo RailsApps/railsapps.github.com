@@ -40,7 +40,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Foundation and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 24 November 2013</em></p>
+<p><em>Last updated 3 December 2013</em></p>
 <p>Foundation 5.0 and Rails 4.0. Shows how to set up a Rails application to use Zurb Foundation. <a href="http://foundation.zurb.com/">Zurb Foundation</a> provides a standard grid for layout plus dozens of reusable components for common page elements such as navigation, forms, and buttons. More importantly, it gives <span class="caps">CSS</span> the kind of structure and convention that makes Rails popular for back-end development. Developers use Foundation to add attractive <span class="caps">CSS</span> styling and JavaScript effects to web applications.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
@@ -171,7 +171,7 @@ $(function() {
 <p>You could add the Foundation <code>@import</code> code to the <strong>app/assets/stylesheets/application.css.scss</strong> file. However, it is better to have a separate <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file. You may wish to modify the Foundation <span class="caps">CSS</span> rules; placing changes to Foundation <span class="caps">CSS</span> rules in the <strong>framework_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
 <h4>Using Sass Mixins with Foundation</h4>
 <p>In addition to the simple <code>@import "foundation";</code> directive, the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> contains a collection of Sass mixins. These are examples that you can remove.</p>
-<p>You can use Sass mixins to map Foundation class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply <span class="caps">CSS</span> style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with either Twitter Bootstrap or Zurb Foundation. The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> explains how to use Sass mixins with Foundation.</p>
+<p>You can use Sass mixins to map Foundation class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply <span class="caps">CSS</span> style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with Zurb Foundation, Bootstrap, or other front-end frameworks. The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> explains how to use Sass mixins.</p>
 <h2>Using Foundation <span class="caps">CSS</span> Classes</h2>
 <p>Now that you’ve installed Zurb Foundation, you have a rich library of interactive effects you can add to your pages.</p>
 <p>Take a look at the <a href="http://foundation.zurb.com/docs/">Foundation documentation</a> to see your options. Here are just a few examples:</p>
@@ -198,6 +198,7 @@ $(function() {
 <p>The Foundation <code>row</code> class will create a horizontal break. The footer will contain two side-by-side sections. The first will be four columns wide; the second will be eight columns wide.</p>
 <p>To better understand the grid system with all its options, see the <a href="http://foundation.zurb.com/docs/components/grid.html">documentation for the Foundation Grid</a>.</p>
 <h2>Application Layout with Zurb Foundation</h2>
+<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout. Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
 <p>Let’s look at the application layout file created by the rails_layout gem:</p>
 <p>Examine the contents of the file <strong>app/views/layouts/application.html.erb</strong>:</p>
 <pre>
@@ -247,6 +248,10 @@ $(function() {
 </pre>
 <p>The <a href="http://modernizr.com/">Modernizr</a> JavaScript library is a prerequisite for Foundation. Modernizr makes it possible for older browsers to use HTML5 elements. It also detects mobile devices. It must be loaded before Foundation, so it is included above <code>javascript_include_tag "application"</code>.</p>
 <h2>Flash Messages with Zurb Foundation</h2>
+<p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a <em>flash message</em>. The name comes from the term “flash memory” and should not be confused with the “Adobe Flash” web development platform that was once popular for animated websites.</p>
+<p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Foundation provides a base class <code>alert-box</code> with additional classes <code>success</code> and <code>alert</code>. A bit of parsing is required to get a Rails “notice” message to be styled with the Foundation <code>success</code> style. Any other message, including a Rails “alert” message, will be styled with the Foundation <code>alert</code> style.</p>
+<p>By default, Foundation applies a green background to <code>success</code> and a red background to <code>alert</code>. Foundation provides additional classes <code>info</code> (blue) and <code>warning</code> (amber). With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Foundation <code>info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
+<p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
 <p>The application layout file includes a messages partial:</p>
 <pre>
 &lt;%= render 'layouts/messages' %&gt;
