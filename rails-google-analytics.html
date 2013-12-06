@@ -40,7 +40,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Analytics for Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 June 2013</em></p>
+<p><em>Last updated 5 December 2013</em></p>
 <p>Website analytics for Rails applications. Google Analytics and alternatives. How to install Google Analytics with Rails 4.0 Turbolinks. Event tracking and more with Segment.io, Mixpanel, KISSmetrics and others.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
@@ -115,35 +115,23 @@
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Learning Rails" %&gt;&lt;/title&gt;
-    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Learning Rails" %&gt;"&gt;
-    &lt;%= stylesheet_link_tag "application", :media =&gt; "all" %&gt;
-    &lt;%= javascript_include_tag "application" %&gt;
+    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Learn Rails" %&gt;&lt;/title&gt;
+    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Learn Rails" %&gt;"&gt;
+    &lt;%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" =&gt; true %&gt;
+    &lt;%= javascript_include_tag "application", "data-turbolinks-track" =&gt; true %&gt;
     &lt;%= csrf_meta_tags %&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;header class="navbar navbar-fixed-top"&gt;
-      &lt;nav class="navbar-inner"&gt;
-        &lt;div class="container"&gt;
-          &lt;%= render 'layouts/navigation' %&gt;
-        &lt;/div&gt;
-      &lt;/nav&gt;
+    &lt;header&gt;
+      &lt;%= render 'layouts/navigation' %&gt;
     &lt;/header&gt;
     &lt;main role="main"&gt;
-      &lt;div class="container"&gt;
-        &lt;div class="content"&gt;
-           &lt;div class="row"&gt;
-            &lt;div class="span12"&gt;
-              &lt;%= render 'layouts/messages' %&gt;
-              &lt;%= yield %&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;footer&gt;
-            &lt;%= render 'layouts/footer' %&gt;
-          &lt;/footer&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+       &lt;%= render 'layouts/messages' %&gt;
+       &lt;%= yield %&gt;
     &lt;/main&gt;
+    &lt;footer&gt;
+      &lt;%= render 'layouts/footer' %&gt;
+    &lt;/footer&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
@@ -177,10 +165,10 @@ $ git commit -m "assets compiled for Heroku"
 <pre>
 $ git push heroku master
 </pre>
-<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0, your Gemfile must include the <a href="https://github.com/heroku/rails_on_heroku">rails_on_heroku</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
+<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0, your Gemfile must include the <a href="https://github.com/heroku/rails_12factor">rails_12factor</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
 <p>Log into your Google Analytics account to see real-time tracking of visits to your website. Under “Standard Reports” see “Real-Time Overview.” You’ll see data within seconds after visiting any page.</p>
 <h2>Segment.io</h2>
-<p><a href="https://segment.io/">Segment.io</a> is a subscription service that gathers analytics data from your application and sends it to dozens of different services, including Google Analytics. The service is free for low- and medium- volume websites, providing one million <span class="caps">API</span> calls (page views or events) per month at no cost. There is no charge to sign up for the service.</p>
+<p><a href="https://segment.io/">Segment.io</a> is a subscription service that gathers analytics data from your application and sends it to dozens of different services, including Google Analytics. The service is free for low- and medium- volume websites, providing 100,000 <span class="caps">API</span> calls (page views or events) per month at no cost. There is no charge to sign up for the service.</p>
 <p>Using Segment.io means you install one JavaScript library and get access to reports from dozens of analytics services. You can <a href="https://segment.io/docs/integrations">see a list of supported services</a>. The company offers helpful advice about <a href="https://segment.io/academy/">which analytics tools to choose from</a>. For low-volume sites, many of the analytics services are free, so Segment.io makes it easy to experiment and learn about the available analytics tools. The service is fast and reliable, so there’s no downside to trying it.</p>
 <p>If you’ve followed instructions above and installed Google Analytics using the conventional approach, be sure to remove the code before installing Segment.io.</p>
 <h3>Accounts You Will Need</h3>
@@ -193,34 +181,34 @@ $ git push heroku master
 <p>Add the file <strong>app/assets/javascripts/segmentio.js</strong> to include the Segment.io JavaScript snippet:</p>
 <pre>
 // Create a queue, but don't obliterate an existing one!
-var analytics = analytics || [];
+window.analytics || (window.analytics = []);
 
-(function () {
+// A list of all the methods in analytics.js that we want to stub.
+window.analytics.methods = ['identify', 'track', 'trackLink', 'trackForm',
+'trackClick', 'trackSubmit', 'page', 'pageview', 'ab', 'alias', 'ready',
+'group', 'on', 'once', 'off'];
 
-  // A list of all the methods we want to generate queueing stubs for.
-  var methods = [
-    'identify', 'track', 'trackLink', 'trackForm', 'trackClick', 'trackSubmit',
-    'page', 'pageview', 'ab', 'alias', 'ready', 'group'
-  ];
-
-  // For each of our methods, generate a queueing method that pushes arrays of
-  // arguments onto our `analytics` queue. The first element of the array
-  // is always the name of the analytics.js method itself (eg. `track`), so that
-  // we know where to replay them when analytics.js finally loads.
-  var factory = function (method) {
-    return function () {
-      analytics.push([method].concat(Array.prototype.slice.call(arguments, 0)));
-    };
+// Define a factory to create queue stubs. These are placeholders for the
+// "real" methods in analytics.js so that you never have to wait for the library
+// to load asynchronously to actually track things. The `method` is always the
+// first argument, so we know which method to replay the call into.
+window.analytics.factory = function (method) {
+  return function () {
+    var args = Array.prototype.slice.call(arguments);
+    args.unshift(method);
+    window.analytics.push(args);
+    return window.analytics;
   };
+};
 
-  for (var i = 0; i &lt; methods.length; i++) {
-    analytics[methods[i]] = factory(methods[i]);
-  }
-
-}());
+// For each of our methods, generate a queueing method.
+for (var i = 0; i &lt; window.analytics.methods.length; i++) {
+  var method = window.analytics.methods[i];
+  window.analytics[method] = window.analytics.factory(method);
+}
 
 // Define a method that will asynchronously load analytics.js from our CDN.
-analytics.load = function(apiKey) {
+window.analytics.load = function (apiKey) {
 
   // Create an async script element for analytics.js based on your API key.
   var script = document.createElement('script');
@@ -234,9 +222,16 @@ analytics.load = function(apiKey) {
   firstScript.parentNode.insertBefore(script, firstScript);
 };
 
+// Add a version so we can keep track of what's out there in the wild.
+window.analytics.SNIPPET_VERSION = '2.0.6';
+
 // Load analytics.js with your API key, which will automatically load all of the
 // analytics integrations you've turned on for your account. Boosh!
-analytics.load('YOUR_API_TOKEN');
+window.analytics.load('YOUR_API_TOKEN');
+
+// Make our first page call to load the integrations. If you'd like to manually
+// name or tag the page, edit or move this call to use your own tags.
+window.analytics.page();
 </pre>
 <p>If you previously installed the file <strong>app/assets/javascripts/analytics.js.coffee</strong> in the Google Analytics instructions above, be sure to remove it. Also remove the footer file and partial from the default application layout if you haven’t already.</p>
 <p>The Segment.io website offers a minified version of the snippet for faster page loads. You can use it if you wish; the non-minified version is provided above so you can read the code and comments.</p>
@@ -245,12 +240,13 @@ analytics.load('YOUR_API_TOKEN');
 <h3>Page View Tracking with Turbolinks</h3>
 <p>To make sure every page is tracked when Rails 4.0 Turbolinks is used, append the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
 <pre>
-$(document).on('page:load', function() {
-  analytics.pageview();
-});
+// accommodate Turbolinks and track page views
+$(document).on('ready page:change', function() {
+  analytics.page();
+})
 </pre>
-<p>This code should follow the <code>analytics.load('YOUR_API_TOKEN');</code> statement at the end of the file.</p>
-<p>Turbolinks fires a <code>page:load</code> event when a page has been replaced. The code listens for the <code>page:load</code> event and calls the Segment.io <code>pageview()</code> method.</p>
+<p>Add this code at the end of the file.</p>
+<p>Turbolinks fires a <code>page:change</code> event when a page has been replaced. The code listens for the <code>page:change</code> event and calls the Segment.io <code>analytics.page()</code> method. This code will work even on pages that are not visited through Turbolinks (for example, the first page visited).</p>
 <h3>Event Tracking</h3>
 <p>Segment.io gives us a convenient method to track page views. Page view tracking gives us data about our website traffic, showing visits to the site and information about our visitors.</p>
 <p>It’s also important to learn about a visitor’s activity on the site. Site usage data helps us improve the site and determine whether we are meeting our business goals. This requires tracking events as well as page views.</p>
@@ -261,18 +257,27 @@ $(document).on('page:load', function() {
 </ul><p>Link tracking can be used to send data to Segment.io whenever a visitor clicks a link. It can be useful if you add links to external sites and want to track click-throughs. The method can also be used to track clicks that don’t result in a new page view, such as changing elements on a page.</p>
 <p>The <code>trackForm</code> method is very useful for event tracking as many of the significant events on a website are the result of form submissions. Append it to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
 <pre>
-$(document).on('page:load', function() {
+// accommodate Turbolinks
+// track page views and form submissions
+$(document).on('ready page:change', function() {
+  console.log('page loaded');
+  analytics.page();
   analytics.trackForm($('#new_visitor'), 'Signed Up');
+  analytics.trackForm($('#new_contact'), 'Contact Request');
 })
 </pre>
+<p>I’ve included a <code>console.log('page loaded')</code> statement so you can check the browser JavaScript console to see if the code runs as expected.</p>
 <p>The <code>trackForm</code> method takes two parameters, the ID attribute of a form and a name given to the event. Here we assume we have a form with the ID attribute “new_visitor” and we want to identify the event as “Signed Up.”</p>
 <p>With Google Analytics enabled as a Segment.io integration, you’ll see form submissions appear in the Google Analytics Real-Time report, under the “Events” heading.</p>
 <p>You can read more about the Segment.io JavaScript library in the <a href="https://segment.io/libraries/analytics.js">Segment.io documentation</a>.</p>
 <h3>Segment.io Integrations</h3>
 <p>After installing the Segment.io JavaScript snippet in your application, visit the Segment.io integrations page to select the services that will receive your data. When you <a href="https://segment.io/">log in to Segment.io</a> you will see a link to “Integrations” in the navigation bar.</p>
-<p>Each service requires a different configuration information. At a minimum, you’ll have to provide an account identifier or <span class="caps">API</span> key that you obstained when you signed up for the service.</p>
-<p>For Google Analytics, enter your Google Analytics tracking id. It looks like <code>UA-XXXXXXX-XX</code>. Check the box to “Enable Client-Side Universal Analytics.” Accept the other defaults.</p>
+<p>Each service requires a different configuration information. At a minimum, you’ll have to provide an account identifier or <span class="caps">API</span> key that you obtained when you signed up for the service.</p>
+<p>For Google Analytics, enter your Google Analytics tracking id. It looks like <code>UA-XXXXXXX-XX</code>.</p>
 <p>Click “Dashboard” in the navigation bar so you can monitor data sent to Segment.io from your application.</p>
+<p>When you test the application locally, you should see the results of page visits and form submissions within seconds in the Segment.io Dashboard.</p>
+<p>With Google Analytics enabled as a Segment.io integration, you’ll see form submissions appear in the Google Analytics Real-Time report, under the “Events” heading.</p>
+<p>Note that Google doesn’t process their data in real-time in most of its reports. Data only appears immediately in the Google Analytics Real-Time report. Other Google Analytics reports, such as the Audience report, won’t show data immediately. Check the next day for updated reports.</p>
 <h3>Deploy</h3>
 <p>If you wish to deploy to Heroku, you must recompile assets and commit to the Git repo:</p>
 <pre>
@@ -286,7 +291,7 @@ $ git commit -m "assets compiled for Heroku"
 <pre>
 $ git push heroku master
 </pre>
-<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0, your Gemfile must include the <a href="https://github.com/heroku/rails_on_heroku">rails_on_heroku</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
+<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0, your Gemfile must include the <a href="https://github.com/heroku/rails_12factor">rails_12factor</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
 <p>You should see real-time tracking of data sent to Segment.io in the Segment.io dashboard.</p>
 <p>Log into your Google Analytics account to see real-time tracking of visits to your website. Under “Standard Reports” see “Real-Time Overview.” You’ll see data within seconds after visiting any page.</p>
 <h2>Credits</h2>
