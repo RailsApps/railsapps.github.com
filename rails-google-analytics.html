@@ -40,8 +40,8 @@
     <div class="content wikistyle gollum textile">
       <h1>Analytics for Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 5 December 2013</em></p>
-<p>Website analytics for Rails applications. Google Analytics and alternatives. How to install Google Analytics with Rails 4.0 Turbolinks. Event tracking and more with Segment.io, Mixpanel, KISSmetrics and others.</p>
+<p><em>Last updated 18 December 2013</em></p>
+<p>Website analytics for Rails applications. Google Analytics and alternatives. How to install Google Analytics with Rails Turbolinks. Event tracking and more with Segment.io, Mixpanel, KISSmetrics and others.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
 <p><a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter for updates and timely Rails tips.</p>
@@ -50,8 +50,8 @@
 <h2>Introduction</h2>
 <p>Analytics services provide reports about website traffic and usage.</p>
 <p>You’ll use the data to increase visits and improve your site. Analytics close the communication loop with your users; your website puts out a message and analytics reports show how visitors respond.</p>
-<p>Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this article you’ll learn how to add Google Analytics to a Rails application, specifically addressing a known problem with the Rails 4.0 Turbolinks feature.</p>
-<p>We’ll look at two ways to install Google Analytics for Rails 4.0. First we’ll look at a conventional approach and see how Google Analytics works. Then I’ll show an alternative approach using the <a href="https://segment.io/">Segment.io</a> service. The service provides an <span class="caps">API</span> to send analytics data to dozens of different services, including Google Analytics.</p>
+<p>Google Analytics is the best known tracking service. It is free, easy to use, and familiar to most web developers. In this article you’ll learn how to add Google Analytics to a Rails application, specifically addressing a known problem with the Rails Turbolinks feature.</p>
+<p>We’ll look at two ways to install Google Analytics for Rails 4.0 and newer versions. First we’ll look at a conventional approach and see how Google Analytics works. Then I’ll show an alternative approach using the <a href="https://segment.io/">Segment.io</a> service. The service provides an <span class="caps">API</span> to send analytics data to dozens of different services, including Google Analytics.</p>
 <h2>Google Analytics</h2>
 <p>A conventional installation of Google Analytics requires adding JavaScript to every page of the Rails application. This can be accomplished by modfiying the application layout and adding additional JavaScript as an application asset.</p>
 <p>First let’s look at how Google Analytics works.</p>
@@ -70,8 +70,8 @@
 	<li>use Rack middleware such as Lee Hambley’s <a href="https://github.com/leehambley/rack-google-analytics">rack-google-analytics</a> gem</li>
 	<li>add the Google tracking code to the asset pipeline</li>
 </ol><p>All these approaches work for Rails 3.2. It doesn’t matter to Google how the script gets injected.</p>
-<h3>Google Analytics for Rails 4.0</h3>
-<p>Google Analytics doesn’t work for a Rails 4.0 web application. To be more precise, it won’t work for all pages. It can be made to work with a workaround.</p>
+<h3>Google Analytics for Rails 4.0 and Newer Versions</h3>
+<p>Google Analytics doesn’t work for a Rails 4.0 or newer web applications. To be more precise, it won’t work for all pages. It can be made to work with a workaround.</p>
 <p>Rails 4.0 introduced a feature named <a href="https://github.com/rails/turbolinks/">Turbolinks</a> to increase the perceived speed of a website.</p>
 <p>Turbolinks makes an application appear faster by only updating the body and the title of a page when a link is followed. By not reloading the full page, Turbolinks reduces browser rendering time and trips to the server.</p>
 <p>With Turbolinks, the user follows a link and sees a new page but Google Analytics thinks the page hasn’t changed because a new page has not been loaded.</p>
@@ -137,7 +137,7 @@
 </pre>
 <p>You can learn more about the default application layout in an article about the <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Default Application Layout</a>.</p>
 <p>With the footer partial in place, the Google Analytics JavaScript library will be added on every page.</p>
-<p>Ordinarily, that’s all you need to send tracking data to Google Analytics. But we have to add a Turbolinks workaround for Rails 4.0.</p>
+<p>Ordinarily, that’s all you need to send tracking data to Google Analytics. But we have to add a Turbolinks workaround for Rails 4.0 or newer versions.</p>
 <h3>Turbolinks Workaround</h3>
 <p>With Turbolinks, the Google Analytics JavaScript library is not sufficient to record a page visit for every page update. We’ll add a Turbolinks workaround.</p>
 <p>The workaround should be loaded on every page and it can be included as an application-wide asset (it will load before Turbolinks).</p>
@@ -165,7 +165,7 @@ $ git commit -m "assets compiled for Heroku"
 <pre>
 $ git push heroku master
 </pre>
-<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0, your Gemfile must include the <a href="https://github.com/heroku/rails_12factor">rails_12factor</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
+<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0 and newer versions, your Gemfile must include the <a href="https://github.com/heroku/rails_12factor">rails_12factor</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
 <p>Log into your Google Analytics account to see real-time tracking of visits to your website. Under “Standard Reports” see “Real-Time Overview.” You’ll see data within seconds after visiting any page.</p>
 <h2>Segment.io</h2>
 <p><a href="https://segment.io/">Segment.io</a> is a subscription service that gathers analytics data from your application and sends it to dozens of different services, including Google Analytics. The service is free for low- and medium- volume websites, providing 100,000 <span class="caps">API</span> calls (page views or events) per month at no cost. There is no charge to sign up for the service.</p>
@@ -238,7 +238,7 @@ window.analytics.page();
 <p>You <strong>must replace</strong> <code>YOUR_API_TOKEN</code> with your Segment.io <span class="caps">API</span> token. You can find the <span class="caps">API</span> token on your “Settings” page when you <a href="https://segment.io/">log in to Segment.io</a> (it is labelled “Your <span class="caps">API</span> Key”).</p>
 <p>The manifest directive <code>//= require_tree .</code> in the file <strong>app/assets/javascripts/application.js</strong> insures that the Segment.io JavaScript snippet is included in the concatenated application JavaScript file. If you’ve removed the <code>//= require_tree .</code> directive, you’ll have to add a directive to include the <strong>app/assets/javascripts/segmentio.js</strong> file.</p>
 <h3>Page View Tracking with Turbolinks</h3>
-<p>To make sure every page is tracked when Rails 4.0 Turbolinks is used, append the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
+<p>To make sure every page is tracked when Rails Turbolinks is used, append the following JavaScript to the <strong>app/assets/javascripts/segmentio.js</strong> file:</p>
 <pre>
 // accommodate Turbolinks and track page views
 $(document).on('ready page:change', function() {
@@ -291,7 +291,7 @@ $ git commit -m "assets compiled for Heroku"
 <pre>
 $ git push heroku master
 </pre>
-<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0, your Gemfile must include the <a href="https://github.com/heroku/rails_12factor">rails_12factor</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
+<p>See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails and Heroku</a> for more on deploying to Heroku. For Rails 4.0 and newer versions, your Gemfile must include the <a href="https://github.com/heroku/rails_12factor">rails_12factor</a> gem to serve assets from the Rails asset pipeline; our analytics JavaScript won’t work without the gem.</p>
 <p>You should see real-time tracking of data sent to Segment.io in the Segment.io dashboard.</p>
 <p>Log into your Google Analytics account to see real-time tracking of visits to your website. Under “Standard Reports” see “Real-Time Overview.” You’ll see data within seconds after visiting any page.</p>
 <h2>Credits</h2>
