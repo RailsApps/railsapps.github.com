@@ -63,7 +63,7 @@
 	<li>modify the file <strong>app/views/layouts/application.html.erb</strong> to change the application layout</li>
 </ul><p>Complete instructions are below.</p>
 <h2>Choose a Bootstrap Gem</h2>
-<p><a href="http://rubysource.com/twitter-bootstrap-less-and-sass-understanding-your-options-for-rails-3-1/">Several Ruby gems</a> offer Bootstrap packaged for the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>. Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/">Sass</a> language. Sass is a default for Rails, so I recommended using the gem <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> from Thomas McDonald.</p>
+<p>Bootstrap can be installed using either its native <a href="http://lesscss.org/"><span class="caps">LESS</span> <span class="caps">CSS</span></a> language or the <a href="http://sass-lang.com/">Sass</a> language. Sass is a default for Rails, and the gem <a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a> is the <a href="https://github.com/thomas-mcdonald/bootstrap-sass/issues/481">official Sass port of Bootstrap</a>. Using a gem means you’ll install Bootstrap into the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>.</p>
 <p>We’ll add the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to generate files for an application layout, navigation links, and flash messages styled with Bootstrap <span class="caps">CSS</span> classes and layout.</p>
 <p>In your <strong>Gemfile</strong>, add:</p>
 <pre>
@@ -304,9 +304,24 @@ img {
 &lt;li&gt;&lt;%= link_to 'Contact', new_contact_path %&gt;&lt;/li&gt;
 </pre>
 <p>The navigation links partial is simply a list of navigation links. It doesn’t require additional <span class="caps">CSS</span> styling. By separating the links from the styling that creates the navigation bar, we segregate the code that is unique to Bootstrap. In the future, if the Bootstrap layout or <span class="caps">CSS</span> classes change, we can make changes without touching the navigation links.</p>
-<h2>SimpleForm with Bootstrap</h2>
-<p>Rails provides a set of view helpers for forms. They are described in the <a href="http://guides.rubyonrails.org/form_helpers.html">RailsGuides: Rails Form Helpers</a> document. Many developers use an alternative set of form helpers named SimpleForm, provided by the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>. The SimpleForm helpers are more powerful, easier to use, and offer an option for styling with Bootstrap 2.3.</p>
-<p>As of early December 2013, SimpleForm 3.0 does not fully support Bootstrap 3.0. See the SimpleForm issue <a href="https://github.com/rafaelfranca/simple_form-bootstrap/pull/28">Bootstrap 3 support</a>.</p>
+<h2>Form Helpers</h2>
+<p>Rails provides a set of view helpers for forms. They are described in the <a href="http://guides.rubyonrails.org/form_helpers.html">RailsGuides: Rails Form Helpers</a> document. Many developers use an alternative set of form helpers named SimpleForm, provided by the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>. The SimpleForm helpers are more powerful, easier to use, and offer an option for styling with Bootstrap.</p>
+<p>The <a href="http://simple-form-bootstrap.plataformatec.com.br/">SimpleForm and Twitter Bootstrap Demo</a> shows how the form helpers work with Bootstrap 2.3.</p>
+<p>In your Gemfile, add:</p>
+<p><code>@</code> ruby<br>
+gem ‘simple_form’, github: ‘wtfiwtz/simple_form_bootstrap3’<br><code>@</code></p>
+<p>I recommend using a <a href="https://github.com/wtfiwtz/simple_form_bootstrap3">fork of the simple_form gem</a> pending support of Bootstrap 3 in the SimpleForm gem (see an <a href="https://github.com/rafaelfranca/simple_form-bootstrap/pull/28">issue</a>).</p>
+<p>Run <code>$ bundle install</code>.</p>
+<p>Next, run a generator to install SimpleForm with a Bootstrap 3 option:</p>
+<p><code>@</code> console<br>
+$ rails generate simple_form:install —bootstrap3<br><code>@</code></p>
+<p>This installs several configuration files:</p>
+<p><code>@</code> console<br>
+config/initializers/simple_form.rb<br>
+config/initializers/simple_form_bootstrap3.rb<br>
+config/locales/simple_form.en.yml<br>
+lib/templates/erb/scaffold/_form.html.erb<br><code>@</code></p>
+<p>Here the SimpleForm gem uses the generator command to create files for initialization and localization (language translation). SimpleForm can be customized with settings in the initialization file.</p>
 <h2>Themes for Bootstrap</h2>
 <p>Frameworks such as Bootstrap are intended to provide the building blocks for a custom website design. If you’ve got strong design skills, or can partner with an experienced web designer, you can develop a custom design that expresses the purpose and motif of your website. If you don’t have the skill or resources to customize the design, you can use the generic Bootstrap design.</p>
 <p>An alternative is to find or purchase a pre-designed theme for your website. <a href="http://www.themesforbootstrap.com/">Themes for Bootstrap</a> aggregates themes from many sites.</p>
