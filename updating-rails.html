@@ -40,7 +40,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Updating Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 26 June 2013</em></p>
+<p><em>Last updated 28 December 2013</em></p>
 <p>Installing Rails 3.2 and Rails 4.0, how to update Rails versions, and upgrading Rails applications. Instructions and advice.</p>
 <p>If you’re a Rails developer, you really don’t want to replace an old version of Rails with another. Instead, you’ll want to install multiple versions of Rails and switch between them as you step through the process of updating your Rails applications. This article details a process you can use to update any Rails application. I also provide links to address the specifics of <a href="#updating">upgrading from Rails 3.2 to Rails 4.0</a>.</p>
 <p>Before you start, install multiple versions of Rails, as explained in this article:</p>
@@ -86,7 +86,7 @@ $ gem list
 <pre>
 $ rvm use ruby-1.9.3-p392@Rails3.2.12
 $ rails new myapp3.2.12
-$ rvm use ruby-2.0.0@Rails3.2.13
+$ rvm use ruby-2.1.0@Rails3.2.13
 $ rails new myapp3.2.13
 </pre>
 <p>Compare the two applications with a file compare tool.</p>
@@ -111,9 +111,8 @@ $ bundle update rails
 <p>If you have installed rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, you’ll have greater flexibility in maintaining your Rails applications and updating Rails. With rvm, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling and compiling your old gems.</p>
 <p>The article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> shows how to install multiple versions of Ruby and create gemsets for more than one version of Rails.</p>
 <p>Let’s assume you have an application named “myapp” that runs with Ruby 1.9.3-p392 and Rails 3.2.12.</p>
-<p>First, you’ll update it to Ruby 2.0 and Rails 3.2.13, a version of Rails patched for Ruby 2.0.</p>
-<p>Then you’ll upgrade it to Ruby 2.0 and Rails 4.0.</p>
-<p>If you followed the instructions in the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>, you installed Ruby 1.9.3-p392 and Ruby 2.0.0-p195.</p>
+<p>First, you’ll update it to Ruby 2.1 and Rails 3.2.13, a version of Rails patched for Ruby 2.1.</p>
+<p>Then you’ll upgrade it to Ruby 2.1 and Rails 4.0.</p>
 <p>Start the upgrade in the application’s root directory:</p>
 <pre>
 $ cd myapp
@@ -136,10 +135,10 @@ $ bundle install
 $ git checkout -b upgrading
 </pre>
 <p>The command creates a new branch named “upgrading” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with git).</p>
-<h3>Ruby 2.0 and Rails 3.2.13</h3>
-<p>Create a new project-specific gemset for Ruby 2.0 and Rails 3.2.13:</p>
+<h3>Ruby 2.1 and Rails 3.2.13</h3>
+<p>Create a new project-specific gemset for Ruby 2.1 and Rails 3.2.13:</p>
 <pre>
-$ rvm use ruby-2.0.0@Rails3.2.13_myapp --create
+$ rvm use ruby-2.1.0@Rails3.2.13_myapp --create
 $ rvm gemset list
 </pre>
 <p>Check that the only installed gems are those from the global gemset:</p>
@@ -170,10 +169,10 @@ $ bundle update
 <pre>
 $ rails -v
 </pre>
-<p>Test the application and make any changes needed to run it with Ruby 2.0 and Rails 3.2.13.</p>
-<p>You’ll repeat the process for Ruby 2.0 and Rails 4.0.</p>
+<p>Test the application and make any changes needed to run it with Ruby 2.1 and Rails 3.2.13.</p>
+<p>You’ll repeat the process for Ruby 2.1 and Rails 4.0.</p>
 <h3>Git Workflow</h3>
-<p>If your application is running successfully under Ruby 2.0 and Rails 3.2.13, commit any changes.</p>
+<p>If your application is running successfully under Ruby 2.1 and Rails 3.2.13, commit any changes.</p>
 <pre>
 $ git add -A
 $ git commit -m "upgrade to Rails 3.2.13"
@@ -186,10 +185,10 @@ $ git commit -m "upgrade to Rails 3.2.13"
 <pre>
 $ git checkout upgrading
 </pre>
-<h3>Ruby 2.0 and Rails 4.0</h3>
-<p>Create a new project-specific gemset for Ruby 2.0 and Rails 4.0.beta1:</p>
+<h3>Ruby 2.1 and Rails 4.0</h3>
+<p>Create a new project-specific gemset for Ruby 2.1 and Rails 4.0.beta1:</p>
 <pre>
-$ rvm use ruby-2.0.0@Rails4.0_myapp --create
+$ rvm use ruby-2.1.0@Rails4.0_myapp --create
 $ rvm gemset list
 </pre>
 <p>Check that the only installed gems are those from the global gemset:</p>
@@ -227,11 +226,11 @@ $ bundle update
 <pre>
 $ rails -v
 </pre>
-<p>Test the application and make any changes needed to run it with Ruby 2.0 and Rails 4.0.</p>
+<p>Test the application and make any changes needed to run it with Ruby 2.1 and Rails 4.0.</p>
 <p>See the section <a href="#updating">Updating Your Application</a> for links to articles that detail the specifics of upgrading to Rails 4.0.</p>
 <p>You can follow the progress of Rails 4.0 development on the <a href="http://www.edgerails.info/">EdgeRails.info</a> site.</p>
 <h3>Git Workflow</h3>
-<p>If your application is running successfully under Ruby 2.0 and Rails 4.0, commit any changes.</p>
+<p>If your application is running successfully under Ruby 2.1 and Rails 4.0, commit any changes.</p>
 <pre>
 $ git add -A
 $ git commit -m "upgrade to Rails 4.0"

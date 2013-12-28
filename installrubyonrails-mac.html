@@ -40,7 +40,7 @@
     <div class="content wikistyle gollum textile">
       <h1>Install Ruby on Rails · Mac OS X Mavericks</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 18 December 2013</em></p>
+<p><em>Last updated 28 December 2013</em></p>
 <p>Installing Ruby on Rails 4.1 on Mac OS X Mavericks. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.1, the newest version of Rails, on a new install of Mac OS X 10.9 Mavericks.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
@@ -153,7 +153,7 @@ user.email=me@example.com
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p><span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove it. The “system Ruby” will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.0.0-p353 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.1.0 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
@@ -167,7 +167,7 @@ $ \curl -L https://get.rvm.io | bash -s stable --ruby
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.0.0-p353
+$ rvm --default use ruby-2.1.0
 </pre>
 <h4>Installation Troubleshooting and Advice</h4>
 <p>If you have trouble installing Ruby with <span class="caps">RVM</span>, see the article “Installing Ruby” for <a href="http://railsapps.github.io/install-ruby.html#troubleshooting">Installation Troubleshooting and Advice</a>. If you have problems installing <span class="caps">RVM</span>, use <a href="https://www.nitrous.io/">Nitrous.io</a>.</p>
@@ -190,7 +190,7 @@ $ gem -v
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.0.0-p353
+gemsets for ruby-2.1.0
 =&gt; (default)
    global
 </pre>
@@ -270,7 +270,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.0.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.0@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -301,7 +301,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.0.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.0@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -376,7 +376,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </table><h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.0.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.0@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
@@ -384,9 +384,9 @@ $ gem install rails
 $ bundle install
 </pre>
 <h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.0.0@myapp”:</p>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.0@myapp”:</p>
 <pre>
-$ echo "ruby-2.0.0" &gt; .ruby-version
+$ echo "ruby-2.1.0" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
