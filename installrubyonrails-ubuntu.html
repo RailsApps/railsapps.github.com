@@ -111,11 +111,11 @@ gem 'therubyracer'
 <p>Check the installed gem manager version:</p>
 <pre>
 $ gem -v
-2.1.11
+2.2.0
 </pre>
 <p>You should have:</p>
 <ul>
-<li>RubyGems 2.1.11 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
+<li>RubyGems 2.2.0 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
 </li>
 </ul><p>Use <code>gem update --system</code> to upgrade the Ruby gem manager if necessary.</p>
 <h2>
@@ -140,13 +140,13 @@ $ gem list
 <p>A trouble-free development environment requires the newest versions of the default gems.</p>
 <p>Several gems are installed with Ruby or the <span class="caps">RVM</span> default gemset:</p>
 <ul>
-<li>bundler (1.3.5) <a href="https://rubygems.org/gems/bundler">check for newer version</a>
+<li>bundler (1.5.1) <a href="https://rubygems.org/gems/bundler">check for newer version</a>
 </li>
-	<li>bundler-unload (1.0.1) <a href="http://rubygems.org/gems/bundler-unload">check for newer version</a>
+	<li>bundler-unload (1.0.2) <a href="http://rubygems.org/gems/bundler-unload">check for newer version</a>
 </li>
-	<li>rake (10.1.0) <a href="http://rubygems.org/gems/rake">check for newer version</a>
+	<li>rake (10.0.1) <a href="http://rubygems.org/gems/rake">check for newer version</a>
 </li>
-	<li>rubygems-bundler (1.3.3) <a href="http://rubygems.org/gems/rubygems-bundler">check for newer version</a>
+	<li>rubygems-bundler (1.4.2) <a href="http://rubygems.org/gems/rubygems-bundler">check for newer version</a>
 </li>
 	<li>rvm (1.11.3.8) <a href="http://rubygems.org/gems/rvm">check for newer version</a>
 </li>
@@ -160,6 +160,7 @@ $ gem outdated
 $ gem update
 ### list not shown for brevity
 </pre>
+<p>In particular, rake should be updated to version 10.1.1 or newer.</p>
 <h3>Faster Gem Installation</h3>
 <p>By default, when you install gems, documentation files will be installed. Developers seldom use gem documentation files (they’ll browse the web instead). Installing gem documentation files takes time, so many developers like to toggle the default so no documentation is installed.</p>
 <p>Here’s how to speed up gem installation by disabling the documentation step:</p>
@@ -173,7 +174,12 @@ $ echo "gem: --no-document" &gt;&gt; ~/.gemrc
 <h2>Rails Installation Options</h2>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.0.beta1 is the newest pre-release version of Rails. Rails 4.0.2 is the current stable release.</p>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
-<p>Let’s consider the options you have for installing Rails.</p>
+<p>If you install Rails at this point, you will install it into the global gemset.</p>
+<p>Instead, make a gemset just for the current version of Rails:</p>
+<pre>
+$ rvm use ruby-2.1.0@rails4.0 --create
+</pre>
+<p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
 <pre>
 $ gem install rails

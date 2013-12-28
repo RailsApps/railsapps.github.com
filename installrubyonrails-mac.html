@@ -51,13 +51,12 @@
 <p>See the article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a> if you already have Rails installed.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
 <h2>Ruby on Rails for Mac OS X Mavericks</h2>
-<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Mavericks includes the Ruby version Ruby 2.0.0p247 which has a known security vulnerability.</p>
-<p>It is likely you will need to use Ruby 1.9.3 if you are maintaining older Rails applications. And in the future, you are likely to need Ruby 2.1.0 or other versions, as new Ruby versions are released. Even if you are a student and only building new Rails applications, you should be prepared to manage multiple versions of Ruby.</p>
-<p>For these reasons, do not use the system Ruby. Instead, use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
+<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Mavericks includes Ruby 2.0.0p247 which has a known security vulnerability. You should update to Ruby 2.1.0 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
+<p>If you are maintaining older Rails applications, you will likely need to install Ruby 1.9.3. And in the future, you will need to install newer Ruby versions as they are released. Even if you are a student only building new Rails applications, you should be prepared to manage multiple versions of Ruby.</p>
+<p>These are all reasons to use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
 <h3>If You Updated to Mac OS X Mavericks</h3>
 <p>This guide covers installing Ruby and Rails on a Mac with no previous installation of a Rails development environment.</p>
 <p>If you updated to Mavericks from an earlier version of Mac OS X, and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a>. If you previously installed the full Xcode package, you will need to update Xcode to the newest version (Xcode 5.01 or newer).</p>
-<p>Use this article to check if any components of your development environment need to be updated.</p>
 <h3>Use a Ruby Version Manager</h3>
 <p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a>, Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>, or others <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
 <p>Conveniently, you can use <span class="caps">RVM</span> to install Ruby.</p>
@@ -176,11 +175,11 @@ $ rvm --default use ruby-2.1.0
 <p>Check the installed gem manager version:</p>
 <pre>
 $ gem -v
-2.1.11
+2.2.0
 </pre>
 <p>You should have:</p>
 <ul>
-<li>RubyGems 2.1.11 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
+<li>RubyGems 2.2.0 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
 </li>
 </ul><p>Use <code>gem update --system</code> to upgrade the Ruby gem manager if necessary.</p>
 <h2>
@@ -205,13 +204,13 @@ $ gem list
 <p>A trouble-free development environment requires the newest versions of the default gems.</p>
 <p>Several gems are installed with Ruby or the <span class="caps">RVM</span> default gemset:</p>
 <ul>
-<li>bundler (1.3.5) <a href="https://rubygems.org/gems/bundler">check for newer version</a>
+<li>bundler (1.5.1) <a href="https://rubygems.org/gems/bundler">check for newer version</a>
 </li>
 	<li>bundler-unload (1.0.2) <a href="http://rubygems.org/gems/bundler-unload">check for newer version</a>
 </li>
-	<li>rake (0.9.6) <a href="http://rubygems.org/gems/rake">check for newer version</a>
+	<li>rake (10.0.1) <a href="http://rubygems.org/gems/rake">check for newer version</a>
 </li>
-	<li>rubygems-bundler (1.4.1) <a href="http://rubygems.org/gems/rubygems-bundler">check for newer version</a>
+	<li>rubygems-bundler (1.4.2) <a href="http://rubygems.org/gems/rubygems-bundler">check for newer version</a>
 </li>
 	<li>rvm (1.11.3.8) <a href="http://rubygems.org/gems/rvm">check for newer version</a>
 </li>
@@ -225,7 +224,7 @@ $ gem outdated
 $ gem update
 ### list not shown for brevity
 </pre>
-<p>In particular, rake should be updated to version 10.1.0 or newer.</p>
+<p>In particular, rake should be updated to version 10.1.1 or newer.</p>
 <h3>Faster Gem Installation</h3>
 <p>By default, when you install gems, documentation files will be installed. Developers seldom use gem documentation files (they’ll browse the web instead). Installing gem documentation files takes time, so many developers like to toggle the default so no documentation is installed.</p>
 <p>Here’s how to speed up gem installation by disabling the documentation step:</p>
@@ -240,7 +239,11 @@ $ echo "gem: --no-document" &gt;&gt; ~/.gemrc
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.0.beta1 is the newest pre-release version of Rails. Rails 4.0.2 is the current stable release.</p>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
-<p>Let’s consider the options you have for installing Rails.</p>
+<p>Instead, make a gemset just for the current version of Rails:</p>
+<pre>
+$ rvm use ruby-2.1.0@rails4.0 --create
+</pre>
+<p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
 <pre>
 $ gem install rails
