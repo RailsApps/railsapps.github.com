@@ -41,7 +41,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Ruby on Rails with Nitrous.io</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 December 2013</em></p>
+<p><em>Last updated 21 January 2014</em></p>
 <p>All about Ruby on Rails 4.0 on the Nitrous.io hosted development environment.</p>
 <p>With detailed instructions for getting started on <a href="https://www.nitrous.io/">Nitrous.io</a> with Rails including advice to get you fully productive.</p>
 <h4>If You Are New to Rails</h4>
@@ -72,7 +72,7 @@
 <ul>
 <li>
 <span class="caps">SSH</span> access to the shell</li>
-</ul><p>Additionally, with <a href="https://www.nitrous.io/mac">Nitrous for Mac OS X</a>:</p>
+</ul><p>Additionally, with <a href="https://www.nitrous.io/mac">Nitrous Desktop</a>:</p>
 <ul>
 <li>edit files directly with Sublime Text, Textmate or any other application</li>
 </ul><h3>Scope and Limitations</h3>
@@ -110,12 +110,11 @@
 <p>All accounts come with 155 N2O credits, enough for a starter box, for free.</p>
 <p>The company will give you additional N2O for free if you help expand their customer base by inviting friends or social sharing with Twitter.</p>
 <h2>What’ll Cost You</h2>
-<p>The company intends to make money by providing extra memory and file storage.</p>
+<p>The company makes money by providing extra memory and file storage.</p>
 <p>You may find that 750MB of storage is not enough for all your Rails applications. If you’re cloning repositories from your own GitHub account, you may need to rotate projects on and off your Nitrous box to fit the available storage. If that’s inconvenient, purchase more N2O and increase your storage capacity so you can keep a copy of all your repositories on your Nitrous box.</p>
 <p>A compelling reason for purchasing an additional Nitrous box is to configure a second development environment. If you want to restrict sharing and collaboration to certain projects, and not allow your pairing partners access to all your projects, you may need a second box.</p>
 <p>You may want to set up a second box for testing with a different configuration. More commonly, you’ll use <a href="https://rvm.io/"><span class="caps">RVM</span></a> or another Ruby environment manager such as <a href="https://github.com/postmodern/chruby">Chruby</a> or <a href="https://github.com/sstephenson/rbenv">Rbenv</a> to switch among different versions of Ruby on just one box. You could purchase a second box to run a different version of Ruby. More likely, you’d purchase a second box to experiment or troubleshoot issues with your shell environment.</p>
-<p>It will cost you $10.15 (US) per month to purchase a second box with the minimum capacity of 384MB of memory and 750MB of storage. See the <a href="https://www.nitrous.io/pricing">pricing page</a> to calculate how much you’ll spend for other configurations.</p>
-<p>At the time this was written, Nitrous.io was still in beta and not yet selling N2O credits. For now, get extra N2O by helping them promote the service.</p>
+<p>See the <a href="https://www.nitrous.io/pricing">Nitrous.io pricing page</a> to determine how much you’ll spend for additional capacity.</p>
 <h2>Get a Nitrous.io Account</h2>
 <p>Visit the <a href="https://www.nitrous.io/">Nitrous.io</a> website to sign up. You can create an account using your own email address and password or you can establish an account using your GitHub, Google, or LinkedIn account.</p>
 <p>There is no cost to set up an account.</p>
@@ -514,9 +513,9 @@ Hi DanielKehoe! You've successfully authenticated, but GitHub does not provide s
 <p>With <span class="caps">SSH</span> keys saved to your GitHub account, you can use GitHub without entering your username and password every time you push.</p>
 <h2>Text Editing on Mac OS X</h2>
 <p>Nitrous provides a fully functional text editor within the Web <span class="caps">IDE</span> browser. You can use it from any computer, whether Mac, Linux, Windows. If you prefer the Vim text editor, or Emacs, you can use your console to edit text.</p>
-<p>Mac OS X users who prefer full-featured text editors such as Sublime Text or Textmate can download and install Nitrous.IO for Mac.</p>
-<p>The <a href="https://www.nitrous.io/mac">Nitrous.IO for Mac</a> application works like Dropbox, the file hosting service. A folder in your Mac filesystem contains a copy of all the folders and files in the <strong>workspace/</strong> folder of your Nitrous box and automatically synchronizes the files. This means that any application on your Mac can manipulate the files stored on your Nitrous box. And not just text editors; you can use full-featured applications such as Eclipse or RubyMine, or any other application you like.</p>
-<p>Start by downloading the Nitrous.IO for Mac application. After installing the application, it will ask where to mount the Nitrous  <strong>workspace/</strong> folder. You can set your Nitrous username and password and generate and register <span class="caps">SSH</span> keys to set up a secure connection to your Nitrous box.</p>
+<p>Mac OS X users who prefer full-featured text editors such as Sublime Text or Textmate can download and install Nitrous Desktop.</p>
+<p>The <a href="https://www.nitrous.io/mac">Nitrous Desktop</a> application works like Dropbox, the file hosting service. A folder in your Mac filesystem contains a copy of all the folders and files in the <strong>workspace/</strong> folder of your Nitrous box and automatically synchronizes the files. This means that any application on your Mac can manipulate the files stored on your Nitrous box. And not just text editors; you can use full-featured applications such as Eclipse or RubyMine, or any other application you like.</p>
+<p>Start by downloading the Nitrous Desktop application. After installing the application, it will ask where to mount the Nitrous  <strong>workspace/</strong> folder. You can set your Nitrous username and password and generate and register <span class="caps">SSH</span> keys to set up a secure connection to your Nitrous box.</p>
 <p>The Nitrous application is available from your Mac OS X menu bar. You’ll see a listing for your Nitrous box (such as “ruby-uswest”). You can launch the Mac Terminal application from the Nitrous application to access your Nitrous box shell. Or you can launch the Web <span class="caps">IDE</span> from the Nitrous application menu.</p>
 <p>In your Mac OS X home directory, you’ll find a <strong>Nitrous.io/</strong> folder. All the files from your Nitrous box are there.</p>
 <p>Just drag the files from your Mac Finder to your text editor. Or use your text editor to open the files directly.</p>
@@ -697,9 +696,11 @@ Uploading SSH public key /home/action/.ssh/id_rsa.pub... done
 <h3>Your Application’s Secret Token</h3>
 <p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
 <h2>Where to Get Help</h2>
-<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<p><a href="http://help.nitrous.io/">Nitrous.io provides support</a> for users.</p>
+<p>You can also find help on <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
 <h2>Credits</h2>
 <p>Daniel Kehoe wrote the article. Thank you to Erik Trautman of the <a href="http://www.theodinproject.com/">Odin Project</a> for editing and review.</p>
+<p>Get the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> to and <a href="http://railsapps.github.io/">join RailsApps</a> if the article was helpful.</p>
 <h3><a href="http://learn-rails.com/learn-ruby-on-rails.html"><img src="http://railsapps.github.io/images/learn-rails-cover-130x161.jpg" title="Learn Ruby on Rails" alt="Learn Ruby on Rails"></a></h3>
       </div>
       <div class="comments" id="comments">
