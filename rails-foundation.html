@@ -41,14 +41,14 @@
       <div class="content wikistyle gollum textile">
         <h1>Foundation and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 February 2014</em></p>
-<p>Foundation 5.0 and Rails 4.0. Shows how to set up a Rails application to use Zurb Foundation. <a href="http://foundation.zurb.com/">Zurb Foundation</a> provides a standard grid for layout plus dozens of reusable components for page elements such as navigation, forms, and buttons. More importantly, it gives <span class="caps">CSS</span> the kind of structure and convention that makes Rails popular for back-end development. Developers use Foundation to add attractive <span class="caps">CSS</span> styling and JavaScript effects to web applications. If you prefer Bootstrap, see my article on <a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Bootstrap and Rails</a>.</p>
-<p>A complete <a href="https://github.com/RailsApps/rails-foundation">rails-foundation</a> example application is available from the RailsApps project.</p>
+<p><em>Last updated 1 March 2014</em></p>
+<p>Foundation 5.0 and Rails 4.1. How to set up a Rails application with Zurb Foundation. <a href="http://foundation.zurb.com/">Zurb Foundation</a> provides a standard grid for layout plus dozens of reusable components for page elements such as navigation, forms, and buttons. It gives <span class="caps">CSS</span> the kind of structure and convention that makes Rails popular for back-end development. Developers use Foundation to add attractive <span class="caps">CSS</span> styling and JavaScript effects to web applications.</p>
+<p>A complete <a href="https://github.com/RailsApps/rails-foundation">rails-foundation</a> example application is available from the RailsApps project. There’s no need to copy code from this article, just use the <a href="https://github.com/RailsApps/rails-foundation">rails-foundation</a> example application.</p>
 <h4>If You Are New to Rails</h4>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
+<p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is helpful to you, please <a href="http://railsapps.github.io/">join the RailsApps project</a> to support our work.</p>
 <h2>What’s Here</h2>
 <p>This article covers:</p>
 <ul>
@@ -56,8 +56,7 @@
 	<li>Application Layout</li>
 	<li>Flash Messages</li>
 	<li>Navigation Links</li>
-</ul><p>For more, subscribe and get the full-length <a href="http://railsapps.github.io/">Learn Ruby on Rails</a> book which shows how to build an application using Rails and Foundation.</p>
-<p>In summary, here are the steps for adding Foundation to a Rails application:</p>
+</ul><p>In summary, here are the steps for adding Foundation to a Rails application:</p>
 <ul>
 <li>add a gem to the <strong>Gemfile</strong>
 </li>
@@ -67,7 +66,7 @@
 </ul><p>Complete instructions are below.</p>
 <h2>Zurb Foundation Gem</h2>
 <p>Zurb Foundation is packaged as a gem.</p>
-<p>Foundation versions 5.0.1 and 5.0.2 were <a href="https://github.com/zurb/foundation/issues/3642">incompatible with Rails Turbolinks</a> and the Rails asset pipeline. The foundation-rails gem version 5.1.1.0 is incompatible with the Rails asset pipeline. Use foundation-rails gem version 5.0.3.1 pending resolution of the <a href="https://github.com/zurb/foundation/issues/4494">issue</a>.</p>
+<p>The foundation-rails gem version 5.1.1.0 is incompatible with the Rails asset pipeline. Use foundation-rails gem version 5.0.3.1 pending resolution of the <a href="https://github.com/zurb/foundation/issues/4494">issue</a>.</p>
 <p>We’ll use the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to generate files for an application layout, navigation links, and flash messages styled with Foundation <span class="caps">CSS</span> classes and layout.</p>
 <p>In your <strong>Gemfile</strong>, add:</p>
 <pre>
@@ -261,7 +260,7 @@ $(function() {
 &lt;%# Rails flash messages styled for Zurb Foundation %&gt;
 &lt;% flash.each do |name, msg| %&gt;
   &lt;% if msg.is_a?(String) %&gt;
-    &lt;div data-alert class="alert-box round &lt;%= name == :notice ? "success" : "alert" %&gt;"&gt;
+    &lt;div data-alert class="alert-box round &lt;%= name.to_s == 'notice' ? 'success' : 'alert' %&gt;"&gt;
       &lt;%= content_tag :div, msg %&gt;
       &lt;a href="#" class="close"&gt;&amp;times;&lt;/a&gt;
     &lt;/div&gt;

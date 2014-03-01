@@ -41,7 +41,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Bootstrap and Rails</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 16 January 2014</em></p>
+<p><em>Last updated 1 March 2014</em></p>
 <p>Twitter Bootstrap 3.0 and Rails 4.0. Shows how to set up a Rails application to use Bootstrap (formerly Twitter Bootstrap). <a href="http://getbootstrap.com/">Bootstrap</a> provides <span class="caps">CSS</span> stylesheets and JavaScript code for the visual design of websites. <span class="caps">CSS</span> stylesheets are used for design and layout. JavaScript code combines user interaction elements and visual effects for features such as tabs, modal windows, and image carousels. Bootstrap is a framework for client-side (browser-based or “front end”) development, much like Ruby on Rails is a framework for server-side development. If you prefer Foundation, see my article on <a href="http://railsapps.github.io/rails-foundation.html">Foundation and Rails</a>.</p>
 <p>A complete <a href="https://github.com/RailsApps/rails-bootstrap">rails-bootstrap</a> example application is available from the RailsApps project.</p>
 <h4>If You Are New to Rails</h4>
@@ -251,7 +251,7 @@ img {
 &lt;%# Rails flash messages styled for Twitter Bootstrap 3.0 %&gt;
 &lt;% flash.each do |name, msg| %&gt;
   &lt;% if msg.is_a?(String) %&gt;
-    &lt;div class="alert alert-&lt;%= name == :notice ? "success" : "danger" %&gt;"&gt;
+    &lt;div class="alert alert-&lt;%= name.to_s == 'notice' ? "success" : "danger" %&gt;"&gt;
       &lt;button type="button" class="close" data-dismiss="alert" aria-hidden="true"&gt;&amp;times;&lt;/button&gt;
       &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
     &lt;/div&gt;
@@ -266,9 +266,9 @@ img {
 <h4>Beyond Red and Green</h4>
 <p>For simplicity, it’s wise to stick with the Rails convention of using only “alert” and “notice.” However, if you wish, you can accommodate an additional “success” class.</p>
 <p>By default, Bootstrap applies a green background to <code>alert-success</code> and a red background to <code>alert-danger</code>. Bootstrap provides additional classes <code>alert-info</code> (blue) and <code>alert-warning</code> (yellow). With a little hacking, it’s possible to accommodate a Rails flash message with a third name, such as <code>:success</code>. Here’s an example.</p>
-<p>You can replace <code>&lt;%= name == :notice ? "success" : "danger" %&gt;"&gt;</code> with this:</p>
+<p>You can replace <code>&lt;%= name.to_s == 'notice' ? "success" : "danger" %&gt;"&gt;</code> with this:</p>
 <pre>
-&lt;%= name == :success ? "success" : (name == :notice ? "info" : "danger" )%&gt;
+&lt;%= name.to_s == 'notice' ? "success" : (name == :notice ? "info" : "danger" )%&gt;
 </pre>
 <p>This will style any message with the red <code>alert-danger</code> class unless it is “notice” (blue) or “success” (green).</p>
 <h2>Navigation Partial with Bootstrap</h2>
