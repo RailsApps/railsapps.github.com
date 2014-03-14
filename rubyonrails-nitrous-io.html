@@ -41,7 +41,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Ruby on Rails with Nitrous.io</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 February 2014</em></p>
+<p><em>Last updated 14 March 2014</em></p>
 <p>All about Ruby on Rails 4.0 on the Nitrous.io hosted development environment.</p>
 <p>With detailed instructions for getting started on <a href="https://www.nitrous.io/">Nitrous.io</a> with Rails including advice to get you fully productive.</p>
 <h4>If You Are New to Rails</h4>
@@ -210,10 +210,10 @@ workspace
 $ ruby -v
 ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-linux]
 </pre>
-<p>Ruby 2.1.0 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. If Nitrous.io is not up to date, contact support and nag them to update the Ruby version. Or use <span class="caps">RVM</span> to install a newer version yourself.</p>
+<p>Ruby 2.1.1 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. If Nitrous.io is not up to date, contact support and nag them to update the Ruby version. Or use <span class="caps">RVM</span> to install a newer version yourself.</p>
 <p>For a newer version of Ruby, use <span class="caps">RVM</span>:</p>
 <pre>
-$ rvm install 2.1.0
+$ rvm install 2.1.1
 </pre>
 <p>If you need an older version of Ruby, you can install it with <span class="caps">RVM</span>:</p>
 <pre>
@@ -232,7 +232,7 @@ $ rvm list
 
 rvm rubies
 
-=* ruby-2.1.0-p247 [ x86_64 ]
+=* ruby-2.1.1 [ x86_64 ]
 
 # =&gt; - current
 # =* - current &amp;&amp; default
@@ -245,7 +245,7 @@ rvm rubies
 $ rails -v
 Rails 4.0.0
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.3 was current when this was written. If you need a newer version of Rails, you can install it in an <span class="caps">RVM</span> gemset (no need to nag support on this). Details below.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.4 was current when this was written. If you need a newer version of Rails, you can install it in an <span class="caps">RVM</span> gemset (no need to nag support on this). Details below.</p>
 <p>When a new version of Rails is released, you can update the system-level Rails gem, or you can install Rails into an <span class="caps">RVM</span> gemset. It is best to install Rails into project-specific gemsets, so each project has the appropriate version of Rails and its dependencies.</p>
 <h2>Check the Gem Manager</h2>
 <p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the gem manager in Ruby.</p>
@@ -268,7 +268,7 @@ $ gem list
 <p>You can see the location in the file system where these gems are stored:</p>
 <pre>
 $ gem which rails
-/home/action/.rvm/gems/ruby-2.1.0-p247/gems/railties-4.0.0/lib/rails.rb
+/home/action/.rvm/gems/ruby-2.1.1@rails4.1/gems/railties-4.1.0/lib/rails.rb
 </pre>
 <p>You’ll never directly move or remove the gem files but it is helpful to know that they are being managed by <span class="caps">RVM</span>.</p>
 <h2>Updating System Gems</h2>
@@ -313,7 +313,7 @@ $ gem update
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.1.0 (found in /home/action/.rvm/gems/ruby-2.1.0)
+gemsets for ruby-2.1.1 (found in /home/action/.rvm/gems/ruby-2.1.1)
 =&gt; (default)
    global
 </pre>
@@ -325,7 +325,7 @@ gemsets for ruby-2.1.0 (found in /home/action/.rvm/gems/ruby-2.1.0)
 <p>Display a list of gems installed in the default gemset:</p>
 <pre>
 $ rvm gemset use global
-Using ruby-2.1.0 with gemset global
+Using ruby-2.1.1 with gemset global
 $ gem list
 
 *** LOCAL GEMS ***
@@ -365,19 +365,19 @@ $ gem update
 <h2>Create a New Gemset</h2>
 <p>Here’s how to create a new gemset for a project named “myapp”:</p>
 <pre>
-$ rvm use ruby-2.1.0@myapp --create
-Using /home/action/.rvm/gems/ruby-2.1.0 with gemset myapp
+$ rvm use ruby-2.1.1@myapp --create
+Using /home/action/.rvm/gems/ruby-2.1.1 with gemset myapp
 </pre>
 <p>You’ll see it in the list:</p>
 <pre>
 $ rvm gemset list
-gemsets for ruby-2.1.0 (found in /home/action/.rvm/gems/ruby-2.1.0)
+gemsets for ruby-2.1.1 (found in /home/action/.rvm/gems/ruby-2.1.1)
    (default)
    global
 =&gt; myapp
 </pre>
 <h2>Rails Installation Options</h2>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.3 was current when this was written.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.4 was current when this was written.</p>
 <p>When a new version of Rails is released, you can update the system-level Rails gem, or you can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
 <p>Let’s consider the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -410,7 +410,7 @@ $
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.1.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.1@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -555,7 +555,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.1.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.1@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -654,7 +654,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </table><h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.1.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.1@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
@@ -662,9 +662,9 @@ $ gem install rails
 $ bundle install
 </pre>
 <h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.0@myapp”:</p>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.1@myapp”:</p>
 <pre>
-$ echo "ruby-2.1.0" &gt; .ruby-version
+$ echo "ruby-2.1.1" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>

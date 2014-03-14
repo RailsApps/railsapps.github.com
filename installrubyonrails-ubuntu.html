@@ -41,8 +41,8 @@
       <div class="content wikistyle gollum textile">
         <h1>Install Ruby on Rails · Ubuntu Linux</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 February 2014</em></p>
-<p>Installing Ruby on Rails 4.0 on Ubuntu Linux. Up-to-date, detailed instructions on how to install Rails newest release. Rails 4.1.0.beta1 is the newest pre-release version of Rails. Rails 4.0.3 is the current stable release.</p>
+<p><em>Last updated 14 March 2014</em></p>
+<p>Installing Ruby on Rails 4.0 on Ubuntu Linux. Up-to-date, detailed instructions on how to install Rails newest release. Rails 4.1.0.beta1 is the newest pre-release version of Rails. Rails 4.0.4 is the current stable release.</p>
 <p>This in-depth installation guide is used by developers to configure their working environment for real-world Rails development. This guide doesn’t cover installation of Ruby on Rails for a production server.</p>
 <p>To develop with Rails on Ubuntu, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
@@ -78,7 +78,7 @@ $ sudo apt-get install curl
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p>If you have an older version of Ruby installed on your computer, there’s no need to remove it. <span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.1.0 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.1.1 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
@@ -91,7 +91,7 @@ $ \curl -L https://get.rvm.io | bash -s stable --ruby
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.1.0
+$ rvm --default use ruby-2.1.1
 </pre>
 <h4>Installation Troubleshooting and Advice</h4>
 <h4>
@@ -128,7 +128,7 @@ $ gem -v
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.1.0
+gemsets for ruby-2.1.1
 =&gt; (default)
    global
 </pre>
@@ -175,12 +175,12 @@ $ echo "gem: --no-document" &gt;&gt; ~/.gemrc
 <p>You can stay informed of new gem versions by creating an account at RubyGems.org and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard).</p>
 <p>After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
 <h2>Rails Installation Options</h2>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.0.beta1 is the newest pre-release version of Rails. Rails 4.0.3 is the current stable release.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.0.4 is the current stable release.</p>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current version of Rails:</p>
 <pre>
-$ rvm use ruby-2.1.0@rails4.0 --create
+$ rvm use ruby-2.1.1@rails4.0 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -212,7 +212,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.1.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.1@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -243,7 +243,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.1.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.1@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -343,7 +343,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </table><h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.1.0@myapp --ruby-version --create
+$ rvm use ruby-2.1.1@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
@@ -351,9 +351,9 @@ $ gem install rails
 $ bundle install
 </pre>
 <h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.0@myapp”:</p>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.1@myapp”:</p>
 <pre>
-$ echo "ruby-2.1.0" &gt; .ruby-version
+$ echo "ruby-2.1.1" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
