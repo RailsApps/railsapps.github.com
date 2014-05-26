@@ -1,925 +1,391 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
-    <title>Rails Tutorial for Devise with RSpec and Cucumber &#183; RailsApps</title>
-    <meta content='Ruby on Rails tutorial showing how to create a Rails 3.2 application using Devise with RSpec and Cucumber.' name='description'>
-    <meta content='Rails Tutorial, Devise, RSpec, Cucumber' name='keywords'>
-
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="http://railsapps.github.io/css/tutorials.css" type="text/css" />
-    <link rel="stylesheet" href="http://railsapps.github.io/css/github.css" type="text/css" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-    <script src="http://railsapps.github.io/javascript/tutorials.js"></script>
+    <title>Rails Tutorials for Devise and RSpec &#183; RailsApps</title>
+    <meta content='Ruby on Rails tutorials showing how to create a Rails application using Devise and RSpec.' name='description'>
+    <meta content='Rails Tutorial, Devise, RSpec' name='keywords'>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/foundation.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <link rel="stylesheet" href="http://railsapps.github.io/css/landing.css">
+    <!-- Social button scripts-->
+    <link href="https://plus.google.com/117374718581973393536" rel="publisher" />
     <script type="text/javascript">
       var analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
       analytics.load("l1stqfqqbf");
     </script>
   </head>
-  <body class='tutorials show' data-spy='scroll' data-target='.bs-docs-sidebar'>
-
-
-
-
-
-<div class="container">
-  <div class="row">
-    <div class="span3 bs-docs-sidebar">
-      <ul class="nav nav-list bs-docs-sidenav">
-        <li>
-          <div class="tutorial-account">
-            <a href="https://tutorials.railsapps.org/plan/portal" class="brand">Tutorials</a><span class="pull-right"><a href="https://tutorials.railsapps.org/logout">Logout</a></span>
-          </div>
-        </li>
-        <li>
-          <ul class="tutorial-links">
-            <li><span class="uppercase repotitle">rails3-devise-rspec-cucumber</span></li>
-            <li>By Daniel Kehoe</li>
-            <li>Last updated 31 Mar 2013</li>
-            <li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">GitHub Repository</a></li>
-            <li><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">GitHub Issues</a></li>
-            <li><a href="#comments">Comments</a></li>
-          </ul>
-        </li>
-        <li class="level2"><a href="#">CONTENTS</a></li>
-        <li class='level2'><a href='#introduction'><i class='icon-chevron-right'></i> Introduction</a></li>
-<li class='level2'><a href='#create-the-application'><i class='icon-chevron-right'></i> Create the Application</a></li>
-<li class='level2'><a href='#test-driven-development'><i class='icon-chevron-right'></i> Test-Driven Development</a></li>
-<li class='level2'><a href='#test-the-app'><i class='icon-chevron-right'></i> Test the App</a></li>
-<li class='level2'><a href='#configuration'><i class='icon-chevron-right'></i> Configuration</a></li>
-<li class='level2'><a href='#layout-and-stylesheets'><i class='icon-chevron-right'></i> Layout and Stylesheets</a></li>
-<li class='level2'><a href='#authentication'><i class='icon-chevron-right'></i> Authentication</a></li>
-<li class='level2'><a href='#authorization'><i class='icon-chevron-right'></i> Authorization</a></li>
-<li class='level2'><a href='#user-management'><i class='icon-chevron-right'></i> User Management</a></li>
-<li class='level2'><a href='#home-page'><i class='icon-chevron-right'></i> Home Page</a></li>
-<li class='level2'><a href='#initial-data'><i class='icon-chevron-right'></i> Initial Data</a></li>
-<li class='level2'><a href='#user-profiles'><i class='icon-chevron-right'></i> User Profiles</a></li>
-<li class='level2'><a href='#restrict-access'><i class='icon-chevron-right'></i> Restrict Access</a></li>
-<li class='level2'><a href='#deploy'><i class='icon-chevron-right'></i> Deploy</a></li>
-<li class='level2'><a href='#additional-features'><i class='icon-chevron-right'></i> Additional Features</a></li>
-<li class='level2'><a href='#comments'><i class='icon-chevron-right'></i> Comments</a></li>
-
-      </ul>
-    </div>
-    <div class="span9">
-      <div class="jumbotron subhead">
-        <h1>RailsApps Tutorials</h1>
-        <p class="lead">Devise with RSpec and Cucumber</p>
+  <body>
+    <div class="container">
+      <div class="alert-box text-center">Devise and RSpec Tutorials for Rails 4.1
       </div>
-
-  <section class='chapter' id='introduction'><h2>Introduction</h2>
-<p>Ruby on Rails tutorial showing how to create a Rails 3.2 application using <strong>Devise</strong> with <strong>RSpec</strong> and <strong>Cucumber</strong>.</p>
-<ul>
-  <li><a href="http://github.com/plataformatec/devise">Devise</a> provides ready-made authentication and user management.</li>
-  <li><a href="http://rspec.info/">RSpec</a> is a popular framework for unit testing.</li>
-  <li><a href="http://cukes.info/">Cucumber</a> is used for integration testing and behavior driven development.</li>
-</ul>
-<p>The combination of Devise, RSpec, and Cucumber is the foundation for many real-world Rails applications. Devise provides features for signing up a new user and creating an account, as well as requiring a visitor to log in before allowing access to the application. Unit tests built with RSpec confirm that small, discrete portions of the application continue working as developers add features and refactor code. Integration tests built with Cucumber determine whether the application’s features work as expected, testing the application from the point of view of the user.</p>
-<h3 id="is-it-for-you">Is It for You?</h3>
-<p>This tutorial is for experienced Rails developers as well as startup founders or hobbyist coders who are new to Rails.</p>
-<p>Experienced developers will find the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">complete application on GitHub</a>; this tutorial provides the detail and background to understand the implementation in depth.</p>
-<p>For Rails beginners, this tutorial describes each step that you must follow to create the application. Every step is documented concisely, so you can create this application without any additional knowledge. However, the tutorial assumes you’ve already been introduced to Rails, so if you are a beginner, you may be overwhelmed unless you’ve been introduced to Rails elsewhere. If you’re new to Rails, see recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a> and resources for getting started with <a href="http://railsapps.github.io/rails.html">Rails</a>.</p>
-<p>This is one in a series of Rails example apps and tutorials from the <a href="http://railsapps.github.io/">RailsApps Project</a>. See a list of similar <a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
-<p>This example application uses ActiveRecord and a SQLite database. You can use the Mongoid <span class="caps">ORM</span> with the MongoDB datastore instead, for faster development without schemas or migrations. The <a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a> example app and tutorial shows how to set up Devise and Mongoid with RSpec and Cucumber.</p>
-<p>For more complex applications that use Devise, CanCan, and Twitter Bootstrap, see:</p>
-<ul>
-  <li><a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> example and tutorial</li>
-  <li><a href="https://github.com/RailsApps/rails-stripe-membership-saas">rails-stripe-membership-saas</a> example and tutorial</li>
-  <li><a href="https://github.com/RailsApps/rails-prelaunch-signup/">rails-prelaunch-signup</a> example and tutorial</li>
-</ul>
-<h3 id="how-to-support-the-project">How to Support the Project</h3>
-<p>If you haven’t subscribed to the <a href="https://tutorials.railsapps.org/">RailsApps Tutorials Pro Plan</a>, please consider purchasing a monthly subscription to support the project.</p>
-<p>The code for the example applications is open source and unrestricted; your purchase of a subscription plan supports maintenance of the project. Rails applications need frequent updates as Rails and its gems change. Subscription sales support the project so we can keep the applications current so you’ll always have an up-to-date reference implementation.</p>
-<h3 id="before-you-start">Before You Start</h3>
-<p>Most of the tutorials from the RailsApps project take about an hour to complete.</p>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app in the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> repository is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you find problems or wish to suggest improvements, please create a <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">GitHub issue</a>. It’s best to clone and check the example application from the GitHub repository before you report an issue, just to make sure the error isn’t a result of your own mistake.</p>
-<p>The online edition of this tutorial contains a <a href="#comments">comments section</a> at the end of the tutorial. I encourage you to offer feedback to improve this tutorial.</p>
-<h3 id="assumptions">Assumptions</h3>
-<p>Before beginning this tutorial, you need to install</p>
-<ul>
-  <li>The Ruby language (version 1.9.3)</li>
-  <li>Rails 3.2</li>
-</ul>
-<p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
-<div class="highlight"><pre><span class="gp">$</span> ruby -v
-<span class="gp">$</span> rails -v
-</pre></div><p>Be sure to read <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> to make sure your development environment is set up properly.</p>
-<p>I recommend using <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager to manage your Rails versions and create a dedicated gemset for each application you build.</p>
-</section>
-<section class='chapter' id='create-the-application'><h2>Create the Application</h2>
-<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
-<h3 id="copy-from-the-tutorial">Copy from the Tutorial</h3>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h3 id="other-options">Other Options</h3>
-<h4 id="fork">Fork</h4>
-<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
-<h4 id="clone">Clone</h4>
-<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below). To clone:</p>
-<div class="highlight"><pre><span class="gp">$</span> git clone git://github.com/RailsApps/rails3-devise-rspec-cucumber.git
-</pre></div><p>You’ll need <a href="http://git-scm.com/">git</a> on your machine. See <a href="http://railsapps.github.io/rails-git.html">Rails and Git</a>.</p>
-<h4 id="generate">Generate</h4>
-<p>If you wish to skip the tutorial and build the application immediately, use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate the complete example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the complete example application immediately, see the instructions in the <span class="caps">README</span> for the <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> example application.</p>
-<h3 id="building-from-scratch">Building from Scratch</h3>
-<p>Beginning here, we show how to create the application from scratch.</p>
-<p>Your tools are a terminal application and text editor.</p>
-<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>. If you are using rvm to manage gemsets, create a new gemset and install Rails:</p>
-<div class="highlight"><pre><span class="gp">$</span> rvm use ruby-2.0.0@rails3-devise-rspec-cucumber --create
-<span class="gp">$</span> gem install rails
-</pre></div><p>The first step will create and make active a new gemset named <code>rails3-devise-rspec-cucumber</code>. You can give the gemset any name but it’ll be easier to recognize if you give it the same name as the application you are going to build. The second step installs the newest stable Rails version.</p>
-<p>Next, create a new Rails project. Navigate to a folder where you have rights to create files, and type:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails new rails3-devise-rspec-cucumber -T
-</pre></div><p>Use the <code>-T</code> flag to skip Test::Unit files (since you will be using RSpec).</p>
-<p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-devise-rspec-cucumber.”</p>
-<p>This will create a Rails application that uses a SQLite database for data storage.</p>
-<p>After you create the application, switch to its folder to continue work directly in the application root directory:</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>rails3-devise-rspec-cucumber
-</pre></div><p>If you are using rvm to manage gemsets, create <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files which will automatically select the correct Ruby version and gemset when you enter the project directory:</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"ruby-2.0.0"</span> &gt; .ruby-version
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"rails3-devise-rspec-cucumber"</span> &gt; .ruby-gemset
-</pre></div><p>In the future, when you <code>cd</code> into the application root directory, rvm will activate the project-specific gemfile.</p>
-<h4 id="replace-the-readmes">Replace the READMEs</h4>
-<p>Please edit the <span class="caps">README</span> files to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if your app will be publicly visible on GitHub. Otherwise, people will think I am the author of your app. If you like, add an acknowledgment and a link to the <a href="http://railsapps.github.io/">RailsApps project</a>.</p>
-<h3 id="set-up-source-control-git">Set Up Source Control (Git)</h3>
-<p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
-<div class="highlight"><pre><span class="gp">$</span> git init .
-<span class="gp">$</span> git add -A
-<span class="gp">$</span> git commit -m <span class="s1">'Initial commit'</span>
-</pre></div><p>See detailed instructions for <a href="http://railsapps.github.io/rails-git.html">Using Git with Rails</a>.</p>
-<p>If you want to store your application on GitHub, you should now set up your <a href="http://railsapps.github.io/rails-git.html">GitHub repository</a>.</p>
-<h3 id="set-up-gems">Set Up Gems</h3>
-<p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
-<div class="highlight"><pre><span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
-<span class="n">gem</span> <span class="s1">'rails'</span><span class="p">,</span> <span class="s1">'3.2.11'</span>
-<span class="n">gem</span> <span class="s1">'sqlite3'</span>
-<span class="n">group</span> <span class="ss">:assets</span> <span class="k">do</span>
-  <span class="n">gem</span> <span class="s1">'sass-rails'</span><span class="p">,</span>   <span class="s1">'~&gt; 3.2.3'</span>
-  <span class="n">gem</span> <span class="s1">'coffee-rails'</span><span class="p">,</span> <span class="s1">'~&gt; 3.2.1'</span>
-  <span class="n">gem</span> <span class="s1">'uglifier'</span><span class="p">,</span> <span class="s1">'&gt;= 1.0.3'</span>
-<span class="k">end</span>
-<span class="n">gem</span> <span class="s1">'jquery-rails'</span>
-<span class="n">gem</span> <span class="s2">"rspec-rails"</span><span class="p">,</span> <span class="s2">"&gt;= 2.12.2"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span><span class="o">]</span>
-<span class="n">gem</span> <span class="s2">"database_cleaner"</span><span class="p">,</span> <span class="s2">"&gt;= 0.9.1"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"email_spec"</span><span class="p">,</span> <span class="s2">"&gt;= 1.4.0"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"cucumber-rails"</span><span class="p">,</span> <span class="s2">"&gt;= 1.3.0"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
-<span class="n">gem</span> <span class="s2">"launchy"</span><span class="p">,</span> <span class="s2">"&gt;= 2.1.2"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"capybara"</span><span class="p">,</span> <span class="s2">"&gt;= 2.0.2"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"factory_girl_rails"</span><span class="p">,</span> <span class="s2">"&gt;= 4.2.0"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span><span class="o">]</span>
-<span class="n">gem</span> <span class="s2">"devise"</span><span class="p">,</span> <span class="s2">"&gt;= 2.2.3"</span>
-<span class="n">gem</span> <span class="s2">"quiet_assets"</span><span class="p">,</span> <span class="s2">"&gt;= 1.0.1"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:development</span>
-<span class="n">gem</span> <span class="s2">"figaro"</span><span class="p">,</span> <span class="s2">"&gt;= 0.5.3"</span>
-<span class="n">gem</span> <span class="s2">"better_errors"</span><span class="p">,</span> <span class="s2">"&gt;= 0.3.2"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:development</span>
-<span class="n">gem</span> <span class="s2">"binding_of_caller"</span><span class="p">,</span> <span class="s2">"&gt;= 0.6.8"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:development</span>
-</pre></div><p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.11'</code> accordingly.</p>
-<p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
-<p>If you want to use PostgreSQL instead of SQLite for your database, replace <code>gem 'sqlite3'</code> with <code>gem 'pg'</code>. SQLite is already running if you are using Mac OS X; if you want to use PostgreSQL, you’ll need to install and launch it.</p>
-<p>For more information about the gems we are using in this Gemfile, see <a href="http://railsapps.github.io/rails-3-2-example-gemfile.html">Gemfiles for Rails 3.2</a>.</p>
-<h3 id="install-the-required-gems">Install the Required Gems</h3>
-<p>Install the required gems on your computer:</p>
-<div class="highlight"><pre><span class="gp">$</span> bundle install
-</pre></div><p>You can check which gems are installed on your computer with:</p>
-<div class="highlight"><pre><span class="gp">$</span> gem list
-</pre></div><p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available. If you deploy to Heroku, the Gemfile will manage that for you.</p>
-<h3 id="test-the-app-2">Test the App</h3>
-<p>Check that your app runs properly by entering the command:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails server
-</pre></div><p>You can use <code>rails s</code> as a shortcut.</p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
-<p>Stop the server with Control-C.</p>
-</section>
-<section class='chapter' id='test-driven-development'><h2>Test-Driven Development</h2>
-<p>This example application uses RSpec for unit testing and Cucumber for integration testing.</p>
-<p>Testing is at the center of any robust software development process. Unit tests confirm that small, discrete portions of the application continue working as developers add features and refactor code. Integration tests determine whether the application’s features work as expected, testing the application from the point of view of the user.</p>
-<p>This tutorial provides examples but does not teach the art of writing tests. This tutorial:</p>
-<ul>
-  <li>shows how to set up RSpec and provides example specs for use with Devise</li>
-  <li>shows how to set up Cucumber and provides example scenarios for use with Devise</li>
-</ul>
-<p>To learn more about writing tests, see the books:</p>
-<ul>
-  <li><a href="http://www.pragprog.com/titles/achbd/the-rspec-book">The RSpec Book</a></li>
-  <li><a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a></li>
-</ul>
-<h3 id="install-rspec-and-related-gems">Install RSpec and Related Gems</h3>
-<p>Use the gem <a href="https://github.com/rspec/rspec-rails">rspec-rails</a> to set up the app for RSpec.</p>
-<p>You should have the following gems in your <strong>Gemfile</strong>:</p>
-<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'rspec-rails'</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span><span class="o">]</span>
-<span class="n">gem</span> <span class="s2">"factory_girl_rails"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span><span class="o">]</span>
-<span class="n">gem</span> <span class="s2">"database_cleaner"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"email_spec"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-</pre></div><p>The gem <code>rspec-rails</code> needs to be in the <code>:development</code> group (as well as the <code>:test</code> group) to expose generators and rake tasks during development.</p>
-<p>Install the required gems on your computer if you haven’t already done so:</p>
-<div class="highlight"><pre><span class="gp">$</span> bundle install
-</pre></div><h3 id="generate-rspec">Generate RSpec</h3>
-<p>Use the rspec-rails generator to set up files needed for RSpec:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate rspec:install
-</pre></div><p>The rspec-rails generator creates the files:</p>
-<ul>
-  <li><strong>.rspec</strong></li>
-  <li><strong>spec/spec_helper.rb</strong></li>
-</ul>
-<p>In you did not include the -T option when you ran <code>rails new</code>, you can remove the <strong>test</strong> folder (it is not needed for RSpec):</p>
-<div class="highlight"><pre><span class="gp">$</span> rm -rf <span class="nb">test</span>/
-</pre></div><h3 id="database-cleaner-for-rspec">Database Cleaner for RSpec</h3>
-<p>To reset your application database to a pristine state during testing, you can use <a href="http://github.com/bmabey/database_cleaner">Database Cleaner</a> with RSpec.</p>
-<p>Modify the file <strong>spec/spec_helper.rb</strong> to add Database Cleaner before the final <code>end</code>:</p>
-<div class="highlight"><pre><span class="o">.</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="o">.</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="ss">:suite</span><span class="p">)</span> <span class="k">do</span>
-    <span class="no">DatabaseCleaner</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="ss">:truncation</span>
-  <span class="k">end</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span> <span class="k">do</span>
-    <span class="no">DatabaseCleaner</span><span class="o">.</span><span class="n">start</span>
-  <span class="k">end</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span> <span class="k">do</span>
-    <span class="no">DatabaseCleaner</span><span class="o">.</span><span class="n">clean</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</pre></div><p>Don’t copy the dots. Leave the file intact and just add the Database Cleaner lines.</p>
-<h3 id="add-factory-girl-for-test-objects">Add Factory Girl for Test Objects</h3>
-<p>The  <a href="https://github.com/thoughtbot/factory_girl">factory_girl</a> gem is used to create default model objects for tests. For example, if a controller action requires finding a User object before displaying a “show” page, Factory Girl will create a user just for a test of the controller. You’ll need <code>gem 'factory_girl_rails', :group =&gt; :test</code> in your Gemfile.</p>
-<p>We’ll create a User model later in the tutorial. For testing the User model, we’ll need a factory to create a User model object.</p>
-<p>Create a file <strong>spec/factories/users.rb</strong>:</p>
-<div class="highlight"><pre><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
-  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
-    <span class="nb">name</span> <span class="s1">'Test User'</span>
-    <span class="n">email</span> <span class="s1">'example@example.com'</span>
-    <span class="n">password</span> <span class="s1">'changeme'</span>
-    <span class="n">password_confirmation</span> <span class="s1">'changeme'</span>
-    <span class="c1"># required if the Devise Confirmable module is used</span>
-    <span class="c1"># confirmed_at Time.now</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</pre></div><p>This tutorial uses Devise for user authentication. Devise offers an optional Confirmable module which sends an email to a new user to request confirmation of an email address when creating a new account. If you choose to add the Devise Confirmable module, remove the commenting to enable <code>confirmed_at Time.now</code>.</p>
-<h3 id="add-devise-test-helpers">Add Devise Test Helpers</h3>
-<p>Using Devise, your controllers will often include <code>before_filter :authenticate_user!</code> to limit access to signed-in users. Your tests will fail unless a default user is created and logs in before each test run. Devise provides test helpers to make it simple to create and log in a default user.</p>
-<p>Create a file <strong>spec/support/devise.rb</strong>:</p>
-<div class="highlight"><pre><span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">include</span> <span class="ss">Devise</span><span class="p">:</span><span class="ss">:TestHelpers</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="ss">:controller</span>
-<span class="k">end</span>
-</pre></div><p>Now you can write controller specs that set up a signed-in user before tests are run.</p>
-<h3 id="email-spec">Email Spec</h3>
-<p>The email_spec gem provides a collection of RSpec matchers for testing email.</p>
-<p>Modify the file <strong>spec/spec_helper.rb</strong> to enable the email_spec library:</p>
-<div class="highlight"><pre><span class="c1"># This file is copied to spec/ when you run 'rails generate rspec:install'</span>
-<span class="no">ENV</span><span class="o">[</span><span class="s2">"RAILS_ENV"</span><span class="o">]</span> <span class="o">||=</span> <span class="s1">'test'</span>
-<span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">"../../config/environment"</span><span class="p">,</span> <span class="bp">__FILE__</span><span class="p">)</span>
-<span class="nb">require</span> <span class="s1">'rspec/rails'</span>
-<span class="nb">require</span> <span class="s1">'email_spec'</span>
-<span class="nb">require</span> <span class="s1">'rspec/autorun'</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="ss">EmailSpec</span><span class="p">:</span><span class="ss">:Helpers</span><span class="p">)</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="ss">EmailSpec</span><span class="p">:</span><span class="ss">:Matchers</span><span class="p">)</span>
-  <span class="c1"># ## Mock Framework</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="k">end</span>
-</pre></div><p>Don’t copy the dots. Leave the file intact and just add the email_spec lines.</p>
-<h3 id="configure-the-rails-generator">Configure the Rails Generator</h3>
-<p>By default, using a Rails generator to create a controller will create placeholder files for Test::Unit controller tests with additional placeholder files for testing helpers and views.</p>
-<p>We’ll modify the <strong>config/application.rb</strong> configuration settings to indicate we are using RSpec.</p>
-<p>We’re using Cucumber scenarios (integration tests) so unit tests of helpers and views are redundant. We’ll tell the Rails generator to skip unit tests for helpers and views.</p>
-<p>Rails also likes to create controller-specific helper classes, JavaScript files and stylesheet stubs. If you are like most developers, you will create these files manually as you need them, so this is a good time to tell the generator to skip the clutter.</p>
-<p>Modify the file <strong>config/application.rb</strong> to include:</p>
-<div class="highlight"><pre><span class="o">.</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="k">module</span> <span class="nn">Rails3DeviseRspecCucumber</span>
-  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="ss">Rails</span><span class="p">:</span><span class="ss">:Application</span>
-
-  <span class="c1"># don't generate RSpec tests for views and helpers</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">test_framework</span> <span class="ss">:rspec</span><span class="p">,</span> <span class="ss">fixture</span><span class="p">:</span> <span class="kp">true</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">fixture_replacement</span> <span class="ss">:factory_girl</span><span class="p">,</span> <span class="ss">dir</span><span class="p">:</span> <span class="s1">'spec/factories'</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">view_specs</span> <span class="kp">false</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">helper_specs</span> <span class="kp">false</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">stylesheets</span> <span class="o">=</span> <span class="kp">false</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">javascripts</span> <span class="o">=</span> <span class="kp">false</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">helper</span> <span class="o">=</span> <span class="kp">false</span>
-  <span class="k">end</span>
-<span class="o">.</span>
-<span class="o">.</span>
-<span class="o">.</span>
-</pre></div><p>Again, don’t copy the dots.</p>
-<h3 id="run-rspec">Run RSpec</h3>
-<p>You can run <code>rake -T</code> as a quick “smoke test” to check that rake tasks for RSpec are available.</p>
-<div class="highlight"><pre><span class="gp">$</span> rake -T
-</pre></div><p>You’ll see <code>rake spec</code> as well as numerous other RSpec rake tasks.</p>
-<p>Prepare the database for testing by running the commands:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake db:migrate
-<span class="gp">$</span> rake db:test:prepare
-</pre></div><p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
-<p>This will create a <strong>db/schema.rb</strong> file so <code>rake spec</code> can run successfully.</p>
-<p>You should be able to run <code>rake spec</code> to run all specs.</p>
-<div class="highlight"><pre><span class="gp">$</span> rake spec
-</pre></div><p>If you haven’t written any specs, you’ll see the message “No examples matching … could be found”.</p>
-<p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/tree/master/spec">spec directory</a> to use our ready-made specs.</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>spec
-<span class="gp">$</span> mkdir controllers
-<span class="gp">$</span> <span class="nb">cd </span>controllers
-<span class="gp">$</span> curl -o home_controller_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/controllers/home_controller_spec.rb
-<span class="gp">$</span> curl -o users_controller_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/controllers/users_controller_spec.rb
-<span class="gp">$</span> <span class="nb">cd</span> ../
-<span class="gp">$</span> mkdir models
-<span class="gp">$</span> <span class="nb">cd </span>models
-<span class="gp">$</span> curl -o user_spec.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/spec/models/user_spec.rb
-<span class="gp">$</span> <span class="nb">cd</span> ../../
-</pre></div><p>Our ready-made specs provide tests for a User model, User controller, and Home controller. If you run <code>rake spec</code> now, you’ll see an error such as <code>Uninitialized constant ... (NameError)</code> because you haven’t created a User model, User controller, or Home controller.</p>
-<p>You’ll have to complete the tutorial before <code>rake spec</code> will run successfully.</p>
-<h3 id="add-cucumber-for-behavior-driven-development">Add Cucumber for Behavior Driven Development</h3>
-<p>This example application uses Cucumber for integration testing.</p>
-<p>Not all developers use Cucumber. Some developers create integration tests using <a href="http://inancgumus.com/66712574">Capybara in combination with RSpec</a> as described in Ryan Bates’s <a href="http://railscasts.com/episodes/275-how-i-test">How I Test</a> Railscast.</p>
-<p>In a broad sense, Cucumber is a tool for managing software development. If you are planning development and specifying application functionality as “user stories,” Cucumber is a good tool for turning user stories into specifications for automated acceptance testing. Cucumber is particularly appropriate when a team includes nonprogrammers who are involved in defining product requirements or there is a need for a specification and acceptance tests to be maintained independently of implementation (for example, when implementation is outsourced).</p>
-<p>This tutorial shows how to set up Cucumber and provides example scenarios for use with Devise.</p>
-<h3 id="cucumber-gems">Cucumber Gems</h3>
-<p>Use the gem <a href="https://github.com/aslakhellesoy/cucumber-rails">cucumber-rails</a> to set up the app for Cucumber.</p>
-<p>You should have the following gems in your <strong>Gemfile</strong>:</p>
-<div class="highlight"><pre><span class="n">gem</span> <span class="s2">"cucumber-rails"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
-<span class="n">gem</span> <span class="s2">"capybara"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"database_cleaner"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-<span class="n">gem</span> <span class="s2">"email_spec"</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:test</span>
-</pre></div><p>The database_cleaner and email_spec gems are also used by RSpec. There’s no need to add them again if you previously added them for use with RSpec.</p>
-<p>Install the required gems on your computer (if you haven’t already done so):</p>
-<div class="highlight"><pre><span class="gp">$</span> bundle install
-</pre></div><p>Use the cucumber-rails generator to set up files needed for Cucumber:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate cucumber:install --capybara --rspec
-</pre></div><p>The <code>-–capybara</code> option specifies Capybara instead of the default Webrat for acceptance testing. The <code>-–rspec</code> option enables RSpec matchers for your step definitions.</p>
-<p>The cucumber-rails generator creates the directories:</p>
-<ul>
-  <li><strong>features/step_definitions</strong></li>
-  <li><strong>features/support</strong></li>
-</ul>
-<p>The cucumber-rails generator creates the files:</p>
-<ul>
-  <li><strong>config/cucumber.yml</strong></li>
-  <li><strong>features/support/env.rb</strong></li>
-  <li><strong>lib/tasks/cucumber.rake</strong></li>
-  <li><strong>script/cucumber</strong></li>
-</ul>
-<h3 id="database-cleaner-for-cucumber">Database Cleaner for Cucumber</h3>
-<p>To reset your application database to a pristine state during testing, Cucumber makes use of <a href="http://github.com/bmabey/database_cleaner">Database Cleaner</a>. The file <strong>features/support/env.rb</strong> is already set up to use Database Cleaner:</p>
-<div class="highlight"><pre><span class="k">begin</span>
-  <span class="no">DatabaseCleaner</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="ss">:transaction</span>
-<span class="k">rescue</span> <span class="no">NameError</span>
-  <span class="k">raise</span> <span class="s2">"You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."</span>
-<span class="k">end</span>
-</pre></div><h3 id="email-spec-2">Email Spec</h3>
-<p>The email_spec gem provides a collection of Cucumber steps for testing email.</p>
-<p>Add a file <strong>features/support/email_spec.rb</strong> to enable the email_spec library:</p>
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'email_spec/cucumber'</span>
-</pre></div><p>Create a set of Cucumber step definitions for testing email:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate email_spec:steps
-</pre></div><p>This creates a file <strong>features/step_definitions/email_steps.rb</strong>.</p>
-<h3 id="run-single-features-easily">Run Single Features Easily</h3>
-<p>You can run a single Cucumber feature with a command such as:</p>
-<div class="highlight"><pre><span class="gp">$</span> cucumber features/visitors/request_invitation.feature --require features
-</pre></div><p>To save some typing, you can eliminate the need for <code>--require features</code> by changing the <strong>config/cucumber.yml</strong> file:</p>
-<div class="highlight"><pre><span class="l-Scalar-Plain">std_opts = "-r features/support/ -r features/step_definitions --format</span> <span class="c1">#{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip"</span>
-</pre></div><h3 id="run-cucumber">Run Cucumber</h3>
-<p>Run <code>rake -T</code> to check that rake tasks for Cucumber are available.</p>
-<p>You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run Cucumber scenarios and steps. If you haven’t written any Cucumber scenarios and steps, you’ll see the message “0 scenarios, 0 steps”.</p>
-<p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/tree/master/features">features directory</a> to use our ready-made Cucumber feature files.</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd </span>features
-<span class="gp">$</span> <span class="nb">cd </span>support
-<span class="gp">$</span> curl -o paths.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/support/paths.rb
-<span class="gp">$</span> <span class="nb">cd</span> ../
-<span class="gp">$</span> <span class="nb">cd </span>step_definitions
-<span class="gp">$</span> curl -o user_steps.rb https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/step_definitions/user_steps.rb
-<span class="gp">$</span> <span class="nb">cd</span> ../
-<span class="gp">$</span> mkdir users
-<span class="gp">$</span> <span class="nb">cd </span>users
-<span class="gp">$</span> curl -o sign_in.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/sign_in.feature
-<span class="gp">$</span> curl -o sign_out.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/sign_out.feature
-<span class="gp">$</span> curl -o sign_up.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/sign_up.feature
-<span class="gp">$</span> curl -o user_edit.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/user_edit.feature
-<span class="gp">$</span> curl -o user_show.feature https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/users/user_show.feature
-<span class="gp">$</span> <span class="nb">cd</span> ../../
-</pre></div><p>If you’ve chosen to create the application with the Devise Confirmable module, you should change one step in the <strong>features/step_definitions/user_steps.rb</strong> file:</p>
-<div class="highlight"><pre><span class="no">Then</span> <span class="sr">/^I should see a successful sign up message$/</span> <span class="k">do</span>
-  <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span> <span class="s2">"Welcome! You have signed up successfully."</span>
-<span class="k">end</span>
-</pre></div><p>should be changed so all Cucumber scenarios pass when the Devise Confirmable module is used:</p>
-<div class="highlight"><pre><span class="no">Then</span> <span class="sr">/^I should see a successful sign up message$/</span> <span class="k">do</span>
-  <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span> <span class="s2">"A message with a confirmation link has been sent to your email address."</span>
-<span class="k">end</span>
-</pre></div><p>You can run <code>rake cucumber</code> to see your failing Cucumber integraton tests.</p>
-<p>You’ll have to complete the tutorial before all Cucumber scenarios will run successfully.</p>
-<h3 id="write-cucumber-scenarios">Write Cucumber Scenarios</h3>
-<p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
-<p>There are two approaches to writing Cucumber scenarios. The newest (and recommended) approach uses <a href="https://github.com/jnicklas/capybara">Capybara</a> to write the code (“steps”) that turn Cucumber scenarios into executable specifications. Older versions of Cucumber provided a <code>web_steps.rb</code> file that implemented common features. See the <a href="http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off">The Training Wheels Came Off</a> by Aslak Hellesøy to understand why the <code>web_steps.rb</code> approach is no longer recommended.</p>
-<h2 id="test-the-app">Test the App</h2>
-<p>You can check that your app runs properly by entering the command</p>
-<div class="highlight"><pre><span class="gp">$</span> rails server
-</pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
-<p>Stop the server with Control-C.</p>
-</section>
-<section class='chapter' id='configuration'><h2>Configuration</h2>
-<h3 id="configuration-file">Configuration File</h3>
-<p>The application uses the <a href="https://github.com/laserlemon/figaro">figaro gem</a> to set environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
-<p>The figaro gem uses a generator to set up the necessary files. Run:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate figaro:install
-</pre></div><p>This generates a <strong>config/application.yml</strong> file and lists it in your <strong>.gitignore</strong> file.</p>
-<p>Credentials for a user’s account are set in the <strong>config/application.yml</strong> file. The <strong>.gitignore</strong> file prevents the <strong>config/application.yml</strong> file from being saved in the git repository so your credentials are kept private.</p>
-<p>Modify the file <strong>config/application.yml</strong>:</p>
-<div class="highlight"><pre><span class="c1"># Add account credentials and API keys here.</span>
-<span class="c1"># See http://railsapps.github.io/rails-environment-variables.html</span>
-<span class="c1"># This file should be listed in .gitignore to keep your settings secret!</span>
-<span class="c1"># Each entry sets a local environment variable and overrides ENV variables in the Unix shell.</span>
-<span class="c1"># For example, setting:</span>
-<span class="c1"># GMAIL_USERNAME: Your_Gmail_Username</span>
-<span class="c1"># makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]</span>
-<span class="c1"># Add application configuration variables here, as shown below.</span>
-<span class="c1">#</span>
-<span class="l-Scalar-Plain">GMAIL_USERNAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Username</span>
-<span class="l-Scalar-Plain">GMAIL_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Your_Password</span>
-<span class="l-Scalar-Plain">ADMIN_NAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">First User</span>
-<span class="l-Scalar-Plain">ADMIN_EMAIL</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">user@example.com</span>
-<span class="l-Scalar-Plain">ADMIN_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">changeme</span>
-</pre></div><p>You can use the <code>GMAIL_USERNAME</code> and <code>GMAIL_PASSWORD</code> variables if you want to set up the application to send email.</p>
-<p>The variables <code>ADMIN_NAME</code>, <code>ADMIN_EMAIL</code>, and <code>ADMIN_PASSWORD</code> are used in the <strong>db/seeds.rb</strong> file to intialize the application database. They set the name, email address, and password for the first user’s account. You can use the default to sign in to the application and edit the account after deployment. It is always a good idea to change the user’s password after the application is deployed.</p>
-<p>All configuration values in the <strong>config/application.yml</strong> file are available anywhere in the application as environment variables. For example, <code>ENV["GMAIL_USERNAME"]</code> will return the string “Your_Username”.</p>
-<p>If you prefer, you can delete the <strong>config/application.yml</strong> file and set each value as an environment variable in the Unix shell.</p>
-<h3 id="configure-email">Configure Email</h3>
-<p>This example application doesn’t send email messages. However, if you want your application to send email messages (for example, if you plan to install the Devise <code>:confirmable</code> module) you must configure the application for your email account. See the article <a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a>.</p>
-</section>
-<section class='chapter' id='layout-and-stylesheets'><h2>Layout and Stylesheets</h2>
-<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
-<p>You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
-<p><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and other <span class="caps">CSS</span> front-end frameworks (such as <a href="http://foundation.zurb.com/">Zurb Foundation</a>) are toolkits that provide the kind of structure and convention for the front end that make Rails popular for server-side (“back-end”) development. If you want to use Twitter Bootstrap to quickly add attractive <span class="caps">CSS</span> styling to your application, see the article <a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Twitter Bootstrap and Rails</a>.</p>
-<p>This tutorial shows code using <span class="caps">ERB</span>, the default Rails templating language. If you prefer to use Haml, see the detailed guide <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Default Application Layout for HTML5</a>.</p>
-<h3 id="navigation-links">Navigation Links</h3>
-<p>You’ll likely need navigation links on every page of your web application. You’ll want a link for Home. You’ll want links for Login, Logout, and Sign Up.</p>
-<p>You can add navigation links directly to your application layout file but many developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
-<p>Create the file <strong>app/views/layouts/_navigation.html.erb</strong> for the navigation links:</p>
-<div class="highlight"><pre><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Rails3 Devise Rspec Cucumber"</span><span class="p">,</span> <span class="n">root_path</span><span class="p">,</span> <span class="ss">:class</span> <span class="o">=&gt;</span> <span class="s1">'brand'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">&lt;ul class="nav"&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">user_signed_in?</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;li&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Logout'</span><span class="p">,</span> <span class="n">destroy_user_session_path</span><span class="p">,</span> <span class="ss">:method</span><span class="o">=&gt;</span><span class="s1">'delete'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;/li&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">else</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;li&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Login'</span><span class="p">,</span> <span class="n">new_user_session_path</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;/li&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">user_signed_in?</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;li&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit account'</span><span class="p">,</span> <span class="n">edit_user_registration_path</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;/li&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">else</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;li&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Sign up'</span><span class="p">,</span> <span class="n">new_user_registration_path</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;/li&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">&lt;/ul&gt;</span>
-</pre></div><h3 id="flash-messages">Flash Messages</h3>
-<p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called Rails “flash messages” (as in “flash memory”, not to be confused with the “Adobe Flash” proprietary web development platform).</p>
-<p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
-<p>Create a partial for flash messages in <strong>app/views/layouts/_messages.html.erb</strong> like this:</p>
-<div class="highlight"><pre><span class="cp">&lt;%</span> <span class="n">flash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">"flash_</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. This partial will display flash messages. You can add a <span class="caps">CSS</span> style to display either a red or green message determined by the element ID.</p>
-<h3 id="css-styling-with-sass"><span class="caps">CSS</span> Styling with <span class="caps">SASS</span></h3>
-<p>It’s a good idea to rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
-<p>This will allow you to use the advantages of the <span class="caps">SASS</span> syntax and features for your application stylesheet. For more on the advantages of <span class="caps">SASS</span> and how to use it, see the <a href="http://railscasts.com/episodes/268-sass-basics"><span class="caps">SASS</span> Basics</a> RailsCast from Ryan Bates.</p>
-<p>You can apply simple <span class="caps">CSS</span> styling for your navigation links and flash messages with the following code.</p>
-<p>Add stylesheet rules to the <strong>app/assets/stylesheets/application.css.scss</strong> file:</p>
-<pre>
-.brand {
-  float: left;
-  padding-right: 8px;
-}
-ul.nav {
-  list-style: none;
-  margin: 0 0 2em;
-  padding: 0;
-}
-ul.nav li {
-  display: inline;
-}
-#flash_notice, #flash_alert {
-  padding: 5px 8px;
-  margin: 10px 0;
-}
-#flash_notice {
-  background-color: #CFC;
-  border: solid 1px #6C6;
-}
-#flash_alert {
-  background-color: #FCC;
-  border: solid 1px #C66;
-}
-</pre>
-<p>The <span class="caps">CSS</span> style rules display the navigation links on a single line at the top of the page.</p>
-<p>“Alert” messages are displayed in red and “notice” messages are displayed in green.</p>
-<h3 id="default-application-layout">Default Application Layout</h3>
-<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Modify the file to add navigation links, include flash messages, and apply <span class="caps">CSS</span> styling.</p>
-<p>Use the code below to incorporate recommendations from the article <a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a>.</p>
-<p>Replace the contents of the file <strong>app/views/layouts/application.html.erb</strong> with this:</p>
-<div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
-<span class="x">&lt;html&gt;</span>
-<span class="x">  &lt;head&gt;</span>
-<span class="x">    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span>
-<span class="x">    &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Rails3 Devise Rspec Cucumber"</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
-<span class="x">    &lt;meta name="description" content="</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:description</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Rails3 Devise Rspec Cucumber"</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:head</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  &lt;/head&gt;</span>
-<span class="x">  &lt;body class="</span><span class="cp">&lt;%=</span> <span class="n">controller_name</span> <span class="cp">%&gt;</span><span class="x"> </span><span class="cp">&lt;%=</span> <span class="n">action_name</span> <span class="cp">%&gt;</span><span class="x">"&gt;</span>
-<span class="x">    &lt;div id="container" class="container"&gt;</span>
-<span class="x">      &lt;header&gt;</span>
-<span class="x">        </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/navigation'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">        </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'layouts/messages'</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">      &lt;/header&gt;</span>
-<span class="x">      &lt;div id="main" role="main"&gt;</span>
-<span class="x">        </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">      &lt;/div&gt;</span>
-<span class="x">      &lt;footer&gt;</span>
-<span class="x">      &lt;/footer&gt;</span>
-<span class="x">    &lt;/div&gt; &lt;!--! end of #container --&gt;</span>
-<span class="x">  &lt;/body&gt;</span>
-<span class="x">&lt;/html&gt;</span>
-</pre></div><p>See the article <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Default Application Layout</a> for an explanation of each of the elements in the application layout.</p>
-<p>Your default application layout defines the look-and-feel of your application. You now have the basics with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling.</p>
-</section>
-<section class='chapter' id='authentication'><h2>Authentication</h2>
-<p>This app uses <a href="http://github.com/plataformatec/devise">Devise</a> for user management and authentication.</p>
-<h3 id="set-up-configuration-for-devise">Set Up Configuration for Devise</h3>
-<p>You should have the following gem in your <strong>Gemfile</strong>:</p>
-<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'devise'</span>
-</pre></div><p>If you haven’t already, run:</p>
-<div class="highlight"><pre><span class="gp">$</span> bundle install
-</pre></div><p>Run the generator to install Devise:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate devise:install
-</pre></div><p>which installs a configuration file <strong>config/initializers/devise.rb</strong> and a localization file <strong>config/locales/devise.en.yml</strong>.</p>
-<h3 id="configure-devise-for-email">Configure Devise for Email</h3>
-<p>If you will be using the Devise Confirmable module to send confirmation emails, complete your email configuration by modifying the <strong>config/initializers/devise.rb</strong> file and setting the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
-<h3 id="generate-a-model-and-routes-for-users">Generate a Model and Routes for Users</h3>
-<p>Use Devise to generate a model and routes for a User.</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate devise User
-</pre></div><p>Devise will create a database migration and a User model.</p>
-<p>Devise will try to create a spec file for the User model. If you’ve already downloaded the example app spec files, don’t let the Devise generator overwrite the <strong>spec/models/user_spec.rb</strong> file.</p>
-<p>Devise will try to create factories for testing the User model. If you’ve already downloaded the  <strong>spec/factories/users.rb</strong> file, don’t let the Devise generator overwrite the <strong>spec/factories/users.rb</strong> file (enter “n” to prevent overwriting).</p>
-<p>Devise will modify the <strong>config/routes.rb</strong> file to add:</p>
-<div class="highlight"><pre><span class="n">devise_for</span> <span class="ss">:users</span>
-</pre></div><p>which provides a complete set of routes for user signup and login. If you run <code>rake routes</code> you can see the routes that this line of code creates.</p>
-<h3 id="accommodate-cucumber-testing-for-sign-out">Accommodate Cucumber Testing for “Sign Out”</h3>
-<p>By default, Devise uses an http <span class="caps">DELETE</span> request for sign out requests (<code>destroy_user_session_path</code>). Rails uses Javascript to implement http <span class="caps">DELETE</span> requests. Prior to Devise 1.4.1 (27 June 2011), Devise used an http <span class="caps">GET</span> request for sign out requests. Jose Valim explained the change: “<span class="caps">GET</span> requests should not change the state of the server. When sign out is a <span class="caps">GET</span> request, <span class="caps">CSRF</span> can be used to sign you out automatically and things that preload links can eventually sign you out by mistake as well.”</p>
-<p>However, Cucumber wants to test <span class="caps">GET</span> requests not <span class="caps">DELETE</span> requests. If you intend to use Cucumber with Devise, you must change the Devise default from <span class="caps">DELETE</span> to <span class="caps">GET</span> in <strong>/config/initializers/devise.rb</strong> for the Rails test environment. You may see a suggestion elsewhere to tweak the routes.rb file or change the log_out link to make the fix. It isn’t necessary if you change the <strong>/config/initializers/devise.rb</strong> file.</p>
-<div class="highlight"><pre><span class="c1"># The default HTTP method used to sign out a resource. Default is :delete.</span>
-<span class="n">config</span><span class="o">.</span><span class="n">sign_out_via</span> <span class="o">=</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span> <span class="p">?</span> <span class="ss">:get</span> <span class="p">:</span> <span class="ss">:delete</span>
-</pre></div><p>Since you only use Cucumber during testing, switching the default is only needed for testing.</p>
-<p>If you’re not going to use Cucumber, leave Devise’s default (<span class="caps">DELETE</span>) in place.</p>
-<h3 id="prevent-logging-of-passwords">Prevent Logging of Passwords</h3>
-<p>We don’t want passwords written to our log file.</p>
-<p>Modify the file <strong>config/application.rb</strong> to include:</p>
-<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">filter_parameters</span> <span class="o">+=</span> <span class="o">[</span><span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span><span class="o">]</span>
-</pre></div><p>Note that filter_parameters is an array.</p>
-</section>
-<section class='chapter' id='authorization'><h2>Authorization</h2>
-<p>Devise provides authentication, a system to securely identify users, making sure the user is really who he represents himself to be. Devise also provides user management, implementing features that let a user sign up to create or edit an account.</p>
-<p>Devise does not provide features for <em>authorization</em>. A system for authorization determines if an authenticated user should have access to secured resources. For example, you might wish to limit access so only users in an administrator role can see an administrative dashboard.</p>
-<p><a href="https://github.com/ryanb/cancan">CanCan</a> is by far the most popular gem used to implement authorization (see the Rails Authorization category on <a href="https://www.ruby-toolbox.com/categories/rails_authorization">The Ruby Toolbox</a> site). See the <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">Rails3-Bootstrap-Devise-Cancan</a> example application and tutorial if you want to implement role-based authorization in your application.</p>
-</section>
-<section class='chapter' id='user-management'><h2>User Management</h2>
-<p>By default, Devise uses an email address to identify users. We’ll add a “name” attribute as well. Your application may not require a user to provide a name. But showing you how to add a name will help you see what you need to do if you decide to make changes to the default Devise user model.</p>
-<h3 id="add-a-migration">Add a Migration</h3>
-<p>Devise created a migration file to establish the schema for the SQLite database with a migration file named something like <strong>db/migrate/xxxxxxx_devise_create_users.rb</strong>. We won’t modify the migration file. Instead we’ll add an additional migration that adds the “name” field to the User record.</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate migration AddNameToUsers name:string
-</pre></div><p>Run the migration and prepare the test database to pick up the “name” field:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake db:migrate
-<span class="gp">$</span> rake db:test:prepare
-</pre></div><h3 id="modify-the-user-model">Modify the User Model</h3>
-<p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of <code>update_attributes(attrs)</code> or <code>new(attrs)</code>. Devise already added this to the <strong>models/user.rb</strong> file:</p>
-<div class="highlight"><pre><span class="n">attr_accessible</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span><span class="p">,</span> <span class="ss">:remember_me</span>
-</pre></div><p>but you’ll need to add the “name” attribute:</p>
-<div class="highlight"><pre><span class="n">attr_accessible</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span><span class="p">,</span> <span class="ss">:remember_me</span>
-</pre></div><p>If you wish, you can modify the user model to validate the presence and uniqueness of the “name” attribute. Modify the file <strong>app/models/user.rb</strong> and add:</p>
-<div class="highlight"><pre><span class="n">validates_presence_of</span> <span class="ss">:name</span>
-<span class="n">validates_uniqueness_of</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:case_sensitive</span> <span class="o">=&gt;</span> <span class="kp">false</span>
-</pre></div><p>This will allow users to be created (or edited) with a name attribute. When a user is created, a name and email address must be present and must be unique (not used before). Note that Devise (by default) will check that the email address and password are not blank and that the email address is unique.</p>
-<h3 id="create-custom-views-for-user-registration">Create Custom Views for User Registration</h3>
-<p>Devise provides a controller and views for registering users. It is called the “registerable” module. The controller and views are hidden in the Devise gem so we don’t need to create anything. However, because we want our users to provide a name when registering, we will create custom views for creating and editing a user. Our custom views will override the Devise gem defaults.</p>
-<p>Create a new <strong>app/views/devise/registrations/new.html.erb</strong> file:</p>
-<div class="highlight"><pre><span class="x">&lt;h2&gt;Sign up&lt;/h2&gt;</span>
-
-<span class="cp">&lt;%=</span> <span class="n">form_for</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="n">resource_name</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">registration_path</span><span class="p">(</span><span class="n">resource_name</span><span class="p">))</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">devise_error_messages!</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">&lt;p&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:name</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">email_field</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:password</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">password_field</span> <span class="ss">:password</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:password_confirmation</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">password_field</span> <span class="ss">:password_confirmation</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">submit</span> <span class="s2">"Sign up"</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-
-<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s2">"devise/shared/links"</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><p>Create a new <strong>app/views/devise/registrations/edit.html.erb</strong> file:</p>
-<div class="highlight"><pre><span class="x">&lt;h2&gt;Edit </span><span class="cp">&lt;%=</span> <span class="n">resource_name</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">humanize</span> <span class="cp">%&gt;</span><span class="x">&lt;/h2&gt;</span>
-
-<span class="cp">&lt;%=</span> <span class="n">form_for</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="n">resource_name</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">registration_path</span><span class="p">(</span><span class="n">resource_name</span><span class="p">),</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:put</span> <span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">devise_error_messages!</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">&lt;p&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:name</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">email_field</span> <span class="ss">:email</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:password</span> <span class="cp">%&gt;</span><span class="x"> &lt;i&gt;(leave blank if you don't want to change it)&lt;/i&gt;&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">password_field</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:autocomplete</span> <span class="o">=&gt;</span> <span class="s2">"off"</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:password_confirmation</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">password_field</span> <span class="ss">:password_confirmation</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:current_password</span> <span class="cp">%&gt;</span><span class="x"> &lt;i&gt;(we need your current password to confirm your changes)&lt;/i&gt;&lt;br /&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">password_field</span> <span class="ss">:current_password</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-
-<span class="x">  &lt;div&gt;</span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">submit</span> <span class="s2">"Update"</span> <span class="cp">%&gt;</span><span class="x">&lt;/div&gt;</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-
-<span class="x">&lt;h3&gt;Cancel my account&lt;/h3&gt;</span>
-
-<span class="x">&lt;p&gt;Unhappy? </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Cancel my account"</span><span class="p">,</span> <span class="n">registration_path</span><span class="p">(</span><span class="n">resource_name</span><span class="p">),</span> <span class="ss">:data</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:confirm</span> <span class="o">=&gt;</span> <span class="s2">"Are you sure?"</span> <span class="p">},</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:delete</span> <span class="cp">%&gt;</span><span class="x">.&lt;/p&gt;</span>
-
-<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Back"</span><span class="p">,</span> <span class="ss">:back</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><p>We do not need to add a controller with methods to create a new user or edit or delete a user. We use the existing “registerable” module from Devise which provides a controller with methods to create, edit or delete a user.</p>
-<p>Note that Devise’s default behaviour allows any logged-in user to edit or delete his or her own record (but no one else’s). When you access the edit page you are editing just your info, and not info of other users.</p>
-<p>If you are using Haml, you can convert the <span class="caps">ERB</span> files using the online tool <a href="http://html2haml.heroku.com/">Html2Haml</a>. You’ll need to remove the <strong>.erb</strong> files and replace them with <strong>app/views/devise/registrations/edit.html.haml</strong> and <strong>app/views/devise/registrations/new.html.haml</strong>.</p>
-</section>
-<section class='chapter' id='home-page'><h2>Home Page</h2>
-<h3 id="remove-the-default-home-page">Remove the Default Home Page</h3>
-<p>Delete the default home page from your application:</p>
-<div class="highlight"><pre><span class="gp">$</span> rm public/index.html
-</pre></div><h3 id="create-a-home-controller-and-view">Create a Home Controller and View</h3>
-<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate controller home index --no-controller-specs --skip-stylesheets --skip-javascripts
-</pre></div><p>Specify <code>--no-controller-specs</code> to avoid overwriting any RSpec files you’ve already downloaded. We’ll use <code>--skip-stylesheets --skip-javascripts</code> to avoid cluttering our application with stylesheet and JavaScript files we don’t need.</p>
-<p>If you’re using the default template engine, you’ll find an <span class="caps">ERB</span> file with placeholder content: <strong>app/views/home/index.html.erb</strong>.</p>
-<p>Next, set a route to your home page.</p>
-<p>Modify the file <strong>config/routes.rb</strong> so it looks like this:</p>
-<div class="highlight"><pre><span class="ss">Rails3DeviseRspecCucumber</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
-  <span class="n">authenticated</span> <span class="ss">:user</span> <span class="k">do</span>
-    <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
-  <span class="k">end</span>
-  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"home#index"</span>
-  <span class="n">devise_for</span> <span class="ss">:users</span>
-<span class="k">end</span>
-</pre></div><p>Be careful. If you have changed the name of the application to something different from “rails3-devise-rspec-cucumber,” the application object should not be named <code>Rails3DeviseRspecCucumber</code>.</p>
-<p>If you examine this code, you’ll see that authenticated users (those who have an account and are logged in) will see the home/index page as the application root (or home) page. And all other users (those who don’t have an account or who are not logged in) will see the same home page. The redundancy serves a didactic purpose: If you decide you want  users to see a different page when they log in, you now know exactly where to change it.</p>
-<p>By default, Devise will redirect to the root_path after successful sign in or sign out. It is easy to change the root_path as shown in the <strong>config/routes.rb</strong> file. Alternatively, you can override the Devise methods <code>after_sign_in_path_for</code> and <code>after_sign_out_path_for</code> as described in the Devise wiki article <a href="https://github.com/plataformatec/devise/wiki/How-To%3A-Redirect-to-a-specific-page-on-successful-sign-in-out">How To Redirect to a Specific Page</a>.</p>
-<h3 id="test-the-app-3">Test the App</h3>
-<p>You can check that your app runs properly by entering the command</p>
-<div class="highlight"><pre><span class="gp">$</span> rails server
-</pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
-<p>Stop the server with Control-C.</p>
-<h3 id="display-users-on-the-home-page">Display Users on the Home Page</h3>
-<p>Modify the file <strong>app/controllers/home_controller.rb</strong> and add:</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
-  <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span>
-<span class="k">end</span>
-</pre></div><p>Modify the file <strong>app/views/home/index.html.erb</strong> and add:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;Home&lt;/h3&gt;</span>
-<span class="cp">&lt;%</span> <span class="vi">@users</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  &lt;p&gt;User: </span><span class="cp">&lt;%=</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x"> &lt;/p&gt;</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
-</section>
-<section class='chapter' id='initial-data'><h2>Initial Data</h2>
-<h3 id="set-up-a-database-seed-file">Set Up a Database Seed File</h3>
-<p>You’ll want to set up default users so you can test the application.</p>
-<p>Replace the file <strong>db/seeds.rb</strong> with:</p>
-<div class="highlight"><pre><span class="nb">puts</span> <span class="s1">'DEFAULT USERS'</span>
-<span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_or_create_by_email</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_NAME'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:email</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_EMAIL'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_PASSWORD'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:password_confirmation</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_PASSWORD'</span><span class="o">].</span><span class="n">dup</span>
-<span class="nb">puts</span> <span class="s1">'user: '</span> <span class="o">&lt;&lt;</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span>
-</pre></div><p>The <strong>db/seeds.rb</strong> file initializes the database with default values. To keep some data private, and consolidate configuration settings in a single location, we use the <strong>config/application.yml</strong> file to set environment variables and then use the environment variables in the <strong>db/seeds.rb</strong> file.</p>
-<p>You can change the administrator name, email, and password in this file but it is better to make the changes in the <strong>config/application.yml</strong> file to keep the credentials private. If you decide to include your private password in the <strong>db/seeds.rb</strong> file, be sure to add the filename to your <strong>.gitignore</strong> file so that your password doesn’t become available in your public GitHub repository.</p>
-<p>Note that it’s not necessary to personalize the <strong>db/seeds.rb</strong> file before you deploy your app. You can deploy the app with an example user and then use the application’s “Edit Account” feature to change name, email address, and password after you log in.</p>
-<p>If you wish, you can add a second example user:</p>
-<div class="highlight"><pre><span class="n">user2</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_or_create_by_email</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s1">'Second User'</span><span class="p">,</span> <span class="ss">:email</span> <span class="o">=&gt;</span> <span class="s1">'user2@example.com'</span><span class="p">,</span> <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s1">'changeme'</span><span class="p">,</span> <span class="ss">:password_confirmation</span> <span class="o">=&gt;</span> <span class="s1">'changeme'</span>
-<span class="nb">puts</span> <span class="s1">'user: '</span> <span class="o">&lt;&lt;</span> <span class="n">user2</span><span class="o">.</span><span class="n">name</span>
-</pre></div><p>If you’ve chosen to create the application with the Devise Confirmable module, add the field <code>confirmed_at</code>:</p>
-<div class="highlight"><pre><span class="nb">puts</span> <span class="s1">'DEFAULT USERS'</span>
-<span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find_or_create_by_email</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_NAME'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:email</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_EMAIL'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_PASSWORD'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:password_confirmation</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'ADMIN_PASSWORD'</span><span class="o">].</span><span class="n">dup</span><span class="p">,</span> <span class="ss">:confirmed_at</span> <span class="o">=&gt;</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span>
-<span class="nb">puts</span> <span class="s1">'user: '</span> <span class="o">&lt;&lt;</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span>
-</pre></div><h3 id="seed-the-database">Seed the Database</h3>
-<p>Initialize the database by running:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake db:migrate
-<span class="gp">$</span> rake db:seed
-</pre></div><p>You can run <code>rake db:reset</code> whenever you need to recreate the database:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake db:reset
-</pre></div><p>You should set up the database for the test environment:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake db:test:prepare
-</pre></div><p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
-<p>If the task fails with “Validation failed: Name can’t be blank” you should check that the file <strong>models/user.rb</strong> allows the “name” attribute to be mass updated:</p>
-<div class="highlight"><pre><span class="n">attr_accessible</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:password_confirmation</span><span class="p">,</span> <span class="ss">:remember_me</span>
-</pre></div><h3 id="test-the-app-4">Test the App</h3>
-<p>You can check that your app runs properly by entering the command</p>
-<div class="highlight"><pre><span class="gp">$</span> rails server
-</pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
-<p>Stop the server with Control-C.</p>
-<p>If you test the app by starting the web server and then leave the server running while you install new gems, you’ll have to restart the server to see any changes. The same is true for changes to configuration files in the config folder. This can be confusing to new Rails developers because you can change files in the app folders without restarting the server. Stop the server each time after testing and you will avoid this issue.</p>
-</section>
-<section class='chapter' id='user-profiles'><h2>User Profiles</h2>
-<p>We can add user profile pages to demonstrate how Devise manages authentication.</p>
-<h3 id="add-links-to-users-on-the-home-page">Add Links to Users on the Home Page</h3>
-<p>You’ve already modified the file <strong>app/controllers/home_controller.rb</strong> to include this:</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span>
-  <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span>
-<span class="k">end</span>
-</pre></div><p>Now we’ll add links to each user’s profile.</p>
-<p>Modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;Home&lt;/h3&gt;</span>
-<span class="cp">&lt;%</span> <span class="vi">@users</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  &lt;p&gt;User: </span><span class="cp">&lt;%=</span><span class="n">link_to</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</pre></div><p>This code is not appropriate for deployment in a real application. You likely will not want to display a list of users on the home page. However, it is convenient for our example.</p>
-<p>The links to the user’s profile page will not yet work; in the next section we’ll create a users controller, routes, and views.</p>
-<h3 id="create-a-users-controller">Create a Users Controller</h3>
-<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page. You can specify <code>--no-controller-specs</code> if you’ve already downloaded RSpec files for the example application.</p>
-<div class="highlight"><pre><span class="gp">$</span> rails generate controller users index show --no-controller-specs --skip-stylesheets --skip-javascripts
-</pre></div><p>Note that “users” is plural when you create the controller.</p>
-<h3 id="set-up-the-users-routes">Set Up the Users Routes</h3>
-<p>The generator command has changed the file <strong>config/routes.rb</strong> to include:</p>
-<div class="highlight"><pre><span class="n">get</span> <span class="s2">"users/index"</span>
-<span class="n">get</span> <span class="s2">"users/show"</span>
-</pre></div><p>Remove that and change the file <strong>config/routes.rb</strong> to look like this:</p>
-<div class="highlight"><pre><span class="ss">Rails3DeviseRspecCucumber</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
-  <span class="n">authenticated</span> <span class="ss">:user</span> <span class="k">do</span>
-    <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s1">'home#index'</span>
-  <span class="k">end</span>
-  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">"home#index"</span>
-  <span class="n">devise_for</span> <span class="ss">:users</span>
-  <span class="n">resources</span> <span class="ss">:users</span>
-<span class="k">end</span>
-</pre></div><p>Important note: The <code>devise_for :users</code> route must be placed above <code>resources :users</code>.</p>
-<h3 id="set-up-the-users-show-page">Set Up the Users#Show Page</h3>
-<p>Modify the file <strong>app/views/users/show.html.erb</strong> and add:</p>
-<div class="highlight"><pre><span class="x">&lt;h3&gt;User&lt;/h3&gt;</span>
-<span class="x">&lt;p&gt;User: </span><span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="x">&lt;p&gt;Email: </span><span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span> <span class="k">if</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
-</pre></div><p>In a typical application, this page might provide additional details about the user’s account.</p>
-<h3 id="set-up-the-users-index-page">Set Up the Users#Index Page</h3>
-<p>The Users#Index page will display a list of all users of the application.</p>
-<p>Modify the file <strong>app/views/users/index.html.erb</strong> and add:</p>
-<div class="highlight"><pre><span class="x">&lt;ul class="users"&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="vi">@users</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;li&gt;</span>
-<span class="x">      </span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user</span> <span class="cp">%&gt;</span><span class="x"> signed up </span><span class="cp">&lt;%=</span> <span class="n">user</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">to_date</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">    &lt;/li&gt;</span>
-<span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">&lt;/ul&gt;</span>
-</pre></div><p>Like the home page, this page displays a list of all user accounts. If we add an authorization feature to limit access, we could use this page as the basis for an “Administrator’s Dashboard” and make it accessible only to administrators.</p>
-<p>Right now, any visitor can see this page. In the next section, we will set up authentication so the page is accessible only to users who are registered and logged in.</p>
-</section>
-<section class='chapter' id='restrict-access'><h2>Restrict Access</h2>
-<p>Let’s see how Devise is used to limit access to only users who are registered and logged in.</p>
-<p>Modify the file <strong>app/controllers/users_controller.rb</strong> to look like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="n">before_filter</span> <span class="ss">:authenticate_user!</span>
-
-  <span class="k">def</span> <span class="nf">index</span>
-    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">show</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">end</span>
-
-<span class="k">end</span>
-</pre></div><p>The <code>before_filter :authenticate_user!</code> statement uses Devise to make sure a user is logged in.</p>
-<p>Your application is ready to customize and deploy!</p>
-</section>
-<section class='chapter' id='deploy'><h2>Deploy</h2>
-<h3 id="cleanup">Cleanup</h3>
-<p>Several unneeded files are generated in the process of creating a new Rails application.</p>
-<p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
-<p>See instructions for <a href="http://railsapps.github.io/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
-<h3 id="test-the-app-5">Test the App</h3>
-<p>You can check that your app runs properly by entering the command:</p>
-<div class="highlight"><pre><span class="gp">$</span> rails server
-</pre></div><p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
-<p>To sign in as the first user, (unless you’ve changed it) use:</p>
-<ul>
-  <li>email: user@example.com</li>
-  <li>password: changeme</li>
-</ul>
-<p>Stop the server with Control-C.</p>
-<h3 id="testing">Testing</h3>
-<p>If you’ve copied the RSpec unit tests and Cucumber integration tests from the  <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/">rails3-devise-rspec-cucumber</a> example application, and set up RSpec and Cucumber, you can run <code>rake -T</code> to check that rake tasks for RSpec and Cucumber are available.</p>
-<p>Run <code>rake spec</code> to run RSpec tests.</p>
-<p>Run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run Cucumber scenarios.</p>
-<h3 id="deploy-to-heroku">Deploy to Heroku</h3>
-<p>For your convenience, here is a <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
-<p>Be sure to set up <span class="caps">SSL</span> before you make your application available in production. See the <a href="https://devcenter.heroku.com/articles/ssl">Heroku documentation on <span class="caps">SSL</span></a>.</p>
-<p>Add this configuration parameter to the <strong>config/application.rb</strong> file:</p>
-<div class="highlight"><pre><span class="c1"># Heroku requires this to be false</span>
-<span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">initialize_on_precompile</span><span class="o">=</span><span class="kp">false</span>
-</pre></div><p>Then precompile assets, commit to git, and push to Heroku:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake assets:precompile
-<span class="gp">$</span> git add -A
-<span class="gp">$</span> git commit -m <span class="s2">"assets compiled for Heroku"</span>
-<span class="gp">$</span> git push heroku master
-</pre></div><p>You’ll need to set the configuration values from the <strong>config/application.yml</strong> file as Heroku environment variables. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> for more information.</p>
-<p>With the figaro gem, just run:</p>
-<div class="highlight"><pre><span class="gp">$</span> rake figaro:heroku
-</pre></div><p>Alternatively, you can set Heroku environment variables directly.</p>
-<p>Here’s how to set environment variables directly on Heroku with <code>heroku config:add</code>.</p>
-<div class="highlight"><pre><span class="gp">$</span> heroku config:add <span class="nv">GMAIL_USERNAME</span><span class="o">=</span><span class="s1">'myname@gmail.com'</span> <span class="nv">GMAIL_PASSWORD</span><span class="o">=</span><span class="s1">'secret'</span>
-<span class="gp">$</span> heroku config:add <span class="s1">'ROLES=[admin, user, VIP]'</span>
-<span class="gp">$</span> heroku config:add <span class="nv">ADMIN_NAME</span><span class="o">=</span><span class="s1">'First User'</span> <span class="nv">ADMIN_EMAIL</span><span class="o">=</span><span class="s1">'user@example.com'</span> <span class="nv">ADMIN_PASSWORD</span><span class="o">=</span><span class="s1">'changeme'</span>
-</pre></div><p>Complete Heroku deployment with:</p>
-<div class="highlight"><pre><span class="gp">$</span> heroku run rake db:migrate
-<span class="gp">$</span> heroku run rake db:seed
-</pre></div><p>See the <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial for Rails on Heroku</a> for details.</p>
-</section>
-<section class='chapter' id='additional-features'><h2>Additional Features</h2>
-<p>You’ve created a fully functional web application that allows visitors to register and sign in.</p>
-<p>Here are other example applications that add features to this application:</p>
-<table>
-  <tr>
-    <th>Tutorial </th>
-    <th>GitHub Repo </th>
-    <th>Description </th>
-  </tr>
-  <tr>
-    <td> <a href="https://tutorials.railsapps.org/tutorials/rails3-bootstrap-devise-cancan">Devise with CanCan and Twitter Bootstrap</a> </td>
-    <td> <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">rails3-bootstrap-devise-cancan</a> </td>
-    <td> adds CanCan for authorization, Twitter Bootstrap for <span class="caps">CSS</span> </td>
-  </tr>
-  <tr>
-    <td> <a href="https://tutorials.railsapps.org/tutorials/rails-stripe-membership-saas">Rails Membership Site with Stripe</a> </td>
-    <td> <a href="http://railsapps.github.io/rails-stripe-membership-saas">rails-stripe-membership-saas</a> </td>
-    <td> Site with subscription billing using Stripe </td>
-  </tr>
-  <tr>
-    <td> <a href="https://tutorials.railsapps.org/tutorials/rails-recurly-subscription-saas.html">Rails Membership Site with Recurly</a> </td>
-    <td> <a href="http://railsapps.github.io/rails-recurly-subscription-saas">rails-recurly-subscription-saas</a> </td>
-    <td> Site with subscription billing using Recurly </td>
-  </tr>
-</table>
-<h3 id="feature-requests">Feature Requests</h3>
-<p>If you have suggestions for additional features, please create an <a href="http://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">issue</a> on GitHub.</p>
-</section>
-<section class='chapter' id='comments'><h2>Comments</h2>
-<h3 id="credits">Credits</h3>
-<p>Daniel Kehoe implemented the application and wrote the tutorial.</p>
-<h3 id="did-you-like-the-tutorial">Did You Like the Tutorial?</h3>
-<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please create an <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber/issues">issue</a> on GitHub. Reporting (and patching!) issues helps everyone.</p>
-</section>
-<div class='comments'>
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-      var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  <a href="http://disqus.com" class="dsq-brlink">Comments disabled.</a>
-</div><!-- class="comments" -->
+      <header>
+        <div class="row">
+          <div class="large-4 columns">
+            <h1>RailsApps</h1>
+          </div>
+          <div class="large-8 columns">
+            <ul class="testimonials" data-orbit data-options="timer_speed: 20000; variable_height: false; bullets: false; navigation_arrows: false; pause_on_hover: true; resume_on_mouseout: true;">
+              <li data-orbit-slide="testify-1">
+                <div class="row">
+                  <div class="small-2 columns right">
+                    <img src="http://railsapps.github.io/images/landing/rickquantz.png" alt="Testimonial" title="Testimonial" />
+                  </div>
+                  <div class="small-8 columns">
+                    <blockquote class="testify">
+                      <p>
+                        Thanks so much for this. There are so many Rails tutorials for absolute beginners, and lots of stuff that assumes expert knowledge, but not much, besides practice, to span the gap.
+                        <cite> <strong>Rick Quantz, <a href="http://news.ycombinator.com/item?id=2545768">HackerNews, 13 May 2011</a></strong>
+                        </cite>
+                      </p>
+                    </blockquote>
+                  </div>
+              </li>
+              <li data-orbit-slide="testify-1">
+                <div class="row">
+                  <div class="small-2 columns right">
+                    <img src="http://railsapps.github.io/images/landing/josephmay.png" alt="Testimonial" title="Testimonial" />
+                  </div>
+                  <div class="small-8 columns">
+                    <blockquote class="testify">
+                      <p>
+                        I will be starting a new job here in SF, due in no small part to what I've learned here from the RailsApp Project.
+                        <cite> <strong>Joseph May, 23 Dec 2013</a></strong>
+                        </cite>
+                      </p>
+                    </blockquote>
+                  </div>
+              </li>
+              <li data-orbit-slide="testify-2">
+                <div class="row">
+                  <div class="small-2 columns right">
+                    <img src="http://railsapps.github.io/images/landing/justin.png" alt="Testimonial" title="Testimonial" />
+                  </div>
+                  <div class="small-8 columns">
+                    <blockquote class="testify">
+                      <p>
+                        I would like to say thank you for such a precise guide. It helped me understand how things work a great deal quicker than all of the bits and pieces I was reading around the web.
+                        <cite> <strong>Justin Booth</strong>
+                        </cite>
+                      </p>
+                    </blockquote>
+                  </div>
+              </li>
+              <li data-orbit-slide="testify-3">
+                <div class="row">
+                  <div class="small-2 columns right">
+                    <img src="http://railsapps.github.io/images/landing/warwickpoole.png" alt="Testimonial" title="Testimonial" />
+                  </div>
+                  <div class="small-8 columns">
+                    <blockquote class="testify">
+                      <p>
+                        @danielkehoe is somewhat of a hero with the stuff he puts on @github
+                        <cite> <strong>Warwick Poole, <a href="https://twitter.com/#!/warwickp/status/86987405327994880">Twitter, 2 July 2011</a></strong>
+                        </cite>
+                      </p>
+                    </blockquote>
+                  </div>
+              </li>
+              <li data-orbit-slide="testify-4">
+                <div class="row">
+                  <div class="small-2 columns right">
+                    <img src="http://railsapps.github.io/images/landing/petercooper.jpg" alt="Testimonial" title="Testimonial" />
+                  </div>
+                  <div class="small-8 columns">
+                    <blockquote class="testify">
+                      <p>
+                        Crazy Deep!
+                        <cite> <strong>Peter Cooper, <a href="http://j.mp/ieyXxu">Ruby Weekly, 19 May 2011</a></strong>
+                        </cite>
+                      </p>
+                    </blockquote>
+                  </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="row toprow">
+        <div class="large-12 columns">
+          <span class="mainseparator"></span><hr>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-7 columns">
+          <div class="row">
+            <div class="medium-12 columns">
+              <h3>Tutorials for Devise and RSpec</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="medium-3 columns">
+              <img class="img-circle" src="http://railsapps.github.com/images/readme.png" alt="Devise Quickstart Guide" title="Devise Quickstart Guide">
+              <br />
+              <br />
+            </div>
+            <div class="medium-3 columns text-left">
+              <h5><a href="http://railsapps.github.io/rails-devise/">Devise Quickstart Guide</a></h5>
+            </div>
+            <div class="medium-6 columns text-left features-list">
+              <p>Contents:</p>
+              <ul>
+                <li>how to install Devise</li>
+                <li>Devise architecture and API</li>
+                <li>customized applications with Devise</li>
+                <li>tips and tricks for Devise</li>
+                <li>tests for Devise with RSpec</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="medium-3 columns">
+              <img class="img-circle" src="http://railsapps.github.com/images/readme.png" alt="RSpec Quickstart Guide" title="RSpec Quickstart Guide">
+              <br />
+              <br />
+            </div>
+            <div class="medium-3 columns text-left">
+              <h5><a href="http://railsapps.github.io/rspec.html">RSpec Quickstart Guide</a></h5>
+            </div>
+            <div class="medium-6 columns text-left features-list">
+              <p>Contents:</p>
+              <ul>
+                <li>how to install RSpec</li>
+                <li>concepts and terminology</li>
+                <li>advice and best practices</li>
+                <li>feature tests with Capybara</li>
+                <li>test data with FactoryGirl</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="medium-3 columns">
+              <img class="img-circle" src="http://railsapps.github.io/images/landing/repo-rails-bootstrap-186x191.png" alt="Devise Example Application" title="Devise Example Application">
+              <br />
+              <br />
+            </div>
+            <div class="medium-3 columns text-left">
+              <h5>Devise Example Application <a href="https://github.com/RailsApps/rails-devise/">on GitHub</a></h5>
+            </div>
+            <div class="medium-6 columns text-left features-list">
+              <p>Use as a starter app:</p>
+              <ul>
+                <li>full RSpec test suite</li>
+                <li>open source</li>
+                <li>maintained and working code</li>
+                <li>clone from GitHub, or</li>
+                <li>generate with Rails Composer</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="large-5 columns">
+          <div class="row">
+            <div class="small-6 columns">
+              <ul class="pricing-table">
+                <li class="title"><small>SUBSCRIPTION</small></li>
+                <li class="price price-basic">
+                  <span class="round">$19</span>
+                </li>
+                <li class="description">Per Month</li>
+                <li class="description"><em>Devise Quickstart Guide</em><br />
+                                        <em>RSpec Quickstart Guide</em><br />
+                                        plus other tutorials</li>
+                <li class="description">With two full-length books:<br /><em>Rails and Bootstrap</em><br /><em>Learn Ruby on Rails</em></li>
+                <li class="description">Support the project for updates and more guides</li>
+                <li class="cta-button">
+                  <a class="button radius" href="https://tutorials.railsapps.org/users/sign_up?plan=pro">SUBSCRIBE</a>
+                </li>
+              </ul>
+            </div>
+            <div class="small-6 columns">
+              <ul class="pricing-table">
+                <ul class="pricing-table">
+                  <li class="title"><small>ORGANIZATION</small></li>
+                  <li class="price price-basic">
+                    <span class="round">$349</span>
+                  </li>
+                  <li class="description">Per Year</li>
+                  <li class="bullet-item">All Tutorials</li>
+                  <li class="bullet-item">Books Included</li>
+                  <li class="bullet-item">For Your Entire Team</li>
+                  <li class="bullet-item">Invite Multiple Users</li>
+                  <li class="cta-button">
+                    <a class="button price-basic radius" href="https://tutorials.railsapps.org/users/sign_up?plan=hero">SUBSCRIBE</a>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+          <span class="separator"></span><hr>
+        </div>
+      </div>
+      <article class="row">
+        <div class="large-4 columns">
+          <section class="four columns">
+            <h4 class="uptext">Rails 4.1 Examples</h4>
+            <p>Our example applications show how to use Bootstrap with Devise (authentication), OmniAuth (authentication), or Pundit (access control). All are open source, thanks to support from our subscribers.</p>
+          </section>
+        </div>
+        <div class="large-4 columns">
+          <section class="four columns">
+            <h4 class="uptext">Composer</h4>
+            <p>Use our <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate a Bootstrap starter app with a choice of popular gems. Save time and effort when you start any project. Again, open source, thanks to our subscribers.</p>
+          </section>
+        </div>
+        <div class="large-4 columns">
+          <section class="four columns">
+            <h4 class="uptext">Books and Guides</h4>
+            <p>Our books and guides are available exclusively to paid subscribers. Your monthly subscription provides financial support for the project. In exchange, we give you in-depth documentation.</p>
+          </section>
+        </div>
+      </article>
+      <div class="row">
+        <div class="large-6 columns">
+          <div class="row">
+            <div class="">
+              <div class="">
+                <div class="small-4 columns">
+                  <div class="alert label">EXAMPLES</div>
+                  <ul class="checkmarks">
+                    <li>
+                      <a href="https://github.com/RailsApps/rails-bootstrap/">Bootstrap and Rails</a>
+                    </li>
+                    <li>
+                      <a href="https://github.com/RailsApps/rails-foundation/">Foundation and Rails</a>
+                    </li>
+                    <li>
+                      <a href="https://github.com/RailsApps/rails-omniauth/">OmniAuth</a>
+                    </li>
+                    <li>
+                      <a href="https://github.com/RailsApps/rails-devise/">Devise</a>
+                    </li>
+                    <li>
+                      <a href="https://github.com/RailsApps/rails-devise-pundit/">Devise and Pundit</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="small-4 columns">
+                  <div class="alert label">QUICKSTART GUIDES
+                  </div>
+                  <ul class="checkmarks">
+                    <li>
+                      <a href="http://railsapps.github.io/rails-devise/">Devise Quickstart</a>
+                    </li>
+                    <li>
+                      <a href="http://railsapps.github.io/rspec.html">RSpec Quickstart</a>
+                    </li>
+                    <li>
+                      <a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Bootstrap Quickstart</a>
+                    </li>
+                    <li>
+                      <a href="http://railsapps.github.io/rails-foundation.html">Foundation Quickstart</a>
+                    </li>
+                  </ul>
+                  <div class="alert label">BOOKS
+                  </div>
+                  <ul class="checkmarks">
+                    <li>
+                      <a href="http://learn-rails.com/learn-ruby-on-rails.html"><em>Learn Ruby on Rails</em></a>
+                    </li>
+                    <li>
+                      <a href="http://railsapps.github.io/twitter-bootstrap-rails.html"><em>Bootstrap and Rails</em></a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="small-4 columns">
+                  <div class="alert label">ARTICLES
+                  </div>
+                  <ul class="checkmarks">
+                    <li><a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a></li>
+                    <li><a href="http://railsapps.github.io/installrubyonrails-mac.html">Install Ruby on Rails - Mac OS X</a></li>
+                    <li><a href="http://railsapps.github.io/installrubyonrails-ubuntu.html">Install Ruby on Rails - Ubuntu</a></li>
+                    <li><a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Install Ruby on Rails - Nitrous.io</a></li>
+                    <li><a href="http://railsapps.github.io/rails-google-analytics.html">Analytics for Rails</a></li>
+                    <li><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a></li>
+                    <li><a href="http://railsapps.github.io/rails-javascript-include-external.html">JavaScript and Rails</a></li>
+                    <li><a href="http://railsapps.github.io/rails-environment-variables.html">Rails Env Variables</a></li>
+                    <li><a href="http://railsapps.github.io/rails-git.html">Git and Rails</a></li>
+                    <li><a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="large-3 columns">
+          <img src="http://railsapps.github.io/images/landing/tools.png" alt="Tools" title="Tools">
+          <h4 class="text-center uptext">Tools</h4>
+          <p class="text-center">In addition to the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool, your subscription supports development and maintenance of the <a href="https://github.com/RailsApps/rails_layout/">Rails Layout</a> gem and the <a href="https://github.com/RailsApps/rails_apps_composer">RailsAppsComposer</a> gem.</p>
+        </div>
+        <div class="large-3 columns">
+          <img src="http://railsapps.github.io/images/landing/paperbackstack.jpg" alt="The Book" title="The Book">
+          <h4 class="text-center uptext">The Books</h4>
+          <p class="text-center"><em><a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a></em> is the acclaimed book for beginners. <em>Rails and Bootstrap</em> covers installation and use of Bootstrap. All available here, with a subscription.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="panel cta-panel">
+            <h4>Support the project. Sign up now!</h4>
+            <div class="row">
+              <div class="large-8 columns">
+                <p>
+                Your participation insures the survival of a project that benefits Rails developers all over the world. Plus, you get exclusive access to books and tutorials so you can build and learn.
+                </p>
+              </div>
+              <div class="large-4 columns">
+                <a class="button large radius" href="https://tutorials.railsapps.org/users/sign_up?plan=pro">Subscribe Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns small-centered">
+          <h4>
+            What people are saying...
+          </h3>
+          <div class="row">
+            <div class="large-12 columns">
+              <span class="mainseparator"></span>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns">
+              <div class="comments" id="comments">
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+              </div><!-- class="comments" -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="row footer-cover">
+        <div class="large-12 columns copyright">&copy; 2014 RailsApps All Rights Reserved.
+        </div>
+      </footer>
     </div>
-  </div>
-</div>
-<footer class="footer">
-  <div class="footer-constrain">
-    <p>Code licensed under the <a href="http://www.opensource.org/licenses/mit-license" target="_blank">MIT License</a>.<br />Use of the tutorials is restricted to registered users of the RailsApps Tutorials website.</p>
-    <ul class="footer-links">
-      <li><a href="https://tutorials.railsapps.org/pages/support#Privacy">Privacy</a></li>
-      <li class="muted">&middot;</li>
-      <li><a href="https://tutorials.railsapps.org/pages/support#Legal">Legal</a></li>
-      <li class="muted">&middot;</li>
-      <li><a href="https://tutorials.railsapps.org/pages/support">Support</a></li>
-    </ul>
-  </div>
-</footer>
-</body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.0.2/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
 </html>
