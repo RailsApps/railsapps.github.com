@@ -41,7 +41,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Install Ruby on Rails · Mac OS X Mavericks</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 17 June 2014</em></p>
+<p><em>Last updated 26 June 2014</em></p>
 <p>Install Ruby on Rails 4.1 on Mac OS X Mavericks. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.1, the newest version of Rails, on Mac OS X 10.9 Mavericks.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
@@ -58,7 +58,7 @@
 <p>This guide covers installing Ruby and Rails on a Mac with no previous installation of a Rails development environment.</p>
 <p>If you updated to Mavericks from an earlier version of Mac OS X, and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a>. If you previously installed the full Xcode package, you will need to update Xcode to the newest version (Xcode 5.01 or newer).</p>
 <h3>Use a Ruby Version Manager</h3>
-<p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a>, Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>, or others <a href="https://github.com/wayneeseguin/rvm/blob/master/help/alt.md">on this list</a>.</p>
+<p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a> or Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>.</p>
 <p>Conveniently, you can use <span class="caps">RVM</span> to install Ruby.</p>
 <h3>Don’t Use a One-Click Installer</h3>
 <p>You may hear about one-click installation programs such as <a href="http://railsinstaller.org/">RailsInstaller</a>, <a href="http://www.atmos.org/cinderella/">Cinderella</a>, and <a href="http://bitnami.org/stack/rubystack">BitNami RubyStack</a>. These installation programs are often outdated and they are no longer needed as <span class="caps">RVM</span> will set up almost everything needed to install Ruby. In particular, I don’t recommend RailsInstaller for experienced developers as it installs <span class="caps">RVM</span> at the system level creating potential conflicts.</p>
@@ -177,11 +177,11 @@ $ rvm --default use ruby-2.1.2
 <p>Check the installed gem manager version:</p>
 <pre>
 $ gem -v
-2.2.2
+2.3.0
 </pre>
 <p>You should have:</p>
 <ul>
-<li>RubyGems 2.2.2 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
+<li>RubyGems 2.3.0 — <a href="https://rubygems.org/gems/rubygems-update">check for newer version</a>
 </li>
 </ul><p>Use <code>gem update --system</code> to upgrade the Ruby gem manager if necessary.</p>
 <h2>
@@ -206,16 +206,11 @@ $ gem list
 <p>A trouble-free development environment requires the newest versions of the default gems.</p>
 <p>Several gems are installed with Ruby or the <span class="caps">RVM</span> default gemset:</p>
 <ul>
-<li>bundler (1.6.2) <a href="https://rubygems.org/gems/bundler">check for newer version</a>
-</li>
-	<li>bundler-unload (1.0.2) <a href="http://rubygems.org/gems/bundler-unload">check for newer version</a>
-</li>
-	<li>rake (10.3.1) <a href="http://rubygems.org/gems/rake">check for newer version</a>
-</li>
-	<li>rubygems-bundler (1.4.3) <a href="http://rubygems.org/gems/rubygems-bundler">check for newer version</a>
-</li>
-	<li>rvm (1.11.3.9) <a href="http://rubygems.org/gems/rvm">check for newer version</a>
-</li>
+<li><a href="https://rubygems.org/gems/bundler">bundler</a></li>
+	<li><a href="http://rubygems.org/gems/bundler-unload">bundler-unload</a></li>
+	<li><a href="http://rubygems.org/gems/rake">rake</a></li>
+	<li><a href="http://rubygems.org/gems/rubygems-bundler">rubygems-bundler</a></li>
+	<li><a href="http://rubygems.org/gems/rvm">rvm</a></li>
 </ul><p>To get a list of gems that are outdated:</p>
 <pre>
 $ gem outdated
@@ -238,7 +233,7 @@ $ echo "gem: --no-document" &gt;&gt; ~/.gemrc
 <p>You can stay informed of new gem versions by creating an account at RubyGems.org and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard).</p>
 <p>After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
 <h2>Rails Installation Options</h2>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.1 was current when this was written.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.2 was current when this was written.</p>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
@@ -276,7 +271,7 @@ $ cd workspace
 $ mkdir myapp
 $ cd myapp
 $ rvm use ruby-2.1.2@myapp --ruby-version --create
-$ gem install rails --pre
+$ gem install rails
 $ rails new .
 </pre>
 <p>We’ll name the new application “myapp.” Obviously, you can give it any name you like.</p>
