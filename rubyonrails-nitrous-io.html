@@ -354,6 +354,11 @@ $ gem install rails --version=3.2.18
 $ rails -v
 </pre>
 <h2>New Rails Application</h2>
+<p>First, change directories into the <strong>action/workspace/</strong> folder:</p>
+<pre>
+$ cd workspace
+</pre>
+<p>It’s best to create all your Rails applications in this <strong>action/workspace/</strong> folder.</p>
 <p>Here’s how to create a project-specific gemset, installing Rails, and creating a new application.</p>
 <pre>
 $ mkdir myapp
@@ -415,7 +420,7 @@ $ kill -9 4640
 <p>Git is pre-installed on your Nitrous box. Check that Git is installed:</p>
 <pre>
 $ git version
-git version 1.8.3.4
+git version 2.0.0
 </pre>
 <p>You must configure Git before you can use it:</p>
 <pre>
@@ -440,7 +445,7 @@ user.email=me@example.com
 <p>Nitrous has already created an <span class="caps">SSH</span> public key for you. View it with the Unix <code>cat</code> command:</p>
 <pre>
 $ cat ~/.ssh/id_rsa.pub
-ssh-rsa 094fa31ab0 ... deafdc0d== action@usw1.actionbox.io
+ssh-rsa 094fa31ab0 ... deafdc0d== root@usw1-2.nitrousbox.com
 </pre>
 <p>Carefully copy the entire string (it’s longer than the example shown here).</p>
 <p>Log in to your GitHub and go to “Account Settings” (the tiny wrench and screwdriver at the upper right corner of any page).</p>
@@ -470,9 +475,9 @@ Hi DanielKehoe! You've successfully authenticated, but GitHub does not provide s
 <p>Just drag the files from your Mac Finder to your text editor. Or use your text editor to open the files directly.</p>
 <p>As you make changes and save a file, you’ll see a brief notification that your files are being synchronized with the Nitrous box.</p>
 <p>In many ways, this is the best of all worlds. Your project files are backed up to your Nitrous box (where you can commit changes to GitHub), and you’ll use your Nitrous box to run your applications, so you are working “in the cloud.” But you can use a native Mac text editor with full mouse and keyboard support.</p>
-<p>See the Nitrous <a href="http://help.nitrous.io/mac-preferences/">Mac App Preferences</a> documentation for more information.</p>
+<p>See the Nitrous <a href="http://help.nitrous.io/nitrous-desktop/" title="Mac">Nitrous Desktop</a> documentation for more information.</p>
 <h2>Local Shell Access</h2>
-<p>Just as you can use your favorite text editor (on Mac OS X only), you can use your favorite Terminal application to connect to the shell running on your Nitrous box (from Linux, Mac, or Windows). This is primarily an option for experienced users; the Web <span class="caps">IDE</span> console is fine for beginners. See the Nitrous <a href="http://help.nitrous.io/categories/ssh/">Connecting to box via <span class="caps">SSH</span></a> documentation for more information.</p>
+<p>Just as you can use your favorite text editor (on Mac OS X only), you can use your favorite Terminal application to connect to the shell running on your Nitrous box (from Linux, Mac, or Windows). This is primarily an option for experienced users; the Web <span class="caps">IDE</span> console is fine for beginners. See the Nitrous <a href="http://help.nitrous.io/categories/ssh/">Adding <span class="caps">SSH</span> keys</a> documentation for more information.</p>
 <h2>Fancy Prompts and More</h2>
 <p>Experienced Unix users often configure the shell with a fancy prompt, environment variables, and command aliases. You can switch to the Z shell and install Robby Russell’s <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> for the ultimate power user experience (experts only!).</p>
 <p><a href="https://github.com/revans/bash-it">Bash-it</a> is a simpler alternative to oh-my-zsh if you want to continue to use the Bash shell. It’s easy to install if you just want a fancy prompt and a library of command aliases.</p>
@@ -490,7 +495,7 @@ $ ~/.bash_it/install.sh
 <p>Collaboration is limited to the text editor and the chatroom. Your console windows (and your partner’s console windows) are not shared, so your partner cannot see what you are doing in your console. If you want to share a console, you can run <a href="http://en.wikipedia.org/wiki/Tmux">Tmux</a>, a terminal multiplexer, which lets you switch between multiple sessions in one console window, and leave sessions running between logins.</p>
 <p>If you are physically present with your partner, at a shared desk or in the same room, Nitrous is a good way to edit a project using two keyboards and two displays.</p>
 <p>For remote collaboration, open a browser window for video chat (such as Google Hangouts) or use Skype for conversation. You can screenshare with video chat if your partner needs to see your full screen.</p>
-<p>See the Nitrous <a href="http://help.nitrous.io/collab">Getting Started with Collaboration</a> for more information.</p>
+<p>See the Nitrous <a href="http://help.nitrous.io/collab">Collaborative Coding Overview</a> for more information.</p>
 <h2>Rails Starter Apps</h2>
 <p>The starter application you create with <code>rails new</code> is very basic.</p>
 <p>Use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to build a full-featured Rails starter app.</p>
@@ -566,7 +571,7 @@ $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
 <h2>Databases</h2>
-<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Your Nitrous box comes with SQLite pre-installed and there’s nothing to configure.</p>
+<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Your Nitrous box comes with SQLite pre-installed and there’s nothing to configure. With Nitrous Autoparts, you can add various database servers. Nitrous also provides connections to hosted database services. See the Nitrous <a href="http://help.nitrous.io/categories/databases/">Databases</a> documentation to set up databases.</p>
 <p>Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command <code>rails new myapp --database=</code> will show you a list of supported databases.</p>
 <pre>
 Supported for preconfiguration are: mysql, oracle, postgresql, sqlite3, frontbase, ibm_db, sqlserver, jdbcmysql, jdbcsqlite3, jdbcpostgresql, jdbc.
@@ -577,20 +582,8 @@ $ rails new myapp --database=postgresql
 </pre>
 <p>The <code>--database=postgresql</code> parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file.</p>
 <p>Don’t use the <code>--database=</code> argument with the Rails Composer tool. You’ll select a database from a menu instead.</p>
-<p>Nitrous doesn’t host any database systems other than SQLite. However, Nitrous provides connections to hosted database services. At this time you can choose:</p>
-<ul>
-<li>MongoDB hosted by <a href="https://mongolab.com/welcome/">MongoLab</a>
-</li>
-	<li>PostgreSQL hosted by <a href="https://postgres.heroku.com/">Heroku</a>
-</li>
-	<li>Redis hosted by <a href="http://redis-cloud.com/">RedisCloud</a>
-</li>
-	<li>
-<span class="caps">RDS</span> hosted by <a href="http://aws.amazon.com/rds/">Amazon Web Services</a>
-</li>
-</ul><p>See the Nitrous <a href="http://help.nitrous.io/categories/databases/">Databases</a> documentation to set up database connections for your application.</p>
 <h2>Deployment</h2>
-<p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
+<p>You can use the Nitrous.io platform to host your web application and make it available to anyone. With a paid plan, you can even add a custom domain. However, Nitrous.io recommends that you deploy your application with a “platform as a service” provider such as Heroku.</p>
 <h3>Hosting</h3>
 <p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
