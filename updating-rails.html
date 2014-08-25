@@ -46,7 +46,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Updating to Rails 4.2</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 23 August 2014</em></p>
+<p><em>Last updated 25 August 2014</em></p>
 <p>Upgrading to Rails 4.2, the newest Ruby on Rails version. How to update Rails versions and upgrade Rails applications. Instructions and advice.</p>
 <h4>How to Upgrade Rails</h4>
 <p>This article shows how to add a new version of Rails while keeping an old version. Rails is revised frequently and you’ll likely need more than one version. Don’t simply replace an old version of Rails with another. Instead, set up your development environment with multiple versions of Rails so you can easily switch between them.</p>
@@ -267,7 +267,14 @@ gem 'rails', '4.1.15'
 .
 .
 </pre>
-<p>Change the Rails version to 4.2.0.beta1 (or a newer one if available).</p>
+<p>Change the Rails version to 4.2.0.beta1 (or a newer one if available):</p>
+<pre>
+source 'https://rubygems.org'
+gem 'rails', '4.2.0.beta1'
+.
+.
+.
+</pre>
 <p>To update to Rails 4.2.0.beta1, you’ll need to specify a newer version of <a href="https://github.com/rails/sass-rails">sass-rails</a> (see <a href="https://github.com/rails/sprockets-rails/issues/159">issue 159</a>):</p>
 <pre>
 gem 'sass-rails', '~&gt; 4.0.3'
@@ -290,6 +297,7 @@ $ rails -v
 <p>Minor Rails version updates seldom require changes to configuration files. Major Rails updates often change configuration files. If you don’t make the required configuration file changes, you’ll likely see deprecation warnings when you launch a Rails application.</p>
 <p>Rails provides a <code>rake rails:update</code> task to update configuration files. Be sure you’ve committed your application with git before running <code>rake rails:update</code> in case you need to roll back changes.</p>
 <pre>
+$ git add .
 $ git commit -m 'before rake rails update'
 $ rake rails:update
 </pre>
@@ -306,15 +314,12 @@ $ git merge --squash upgrading
 $ git commit -m "upgrade to Rails 4.2"
 </pre>
 <p>The commands commit the changes to the working branch named “upgrading,” switch to the master branch, and then merge the changes into the master branch for a final commit.</p>
-<h2>Updating Other Gems</h2>
-<p>It’s important to update the Rails gem when there are security fixes. You’ll seldom need to update other gems once you’ve deployed your application but you may want to stay informed of changes. You can track updates to gems by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a> at the RubyGems.org site. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). As an alternative, use the <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a> services which survey your GitHub repo and send email notifications when gem versions change. The services are free for public repositories with a premium plan for private repositories.</p>
-<p>You can update any gem by running <code>bundle update gem_name</code>. This installs the newest version of the gem (if the Gemfile entry doesn’t require a specific version) and updates the Gemfile.lock file.</p>
-<p>You can run <code>bundle update</code> to update all gems at once. Bundler will observe the version rules specified in the Gemfile; when a specific version is specified in the Gemfile, running <code>bundle update</code> without changing the Gemfile entry won’t update a gem. Running <code>bundle update</code> installs new gem versions and updates the Gemfile.lock file. As an alternative to running <code>bundle update</code>, you can delete the Gemfile.lock file and run <code>bundle install</code> to replace the Gemfile.lock file.</p>
-<p>If you are using <span class="caps">RVM</span> and multiple gemsets, it is best not to run <code>bundle update rails</code>. Instead, create a new gemset for the new Rails version as described above so you can switch gemsets as needed.</p>
 <h2 id="updating">Updating Your Application</h2>
-<p>After updating Rails and other gems, run your test suite (hopefully, you have tests; this is why you need them!).</p>
-<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you will have to rework parts of your application. Here are resources you can use to identify specific code that needs to be updated.</p>
-<h4 id="torails4">Rails 3.2 to Rails 4.0</h4>
+<p>After updating Rails and configuration files, run your test suite (hopefully, you have tests; this is why you need them!).</p>
+<p>Often, when the changes to Rails are minor, you will not need to update your application. When a major new version of Rails is released, you will have to rework parts of your application. Here are resources you can use to identify specific code that needs to be updated. Take a look at a checklist from Jesse Wolgamott:</p>
+<ul>
+<li><a href="http://www.rails-upgrade-checklist.com/">Rails Upgrade Checklist</a></li>
+</ul><h4 id="torails4">Rails 3.2 to Rails 4.0</h4>
 <ul>
 <li>Ebook: Andy Lindeman <a href="http://www.upgradingtorails4.com/">Upgrading to Rails 4</a>
 </li>
@@ -333,12 +338,17 @@ $ git commit -m "upgrade to Rails 4.2"
 <ul>
 <li>Railscast by Ryan Bates <a href="http://railscasts.com/episodes/318-upgrading-to-rails-3-2">Upgrading to Rails 3.2</a>
 </li>
-</ul><h2>Security</h2>
+</ul><h2>Updating Other Gems</h2>
+<p>It’s important to update the Rails gem when there are security fixes. You’ll seldom need to update other gems once you’ve deployed your application but you may want to stay informed of changes. You can track updates to gems by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a> at the RubyGems.org site. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). As an alternative, use the <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a> services which survey your GitHub repo and send email notifications when gem versions change. The services are free for public repositories with a premium plan for private repositories.</p>
+<p>You can update any gem by running <code>bundle update gem_name</code>. This installs the newest version of the gem (if the Gemfile entry doesn’t require a specific version) and updates the Gemfile.lock file.</p>
+<p>You can run <code>bundle update</code> to update all gems at once. Bundler will observe the version rules specified in the Gemfile; when a specific version is specified in the Gemfile, running <code>bundle update</code> without changing the Gemfile entry won’t update a gem. Running <code>bundle update</code> installs new gem versions and updates the Gemfile.lock file. As an alternative to running <code>bundle update</code>, you can delete the Gemfile.lock file and run <code>bundle install</code> to replace the Gemfile.lock file.</p>
+<p>If you are using <span class="caps">RVM</span> and multiple gemsets, it is best not to run <code>bundle update rails</code>. Instead, create a new gemset for the new Rails version as described above so you can switch gemsets as needed.</p>
+<h2>Security</h2>
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
 <p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encrypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated and written to the <strong>config/initializers/secret_token.rb</strong> file. If you’ve generated a Rails application and committed it only to a private GitHub repository, you do not need to change the secret key. However, if you’ve cloned a public GitHub repository or made your application publicly available on GitHub, you must change the secret key when you deploy. The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the <strong>config/initializers/secret_token.rb</strong> file. Remember, you should never deploy an application to production that uses a publicly available secret token (obviously, it is not secret if it is public!).</p>
 <h2>Where to Get Help</h2>
-<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">
