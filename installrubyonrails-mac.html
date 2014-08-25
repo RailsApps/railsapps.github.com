@@ -228,16 +228,23 @@ $ gem update
 ### list not shown for brevity
 </pre>
 <p>In particular, rake should be updated to version 10.2.1 or newer.</p>
-<h3>Faster Gem Installation</h3>
+<h4>Stay Current</h4>
+<p>You can track updates to gems at the RubyGems.org site by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
+<h4>Faster Gem Installation</h4>
 <p>By default, when you install gems, documentation files will be installed. Developers seldom use gem documentation files (they’ll browse the web instead). Installing gem documentation files takes time, so many developers like to toggle the default so no documentation is installed.</p>
 <p>Here’s how to speed up gem installation by disabling the documentation step:</p>
 <pre>
 $ echo "gem: --no-document" &gt;&gt; ~/.gemrc
 </pre>
 <p>This adds the line <code>gem: --no-document</code> to the hidden <strong>.gemrc</strong> file in your home directory.</p>
-<h3>Staying Informed</h3>
-<p>You can stay informed of new gem versions by creating an account at RubyGems.org and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard).</p>
-<p>After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
+<h4>Nokogiri</h4>
+<p><a href="http://nokogiri.org/">Nokogiri</a> is a gem that is a dependency for many other gems. Nokogiri is a gem that requires compilation for your specific operating system. As such, if your system environment doesn’t match Nokogiri’s requirements, compilation of Nokogiri will fail. If your system is configured properly, you’ll be able to compile Nokogiri. However, compilation takes time. Every time you install the Nokogiri gem, you’ll wait (as long as five minutes).</p>
+<p>To save time, install the Nokogiri gem in the <span class="caps">RVM</span> global gemset:</p>
+<pre>
+$ gem install nokogiri
+</pre>
+<p>During installation, Nokogiri will display two lengthy messages in the console. It will also pause without displaying any progress for as long as five minutes. Don’t assume installation has failed unless you see an error message or you’ve waited more than ten minutes.</p>
+<p>If installation fails, make sure your system is configured properly (look for help on <a href="http://stackoverflow.com/questions/tagged/nokogiri">Stack Overflow</a>).</p>
 <h2>Rails Installation Options</h2>
 <p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.5 was current when this was written.</p>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
