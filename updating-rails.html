@@ -138,13 +138,17 @@ $ gem update
 <p>In particular, rake should be updated to version 10.2.1 or newer.</p>
 <p>You can track updates to gems at the RubyGems.org site by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). As an alternative, use the <a href="https://gemnasium.com/">Gemnasium</a> service which surveys your GitHub repo and sends email notifications when gem versions change. Gemnasium is free for public repositories with a premium plan for private repositories.</p>
 <h2>Simple Rails Update</h2>
-<p>I recommend using <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a> so you can switch between Rails versions. However, use this simple procedure if you don’t think you’ll need to move back and forth between versions. Make sure you have committed the Gemfile and Gemfile.lock files to git so you can restore a known working version of your application if necessary.</p>
-<p>In most cases, your Gemfile specifies the Rails version used by your application. For example:</p>
+<p>Here’s the simplest way to update an application to a new version of Rails. Use this method for updates between patch versions, for example from Rails 4.1.5 to 4.1.6. Use this simple procedure if you don’t think you’ll need to move back and forth between versions. Make sure you have committed the Gemfile and Gemfile.lock files to git so you can restore a known working version of your application if necessary. I recommend using <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a> when you need to switch between Rails versions (described in the nest section).</p>
+<p>Your Gemfile specifies the Rails version used by your application. If you have a Rails 4.1.5 application:</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '3.2.13'
+gem 'rails', '4.1.5'
 </pre>
-<p>Change the Rails version to a newer version of Rails.</p>
+<p>You can change the Rails version to a newer version of Rails. For example, update it to Rails 4.1.6:</p>
+<pre>
+source 'https://rubygems.org'
+gem 'rails', '4.1.6'
+</pre>
 <p>Then run:</p>
 <pre>
 $ bundle update rails
@@ -204,7 +208,6 @@ $ rvm use ruby-2.1.2@rails4.2
 $ rails new myapp4.2
 </pre>
 <p>Compare the two applications with a file compare tool.</p>
-<p>You can also use the <code>rake rails:update</code> command to compare two default Rails applications to identify changes to configuration files. Update the “myapp4.1” application to the newest version of Rails by changing the Gemfile and running <code>bundle update</code>. Then run <code>rake rails:update</code> to find how configuration files changed between versions.</p>
 <p>You may find a few differences in the starter Rails application between versions. Patch updates seldom change the default new Rails application but other updates may change the starter app files. Major Rails updates often make many changes.</p>
 <h2>Updating a Rails Application</h2>
 <p>With <span class="caps">RVM</span>, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling your old gems.</p>
@@ -256,7 +259,15 @@ gem 'rails', '4.1.15'
 .
 .
 </pre>
-<p>Change the Rails version to 4.2.0.beta1. (or a newer one if available).</p>
+<p>Change the Rails version to 4.2.0.beta1 (or a newer one if available).</p>
+<p>To update to Rails 4.2.0.beta1, you’ll need to specify a newer version of <a href="https://github.com/rails/sass-rails">sass-rails</a> (see <a href="https://github.com/rails/sprockets-rails/issues/159">issue 159</a>):</p>
+<pre>
+gem 'sass-rails', '~&gt; 4.0.3'
+</pre>
+<p>Change the Gemfile:</p>
+<pre>
+gem 'sass-rails', '&gt;= 5.0.0.beta1'
+</pre>
 <p>Then update the gems specified in the Gemfile:</p>
 <pre>
 $ bundle update
