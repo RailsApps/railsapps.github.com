@@ -46,18 +46,16 @@
       <div class="content wikistyle gollum textile">
         <h1>Rails Authorization</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 31 August 2014</em></p>
-<p>How to control access in a Rails application. An overview of Rails authorization, introducing role-based authorization, with a comparison of the CanCan or Pundit gems.</p>
+<p><em>Last updated 1 Spetember 2014</em></p>
+<p>How to control access in a Rails application. An overview of Rails authorization, including role-based authorization, with a comparison of the CanCan and Pundit gems.</p>
 <h4>Examples</h4>
 <p>This article offers an overview of role-based authorization in Rails. The RailsApps project provides example applications and tutorials demonstrating authorization:</p>
-<ul>
-<li><a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a></li>
-	<li><a href="http://railsapps.github.io/rails-devise-pundit">rails-devise-pundit</a></li>
-</ul><h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
+<p><strong><a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a></strong><br><strong><a href="https://github.com/RailsApps/rails-devise-pundit">rails-devise-pundit</a></strong></p>
+<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is helpful, please <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
 <h2>Authentication</h2>
-<p>Originally, everyone was anonymous on the web. Browsers requested web pages without identifying the user. In 1997, <a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookies</a> were introduced to the web to keep track of user sessions, and soon web application frameworks were developed that allowed users to create accounts, and sign in to their accounts to initiate sessions. The features that allow users to create accounts (and edit or delete their profiles) are called <em>user management</em> features. The feature that allows users to sign in and identify themselves is called <em>authentication</em>. Typically, we request an email address and a password to authenticate the user, so we can be sure whoever is signing in is the same person who created the account.</p>
+<p>Originally, everyone was anonymous on the web. Browsers requested web pages without identifying the user. In 1997, <a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookies</a> were introduced to the web to keep track of user sessions, and soon applications were developed that allowed users to create accounts, and sign in to their accounts to initiate sessions. The features that allow users to create accounts (and edit or delete their profiles) are called <em>user management</em> features. Allowing users to sign in and identify themselves is called <em>authentication</em>. Typically, we request an email address and a password to authenticate the user, so we can be sure whoever is signing in is the same person who created the account.</p>
 <p>User management and authentication are not core features of Rails but it is easy to add authentication and user management to a Rails application, either by writing the code or adding a gem. If you would like your users to sign in with an account they’ve already established on a popular site such as Twitter or Facebook, you can use the <a href="https://github.com/intridea/omniauth/wiki">OmniAuth</a> gem. If you’d like visitors to register and sign in with an email address and password, you can use the <a href="https://github.com/plataformatec/devise">Devise</a> gem. Both OmniAuth and Devise are robust and full-featured, so most developers use the gems, rather than implementing authentication features themselves. The RailsApps project offers an <a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a> and a <a href="http://railsapps.github.io/rails-devise/">Devise Tutorial</a> to get you started.</p>
 <p>It’s important to distinguish <em>authentication</em>, which identifies a user, from <em>authorization</em>, which controls what a user is allowed to do. In this article, we look at ways to implement authorization, anticipating that you’ve already added user management and authentication.</p>
 <h2>Role-Based Authorization</h2>
@@ -73,7 +71,7 @@
 <li>attributes for roles, typically in a User model</li>
 	<li>access rules added to controller actions, restricting access to prohibited pages</li>
 	<li>methods to check roles in view templates, displaying content conditionally</li>
-</ul><p>In an application with simple access restrictions, you can add authorization with a few lines of hand-crafted code. You’ll need to add a role attribute to a User model. You’ll use helper methods to construct conditional <code>if</code> statements for access control in Rails controllers. And you can use the same helper methods to conditionally display content in views.</p>
+</ul><p>In an application with simple access restrictions, you can add authorization with a few lines of hand-crafted code. You’ll need to add a role attribute to a User model. You’ll use helper methods to construct conditional statements for access control in Rails controllers. And you can use the same helper methods to conditionally display content in views.</p>
 <p>Many developers use the <a href="https://github.com/elabs/pundit">Pundit</a> or <a href="https://github.com/ryanb/cancan">CanCan</a> gems (or its successor, <a href="https://github.com/CanCanCommunity/cancancan">CanCanCan</a>). These gems help organize and centralize access rules in complex applications, keeping controllers “skinny.” As a framework, Rails allows you to add as much complexity to a controller as you wish. However, the Rails community has come to a consensus that complexity in controllers is a not a best practice. Authorization quickly adds complexity to controllers, which is why developers use Pundit or CanCan.</p>
 <p>Given the advice, “Keep your controllers skinny,” some developers attempt to implement access rules as methods in a model. Access rules don’t belong in a model, given that a model is best used for retrieving and manipulating data, and not for logic that controls program flow through the application. Rather than build “fat models” with complex access rules for program flow, developers look for ways to keep both models and controllers free from excess authorization code. Pundit or CanCan are options.</p>
 <h3>Pundit</h3>
@@ -155,7 +153,7 @@
 	<li><code>user.crew?</code></li>
 </ul><p>Active Record enums make it easy to add role-based authorization to a Rails application.</p>
 <h2>Examples</h2>
-<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> explains how to build the complete application.</p>
+<p>The following cade samples are taken from the <a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> explains how to build the complete application.</p>
 <h3>User Model</h3>
 <p>Thanks to the power of the Active Record enum attribute, we need only a few lines of code in the User model to provide a complete roles implementation for role-based authorization. Here is an example of a User model with the code needed to implement roles:</p>
 <pre>
@@ -190,7 +188,7 @@ end
 </pre>
 <p>You’ll access roles by name, such as <code>user</code>, <code>vip</code>, or <code>admin</code>, but thanks to Active Record enum, the values are stored as integers in the Users table. The values that correspond to each integer are defined in the User class. Whether you use CanCan, Pundit, or simple role-based authorization, you can set up your roles in the User model using an Active Record enum attribute.</p>
 <h3>User Controller With Simple Role-Based Authorization</h3>
-<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> provides additional details.</p>
+<p>The following cade samples are taken from the <a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> provides additional details.</p>
 <p>Here is an example of a User controller with authorization checks:</p>
 <pre>
 class UsersController &lt; ApplicationController
@@ -244,7 +242,7 @@ end
 <p>The <code>index</code> action displays a page with a list of users. We only want administrators to have access to the Users#index page. We want the <code>update</code> and <code>destroy</code> actions to only be used by administrators.</p>
 <p>The <code>show</code> action displays a user’s profile page, with details about the user. We want administrators to have access to any user’s profile. And we want a user to have access to their own profile, but not the profile of any other user.</p>
 <h3>Views With Simple Role-Based Authorization</h3>
-<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> provides additional details.</p>
+<p>The following cade samples are taken from the <a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> provides additional details.</p>
 <p>Here’s an example of a view file that uses role-based authorization to display different messages to an ordinafry user, <span class="caps">VIP</span>, or administrator:</p>
 <pre>
 &lt;% if user_signed_in? %&gt;
@@ -263,7 +261,7 @@ end
 </pre>
 <p>The Active Record Enum gives us a method we can use to determine the name of the role. We use <code>current_user.role</code> to find the user’s role. Depending on the role, we display a different welcome message. You can imagine that view templates can quickly become cumbersome if we try to accommodate a large number of roles or complex access rules. If your view templates become complex, use partials to reduce the code complexity, or use Pundit to implement access control logic.</p>
 <h3>User Controller With Pundit</h3>
-<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-pundit">rails-devise-pundit</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-pundit">Rails and Pundit Tutorial</a>  provides additional details.</p>
+<p>The following cade samples are taken from the <a href="https://github.com/RailsApps/rails-devise-pundit">rails-devise-pundit</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-pundit">Rails and Pundit Tutorial</a>  provides additional details.</p>
 <p>Here is an example of a User controller that uses methods supplied by Pundit:</p>
 <pre>
 class UsersController &lt; ApplicationController
