@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Rails Authorization &#183; RailsApps</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="https://plus.google.com/117374718581973393536" rel="publisher">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/foundation.min.css">
+  <link rel="stylesheet" href="http://railsapps.github.io/css/railsapps.css" />
+  <link rel="stylesheet" href="http://railsapps.github.io/css/syntax.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <script type="text/javascript">
+  window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
+    window.analytics.load("l1stqfqqbf");
+    window.analytics.page();
+    window.analytics.ready(function () {
+      ga('require', 'linker');
+      ga('linker:autoLink', ['railscomposer.com','learn-rails.com','blog.railsapps.org','tutorials.railsapps.org']);
+    });
+    </script>
+</head>
+<body>
+  <div class="fixed">
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <a href="http://railsapps.github.io/" class="brand">RailsApps Project</a>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <ul class="right">
+          <li><a href="https://tutorials.railsapps.org/" class="google">Tutorials</a></li>
+          <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
+          <li><a href="http://blog.railsapps.org/" class="twitter">Blog</a></li>
+          <li><a href="https://github.com/RailsApps" class="github">GitHub Repository</a></li>
+        </ul>
+      </section>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="content wikistyle gollum textile">
+        <h1>Rails Authorization</h1>
+<h4>by Daniel Kehoe</h4>
+<p><em>Last updated 31 August 2014</em></p>
+<p>How to control access in a Rails application. An overview of Rails authorization, introducing role-based authorization, with a comparison of the CanCan or Pundit gems.</p>
+<h4>Examples</h4>
+<p>This article offers an overview of role-based authorization in Rails. The RailsApps project provides example applications and tutorials demonstrating authorization:</p>
+<ul>
+<li><a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a></li>
+	<li><a href="http://railsapps.github.io/rails-devise-pundit">rails-devise-pundit</a></li>
+</ul><h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
+<h4>What is the RailsApps Project?</h4>
+<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is helpful, please <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
+<h2>Authentication</h2>
+<p>Originally, everyone was anonymous on the web. Browsers requested web pages without identifying the user. In 1997, <a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookies</a> were introduced to the web to keep track of user sessions, and soon web application frameworks were developed that allowed users to create accounts, and sign in to their accounts to initiate sessions. The features that allow users to create accounts (and edit or delete their profiles) are called <em>user management</em> features. The feature that allows users to sign in and identify themselves is called <em>authentication</em>. Typically, we request an email address and a password to authenticate the user, so we can be sure whoever is signing in is the same person who created the account.</p>
+<p>User management and authentication are not core features of Rails but it is easy to add authentication and user management to a Rails application, either by writing the code or adding a gem. If you would like your users to sign in with an account they’ve already established on a popular site such as Twitter or Facebook, you can use the <a href="https://github.com/intridea/omniauth/wiki">OmniAuth</a> gem. If you’d like visitors to register and sign in with an email address and password, you can use the <a href="https://github.com/plataformatec/devise">Devise</a> gem. Both OmniAuth and Devise are robust and full-featured, so most developers use the gems, rather than implementing authentication features themselves. The RailsApps project offers an <a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a> and a <a href="http://railsapps.github.io/rails-devise/">Devise Tutorial</a> to get you started.</p>
+<p>It’s important to distinguish <em>authentication</em>, which identifies a user, from <em>authorization</em>, which controls what a user is allowed to do. In this article, we look at ways to implement authorization, anticipating that you’ve already added user management and authentication.</p>
+<h2>Role-Based Authorization</h2>
+<p>Almost every web application needs an authorization system, if there are parts of the website that are restricted to some users. Most websites set access restrictions based on roles; that is, users are grouped by privilege. The web application checks the user’s role to determine if access is allowed. We call this <em>role-based authorization</em>.</p>
+<p>In the simplest implementation, we check if a user has a specific role (such as administrator) and either allow access or redirect with an “Access Denied” message. Roles are attributes associated with a user account, and often implemented in a User model. We’ll look at ways to implement roles, but first let’s consider situations where role-based authorization is not suitable.</p>
+<h3>Alternatives to Role-Based Authorization</h3>
+<p>Role-based authorization is suitable for simple applications without complex access rules. A big advantage is easy conceptualization; it is easy to imagine personas, each with different (but uniform) privileges. If all you need are role-based rules, use them.</p>
+<p>You may encounter complex applications where role-based authorization is inadequate. In these cases, authorization is often based on matching requested activities with a database of privileges. For example, imagine an application that is used across a university to record and report student grades. A student can see his or her own grades for any class; a teaching assistant can enter a grade but not change it after the course ends but only for students in their own section; a professor can enter or change a grade for any student in the class until the next semester begins; the department chairperson can view but not change grades for any student enrolled in a department course; the registrar of records can view or change any grade for any student ever enrolled. Whew! In a real university, the requirements are even more complex, I’m sure. Not only do roles overlap (a professor may also be a department chairperson) but privileges are finer-grained than roles. A user with the role of professor should only have grade-changing privileges for the students in his or her course and it is impractical to create a new role for every new course every semester. This is a use case for building access rules based on permissions attached to activities, not roles.</p>
+<p>If you’re building an application with this level of complexity, seek help from experienced developers. You’ll be treading in the territory of large enterprises where initiatives such as <a href="http://en.wikipedia.org/wiki/User-Managed_Access" title="UMA">User-Managed Access</a> hold sway. This tutorial doesn’t cover such complexity. We’ll focus on the majority of applications where role-based authorization is optimal.</p>
+<h2>Implementing Role-Based Authorization</h2>
+<p>Simple role-based authorization requires:</p>
+<ul>
+<li>attributes for roles, typically in a User model</li>
+	<li>access rules added to controller actions, restricting access to prohibited pages</li>
+	<li>methods to check roles in view templates, displaying content conditionally</li>
+</ul><p>In an application with simple access restrictions, you can add authorization with a few lines of hand-crafted code. You’ll need to add a role attribute to a User model. You’ll use helper methods to construct conditional <code>if</code> statements for access control in Rails controllers. And you can use the same helper methods to conditionally display content in views.</p>
+<p>Many developers use the <a href="https://github.com/elabs/pundit">Pundit</a> or <a href="https://github.com/ryanb/cancan">CanCan</a> gems (or its successor, <a href="https://github.com/CanCanCommunity/cancancan">CanCanCan</a>). These gems help organize and centralize access rules in complex applications, keeping controllers “skinny.” As a framework, Rails allows you to add as much complexity to a controller as you wish. However, the Rails community has come to a consensus that complexity in controllers is a not a best practice. Authorization quickly adds complexity to controllers, which is why developers use Pundit or CanCan.</p>
+<p>Given the advice, “Keep your controllers skinny,” some developers attempt to implement access rules as methods in a model. Access rules don’t belong in a model, given that a model is best used for retrieving and manipulating data, and not for logic that controls program flow through the application. Rather than build “fat models” with complex access rules for program flow, developers look for ways to keep both models and controllers free from excess authorization code. Pundit or CanCan are options.</p>
+<h3>Pundit</h3>
+<p>You can use the <a href="https://github.com/elabs/pundit">Pundit</a> gem to keep your controllers skinny. Pundit is an authorization system that uses simple Ruby objects for access rules. Pundit uses a folder named <strong>app/policies/</strong> containing plain Ruby objects that implement access rules. Pundit is well-suited to the service-oriented architecture that is popular for large Rails applications, emphasizing object-oriented design with discrete Ruby objects providing specialized services.</p>
+<p>Pundit policy objects are often described as POROs, or “plain old Ruby objects.” <span class="caps">PORO</span> simply means that a Pundit policy object doesn’t inherit from other classes or include code mixed in from elsewhere. In contrast, a Rails model that inherits from Active Record is not a <span class="caps">PORO</span>; the model inherits behavior that is defined in a parent class. Because Pundit policy objects are POROs, the code is simple and easy to understand.</p>
+<h3>CanCan</h3>
+<p><a href="https://github.com/ryanb/cancan">CanCan</a> was a popular gem for authorization developed by Ryan Bates (best known for <a href="http://railscasts.com/">RailsCasts</a>) and abandoned prior to the release of Rails 4.0. Due to its popularity, the community-based <a href="https://github.com/CanCanCommunity/cancancan">CanCanCan</a> project maintains an updated version of CanCan. CanCan provides a <span class="caps">DSL</span> (domain-specific language) that isolates all authorization logic in a single Ability class.</p>
+<h3>CanCan or Pundit?</h3>
+<p>Before starting a project, developers often want to know what is best, CanCan or Pundit?</p>
+<p>As an application grows in complexity, the CanCan Ability class can grow unwieldy. Also, every authorization request requires evaluation of the full CanCan Ability class, adding performance overhead. In its favor, CanCan is popular and well known among Rails developers. If you inherit a project that uses CanCan, you can upgrade to <a href="https://github.com/CanCanCommunity/cancancan">CanCanCan</a> with minimal disruption. Many developers continue to be happy using CanCan.</p>
+<p>Pundit also offers the advantage of segregating access rules into a central location, keeping controllers skinny. With Pundit the central location is not a single Ability file. Instead, it is a folder named <strong>app/policies/</strong> containing plain Ruby objects that implement access rules. Adding authorization to a controller action requires one line of code that calls a helper method. Pundit uses meta-programming magic to instantiate a policy object that matches an access rule to the controller action. Pundit policy objects are lightweight, adding authorization logic without as much overhead as CanCan. If you wish, you can create a single Pundit policy object for use with all your controllers. More often, developers create a policy object that corresponds with a specific model (for example, a UserPolicy class to match a User model) and will use the policy object to control access for actions in a specific controller (for example, a Users controller).</p>
+<p>I prefer Pundit when implementing authorization in a complex application. You can read the <a href="http://railsapps.github.io/rails-devise-pundit">Rails and Pundit Tutorial</a> to learn how to use Pundit.</p>
+<p>For simple applications, CanCan or Pundit are not necessary and you can use simple role-based authorization without any extra authorization gems. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> goes into detail.</p>
+<h2>Implementing Roles</h2>
+<p>Neither Pundit or CanCan implement roles. With either gem, or hand-rolled authorization approaches, you’ll need to implement roles, either by adding attributes to a User Model or adding a gem to manage roles. Rails has no convention for implementing roles. There is a wide range of approaches which we’ll survey here.</p>
+<p>Despite the emphasis in Rails on conventions for the sake of consistency, there is no convention established in the framework for a “user.” Developers are free to create a model for an Account, a Member, a Profile, or anything else that meets their requirements. In most cases, developers create a User model, which is a practice we follow in the RailsApps example applications and tutorials.</p>
+<h3>Single or Multiple Roles</h3>
+<p>Before you decide which approach you’ll use to implement roles, consider whether your users will each have a single role, or if you will need to assign multiple roles to a single user. Let’s consider some examples.</p>
+<p>If a user can either be an ordinary user, or an administrator, and nothing else, each user has a single role. If a user can join with a bronze, silver, or gold plan, or be an administrator, you’ll only need one role per user. With a single role per user, privileges can be cumulative. You can create access rules so gold users get all the privileges of bronze or silver users (plus more). A single role per user is all you need for these web applications.</p>
+<p>If privileges are not cumulative, you may need multiple roles per user. Consider concertgoers. Some may pay extra to sit close to the stage; there’s a “seating” role with values of “close” or “far.” Some may win a contest for a backstage pass; whether they sit close or far, each user will be assigned a value of “access” or “no access” for the “backstage” role. Each user will have multiple roles. Take the time to map out your system of privileges before deciding how you’ll implement roles.</p>
+<h3>Binary Role</h3>
+<p>The simplest use case is a user who can be either an administrator or an ordinary user. You can add a boolean attribute to the User model to indicate whether a user is an administrator or not. Then you can check the role with a simple method such as <code>@user.admin?</code>.</p>
+<p>This approach has drawbacks when you need multiple roles. You could add another boolean attribute to indicate if a user has a premium plan, but as soon as you add more plans, the approach gets unwieldy, as you’ll need to add a separate attribute to the model for every anticipated authorization level.</p>
+<h3>String Roles</h3>
+<p>For a user who can have only a single role, you could add a <code>role</code> attribute to the User model, and set a string representing a privilege level such as “admin,” “gold,” “silver,” or “bronze.” This approach requires only one column in the User data table. You may need some supporting code in the User model that makes sure only pre-defined roles can be used. You can check the role with <code>if @user.role == 'admin'</code>; with a little extra code, you can implement methods in the User model such as <code>@user.is_admin?</code>.</p>
+<p>You may encounter several limitations with this approach. First, though you can easily add new roles, you can’t easily rename roles once you’ve got registered users (you’d have to change many records in the database). Second, a user cannot have multiple roles; only one role is possible for each user. Finally, this approach requires extra code in the model to implement convenience methods such as <code>@user.is_admin?</code>.</p>
+<h3>Bitmask Roles</h3>
+<p>A model attribute can encode a role using a <a href="http://en.wikipedia.org/wiki/Mask_(computing)">bitmask</a> function. Instead of representing the role as a string, the role attribute can take an integer value. The integer itself means nothing; instead, by decoding the integer as a binary number, each bit represents a role. This is more compact than creating a separate database column for each role.</p>
+<p>In the early days of computing, when machine memory was limited and code had to be compact, bitmasks were commonly used to store configuration settings or other data. Today bitmasks are a clever trick that is best avoided. To implement bitmasks to encode roles, you’ll have to add complex methods to your User model (or use the <a href="https://github.com/joelmoss/bitmask_attributes">bitmask_attributes</a> gem). There is also no way to set up database indexes or simple queries to retrieve encoded roles. It’s the worst kind of hack; there is no performance benefit and your code becomes much less readable. There are better alternatives.</p>
+<h3>Role Model</h3>
+<p>If your application requires that users have more than one role, a Role model provides the most flexible implementation. The User model and Role model will have a many-to-many association, so a user can have multiple roles and a role can be assigned to multiple users. You’ll need two database tables, one for the User model and another for the Role model. Additionally, to implement the many-to-many association, your database will need an intermediate “join” table named roles_users. Your models will implement the association using the <a href="http://guides.rubyonrails.org/association_basics.html#the-has-and-belongs-to-many-association">has_and_belongs_to_many</a> association:</p>
+<p>An alternative approach uses the <a href="http://guides.rubyonrails.org/association_basics.html#the-has-many-through-association">has_many :through</a>. This requires an intermediate class such as Assignment. Unless you need to interact with the intermediate object, has_and_belongs_to_many is more appropriate.</p>
+<p>With a Role model, each user can be assigned multiple roles. You’ll be able to construct access rules with conditions such as <code>if @user.roles.include?('admin')</code>. If you want convenience methods such as <code>@user.is_admin?</code>, you’ll need extra code in the User model.</p>
+<p>I won’t show you the code you need to implement roles using the Role model because there is a gem that provides this functionality. You don’t have to implement it yourself.</p>
+<h3>Rolify Gem</h3>
+<p>Use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to add multiple roles to an application. The gem is <a href="https://github.com/EppO/rolify/wiki">well-documented on its wiki</a>. The Rolify gem provides a generator that creates a Role model with a migration to create a roles table, a users_roles join table, and appropriate database indexes. To add roles to the User model, simply add a <code>rolify</code> method to the model.</p>
+<p>Rolify provides a full set of convenience methods without any extra coding, so you can use methods such as:</p>
+<ul>
+<li>
+<code>user.add_role :admin</code> – to assign an admin role to a user</li>
+	<li>
+<code>user.has_role? :admin</code> – to determine if a user is an administrator</li>
+	<li>
+<code>user.remove_role :admin</code> – to remove a role</li>
+	<li>
+<code>@users = User.with_role :admin</code> – obtain an array of all users with the admin role</li>
+</ul><p>Rolify is convenient and well-tested, so there is little reason to implement your own Role model, if your application requires users with more than one role.</p>
+<h3>Enum Roles</h3>
+<p>Most applications don’t need to assign more than one role to a user. In many applications, a single role for each user is sufficient, so you don’t need to use the Rolify gem. Instead you can use a feature of Active Record, <a href="http://api.rubyonrails.org/classes/ActiveRecord/Enum.html">Enum</a>, introduced in Rails 4.1. Enums are the simplest way to add roles to a User model, with advantages over all the approaches described above.</p>
+<p>An enum, or <a href="http://en.wikipedia.org/wiki/Enumerated_type">enumerated type</a>, is stored in the database as an integer but represented in code as a string. Enums give us all the functionality we need to implement user roles. We can define the names of the roles, and if necessary, change the names as needed (the integer values stored with each user record remain unchanged). Active Record will restrict the assignment of the attribute to a collection of predefined values, so we don’t have to add any code to restrict the names of the roles to a defined set. Best of all, enums come with a set of convenience methods that allow us to directly query the role without any extra code. For an enum attribute named <code>role</code>, with the values <code>admin</code>, <code>vip</code>, and <code>user</code>, we can use these methods:</p>
+<ul>
+<li>
+<code>User.roles # =&gt; {"user"=&gt;0, "vip"=&gt;1, "admin"=&gt;2}</code> – list all roles</li>
+	<li>
+<code>user.admin!</code> – make the user an administrator</li>
+	<li>
+<code>user.admin? # =&gt; true</code> – query if the user is an administrator</li>
+	<li>
+<code>user.role # =&gt; "admin"</code> – find out the user’s role</li>
+	<li>
+<code>@users = User.admin</code> – obtain an array of all users with the admin role</li>
+	<li>
+<code>user.role = 'foo' # ArgumentError: 'foo' is not a valid role</code> – we can’t set invalid roles</li>
+</ul><p>Active Record automatically gives you convenience methods to assign and query any role. For example, in a User model, if you have:</p>
+<ul>
+<li><code>enum role: [:coach, :business, :first, :crew]</code></li>
+</ul><p>You’ll automatically get the following methods anywhere you’ve instantiated the user object:</p>
+<ul>
+<li>
+<code>user.coach!</code> – assign the user’s role</li>
+	<li><code>user.business!</code></li>
+	<li><code>user.first!</code></li>
+	<li><code>user.crew!</code></li>
+</ul><ul>
+<li>
+<code>user.coach?</code> – query the user’s role</li>
+	<li><code>user.business?</code></li>
+	<li><code>user.first?</code></li>
+	<li><code>user.crew?</code></li>
+</ul><p>Active Record enums make it easy to add role-based authorization to a Rails application.</p>
+<h2>Examples</h2>
+<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> explains how to build the complete application.</p>
+<h3>User Model</h3>
+<p>Thanks to the power of the Active Record enum attribute, we need only a few lines of code in the User model to provide a complete roles implementation for role-based authorization. Here is an example of a User model with the code needed to implement roles:</p>
+<pre>
+class User &lt; ActiveRecord::Base
+  enum role: [:user, :vip, :admin]
+  after_initialize :set_default_role, :if =&gt; :new_record?
+
+  def set_default_role
+    self.role ||= :user
+  end
+
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+end
+</pre>
+<p>The <code>enum</code> method sets the <code>role</code> attribute with a set of predefined role values: <code>user</code>, <code>vip</code>, and <code>admin</code>. Refer to the documentation for <a href="http://api.rubyonrails.org/classes/ActiveRecord/Enum.html">Enum</a> to see other options for setting role values. For example, you can use a hash to explicitly map enum values to integers:</p>
+<ul>
+<li><code>enum role: {user: 0, bronze: 1, silver: 2, gold: 3, admin: 4}</code></li>
+</ul><p>Before you can use a User model with these roles, you’ll need to run a migration to add a new field to the Users table in the database:</p>
+<pre>
+$ rails generate migration AddRoleToUsers role:integer
+</pre>
+<p>The migration will look like this:</p>
+<pre>
+class AddRoleToUsers &lt; ActiveRecord::Migration
+  def change
+    add_column :users, :role, :integer
+  end
+end
+</pre>
+<p>You’ll access roles by name, such as <code>user</code>, <code>vip</code>, or <code>admin</code>, but thanks to Active Record enum, the values are stored as integers in the Users table. The values that correspond to each integer are defined in the User class. Whether you use CanCan, Pundit, or simple role-based authorization, you can set up your roles in the User model using an Active Record enum attribute.</p>
+<h3>User Controller With Simple Role-Based Authorization</h3>
+<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> provides additional details.</p>
+<p>Here is an example of a User controller with authorization checks:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  before_filter :admin_only, :except =&gt; :show
+
+  def index
+    @users = User.all
+  end
+
+  def show
+    @user = User.find(params[:id])
+    unless current_user.admin?
+      unless @user == current_user
+        redirect_to :back, :alert =&gt; "Access denied."
+      end
+    end
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(secure_params)
+      redirect_to users_path, :notice =&gt; "User updated."
+    else
+      redirect_to users_path, :alert =&gt; "Unable to update user."
+    end
+  end
+
+  def destroy
+    user = User.find(params[:id])
+    user.destroy
+    redirect_to users_path, :notice =&gt; "User deleted."
+  end
+
+  private
+
+  def admin_only
+    unless current_user.admin?
+      redirect_to :back, :alert =&gt; "Access denied."
+    end
+  end
+
+  def secure_params
+    params.require(:user).permit(:role)
+  end
+
+end
+</pre>
+<p>We’ll apply a <code>before_filter</code> that calls a private <code>admin_only</code> method on all actions except <code>show</code>.</p>
+<p>The <code>admin_only</code> method checks if the current user is an administrator. If the user is not an administrator, the action redirects to the previous page and displays a flash message, “Access denied.”</p>
+<p>The <code>index</code> action displays a page with a list of users. We only want administrators to have access to the Users#index page. We want the <code>update</code> and <code>destroy</code> actions to only be used by administrators.</p>
+<p>The <code>show</code> action displays a user’s profile page, with details about the user. We want administrators to have access to any user’s profile. And we want a user to have access to their own profile, but not the profile of any other user.</p>
+<h3>Views With Simple Role-Based Authorization</h3>
+<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> provides additional details.</p>
+<p>Here’s an example of a view file that uses role-based authorization to display different messages to an ordinafry user, <span class="caps">VIP</span>, or administrator:</p>
+<pre>
+&lt;% if user_signed_in? %&gt;
+  &lt;% case current_user.role %&gt;
+  &lt;% when 'user' %&gt;
+    &lt;h3&gt;Welcome&lt;/h3&gt;
+  &lt;% when 'vip' %&gt;
+    &lt;h3&gt;Welcome, VIP&lt;/h3&gt;
+  &lt;% when 'admin' %&gt;
+    &lt;h3&gt;Welcome, Administrator&lt;/h3&gt;
+  &lt;% end %&gt;
+&lt;% else %&gt;
+  &lt;h3&gt;Welcome&lt;/h3&gt;
+&lt;% end %&gt;
+&lt;p&gt;&lt;%= link_to 'Users:', users_path %&gt; &lt;%= User.count %&gt; registered&lt;/p&gt;
+</pre>
+<p>The Active Record Enum gives us a method we can use to determine the name of the role. We use <code>current_user.role</code> to find the user’s role. Depending on the role, we display a different welcome message. You can imagine that view templates can quickly become cumbersome if we try to accommodate a large number of roles or complex access rules. If your view templates become complex, use partials to reduce the code complexity, or use Pundit to implement access control logic.</p>
+<h3>User Controller With Pundit</h3>
+<p>The following cade samples are taken from the <a href="http://railsapps.github.io/rails-devise-pundit">rails-devise-pundit</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-pundit">Rails and Pundit Tutorial</a>  provides additional details.</p>
+<p>Here is an example of a User controller that uses methods supplied by Pundit:</p>
+<pre>
+class UsersController &lt; ApplicationController
+  before_filter :authenticate_user!
+  after_action :verify_authorized
+
+  def index
+    @users = User.all
+    authorize User
+  end
+
+  def show
+    @user = User.find(params[:id])
+    authorize @user
+  end
+
+  def update
+    @user = User.find(params[:id])
+    authorize @user
+    if @user.update_attributes(secure_params)
+      redirect_to users_path, :notice =&gt; "User updated."
+    else
+      redirect_to users_path, :alert =&gt; "Unable to update user."
+    end
+  end
+
+  def destroy
+    user = User.find(params[:id])
+    authorize user
+    user.destroy
+    redirect_to users_path, :notice =&gt; "User deleted."
+  end
+
+  private
+
+  def secure_params
+    params.require(:user).permit(:role)
+  end
+
+end
+</pre>
+<p>The statement <code>after_action :verify_authorized</code> isn’t strictly necessary. It is a second line of defense, offered by Pundit, that ensures you haven’t forgotten to confirm authorization in every controller action where you want it. If you include <code>after_action :verify_authorized</code> and a controller action isn’t protected with the <code>authorize</code> method, the user will see an exception when the unprotected action is called.</p>
+<p>The <code>index</code> action is protected with Pundit using the <code>authorize User</code> method call. We add the keyword <code>authorize</code> to any controller action that requires authorization for access. The <code>authorize</code> method takes an argument that tells Pundit where to find access rules. The <code>authorize</code> helper method finds a UserPolicy class and instantiates it, passing the <code>current_user</code> object and either the User class or an instance of the User model, and calling an <code>index?</code> method to return true or false.</p>
+<p>Here’s an example of the corresponding Pundit policy object:</p>
+<pre>
+class UserPolicy
+  attr_reader :current_user, :model
+
+  def initialize(current_user, model)
+    @current_user = current_user
+    @user = model
+  end
+
+  def index?
+    @current_user.admin?
+  end
+
+  def show?
+    @current_user.admin? or @current_user == @user
+  end
+
+  def update?
+    @current_user.admin?
+  end
+
+  def destroy?
+    return false if @current_user == @user
+    @current_user.admin?
+  end
+
+end
+</pre>
+<p>The Pundit documentation recommends placing policy objects in the <strong>app/policies</strong> folder. Notice the class definition <code>class UserPolicy</code>. It doesn’t inherit from any parent class. It is a plain old Ruby object, which means there are no inherited methods other than what is found in any simple Ruby object. We have to implement everything we need. That’s a benefit; there is no hidden <span class="caps">API</span> or domain specific language to learn. Fortunately, the boilerplate needed to implement a policy object is very simple, so we don’t have to add much code to turn a simple Ruby object into a policy object.</p>
+<p>The name of the class must correspond to an existing model class (one that inherits from ActiveRecord or ActiveModel). The name of the model class is combined with “Policy” to form the class name. This allows Pundit to find and instantiate the class from the <code>authorize</code> method.</p>
+<p>You’ll need to define a method that corresponds to each controller action that requires authorization. Use the name of the controller action combined with a <code>?</code> (question mark) character. By convention in Ruby, method names ending in question marks are expected to return true or false. We’ve been calling these methods “access rules,” which is descriptive of their function. There is nothing special about these methods. As long as the method has the name of a controller action followed by a question mark, and returns a boolean, it serves as an access rule for Pundit authorization.</p>
+<p>This is a simple example of a Pundit policy object. You’ll have to judge for yourself whether your application is sufficiently complex to warrant use of Pundit. If you anticipate your application will grow in complexity, it is a good idea to use Pundit. Pundit has a steeper learning curve than simple role-based authorization; the <a href="http://railsapps.github.io/rails-devise-pundit">Rails and Pundit Tutorial</a> explains Pundit in depth.</p>
+<h2>Conclusion</h2>
+<p>Authorization is a requirement for many Rails applications. Role-based authorization is easy to conceptualize and can be added to a User model using an Active Record Enum attribute (use the Rolify gem if access is predicated on more than one assigned role). Simple role-based authorization may be all you need. If your controller gets overly complex, switch to Pundit to manage authorization.</p>
+      </div>
+      <div class="comments" id="comments">
+        <div class="content wikistyle gollum">
+          <h2>Comments</h2>
+        </div>
+        <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div><!-- class="comments" -->
+    </div><!-- class="columns" -->
+  </div><!-- class="row" -->
+  <footer class="row">
+    <div class="large-12 columns">
+      <div class="row">
+         <div class="medium-4 large-4 columns">
+           <dl class="footer_nav">
+             <dt>RailsApps &#183; Getting Started</dt>
+             <dd><a href="http://railsapps.github.io/ruby-and-rails.html">Ruby on Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a></dd>
+             <dd><a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-tutorial">Rails Tutorial</a></dd>
+             <dd><a href="http://learn-rails.com/ruby-on-rails-tutorial-for-beginners">Ruby on Rails Tutorial for Beginners</a></dd>
+             <dd><a href="http://railsapps.github.io/installing-rails.html">Install Ruby on Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/installrubyonrails-mac.html">Install Ruby on Rails - Mac OS X</a></dd>
+             <dd><a href="http://railsapps.github.io/installrubyonrails-ubuntu.html">Install Ruby on Rails - Ubuntu</a></dd>
+             <dd><a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Ruby on Rails - Nitrous.io</a></dd>
+             <dd><a href="http://railsapps.github.io/updating-rails.html">Update Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-composer/">Rails Composer</a></dd>
+             <dd><a href="http://railsapps.github.io/">Rails Examples</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails Starter Apps</a></dd>
+           </dl>
+         </div>
+         <div class="medium-4 large-4 columns">
+           <dl class="footer_nav">
+             <dt>RailsApps &#183; Articles</dt>
+             <dd><a href="http://railsapps.github.io/rails-google-analytics.html">Analytics for Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-javascript-include-external.html">JavaScript and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-git.html">Git and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-github.html">Rails GitHub</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-haml.html">Haml and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Application Layout</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-3-2-example-gemfile.html">Example Gemfiles for Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-application-templates.html">Rails Application Templates</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-product-planning.html">Rails Product Planning</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-project-management.html">Rails Project Management</a></dd>
+           </dl>
+           </div>
+           <div class="medium-4 large-4 columns">
+           <dl class="footer_nav">
+             <dt>RailsApps &#183; Tutorials</dt>
+             <dd><a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Rails Bootstrap</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-foundation.html">Rails Foundation</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a></dd>
+             <dd><a href="http://railsapps.github.io/tutorial-rails-devise.html">Rails Devise Tutorial</a></dd>
+             <dd><a href="http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html">Devise RSpec</a></dd>
+             <dd><a href="http://railsapps.github.io/tutorial-rails-bootstrap-devise-cancan.html">Devise Bootstrap</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-devise-pundit">Rails Authorization with Pundit</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-stripe-membership-saas">Rails Membership Site with Stripe</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-recurly-subscription-saas">Rails Subscription Site with Recurly</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-prelaunch-signup">Startup Prelaunch Signup Application</a></dd>
+           </dl>
+           <dl class="footer_nav">
+            <dt>RailsApps Profile</dt>
+            <dd><a href="https://plus.google.com/108039160165742774777?rel=author">Google</a></dd>
+            <dd><a href="https://plus.google.com/117374718581973393536" rel="publisher">Find us on Google+</a></dd>
+           </dl>
+        </div>
+      </div>
+    </div>
+  </footer>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/js/foundation.min.js"></script>
+<script>
+  $(document).foundation();
+</script>
+</body>
+</html>
