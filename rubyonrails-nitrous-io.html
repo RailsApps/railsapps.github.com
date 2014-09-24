@@ -46,7 +46,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Ruby on Rails with Nitrous.io</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 September 2014</em></p>
+<p><em>Last updated 24 September 2014</em></p>
 <p>All about Ruby on Rails 4.1 on the Nitrous.io hosted development environment.</p>
 <p>With detailed instructions for getting started on <a href="https://www.nitrous.io/">Nitrous.io</a> with Rails including advice to get you fully productive.</p>
 <h4>If You Are New to Rails</h4>
@@ -209,7 +209,7 @@ README.md  workspace
 <p>Remove chruby by using the “Autoparts/Manage Packages” menu item. Click the box to “Show only installed packages.”</p>
 <ul>
 <li>Click the “Uninstall” button for chruby</li>
-	<li>Click the “Uninstall” button for Ruby 2.1.2</li>
+	<li>Click the “Uninstall” button for Ruby 2.1.3</li>
 </ul><p>It takes a few minutes to uninstall Ruby.</p>
 <p>Close and reopen the console window.</p>
 <p>A old “system version” of Ruby is still available:</p>
@@ -222,7 +222,7 @@ ruby 1.9.3p0 (2011-10-30 revision 33570) [x86_64-linux]
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p><span class="caps">RVM</span> will leave the “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove it. The “system Ruby” will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.1.2 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.1.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --auto-dotfiles --ruby
@@ -249,9 +249,9 @@ rvm 1.25.28 (stable) by ...
 <p>The newest version of Ruby is now installed:</p>
 <pre>
 $ ruby -v
-ruby 2.1.2p95 (2014-05-08 revision 45877) [x86_64-linux]
+ruby 2.1.3p95 (2014-05-08 revision 45877) [x86_64-linux]
 </pre>
-<p>Ruby 2.1.2 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
+<p>Ruby 2.1.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
 <p>If you need an older version of Ruby, you can install it with <span class="caps">RVM</span>:</p>
 <pre>
 $ rvm install 1.9.3
@@ -262,7 +262,7 @@ $ rvm list
 
 rvm rubies
 
-=* ruby-2.1.2 [ x86_64 ]
+=* ruby-2.1.3 [ x86_64 ]
 
 # =&gt; - current
 # =* - current &amp;&amp; default
@@ -287,7 +287,7 @@ $ gem -v
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.1.2
+gemsets for ruby-2.1.3
 =&gt; (default)
    global
 </pre>
@@ -341,7 +341,7 @@ $ gem install nokogiri
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.1.2@rails4.1 --create
+$ rvm use ruby-2.1.3@rails4.1 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -370,7 +370,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.1.2@myapp --ruby-version --create
+$ rvm use ruby-2.1.3@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -516,7 +516,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.1.2@myapp --ruby-version --create
+$ rvm use ruby-2.1.3@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -563,7 +563,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </table><h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.1.2@myapp --ruby-version --create
+$ rvm use ruby-2.1.3@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
@@ -571,9 +571,9 @@ $ gem install rails
 $ bundle install
 </pre>
 <h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.2@myapp”:</p>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.1.3@myapp”:</p>
 <pre>
-$ echo "ruby-2.1.2" &gt; .ruby-version
+$ echo "ruby-2.1.3" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
