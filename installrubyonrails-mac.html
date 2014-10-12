@@ -44,11 +44,12 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Install Ruby on Rails · Mac OS X Mavericks</h1>
+        <h1>Install Ruby on Rails · Mac OS X Yosemite</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 24 September 2014</em></p>
-<p>Install Ruby on Rails 4.1 on Mac OS X Mavericks. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.1, the newest version of Rails, on Mac OS X 10.9 Mavericks.</p>
+<p><em>Last updated 12 October 2014</em></p>
+<p>Install Ruby on Rails 4.1 on Mac OS X Yosemite. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.1, the newest version of Rails, on Mac OS X 10.10 Yosemite.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
+<p>These instructions can be used for Mac OS X 10.9 Mavericks. Installing Ruby on Rails on Mavericks is the same, but you should upgrade from Mavericks to Yosemite if you can.</p>
 <p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
 <h4>If You Are New to Rails</h4>
@@ -56,12 +57,14 @@
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is useful, please support us and <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>Ruby on Rails for Mac OS X Mavericks</h2>
-<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Mavericks includes Ruby 2.0.0p247 which has a known security vulnerability. You should update to Ruby 2.1.3 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
+<h2>Ruby on Rails for Mac OS X Yosemite</h2>
+<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Yosemite includes Ruby 2.0.0p247 which has a known security vulnerability. You should update to Ruby 2.1.3 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
 <p>If you are maintaining older Rails applications, you will likely need to install Ruby 1.9.3. And in the future, you will need to install newer Ruby versions as they are released. Even if you are a student only building new Rails applications, you should be prepared to manage multiple versions of Ruby. These are all reasons to use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
-<h3>If You Updated to Mac OS X Mavericks</h3>
+<h3>If You Updated to Mac OS X Yosemite</h3>
 <p>This guide covers installing Ruby and Rails on a Mac with no previous installation of a Rails development environment.</p>
-<p>If you updated to Mavericks from an earlier version of Mac OS X, and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a>. If you previously installed the full Xcode package, you will need to update Xcode to the newest version (Xcode 5.01 or newer).</p>
+<p>If you updated to Yosemite from an earlier version of Mac OS X, and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a> (full instructions below). If you previously installed the full Xcode package, you will need to update Xcode to the newest version (Xcode 6 or newer).</p>
+<h3>Updating Ruby on Rails</h3>
+<p>If you already have Rails installed on your Mac, see the article <a href="http://railsapps.github.io/updating-rails.html">Updating Rails</a>.</p>
 <h3>Use a Ruby Version Manager</h3>
 <p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a> or Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>.</p>
 <p>Conveniently, you can use <span class="caps">RVM</span> to install Ruby.</p>
@@ -72,9 +75,9 @@
 <p>Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to “work in the cloud” using Nitrous.io. For more on Nitrous.io, see the article <a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Ruby on Rails with Nitrous.io</a>. Nitrous.io is a good option if you have trouble installing Ruby on Rails on your Mac.</p>
 <h2>Prepare Your Computer</h2>
 <p>You’ll need to prepare your computer before installing Ruby on Rails.</p>
-<h3>Upgrade Mac OS X to 10.9</h3>
-<p>Make sure you have the latest version of Mac OS X. Under the Apple menu, check “About This Mac.” It should show “Version 10.9” or newer. If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system.</p>
-<p>If you need to upgrade, see Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to OS X Mavericks</a>. You can install Mac OS X 10.9 (Mavericks) from the Mac App Store for free. Allow plenty of time for the download and installation (it may take several hours).</p>
+<h3>Upgrade Mac OS X to 10.10</h3>
+<p>Make sure you have the latest version of Mac OS X. Under the Apple menu, check “About This Mac.” It should show “Version 10.10” or newer. If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system.</p>
+<p>If you need to upgrade, see Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to OS X Yosemite</a>. You can install Mac OS X 10.10 (Yosemite) from the Mac App Store for free. Allow plenty of time for the download and installation (it may take several hours).</p>
 <h3>Terminal Application</h3>
 <p>You’ll need to use the Terminal application to install Ruby and develop Rails applications.</p>
 <p>The <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> or <em>console</em> gives us access to the Unix command line, or <em>shell</em>. We call the command line the shell because it is the outer layer of the operating system’s internal mechanisms (which we call the kernel).</p>
@@ -96,7 +99,7 @@ $ xcode-select -p
 /Applications/Xcode.app/Contents/Developer
 </pre>
 <p>the full Xcode package is already installed.</p>
-<p>You will need to update Xcode to the newest version (Xcode 5.01 or newer). Go to the App Store application and check “Updates.” After updating Xcode, be sure to launch the Xcode application and accept the Apple license terms.</p>
+<p>You will need to update Xcode to the newest version (Xcode 6 or newer). Go to the App Store application and check “Updates.” After updating Xcode, be sure to launch the Xcode application and accept the Apple license terms.</p>
 <p>If you see a file location that contains spaces in the path:</p>
 <pre>
 /Applications/Apple Dev Tools/Xcode.app/Contents/Developer
@@ -105,13 +108,17 @@ $ xcode-select -p
 <h3>Install Xcode Command Line Tools</h3>
 <p>Before installing Ruby, you’ll need to prepare your computer by installing Apple’s <a href="http://railsapps.github.io/xcode-command-line-tools.html">Xcode Command Line Tools</a>.</p>
 <p>The Xcode Command Line Tools provide a C language compiler needed to install Ruby. For many Rails projects, you will need the C language compiler to install gems that use native extensions.</p>
-<p>Mac OS X Mavericks will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code>, <code>git</code>, or <code>make</code>.</p>
+<p>Mac OS X Yosemite will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code>, <code>git</code>, or <code>make</code>.</p>
 <p>Try it. Enter:</p>
 <pre>
 $ gcc
 </pre>
 <p>You’ll see an alert box:</p>
 <p><img src="http://railsapps.github.io/images/installing-mavericks-popup.png" title="alert Xcode Command Line Tools is required" alt="alert Xcode Command Line Tools is required"></p>
+<p>Alternatively, you can use a command to install Xcode Command Line Tools. It will produce a similar alert box:</p>
+<pre>
+$ xcode-select --install
+</pre>
 <p>Click “Install” to download and install Xcode Command Line Tools.</p>
 <p>The instructions in the alert box are confusing. You don’t need to “Get Xcode” from the App Store. Just click “Install” for the Xcode Command Line Tools.</p>
 <p><img src="http://railsapps.github.io/images/installing-mavericks-download.png" title="downloading Xcode Command Line Tools" alt="downloading Xcode Command Line Tools"></p>
@@ -125,11 +132,11 @@ $ xcode-select -p
 <pre>
 $ gcc --version
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
-Apple LLVM version 5.0 (clang-500.2.79) (based on LLVM 3.3svn)
-Target: x86_64-apple-darwin13.0.0
+Apple LLVM version 6.0 (clang-600.0.54) (based on LLVM 3.5svn)
+Target: x86_64-apple-darwin14.0.0
 Thread model: posix
 </pre>
-<p>On earlier versions of Mac OS X, it was more difficult to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X Mavericks makes installation of Xcode Command Line Tools much simpler.</p>
+<p>On earlier versions of Mac OS X, it was more difficult to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X 10.9 Mavericks made installation of Xcode Command Line Tools much simpler.</p>
 <h3>Alternatives</h3>
 <p>The <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> is an open source project to provide the <span class="caps">GCC</span> compiler and related tools. In a recent blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, <span class="caps">GCC</span>, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
 <h2>Configure Git</h2>
