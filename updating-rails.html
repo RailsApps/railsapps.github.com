@@ -46,7 +46,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Updating to Rails 4.2</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 October 2014</em></p>
+<p><em>Last updated 17 October 2014</em></p>
 <p>Upgrading to Rails 4.2, the newest Ruby on Rails version. How to update Rails versions and upgrade Rails applications. Instructions and advice.</p>
 <h4>How to Upgrade Rails</h4>
 <p>This article shows how to add a new version of Rails while keeping an old version. Rails is revised frequently and you’ll likely need more than one version. Don’t simply replace an old version of Rails with another. Instead, set up your development environment with multiple versions of Rails so you can easily switch between them.</p>
@@ -74,15 +74,14 @@
 <p>Rails developers love to debate the merits of their tools and you’ll hear strong opinions about preferences for <span class="caps">RVM</span>, chruby, or rbenv. <a href="https://github.com/postmodern/chruby">Chruby</a> is the simplest; you’ll need a separate tool such as <a href="https://github.com/postmodern/ruby-install">ruby-install</a> to install Ruby versions. <a href="https://github.com/sstephenson/rbenv">Rbenv</a> is a favorite among people who are experienced Unix users. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> for beginners because it is robust and full-featured, with options for installing Ruby and managing sets of gems. This article will show how to use <span class="caps">RVM</span> to manage Rails versions, though you can adapt the principles for chruby or rbenv.</p>
 <h4>Installing Ruby Versions</h4>
 <p>These articles from the RailsApps project will show you how to install multiple versions of Ruby using <span class="caps">RVM</span>:</p>
-<p><a href="http://railsapps.github.io/installrubyonrails-mac.html">*Install Ruby on Rails – Mac OS X Yosemite<br>
-*</a></p>
+<p><a href="http://railsapps.github.io/installrubyonrails-mac.html"><strong>Install Ruby on Rails – Mac OS X Yosemite</strong></a></p>
 <p><a href="http://railsapps.github.io/installrubyonrails-ubuntu.html"><strong>Install Ruby on Rails – Ubuntu</strong></a></p>
 <p><a href="http://railsapps.github.io/rubyonrails-nitrous-io.html"><strong>Install Ruby on Rails – Nitrous.io</strong></a></p>
 <p>If you’re using Windows, see the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>.</p>
 <p>If you are not using <span class="caps">RVM</span> already, see the articles to get started with multiple versions of Ruby. The articles are detailed and provide good advice, so it is worthwhile to take a look if you haven’t read the articles previously.</p>
 <h2>Rails 4.2</h2>
 <p>Rails 4.1 is the current stable version.</p>
-<p>Rails 4.2.0.beta1 is the newest pre-release version. Notable additions include <a href="https://github.com/rails/rails/tree/master/activejob">Active Job</a> for queueing tasks to run separately from the user request-response cycle.</p>
+<p>Rails 4.2.0.beta2 is the newest pre-release version. Notable additions include <a href="https://github.com/rails/rails/tree/master/activejob">Active Job</a> for queueing tasks to run separately from the user request-response cycle.</p>
 <p>Learn more about Rails 4.2:</p>
 <ul>
 <li><a href="http://weblog.rubyonrails.org/2014/8/20/Rails-4-2-beta1/">Rails 4.2 Release Announcement</a></li>
@@ -91,16 +90,15 @@
 </ul><p><em>What You Need to Know:</em> Rails 4.1 is the current stable version. Upgrade older projects to Rails 4.1 now. Start new projects with the Rails 4.2 pre-release version, especially if you will use the Active Job feature.</p>
 <h2>Check the Gem Manager</h2>
 <p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the gem manager in Ruby.</p>
-<p>Check the installed gem manager version:</p>
+<p>Check the installed gem manager version. You may see:</p>
 <pre>
 $ gem -v
 2.2.2
 </pre>
-<p>You should have:</p>
-<ul>
-<li>RubyGems 2.2.2</li>
-</ul><p>At the time this was written, a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems 2.4.1</a> version was available. Don’t install the newer version. A bug prevents installing the newest Rails pre-release version (see <a href="https://github.com/rails/rails/issues/16609">Rails issue 16609</a>) if you use RubyGems 2.4.1.</p>
-<p>In the future, when the bug is resolved, you can use <code>gem update --system</code> to upgrade the Ruby gem manager.</p>
+<p>At the time this was written, a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems</a> version was available. Use <code>gem update --system</code> to upgrade the Ruby gem manager:</p>
+<pre>
+$ gem update --system
+</pre>
 <h2>
 <span class="caps">RVM</span> Gemsets</h2>
 <p><span class="caps">RVM</span> gives you <em>gemsets</em>, which are sandboxed environments that let you maintain separate sets of gems. Gemsets are ideal for multiple versions of Rails.</p>
@@ -186,7 +184,7 @@ $ rvm use ruby-2.1.3@rails4.2 --create
 $ gem install rails --pre
 $ rails -v
 </pre>
-<p>At this time, you’ll get <a href="http://weblog.rubyonrails.org/2014/8/20/Rails-4-2-beta1/">Rails 4.2.0.beta1</a>. Be sure you are using RubyGems 2.2.2 (check with <code>gem -v</code>) as newer versions of RubyGems have a bug that prevents installing the Rails pre-release version (see <a href="https://github.com/rails/rails/issues/16609">Rails issue 16609</a>).</p>
+<p>At this time, you’ll get <a href="http://weblog.rubyonrails.org/2014/8/20/Rails-4-2-beta1/">Rails 4.2.0.beta2</a>. Be sure you are using RubyGems 2.2.2 (check with <code>gem -v</code>) as newer versions of RubyGems have a bug that prevents installing the Rails pre-release version (see <a href="https://github.com/rails/rails/issues/16609">Rails issue 16609</a>).</p>
 <h4>Other Rails Versions</h4>
 <p>You can install a specific version if you need it.</p>
 <p>For example, if you want the Rails 3.2.18 release:</p>
@@ -223,7 +221,7 @@ $ rails new myapp4.2
 <h2>Updating a Rails Application</h2>
 <p>With <span class="caps">RVM</span>, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling your old gems.</p>
 <p>Let’s assume you have an application named “myapp” that runs with Ruby 2.1.3 and Rails 4.1.15.</p>
-<p>We’ll upgrade it to Rails 4.2.0.beta1.</p>
+<p>We’ll upgrade it to Rails 4.2.0.beta2.</p>
 <p>Start the upgrade in the application’s root directory:</p>
 <pre>
 $ cd myapp
@@ -270,15 +268,15 @@ gem 'rails', '4.1.15'
 .
 .
 </pre>
-<p>Change the Rails version to 4.2.0.beta1 (or a newer one if available):</p>
+<p>Change the Rails version to 4.2.0.beta2 (or a newer one if available):</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '4.2.0.beta1'
+gem 'rails', '4.2.0.beta2'
 .
 .
 .
 </pre>
-<p>To update to Rails 4.2.0.beta1, you’ll need to specify a newer version of <a href="https://github.com/rails/sass-rails">sass-rails</a> (see <a href="https://github.com/rails/sprockets-rails/issues/159">issue 159</a>):</p>
+<p>To update to Rails 4.2.0.beta2, you’ll need to specify a newer version of <a href="https://github.com/rails/sass-rails">sass-rails</a> (see <a href="https://github.com/rails/sprockets-rails/issues/159">issue 159</a>):</p>
 <pre>
 gem 'sass-rails', '~&gt; 4.0.3'
 </pre>
