@@ -46,7 +46,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Updating to Rails 4.2</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 17 October 2014</em></p>
+<p><em>Last updated 17 November 2014</em></p>
 <p>Upgrading to Rails 4.2, the newest Ruby on Rails version. How to update Rails versions and upgrade Rails applications. Instructions and advice.</p>
 <h4>How to Upgrade Rails</h4>
 <p>This article shows how to add a new version of Rails while keeping an old version. Rails is revised frequently and you’ll likely need more than one version. Don’t simply replace an old version of Rails with another. Instead, set up your development environment with multiple versions of Rails so you can easily switch between them.</p>
@@ -106,7 +106,7 @@ $ gem update --system
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.1.3
+gemsets for ruby-2.1.5
 =&gt; (default)
    global
 </pre>
@@ -147,16 +147,16 @@ $ gem install nokogiri
 <p>During installation, Nokogiri will display two lengthy messages in the console. It will also pause without displaying any progress for as long as five minutes. Don’t assume installation has failed unless you see an error message or you’ve waited more than ten minutes.</p>
 <p>If installation fails, make sure your system is configured properly (look for help on <a href="http://stackoverflow.com/questions/tagged/nokogiri">Stack Overflow</a>).</p>
 <h2>Simple Rails Update</h2>
-<p>Here’s the simplest way to update an application to a new version of Rails. Use this method for updates between patch versions, for example from Rails 4.1.6 to 4.1.7. Use this simple procedure if you don’t think you’ll need to move back and forth between versions. Make sure you have committed the Gemfile and Gemfile.lock files to git so you can restore a known working version of your application if necessary. I recommend using <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a> when you need to switch between Rails versions (described in the next section).</p>
-<p>Your Gemfile specifies the Rails version used by your application. If you have a Rails 4.1.6 application:</p>
+<p>Here’s the simplest way to update an application to a new version of Rails. Use this method for updates between patch versions, for example from Rails 4.1.8 to 4.1.9. Use this simple procedure if you don’t think you’ll need to move back and forth between versions. Make sure you have committed the Gemfile and Gemfile.lock files to git so you can restore a known working version of your application if necessary. I recommend using <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a> when you need to switch between Rails versions (described in the next section).</p>
+<p>Your Gemfile specifies the Rails version used by your application. If you have a Rails 4.1.8 application:</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '4.1.6'
+gem 'rails', '4.1.8'
 </pre>
-<p>You can change the Rails version to a newer version of Rails. For example, update it to Rails 4.1.7:</p>
+<p>You can change the Rails version to a newer version of Rails. For example, update it to Rails 4.1.9:</p>
 <pre>
 source 'https://rubygems.org'
-gem 'rails', '4.1.7'
+gem 'rails', '4.1.9'
 </pre>
 <p>Then run:</p>
 <pre>
@@ -164,13 +164,13 @@ $ bundle update rails
 </pre>
 <p>The Rails gem will be updated by bundler and the Gemfile.lock file will be updated to record the new gem version.</p>
 <p>You’ll see a message showing which version of Rails is running when you start the web server.</p>
-<p>This approach is appropriate if you are moving between patch versions, for example from Rails 4.1.6 to 4.1.7. If you’re making a big upgrade, for example from Rails 3.2 to Rails 4.0, use <span class="caps">RVM</span> and follow the procedure below.</p>
+<p>This approach is appropriate if you are moving between patch versions, for example from Rails 4.1.8 to 4.1.9. If you’re making a big upgrade, for example from Rails 4.1 to Rails 4.2, use <span class="caps">RVM</span> and follow the procedure below.</p>
 <h2>Rails Installation With <span class="caps">RVM</span> Gemsets</h2>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails. You may also wish to have gemsets for different versions of Rails, for example Rails 4.1 and Rails 4.2.</p>
 <h4>Rails 4.1</h4>
 <p>First, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.1.3@rails4.1 --create
+$ rvm use ruby-2.1.5@rails4.1 --create
 </pre>
 <p>If you want the most recent stable release:</p>
 <pre>
@@ -180,7 +180,7 @@ $ rails -v
 <h4>Rails 4.2</h4>
 <p>Make another gemset for the newest beta version or release candidate using <code>--pre</code>.</p>
 <pre>
-$ rvm use ruby-2.1.3@rails4.2 --create
+$ rvm use ruby-2.1.5@rails4.2 --create
 $ gem install rails --pre
 $ rails -v
 </pre>
@@ -189,7 +189,7 @@ $ rails -v
 <p>You can install a specific version if you need it.</p>
 <p>For example, if you want the Rails 3.2.18 release:</p>
 <pre>
-$ rvm use ruby-2.1.3@rails3.2 --create
+$ rvm use ruby-2.1.5@rails3.2 --create
 $ gem install rails --version=3.2.18
 $ rails -v
 </pre>
@@ -197,12 +197,12 @@ $ rails -v
 <p>You can easily switch between gemsets.</p>
 <p>For example, to use Rails 4.1:</p>
 <pre>
-$ rvm use ruby-2.1.3@rails4.1
+$ rvm use ruby-2.1.5@rails4.1
 </pre>
 <h2>Specifying Gemsets</h2>
 <p>If you’ve already created an application, you can create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s project directory:</p>
 <pre>
-$ rvm use ruby-2.1.3@myapp --ruby-version --create
+$ rvm use ruby-2.1.5@myapp --ruby-version --create
 </pre>
 <p>The next time you <code>cd</code> into the project directory, <span class="caps">RVM</span> will read the <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files and automatically configure your development environment to use the correct Ruby version and gemset. If it is a new gemset, and a Gemfile is present in the project directory, you can use <code>bundle install</code> to install the necessary gems.</p>
 <h2>Examine Version Differences</h2>
@@ -211,16 +211,16 @@ $ rvm use ruby-2.1.3@myapp --ruby-version --create
 <p>Or do the research yourself. First, create a starter app with the old version of Rails. Then switch gemsets and create a starter app with the new version of Rails.</p>
 <p>Let’s assume you want to compare Rails 4.1 and Rails 4.2.</p>
 <pre>
-$ rvm use ruby-2.1.3@rails4.1
+$ rvm use ruby-2.1.5@rails4.1
 $ rails new myapp4.1
-$ rvm use ruby-2.1.3@rails4.2
+$ rvm use ruby-2.1.5@rails4.2
 $ rails new myapp4.2
 </pre>
 <p>Compare the two applications with a file compare tool.</p>
 <p>You may find a few differences in the starter Rails application between versions. Patch updates seldom change the default new Rails application but other updates may change the starter app files. Major Rails updates often make many changes.</p>
 <h2>Updating a Rails Application</h2>
 <p>With <span class="caps">RVM</span>, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling your old gems.</p>
-<p>Let’s assume you have an application named “myapp” that runs with Ruby 2.1.3 and Rails 4.1.15.</p>
+<p>Let’s assume you have an application named “myapp” that runs with Rails 4.1.15.</p>
 <p>We’ll upgrade it to Rails 4.2.0.beta2.</p>
 <p>Start the upgrade in the application’s root directory:</p>
 <pre>
@@ -231,9 +231,9 @@ $ cd myapp
 <pre>
 $ rvm gemset rename myapp Rails4.1_myapp
 </pre>
-<p>If not, create a project-specific gemset using Ruby Ruby 2.1.3 and Rails 4.1:</p>
+<p>If not, create a project-specific gemset using Ruby Ruby 2.1.5 and Rails 4.1:</p>
 <pre>
-$ rvm use ruby-2.1.3@rails4.1_myapp --create
+$ rvm use ruby-2.1.5@rails4.1_myapp --create
 $ rvm gemset list
 $ bundle install
 </pre>
@@ -247,7 +247,7 @@ $ git checkout -b upgrading
 <h4>Rails 4.2</h4>
 <p>Create a new project-specific gemset for Rails 4.2:</p>
 <pre>
-$ rvm use ruby-2.1.3@Rails4.2_myapp --create
+$ rvm use ruby-2.1.5@Rails4.2_myapp --create
 $ rvm gemset list
 </pre>
 <p>Check that the only installed gems are those from the global gemset:</p>
