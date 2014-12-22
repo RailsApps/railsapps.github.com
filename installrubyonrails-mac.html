@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Install Ruby on Rails 4.1 &#183; Mac OS X &#183; RailsApps</title>
+  <title>Install Ruby on Rails 4.2 &#183; Mac OS X &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <meta name="description" content="How to install Install Ruby on Rails on Mac OS X Yosemite. Complete guide to installation.">
   <meta name="keywords" content="tutorial install Ruby on Rails Mac Yosemite">
@@ -81,8 +81,8 @@
         <br />
         <h1>Install Ruby on Rails · Mac OS X Yosemite</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 5 December 2014</em></p>
-<p>Install Ruby on Rails 4.1 on Mac OS X Yosemite. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.1, the newest version of Rails, on Mac OS X 10.10 Yosemite.</p>
+<p><em>Last updated 22 December 2014</em></p>
+<p>Install Ruby on Rails 4.2 on Mac OS X Yosemite. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.2, the newest version of Rails, on Mac OS X 10.10 Yosemite.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
 <p>These instructions can be used for Mac OS X 10.9 Mavericks. Installing Ruby on Rails on Mavericks is the same, but you should upgrade from Mavericks to Yosemite if you can.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
@@ -282,12 +282,12 @@ $ gem install nokogiri
 <p>During installation, Nokogiri will display two lengthy messages in the console. It will also pause without displaying any progress for as long as five minutes. Don’t assume installation has failed unless you see an error message or you’ve waited more than ten minutes.</p>
 <p>If installation fails, make sure your system is configured properly (look for help on <a href="http://stackoverflow.com/questions/tagged/nokogiri">Stack Overflow</a>).</p>
 <h2>Rails Installation Options</h2>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.1.8 was current when this was written.</p>
+<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.2.0 was current when this was written.</p>
 <p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.1.5@rails4.1 --create
+$ rvm use ruby-2.1.5@rails4.2 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -300,7 +300,6 @@ $ rails -v
 $ gem install rails --pre
 $ rails -v
 </pre>
-<p>At this time, you’ll get Rails 4.2.0.rc2.</p>
 <p>Or you can get a specific version.</p>
 <p>For example, if you want the Rails 3.2.18 release:</p>
 <pre>
@@ -363,7 +362,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 <p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. Purchasing a <a href="https://tutorials.railsapps.org/">subscription for the tutorials</a> gives the project financial support.</p>
 <table>
 <tr>
-<th>Example Applications for Rails 4.1 </th>
+<th>Example Applications for Rails 4.2 </th>
     <th>Tutorial </th>
     <th>Comments </th>
   </tr>
@@ -444,7 +443,7 @@ $ rails new myapp --database=postgresql
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
 <p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encrypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated. If you’ve used the Rails Composer tool to generate the application, the application’s secret token will be unique, just as with any Rails application generated with the <code>rails new</code> command.</p>
-<p>In Rails 4.1, the file <strong>config/secrets.yml</strong> contains secret tokens for development and production.</p>
+<p>The file <strong>config/secrets.yml</strong> contains secret tokens for development and production.</p>
 <p>Take care to hide the secret token you use in production. Don’t expose it in a public GitHub repo, or people could change their session information, and potentially access your site without permission. It’s best to set the secret token in a Unix shell variable.</p>
 <p>If you need to create a new secret token:</p>
 <pre>
