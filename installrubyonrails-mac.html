@@ -92,7 +92,7 @@
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is useful, please support us and <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
 <h2>Ruby on Rails for Mac OS X Yosemite</h2>
-<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Yosemite includes Ruby 2.0.0p481 which is not the newest version. You should update to Ruby 2.2.0 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
+<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X Yosemite includes Ruby 2.0.0p481 which is not the newest version. You should update to Ruby 2.2.2 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
 <p>If you are maintaining older Rails applications, you will likely need to install Ruby 1.9.3. And in the future, you will need to install newer Ruby versions as they are released. Even if you are a student only building new Rails applications, you should be prepared to manage multiple versions of Ruby. These are all reasons to use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
 <h3>If You Updated to Mac OS X Yosemite</h3>
 <p>If you updated to Yosemite from an earlier version of Mac OS X, and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a> (full instructions below). Though Rails is still intact after an update, read through this article and take this opportunity to update your development environment.</p>
@@ -199,7 +199,7 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p><span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove it. The “system Ruby” will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.2.0 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.2.2 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
@@ -214,7 +214,7 @@ $ \curl -L https://get.rvm.io | bash -s stable --ruby
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.2.0
+$ rvm --default use ruby-2.2.2
 </pre>
 <h4>
 <span class="caps">RVM</span> Troubleshooting</h4>
@@ -240,7 +240,7 @@ $ gem update --system
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.2.0
+gemsets for ruby-2.2.2
 =&gt; (default)
    global
 </pre>
@@ -294,7 +294,7 @@ $ gem install nokogiri
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.2.0@rails4.2 --create
+$ rvm use ruby-2.2.2@rails4.2 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -326,7 +326,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.0@myapp --ruby-version --create
+$ rvm use ruby-2.2.2@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -357,7 +357,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.0@myapp --ruby-version --create
+$ rvm use ruby-2.2.2@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -406,7 +406,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </table><h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.2.0@myapp --ruby-version --create
+$ rvm use ruby-2.2.2@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
