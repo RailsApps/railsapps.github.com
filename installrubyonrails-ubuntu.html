@@ -65,8 +65,8 @@
 <h3>Don’t Install Ruby from a Package</h3>
 <p>Ubuntu provides a package manager system for installing system software. You’ll use this to prepare your computer before installing Ruby. However, don’t use <code>apt-get</code> to install Ruby. The package manager will install an outdated version of Ruby. And it will install Ruby at the system level (for all users). It’s better to use <span class="caps">RVM</span> to install Ruby within your user environment.</p>
 <h3>Hosted Development</h3>
-<p>You can use Ruby on Rails without actually installing it on your computer. Hosted development, using a service such as <a href="https://www.nitrous.io/">Nitrous.io</a>, means you get a computer “in the cloud” that you use from your web browser. Any computer can access the hosted development environment, though you’ll need a broadband connection. Nitrous.io is free for small projects.</p>
-<p>Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to “work in the cloud” using Nitrous.io. For more on Nitrous.io, see the article <a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Ruby on Rails with Nitrous.io</a>. Nitrous.io is a good option if you have trouble installing Ruby on Rails on your computer.</p>
+<p>You can use Ruby on Rails without actually installing it on your computer. Hosted development, using a service such as <a href="https://c9.io/">Cloud9</a>, means you get a computer “in the cloud” that you use from your web browser. Any computer can access the hosted development environment, though you’ll need a broadband connection. Cloud9 is free for small projects.</p>
+<p>Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to “work in the cloud” using Cloud9. Cloud9 is a good option if you have trouble installing Ruby on Rails on your computer.</p>
 <h2>Prepare Your System</h2>
 <p>You’ll need to prepare your computer with the required system software before installing Ruby on Rails.</p>
 <p>You’ll need superuser (root) access to update the system software.</p>
@@ -84,7 +84,7 @@ $ sudo apt-get install curl
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p>If you have an older version of Ruby installed on your computer, there’s no need to remove it. <span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.2.2 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
@@ -97,7 +97,7 @@ $ \curl -L https://get.rvm.io | bash -s stable --ruby
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.2.2
+$ rvm --default use ruby-2.2.3
 </pre>
 <h4>Installation Troubleshooting and Advice</h4>
 <h4>
@@ -120,7 +120,7 @@ gem 'therubyracer'
 <p>Check the installed gem manager version. You may see:</p>
 <pre>
 $ gem -v
-2.2.2
+2.2.3
 </pre>
 <p>At the time this was written, a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems</a> version was available. Use <code>gem update --system</code> to upgrade the Ruby gem manager:</p>
 <pre>
@@ -133,7 +133,7 @@ $ gem update --system
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.2.2
+gemsets for ruby-2.2.3
 =&gt; (default)
    global
 </pre>
@@ -191,7 +191,7 @@ $ gem install nokogiri
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.2.2@rails4.2 --create
+$ rvm use ruby-2.2.3@rails4.2 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -223,7 +223,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.2@myapp --ruby-version --create
+$ rvm use ruby-2.2.3@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -254,7 +254,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.2@myapp --ruby-version --create
+$ rvm use ruby-2.2.3@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -323,7 +323,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 </table><h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.2.2@myapp --ruby-version --create
+$ rvm use ruby-2.2.3@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
@@ -331,9 +331,9 @@ $ gem install rails
 $ bundle install
 </pre>
 <h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.2.2@myapp”:</p>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.2.3@myapp”:</p>
 <pre>
-$ echo "ruby-2.2.2" &gt; .ruby-version
+$ echo "ruby-2.2.3" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
