@@ -321,44 +321,6 @@ $ git config --global user.name "Real Name"
 $ git config --global user.email "me@example.com"
 </pre>
 <p>Use your real name so people will associate you with your work when they meet you in real life. There’s no reason to use a clever name unless you have something to hide. Here’s another tip: Life will be easier if you use the same email address for Git, your GitHub account, and Heroku.</p>
-<h2>Configure GitHub Access</h2>
-<p>Rails developers use <a href="https://github.com/">GitHub</a>, the “social coding” website, for collaboration and remote backup of projects. GitHub is absolutely essential to all open source Rails development (and most proprietary development as well). Get a <a href="https://github.com/signup/free">free personal GitHub account</a> if you don’t already have one.</p>
-<p>There are two ways to “clone” (download) project repositories from GitHub. GitHub suggests using the <code>https</code> protocol because it works even when you are behind a firewall. On a Mac, you can set up Git so you don’t have to enter a username and password when you “push” (upload) your changes to GitHub. With <code>https</code> on Linux, you’ll have to enter your username and password each time.</p>
-<p>For greater convenience, use the <code>git</code> protocol when you clone a GitHub repository. On a GitHub project page, look for the tiny text, “You can clone with <span class="caps">HTTPS</span>, <span class="caps">SSH</span>, Subversion, and other methods” and choose <span class="caps">SSH</span>.</p>
-<p>To avoid entering your username and password every time you push to GitHub, set up <span class="caps">SSH</span> keys to establish a secure connection between your Cloud9 workspace and GitHub.</p>
-<p>Cloud9 has already created an <span class="caps">SSH</span> public key for you. View it with the Unix <code>cat</code> command:</p>
-<pre>
-$ cat ~/.ssh/id_rsa.pub
-ssh-rsa 094fa31ab0 ... deafdc0d== root@usw1-2.Cloud9box.com
-</pre>
-<p>Carefully copy the entire string (it’s longer than the example shown here).</p>
-<p>Log in to your GitHub and go to “Account Settings” (the tiny wrench and screwdriver at the upper right corner of any page).</p>
-<p>Select “<span class="caps">SSH</span> Keys” in the left sidebar. Click “Add <span class="caps">SSH</span> key”.</p>
-<p>Enter any helpful name in the “Title” field, such as “Cloud9-ruby-uswest”.</p>
-<p>Carefully paste your key into the “Key” field.</p>
-<p>Click the “Add key” button. Confirm the action by entering your GitHub password.</p>
-<p>Check that your GitHub account is set up properly. Enter “yes” when prompted to continue.</p>
-<pre>
-$ ssh -T -p 443 git@ssh.github.com
-The authenticity of host '[ssh.github.com]:443 ([192.30.252.149]:443)' can't be established.
-RSA key fingerprint is 16:27:ac:a ... df:a6:48.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '[ssh.github.com]:443,[192.30.252.149]:443' (RSA) to the list of known hosts.
-Hi DanielKehoe! You've successfully authenticated, but GitHub does not provide shell access.
-</pre>
-<p>The command establishes a secure <span class="caps">SSH</span> connection from your Cloud9 workspace to port 443 on the GitHub server. The first time you connect, your Cloud9 workspace will warn you that it has never connected to the server and can’t be sure the host is legitimate and secure. Unless you are a target of a sophisticated hacking scheme, you can safely answer “yes” when prompted.</p>
-<p>If your <span class="caps">SSH</span> key is set at your GitHub account, the GitHub server will confirm you’ve successfully connected and inform you that “GitHub does not provide shell access.” That just means you can’t log in to GitHub and use their servers the way you are using your Cloud9 workspace as your personal console. That’s fine; GitHub is not used for remote shell services.</p>
-<p>With <span class="caps">SSH</span> keys saved to your GitHub account, you can use GitHub without entering your username and password every time you push.</p>
-<h2>Fancy Prompts and More</h2>
-<p>Experienced Unix users often configure the shell with a fancy prompt, environment variables, and command aliases. You can switch to the Z shell and install Robby Russell’s <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> for the ultimate power user experience (experts only!).</p>
-<p><a href="https://github.com/revans/bash-it">Bash-it</a> is a simpler alternative to oh-my-zsh if you want to continue to use the Bash shell. It’s easy to install if you just want a fancy prompt and a library of command aliases.</p>
-<pre>
-$ git clone git@github.com:revans/bash-it.git .bash_it
-$ ~/.bash_it/install.sh
-</pre>
-<p>During the initial install, choose “none” for each prompt to avoid installing more than you need. You can run <code>bash-it show aliases</code> later to pick command aliases for the tools you use.</p>
-<p>Close and reopen the console to enable Bash-it and see your new prompt. Bash-it offers a choice of “themes” that give you different prompts.</p>
-<p>A fancy prompt will show you the git status of your current directory as well as the current <span class="caps">RVM</span> gemset. And, of course, it will impress your friends.</p>
 <h2>Collaboration</h2>
 <p>You can use your Cloud9 workspace for pair programming.</p>
 <p>Your pairing partner must have a Cloud9 account. Use the “Share” link (in the upper right corner of the page) to add members to the workspace. See the <a href="https://docs.c9.io/v1.0/docs">Cloud9 Share a Workspace article</a> for more about adding members to a workspace.</p>
