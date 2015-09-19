@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Ruby on Rails with Cloud9 &#183; RailsApps</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="https://plus.google.com/117374718581973393536" rel="publisher">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/foundation.min.css">
+  <link rel="stylesheet" href="http://railsapps.github.io/css/railsapps.css" />
+  <link rel="stylesheet" href="http://railsapps.github.io/css/syntax.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <script type="text/javascript">
+  window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
+    window.analytics.load("l1stqfqqbf");
+    window.analytics.page();
+    window.analytics.ready(function () {
+      ga('require', 'linker');
+      ga('linker:autoLink', ['railscomposer.com','learn-rails.com','blog.railsapps.org','tutorials.railsapps.org']);
+    });
+    </script>
+</head>
+<body>
+  <div class="fixed">
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <a href="http://railsapps.github.io/" class="brand">RailsApps Project</a>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <ul class="right">
+          <li><a href="https://tutorials.railsapps.org/" class="google">Tutorials</a></li>
+          <li><a href="http://twitter.com/rails_apps" class="twitter">Twitter</a></li>
+          <li><a href="http://blog.railsapps.org/" class="twitter">Blog</a></li>
+          <li><a href="https://github.com/RailsApps" class="github">GitHub Repository</a></li>
+        </ul>
+      </section>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="content wikistyle gollum textile">
+        <h1>Ruby on Rails with Cloud9</h1>
+<h4>by Daniel Kehoe</h4>
+<p><em>Last updated 19 September 2015</em></p>
+<p>All about Ruby on Rails on the Cloud9 hosted development environment.</p>
+<p>With detailed instructions for getting started on <a href="https://c9.io/">Cloud9</a> with Rails including advice to get you fully productive.</p>
+<h4>If You Are New to Rails</h4>
+<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
+<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
+<h4>What is the RailsApps Project?</h4>
+<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Purchase the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a> and you’ll support the project.</p>
+<h2>Cloud9</h2>
+<p><a href="https://c9.io/">Cloud9</a> provides a hosted development environment. Simply put, you get access to a remote computer from your web browser.</p>
+<p>The Cloud9 computer runs Ubuntu Linux, a popular operating system for Rails development. The online computer is instantly created with everything in place to immediately begin working on projects in Rails. This guide will orient you and provide additional details so you can be productive with Rails.</p>
+<h3>Costs</h3>
+<p>There is no cost to set up an account. You will only be charged if you decide to add extra storage or memory.</p>
+<p>For ordinary Rails development, you don’t need extra storage or memory. For typical projects, the Cloud9 service is free.</p>
+<h3>The Service</h3>
+<p>The Cloud9 service gives you everything you need for Rails development, including:</p>
+<ul>
+<li>Unix shell with Ruby pre-installed</li>
+	<li>browser-based file manager</li>
+	<li>browser-based text editor</li>
+	<li>project preview with your own web browser</li>
+</ul><p>For pair programming or other collaboration:</p>
+<ul>
+<li>text chat for conversation</li>
+	<li>shared text editor</li>
+	<li>collaborate remotely</li>
+</ul><h3>Scope and Limitations</h3>
+<p>The Cloud9 service offers enormous value. However, these limitations may make it unsuitable for you:</p>
+<ul>
+<li>requires a fast broadband Internet connection</li>
+</ul><p>In principle, Cloud9 allows you to do Rails development from any device that runs a web browser, including a tablet or smartphone. However, to be productive:</p>
+<ul>
+<li>you need a decent-sized screen</li>
+	<li>you need a keyboard</li>
+</ul><p>Like any other Rails development environment:</p>
+<ul>
+<li>you need basic Unix command-line skills</li>
+</ul><h3>Benefits</h3>
+<p>Cloud9 can be used on any operating system that provides a web browser and an Internet connection.</p>
+<p>As an alternative to installing Ruby directly on your own computer, Cloud9 can be beneficial:</p>
+<ul>
+<li>enables complete “cloud-based” development so no files are stored locally</li>
+	<li>provides an “extra computer” or alternative development environment</li>
+	<li>an alternative if you encounter difficulties installing Ruby on your own computer</li>
+</ul><p>Developers who travel frequently, or work at multiple sites, like cloud-based development because any computer provides access to a fully-configured, productive development environment. Additionally, cloud-based development means you will remain productive if your laptop is lost, stolen, or fails in service.</p>
+<h4>Mac OS X</h4>
+<p>Most Macintosh users will prefer to <a href="http://railsapps.github.io/installrubyonrails-mac.html">install Ruby on Rails on Mac OS X</a> directly. However, Cloud9 can be beneficial for the reasons listed above.</p>
+<h4>Linux</h4>
+<p>The Cloud9 shell environment will be familiar to any Ubuntu Linux user. Unlike Linux <a href="http://en.wikipedia.org/wiki/Virtual_private_server">virtual private servers</a> from companies such as Linode, the Cloud9 service is free and the system is maintained for you so you’ll spend more time as a developer and less time as a sysadmin. Cloud9 is particularly appropriate for newcomers who want to learn Unix but might be overwhelmed by the effort required to install and configure Ubuntu Linux.</p>
+<h4>Windows</h4>
+<p>Installing Rails on Windows is frustrating and painful. Students often give up on learning Rails because installation of Ruby on Windows is difficult and introduces bugs or creates configuration issues. Even when you succeed in getting Rails to run on Windows, you will encounter gems you cannot install. For these reasons, Cloud9 is an ideal option for a Rails development environment on a Windows laptop.</p>
+<h4>Chromebook</h4>
+<p>A <a href="http://en.wikipedia.org/wiki/Chromebook">Chromebook</a> is a personal computer running the Google Chrome OS operating system. Chromebooks are among the least expensive laptops available, selling for as low as $200 (US). Chromebooks are intended for cloud-based computing with no local storage and all applications running in the web browser. As such, Cloud9 is ideally matched to Chromebooks. At $200 (US), a Chromebook with Cloud9 is probably the least expensive way for a student to get a fully functional Rails development environment.</p>
+<h2>What It Will Cost You</h2>
+<p>The company makes money by selling memory and file storage. See the Cloud9 <a href="https://docs.c9.io/docs/picking-a-plan">Picking a Plan</a> article for details.</p>
+<p>You can create any number of public projects (called “community workspaces”) and one private project (called a “premium workspace”). A free plan gives you 512MB of <span class="caps">RAM</span> and 1GB of disk storage. When you create a private project, you’ll use up the 512MB of <span class="caps">RAM</span> and 1GB of disk storage provided for a free plan. If you want more than one private project, you’ll have to upgrade to a paid plan.</p>
+<p>Build as many Rails applications as you like by creating public “community workspaces.” If you want to keep your project private, the 512MB of <span class="caps">RAM</span> and 1GB of disk storage provided with a free plan is enough for a simple Rails application.</p>
+<h2>Get a Cloud9 Account</h2>
+<p>Visit the <a href="https://c9.io/">Cloud9</a> website to sign up.</p>
+<p>There is no cost to set up an account. No credit card is required.</p>
+<p>You can create an account using your own email address and password or you can establish an account using your GitHub account. I recommend creating a GitHub account (if you don’t already have one), then sign up using your GitHub account. This will link your Cloud9 and GitHub accounts for convenience.</p>
+<p>After you establish an account and sign in, you’ll see the “Dashboard” page with an option to “Create a new workspace.”</p>
+<h2>Create a workspace</h2>
+<p>A Cloud9 “workspace” is a virtual computer with a minimum of 512MB of memory and 1GB of disk storage, which is enough to build and run simple Rails applications.</p>
+<p>From the “Dashboard” page, click “Create a new workspace.”</p>
+<p>Enter a name for your workspace. Give it the name of the project or application you are building. This may be the same name you use for a GitHub repository.</p>
+<p>You can add a short description of your workspace. This would be a good place to note that is a “Ruby on Rails project.”</p>
+<p>If you’re a student learning Rails, choose the “Public” option for your workspace. No one will find your project unless you tell someone where to look. If you are working on a company project or your own startup, you may want to select the “Private” option. Selecting “Private” will use up the 512MB of memory and 1GB of disk storage provided with your free plan.</p>
+<p>Cloud9 offers several “templates” for your workspace. A “template” is a preconfigured development environment. For Rails developers, Cloud9 offers a “Ruby” template, a “Ruby on Rails Tutorial” template, and a “Custom” template.</p>
+<p>With any of these three templates, you’ll have a development environment that is already set up with a recent version of Ruby and Rails. At the time this was written, Ruby 2.2.3 and Rails 4.2.4 were the current versions and Cloud9 was providing Ruby 2.2.2 and Rails 4.2.1. Cloud9 is conscientious about updating versions of Ruby and Rails. It is never far behind the most currently releases and you can begin a project without updating versions.</p>
+<p>For this article, choose the “Custom” template. If you choose the “Ruby” template, the workspace will be created with a default Rails application. The “Custom” template does not contain a prebuilt Rails application.</p>
+<p>Click the “Create workspace” button and Cloud9 will build your virtual computer in a few seconds.</p>
+<p>See the Cloud9 <a href="https://docs.c9.io/docs/create-a-workspace">Creating a Workspace</a> documentation for more.</p>
+<h3>Delete a workspace</h3>
+<p>It is not obvious how to delete a workspace you no longer need. Here’s what you need to know. On your Dashboard page, click the name of a workspace and you will see a summary page for the workspace. Click the gear next to the “Open” button to open a settings page. You’ll see a “Delete workspace” button.</p>
+<h2>The Cloud9 <span class="caps">IDE</span>
+</h2>
+<p>As soon as you’ve built a new workspace, you’ll see the Cloud9 <span class="caps">IDE</span> (<em>Integrated Development Environment</em>).</p>
+<p>You can find your way back to the <span class="caps">IDE</span> by visiting the Dashboard page and clicking the “Open” button for a workspace.</p>
+<p>The Cloud9 <span class="caps">IDE</span> is very complex, because it is a full development environment that does the duty of a console, a file browser, a text editor, and a chat room.</p>
+<p>Take time to get familiar with the interface. For example:</p>
+<p>Drag the bar at the top of the console window to resize it. You’ll often need a bigger console window.</p>
+<p>Click the little windows icon to expand or minimize the console window. You’ll often need a full console window.</p>
+<p>Click the “plus” icon to open a tab for a second console window. You’ll often need multiple console windows. For example, you might leave a Rails server running in one console while entering Rails commands in another.</p>
+<p>See the <a href="https://docs.c9.io/v1.0/docs">Cloud9 documentation</a> for more about the <span class="caps">IDE</span> features.</p>
+<p>Let’s use the console to explore the Cloud9 workspace and create a Rails application.</p>
+<h2>Unix Commands</h2>
+<p>If you haven’t used the Unix command line interface (<span class="caps">CLI</span>) before, spend some time with <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> to become comfortable with Unix shell commands.</p>
+<h2>Workspace Directory</h2>
+<p>When your workspace is created, Cloud9 creates a directory named <strong>workspace/</strong>.</p>
+<p>Expand the console window and use Unix commands to explore the directory structure:</p>
+<pre>
+danielkehoe@my-project:~/workspace $ pwd
+/home/ubuntu/workspace
+danielkehoe@my-project:~/workspace $ echo $SHELL
+/bin/bash
+danielkehoe@my-project:~/workspace $  ls -la
+total 16
+drwxrwxr-x  3 ubuntu ubuntu 4096 Sep 18 09:41 ./
+drwxr-xr-x 18 ubuntu ubuntu 4096 Sep 18 09:41 ../
+drwxr-xr-x  3 ubuntu ubuntu 4096 Sep 18 09:41 .c9/
+-rw-rw-r--  1 ubuntu ubuntu  699 Mar 26 14:16 README.md
+danielkehoe@my-project:~/workspace $
+</pre>
+<p>The current directory is <strong>/home/ubuntu/workspace</strong>.</p>
+<p>The Unix command <code>echo $SHELL</code> shows you that you are using the Bash shell.</p>
+<p>The <code>ls -la</code> command lists all the hidden files and folders.</p>
+<h2>Home Directory</h2>
+<p>Use the Unix command <code>ls -lag ~</code> to see the contents of the home directory:</p>
+<pre>
+danielkehoe@my-project:~/workspace $ ls -la ~
+total 88
+drwxr-xr-x  19 ubuntu ubuntu  4096 Sep 18 10:01 ./
+drwxr-xr-x  12 root   root    4096 Sep 18 09:40 ../
+-rw-r--r--   1 ubuntu ubuntu   313 Mar 26 14:16 .bash_aliases
+-rw-r--r--   1 ubuntu ubuntu   220 Apr  9  2014 .bash_logout
+-rw-r--r--   1 ubuntu ubuntu  1665 Mar 26 14:16 .bashrc
+drwxr-xr-x   3 ubuntu ubuntu  4096 Sep 18 09:41 .c9/
+drwxrwxr-x   5 ubuntu ubuntu  4096 Sep 18 10:00 .gem/
+-rw-r--r--   1 ubuntu ubuntu    90 Sep 18 10:02 .gemrc
+-rw-r--r--   1 ubuntu ubuntu   228 Sep 18 09:41 .gitconfig
+-rw-r--r--   1 ubuntu ubuntu   499 Mar 26 14:16 .gitignore
+drwx------   2 ubuntu ubuntu  4096 Jun 10 12:32 .gnupg/
+-rw-r--r--   1 ubuntu ubuntu   499 Jun 10 13:02 .hgignore
+-rw-r--r--   1 ubuntu ubuntu    68 Sep 18 09:41 .hgrc
+drwxr-xr-x   3 ubuntu ubuntu  4096 Jun 10 12:56 .node-gyp/
+drwxr-xr-x 278 ubuntu ubuntu 12288 Jun 10 12:57 .npm/
+drwxr-xr-x  13 ubuntu ubuntu  4096 Jun 10 12:56 .nvm/
+-rw-r--r--   1 ubuntu ubuntu   758 Jun 10 12:35 .profile
+drwxr-xr-x   2 ubuntu ubuntu  4096 Sep 18 09:41 .ssh/
+drwxr-xr-x   3 ubuntu ubuntu  4096 Jun 10 13:02 lib/
+drwxrwxr-x   3 ubuntu ubuntu  4096 Sep 18 09:41 workspace/
+</pre>
+<p>If you have some experience with a Unix environment or Rails, you’ll recognize configuration files for some familiar tools:</p>
+<ul>
+<li>bash – the default shell</li>
+	<li>git – the version control system</li>
+	<li>ssh – a folder containing public keys for connecting to GitHub</li>
+</ul><p>When you create a new workspace, the <span class="caps">IDE</span> opens in the <strong>workspace/</strong> directory but you can also access the home directory, one level above the <strong>workspace/</strong> directory.</p>
+<h2>Unix Command Prompt</h2>
+<p>You’ll see that Cloud9 has set an informative Unix command prompt for your shell:</p>
+<pre>
+danielkehoe@my-project:~/workspace $ whoami
+ubuntu
+</pre>
+<p>Your username appears with workspace name, as well as the current directory, followed by the familiar <code>$</code> Unix command prompt.</p>
+<p>For brevity, for the rest of this tutorial, I’ll show the command prompt as simple <code>$</code>.</p>
+<h2>Ruby Versions</h2>
+<p>The Cloud9 workspace includes a pre-installed version of <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, a tool to switch Ruby versions. Several pre-installed versions of Ruby are available:</p>
+<pre>
+$ rvm list
+
+rvm rubies
+
+   ruby-1.8.7-p374 [ x86_64 ]
+   ruby-1.9.3-p547 [ x86_64 ]
+   ruby-2.1.5 [ x86_64 ]
+=* ruby-2.2.2 [ x86_64 ]
+
+# =&gt; - current
+# =* - current &amp;&amp; default
+#  * - default
+</pre>
+<p>For this article, we’ll use the default Ruby 2.2.2 version.</p>
+<h4>Installing a Different Ruby Version</h4>
+<p>If you are following instructions for an old tutorial, or working on an old Rails application, you can use an older version of Ruby by changing the default:</p>
+<pre>
+$ rvm --default use ruby-1.9.3-p547
+</pre>
+<p>If you wish, you can use <span class="caps">RVM</span> to install the newest Ruby version. The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. However, unless you know there is a problem with the default version of Ruby, it is simpler to use the default version.</p>
+<h2>Rails is Already Installed</h2>
+<p>Your Cloud9 workspace has a recent version of Rails already installed. Rails 4.2.1 was offered when this was written.</p>
+<p>If you are following a tutorial that specifies any 4.2 version of Rails, such as Rails 4.2.0 or Rails 4.2.4, you can use the version that is already installed in your Cloud9 workspace.</p>
+<h4>Installing a Different Rails Version</h4>
+<p>If you are following instructions for an old tutorial, or working on an old Rails application, you can install an older version of Rails. You can also update to the <a href="http://rubygems.org/gems/rails">current version of Rails</a>.</p>
+<p>Cloud9 has already installed Rails directly into the global gemset. It is best to leave the global gemset unchanged and create a new gemset for a different Rails version.</p>
+<p>Here’s how to make a gemset for the current stable release:</p>
+<pre>
+$ rvm use ruby-2.2.2@rails4.2 --create
+$ rvm gemset list
+</pre>
+<p>If you want the most recent stable release:</p>
+<pre>
+$ gem install rails
+$ rails -v
+</pre>
+<p>If you want the newest beta version or release candidate, you can install with <code>--pre</code>.</p>
+<pre>
+$ gem install rails --pre
+$ rails -v
+</pre>
+<p>Or you can create a gemset for a different version of Rails.</p>
+<p>For example, if you want the Rails 3.2.18 release:</p>
+<pre>
+$ rvm use ruby-2.2.2@rails3.2 --create
+$ gem install rails --version=3.2.18
+$ rails -v
+</pre>
+<h2>New Rails Application</h2>
+<p>Here’s how to create a new Rails application in a Cloud9 custom workspace.</p>
+<p>First, be sure you are in the <strong>/home/ubuntu/workspace</strong> folder:</p>
+<pre>
+$ pwd
+/home/ubuntu/workspace
+</pre>
+<p>It’s best to create your Rails application in this <strong>/home/ubuntu/workspace</strong> folder.</p>
+<p>Here’s how to create a project-specific gemset, installing Rails, and creating a new application.</p>
+<pre>
+$ mkdir myapp
+$ cd myapp
+$ rvm use ruby-2.2.2@myapp --ruby-version --create
+$ gem install rails
+$ rails new .
+</pre>
+<p>We’ll name the new application “myapp.” Obviously, you can give it any name you like.</p>
+<p>With this workflow, you’ll first create a root directory for your application, then move into the new directory.</p>
+<p>With one command you’ll create a new project-specific gemset. The option “—ruby-version” creates <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the root directory. <span class="caps">RVM</span> recognizes these files in an application’s root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.</p>
+<p>When we create the gemset, it will be empty (though it inherits use of all the gems in the global gemset). We immediately install Rails. The command <code>gem install rails</code> installs the most recent release of Rails.</p>
+<p>Finally we run <code>rails new .</code>. We use the Unix “dot” convention to refer to the current directory. This assigns the name of the directory to the new application.</p>
+<p>This approach is different from the way most beginners are taught to create a Rails application. Most instructions suggest using <code>rails new myapp</code> to generate a new application and then enter the directory to begin work. Our approach makes it easy to create a project-specific gemset and install Rails before the application is created.</p>
+<p>The <code>rails new</code> command generates the default Rails starter app. If you wish, you can use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate a starter application with a choice of basic features and popular gems.</p>
+<h4>Quick Test</h4>
+<p>For a “smoke test” to see if everything runs, display a list of Rake tasks.</p>
+<pre>
+$ rake -T
+</pre>
+<p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using <span class="caps">RVM</span> (see <a href="https://rvm.io/integration/bundler/"><span class="caps">RVM</span> and bundler integration</a>).</p>
+<p>You can launch and run the application with the Rails server:</p>
+<pre>
+$ rails server -p $PORT -b $IP
+</pre>
+<p>If you start the Rails server by using <code>rails server</code> without any arguments, Cloud9 will display a helpful message that you may be using the wrong port and IP address for your server. You must specify the port and IP address using the environment variables provided by Cloud9.</p>
+<h2>Previewing a Rails Application</h2>
+<p>To view the the running application, click the “Preview” link in the <span class="caps">IDE</span> menu (at the top of the page). There is a “Run” link, too, but it doesn’t work if you have created your Rails application in a folder within the <strong>workspace/</strong> folder.</p>
+<p>You can also open a browser tab or window and enter the <span class="caps">URL</span> for the application, as hosted by Cloud9. When you launch the Rails server, Cloud9 displays a helpful message showing the <span class="caps">URL</span> where you can view your application.</p>
+<h2>Stopping the Rails Server</h2>
+<p>You can stop the server with Control-c to return to the command prompt.</p>
+<p>Most of the time you’ll keep the web server running as you add or edit files in your project. This a reason to open multiple console windows.</p>
+<p>Changes will automatically appear when you refresh the browser or request a new page. There is a tricky exception, however. If you make changes to the Gemfile, or changes to configuration files, the web server must be shut down and relaunched for changes to be activated.</p>
+<p>Working on a remote server means you can lose a connection (or close your console window) while the server is still running. If that happens, you may find you cannot start the server because you get an error, “A server is already running.” Use the provided <span class="caps">PID</span> file to find the Unix process ID and then stop the server with the Unix <code>kill -9 PID</code> command.</p>
+<pre>
+$ rails server
+.
+.
+.
+A server is already running. Check /home/action/workspace/myapp/tmp/pids/server.pid.
+Exiting
+$ cat /home/ubuntu/workspace/myapp/tmp/pids/server.pid
+4640
+$ kill -9 4640
+</pre>
+<p>The Unix <code>kill -9</code> command will stop the abandoned server process.</p>
+<h2>Configure Git</h2>
+<p>Git is an essential tool for developing with Rails. With Git, you can roll back code changes as needed, collaborate on code with others, and deploy your application for hosting on Heroku. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more information.</p>
+<p>Git is pre-installed on your Cloud9 workspace. Check that Git is installed:</p>
+<pre>
+$ git version
+git version 1.9.1
+</pre>
+<p>If you created your account and logged in with GitHub, Git is already preconfigured with your user name and email.</p>
+<p>Check that Git is configured correctly:</p>
+<pre>
+$ git config -l --global
+.
+.
+.
+user.name=Real Name
+user.email=me@example.com
+</pre>
+<p>You can make changes if necessary:</p>
+<pre>
+$ git config --global user.name "Real Name"
+$ git config --global user.email "me@example.com"
+</pre>
+<p>Use your real name so people will associate you with your work when they meet you in real life. There’s no reason to use a clever name unless you have something to hide. Here’s another tip: Life will be easier if you use the same email address for Git, your GitHub account, and Heroku.</p>
+<h2>Configure GitHub Access</h2>
+<p>Rails developers use <a href="https://github.com/">GitHub</a>, the “social coding” website, for collaboration and remote backup of projects. GitHub is absolutely essential to all open source Rails development (and most proprietary development as well). Get a <a href="https://github.com/signup/free">free personal GitHub account</a> if you don’t already have one.</p>
+<p>There are two ways to “clone” (download) project repositories from GitHub. GitHub suggests using the <code>https</code> protocol because it works even when you are behind a firewall. On a Mac, you can set up Git so you don’t have to enter a username and password when you “push” (upload) your changes to GitHub. With <code>https</code> on Linux, you’ll have to enter your username and password each time.</p>
+<p>For greater convenience, use the <code>git</code> protocol when you clone a GitHub repository. On a GitHub project page, look for the tiny text, “You can clone with <span class="caps">HTTPS</span>, <span class="caps">SSH</span>, Subversion, and other methods” and choose <span class="caps">SSH</span>.</p>
+<p>To avoid entering your username and password every time you push to GitHub, set up <span class="caps">SSH</span> keys to establish a secure connection between your Cloud9 workspace and GitHub.</p>
+<p>Cloud9 has already created an <span class="caps">SSH</span> public key for you. View it with the Unix <code>cat</code> command:</p>
+<pre>
+$ cat ~/.ssh/id_rsa.pub
+ssh-rsa 094fa31ab0 ... deafdc0d== root@usw1-2.Cloud9box.com
+</pre>
+<p>Carefully copy the entire string (it’s longer than the example shown here).</p>
+<p>Log in to your GitHub and go to “Account Settings” (the tiny wrench and screwdriver at the upper right corner of any page).</p>
+<p>Select “<span class="caps">SSH</span> Keys” in the left sidebar. Click “Add <span class="caps">SSH</span> key”.</p>
+<p>Enter any helpful name in the “Title” field, such as “Cloud9-ruby-uswest”.</p>
+<p>Carefully paste your key into the “Key” field.</p>
+<p>Click the “Add key” button. Confirm the action by entering your GitHub password.</p>
+<p>Check that your GitHub account is set up properly. Enter “yes” when prompted to continue.</p>
+<pre>
+$ ssh -T -p 443 git@ssh.github.com
+The authenticity of host '[ssh.github.com]:443 ([192.30.252.149]:443)' can't be established.
+RSA key fingerprint is 16:27:ac:a ... df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[ssh.github.com]:443,[192.30.252.149]:443' (RSA) to the list of known hosts.
+Hi DanielKehoe! You've successfully authenticated, but GitHub does not provide shell access.
+</pre>
+<p>The command establishes a secure <span class="caps">SSH</span> connection from your Cloud9 workspace to port 443 on the GitHub server. The first time you connect, your Cloud9 workspace will warn you that it has never connected to the server and can’t be sure the host is legitimate and secure. Unless you are a target of a sophisticated hacking scheme, you can safely answer “yes” when prompted.</p>
+<p>If your <span class="caps">SSH</span> key is set at your GitHub account, the GitHub server will confirm you’ve successfully connected and inform you that “GitHub does not provide shell access.” That just means you can’t log in to GitHub and use their servers the way you are using your Cloud9 workspace as your personal console. That’s fine; GitHub is not used for remote shell services.</p>
+<p>With <span class="caps">SSH</span> keys saved to your GitHub account, you can use GitHub without entering your username and password every time you push.</p>
+<h2>Fancy Prompts and More</h2>
+<p>Experienced Unix users often configure the shell with a fancy prompt, environment variables, and command aliases. You can switch to the Z shell and install Robby Russell’s <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> for the ultimate power user experience (experts only!).</p>
+<p><a href="https://github.com/revans/bash-it">Bash-it</a> is a simpler alternative to oh-my-zsh if you want to continue to use the Bash shell. It’s easy to install if you just want a fancy prompt and a library of command aliases.</p>
+<pre>
+$ git clone git@github.com:revans/bash-it.git .bash_it
+$ ~/.bash_it/install.sh
+</pre>
+<p>During the initial install, choose “none” for each prompt to avoid installing more than you need. You can run <code>bash-it show aliases</code> later to pick command aliases for the tools you use.</p>
+<p>Close and reopen the console to enable Bash-it and see your new prompt. Bash-it offers a choice of “themes” that give you different prompts.</p>
+<p>A fancy prompt will show you the git status of your current directory as well as the current <span class="caps">RVM</span> gemset. And, of course, it will impress your friends.</p>
+<h2>Collaboration</h2>
+<p>You can use your Cloud9 workspace for pair programming.</p>
+<p>Your pairing partner must have a Cloud9 account. Use the “Share” link (in the upper right corner of the page) to add members to the workspace. See the <a href="https://docs.c9.io/v1.0/docs">Cloud9 Share a Workspace article</a> for more about adding members to a workspace.</p>
+<p>Begin a pairing session by selecting the “Collaborate” link (on the right side of the page).</p>
+<p>If you are physically present with your partner, at a shared desk or in the same room, Cloud9 is a good way to edit a project using two keyboards and two displays.</p>
+<p>For remote collaboration, open a browser window for video chat (such as Google Hangouts) or use Skype for conversation.</p>
+<h2>Rails Starter Apps</h2>
+<p>The starter application you create with <code>rails new</code> is very basic.</p>
+<p>Use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to build a full-featured Rails starter app.</p>
+<p>You’ll get a choice of starter applications with basic features and popular gems.</p>
+<p>Here’s how to generate a new Rails application using the Rails Composer tool:</p>
+<p>Using the conventional approach:</p>
+<pre>
+$ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
+</pre>
+<p>Or, first creating an empty application root directory:</p>
+<pre>
+$ mkdir myapp
+$ cd myapp
+$ rvm use ruby-2.2.2@myapp --ruby-version --create
+$ gem install rails
+$ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
+</pre>
+<p>You can add the <code>-T</code> flags to skip Test::Unit if you are using RSpec for testing.</p>
+<p>You can add the <code>-O</code> flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.</p>
+<h4>Rails Tutorials and Example Applications</h4>
+<p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. There is a tutorial for each one so there is no mystery code.</p>
+<table>
+<tr>
+<th>Example Applications for Rails 4.2 </th>
+		<th>Tutorial </th>
+		<th>Comments </th>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/learn-rails">Learn Rails</a> </td>
+		<td> <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> </td>
+		<td> introduction to Rails for beginners </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-bootstrap">Rails and Bootstrap</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-bootstrap">Rails Bootstrap Tutorial</a>  </td>
+		<td> starter app for Rails and Bootstrap </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-foundation">Rails and Foundation</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-foundation">Rails Foundation Tutorial</a> </td>
+		<td> starter app for Rails and Zurb Foundation </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-mailinglist-activejob">Mailing List with Active Job</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-mailinglist-activejob">Mailing List with Active Job Tutorial</a> </td>
+		<td> background processing </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-omniauth">OmniAuth and Rails</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a> </td>
+		<td> OmniAuth for authentication </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-devise">Devise and Rails</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-devise">Devise Tutorial</a> </td>
+		<td> Devise for authentication </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-devise-role">Role-Based Authorization</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> </td>
+		<td> Simple authorization </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-devise-pundit">Pundit and Rails</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-devise-pundit">Rails Pundit Tutorial</a> </td>
+		<td> Pundit for authorization </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-signup-download">Sign Up and Download</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-signup-download">Sign Up and Download Tutorial</a> </td>
+		<td> Devise with authorization to download a <span class="caps">PDF</span> file </td>
+	</tr>
+<tr>
+<td> <a href="https://github.com/RailsApps/rails-stripe-checkout">Stripe Checkout</a> </td>
+		<td> <a href="http://railsapps.github.io/rails-stripe-checkout">Stripe Checkout Tutorial</a> </td>
+		<td> selling a product with Stripe Checkout </td>
+	</tr>
+</table><h2>Where to Get Help</h2>
+<p><a>Cloud9 provides support</a> for users.</p>
+<p>You can also find help on <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<h2>Credits</h2>
+<p>Daniel Kehoe wrote the article.</p>
+<p>Get the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> to and <a href="http://railsapps.github.io/">support RailsApps</a> if the article was helpful.</p>
+<h3><a href="http://learn-rails.com/learn-ruby-on-rails.html"><img src="http://railsapps.github.io/images/learn-rails-cover-130x161.jpg" title="Learn Ruby on Rails" alt="Learn Ruby on Rails"></a></h3>
+      </div>
+      <div class="comments" id="comments">
+        <div class="content wikistyle gollum">
+          <h2>Comments</h2>
+        </div>
+        <p>Is this helpful? Your encouragement fuels the project. Please tweet or add a comment. Couldn't get something to work? For the example apps and tutorials, it's best to open an issue on GitHub so we can help you.</p>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'railsapps'; // required: replace example with your forum shortname
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div><!-- class="comments" -->
+    </div><!-- class="columns" -->
+  </div><!-- class="row" -->
+  <footer class="row">
+    <div class="large-12 columns">
+      <div class="row">
+         <div class="medium-4 large-4 columns">
+           <dl class="footer_nav">
+             <dt>RailsApps &#183; Getting Started</dt>
+             <dd><a href="http://railsapps.github.io/ruby-and-rails.html">Ruby on Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a></dd>
+             <dd><a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-tutorial">Rails Tutorial</a></dd>
+             <dd><a href="http://learn-rails.com/ruby-on-rails-tutorial-for-beginners">Ruby on Rails Tutorial for Beginners</a></dd>
+             <dd><a href="http://railsapps.github.io/installing-rails.html">Install Ruby on Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/installrubyonrails-mac.html">Install Ruby on Rails - Mac OS X</a></dd>
+             <dd><a href="http://railsapps.github.io/installrubyonrails-ubuntu.html">Install Ruby on Rails - Ubuntu</a></dd>
+             <dd><a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Ruby on Rails - Nitrous.io</a></dd>
+             <dd><a href="http://railsapps.github.io/updating-rails.html">Update Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-composer/">Rails Composer</a></dd>
+             <dd><a href="http://railsapps.github.io/">Rails Examples</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails Starter Apps</a></dd>
+           </dl>
+         </div>
+         <div class="medium-4 large-4 columns">
+           <dl class="footer_nav">
+             <dt>RailsApps &#183; Articles</dt>
+             <dd><a href="http://railsapps.github.io/rails-authorization.html">Rails Authorization</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-google-analytics.html">Analytics for Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-javascript-include-external.html">JavaScript and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-git.html">Git and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-github.html">Rails GitHub</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-send-email.html">Send Email with Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-haml.html">Haml and Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-default-application-layout.html">Rails Application Layout</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-3-2-example-gemfile.html">Example Gemfiles for Rails</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-application-templates.html">Rails Application Templates</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-product-planning.html">Rails Product Planning</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-project-management.html">Rails Project Management</a></dd>
+           </dl>
+           </div>
+           <div class="medium-4 large-4 columns">
+           <dl class="footer_nav">
+             <dt>RailsApps &#183; Tutorials</dt>
+             <dd><a href="http://railsapps.github.io/twitter-bootstrap-rails.html">Rails Bootstrap</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-foundation.html">Rails Foundation</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a></dd>
+             <dd><a href="http://railsapps.github.io/tutorial-rails-devise.html">Rails Devise Tutorial</a></dd>
+             <dd><a href="http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html">Devise RSpec</a></dd>
+             <dd><a href="http://railsapps.github.io/tutorial-rails-bootstrap-devise-cancan.html">Devise Bootstrap</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization</a></dd>
+             <dd><a href="http://railsapps.github.io/rails-devise-pundit">Rails Authorization with Pundit</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-stripe-membership-saas">Rails Membership Site with Stripe</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-recurly-subscription-saas">Rails Subscription Site with Recurly</a></dd>
+             <dd><a href="https://tutorials.railsapps.org/rails-prelaunch-signup">Startup Prelaunch Signup Application</a></dd>
+           </dl>
+           <dl class="footer_nav">
+            <dt>RailsApps Profile</dt>
+            <dd><a href="https://plus.google.com/108039160165742774777?rel=author">Google</a></dd>
+            <dd><a href="https://plus.google.com/117374718581973393536" rel="publisher">Find us on Google+</a></dd>
+           </dl>
+        </div>
+      </div>
+    </div>
+  </footer>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/js/foundation.min.js"></script>
+<script>
+  $(document).foundation();
+</script>
+</body>
+</html>
