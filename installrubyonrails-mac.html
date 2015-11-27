@@ -222,10 +222,9 @@ $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 <p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
-$ \curl -L https://get.rvm.io | bash -s stable --ruby
+$ \curl -L https://get.rvm.io | bash -s stable
 </pre>
 <p>Note the backslash before “curl” (this avoids potential version conflicts).</p>
-<p>The “—ruby” flag will install the newest version of Ruby. It takes a long time (about five minutes) to install Ruby because the computer must compile the source code.</p>
 <p><span class="caps">RVM</span> includes an “autolibs” option to identify and install components needed for your operating system. See the article <a href="https://blog.engineyard.com/2013/rvm-ruby-2-0"><span class="caps">RVM</span> Autolibs: Automatic Dependency Handling and Ruby 2.0</a> for more information. RVM will update your system and install dependencies required for installing Ruby on Mac OS X.</p>
 <p>You may see a message:</p>
 <pre>
@@ -239,8 +238,6 @@ your password required for 'mkdir -p /etc/openssl':
 <p>If you already have <span class="caps">RVM</span> installed, update it to the latest version and install Ruby:</p>
 <pre>
 $ rvm get stable --autolibs=enable
-$ rvm install ruby
-$ rvm --default use ruby-2.2.3
 </pre>
 <h4>
 <span class="caps">RVM</span> Troubleshooting</h4>
@@ -255,6 +252,13 @@ $ rvm --default use ruby-2.2.3
 $ source ~/.rvm/scripts/rvm
 </pre>
 <p>But it is easier to simply close and reopen the Terminal window.</p>
+<h2>Install Ruby</h2>
+<p>After installing RVM, install the newest version of Ruby:</p>
+<pre>
+$ rvm install ruby-2.2.3
+$ rvm --default use ruby-2.2.3
+</pre>
+<p>It takes a long time (about five minutes) to install Ruby because the computer must compile the source code.</p>
 <h2>Check the Gem Manager</h2>
 <p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the gem manager in Ruby.</p>
 <p>Check the installed gem manager version. You may see:</p>
