@@ -217,6 +217,7 @@ $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 <h2>Install Ruby Using <span class="caps">RVM</span>
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
+<p>If your Mac user name contains a space character, you must <a href="http://support.apple.com/kb/HT1428">change you account name</a> to remove the space.</p>
 <p><span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove the system Ruby. The system Ruby will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
 <p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
@@ -224,10 +225,16 @@ $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
 </pre>
 <p>Note the backslash before “curl” (this avoids potential version conflicts).</p>
-<p>The “—ruby” flag will install the newest version of Ruby.</p>
-<p><span class="caps">RVM</span> includes an “autolibs” option to identify and install components needed for your operating system. See the article <a href="https://blog.engineyard.com/2013/rvm-ruby-2-0"><span class="caps">RVM</span> Autolibs: Automatic Dependency Handling and Ruby 2.0</a> for more information.</p>
-<p>On a new, clean version of Mac OS X, <span class="caps">RVM</span> will check requirements and install MacPorts (you may need to enter your user password). <span class="caps">RVM</span> will update your system and install dependencies required for installing Ruby on Mac OS X. You may be prompted to install a Java SE 6 runtime (for the javac Java compiler).</p>
-<p>If your Mac user name contains a space character, you must <a href="http://support.apple.com/kb/HT1428">change you account name</a> to remove the space.</p>
+<p>The “—ruby” flag will install the newest version of Ruby. It takes a long time (about five minutes) to install Ruby because the computer must compile the source code.</p>
+<p><span class="caps">RVM</span> includes an “autolibs” option to identify and install components needed for your operating system. See the article <a href="https://blog.engineyard.com/2013/rvm-ruby-2-0"><span class="caps">RVM</span> Autolibs: Automatic Dependency Handling and Ruby 2.0</a> for more information. RVM will update your system and install dependencies required for installing Ruby on Mac OS X.</p>
+<p>You may see a message:</p>
+<pre>
+mkdir: /etc/openssl: Permission denied
+mkdir -p "/etc/openssl" failed, retrying with sudo
+your password required for 'mkdir -p /etc/openssl':
+</pre>
+<p>If you see the message, enter your Mac password.</p>
+<p>You may be prompted to install a Java SE 6 runtime (for the javac Java compiler).</p>
 <h4>If You Already Have <span class="caps">RVM</span> Installed</h4>
 <p>If you already have <span class="caps">RVM</span> installed, update it to the latest version and install Ruby:</p>
 <pre>
