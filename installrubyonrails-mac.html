@@ -83,11 +83,11 @@
 <h4>by Daniel Kehoe</h4>
 <p><em>Last updated 27 November 2015</em></p>
 <p>Install Ruby on Rails 4.2 on Mac OS X El Capitan. Up-to-date, detailed instructions for the Rails newest release. How to set up and install Rails 4.2, the newest version of Rails, on Mac OS X 10.11 El Capitan.</p>
-<p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development.</p>
+<p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development. Beginners can use it, too.</p>
 <p>These instructions can be used for Mac OS X 10.9 Mavericks or 10.10 Yosemite. However, you should upgrade to El Capitan if you can.</p>
 <p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
 <h4>If You Are New to Rails</h4>
-<p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework. If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
+<p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework. If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>. This article explains how to install Rails.</p>
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from people who purchase the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>. Get the tutorials; you'll support the project and get the best intermediate-level tutorials for Rails.</p>
@@ -118,8 +118,8 @@ $ whoami
 <p>To learn more about Unix shell commands, read <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> or <a href="http://www.learnenough.com/command-line-tutorial">Learn Enough Command Line to Be Dangerous</a>.</p>
 <h3>Is Xcode Already Installed?</h3>
 <p>You need to install Apple's Xcode Command Line Tools to get the Unix tools needed to install Ruby and develop with Rails.</p>
-<p>Xcode is Apple's software library for OS X developers. You only need the full Xcode package if you are doing development of applications for the Apple operating systems. However, you may have previously installed the full Xcode package.</p>
-<p>Check if the full Xcode package is already installed:</p>
+<p>Xcode is Apple's software library for OS X developers. You only need the full Xcode package if you are doing development of applications for the Apple operating systems.</p>
+<p> Check if you have previously installed the full Xcode package:</p>
 <pre>
 $ xcode-select -p
 </pre>
@@ -127,7 +127,7 @@ $ xcode-select -p
 <pre>
 xcode-select: error: unable to get active developer directory...
 </pre>
-<p>The Xcode package is not installed.</p>
+<p>The Xcode package is not installed. Jump to the next section and install only the Xcode Command Line Tools.</p>
 <p>If you see:</p>
 <pre>
 /Applications/Xcode.app/Contents/Developer
@@ -166,22 +166,22 @@ $ xcode-select -p
 <pre>
 $ gcc --version
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
-Apple LLVM version 6.0 (clang-600.0.54) (based on LLVM 3.5svn)
-Target: x86_64-apple-darwin14.0.0
+Apple LLVM version 7.0.0 (clang-700.1.76)
+Target: x86_64-apple-darwin15.0.0
 Thread model: posix
 </pre>
-<p>On earlier versions of Mac OS X, it was more difficult to install Xcode Command Line Tools. It required a huge download of the full Xcode package from the Mac App Store or registration as an Apple developer for a smaller Command Line Tools package. Mac OS X 10.9 Mavericks made installation of Xcode Command Line Tools much simpler.</p>
-<h4>Alternatives</h4>
-<p>The <a href="https://github.com/kennethreitz/osx-gcc-installer"><span class="caps">OSX</span> <span class="caps">GCC</span> Installer</a> is an open source project to provide the <span class="caps">GCC</span> compiler and related tools. In a recent blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, <span class="caps">GCC</span>, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
+<h4>Ignore the Alternatives</h4>
+<p>You might hear about the <a href="https://github.com/kennethreitz/osx-gcc-installer">OSX GCC Installer</a>, an open source project to provide the GCC compiler and related tools. In the blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, GCC, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
 <h2>Configure Git</h2>
 <p>Before installing Ruby on Rails, you should configure Git. Git is automatically installed as part of the Xcode Command Line Tools. Or, if you updated from a previous version of Mac OS X, you may have installed Git previously.</p>
 <p><a href="http://git-scm.com/">Git</a> provides a source control repository. Developers use Git to roll back code changes as needed, to collaborate with others, and deploy applications for hosting with a service such as Heroku. As a Rails developer, you’ll use Git with a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more background.</p>
 <p>Check that Git is installed:</p>
 <pre>
 $ git version
-git version 1.9.3 (Apple Git-50)
+git version 2.4.9 (Apple Git-60)
 </pre>
-<p>Configure Git if you haven’t used it before. First, list the current settings with the <code>git config -l --global</code> command. Then set <code>user.name</code> and <code>user.email</code> if necessary:</p>
+<p>Configure Git if you haven’t used it before. First, list the current settings with the <code>git config -l --global</code> command. Then set <code>user.name</code> and <code>user.email</code> if necessary.</p>
+<p>Before you do this, it is a good idea to <a href="https://help.github.com/articles/signing-up-for-a-new-github-account/">create an account on GitHub</a>. You don't have to, but it is important to use the same email address for git and for GitHub.</p>
 <pre>
 $ git config -l --global
 fatal: unable to read config file '/Users/.../.gitconfig': No such file or directory
