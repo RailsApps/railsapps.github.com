@@ -108,16 +108,17 @@
 <p>Mac OS X El Capitan was released on September 30, 2015. Make sure you have the latest version of Mac OS X. Under the Apple menu, check “About This Mac.” It should show “Version 10.11.1” or newer. If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system.</p>
 <p>If you need to upgrade, see Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to OS X El Capitan</a>. You can install Mac OS X 10.11 (El Capitan) from the Mac App Store for free. Allow plenty of time for the download and installation (it may take several hours).</p>
 <h3>Terminal Application</h3>
-<p>You’ll need to use the Terminal application to install Ruby and develop Rails applications. The <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> or <em>console</em> gives us access to the Unix command line, or <em>shell</em>. We call the command line the shell because it is the outer layer of the operating system’s internal mechanisms (which we call the kernel). Find the Mac OS X Terminal application by pressing the Command-Spacebar combination and searching for “Terminal.” It’s in the <strong>Applications/Utilities/</strong> folder.</p>
-<p>Try out the terminal application by entering a shell command:</p>
+<p>You’ll need to use the Terminal application to install Ruby and develop Rails applications. The <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> or <em>console</em> gives us access to the Unix command line, or <em>shell</em>. We call the command line the shell because it is the outer layer of the operating system’s internal mechanisms (which we call the kernel). Search for the Mac OS X Terminal application by pressing the Command-Spacebar combination (which Apple calls "Spotlight Search") and searching for “Terminal.” Or look in the <strong>Applications/Utilities/</strong> folder for the Terminal application.</p>
+<p>Launch the Terminal application. Then try out the terminal application by entering a shell command:</p>
 <pre>
 $ whoami
 </pre>
 <p>Don’t type the <code>$</code> character. The <code>$</code> character is a cue that you should enter a shell command. This is a longtime convention that indicates you should enter a command in the terminal application. The Unix shell command <code>whoami</code> returns your username.</p>
+<p>Just a reminder to absolute beginners: Press "Enter" after you type the command.</p>
 <p>To learn more about Unix shell commands, read <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> or <a href="http://www.learnenough.com/command-line-tutorial">Learn Enough Command Line to Be Dangerous</a>.</p>
 <h3>Is Xcode Already Installed?</h3>
 <p>You need to install Apple's Xcode Command Line Tools to get the Unix tools needed to install Ruby and develop with Rails.</p>
-<p>Xcode is Apple's software library for OS X developers. You only need the full Xcode package if you are doing development of applications for the Apple operating systems.</p>
+<p>Xcode is Apple's software library for OS X developers. You need the full Xcode package if you are doing development of applications for the Apple operating systems but you don't need all of Xcode for Rails development. You just need the Xcode Command Line Tools. Here's how to install the Xcode Command Line Tools.</p>
 <p> Check if you have previously installed the full Xcode package:</p>
 <pre>
 $ xcode-select -p
@@ -131,13 +132,13 @@ xcode-select: error: unable to get active developer directory...
 <pre>
 /Applications/Xcode.app/Contents/Developer
 </pre>
-<p>The full Xcode package is already installed.</p>
+<p>The full Xcode package is already installed. Maybe you or someone else installed it previously.</p>
 <p>If Xcode is installed, you will need to update Xcode to the newest version (Xcode 7.1 or newer). Go to the App Store application and check “Updates.” After updating Xcode, be sure to launch the Xcode application and accept the Apple license terms.</p>
 <p>If you see a file location that contains spaces in the path:</p>
 <pre>
 /Applications/Apple Dev Tools/Xcode.app/Contents/Developer
 </pre>
-<p>you must delete Xcode. <a href="http://rvm.io/support/faq#can-i-use-a-path-with-spaces"><span class="caps">RVM</span> cannot accommodate spaces in a path</a> so <span class="caps">RVM</span> will fail when you attempt to install Ruby. You can either install only the Xcode Command Line Tools (instructions below) or reinstall the full Xcode package.</p>
+<p>you must delete Xcode. <a href="http://rvm.io/support/faq#can-i-use-a-path-with-spaces"><span class="caps">RVM</span> cannot accommodate spaces in a path</a> so <span class="caps">RVM</span> will fail when you attempt to install Ruby.</p>
 <h3>Install Xcode Command Line Tools</h3>
 <p>Before installing Ruby, you’ll need to prepare your computer by installing Apple’s <a href="http://railsapps.github.io/xcode-command-line-tools.html">Xcode Command Line Tools</a>.</p>
 <p>The Xcode Command Line Tools provide a C language compiler needed to install Ruby. For many Rails projects, you will need the C language compiler to install gems that use native extensions.</p>
@@ -153,7 +154,7 @@ $ gcc
 $ xcode-select --install
 </pre>
 <p>Click “Install” to download and install Xcode Command Line Tools.</p>
-<p>The instructions in the alert box are confusing. You don’t need to “Get Xcode” from the App Store. Just click “Install” for the Xcode Command Line Tools.</p>
+<p>The instructions in the alert box are confusing. You don’t need to “Get Xcode” from the App Store. Just click “Install” for the Xcode Command Line Tools. If you have a slow Internet connection, it may take many minutes.</p>
 <p><img src="http://railsapps.github.io/images/installing-mavericks-download.png" title="downloading Xcode Command Line Tools" alt="downloading Xcode Command Line Tools"></p>
 <p><img src="http://railsapps.github.io/images/imstalling-mavericks-installed.png" title="installed Xcode Command Line Tools" alt="installed Xcode Command Line Tools"></p>
 <p>Verify that you’ve successfully installed Xcode Command Line Tools:</p>
@@ -161,7 +162,7 @@ $ xcode-select --install
 $ xcode-select -p
 /Library/Developer/CommandLineTools
 </pre>
-<p>Just to be certain, verify that <code>gcc</code> is installed:</p>
+<p>The Xcode Command Line Tools must be installed before you go to the next steps. Just to be certain, verify that <code>gcc</code> is installed:</p>
 <pre>
 $ gcc --version
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
@@ -172,7 +173,7 @@ Thread model: posix
 <h4>Ignore the Alternatives</h4>
 <p>You might hear about the <a href="https://github.com/kennethreitz/osx-gcc-installer">OSX GCC Installer</a>, an open source project to provide the GCC compiler and related tools. In the blog post, <a href="http://kennethreitz.org/xcode-gcc-and-homebrew/">Xcode, GCC, and Homebrew</a>, the project maintainer recommends installing the Xcode Command Line Tools because the open source project is unable to duplicate the complete Apple package (notably, the Node software project isn’t supported).</p>
 <h2>Configure Git</h2>
-<p>Before installing Ruby on Rails, you should configure Git. Git is automatically installed as part of the Xcode Command Line Tools. Or, if you updated from a previous version of Mac OS X, you may have installed Git previously.</p>
+<p>Before installing Ruby on Rails, you should configure Git. Git is automatically installed as part of the Xcode Command Line Tools.</p>
 <p><a href="http://git-scm.com/">Git</a> provides a source control repository. Developers use Git to roll back code changes as needed, to collaborate with others, and deploy applications for hosting with a service such as Heroku. As a Rails developer, you’ll use Git with a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration. See the article <a href="http://railsapps.github.io/rails-git.html">Rails with Git and GitHub</a> for more background.</p>
 <p>Check that Git is installed:</p>
 <pre>
@@ -180,7 +181,7 @@ $ git version
 git version 2.4.9 (Apple Git-60)
 </pre>
 <p>Configure Git if you haven’t used it before. First, list the current settings with the <code>git config -l --global</code> command. Then set <code>user.name</code> and <code>user.email</code> if necessary.</p>
-<p>Before you do this, it is a good idea to <a href="https://help.github.com/articles/signing-up-for-a-new-github-account/">create an account on GitHub</a>. You don't have to, but it is important to use the same email address for git and for GitHub. Don't just copy and paste the code below. Make sure you use your name and change the email address.</p>
+<p>Before you do this, it is a good idea to <a href="https://help.github.com/articles/signing-up-for-a-new-github-account/">create an account on GitHub</a>. You don't have to, but it is important to use the same email address for git and for GitHub. Don't just copy and paste the code below. Edit it to add your name and the email address you've used for GitHub.</p>
 <pre>
 $ git config -l --global
 fatal: unable to read config file '/Users/.../.gitconfig': No such file or directory
@@ -203,7 +204,14 @@ $ brew
 <pre>
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 </pre>
-<p>You'll need to enter your Mac password at the prompt. You may notice that we use Ruby to install Homebrew. We use the Mac OS X pre-installed system version of Ruby to install Homebrew. Soon we'll add a newer version of Ruby using RVM.</p>
+<p>The Homebrew installation script will display a warning and ask you to enter your Mac password:</p>
+<pre>
+WARNING: Improper use of the sudo command could lead to data loss...
+To proceed, enter your password...
+Password:
+</pre>
+<p>Ignore the scary warning and enter your Mac password. You won't see the characters as you type. Press enter when you are done.</p>
+<p>You may notice that we use Ruby to install Homebrew. We use the Mac OS X pre-installed system version of Ruby to install Homebrew. Soon we'll add a newer version of Ruby using RVM.</p>
 <p>You can use Homebrew to install <a href="https://en.wikipedia.org/wiki/GNU_Privacy_Guard">gpg</a>, an encryption program used to check the security of the RVM download. Installing gpg eliminates a warning message which you could otherwise ignore.</p>
 <pre>
 $ brew install gpg
@@ -254,7 +262,6 @@ $ source ~/.rvm/scripts/rvm
 <p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. You must specify a version number to install the newest stable Ruby version:</p>
 <pre>
 $ rvm install ruby-2.2.3
-$ rvm --default use ruby-2.2.3
 </pre>
 <p>Sometimes a precompiled version of Ruby is available. If not, it takes a long time (about five minutes) to install Ruby because the computer must compile the source code.</p>
 <h2>Check the Gem Manager</h2>
@@ -264,6 +271,7 @@ $ rvm --default use ruby-2.2.3
 $ gem -v
 2.4.5.1
 </pre>
+<p>Don't type the number you see above. It's just to show you the response you might get from your computer.</p>
 <p>At the time this was written, a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems</a> version was available. Use <code>gem update --system</code> to upgrade the Ruby gem manager:</p>
 <pre>
 $ gem update --system
