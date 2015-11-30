@@ -81,7 +81,7 @@
         <br />
         <h1>Install Ruby on Rails · Mac OS X El Capitan</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 November 2015</em></p>
+<p><em>Last updated 30 November 2015</em></p>
 <p>Install Ruby on Rails 4.2 on Mac OS X El Capitan. Up-to-date, detailed instructions for the Rails newest release. How to set up and install Rails 4.2, the newest version of Rails, on Mac OS X 10.11 El Capitan.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development. Beginners can use it, too. You can find shorter articles elsewhere but this explains everything, covers everything, and is up to date.</p>
 <p>If you like the level of detail and explanation in this article, you will like my book <a href="http://learn-rails.com/learn-ruby-on-rails.html"><em>Learn Ruby on Rails</em></a> and you may want to try my intermediate-level tutorials, the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>.</p>
@@ -192,8 +192,7 @@ user.name=Your Real Name
 user.email=me@example.com
 </pre>
 <p>Now you’ll be ready to use Git when you need it.</p>
-<h2>Install Homebrew
-</h2>
+<h2>Install Homebrew</h2>
 <p>Check if Homebrew is installed:</p>
 <pre>
 $ brew
@@ -212,15 +211,16 @@ Password:
 </pre>
 <p>Ignore the scary warning and enter your Mac password. You won't see the characters as you type. Press enter when you are done.</p>
 <p>You may notice that we use Ruby to install Homebrew. We use the Mac OS X pre-installed system version of Ruby to install Homebrew. Soon we'll add a newer version of Ruby using RVM.</p>
-<p>You can use Homebrew to install <a href="https://en.wikipedia.org/wiki/GNU_Privacy_Guard">gpg</a>, an encryption program used to check the security of the RVM download. Installing gpg eliminates a warning message which you could otherwise ignore.</p>
+<h2>Install GPG</h2>
+<p>You can use Homebrew to install <a href="https://en.wikipedia.org/wiki/GNU_Privacy_Guard">gpg</a>, an encryption program used to check the security of the RVM download. Installing gpg eliminates a warning message which will halt installation of RVM.</p>
 <pre>
 $ brew install gpg
 </pre>
-<p>If you install gpg, you should install the security key for RVM:</p>
+<p>Install the security key for RVM:</p>
 <pre>
 $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 </pre>
-<p>This is optional. You can skip the gpg steps and just ignore any gpg warnings you see from RVM.</p>
+<p>If you skip the gpg steps you may not be able to install RVM.</p>
 <h2>Install RVM</h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p>If your Mac user name contains a space character, you must <a href="http://support.apple.com/kb/HT1428">change you account name</a> to remove the space.</p>
@@ -264,8 +264,13 @@ $ source ~/.rvm/scripts/rvm
 $ rvm install ruby-2.2.3
 </pre>
 <p>Sometimes a precompiled version of Ruby is available. If not, it takes a long time (about five minutes) to install Ruby because the computer must compile the source code.</p>
+<p>Verify that the newest version of Ruby is installed:</p>
+<pre>
+$ ruby -v
+ruby 2.2.3...
+</pre>
 <h2>Check the Gem Manager</h2>
-<p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the gem manager in Ruby.</p>
+<p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the package manager in Ruby. We use it to install software packages that add functionality to Ruby.</p>
 <p>Check the installed gem manager version. You may see:</p>
 <pre>
 $ gem -v
@@ -360,8 +365,13 @@ $ rails -v
 $ gem install rails --version=3.2.18
 $ rails -v
 </pre>
+<p>Verify that the correct version of Rails is installed:</p>
+<pre>
+$ rails -v
+Rails 4.2.5
+</pre>
 <p>Rails is now installed. If you want, you can close the Terminal window. Everything is installed, so you won't lose anything by closing the Terminal.</p>
-<p>You can leave the Terminal window open and try building a Rails application.</p>
+<p>Next, try building a Rails application.</p>
 <h2>Create a Workspace Folder</h2>
 <p>You’ll need a convenient folder to store your Rails projects. You can give it any name, such as <strong>code/</strong> or <strong>projects/</strong>. For this tutorial, we’ll call it <strong>workspace/</strong>.</p>
 <p>Create a projects folder and move into the folder:</p>
@@ -392,6 +402,12 @@ $ rails new .
 $ rake -T
 </pre>
 <p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using <span class="caps">RVM</span> (see <a href="https://rvm.io/integration/bundler/"><span class="caps">RVM</span> and bundler integration</a>).</p>
+<p>Run the application with the Rails server command:</p>
+<pre>
+$ rails server
+</pre>
+<p>Use your web browser to visit the application at <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
+<p>Use Control-c to stop the server.</p>
 <p>This concludes the instructions for installing Ruby and Rails. Read on for additional advice and tips.</p>
 <h2>Terminal Application and Text Editor</h2>
 <p>The built-in Apple Terminal application is adequate but many developers install <a href="http://www.iterm2.com/#/section/home">iTerm 2</a>. It has more options for customization.</p>
@@ -431,7 +447,8 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 <p>You can add the <code>-T</code> flags to skip Test::Unit if you are using RSpec for testing.</p>
 <p>You can add the <code>-O</code> flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.</p>
 <p>If you get an error “OpenSSL certificate verify failed” when you try to generate a new Rails app, see the article <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL Errors and Rails</a>.</p>
-</table><h2>Adding a Gemset to an Existing Application</h2>
+<p>You can run the Rails server to test the application.</p>
+<h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
 $ rvm use ruby-2.2.3@myapp --ruby-version --create
@@ -497,9 +514,16 @@ $ rake secret
 <p>Ruby and RubyGems (starting with Ruby 1.9.3p194 and RubyGems 1.8.23) require verification of server <span class="caps">SSL</span> certificates when Ruby makes an Internet connection via https. If you run <code>rails new</code> and get an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate” see this article suggesting solutions: <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <h4>Problems with “Certificate Verify Failed”</h4>
 <p>Are you getting an error “OpenSSL certificate verify failed” when you try to generate a new Rails app from an application template? See this article suggesting solutions: <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
+<h4>Installing in a Second Account</h4>
+<p>If you've created a second user account on your Mac, and the first user has already installed Homebrew, the first user may have to change permissions for the <strong>/usr/local/bin</strong> and <strong>/usr/local/Cellar</strong> folders:</p>
+<pre>
+$ sudo chmod g+w /usr/local/bin
+$ sudo chmod g+w /usr/local/Cellar
+</pre>
+<p>The second user account should be given admin privileges using the System Preferences "Users and Groups" setting.</p>
 <h2>Where to Get Help</h2>
-<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
-<p>You can also try <a href="http://www.railshotline.com/">Rails Hotline</a>, a free telephone hotline for Rails help staffed by volunteers.</p>
+<p>Your best source for online help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
+<p>To find a real person who can help, attend a Ruby meetup in your city. Google for "ruby meetup" with your city name.</p>
 <h2>Credits</h2>
 <p>Daniel Kehoe wrote the article.</p>
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
