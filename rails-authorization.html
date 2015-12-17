@@ -50,7 +50,8 @@
 <p>How to control access in a Rails application. An overview of Rails authorization, including role-based authorization, with a comparison of the CanCan and Pundit gems.</p>
 <h4>Examples</h4>
 <p>This article offers an overview of role-based authorization in Rails. The RailsApps project provides example applications and tutorials demonstrating authorization:</p>
-<p><strong><a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a></strong><br><strong><a href="https://github.com/RailsApps/rails-devise-pundit">rails-devise-pundit</a></strong></p>
+<p><strong><a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a></strong><br>
+<strong><a href="https://github.com/RailsApps/rails-devise-pundit">rails-devise-pundit</a></strong></p>
 <p>You can create the example applications in a few minutes using <a href="http://www.railscomposer.com/">Rails Composer</a>.</p>
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
@@ -69,10 +70,11 @@
 <h2>Implementing Role-Based Authorization</h2>
 <p>Simple role-based authorization requires:</p>
 <ul>
-<li>attributes for roles, typically in a User model</li>
+	<li>attributes for roles, typically in a User model</li>
 	<li>access rules added to controller actions, restricting access to prohibited pages</li>
 	<li>methods to check roles in view templates, displaying content conditionally</li>
-</ul><p>In an application with simple access restrictions, you can add authorization with a few lines of hand-crafted code. You’ll need to add a role attribute to a User model. You’ll use helper methods to construct conditional statements for access control in Rails controllers. And you can use the same helper methods to conditionally display content in views.</p>
+</ul>
+<p>In an application with simple access restrictions, you can add authorization with a few lines of hand-crafted code. You’ll need to add a role attribute to a User model. You’ll use helper methods to construct conditional statements for access control in Rails controllers. And you can use the same helper methods to conditionally display content in views.</p>
 <p>Many developers use the <a href="https://github.com/elabs/pundit">Pundit</a> or <a href="https://github.com/ryanb/cancan">CanCan</a> gems (or its successor, <a href="https://github.com/CanCanCommunity/cancancan">CanCanCan</a>). These gems help organize and centralize access rules in complex applications, keeping controllers “skinny.” As a framework, Rails allows you to add as much complexity to a controller as you wish. However, the Rails community has come to a consensus that complexity in controllers is a not a best practice. Authorization quickly adds complexity to controllers, which is why developers use Pundit or CanCan.</p>
 <p>Given the advice, “Keep your controllers skinny,” some developers attempt to implement access rules as methods in a model. Access rules don’t belong in a model, given that a model is best used for retrieving and manipulating data, and not for logic that controls program flow through the application. Rather than build “fat models” with complex access rules for program flow, developers look for ways to keep both models and controllers free from excess authorization code. Pundit or CanCan are options.</p>
 <h3>Pundit</h3>
@@ -115,19 +117,20 @@ royce_roles %w[ user vip admin ]
 </pre>
 <p>Royce provides a full set of convenience methods without any extra coding, so you can use methods such as:</p>
 <ul>
-<li>
+	<li>
 <code>user.add_role :admin</code> – to assign an admin role to a user</li>
 	<li>
 <code>user.has_role? :admin</code> – to determine if a user is an administrator</li>
 	<li>
 <code>user.remove_role :admin</code> – to remove a role</li>
-</ul><p>As an alternative to Royce, you can use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to add multiple roles to an application. Like Royce, it provides a generator to set up tables and indexes. Rolify is more complex than Royce. It lets you apply roles to resource classes or instances. For example, for a discussion forum, a user could be a moderator for some forums but not others. Rolify is <a href="https://github.com/EppO/rolify/wiki">well-documented on its wiki</a>.</p>
+</ul>
+<p>As an alternative to Royce, you can use Florent Monbillard’s <a href="https://github.com/EppO/rolify">Rolify</a> gem to add multiple roles to an application. Like Royce, it provides a generator to set up tables and indexes. Rolify is more complex than Royce. It lets you apply roles to resource classes or instances. For example, for a discussion forum, a user could be a moderator for some forums but not others. Rolify is <a href="https://github.com/EppO/rolify/wiki">well-documented on its wiki</a>.</p>
 <p>Both Royce and Rolify are convenient and well-tested, so there is little reason to implement your own Role model, if your application requires users with more than one role.</p>
 <h3>Enum Roles</h3>
 <p>Most applications don’t need to assign more than one role to a user. In many applications, a single role for each user is sufficient, so you don’t need to use the Rolify gem. Instead you can use a feature of Active Record, <a href="http://api.rubyonrails.org/classes/ActiveRecord/Enum.html">Enum</a>, introduced in Rails 4.1. Enums are the simplest way to add roles to a User model, with advantages over all the approaches described above.</p>
 <p>An enum, or <a href="http://en.wikipedia.org/wiki/Enumerated_type">enumerated type</a>, is stored in the database as an integer but represented in code as a string. Enums give us all the functionality we need to implement user roles. We can define the names of the roles, and if necessary, change the names as needed (the integer values stored with each user record remain unchanged). Active Record will restrict the assignment of the attribute to a collection of predefined values, so we don’t have to add any code to restrict the names of the roles to a defined set. Best of all, enums come with a set of convenience methods that allow us to directly query the role without any extra code. For an enum attribute named <code>role</code>, with the values <code>admin</code>, <code>vip</code>, and <code>user</code>, we can use these methods:</p>
 <ul>
-<li>
+	<li>
 <code>User.roles # =&gt; {"user"=&gt;0, "vip"=&gt;1, "admin"=&gt;2}</code> – list all roles</li>
 	<li>
 <code>user.admin!</code> – make the user an administrator</li>
@@ -139,23 +142,27 @@ royce_roles %w[ user vip admin ]
 <code>@users = User.admin</code> – obtain an array of all users with the admin role</li>
 	<li>
 <code>user.role = 'foo' # ArgumentError: 'foo' is not a valid role</code> – we can’t set invalid roles</li>
-</ul><p>Active Record automatically gives you convenience methods to assign and query any role. For example, in a User model, if you have:</p>
+</ul>
+<p>Active Record automatically gives you convenience methods to assign and query any role. For example, in a User model, if you have:</p>
 <ul>
-<li><code>enum role: [:coach, :business, :first, :crew]</code></li>
-</ul><p>You’ll automatically get the following methods anywhere you’ve instantiated the user object:</p>
+	<li><code>enum role: [:coach, :business, :first, :crew]</code></li>
+</ul>
+<p>You’ll automatically get the following methods anywhere you’ve instantiated the user object:</p>
 <ul>
-<li>
+	<li>
 <code>user.coach!</code> – assign the user’s role</li>
 	<li><code>user.business!</code></li>
 	<li><code>user.first!</code></li>
 	<li><code>user.crew!</code></li>
-</ul><ul>
-<li>
+</ul>
+<ul>
+	<li>
 <code>user.coach?</code> – query the user’s role</li>
 	<li><code>user.business?</code></li>
 	<li><code>user.first?</code></li>
 	<li><code>user.crew?</code></li>
-</ul><p>Active Record enums make it easy to add role-based authorization to a Rails application.</p>
+</ul>
+<p>Active Record enums make it easy to add role-based authorization to a Rails application.</p>
 <h2>Examples</h2>
 <p>The following code samples are taken from the <a href="https://github.com/RailsApps/rails-devise-roles">rails-devise-roles</a> example application on GitHub. The <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> explains how to build the complete application.</p>
 <h3>User Model</h3>
@@ -177,8 +184,9 @@ end
 </pre>
 <p>The <code>enum</code> method sets the <code>role</code> attribute with a set of predefined role values: <code>user</code>, <code>vip</code>, and <code>admin</code>. Refer to the documentation for <a href="http://api.rubyonrails.org/classes/ActiveRecord/Enum.html">Enum</a> to see other options for setting role values. For example, you can use a hash to explicitly map enum values to integers:</p>
 <ul>
-<li><code>enum role: {user: 0, bronze: 1, silver: 2, gold: 3, admin: 4}</code></li>
-</ul><p>Before you can use a User model with these roles, you’ll need to run a migration to add a new field to the Users table in the database:</p>
+	<li><code>enum role: {user: 0, bronze: 1, silver: 2, gold: 3, admin: 4}</code></li>
+</ul>
+<p>Before you can use a User model with these roles, you’ll need to run a migration to add a new field to the Users table in the database:</p>
 <pre>
 $ rails generate migration AddRoleToUsers role:integer
 </pre>

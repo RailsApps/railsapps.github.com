@@ -47,7 +47,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Install Ruby on Rails · Ubuntu Linux</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 August 2015</em></p>
+<p><em>Last updated 16 December 2015</em></p>
 <p>Install Ruby on Rails 4.2 on Ubuntu Linux. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.2, the newest version of Rails, on Ubuntu.</p>
 <p>This in-depth installation guide is used by developers to configure their working environment for real-world Rails development. This guide doesn’t cover installation of Ruby on Rails for a production server.</p>
 <p>To develop with Rails on Ubuntu, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
@@ -84,7 +84,7 @@ $ sudo apt-get install curl
 </h2>
 <p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
 <p>If you have an older version of Ruby installed on your computer, there’s no need to remove it. <span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
+<p>Ruby 2.2.4 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
 <p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
@@ -97,7 +97,7 @@ $ \curl -L https://get.rvm.io | bash -s stable --ruby
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.2.3
+$ rvm --default use ruby-2.2.4
 </pre>
 <h4>Installation Troubleshooting and Advice</h4>
 <h4>
@@ -120,7 +120,7 @@ gem 'therubyracer'
 <p>Check the installed gem manager version. You may see:</p>
 <pre>
 $ gem -v
-2.2.3
+2.2.4
 </pre>
 <p>At the time this was written, a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems</a> version was available. Use <code>gem update --system</code> to upgrade the Ruby gem manager:</p>
 <pre>
@@ -133,7 +133,7 @@ $ gem update --system
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.2.3
+gemsets for ruby-2.2.4
 =&gt; (default)
    global
 </pre>
@@ -148,11 +148,12 @@ $ gem list
 <p>A trouble-free development environment requires the newest versions of the default gems.</p>
 <p>Several gems are installed with Ruby or the <span class="caps">RVM</span> default gemset:</p>
 <ul>
-<li><a href="http://rubygems.org/gems/bundler-unload">bundler-unload</a></li>
+	<li><a href="http://rubygems.org/gems/bundler-unload">bundler-unload</a></li>
 	<li><a href="http://rubygems.org/gems/rake">rake</a></li>
 	<li><a href="http://rubygems.org/gems/rubygems-bundler">rubygems-bundler</a></li>
 	<li><a href="http://rubygems.org/gems/rvm">rvm</a></li>
-</ul><p>To get a list of gems that are outdated:</p>
+</ul>
+<p>To get a list of gems that are outdated:</p>
 <pre>
 $ gem outdated
 ### list not shown for brevity
@@ -191,7 +192,7 @@ $ gem install nokogiri
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.2.3@rails4.2 --create
+$ rvm use ruby-2.2.4@rails4.2 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>If you want the most recent stable release:</p>
@@ -223,7 +224,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -254,7 +255,7 @@ $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/comp
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -265,65 +266,66 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 <h4>Rails Tutorials and Example Applications</h4>
 <p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. Purchasing a <a href="https://tutorials.railsapps.org/">subscription for the tutorials</a> gives the project financial support.</p>
 <table>
-<tr>
-<th>Example Applications for Rails 4.2 </th>
+	<tr>
+		<th>Example Applications for Rails 4.2 </th>
 		<th>Tutorial </th>
 		<th>Comments </th>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/learn-rails">Learn Rails</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/learn-rails">Learn Rails</a> </td>
 		<td> <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> </td>
 		<td> introduction to Rails for beginners </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-bootstrap">Rails and Bootstrap</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-bootstrap">Rails and Bootstrap</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-bootstrap">Rails Bootstrap Tutorial</a>  </td>
 		<td> starter app for Rails and Bootstrap </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-foundation">Rails and Foundation</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-foundation">Rails and Foundation</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-foundation">Rails Foundation Tutorial</a> </td>
 		<td> starter app for Rails and Zurb Foundation </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-mailinglist-activejob">Mailing List with Active Job</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-mailinglist-activejob">Mailing List with Active Job</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-mailinglist-activejob">Mailing List with Active Job Tutorial</a> </td>
 		<td> background processing </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-omniauth">OmniAuth and Rails</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-omniauth">OmniAuth and Rails</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a> </td>
 		<td> OmniAuth for authentication </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-devise">Devise and Rails</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-devise">Devise and Rails</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-devise">Devise Tutorial</a> </td>
 		<td> Devise for authentication </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-devise-role">Role-Based Authorization</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-devise-role">Role-Based Authorization</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> </td>
 		<td> Simple authorization </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-devise-pundit">Pundit and Rails</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-devise-pundit">Pundit and Rails</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-devise-pundit">Rails Pundit Tutorial</a> </td>
 		<td> Pundit for authorization </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-signup-download">Sign Up and Download</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-signup-download">Sign Up and Download</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-signup-download">Sign Up and Download Tutorial</a> </td>
 		<td> Devise with authorization to download a <span class="caps">PDF</span> file </td>
 	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-stripe-checkout">Stripe Checkout</a> </td>
+	<tr>
+		<td> <a href="https://github.com/RailsApps/rails-stripe-checkout">Stripe Checkout</a> </td>
 		<td> <a href="http://railsapps.github.io/rails-stripe-checkout">Stripe Checkout Tutorial</a> </td>
 		<td> selling a product with Stripe Checkout </td>
 	</tr>
-</table><h2>Adding a Gemset to an Existing Application</h2>
+</table>
+<h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
@@ -331,9 +333,9 @@ $ gem install rails
 $ bundle install
 </pre>
 <h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.2.3@myapp”:</p>
+<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.2.4@myapp”:</p>
 <pre>
-$ echo "ruby-2.2.3" &gt; .ruby-version
+$ echo "ruby-2.2.4" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
@@ -354,14 +356,16 @@ $ rails new myapp --database=postgresql
 <h3>Hosting</h3>
 <p>For easy deployment, use a “platform as a service” provider such as:</p>
 <ul>
-<li><a href="http://www.heroku.com/">Heroku</a></li>
+	<li><a href="http://www.heroku.com/">Heroku</a></li>
 	<li><a href="http://www.cloudfoundry.com/">CloudFoundry</a></li>
 	<li><a href="http://www.engineyard.com/">EngineYard</a></li>
 	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
-</ul><p>For deployment on Heroku, see the article:</p>
+</ul>
+<p>For deployment on Heroku, see the article:</p>
 <ul>
-<li><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails on Heroku</a></li>
-</ul><h2>Security</h2>
+	<li><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails on Heroku</a></li>
+</ul>
+<h2>Security</h2>
 <p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
 <h3>Your Application’s Secret Token</h3>
 <p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encrypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated. If you’ve used the Rails Composer tool to generate the application, the application’s secret token will be unique, just as with any Rails application generated with the <code>rails new</code> command.</p>
