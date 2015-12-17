@@ -81,7 +81,7 @@
         <br />
         <h1>Install Ruby on Rails · Mac OS X El Capitan</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 30 November 2015</em></p>
+<p><em>Last updated 17 December 2015</em></p>
 <p>Install Ruby on Rails 4.2 on Mac OS X El Capitan. Up-to-date, detailed instructions for the Rails newest release. How to set up and install Rails 4.2, the newest version of Rails, on Mac OS X 10.11 El Capitan.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development. Beginners can use it, too. You can find shorter articles elsewhere but this explains everything, covers everything, and is up to date.</p>
 <p>If you like the level of detail and explanation in this article, you will like my book <a href="http://learn-rails.com/learn-ruby-on-rails.html"><em>Learn Ruby on Rails</em></a> and you may want to try my intermediate-level tutorials, the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>.</p>
@@ -91,7 +91,7 @@
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from people who purchase the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>. You might want to try the <a href="http://railsapps.github.io/">RailsApps Example Applications</a> and the Capstone Rails Tutorials.</p>
 <h2>Ruby on Rails for Mac OS X El Capitan</h2>
 <p>These instructions can be used for Mac OS X 10.9 Mavericks or 10.10 Yosemite. However, you should upgrade to El Capitan if you can.</p>
-<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X El Capitan includes Ruby 2.0.0p645 which is not the newest version. You should update to Ruby 2.2.3 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
+<p>Mac OS X comes with a “system Ruby” pre-installed. Mac OS X El Capitan includes Ruby 2.0.0p645 which is not the newest version. You should update to Ruby 2.2.4 by using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
 <p>If you are maintaining older Rails applications, you will likely need to install older Ruby versions. And in the future, you will need to install newer Ruby versions as they are released. Even if you are a student only building new Rails applications, you should be prepared to manage multiple versions of Ruby. These are all reasons to use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
 <h3>If You Updated to Mac OS X El Capitan</h3>
 <p>If you updated to El Capitan from an earlier version of Mac OS X (sometimes called an "over the top" installation), and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a> (full instructions below). Though Rails is still intact after an update, read through this article and take this opportunity to update your development environment.</p>
@@ -259,15 +259,15 @@ $ source ~/.rvm/scripts/rvm
 <h2>Install Ruby</h2>
 <p>After installing RVM, install the newest version of Ruby.</p>
 <p>RVM will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. There’s no need to remove the system Ruby. The system Ruby will remain on your system and the RVM version will take precedence.</p>
-<p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. You must specify a version number to install the newest stable Ruby version:</p>
+<p>Ruby 2.2.4 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. You must specify a version number to install the newest stable Ruby version:</p>
 <pre>
-$ rvm install ruby-2.2.3
+$ rvm install ruby-2.2.4
 </pre>
 <p>Sometimes a precompiled version of Ruby is available. If not, it takes a long time (about five minutes) to install Ruby because the computer must compile the source code.</p>
 <p>Verify that the newest version of Ruby is installed:</p>
 <pre>
 $ ruby -v
-ruby 2.2.3...
+ruby 2.2.4...
 </pre>
 <h2>Check the Gem Manager</h2>
 <p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the package manager in Ruby. We use it to install software packages that add functionality to Ruby.</p>
@@ -288,7 +288,7 @@ $ gem update --system
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.2.3
+gemsets for ruby-2.2.4
 =&gt; (default)
    global
 </pre>
@@ -346,7 +346,7 @@ $ gem install nokogiri
 <p>If you install Rails at this point, you will install it into the global gemset.</p>
 <p>Instead, make a gemset just for the current stable release:</p>
 <pre>
-$ rvm use ruby-2.2.3@rails4.2 --create
+$ rvm use ruby-2.2.4@rails4.2 --create
 </pre>
 <p>Here are the options you have for installing Rails.</p>
 <p>Most people install the most recent stable release:</p>
@@ -382,7 +382,7 @@ $ cd workspace
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
@@ -436,7 +436,7 @@ $ rails new myapp2 -m https://raw.github.com/RailsApps/rails-composer/master/com
 <pre>
 $ mkdir myapp2
 $ cd myapp2
-$ rvm use ruby-2.2.3@myapp2 --ruby-version --create
+$ rvm use ruby-2.2.4@myapp2 --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
@@ -448,7 +448,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
 <h2>Adding a Gemset to an Existing Application</h2>
 <p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
 <pre>
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 </pre>
 <p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
 <pre>
