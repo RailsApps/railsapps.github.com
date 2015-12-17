@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Rails Environment Variables &#183; RailsApps</title>
+  <title>Configuring Rails Environment Variables &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,22 +44,38 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Rails Environment Variables</h1>
-<h4>by Taylor Mock and Daniel Kehoe</h4>
-<p><em>Last updated 15 December 2012</em></p>
-<p>Setting Rails environment variables. Using <span class="caps">ENV</span> variables in Rails, locally and with Heroku. Rails configuration and security with environment variables.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>Environment Variables</h2>
-<p>Many applications require configuration of settings such as email account credentials or <span class="caps">API</span> keys for external services. You can pass local configuration settings to an application using environment variables.</p>
-<p>Operating systems (Linux, Mac OS X, Windows) provide mechanisms to set local <a href="http://en.wikipedia.org/wiki/Environment_variable">environment variables</a>, as does <a href="http://www.heroku.com/">Heroku</a> and other deployment platforms. Here we show how to set local environment variables in the Unix shell. We also show two alternatives to set environment variables in your application without the Unix shell.</p>
-<h2>Keeping Environment Variables Private</h2>
-<p>Remote <a href="http://railsapps.github.io/rails-git.html">git repositories</a> such as <a href="https://github.com/signup/free">GitHub</a> are a place to store and share code. If your project is open source, any developer will have access to your code. You don’t want to share email account credentials or private <span class="caps">API</span> keys with the public. If you’re collaborating on a team with a private git repository, your local settings may not be suitable for all members of the team. In general, you shouldn’t save email account credentials or private <span class="caps">API</span> keys to a shared git repository.</p>
-<h2>Gmail Example</h2>
-<p>Consider an application that uses Gmail to send email messages. Access to Gmail requires a username and password for access to your Gmail account. In your Rails application, you will need to configure these credentials in the file <strong>config/environments/production.rb</strong>. A portion of the file might look like this:</p>
+        h1. Rails Environment Variables
+
+h4. by Taylor Mock and Daniel Kehoe
+
+_Last updated 15 December 2012_
+
+Setting Rails environment variables. Using ENV variables in Rails, locally and with Heroku. Rails configuration and security with environment variables.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to "join the RailsApps project":http://railsapps.github.io/.
+
+h2. Environment Variables
+
+Many applications require configuration of settings such as email account credentials or API keys for external services. You can pass local configuration settings to an application using environment variables.
+
+Operating systems (Linux, Mac OS X, Windows) provide mechanisms to set local "environment variables":http://en.wikipedia.org/wiki/Environment_variable, as does "Heroku":http://www.heroku.com/ and other deployment platforms. Here we show how to set local environment variables in the Unix shell. We also show two alternatives to set environment variables in your application without the Unix shell.
+
+h2. Keeping Environment Variables Private
+
+Remote "git repositories":http://railsapps.github.io/rails-git.html such as "GitHub":https://github.com/signup/free are a place to store and share code. If your project is open source, any developer will have access to your code. You don't want to share email account credentials or private API keys with the public. If you're collaborating on a team with a private git repository, your local settings may not be suitable for all members of the team. In general, you shouldn't save email account credentials or private API keys to a shared git repository.
+
+h2. Gmail Example
+
+Consider an application that uses Gmail to send email messages. Access to Gmail requires a username and password for access to your Gmail account. In your Rails application, you will need to configure these credentials in the file *config/environments/production.rb*. A portion of the file might look like this:
+
 <pre>
 config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
@@ -71,46 +87,75 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You could “hardcode” your Gmail username and password into the file but that would expose it to everyone who has access to your git repository. Instead use the Ruby variable <code>ENV["GMAIL_USERNAME"]</code> to obtain an environment variable. The variable can be used anywhere in a Rails application. Ruby will replace <code>ENV["GMAIL_USERNAME"]</code> with an environment variable.</p>
-<p>Let’s consider how to set local environment variables.</p>
-<h2>Option One: Set Unix Environment Variables</h2>
-<p>If you’re familiar with Unix, you’ve likely had experience setting environment variables. Unix environment variables are typically set in a file that is read when starting an interactive shell (the <strong>~/.bashrc</strong> file for the bash shell).</p>
-<p>Are you using a bash shell? Use <code>echo $SHELL</code> to find out. For a bash shell, using the Gmail example, edit the <strong>~/.bashrc</strong> file and add:</p>
+
+You could "hardcode" your Gmail username and password into the file but that would expose it to everyone who has access to your git repository. Instead use the Ruby variable @ENV["GMAIL_USERNAME"]@ to obtain an environment variable. The variable can be used anywhere in a Rails application. Ruby will replace @ENV["GMAIL_USERNAME"]@ with an environment variable.
+
+Let's consider how to set local environment variables.
+
+h2. Option One: Set Unix Environment Variables
+
+If you're familiar with Unix, you've likely had experience setting environment variables. Unix environment variables are typically set in a file that is read when starting an interactive shell (the *~/.bashrc* file for the bash shell).
+
+Are you using a bash shell? Use @echo $SHELL@ to find out. For a bash shell, using the Gmail example, edit the *~/.bashrc* file and add:
+
 <pre>
 export GMAIL_USERNAME="myname@gmail.com"
 </pre>
-<p>You’ll have to open a new shell or restart your terminal application to continue.</p>
-<p>It’s important to learn to use the Unix shell if you’re commited to improving your skills as a developer. But troubleshooting shell problems can be difficult, especially when using rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, or when the application is launched in nonstandard ways.</p>
-<p>We’ll show you two alternatives to using the Unix shell that only require a few lines of code in your Rails application to set environment variables. Use one of these alternative approaches when you don’t want to set environment variables in the Unix shell.</p>
-<h2>Option Two: Use the Figaro Gem</h2>
-<p>The <a href="https://github.com/laserlemon/figaro">figaro gem</a> offers a practical alternative to setting environment variables in the Unix shell.</p>
-<p>The gem takes advantage of Ruby’s ability to set environment variables as well as read them. The gem reads a  <strong>config/application.yml</strong> file and sets environment variables before anything else is configured in the Rails application.</p>
-<p>If you want to use different credentials in development, test, or production environments, the gem will let you specify the different credentials in the <strong>config/application.yml</strong> file. If you’re deploying to Heroku, the gem gives you a rake task that will set all the environment variables on Heroku. The gem also gives you a syntax to access the environment variables as Figaro method calls which can be useful in setting up tests.</p>
-<p>The figaro gem makes it so easy to set configuration variables you may find it useful to set other configuration parameters besides email account credentials or private <span class="caps">API</span> keys.</p>
-<p>Here’s how to use it. In your <strong>Gemfile</strong>, add:</p>
+
+You'll have to open a new shell or restart your terminal application to continue.
+
+It's important to learn to use the Unix shell if you're commited to improving your skills as a developer. But troubleshooting shell problems can be difficult, especially when using rvm, the "Ruby Version Manager":https://rvm.io/, or when the application is launched in nonstandard ways.
+
+We'll show you two alternatives to using the Unix shell that only require a few lines of code in your Rails application to set environment variables. Use one of these alternative approaches when you don't want to set environment variables in the Unix shell.
+
+h2. Option Two: Use the Figaro Gem
+
+The "figaro gem":https://github.com/laserlemon/figaro offers a practical alternative to setting environment variables in the Unix shell.
+
+The gem takes advantage of Ruby's ability to set environment variables as well as read them. The gem reads a  *config/application.yml* file and sets environment variables before anything else is configured in the Rails application.
+
+If you want to use different credentials in development, test, or production environments, the gem will let you specify the different credentials in the *config/application.yml* file. If you're deploying to Heroku, the gem gives you a rake task that will set all the environment variables on Heroku. The gem also gives you a syntax to access the environment variables as Figaro method calls which can be useful in setting up tests.
+
+The figaro gem makes it so easy to set configuration variables you may find it useful to set other configuration parameters besides email account credentials or private API keys.
+
+Here's how to use it. In your *Gemfile*, add:
+
 <pre>
 gem 'figaro'
 </pre>
-<p>and run <code>$ bundle install</code>.</p>
-<p>The gem provides a generator:</p>
+
+and run @$ bundle install@.
+
+The gem provides a generator:
+
 <pre>
 $ bundle exec figaro install
 </pre>
-<p>The generator creates a <strong>config/application.yml</strong> file and modifies the <strong>.gitignore</strong> file to prevent the file from being checked into a git repository.</p>
-<p>You can add environment variables as key/value pairs to <strong>config/application.yml</strong>:</p>
+
+The generator creates a *config/application.yml* file and modifies the *.gitignore* file to prevent the file from being checked into a git repository.
+
+You can add environment variables as key/value pairs to *config/application.yml*:
+
 <pre>
 GMAIL_USERNAME: Your_Username
 </pre>
-<p>The environment variables will be available anywhere in your application as <span class="caps">ENV</span> variables:</p>
+
+The environment variables will be available anywhere in your application as ENV variables:
+
 <pre>
 ENV["GMAIL_USERNAME"]
 </pre>
-<p>This gives you the convenience of using the same variables in code whether they are set by the Unix shell or the figaro gem’s <strong>config/application.yml</strong>. Variables in the <strong>config/application.yml</strong> file will override environment variables set in the Unix shell.</p>
-<p>In tests or other situations where <span class="caps">ENV</span> variables might not be appropriate, you can access the configuration values as Figaro method calls:</p>
+
+This gives you the convenience of using the same variables in code whether they are set by the Unix shell or the figaro gem's *config/application.yml*. Variables in the *config/application.yml* file will override environment variables set in the Unix shell.
+
+In tests or other situations where ENV variables might not be appropriate, you can access the configuration values as Figaro method calls:
+
 <pre>
 Figaro.env.gmail_username
 </pre>
-<p>Use this syntax for setting different credentials in development, test, or production environments:</p>
+
+Use this syntax for setting different credentials in development, test, or production environments:
+
 <pre>
 HELLO: world
 development:
@@ -118,17 +163,27 @@ development:
 production:
   HELLO: users
 </pre>
-<p>In this case, <code>ENV["HELLO"]</code> will produce “developers” in development, “users” in production and “world” otherwise.</p>
-<p>Figaro provides a rake task to set the environment variables in the <strong>config/application.yml</strong> file as Heroku environment variables:</p>
+
+In this case, @ENV["HELLO"]@ will produce "developers" in development, "users" in production and "world" otherwise.
+
+Figaro provides a rake task to set the environment variables in the *config/application.yml* file as Heroku environment variables:
+
 <pre>
 rake figaro:heroku
 </pre>
-<p>If you’re using one of the <a href="http://railsapps.github.io/">RailsApps example applications</a> or you have generated a starter application using the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool, you’ll find a file named <strong>config/application.yml</strong>. This file was added by the figaro gem and contains key/value entries for each environment variable you may need. Each entry is commented out. Remove the comment character if you want to override environment variables from the Unix shell or set the environment variables using the <strong>config/application.yml</strong> file.</p>
-<h2>Option Three: Use a <em>local_env.yml</em> File</h2>
-<p>Like the <a href="https://github.com/laserlemon/figaro">figaro gem</a>, this technique takes advantage of Ruby’s ability to set environment variables as well as read them. The figaro gem has additional features and we recommend it. However, if you want to understand how to set environment variables from within your Rails application, or you don’t want to add the figaro gem to your application, you may want to consider this implementation.</p>
-<p>We’ll create a simple file that contains key/value pairs for each environment variable using the standard <span class="caps">YAML</span> file format. We’ll make sure this file is listed in the <strong>.gitignore</strong> file so it isn’t checked into the git repository. And we’ll add some code to the <strong>config/application.rb</strong> to read the file and set the environment variables before anything else is configured in the Rails application.</p>
-<h3>The <em>local_env.yml</em> File</h3>
-<p>Create a file <strong>config/local_env.yml</strong>:</p>
+
+If you're using one of the "RailsApps example applications":http://railsapps.github.io/ or you have generated a starter application using the "Rails Composer":http://railsapps.github.io/rails-composer/ tool, you'll find a file named *config/application.yml*. This file was added by the figaro gem and contains key/value entries for each environment variable you may need. Each entry is commented out. Remove the comment character if you want to override environment variables from the Unix shell or set the environment variables using the *config/application.yml* file.
+
+h2. Option Three: Use a _local_env.yml_ File
+
+Like the "figaro gem":https://github.com/laserlemon/figaro, this technique takes advantage of Ruby's ability to set environment variables as well as read them. The figaro gem has additional features and we recommend it. However, if you want to understand how to set environment variables from within your Rails application, or you don't want to add the figaro gem to your application, you may want to consider this implementation.
+
+We'll create a simple file that contains key/value pairs for each environment variable using the standard YAML file format. We'll make sure this file is listed in the *.gitignore* file so it isn't checked into the git repository. And we'll add some code to the *config/application.rb* to read the file and set the environment variables before anything else is configured in the Rails application.
+
+h3. The _local_env.yml_ File
+
+Create a file *config/local_env.yml*:
+
 <pre>
 # Rename this file to local_env.yml
 # Add account settings and API keys here.
@@ -140,20 +195,30 @@ rake figaro:heroku
 # makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
 GMAIL_USERNAME: 'Your_Gmail_Username'
 </pre>
-<h3>Set .gitignore</h3>
-<p>If you have created a git repository for your application, your application root directory should contain a file named <strong>.gitignore</strong> (it is a hidden file). Be sure your <strong>.gitignore</strong> file contains:</p>
+
+h3. Set .gitignore
+
+If you have created a git repository for your application, your application root directory should contain a file named *.gitignore* (it is a hidden file). Be sure your *.gitignore* file contains:
+
 <pre>
 /config/local_env.yml
 </pre>
-<p>This prevents the <strong>config/local_env.yml</strong> file from being checked into a git repository and made available for others to see.</p>
-<h3>Rails Application Configuration File</h3>
-<p>Rails provides the <strong>config/application.rb</strong> file for specifying settings for various Rails components. We want to set our environment variables before any other settings. Rails provides a <code>config.before_configuration</code> method to do so. See the RailsGuide <a href="http://guides.rubyonrails.org/configuring.html">Configuring Rails Applications</a> for more.</p>
-<p>Find the following code at the end of the <strong>config/application.rb</strong> file:</p>
+
+This prevents the *config/local_env.yml* file from being checked into a git repository and made available for others to see.
+
+h3. Rails Application Configuration File
+
+Rails provides the *config/application.rb* file for specifying settings for various Rails components. We want to set our environment variables before any other settings. Rails provides a @config.before_configuration@ method to do so. See the RailsGuide "Configuring Rails Applications":http://guides.rubyonrails.org/configuring.html for more.
+
+Find the following code at the end of the *config/application.rb* file:
+
 <pre>
 # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 </pre>
-<p>and add this code after it:</p>
+
+and add this code after it:
+
 <pre>
 config.before_configuration do
   env_file = File.join(Rails.root, 'config', 'local_env.yml')
@@ -162,18 +227,28 @@ config.before_configuration do
   end if File.exists?(env_file)
 end
 </pre>
-<p>The code opens the <strong>config/local_env.yml</strong> file, reads each key/value pair, and sets environment variables.</p>
-<p>The code only runs if the file exists. If the file exists, the code overrides <span class="caps">ENV</span> variables set in the Unix shell. If you prefer to set environment variables in the Unix shell, don’t create the <strong>config/local_env.yml</strong> file.</p>
-<h3>Using Environment Variables</h3>
-<p>Use <code>ENV["GMAIL_USERNAME"]</code> anywhere in a Rails application. Your application won’t know if it was loaded from the <strong>config/local_env.yml</strong> file or from the Unix shell.</p>
-<h3>Distinguishing Development From Test Environments</h3>
-<p>Occasionally you’ll want to use different account credentials or <span class="caps">API</span> keys for test and development environments.</p>
-<p>Give the variables different names, for example:</p>
+
+The code opens the *config/local_env.yml* file, reads each key/value pair, and sets environment variables.
+
+The code only runs if the file exists. If the file exists, the code overrides ENV variables set in the Unix shell. If you prefer to set environment variables in the Unix shell, don't create the *config/local_env.yml* file.
+
+h3. Using Environment Variables
+
+Use @ENV["GMAIL_USERNAME"]@ anywhere in a Rails application. Your application won't know if it was loaded from the *config/local_env.yml* file or from the Unix shell.
+
+h3. Distinguishing Development From Test Environments
+
+Occasionally you'll want to use different account credentials or API keys for test and development environments.
+
+Give the variables different names, for example:
+
 <pre>
 GMAIL_USERNAME_DEV: 'Your_Gmail_Username_For_Development'
 GMAIL_USERNAME_TEST: 'Your_Gmail_Username_For_Tests'
 </pre>
-<p>and use the variables conditionally:</p>
+
+and use the variables conditionally:
+
 <pre>
 if Rails.env.development?
   config.action_mailer.smtp_settings = {
@@ -193,37 +268,62 @@ if Rails.env.production?
   }
 end
 </pre>
-<p>This approach works with either the <strong>config/local_env.yml</strong> file or environment variables obtained from the Unix shell.</p>
-<h2>Setting Environment Variables on Heroku</h2>
-<p><a href="http://www.heroku.com/">Heroku</a> is a popular choice for low cost, easily configured Rails application hosting. See the article <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Heroku and Rails</a> for details.</p>
-<p>Heroku provides a simple mechanism for setting environment variables. After creating your Heroku app, set Heroku environment variables to provide the same data your application obtains from your local shell environment.</p>
-<p>For example, for Gmail:</p>
+
+This approach works with either the *config/local_env.yml* file or environment variables obtained from the Unix shell.
+
+h2. Setting Environment Variables on Heroku
+
+"Heroku":http://www.heroku.com/ is a popular choice for low cost, easily configured Rails application hosting. See the article "Heroku and Rails":http://railsapps.github.io/rails-heroku-tutorial.html for details.
+
+Heroku provides a simple mechanism for setting environment variables. After creating your Heroku app, set Heroku environment variables to provide the same data your application obtains from your local shell environment.
+
+For example, for Gmail:
+
 <pre>
 $ heroku config:add GMAIL_USERNAME=myname@gmail.com
 </pre>
-<p>If you have <a href="https://devcenter.heroku.com/articles/multiple-environments">multiple environments</a> on Heroku:</p>
+
+If you have "multiple environments":https://devcenter.heroku.com/articles/multiple-environments on Heroku:
+
 <pre>
 $ heroku config:add GMAIL_USERNAME=myname@gmail.com --remote staging
 </pre>
-<p>You can check that everything has been added correctly by running:</p>
+
+You can check that everything has been added correctly by running:
+
 <pre>
 $ heroku info --app myapp
 </pre>
-<p>where “myapp” is the name of your Heroku application.</p>
-<p>If you are using the figaro gem, just run:</p>
+
+where "myapp" is the name of your Heroku application.
+
+If you are using the figaro gem, just run:
+
 <pre>
 rake figaro:heroku
 </pre>
-<p>Notice that you don’t use the <strong>config/application.yml</strong> file. Your <strong>.gitignore</strong> file should prevent it from getting added to the git repository. It won’t exist when you deploy to Heroku and your application will obtain environment variables from the Heroku configuration table.</p>
-<h2>Other Approaches</h2>
-<p>There are other approaches to setting environment variables in Rails.</p>
-<p>Tammer Saleh suggests a similar approach using the Rails <strong>environment.rb</strong> file in his blog posting, <a href="http://tammersaleh.com/posts/managing-heroku-environment-variables-for-local-development">Managing Heroku environment variables for local development</a>.</p>
-<p>Brandon Keepers offers the <a href="https://github.com/bkeepers/dotenv">dotenv</a> Ruby gem that handles loading environment variables in development. The dotenv gem loads environment variables from a <strong>.env</strong> file.</p>
-<p><a href="https://github.com/ddollar/foreman">Foreman</a> is a tool for starting and configuring multiple processes in a complex application. Foreman will load environment variables from a <strong>.env</strong> file.</p>
-<p>There are numerous gems such as <a href="https://github.com/charlotte-ruby/yettings">yettings</a> that set application configuration variables or other constants from a <span class="caps">YAML</span> file and allow access the to values with a method such as <code>AppConfig.gmail_username</code>. This approach is best used for constants that can be checked into a git repository and are not specific to a particular deployment. Local environment variables are better suited to deployment-specific configuration settings.</p>
-<h2 id="comment">Did You Like the Article?</h2>
-<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. We’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please leave a comment below.</p>
+
+Notice that you don't use the *config/application.yml* file. Your *.gitignore* file should prevent it from getting added to the git repository. It won't exist when you deploy to Heroku and your application will obtain environment variables from the Heroku configuration table.
+
+h2. Other Approaches
+
+There are other approaches to setting environment variables in Rails.
+
+Tammer Saleh suggests a similar approach using the Rails *environment.rb* file in his blog posting, "Managing Heroku environment variables for local development":http://tammersaleh.com/posts/managing-heroku-environment-variables-for-local-development.
+
+Brandon Keepers offers the "dotenv":https://github.com/bkeepers/dotenv Ruby gem that handles loading environment variables in development. The dotenv gem loads environment variables from a *.env* file.
+
+"Foreman":https://github.com/ddollar/foreman is a tool for starting and configuring multiple processes in a complex application. Foreman will load environment variables from a *.env* file.
+
+There are numerous gems such as "yettings":https://github.com/charlotte-ruby/yettings that set application configuration variables or other constants from a YAML file and allow access the to values with a method such as @AppConfig.gmail_username@. This approach is best used for constants that can be checked into a git repository and are not specific to a particular deployment. Local environment variables are better suited to deployment-specific configuration settings.
+
+h2(#comment). Did You Like the Article?
+
+Was this useful to you? Follow "rails_apps":http://twitter.com/rails_apps on Twitter and tweet some praise. We'd love to know you were helped out by the tutorial.
+
+Any issues? Please leave a comment below.
+
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

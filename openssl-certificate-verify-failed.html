@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>OpenSSL Errors and Rails – Certificate Verify Failed &#183; RailsApps</title>
+  <title>OpenSSL Errors and Rails - Certificate Verify Failed &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,18 +44,30 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>OpenSSL Errors and Rails – Certificate Verify Failed</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 28 December 2013</em></p>
-<p>Are you getting an error “OpenSSL certificate verify failed” with Ruby? You may be seeing Ruby errors with OpenSSL because of outdated <span class="caps">SSL</span> certificate files. These problems are most common with Ruby 2.1 on Mac OS X. For problems with Windows or Ubuntu, see the end of the article.</p>
-<p>This is a note for developers using the example applications and tutorials from the <a href="http://railsapps.github.io/">RailsApps</a> project. If you’re getting started with Rails, or want an easier way to get started building your applications, see the RailsApps <a href="http://railsapps.github.io/">example applications and tutorials</a>.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>Errors</h2>
-<p>Have you seen one of these error messages?</p>
+        h1. OpenSSL Errors and Rails - Certificate Verify Failed
+
+h4. by Daniel Kehoe
+
+_Last updated 28 December 2013_
+
+Are you getting an error "OpenSSL certificate verify failed" with Ruby? You may be seeing Ruby errors with OpenSSL because of outdated SSL certificate files. These problems are most common with Ruby 2.1 on Mac OS X. For problems with Windows or Ubuntu, see the end of the article.
+
+This is a note for developers using the example applications and tutorials from the "RailsApps":http://railsapps.github.io/ project. If you're getting started with Rails, or want an easier way to get started building your applications, see the RailsApps "example applications and tutorials":http://railsapps.github.io/.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to "join the RailsApps project":http://railsapps.github.io/.
+
+h2. Errors
+
+Have you seen one of these error messages?
+
 <pre>
 openssl::ssl::sslerror: ssl_connect returned=1 errno=0 state=sslv3 read server certificate b: certificate verify failed
 </pre>
@@ -63,9 +75,13 @@ openssl::ssl::sslerror: ssl_connect returned=1 errno=0 state=sslv3 read server c
 <pre>
 could not load openssl. you must recompile ruby with openssl support or change the sources in your gemfile from 'https' to 'http'. instructions for compiling with openssl using rvm are available at rvm.io/packages/openssl.
 </pre>
-<h2>Use <span class="caps">RVM</span> to Fix <span class="caps">SSL</span> Certificates</h2>
-<p>Recent versions of <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, include a utility to diagnose and resolve errors caused by outdated certificate files. See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> for instructions and advice. The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>.</p>
-<p>If you’ve installed <span class="caps">RVM</span>, try this:</p>
+
+h2. Use RVM to Fix SSL Certificates
+
+Recent versions of RVM, the "Ruby Version Manager":https://rvm.io/, include a utility to diagnose and resolve errors caused by outdated certificate files. See the article "Installing Rails":http://railsapps.github.io/installing-rails.html for instructions and advice. The RVM website explains "how to install RVM":https://rvm.io/rvm/install/.
+
+If you've installed RVM, try this:
+
 <pre>
 $ rvm -v
 # rvm 1.19.1 (stable)
@@ -74,132 +90,210 @@ $ rvm osx-ssl-certs status all
 $ rvm osx-ssl-certs update all
 # Updating certificates...
 </pre>
-<p>That’s all that is needed to resolve the issue if you are using <span class="caps">RVM</span> (you must be using <span class="caps">RVM</span> version 1.19.1 or newer).</p>
-<p>For more on the issue, see a discussion at <a href="https://github.com/wayneeseguin/rvm/pull/1764">add rvm osx-ssl-certs</a> on GitHub.</p>
-<p><em>Let me know if this resolves the issue. Please add to the <a href="#comments">comments</a> below.</em></p>
-<h4>Staying Healthy</h4>
-<p>In a year or two, the error may reappear, when the certificate files again become outdated. To keep the certificate files current, <span class="caps">RVM</span> offers an option to run a cron job that updates the certificate files daily.</p>
+
+That's all that is needed to resolve the issue if you are using RVM (you must be using RVM version 1.19.1 or newer).
+
+For more on the issue, see a discussion at "add rvm osx-ssl-certs":https://github.com/wayneeseguin/rvm/pull/1764 on GitHub.
+
+_Let me know if this resolves the issue. Please add to the "comments":#comments below._
+
+h4. Staying Healthy
+
+In a year or two, the error may reappear, when the certificate files again become outdated. To keep the certificate files current, RVM offers an option to run a cron job that updates the certificate files daily.
+
 <pre>
 $ sudo rvm osx-ssl-certs cron install
 </pre>
-<h4>Getting Help</h4>
-<p>Before you ask for help, please carefully read all the output from <span class="caps">RVM</span> commands, including any log files mentioned in the output messages. <span class="caps">RVM</span> provides very good diagnostic and help messages.</p>
-<p>You can get help directly from the <span class="caps">RVM</span> team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
-<ul>
-<li><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></li>
-</ul><p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> because the <span class="caps">RVM</span> team is helpful and friendly. <span class="caps">IRC</span> on freenode requires registration (see <a href="http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration">how to register</a>).</p>
-<h2>Other Possibilities</h2>
-<p>Almost all problems with Ruby and OpenSSL can be resolved by installing <span class="caps">RVM</span> and running <code>rvm osx-ssl-certs update</code>. Before the <span class="caps">RVM</span> osx-ssl-certs utility was available, there were other, more complicated ways to resolve the issue. This article details some of the older solutions.</p>
-<h2>Errors with Ruby 2.1</h2>
-<p>If you get OpenSSL errors with Ruby 2.1, make sure you are using RubyGems 2.0.3 or newer:</p>
+
+h4. Getting Help
+
+Before you ask for help, please carefully read all the output from RVM commands, including any log files mentioned in the output messages. RVM provides very good diagnostic and help messages.
+
+You can get help directly from the RVM team using the IRC (Internet Relay Chat) channel #rvm on irc.freenode.net:
+
+* "http://webchat.freenode.net/?channels=rvm":http://webchat.freenode.net/?channels=rvm
+
+If you've never used IRC, it's worthwhile to figure out how to use IRC because the RVM team is helpful and friendly. IRC on freenode requires registration (see "how to register":http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration).
+
+h2. Other Possibilities
+
+Almost all problems with Ruby and OpenSSL can be resolved by installing RVM and running @rvm osx-ssl-certs update@. Before the RVM osx-ssl-certs utility was available, there were other, more complicated ways to resolve the issue. This article details some of the older solutions.
+
+h2. Errors with Ruby 2.1
+
+If you get OpenSSL errors with Ruby 2.1, make sure you are using RubyGems 2.0.3 or newer:
+
 <pre>
 $ gem -v
 </pre>
-<p>Use <code>gem update --system</code> to upgrade the RubyGems system gem if necessary.</p>
-<h4>Update <span class="caps">SSL</span> Certificates</h4>
-<p>The <span class="caps">SSL</span> certificates that comes with Mac OS X 10.8 may be outdated. If you are using <span class="caps">RVM</span>, the newest version of <span class="caps">RVM</span> will install OpenSSL and updated certificates automatically. You can also install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and try this:</p>
+
+Use @gem update --system@ to upgrade the RubyGems system gem if necessary.
+
+h4. Update SSL Certificates
+
+The SSL certificates that comes with Mac OS X 10.8 may be outdated. If you are using RVM, the newest version of RVM will install OpenSSL and updated certificates automatically. You can also install "Homebrew":http://mxcl.github.com/homebrew/ and try this:
+
 <pre>
 $ brew update
 $ brew install openssl
 $ brew link openssl --force
 $ brew install curl-ca-bundle
 </pre>
-<h4>Alternative</h4>
-<p>James Tucker (<a href="https://github.com/raggi">raggi</a>) has released a simple script (<a href="https://github.com/raggi/openssl-osx-ca">openssl-osx-ca</a>) that uses Homebrew to update the OpenSSL security certificates found in the Mac OS X Keychain. The script replaces the outdated OpenSSL security certificates on your Mac with new certificates from Mozilla.org</p>
+
+h4. Alternative
+
+James Tucker ("raggi":https://github.com/raggi) has released a simple script ("openssl-osx-ca":https://github.com/raggi/openssl-osx-ca) that uses Homebrew to update the OpenSSL security certificates found in the Mac OS X Keychain. The script replaces the outdated OpenSSL security certificates on your Mac with new certificates from Mozilla.org
+
 <pre>
 $ brew tap raggi/ale
 $ brew install openssl-osx-ca
 </pre>
-<p><em>Doesn’t work for you? Please add to the <a href="#comments">comments</a> below.</em></p>
-<h2>Errors with Ruby 1.9.3</h2>
-<p>You may have received an error message if you’ve tried to create a new Rails application with Ruby 1.9.3.</p>
-<p>For example, you may have entered:</p>
+
+_Doesn't work for you? Please add to the "comments":#comments below._
+
+h2. Errors with Ruby 1.9.3
+
+You may have received an error message if you've tried to create a new Rails application with Ruby 1.9.3.
+
+For example, you may have entered:
+
 <pre>
 $ rails new myapp
 </pre>
-<p>or created a new Rails application using an application template:</p>
+
+or created a new Rails application using an application template:
+
 <pre>
 $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
-<p>and seen the following error message:</p>
+
+and seen the following error message:
+
 <pre>
 SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)
 </pre>
-<p>or</p>
+
+or
+
 <pre>
 Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B
 </pre>
-<p>Here is an explanation and suggested solutions.</p>
-<h2>What is Happening</h2>
-<p>When creating a new Rails application, the Ruby language interpreter uses OpenSSL to connect to <a href="https://rubygems.org/">https://rubygems.org/</a>. The Gemfile installed by the <code>rails new</code> command specifies <a href="https://rubygems.org/">https://rubygems.org/</a> as the source for gems and requires an <span class="caps">SSL</span> connection.</p>
-<p>In the case of a new application generated from an application template hosted on GitHub, the Ruby language interpreter uses OpenSSL to connect to GitHub. GitHub requires all connections to be made using <span class="caps">SSL</span>.</p>
-<p>The error message indicates the connection failed because OpenSSL was unable to verify the server certificate.</p>
-<p>If you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL certificate files on your computer. Users of older versions of Mac OS X and Ubuntu operating systems are likely to see these errors.</p>
-<p>Check <a href="https://github.com/rubygems/rubygems/issues?page=1&amp;sort=updated&amp;state=open">RubyGems issues on GitHub</a> and look for recent updates to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. You may find more information on Stack Overflow, especially this discussion: <a href="http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error">Bundle install fails with <span class="caps">SSL</span> certificate verification error</a>. And please read the <a href="#comments">comments</a> below.</p>
-<h2>Diagnosis</h2>
-<p>What’s your operating system version?</p>
+
+Here is an explanation and suggested solutions.
+
+h2. What is Happening
+
+When creating a new Rails application, the Ruby language interpreter uses OpenSSL to connect to "https://rubygems.org/":https://rubygems.org/. The Gemfile installed by the @rails new@ command specifies "https://rubygems.org/":https://rubygems.org/ as the source for gems and requires an SSL connection.
+
+In the case of a new application generated from an application template hosted on GitHub, the Ruby language interpreter uses OpenSSL to connect to GitHub. GitHub requires all connections to be made using SSL.
+
+The error message indicates the connection failed because OpenSSL was unable to verify the server certificate.
+
+If you are seeing an error when you create a new Rails application, it is likely that you need to update OpenSSL certificate files on your computer. Users of older versions of Mac OS X and Ubuntu operating systems are likely to see these errors.
+
+Check "RubyGems issues on GitHub":https://github.com/rubygems/rubygems/issues?page=1&amp;sort=updated&amp;state=open and look for recent updates to the issue "SSL_connect failure when running 'rails new'":https://github.com/rubygems/rubygems/issues/319. You may find more information on Stack Overflow, especially this discussion: "Bundle install fails with SSL certificate verification error":http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error. And please read the "comments":#comments below.
+
+h2. Diagnosis
+
+What's your operating system version?
+
 <pre>
 $ uname -srv
 </pre>
-<p>It is advisable to upgrade your operating system if older than Mac OS X 10.8 (Mountain Lion) or Ubuntu 12.04 (Precise Pangolin).</p>
-<p>What version of Ruby are you using?</p>
+
+It is advisable to upgrade your operating system if older than Mac OS X 10.8 (Mountain Lion) or Ubuntu 12.04 (Precise Pangolin).
+
+What version of Ruby are you using?
+
 <pre>
 $ ruby -v
 </pre>
-<p>If it’s older than Ruby 2.0.0-p195 or Ruby 1.9.3-p392 you should upgrade. See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>.</p>
-<p>Be sure you are using RubyGems 2.0.3 or newer:</p>
+
+If it's older than Ruby 2.0.0-p195 or Ruby 1.9.3-p392 you should upgrade. See the article "Installing Rails":http://railsapps.github.io/installing-rails.html.
+
+Be sure you are using RubyGems 2.0.3 or newer:
+
 <pre>
 $ gem -v
 </pre>
-<p>Update RubyGems if necessary:</p>
+
+Update RubyGems if necessary:
+
 <pre>
 $ gem update --system
 </pre>
-<p>Check your OpenSSL version:</p>
+
+Check your OpenSSL version:
+
 <pre>
 $ openssl version
 </pre>
-<p>You should see OpenSSL 1.0.1 or newer. If not, try updating OpenSSL.</p>
-<p>A <code>curl -I</code> command should show that the rubygems.org file host is available and responding:</p>
+
+You should see OpenSSL 1.0.1 or newer. If not, try updating OpenSSL.
+
+A @curl -I@ command should show that the rubygems.org file host is available and responding:
+
 <pre>
 $ curl -I https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem
 HTTP/1.0 200 OK
 ...
 </pre>
-<p>Try executing <code>remote_fetcher</code> directly to download a gem from the rubygems.org file host:</p>
+
+Try executing @remote_fetcher@ directly to download a gem from the rubygems.org file host:
+
 <pre>
 $ ruby -rrubygems/remote_fetcher -e 'p Gem::RemoteFetcher.new.fetch_http(URI.parse("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")).bytesize'
 Fetching: rake-0.9.2.2.gem (100%)
 </pre>
-<p>If you’ve updated OpenSSL or upgraded your OS, and you’re still getting the error “SSL_connect returned=1 errno=0 state=unknown state: sslv3 alert handshake failure”, run the diagnostic below and add your report to the issue <a href="https://github.com/rubygems/rubygems/issues/319">SSL_connect failure when running ‘rails new’</a>. Please supply details: OS version, Ruby version, RubyGems version, OpenSSL version, error message.</p>
+
+If you've updated OpenSSL or upgraded your OS, and you're still getting the error "SSL_connect returned=1 errno=0 state=unknown state: sslv3 alert handshake failure", run the diagnostic below and add your report to the issue "SSL_connect failure when running 'rails new'":https://github.com/rubygems/rubygems/issues/319. Please supply details: OS version, Ruby version, RubyGems version, OpenSSL version, error message.
+
 <pre>
 % ruby -d -rrubygems/remote_fetcher -e 'p Gem::RemoteFetcher.new.fetch_http(URI.parse("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")).bytesize'
 % ruby -rrbconfig -e 'p Dir.glob(File.join(RbConfig::CONFIG["sitelibdir"], "rubygems/ssl_certs/*"))'
 % ruby -rhttpclient -e 'h = HTTPClient.new; h.ssl_config.verify_callback = proc { |ok, ctx|; p ctx.current_cert; ok }; h.get("https://d2chzxaqi4y7f8.cloudfront.net/gems/rake-0.9.2.2.gem")'
 </pre>
-<p>You can try several workarounds to isolate the error conditions. Please don’t rely on a workaround for anything other than a temporary solution. Attempt the suggested resolutions (below) and file an issue report if they don’t work.</p>
-<h2>Workaround #1</h2>
-<p>Try changing your <strong>Gemfile</strong> to use an http connection for your gem source. Instead of <code>source 'https://rubygems.org'</code> use:</p>
+
+You can try several workarounds to isolate the error conditions. Please don't rely on a workaround for anything other than a temporary solution. Attempt the suggested resolutions (below) and file an issue report if they don't work.
+
+h2. Workaround #1
+
+Try changing your *Gemfile* to use an http connection for your gem source. Instead of @source 'https://rubygems.org'@ use:
+
 <pre>
 source 'http://rubygems.org'
 </pre>
-<p>This workaround is not an option if you are running <code>rails new</code> because the Gemfile is produced automatically from a template in the Rails library.</p>
-<h2>Workaround #2</h2>
-<p>Use the <code>--skip-bundle</code> when you generate a new Rails application:</p>
+
+This workaround is not an option if you are running @rails new@ because the Gemfile is produced automatically from a template in the Rails library.
+
+h2. Workaround #2
+
+Use the @--skip-bundle@ when you generate a new Rails application:
+
 <pre>
 rails new myapp --skip-bundle
 </pre>
-<p>This workaround is not an option if you are using an application template to generate a new Rails application as most application templates will run commands that require a successful <code>bundle install</code>.</p>
-<h2>Workaround #3</h2>
-<p>Try toggling off the requirement to verify the <span class="caps">SSL</span> security certificate.</p>
-<p>Create or modify the file called <strong>.gemrc</strong> in your home path and add the line:</p>
+
+This workaround is not an option if you are using an application template to generate a new Rails application as most application templates will run commands that require a successful @bundle install@.
+
+h2. Workaround #3
+
+Try toggling off the requirement to verify the SSL security certificate.
+
+Create or modify the file called *.gemrc* in your home path and add the line:
+
 <pre>
 :ssl_verify_mode: 0
 </pre>
-<p>For Mac OS and Linux, “home path” means <strong>~/.gemrc</strong>. You can also create <strong>/etc/gemrc</strong> if you prefer. For Windows XP, “home path” means <strong>C:\Documents</strong> and <strong>Settings\All Users\Application Data\gemrc</strong>. For Windows 7, <strong>C:\ProgramData\gemrc</strong>. (Suggested by Andrew Fallows in a <a href="http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error">Stack Overflow discussion</a>).</p>
-<p>This is only a workaround. It opens a possible security vulnerability (<a href="https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006">discussed here</a>).</p>
-<p>Be sure to try possible solutions suggested below. Please leave a comment if they work (or don’t).</p>
-<h2>Updating <span class="caps">SSL</span> Certificates with Homebrew</h2>
+
+For Mac OS and Linux, "home path" means *~/.gemrc*. You can also create */etc/gemrc* if you prefer. For Windows XP, "home path" means *C:\Documents* and *Settings\All Users\Application Data\gemrc*. For Windows 7, *C:\ProgramData\gemrc*. (Suggested by Andrew Fallows in a "Stack Overflow discussion":http://stackoverflow.com/questions/10246023/bundle-install-fails-with-ssl-certificate-verification-error).
+
+This is only a workaround. It opens a possible security vulnerability ("discussed here":https://github.com/rubygems/rubygems/commit/c7d6c6efd2a9e813eb538d805a6f5780437d7006).
+
+Be sure to try possible solutions suggested below. Please leave a comment if they work (or don't).
+
+h2. Updating SSL Certificates with Homebrew
+
 <pre>
 $ openssl version
 .
@@ -240,14 +334,20 @@ $ brew install curl-ca-bundle
 ==&gt; Downloading https://downloads.sourceforge.net/project/machomebrew/...
 /usr/local/Cellar/curl-ca-bundle/1.87: 2 files, 252K, built in 5 seconds
 </pre>
-<p>Close and reopen your terminal (or reload your shell).</p>
+
+Close and reopen your terminal (or reload your shell).
+
 <pre>
 $ openssl version
 OpenSSL 1.0.1e 11 Feb 2013
 </pre>
-<p><em>Doesn’t work for you? Please add to the <a href="#comments">comments</a> below.</em></p>
-<h2>Updating <span class="caps">SSL</span> Certificates with MacPorts</h2>
-<p>If you don’t want to use <a href="http://mxcl.github.com/homebrew/">Homebrew</a>, you can try updating your OpenSSL certificates using MacPorts. You’ll need to <a href="http://www.macports.org/install.php">install MacPorts</a> first.</p>
+
+_Doesn't work for you? Please add to the "comments":#comments below._
+
+h2. Updating SSL Certificates with MacPorts
+
+If you don't want to use "Homebrew":http://mxcl.github.com/homebrew/, you can try updating your OpenSSL certificates using MacPorts. You'll need to "install MacPorts":http://www.macports.org/install.php first.
+
 <pre>
 $ openssl version
 $ sudo port sync; sudo port selfupdate; sudo port install openssl
@@ -255,25 +355,41 @@ $ sudo port sync; sudo port selfupdate; sudo port install openssl
 $ openssl version
 OpenSSL 1.0.1a 19 Apr 2012
 </pre>
-<p>You should download an updated certificate file. This assumes you are using MacPorts and have a directory <strong>/opt/local/etc/openssl</strong>:</p>
+
+You should download an updated certificate file. This assumes you are using MacPorts and have a directory */opt/local/etc/openssl*:
+
 <pre>
 $ cd /opt/local/etc/openssl
 $ sudo curl -O http://curl.haxx.se/ca/cacert.pem
 $ sudo mv cacert.pem cert.pem
 </pre>
-<p><em>Doesn’t work for you? Please add to the <a href="#comments">comments</a> below.</em></p>
-<h2>Solution for Windows</h2>
-<p>Fletcher Nichol shows how to <a href="https://gist.github.com/867550">download a <code>cacert.pem</code> file</a> and set an environment variable to install the certificate authorities needed by the OpenSSL library.</p>
-<p>You can also try hacking the open-uri source: <a href="http://blog.dominicsayers.com/2011/08/16/howto-use-a-rails-template-from-github-on-windows/">How to Use an Application Template from Github when You’re Developing in Rails on Windows</a></p>
-<p><em>Any advice to offer? Please add to the <a href="#comments">comments</a> below.</em></p>
-<h2>Solution for Ubuntu</h2>
-<p>Ubuntu’s custom build of OpenSSL failed with the <span class="caps">SSL</span> server configuration used for the Cloudfront service (Amazon Web Services) used for RubyGems file hosting.</p>
-<p>For Ubuntu 12.04, the <a href="https://launchpad.net/ubuntu/+source/openssl/1.0.1-4ubuntu5">openssl 1.0.1-4ubuntu5 package</a> fixes the problem. The problem should be resolved when you install the update.</p>
-<p>Newer versions of Ubuntu should not have the problem.</p>
-<p><em>Any advice to offer? Please add to the <a href="#comments">comments</a> below.</em></p>
-<h2>Credits</h2>
-<p>Daniel Kehoe wrote the article.</p>
-<h3><a href="http://learn-rails.com/learn-ruby-on-rails.html"><img src="http://railsapps.github.io/images/learn-rails-cover-130x161.jpg" title="Learn Ruby on Rails" alt="Learn Ruby on Rails"></a></h3>
+
+_Doesn't work for you? Please add to the "comments":#comments below._
+
+h2. Solution for Windows
+
+Fletcher Nichol shows how to "download a @cacert.pem@ file":https://gist.github.com/867550 and set an environment variable to install the certificate authorities needed by the OpenSSL library.
+
+You can also try hacking the open-uri source: "How to Use an Application Template from Github when You’re Developing in Rails on Windows":http://blog.dominicsayers.com/2011/08/16/howto-use-a-rails-template-from-github-on-windows/
+
+_Any advice to offer? Please add to the "comments":#comments below._
+
+h2. Solution for Ubuntu
+
+Ubuntu's custom build of OpenSSL failed with the SSL server configuration used for the Cloudfront service (Amazon Web Services) used for RubyGems file hosting.
+
+For Ubuntu 12.04, the "openssl 1.0.1-4ubuntu5 package":https://launchpad.net/ubuntu/+source/openssl/1.0.1-4ubuntu5 fixes the problem. The problem should be resolved when you install the update.
+
+Newer versions of Ubuntu should not have the problem.
+
+_Any advice to offer? Please add to the "comments":#comments below._
+
+h2. Credits
+
+Daniel Kehoe wrote the article.
+
+h3. !http://railsapps.github.io/images/learn-rails-cover-130x161.jpg(Learn Ruby on Rails)!:http://learn-rails.com/learn-ruby-on-rails.html
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

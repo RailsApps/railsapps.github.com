@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Rails Tutorial for OmniAuth with Mongoid &#183; RailsApps</title>
+  <title>Rails Tutorial &#183; OmniAuth &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,125 +44,136 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Rails Tutorial for OmniAuth with Mongoid</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 23 November 2012</em></p>
-<h4>Rails 4.2 Version</h4>
-<p>For a Rails 4.2 example application with OmniAuth, see the <a href="https://github.com/RailsApps/rails-omniauth">rails-omniauth</a> application, with an <a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a>.</p>
-<h4>Rails 3.2 Version</h4>
-<p>This tutorial showis how to create a Rails 3.2 application using <strong>OmniAuth</strong> with <strong>Mongoid</strong>.</p>
-<p><a href="https://github.com/intridea/omniauth">OmniAuth</a> gives you ready-made authentication using a service provider such as Twitter or Facebook. <a href="http://mongoid.org/">Mongoid</a> gives access to a MongoDB datastore for quick development without schemas or migrations.  This tutorial also gives you the option of using Haml, RSpec and Cucumber, showing how to integrate each option.</p>
-<ul>
-<li>
-<strong>Service Providers:</strong> Facebook, Twitter, GitHub, LinkedIn, and <a href="https://github.com/intridea/omniauth">many more</a>.</li>
-	<li>
-<strong>Gems:</strong> Mongoid and OmniAuth plus optional Haml, RSpec and Cucumber.</li>
-</ul><p>This tutorial shows how to set up an application for sign-in with a <strong>single provider</strong>. For example, you may be creating an application just for Twitter users. Alternatively, it’s possible to create an application that lets a user log in using <strong>multiple providers</strong>. For these more complex applications, see other examples and tutorials listed below.</p>
-<p>Any issues? Please create an <a href="https://github.com/RailsApps/rails3-mongoid-omniauth/issues">Issue</a> on GitHub.</p>
-<h4>When to use Devise?</h4>
-<p><a href="https://github.com/plataformatec/devise">Devise</a> provides authentication using username (or email address) and password. If you don’t need the option of using a username/password, that is, if you wish to have all your users sign in using a service provider’s account (such as Twitter or Facebook), there’s no need to use Devise. Devise can be used in conjunction with the OmniAuth gem when you need to offer users the option of signing up for access to a website using an email address. For example, combine Devise with OmniAuth to accommodate users who want to log in with various service providers (Twitter, Facebook, etc.) as well as users who don’t have external accounts and want to sign up with just an email address. See suggestions below for tutorials and examples that combine Devise with OmniAuth.</p>
-<h4>The Email Problem</h4>
-<p>You don’t need to ask a visitor for an email address when you build an application that allows a user to log in using a service provider such as Twitter or Facebook. You may consider that an advantage: if a user is logged in with Twitter or Facebook, they don’t need to enter an email address and password to access your application. However, the lack of an email address may be a business drawback, if you want the opportunity to stay in contact with the user by email. Some service providers provide the user’s email address to your application (Facebook). Some service providers only provide the email address at the user’s option (GitHub supplies it if the user has provided a public email address). And other service providers do not provide the email address at all (Twitter, Meetup, LinkedIn).</p>
-<p>This example app shows how to request an email address from the user when he or she first requests access to your application. It is easy to remove this feature if you don’t require it.</p>
-<h4>Similar Examples and Tutorials</h4>
-<table>
-<tr>
-<th>Author </th>
-		<th>OmniAuth Example or Tutorial </th>
-		<th>Comments </th>
-	</tr>
-<tr>
-<td> Ryan Bates </td>
-		<td> <a href="http://railscasts.com/episodes/241-simple-omniauth">Simple OmniAuth</a> </td>
-		<td> screencast </td>
-	</tr>
-<tr>
-<td> Markus Proske </td>
-		<td> <a href="https://communityguides.heroku.com/articles/16">OmniAuth Pure</a> </td>
-		<td> example and tutorial for OmniAuth with multiple providers </td>
-	</tr>
-<tr>
-<td> Markus Proske </td>
-		<td> <a href="https://communityguides.heroku.com/articles/11">Devise and OmniAuth</a> </td>
-		<td> example and tutorial for OmniAuth and Devise with multiple providers </td>
-	</tr>
-<tr>
-<td> Fernando Tapia Rico </td>
-		<td> <a href="https://github.com/fertapric/rails3-mongoid-devise-omniauth">Devise, OmniAuth, Mongoid</a> </td>
-		<td> With tutorial, using MongoDB </td>
-	</tr>
-</table><table>
-<tr>
-<th>Author </th>
-		<th>Devise Example and Tutorial </th>
-		<th>Comments </th>
-	</tr>
-<tr>
-<td> Daniel Kehoe </td>
-		<td> <a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">Devise, RSpec, Cucumber</a> </td>
-		<td> Detailed tutorial, app template, starter app, using SQLite </td>
-	</tr>
-<tr>
-<td> Daniel Kehoe </td>
-		<td> <a href="https://github.com/RailsApps/rails3-mongoid-devise">Devise, Mongoid</a> </td>
-		<td> Detailed tutorial, app template, starter app, using MongoDB </td>
-	</tr>
-</table><p>See a list of additional <a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
-<h2>
-<a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
-<p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
-<h2>
-<img src="http://railsapps.github.io/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
-<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a> and resources for getting started with <a href="http://railsapps.github.io/rails.html">Rails</a>.</p>
-<h2>Before You Start</h2>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="https://github.com/RailsApps/rails3-mongoid-omniauth/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please leave comments below.</p>
-<h2>Obtaining <span class="caps">API</span> Keys</h2>
-<p>Before beginning the tutorial, you may wish to contact the service provider you’ll use to obtain any required <span class="caps">API</span> keys. The tutorial assumes you will be using Twitter.</p>
-<h4>Twitter</h4>
-<p>Visit <a href="https://dev.twitter.com/apps/new">https://dev.twitter.com/apps/new</a> to register your application. When you register your application, use the following values:</p>
-<table>
-<tr>
-<th>Application Website                    </th>
-		<th>Callback <span class="caps">URL</span> </th>
-		<th>Notes </th>
-	</tr>
-<tr>
-<td> http://example.com </td>
-		<td> http://127.0.0.1:3000/ </td>
-		<td> http://localhost:3000/ doesn’t work </td>
-	</tr>
-</table><h4>Facebook</h4>
-<p>Visit <a href="http://developers.facebook.com/setup">http://developers.facebook.com/setup</a> to register your application.</p>
-<h4>GitHub</h4>
-<p>Visit <a href="https://github.com/account/applications/new">https://github.com/account/applications/new</a> to register your application.</p>
-<h4>Other Service Providers</h4>
-<p><a href="https://github.com/intridea/omniauth">OmniAuth</a> supports many other service providers. See the OmniAuth wiki for a <a href="https://github.com/intridea/omniauth/wiki/List-of-Strategies">List of Provider Strategies</a>.</p>
-<h2>Installing MongoDB</h2>
-<p>If you don’t have MongoDB installed on your computer, you’ll need to install it and set it up to be always running on your computer (run at launch). On Mac OS X, the easiest way to install MongoDB is to install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then run the following:</p>
+        h1. Rails Tutorial for OmniAuth with Mongoid
+
+h4. by Daniel Kehoe
+
+_Last updated 23 November 2012_
+
+h4. Rails 4.2 Version
+
+For a Rails 4.2 example application with OmniAuth, see the "rails-omniauth":https://github.com/RailsApps/rails-omniauth application, with an "OmniAuth Tutorial":http://railsapps.github.io/rails-omniauth/.
+
+h4. Rails 3.2 Version
+
+This tutorial showis how to create a Rails 3.2 application using *OmniAuth* with *Mongoid*.
+
+"OmniAuth":https://github.com/intridea/omniauth gives you ready-made authentication using a service provider such as Twitter or Facebook. "Mongoid":http://mongoid.org/ gives access to a MongoDB datastore for quick development without schemas or migrations.  This tutorial also gives you the option of using Haml, RSpec and Cucumber, showing how to integrate each option.
+
+* *Service Providers:* Facebook, Twitter, GitHub, LinkedIn, and "many more":https://github.com/intridea/omniauth.
+* *Gems:* Mongoid and OmniAuth plus optional Haml, RSpec and Cucumber.
+
+This tutorial shows how to set up an application for sign-in with a *single provider*. For example, you may be creating an application just for Twitter users. Alternatively, it's possible to create an application that lets a user log in using *multiple providers*. For these more complex applications, see other examples and tutorials listed below.
+
+Any issues? Please create an "Issue":https://github.com/RailsApps/rails3-mongoid-omniauth/issues on GitHub.
+
+h4. When to use Devise?
+
+"Devise":https://github.com/plataformatec/devise provides authentication using username (or email address) and password. If you don't need the option of using a username/password, that is, if you wish to have all your users sign in using a service provider's account (such as Twitter or Facebook), there's no need to use Devise. Devise can be used in conjunction with the OmniAuth gem when you need to offer users the option of signing up for access to a website using an email address. For example, combine Devise with OmniAuth to accommodate users who want to log in with various service providers (Twitter, Facebook, etc.) as well as users who don't have external accounts and want to sign up with just an email address. See suggestions below for tutorials and examples that combine Devise with OmniAuth.
+
+h4. The Email Problem
+
+You don't need to ask a visitor for an email address when you build an application that allows a user to log in using a service provider such as Twitter or Facebook. You may consider that an advantage: if a user is logged in with Twitter or Facebook, they don't need to enter an email address and password to access your application. However, the lack of an email address may be a business drawback, if you want the opportunity to stay in contact with the user by email. Some service providers provide the user's email address to your application (Facebook). Some service providers only provide the email address at the user's option (GitHub supplies it if the user has provided a public email address). And other service providers do not provide the email address at all (Twitter, Meetup, LinkedIn).
+
+This example app shows how to request an email address from the user when he or she first requests access to your application. It is easy to remove this feature if you don't require it.
+
+h4. Similar Examples and Tutorials
+
+|_. Author |_. OmniAuth Example or Tutorial |_. Comments |
+| Ryan Bates | "Simple OmniAuth":http://railscasts.com/episodes/241-simple-omniauth | screencast |
+| Markus Proske | "OmniAuth Pure":https://communityguides.heroku.com/articles/16 | example and tutorial for OmniAuth with multiple providers |
+| Markus Proske | "Devise and OmniAuth":https://communityguides.heroku.com/articles/11 | example and tutorial for OmniAuth and Devise with multiple providers |
+| Fernando Tapia Rico | "Devise, OmniAuth, Mongoid":https://github.com/fertapric/rails3-mongoid-devise-omniauth | With tutorial, using MongoDB |
+
+|_. Author |_. Devise Example and Tutorial |_. Comments |
+| Daniel Kehoe | "Devise, RSpec, Cucumber":https://github.com/RailsApps/rails3-devise-rspec-cucumber | Detailed tutorial, app template, starter app, using SQLite |
+| Daniel Kehoe | "Devise, Mongoid":https://github.com/RailsApps/rails3-mongoid-devise | Detailed tutorial, app template, starter app, using MongoDB |
+
+See a list of additional "Rails examples, tutorials, and starter apps":http://railsapps.github.io/rails-examples-tutorials.html.
+
+h2. !http://twitter-badges.s3.amazonaws.com/t_logo-a.png(Follow on Twitter)!:http://www.twitter.com/rails_apps Follow on Twitter
+
+Follow the project on Twitter: "rails_apps":http://twitter.com/rails_apps. Tweet some praise if you like what you've found.
+
+h2. !http://railsapps.github.io/images/rails-36x36.jpg(Tutorial)! Tutorial
+
+This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you're advised to look for an introduction to Rails elsewhere. See recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial and resources for getting started with "Rails":http://railsapps.github.io/rails.html.
+
+h2. Before You Start
+
+If you follow this tutorial closely, you'll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, "good file compare tools":http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x are "FileMerge":http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge, "DiffMerge":http://sourcegear.com/diffmerge/, "Kaleidoscope":http://www.kaleidoscopeapp.com/, or Ian Baird's "Changes":http://www.changesapp.com/.
+
+If you clone and install the example app and find problems or wish to suggest improvements, please create a "GitHub issue":https://github.com/RailsApps/rails3-mongoid-omniauth/issues.
+
+To improve this tutorial, please leave comments below.
+
+h2. Obtaining API Keys
+
+Before beginning the tutorial, you may wish to contact the service provider you'll use to obtain any required API keys. The tutorial assumes you will be using Twitter.
+
+h4. Twitter
+
+Visit "https://dev.twitter.com/apps/new":https://dev.twitter.com/apps/new to register your application. When you register your application, use the following values:
+
+|_. Application Website                    |_. Callback URL |_. Notes |
+| http://example.com | http://127.0.0.1:3000/ | http://localhost:3000/ doesn't work |
+
+h4. Facebook
+
+Visit "http://developers.facebook.com/setup":http://developers.facebook.com/setup to register your application.
+
+h4. GitHub
+
+Visit "https://github.com/account/applications/new":https://github.com/account/applications/new to register your application.
+
+h4. Other Service Providers
+
+"OmniAuth":https://github.com/intridea/omniauth supports many other service providers. See the OmniAuth wiki for a "List of Provider Strategies":https://github.com/intridea/omniauth/wiki/List-of-Strategies.
+
+h2. Installing MongoDB
+
+If you don't have MongoDB installed on your computer, you'll need to install it and set it up to be always running on your computer (run at launch). On Mac OS X, the easiest way to install MongoDB is to install "Homebrew":http://mxcl.github.com/homebrew/ and then run the following:
+
 <pre>
 brew install mongodb
 </pre>
-<p>Homebrew will provide post-installation instructions to get MongoDB running. The last line of the installation output shows you the MongoDB install location (for example, <strong>/usr/local/Cellar/mongodb/1.8.0-x86_64</strong>). You’ll find the MongoDB configuration file there. After an installation using Homebrew, the default data directory will be <strong>/usr/local/var/mongodb</strong>.</p>
-<h2>Creating the Application</h2>
-<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
-<h3>Copy from the Tutorial</h3>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h3>Fork</h3>
-<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
-<h3>Clone</h3>
-<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
-<h3>Generate</h3>
-<p>You can use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate a new version of the example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the example application, run the command:</p>
+
+Homebrew will provide post-installation instructions to get MongoDB running. The last line of the installation output shows you the MongoDB install location (for example, */usr/local/Cellar/mongodb/1.8.0-x86_64*). You'll find the MongoDB configuration file there. After an installation using Homebrew, the default data directory will be */usr/local/var/mongodb*.
+
+h2. Creating the Application
+
+You have several options for getting the code. You can _copy from the tutorial_, _fork_, _clone_, or _generate_.
+
+h3. Copy from the Tutorial
+
+To create the application, you can cut and paste the code from the tutorial into your own files. It's a bit tedious and error-prone but you'll have a good opportunity to examine the code closely.
+
+h3. Fork
+
+If you'd like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and "make pull requests":http://help.github.com/send-pull-requests/. Your code contributions are welcome!
+
+h3. Clone
+
+If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You'll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).
+
+h3. Generate
+
+You can use the "Rails Composer":http://railsapps.github.io/rails-composer/ tool to generate a new version of the example app. You'll be able to give it your own project name when you generate the app. Generating the application gives you additional options.
+
+To build the example application, run the command:
+
 <pre>
 $ rails new rails3-mongoid-omniauth -m https://raw.github.com/RailsApps/rails-composer/master/composer-Rails3_2.rb -T -O
 </pre>
-<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
-<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails3-mongoid-omniauth</code> on your computer. You can use a different name if you wish.</p>
-<p>You’ll see a prompt:</p>
+
+Use the @-T -O@ flags to skip Test::Unit files and Active Record files.
+
+The @$@ character indicates a shell prompt; don't include it when you run the command.
+
+This creates a new Rails app named @rails3-mongoid-omniauth@ on your computer. You can use a different name if you wish.
+
+You'll see a prompt:
+
 <pre>
 question  Install an example application?
       1)  I want to build my own application
@@ -172,62 +183,105 @@ question  Install an example application?
       5)  rails3-mongoid-omniauth
       6)  rails3-subdomains
 </pre>
-<p>Choose <strong>5) rails3-mongoid-omniauth</strong>.</p>
-<p>The application generator template will ask you for additional preferences.</p>
-<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
-<p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
-<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
-<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Use or create a project-specific rvm gemset?” See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
-<p>Finally, the program will ask if you want to create a GitHub repository.</p>
-<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-mongoid-omniauth folder and running the command again.</p>
-<h2>Assumptions</h2>
-<p>Before beginning this tutorial, you need to install</p>
-<ul>
-<li>The Ruby language (version 1.9.3 or newer)</li>
-	<li>Rails 3.2</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
-<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
-<p>Be sure to read <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
-<h2>Create the Rails Application</h2>
-<p>Beginning here, we show how to create the application from scratch.</p>
-<p>(This has already been done for you if you use the the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool.)</p>
-<p>Open a terminal, navigate to a folder where you have rights to create files, and type:</p>
-<p><code>$ rails new rails3-mongoid-omniauth -T -O</code></p>
-<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files. Add the <code>-J</code> flag to skip Prototype files for Rails 3.0 (not needed for Rails 3.1).</p>
-<p>You may give the app a different name if you are building it for your own use. For this tutorial, we’ll assume the name is “rails3-mongoid-omniauth.”</p>
-<p>This will create a Rails application that uses a SQLite database for data storage. We’ll modify it to use MongoDB.</p>
-<p>After you create the application, switch to its folder to continue work directly in that application:</p>
-<p><code>$ cd rails3-mongoid-omniauth</code></p>
-<h4>Please Remember: Edit the <span class="caps">README</span>
-</h4>
-<p>If you’re open sourcing the app on GitHub, please edit the <span class="caps">README</span> file to add a description of the app and your contact info. Changing the <span class="caps">README</span> is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.</p>
-<h2>Set Up Source Control (Git)</h2>
-<p>If you’re creating an app for deployment into production, you’ll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.</p>
-<p><code>$ git init .</code><br><code>$ git add .</code><br><code>$ git commit -m 'Initial commit'</code></p>
-<p>See detailed instructions for <a href="http://railsapps.github.io/rails-git.html">Using Git with Rails</a>.</p>
-<h2>Set Up Gems</h2>
-<h4>About Required Gems</h4>
-<p>The application uses the following gems:</p>
-<ul>
-<li><a href="http://rubygems.org/gems/rails">rails</a></li>
-	<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
-	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
-	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
-	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
-	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
-	<li><a href="http://rubygems.org/gems/mongoid">mongoid</a></li>
-	<li><a href="http://rubygems.org/gems/bson_ext">bson_ext</a></li>
-	<li><a href="http://rubygems.org/gems/omniauth">omniauth</a></li>
-</ul><h4>Add Gems for Service Providers</h4>
-<p>OmniAuth version 1.0 and later depends on external gems that implement access strategies for specific service providers. For example, if you want your users to authenticate using a Twitter account, you’ll need the <code>omniauth-twitter</code> gem. See the OmniAuth wiki for a <a href="https://github.com/intridea/omniauth/wiki/List-of-Strategies">List of Provider Strategies</a> to determine if gems are available for the services you wish to use. If you don’t see a service you want, try a <a href="https://rubygems.org/search?utf8=%E2%9C%93&amp;query=omniauth">RubyGems.org search</a> for what you need.</p>
-<p>This tutorial assumes you will be using Twitter so add the <code>omniauth-twitter</code> gem to your Gemfile.</p>
-<ul>
-<li><a href="http://rubygems.org/gems/omniauth-twitter">omniauth-twitter</a></li>
-</ul><h3>Set up Your Gemfile</h3>
-<p>It’s a good idea to create a new gemset using rvm, the <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a>, as described in the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>.</p>
-<p>See <a href="http://railsapps.github.io/rails-3-2-example-gemfile.html">Example Gemfiles for Rails 3.2</a>.</p>
-<p>Open your <strong>Gemfile</strong> and replace the contents with the following:</p>
-<p><strong>Gemfile</strong></p>
+
+Choose *5) rails3-mongoid-omniauth*.
+
+The application generator template will ask you for additional preferences.
+
+For this tutorial, choose "WEBrick" for your development webserver.
+
+You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.
+
+If you are a Linux user and you haven't installed node.js, you'll need to answer "yes" to install the 'therubyracer' JavaScript runtime.
+
+If you have installed "rvm":https://rvm.io/, the Ruby Version Manager, I recommend you answer "yes" to the prompt, "Use or create a project-specific rvm gemset?" See the article "Installing Rails":http://railsapps.github.io/installing-rails.html to learn about the benefits of using rvm.
+
+Finally, the program will ask if you want to create a GitHub repository.
+
+If you get an error "You have already activated (...) but your Gemfile requires (...)", try deleting the rails3-mongoid-omniauth folder and running the command again.
+
+h2. Assumptions
+
+Before beginning this tutorial, you need to install
+
+* The Ruby language (version 1.9.3 or newer)
+* Rails 3.2
+
+Check that appropriate versions of Ruby and Rails are installed in your development environment:
+
+@$ ruby -v@
+@$ rails -v@
+
+Be sure to read "Installing Rails":http://railsapps.github.io/installing-rails.html for detailed instructions and advice.
+
+h2. Create the Rails Application
+
+Beginning here, we show how to create the application from scratch.
+
+(This has already been done for you if you use the the "Rails Composer":http://railsapps.github.io/rails-composer/ tool.)
+
+Open a terminal, navigate to a folder where you have rights to create files, and type:
+
+@$ rails new rails3-mongoid-omniauth -T -O@
+
+Use the @-T -O@ flags to skip Test::Unit files and Active Record files. Add the @-J@ flag to skip Prototype files for Rails 3.0 (not needed for Rails 3.1).
+
+You may give the app a different name if you are building it for your own use. For this tutorial, we'll assume the name is "rails3-mongoid-omniauth."
+
+This will create a Rails application that uses a SQLite database for data storage. We'll modify it to use MongoDB.
+
+After you create the application, switch to its folder to continue work directly in that application:
+
+@$ cd rails3-mongoid-omniauth@
+
+h4. Please Remember: Edit the README
+
+If you’re open sourcing the app on GitHub, please edit the README file to add a description of the app and your contact info. Changing the README is important if you’re using a clone of the example app. I’ve been mistaken (and contacted) as the author of apps that are copied from my example.
+
+h2. Set Up Source Control (Git)
+
+If you're creating an app for deployment into production, you'll want to set up a source control repository at this point. If you are building a throw-away app for your own education, you may skip this step.
+
+@$ git init .@
+@$ git add .@
+@$ git commit -m 'Initial commit'@
+
+See detailed instructions for "Using Git with Rails":http://railsapps.github.io/rails-git.html.
+
+h2. Set Up Gems
+
+h4. About Required Gems
+
+The application uses the following gems:
+
+* "rails":http://rubygems.org/gems/rails
+* "rspec-rails":http://rubygems.org/gems/rspec-rails
+* "database_cleaner":http://rubygems.org/gems/database_cleaner
+* "factory_girl_rails":http://rubygems.org/gems/factory_girl_rails
+* "cucumber-rails":http://rubygems.org/gems/cucumber-rails
+* "capybara":http://rubygems.org/gems/capybara
+* "mongoid":http://rubygems.org/gems/mongoid
+* "bson_ext":http://rubygems.org/gems/bson_ext
+* "omniauth":http://rubygems.org/gems/omniauth
+
+h4. Add Gems for Service Providers
+
+OmniAuth version 1.0 and later depends on external gems that implement access strategies for specific service providers. For example, if you want your users to authenticate using a Twitter account, you'll need the @omniauth-twitter@ gem. See the OmniAuth wiki for a "List of Provider Strategies":https://github.com/intridea/omniauth/wiki/List-of-Strategies to determine if gems are available for the services you wish to use. If you don't see a service you want, try a "RubyGems.org search":https://rubygems.org/search?utf8=%E2%9C%93&amp;query=omniauth for what you need.
+
+This tutorial assumes you will be using Twitter so add the @omniauth-twitter@ gem to your Gemfile.
+
+* "omniauth-twitter":http://rubygems.org/gems/omniauth-twitter
+
+h3. Set up Your Gemfile
+
+It's a good idea to create a new gemset using rvm, the "Ruby Version Manager":http://rvm.beginrescueend.com/, as described in the article "Installing Rails":http://railsapps.github.io/installing-rails.html.
+
+See "Example Gemfiles for Rails 3.2":http://railsapps.github.io/rails-3-2-example-gemfile.html.
+
+Open your *Gemfile* and replace the contents with the following:
+
+*Gemfile*
+
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.13'
@@ -248,65 +302,97 @@ gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
 gem "omniauth", "&gt;= 1.1.0"
 gem "omniauth-twitter"
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.13'</code> accordingly.</p>
-<p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
-<h3>Install the Required Gems</h3>
-<p>Install the required gems on your computer:</p>
-<p><code>$ bundle install</code></p>
-<p>You can check which gems are installed on your computer with:</p>
-<p><code>$ gem list</code></p>
-<p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
-<h2>Configuration for Haml</h2>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.io/rails-haml.html">Haml and Rails</a>.</p>
-<h2>Adding RSpec for Unit Testing</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/rspec.rb">rspec</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>You don’t have to install RSpec. The example app will run without it. However, if you are planning to use the example app as a starter app for futher development, you really should install RSpec. RSpec is generally preferred to the Rails default TestUnit for unit testing.</p>
-<p>The <a href="http://www.pragprog.com/titles/achbd/the-rspec-book">RSpec Book</a> is the best reference for using RSpec.</p>
-<h4>Install RSpec and Related Gems</h4>
-<p>Use the gem <a href="https://github.com/rspec/rspec-rails">rspec-rails</a> to set up the app for RSpec.</p>
-<p>Add the following to your <strong>Gemfile</strong> file:</p>
+
+Check for the "current version of Rails":http://rubygems.org/gems/rails and replace @gem 'rails', '3.2.13'@ accordingly.
+
+_Note:_ The RailsApps examples are generated with application templates created by the "Rails Apps Composer Gem":https://github.com/RailsApps/rails_apps_composer. For that reason, groups such as @:development@ or @:test@ are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.
+
+h3. Install the Required Gems
+
+Install the required gems on your computer:
+
+@$ bundle install@
+
+You can check which gems are installed on your computer with:
+
+@$ gem list@
+
+Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.
+
+h2. Configuration for Haml
+
+In this tutorial, we'll use the default "ERB" Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for "Haml and Rails":http://railsapps.github.io/rails-haml.html.
+
+h2. Adding RSpec for Unit Testing
+
+bq. +If you are creating an application template, this step uses the "rspec":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/rspec.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+You don't have to install RSpec. The example app will run without it. However, if you are planning to use the example app as a starter app for futher development, you really should install RSpec. RSpec is generally preferred to the Rails default TestUnit for unit testing.
+
+The "RSpec Book":http://www.pragprog.com/titles/achbd/the-rspec-book is the best reference for using RSpec.
+
+h4. Install RSpec and Related Gems
+
+Use the gem "rspec-rails":https://github.com/rspec/rspec-rails to set up the app for RSpec.
+
+Add the following to your *Gemfile* file:
+
 <pre>
 gem 'rspec-rails', :group =&gt; [:development, :test]
 gem 'database_cleaner', :group =&gt; :test
 gem 'factory_girl_rails', :group =&gt; :test
 gem 'mongoid-rspec', :group =&gt; :test
 </pre>
-<p>The gem <code>rspec-rails</code> needs to be in the <code>:development</code> group (as well as the <code>:test</code> group) to expose generators and rake tasks during development.</p>
-<p>The gems mongoid-rspec and factory_girl_rails add additional capabilities (described below).</p>
-<p>Install the required gems on your computer:</p>
-<p><code>$ bundle install</code></p>
-<h4>Generate RSpec</h4>
-<p>Use the rspec-rails generator to set up files needed for RSpec:</p>
-<p><code>$ rails generate rspec:install</code></p>
-<p>You can remove the <strong>test</strong> folder (it is not needed for RSpec):</p>
-<p><code>$ rm -rf test/</code></p>
-<p>You can also modify the <strong>config/application.rb</strong> file to remove the following:</p>
+
+The gem @rspec-rails@ needs to be in the @:development@ group (as well as the @:test@ group) to expose generators and rake tasks during development.
+
+The gems mongoid-rspec and factory_girl_rails add additional capabilities (described below).
+
+Install the required gems on your computer:
+
+@$ bundle install@
+
+h4. Generate RSpec
+
+Use the rspec-rails generator to set up files needed for RSpec:
+
+@$ rails generate rspec:install@
+
+You can remove the *test* folder (it is not needed for RSpec):
+
+@$ rm -rf test/@
+
+You can also modify the *config/application.rb* file to remove the following:
+
 <pre>
 require 'rails/test_unit/railtie'
 </pre>
-<h4>Suppress Spec Tests for Views and Helpers</h4>
-<p>When RSpec is installed, Rails generators create specs for views and helpers when the <code>rails generate controller</code> or <code>rails generate scaffold</code> commands are run. If you don’t want specs for views and helpers, modify the <strong>config/application.rb</strong> file to add the following:</p>
+
+h4. Suppress Spec Tests for Views and Helpers
+
+When RSpec is installed, Rails generators create specs for views and helpers when the @rails generate controller@ or @rails generate scaffold@ commands are run. If you don't want specs for views and helpers, modify the *config/application.rb* file to add the following:
+
 <pre>
-class Application &lt; Rails::Application
+class Application 
 
-  config.generators do |g|
-    g.view_specs false
-    g.helper_specs false
-  end
+h4. Remove ActiveRecord artifacts
 
-</pre>
-<h4>Remove ActiveRecord artifacts</h4>
-<p>To use Mongoid with RSpec, you’ll need to remove ActiveRecord artifacts from the <strong>spec/spec_helper.rb</strong> file. Modify the file to comment out or remove:</p>
+To use Mongoid with RSpec, you'll need to remove ActiveRecord artifacts from the *spec/spec_helper.rb* file. Modify the file to comment out or remove:
+
 <pre>
 # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 # config.use_transactional_fixtures = true
 </pre>
-<p>Without this adjustment, when you run <code>rake spec</code> with spec files that contain <code>require 'spec_helper'</code> you’ll get an error <code>undefined method `fixture_path='</code>.</p>
-<h4>Database Cleaner for RSpec</h4>
-<p>RSpec needs to reset the database during testing. You’ll need to configure RSpec to inform Database Cleaner that you are using Mongoid.</p>
-<p>Modify the file <strong>spec/spec_helper.rb</strong> to add this:</p>
+
+Without this adjustment, when you run @rake spec@ with spec files that contain @require 'spec_helper'@ you'll get an error @undefined method `fixture_path='@.
+
+h4. Database Cleaner for RSpec
+
+RSpec needs to reset the database during testing. You'll need to configure RSpec to inform Database Cleaner that you are using Mongoid.
+
+Modify the file *spec/spec_helper.rb* to add this:
+
 <pre>
 RSpec.configure do |config|
   # Other things
@@ -323,31 +409,49 @@ RSpec.configure do |config|
   end
 end
 </pre>
-<h4>Add RSpec Matchers for Mongoid</h4>
-<p>Matchers provide ready-made code for your specs, allowing you to quickly add tests for common features. If you are writing specs for <span class="caps">ORM</span> features such as validation in Rails models, you will need matchers customized for RSpec and Mongoid. Two similar gems are available: <a href="https://github.com/evansagge/mongoid-rspec">mongoid-rspec</a> and <a href="https://github.com/bcardarella/remarkable_mongoid">remarkable_mongoid</a>. We use mongoid-rspec in this example. You’ll need <code>gem 'mongoid-rspec', :group =&gt; :test</code> in your Gemfile.</p>
-<p>Create a file <strong>spec/support/mongoid.rb</strong>:</p>
+
+h4. Add RSpec Matchers for Mongoid
+
+Matchers provide ready-made code for your specs, allowing you to quickly add tests for common features. If you are writing specs for ORM features such as validation in Rails models, you will need matchers customized for RSpec and Mongoid. Two similar gems are available: "mongoid-rspec":https://github.com/evansagge/mongoid-rspec and "remarkable_mongoid":https://github.com/bcardarella/remarkable_mongoid. We use mongoid-rspec in this example. You'll need @gem 'mongoid-rspec', :group =&gt; :test@ in your Gemfile.
+
+Create a file *spec/support/mongoid.rb*:
+
 <pre>
 RSpec.configure do |config|
   config.include Mongoid::Matchers
 end
 </pre>
-<p>Now you can use the <a href="https://github.com/evansagge/mongoid-rspec">RSpec matchers for Mongoid</a> when you write tests. Keep in mind that it may be worthwhile to test validations using <span class="caps">ORM</span> matchers but testing of associations is often redundant because Mongoid is well-tested. In general, it is preferable to use Cucumber scenarios to test higher-level functionality and reduce dependency on a specific <span class="caps">ORM</span> (<a href="http://stackoverflow.com/questions/5189384/which-gem-for-rspec-matchers-should-i-use-with-mongoid">see a discussion</a>).</p>
-<h4>Add Factory Girl for Test Objects</h4>
-<p>The Factory Girl gem is used to create default model objects for tests. For example, if a controller action requires finding a User object before displaying a “show” page, Factory Girl will create a user just for a test of the controller. You’ll need <code>gem 'factory_girl_rails', :group =&gt; :test</code> in your Gemfile.</p>
-<p>You’ll need a <strong>spec/factories.rb</strong> file to contain the factory definitions for any default objects used for testing. The example <a href="https://github.com/RailsApps/rails3-mongoid-omniauth/tree/master/spec">spec directory</a> contains an implementation.</p>
-<h4>Run RSpec</h4>
-<p>Run <code>rake -T</code> to check that rake tasks for RSpec are available.</p>
-<p>You should be able to run <code>rake spec</code> to run all specs. If you haven’t written any specs, you’ll see the message “No examples matching ./spec/<strong>/</strong>_spec.rb could be found”.</p>
-<p>You can copy the files from the example <a href="https://github.com/RailsApps/rails3-mongoid-omniauth/tree/master/spec">spec directory</a> to use our ready-made specs. If you run <code>rake spec</code> after adding our ready-made specs, you’ll see an error such as <code>Uninitialized constant ... (NameError)</code> because you haven’t created models or controllers. You’ll have to complete the tutorial before <code>rake spec</code> will run successfully.</p>
-<h2>Add Cucumber for Behavior Driven Development</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/cucumber.rb">cucumber</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>It’s not necessary to add Cucumber (the example will run without it). However, it’s a recommended practice to specify use cases (“user stories”) as Cucumber scenarios. It’s a good way to plan development and, using Cucumber, you’ll have specifications for automated acceptance testing.</p>
-<p>This tutorial shows how to set up Cucumber with OmniAuth.</p>
-<h4>Cucumber Gems</h4>
-<p>Use the gem <a href="https://github.com/aslakhellesoy/cucumber-rails">cucumber-rails</a> to set up the app for Cucumber.</p>
-<p>You should have the following gems in your <strong>Gemfile</strong> file:</p>
+
+Now you can use the "RSpec matchers for Mongoid":https://github.com/evansagge/mongoid-rspec when you write tests. Keep in mind that it may be worthwhile to test validations using ORM matchers but testing of associations is often redundant because Mongoid is well-tested. In general, it is preferable to use Cucumber scenarios to test higher-level functionality and reduce dependency on a specific ORM ("see a discussion":http://stackoverflow.com/questions/5189384/which-gem-for-rspec-matchers-should-i-use-with-mongoid).
+
+h4. Add Factory Girl for Test Objects
+
+The Factory Girl gem is used to create default model objects for tests. For example, if a controller action requires finding a User object before displaying a "show" page, Factory Girl will create a user just for a test of the controller. You'll need @gem 'factory_girl_rails', :group =&gt; :test@ in your Gemfile.
+
+You'll need a *spec/factories.rb* file to contain the factory definitions for any default objects used for testing. The example "spec directory":https://github.com/RailsApps/rails3-mongoid-omniauth/tree/master/spec contains an implementation.
+
+h4. Run RSpec
+
+Run @rake -T@ to check that rake tasks for RSpec are available.
+
+You should be able to run @rake spec@ to run all specs. If you haven't written any specs, you'll see the message "No examples matching ./spec/**/*_spec.rb could be found".
+
+You can copy the files from the example "spec directory":https://github.com/RailsApps/rails3-mongoid-omniauth/tree/master/spec to use our ready-made specs. If you run @rake spec@ after adding our ready-made specs, you'll see an error such as @Uninitialized constant ... (NameError)@ because you haven't created models or controllers. You'll have to complete the tutorial before @rake spec@ will run successfully.
+
+h2. Add Cucumber for Behavior Driven Development
+
+bq. +If you are creating an application template, this step uses the "cucumber":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/cucumber.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+It's not necessary to add Cucumber (the example will run without it). However, it's a recommended practice to specify use cases ("user stories") as Cucumber scenarios. It's a good way to plan development and, using Cucumber, you'll have specifications for automated acceptance testing.
+
+This tutorial shows how to set up Cucumber with OmniAuth.
+
+h4. Cucumber Gems
+
+Use the gem "cucumber-rails":https://github.com/aslakhellesoy/cucumber-rails to set up the app for Cucumber.
+
+You should have the following gems in your *Gemfile* file:
+
 <pre>
 group :test do
   gem 'cucumber-rails'
@@ -355,14 +459,23 @@ group :test do
   gem 'database_cleaner'
 end
 </pre>
-<p>Install the required gems on your computer:</p>
-<p><code>$ bundle install</code></p>
-<p>Use the cucumber-rails generator to set up files needed for Cucumber:</p>
-<p><code>$ rails generate cucumber:install --capybara --rspec --skip-database</code></p>
-<p>The <code>-–capybara</code> option specifies Capybara instead of the default Webrat for acceptance testing. The <code>-–rspec</code> option enables RSpec matchers for your step definitions. If you used the <code>-O</code> flag when you generated the application, the <code>--skip-database</code> option will allow the Cucumber generator to proced without a <strong>database.yml</strong> file.</p>
-<h4>Database Cleaner for Cucumber</h4>
-<p>To reset your application database to a pristine state during testing, Cucumber makes use of <a href="https://github.com/bmabey/database_cleaner">Database Cleaner</a>. You’ll need to configure Cucumber to inform Database Cleaner that you are using Mongoid.</p>
-<p>Modify the file <strong>features/support/env.rb</strong> like this:</p>
+
+Install the required gems on your computer:
+
+@$ bundle install@
+
+Use the cucumber-rails generator to set up files needed for Cucumber:
+
+@$ rails generate cucumber:install --capybara --rspec --skip-database@
+
+The @-–capybara@ option specifies Capybara instead of the default Webrat for acceptance testing. The @-–rspec@ option enables RSpec matchers for your step definitions. If you used the @-O@ flag when you generated the application, the @--skip-database@ option will allow the Cucumber generator to proced without a *database.yml* file.
+
+h4. Database Cleaner for Cucumber
+
+To reset your application database to a pristine state during testing, Cucumber makes use of "Database Cleaner":https://github.com/bmabey/database_cleaner. You'll need to configure Cucumber to inform Database Cleaner that you are using Mongoid.
+
+Modify the file *features/support/env.rb* like this:
+
 <pre>
 begin
   DatabaseCleaner.orm = 'mongoid'
@@ -371,62 +484,101 @@ rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
 </pre>
-<h4>Run Cucumber</h4>
-<p>Run <code>rake -T</code> to check that rake tasks for Cucumber are available.</p>
-<p>You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run all Cucumber scenarios and steps. If you haven’t written any Cucumber scenarios and steps, you’ll see the message “0 scenarios, 0 steps”.</p>
-<h4>Write Cucumber Scenarios</h4>
-<p>To learn more about using Cucumber, refer to <a href="http://pragprog.com/book/hwcuc/the-cucumber-book">The Cucumber Book</a> or the free introduction to Cucumber, <a href="http://cuke4ninja.com/">The Secret Ninja Cucumber Scrolls</a>.</p>
-<p>There are two approaches to writing Cucumber scenarios. The newest (and recommended) approach uses <a href="https://github.com/jnicklas/capybara">Capybara</a> to write the code (“steps”) that turn Cucumber scenarios into executable specifications. Older versions of Cucumber provided a <code>web_steps.rb</code> file that implemented common features. See the <a href="http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off">The Training Wheels Came Off</a> by Aslak Hellesøy to understand why the <code>web_steps.rb</code> approach is no longer recommended.</p>
-<h2>Use Mongoid</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/mongoid.rb">mongoid</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Mongoid provides access to the MongoDB database from Rails.</p>
-<p>You may want to check the current instructions for <a href="http://mongoid.org/docs/installation.html">installing Mongoid</a>.</p>
-<p>Set up Mongoid with:</p>
-<p><code>$ rails generate mongoid:config</code></p>
-<p>You can use the default Mongoid configuration found in the file <strong>config/mongoid.yml</strong>.</p>
-<p>The Mongoid generator automatically modifies the <strong>config/application.rb</strong> file to use Mongoid instead of the default ActiveRecord.</p>
-<p>It will replace the line:</p>
-<p><code>require 'rails/all'</code></p>
-<p>with:</p>
+
+h4. Run Cucumber
+
+Run @rake -T@ to check that rake tasks for Cucumber are available.
+
+You should be able to run @rake cucumber@ (or more simply, @cucumber@) to run all Cucumber scenarios and steps. If you haven't written any Cucumber scenarios and steps, you'll see the message "0 scenarios, 0 steps".
+
+h4. Write Cucumber Scenarios
+
+To learn more about using Cucumber, refer to "The Cucumber Book":http://pragprog.com/book/hwcuc/the-cucumber-book or the free introduction to Cucumber, "The Secret Ninja Cucumber Scrolls":http://cuke4ninja.com/.
+
+There are two approaches to writing Cucumber scenarios. The newest (and recommended) approach uses "Capybara":https://github.com/jnicklas/capybara to write the code ("steps") that turn Cucumber scenarios into executable specifications. Older versions of Cucumber provided a @web_steps.rb@ file that implemented common features. See the "The Training Wheels Came Off":http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off by Aslak Hellesøy to understand why the @web_steps.rb@ approach is no longer recommended.
+
+h2. Use Mongoid
+
+bq. +If you are creating an application template, this step uses the "mongoid":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/mongoid.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+Mongoid provides access to the MongoDB database from Rails.
+
+You may want to check the current instructions for "installing Mongoid":http://mongoid.org/docs/installation.html.
+
+Set up Mongoid with:
+
+@$ rails generate mongoid:config@
+
+You can use the default Mongoid configuration found in the file *config/mongoid.yml*.
+
+The Mongoid generator automatically modifies the *config/application.rb* file to use Mongoid instead of the default ActiveRecord.
+
+It will replace the line:
+
+@require 'rails/all'@
+
+with:
+
 <pre>
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 </pre>
-<p>If you are using RSpec, you don’t need the following. Be sure to comment it out unless you are using the default Test::Unit.</p>
+
+If you are using RSpec, you don't need the following. Be sure to comment it out unless you are using the default Test::Unit.
+
 <pre>
 # require "rails/test_unit/railtie"
 </pre>
-<p>Now you can safely remove the file <strong>config/database.yml</strong>.</p>
-<p>Note that it is no longer necessary (as of <a href="https://github.com/mongoid/mongoid/commit/87718c30bc5e6ef69e1f78d704a5b386dd91b3eb">9 June 2010</a>) to modify <strong>config/application.rb</strong> for Mongoid. The necessary changes to the Rails generators are handled by the Mongoid gem. When you generate a model, Rails will generate a Mongoid Document.</p>
-<h4>Database Commands</h4>
-<p>There’s no need to set up the <strong>db/seeds.rb</strong> file for a default user. You can test the application without a default user.</p>
-<p>During testing, if you wish to reset the MongoDB database you can run the command:</p>
+
+Now you can safely remove the file *config/database.yml*.
+
+Note that it is no longer necessary (as of "9 June 2010":https://github.com/mongoid/mongoid/commit/87718c30bc5e6ef69e1f78d704a5b386dd91b3eb) to modify *config/application.rb* for Mongoid. The necessary changes to the Rails generators are handled by the Mongoid gem. When you generate a model, Rails will generate a Mongoid Document.
+
+h4. Database Commands
+
+There's no need to set up the *db/seeds.rb* file for a default user. You can test the application without a default user.
+
+During testing, if you wish to reset the MongoDB database you can run the command:
+
 <pre>
 $ rake db:drop
 </pre>
-<p>Create indexes for the database with:</p>
+
+Create indexes for the database with:
+
 <pre>
 $ rake db:mongoid:create_indexes
 </pre>
-<p>If you’re not using <a href="https://rvm.io/">rvm</a>, you should preface each rake command with <code>bundle exec</code>. You don’t need to use <code>bundle exec</code> if you are using rvm version 1.11.0 or newer.</p>
-<h4>Test the App</h4>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the Rails default information page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Generate a Model for Users</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/add_user.rb">add_user</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Use the Rails generator to generate a model for a User.</p>
-<p>The User will have “name” and “email” attributes. You can add other attributes that you may need. You may also want to generate a controller and views if you are going to edit or delete User attributes. To keep the example simple, we’ll just create a User model without other attributes, controller, routes, or views.</p>
+
+If you're not using "rvm":https://rvm.io/, you should preface each rake command with @bundle exec@. You don't need to use @bundle exec@ if you are using rvm version 1.11.0 or newer.
+
+h4. Test the App
+
+You can check that your app runs properly by entering the command
+
+@$ rails server@
+
+To see your application in action, open a browser window and navigate to "http://localhost:3000/":http://localhost:3000. You should see the Rails default information page.
+
+Stop the server with Control-C.
+
+h2. Generate a Model for Users
+
+bq. +If you are creating an application template, this step uses the "add_user":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/add_user.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+Use the Rails generator to generate a model for a User.
+
+The User will have "name" and "email" attributes. You can add other attributes that you may need. You may also want to generate a controller and views if you are going to edit or delete User attributes. To keep the example simple, we'll just create a User model without other attributes, controller, routes, or views.
+
 <pre>
 $ rails generate model user provider:string uid:string name:string email:string
 </pre>
-<p>The Rails generator will recognize that Mongoid is installed and set up a User model that looks like this:</p>
+
+The Rails generator will recognize that Mongoid is installed and set up a User model that looks like this:
+
 <pre>
 class User
   include Mongoid::Document
@@ -436,73 +588,114 @@ class User
   field :email, :type =&gt; String
 end
 </pre>
-<p>You’ll want to prevent malicious hackers from creating fake web forms that would allow changing of attributes through the mass-assignment operations of update_attributes(attrs) and new(attrs). You’ll need to add this yourself. Modify the file <strong>app/models/user.rb</strong> and add:</p>
+
+You'll want to prevent malicious hackers from creating fake web forms that would allow changing of attributes through the mass-assignment operations of update_attributes(attrs) and new(attrs). You'll need to add this yourself. Modify the file *app/models/user.rb* and add:
+
 <pre>
 attr_protected :provider, :uid, :name, :email
 </pre>
-<h2>Set Up Authentication</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/omniauth.rb">omniauth</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<h4>Set Up Configuration for OmniAuth</h4>
-<p>This app uses OmniAuth for user management and authentication. OmniAuth is at <a href="https://github.com/intridea/omniauth">https://github.com/intridea/omniauth</a>.</p>
-<p>We’ve already used the <code>$ bundle install</code> command to install the <code>omniauth</code> and <code>omniauth-twitter</code> gems. This tutorial assumes you want to authenticate using Twitter. If you want to use other service providers (such as Facebook), you’ll need to install an appropriate gem.</p>
-<p>You’ll need an OmniAuth initialization file <strong>config/initializers/omniauth.rb</strong> set up for the service provider you’ll use. For most service providers, you need to register your application and obtain <span class="caps">API</span> keys to use their authentication service. The arguments that you supply may not be the same for each OmniAuth strategy you use (check the documentation for each gem).</p>
-<p>For Twitter:</p>
+
+h2. Set Up Authentication
+
+bq. +If you are creating an application template, this step uses the "omniauth":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/omniauth.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+h4. Set Up Configuration for OmniAuth
+
+This app uses OmniAuth for user management and authentication. OmniAuth is at "https://github.com/intridea/omniauth":https://github.com/intridea/omniauth.
+
+We've already used the @$ bundle install@ command to install the @omniauth@ and @omniauth-twitter@ gems. This tutorial assumes you want to authenticate using Twitter. If you want to use other service providers (such as Facebook), you'll need to install an appropriate gem.
+
+You'll need an OmniAuth initialization file *config/initializers/omniauth.rb* set up for the service provider you'll use. For most service providers, you need to register your application and obtain API keys to use their authentication service. The arguments that you supply may not be the same for each OmniAuth strategy you use (check the documentation for each gem).
+
+For Twitter:
+
 <pre>
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :twitter, 'KEY', 'SECRET'
 end
 </pre>
-<p>See the OmniAuth wiki for a <a href="https://github.com/intridea/omniauth/wiki/List-of-Strategies">List of Provider Strategies</a> to determine if gems are available for the services you wish to use. If you don’t see a service you want, try a <a href="https://rubygems.org/search?utf8=%E2%9C%93&amp;query=omniauth">RubyGems.org search</a> for what you need.</p>
-<h4>Keep Your <span class="caps">API</span> Keys Secret</h4>
-<p>Before you modify the <strong>config/initializers/omniauth.rb</strong> initialization file to add the <span class="caps">API</span> keys you’ve obtained from the service provider, make sure that the file will not be added to your GitHub repository. If you’ve created a public repository and you commit the file with your <span class="caps">API</span> Keys, anyone who browses your repo will be able to obtain your <span class="caps">API</span> keys and masquerade as your application.</p>
-<p>Modify the <strong>.gitignore</strong> file before commiting the file with your <span class="caps">API</span> keys. Add:</p>
+
+See the OmniAuth wiki for a "List of Provider Strategies":https://github.com/intridea/omniauth/wiki/List-of-Strategies to determine if gems are available for the services you wish to use. If you don't see a service you want, try a "RubyGems.org search":https://rubygems.org/search?utf8=%E2%9C%93&amp;query=omniauth for what you need.
+
+h4. Keep Your API Keys Secret
+
+Before you modify the *config/initializers/omniauth.rb* initialization file to add the API keys you've obtained from the service provider, make sure that the file will not be added to your GitHub repository. If you've created a public repository and you commit the file with your API Keys, anyone who browses your repo will be able to obtain your API keys and masquerade as your application.
+
+Modify the *.gitignore* file before commiting the file with your API keys. Add:
+
 <pre>
 config/initializers/omniauth.rb
 </pre>
-<p>You’ll need to keep a local copy of the file and recreate it if you replace your local repo with a clone from a remote Git repository.</p>
-<h4>Create a Sessions Controller</h4>
-<p>We’ll use a SessionsController to create and destroy sessions to accommodate logging in and logging out. Use the Rails generator to create a SessionsController:</p>
+
+You'll need to keep a local copy of the file and recreate it if you replace your local repo with a clone from a remote Git repository.
+
+h4. Create a Sessions Controller
+
+We'll use a SessionsController to create and destroy sessions to accommodate logging in and logging out. Use the Rails generator to create a SessionsController:
+
 <pre>
 $ rails generate controller sessions
 </pre>
-<p>For now, we’ll set up the SessionsController to simply raise an exception and show the information returned by the service provider when authentication is succesful. Modify the file <strong>app/controllers/sessions_controller.rb</strong> to look like this:</p>
+
+For now, we'll set up the SessionsController to simply raise an exception and show the information returned by the service provider when authentication is succesful. Modify the file *app/controllers/sessions_controller.rb* to look like this:
+
 <pre>
-class SessionsController &lt; ApplicationController
-  def create
-    raise request.env["omniauth.auth"].to_yaml
-  end
-end
-</pre>
-<h4>Set Up Routes</h4>
-<p>OmniAuth supplies built-in routes for all its supported service providers. For example, the path <code>/auth/twitter</code> will redirect to Twitter’s website and allow the user to authenticate using Twitter. After successful authentication, OmniAuth triggers a callback <span class="caps">URL</span>, such as <code>/auth/twitter/callback</code>.</p>
-<p>We’ll need to set a route for the callback <span class="caps">URL</span>. Edit the file <strong>config/routes.rb</strong> and add:</p>
-<p><code>match '/auth/:provider/callback' =&gt; 'sessions#create'</code></p>
-<p>This route redirects to the Sessions controller <code>create</code> method.</p>
-<p>It could be simplifed as <code>match '/auth/twitter/callback' =&gt; 'sessions#create'</code> but by providing a <code>:provider</code> parameter we can easily enhance the application to handle more than one provider if necessary.</p>
-<p>We should also handle authentication failures. OmniAuth provides a failure <span class="caps">URL</span> <code>/auth/failure</code> that we can route to our Sessions controller. Add the following route to the file <strong>config/routes.rb</strong>:</p>
-<p><code>match '/auth/failure' =&gt; 'sessions#failure'</code></p>
-<p>We also want to offer a feature that allows an authenticated user to log out. Add the following route to the file <strong>config/routes.rb</strong>:</p>
-<p><code>match '/signout' =&gt; 'sessions#destroy', :as =&gt; :signout</code></p>
-<p>Adding <code>:as =&gt; :signout</code> to the route gives us a <code>signout_path</code> helper to use in our views.</p>
-<p>The next route we’ll add isn’t strictly necessary. We’ll use it for signing in to the application. OmniAuth allows us to directly initiate authentication by clicking a <span class="caps">URL</span> link such as <code>/auth/twitter</code> in any view. However, for a more completely RESTful Sessions controller, we’ll have a <code>new</code> method that redirects to <code>/auth/twitter</code> in the Sessions controller. Add the corresponding route to the file <strong>config/routes.rb</strong>:</p>
-<p><code>match '/signin' =&gt; 'sessions#new', :as =&gt; :signin</code></p>
-<p>Adding <code>:as =&gt; :signin</code> to the route gives us a <code>signin_path</code> helper to use in our views.</p>
-<h4>Test the App</h4>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default page.</p>
-<p>Navigate to <a href="http://localhost:3000/auth/twitter">http://localhost:3000/auth/twitter</a> and log in with Twitter. You should be redirected to an error page that shows information from the Twitter authentication.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Store Authentication Data in the User Object</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/omniauth.rb">omniauth</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Each of the authentication services returns a hash to our application that provides information about the user. The dataset varies with each service provider. We will extract what we need from the hash we receive.</p>
-<p>We’ll modify the User model and the Sessions controller to capture data provided by the service provider.</p>
-<h4>Modify the User Model</h4>
-<p>We need a method in the User model that saves a new user to the datastore. Each provider provides user data in a slightly different format, so you may need to modify the file <strong>app/models/user.rb</strong> accordingly. Add the following method:</p>
+class SessionsController 
+
+h4. Set Up Routes
+
+OmniAuth supplies built-in routes for all its supported service providers. For example, the path @/auth/twitter@ will redirect to Twitter's website and allow the user to authenticate using Twitter. After successful authentication, OmniAuth triggers a callback URL, such as @/auth/twitter/callback@.
+
+We'll need to set a route for the callback URL. Edit the file *config/routes.rb* and add:
+
+@match '/auth/:provider/callback' =&gt; 'sessions#create'@
+
+This route redirects to the Sessions controller @create@ method.
+
+It could be simplifed as @match '/auth/twitter/callback' =&gt; 'sessions#create'@ but by providing a @:provider@ parameter we can easily enhance the application to handle more than one provider if necessary.
+
+We should also handle authentication failures. OmniAuth provides a failure URL @/auth/failure@ that we can route to our Sessions controller. Add the following route to the file *config/routes.rb*:
+
+@match '/auth/failure' =&gt; 'sessions#failure'@
+
+We also want to offer a feature that allows an authenticated user to log out. Add the following route to the file *config/routes.rb*:
+
+@match '/signout' =&gt; 'sessions#destroy', :as =&gt; :signout@
+
+Adding @:as =&gt; :signout@ to the route gives us a @signout_path@ helper to use in our views.
+
+The next route we'll add isn't strictly necessary. We'll use it for signing in to the application. OmniAuth allows us to directly initiate authentication by clicking a URL link such as @/auth/twitter@ in any view. However, for a more completely RESTful Sessions controller, we'll have a @new@ method that redirects to @/auth/twitter@ in the Sessions controller. Add the corresponding route to the file *config/routes.rb*:
+
+@match '/signin' =&gt; 'sessions#new', :as =&gt; :signin@
+
+Adding @:as =&gt; :signin@ to the route gives us a @signin_path@ helper to use in our views.
+
+h4. Test the App
+
+You can check that your app runs properly by entering the command
+
+@$ rails server@
+
+To see your application in action, open a browser window and navigate to "http://localhost:3000/":http://localhost:3000. You should see the default page.
+
+Navigate to "http://localhost:3000/auth/twitter":http://localhost:3000/auth/twitter and log in with Twitter. You should be redirected to an error page that shows information from the Twitter authentication.
+
+Stop the server with Control-C.
+
+h2. Store Authentication Data in the User Object
+
+bq. +If you are creating an application template, this step uses the "omniauth":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/omniauth.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+Each of the authentication services returns a hash to our application that provides information about the user. The dataset varies with each service provider. We will extract what we need from the hash we receive.
+
+We'll modify the User model and the Sessions controller to capture data provided by the service provider.
+
+h4. Modify the User Model
+
+We need a method in the User model that saves a new user to the datastore. Each provider provides user data in a slightly different format, so you may need to modify the file *app/models/user.rb* accordingly. Add the following method:
+
 <pre>
 def self.create_with_omniauth(auth)
   create! do |user|
@@ -515,9 +708,13 @@ def self.create_with_omniauth(auth)
   end
 end
 </pre>
-<h4>Modify the Sessions Controller</h4>
-<p>When a visitor authenticates, we will check the datastore to determine if the user’s data has been recorded previously and, if not, we’ll create a new user record. In either case, we’ll add the user to the session and redirect to the application home page with a “Signed In” message.</p>
-<p>Replace the create method in the file <strong>app/controllers/sessions_controller.rb</strong>:</p>
+
+h4. Modify the Sessions Controller
+
+When a visitor authenticates, we will check the datastore to determine if the user's data has been recorded previously and, if not, we'll create a new user record. In either case, we'll add the user to the session and redirect to the application home page with a "Signed In" message.
+
+Replace the create method in the file *app/controllers/sessions_controller.rb*:
+
 <pre>
 def create
   auth = request.env["omniauth.auth"]
@@ -527,61 +724,56 @@ def create
   redirect_to root_url, :notice =&gt; "Signed in!"
 end
 </pre>
-<h2>Add the “Sign Out” Feature</h2>
-<p>We will provide a “Sign Out” feature for the user.</p>
-<p>We’ve already added a <code>signout</code> route to the file <strong>config/routes.rb</strong>.</p>
-<p>Add the following method to the file <strong>app/controllers/sessions_controller.rb</strong>:</p>
+
+h2. Add the "Sign Out" Feature
+
+We will provide a "Sign Out" feature for the user.
+
+We've already added a @signout@ route to the file *config/routes.rb*.
+
+Add the following method to the file *app/controllers/sessions_controller.rb*:
+
 <pre>
 def destroy
   reset_session
   redirect_to root_url, :notice =&gt; 'Signed out!'
 end
 </pre>
-<h2>Add the “Sign In” Feature</h2>
-<p>We will provide a “Sign In” feature for the user.</p>
-<p>We’ve already added a <code>signin</code> route to the file <strong>config/routes.rb</strong>.</p>
-<p>Add the following method to the file <strong>app/controllers/sessions_controller.rb</strong>:</p>
+
+h2. Add the "Sign In" Feature
+
+We will provide a "Sign In" feature for the user.
+
+We've already added a @signin@ route to the file *config/routes.rb*.
+
+Add the following method to the file *app/controllers/sessions_controller.rb*:
+
 <pre>
 def new
   redirect_to '/auth/twitter'
 end
 </pre>
-<h2>Handle Authentication Failure</h2>
-<p>We’ve already accommodated OmniAuth’s <code>/auth/failure</code> route in the file <strong>config/routes.rb</strong> with a redirect to the Sessions controller <code>failure</code> method. To handle authentication failure, add the following method to the file <strong>app/controllers/sessions_controller.rb</strong>:</p>
+
+h2. Handle Authentication Failure
+
+We've already accommodated OmniAuth's @/auth/failure@ route in the file *config/routes.rb* with a redirect to the Sessions controller @failure@ method. To handle authentication failure, add the following method to the file *app/controllers/sessions_controller.rb*:
+
 <pre>
 def failure
   redirect_to root_url, :alert =&gt; "Authentication error: #{params[:message].humanize}"
 end
 </pre>
-<h2>Helper Methods</h2>
-<p>We need a way to access the currently logged-in user from any controller. We’ll also need helper methods for our views to distinguish anonymous visitors from users who are logged in. Devise offers the methods <code>current_user</code>, <code>user_signed_in?</code>, and <code>authenticate_user!</code>. We’ll use the same method names for consistency.</p>
-<p>Additionlly, we’ll add a helper method that restricts access to only th</p>
-<p>Modify the file <strong>app/controllers/application_controller.rb</strong> to look like this:</p>
+
+h2. Helper Methods
+
+We need a way to access the currently logged-in user from any controller. We'll also need helper methods for our views to distinguish anonymous visitors from users who are logged in. Devise offers the methods @current_user@, @user_signed_in?@, and @authenticate_user!@. We'll use the same method names for consistency.
+
+Additionlly, we'll add a helper method that restricts access to only th
+
+Modify the file *app/controllers/application_controller.rb* to look like this:
+
 <pre>
-class ApplicationController &lt; ActionController::Base
-  protect_from_forgery
-
-  helper_method :current_user
-  helper_method :user_signed_in?
-  helper_method :correct_user?
-
-  private
-    def current_user
-      begin
-        @current_user ||= User.find(session[:user_id]) if session[:user_id]
-      rescue Mongoid::Errors::DocumentNotFound
-        nil
-      end
-    end
-
-    def user_signed_in?
-      return true if current_user
-    end
-
-    def correct_user?
-      @user = User.find(params[:id])
-      unless current_user == @user
-        redirect_to root_url, :alert =&gt; "Access denied."
+class ApplicationController  "Access denied."
       end
     end
 
@@ -593,61 +785,102 @@ class ApplicationController &lt; ActionController::Base
 
 end
 </pre>
-<h2>Create a Home Page</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/home_page.rb">home_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<h4>Remove the Default Home Page</h4>
-<p>Delete the default home page from your application:</p>
-<p><code>$ rm public/index.html</code></p>
-<h4>Create a Home Controller and View</h4>
-<p>Create the first page of the application. Use the Rails generate command to create a “home” controller and a “views/home/index” page.</p>
-<p><code>$ rails generate controller home index</code></p>
-<p>If you’re using the default template engine, you’ll find an <strong>erb</strong> file with placeholder content:</p>
-<p><strong>app/views/home/index.html.erb</strong></p>
-<p>If you’re using Haml, you’ll find a <strong>haml</strong> file with placeholder content:</p>
-<p><strong>app/views/home/index.html.haml</strong></p>
-<p>Now, you have to set a route to your home page. Edit the file <strong>config/routes.rb</strong> and replace:</p>
-<p><code>get "home/index"</code></p>
-<p>with</p>
-<p><code>root :to =&gt; 'home#index'</code></p>
-<p>We’ll add some content to the home page in the next step.</p>
-<h4>Test the App</h4>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see your new home page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Create a Default User</h2>
-<h4>Display Users on the Home Page</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/home_page_users.rb">home_page_users</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Modify the file <strong>controllers/home_controller.rb</strong> and add:</p>
+
+h2. Create a Home Page
+
+bq. +If you are creating an application template, this step uses the "home_page":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/home_page.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+h4. Remove the Default Home Page
+
+Delete the default home page from your application:
+
+@$ rm public/index.html@
+
+h4. Create a Home Controller and View
+
+Create the first page of the application. Use the Rails generate command to create a "home" controller and a "views/home/index" page.
+
+@$ rails generate controller home index@
+
+If you're using the default template engine, you'll find an *erb* file with placeholder content:
+
+*app/views/home/index.html.erb*
+
+If you're using Haml, you'll find a *haml* file with placeholder content:
+
+*app/views/home/index.html.haml*
+
+Now, you have to set a route to your home page. Edit the file *config/routes.rb* and replace:
+
+@get "home/index"@
+
+with
+
+@root :to =&gt; 'home#index'@
+
+We'll add some content to the home page in the next step.
+
+h4. Test the App
+
+You can check that your app runs properly by entering the command
+
+@$ rails server@
+
+To see your application in action, open a browser window and navigate to "http://localhost:3000/":http://localhost:3000. You should see your new home page.
+
+Stop the server with Control-C.
+
+h2. Create a Default User
+
+h4. Display Users on the Home Page
+
+bq. +If you are creating an application template, this step uses the "home_page_users":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/home_page_users.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+Modify the file *controllers/home_controller.rb* and add:
+
 <pre>
 def index
   @users = User.all
 end
 </pre>
-<p>Modify the file <strong>app/views/home/index.html.erb</strong> and add:</p>
+
+Modify the file *app/views/home/index.html.erb* and add:
+
 <pre>
-&lt;h3&gt;Home&lt;/h3&gt;
-&lt;% @users.each do |user| %&gt;
-  &lt;p&gt;User: &lt;%= user.name %&gt; &lt;/p&gt;
-&lt;% end %&gt;
+<h3>Home</h3>
+
+  <p>User:  </p>
+
 </pre>
-<h4>Test the App</h4>
-<p>At this point, you may want to know if an authenticated user is saved to the MongoDB database.</p>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000/auth/twitter">http://localhost:3000/auth/twitter</a>.</p>
-<p>After authenticating with Twitter, you should see your user name on the home page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Create an Application Layout</h2>
-<h4>Set Up <span class="caps">CSS</span> Stylesheets</h4>
-<p><em>If you are creating an application template, this step uses the <a href="https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/html5.rb">html5</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository</em></p>
-<p>We’ll create a very simple stylesheet with styling for a horizontal menu and flash messages.</p>
-<p>Rename the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>.</p>
-<p>Add stylesheet rules to the <strong>application.css.scss</strong> file:</p>
+
+h4. Test the App
+
+At this point, you may want to know if an authenticated user is saved to the MongoDB database.
+
+You can check that your app runs properly by entering the command
+
+@$ rails server@
+
+To see your application in action, open a browser window and navigate to "http://localhost:3000/auth/twitter":http://localhost:3000/auth/twitter.
+
+After authenticating with Twitter, you should see your user name on the home page.
+
+Stop the server with Control-C.
+
+h2. Create an Application Layout
+
+h4. Set Up CSS Stylesheets
+
+_If you are creating an application template, this step uses the "html5":https://raw.github.com/RailsApps/rails_apps_composer/master/recipes/html5.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository_
+
+We'll create a very simple stylesheet with styling for a horizontal menu and flash messages.
+
+Rename the *app/assets/stylesheets/application.css* file as *app/assets/stylesheets/application.css.scss*.
+
+Add stylesheet rules to the *application.css.scss* file:
+
 <pre>
 header nav ul {
   list-style: none;
@@ -670,46 +903,56 @@ header nav ul li {
   border: solid 1px #C66;
 }
 </pre>
-<h4>The Default Application Layout</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/application_layout.rb">application_layout</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> or <strong>app/views/layouts/application.html.haml</strong> as a default for rendering any page.</p>
-<p>You’ll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described in the instructions for the <a href="http://railsapps.github.io/rails-default-application-layout.html">Rails default application layout</a>.</p>
-<h4>Add Navigation Links</h4>
-<blockquote>
-<p><ins>If you are adding navigation links, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/navigation.rb">navigation</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>You will want to add navigation links to the application layout for the sign-in and sign-out actions.</p>
-<p>Create a <strong>app/views/shared/</strong> directory. Then create the file <strong>app/views/shared/_navigation.html.erb</strong> and add:</p>
+
+h4. The Default Application Layout
+
+bq. +If you are creating an application template, this step uses the "application_layout":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/application_layout.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+Rails will use the layout defined in the file *app/views/layouts/application.html.erb* or *app/views/layouts/application.html.haml* as a default for rendering any page.
+
+You'll want to include flash messages for errors and notifications. Set up your application layout by modifying the default as described in the instructions for the "Rails default application layout":http://railsapps.github.io/rails-default-application-layout.html.
+
+h4. Add Navigation Links
+
+bq. +If you are adding navigation links, this step uses the "navigation":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/navigation.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+You will want to add navigation links to the application layout for the sign-in and sign-out actions.
+
+Create a *app/views/shared/* directory. Then create the file *app/views/shared/_navigation.html.erb* and add:
+
 <pre>
-&lt;% if user_signed_in? %&gt;
-  &lt;li&gt;
-  Logged in as &lt;%= current_user.name %&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-  &lt;%= link_to('Logout', signout_path) %&gt;
-  &lt;/li&gt;
-&lt;% else %&gt;
-  &lt;li&gt;
-  &lt;%= link_to('Login', signin_path)  %&gt;
-  &lt;/li&gt;
-&lt;% end %&gt;
-</pre>
-<p>Then use these partials in your <strong>app/views/layouts/application.html.erb</strong> file, like this:</p>
+
+  </pre></pre></pre><li>
+  Logged in as 
+  </li>
+  <li>
+  
+  </li>
+
+  <li>
+  
+  </li>
+
+
+
+Then use these partials in your *app/views/layouts/application.html.erb* file, like this:
+
 <pre>
-&lt;body&gt;
-  &lt;ul class="hmenu"&gt;
-    &lt;%= render 'shared/navigation' %&gt;
-  &lt;/ul&gt;
-  &lt;% flash.each do |name, msg| %&gt;
-    &lt;% if msg.is_a?(String) %&gt;
-      &lt;%= content_tag :div, msg, :id =&gt; "flash_#{name}" %&gt;
-    &lt;% end %&gt;
-  &lt;% end %&gt;
-&lt;%= yield %&gt;
-</pre>
-<p>For Haml, modify <strong>app/views/layouts/application.html.haml</strong> like this:</p>
+
+  </pre><ul class="hmenu">
+    
+  </ul>
+  
+    
+       "flash_#{name}" %&gt;
+    
+  
+
+
+
+For Haml, modify *app/views/layouts/application.html.haml* like this:
+
 <pre>
 %body
   %ul.hmenu
@@ -719,22 +962,36 @@ header nav ul li {
       = content_tag :div, msg, :id =&gt; "flash_#{name}"
   = yield
 </pre>
-<h4>Test the App</h4>
-<p>Test the app with the command</p>
-<p><code>$ rails server</code></p>
-<p>Open a browser window and navigate to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
-<p>You should see login and logout links on the home page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Set Up a Demonstration of Access Control</h2>
-<p>You’ll want to see how authentication can be used to control access to restricted pages. We’ll add a user profile page and set up access control so only the authorized user can see his or her own profile.</p>
-<h4>Set Up the Users Controller, Views, and Routes</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/users_page.rb">users_page</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Use the Rails generate command to create a “users” controller and a “views/user/show” page.</p>
-<p><code>$ rails generate controller users show</code></p>
-<p>Note that “users” is plural when you create the controller.</p>
-<p>Modify the file <strong>controllers/users_controller.rb</strong> and add:</p>
+
+h4. Test the App
+
+Test the app with the command
+
+@$ rails server@
+
+Open a browser window and navigate to "http://localhost:3000/":http://localhost:3000/.
+
+You should see login and logout links on the home page.
+
+Stop the server with Control-C.
+
+h2. Set Up a Demonstration of Access Control
+
+You'll want to see how authentication can be used to control access to restricted pages. We'll add a user profile page and set up access control so only the authorized user can see his or her own profile.
+
+h4. Set Up the Users Controller, Views, and Routes
+
+bq. +If you are creating an application template, this step uses the "users_page":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/users_page.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+Use the Rails generate command to create a "users" controller and a "views/user/show" page.
+
+@$ rails generate controller users show@
+
+Note that "users" is plural when you create the controller.
+
+Modify the file *controllers/users_controller.rb* and add:
+
 <pre>
 before_filter :authenticate_user!
 before_filter :correct_user?
@@ -743,19 +1000,27 @@ def show
   @user = User.find(params[:id])
 end
 </pre>
-<p>The file <strong>config/routes.rb</strong> has already been modified to include:</p>
-<p><code>get "users/show"</code></p>
-<p>Remove that and replace it with:</p>
+
+The file *config/routes.rb* has already been modified to include:
+
+@get "users/show"@
+
+Remove that and replace it with:
+
 <pre>
 resources :users
 </pre>
-<p>Modify the file <strong>app/views/users/show.html.erb</strong> to look like this:</p>
+
+Modify the file *app/views/users/show.html.erb* to look like this:
+
 <pre>
-&lt;h3&gt;User Profile&lt;/h3&gt;
-&lt;p&gt;Name: &lt;%= @user.name %&gt;&lt;/p&gt;
-&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
+<h3>User Profile</h3>
+<p>Name: </p>
+<p>Email: </p>
 </pre>
-<p>For Haml, modify <strong>app/views/users/show.html.haml</strong> to look like this:</p>
+
+For Haml, modify *app/views/users/show.html.haml* to look like this:
+
 <pre>
 %h3 User Profile
 %p
@@ -763,40 +1028,58 @@ resources :users
 %p
   Email: #{@user.email if @user.email}
 </pre>
-<h4>Add Links to Users on the Home Page</h4>
-<p>Modify the file <strong>app/views/home/index.html.erb</strong> to look like this:</p>
+
+h4. Add Links to Users on the Home Page
+
+Modify the file *app/views/home/index.html.erb* to look like this:
+
 <pre>
-&lt;h3&gt;Home&lt;/h3&gt;
-&lt;% @users.each do |user| %&gt;
-  &lt;p&gt;User: &lt;%=link_to user.name, user %&gt;&lt;/p&gt;
-&lt;% end %&gt;
+<h3>Home</h3>
+
+  <p>User: </p>
+
 </pre>
-<p>For Haml, modify <strong>app/views/home/index.html.haml</strong> to look like this:</p>
+
+For Haml, modify *app/views/home/index.html.haml* to look like this:
+
 <pre>
 %h3 Home
 - @users.each do |user|
   %p
     User: #{link_to user.name, user}
 </pre>
-<h4>Test the App</h4>
-<p>Test the app with the command</p>
-<p><code>$ rails server</code></p>
-<p>Open a browser window and navigate to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
-<p>If you log in, you should be able to click through to see your user profile page.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Add the Email Option</h2>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/omniauth_email.rb">omniauth_email</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<p>Twitter and LinkedIn do not provide the user’s email address. GitHub only provides an email address if the user specified a public email address. If you need the user’s email address, you can add a feature to request it when they authenticate.</p>
-<h4>Add Edit and Update Methods to the Users Controller</h4>
-<p>Modify the file <strong>controllers/users_controller.rb</strong> and add an <code>edit</code> method:</p>
+
+h4. Test the App
+
+Test the app with the command
+
+@$ rails server@
+
+Open a browser window and navigate to "http://localhost:3000/":http://localhost:3000/.
+
+If you log in, you should be able to click through to see your user profile page.
+
+Stop the server with Control-C.
+
+h2. Add the Email Option
+
+bq. +If you are creating an application template, this step uses the "omniauth_email":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/omniauth_email.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+
+Twitter and LinkedIn do not provide the user's email address. GitHub only provides an email address if the user specified a public email address. If you need the user's email address, you can add a feature to request it when they authenticate.
+
+h4. Add Edit and Update Methods to the Users Controller
+
+Modify the file *controllers/users_controller.rb* and add an @edit@ method:
+
 <pre>
 def edit
   @user = User.find(params[:id])
 end
 </pre>
-<p>Add an <code>update</code> method:</p>
+
+Add an @update@ method:
+
 <pre>
 def update
   @user = User.find(params[:id])
@@ -807,19 +1090,26 @@ def update
   end
 end
 </pre>
-<h4>Routes for the Edit and Update Actions</h4>
-<p>There’s no need to modify the routes file to include the new actions. The <code>edit</code> and <code>update</code> actions are automatically generated by the <code>resources :users</code> route in the file <strong>config/routes.rb</strong>.</p>
-<h4>Add an Edit View</h4>
-<p>Create a file <strong>app/views/users/edit.html.erb</strong> to look like this:</p>
+
+h4. Routes for the Edit and Update Actions
+
+There's no need to modify the routes file to include the new actions. The @edit@ and @update@ actions are automatically generated by the @resources :users@ route in the file *config/routes.rb*.
+
+h4. Add an Edit View
+
+Create a file *app/views/users/edit.html.erb* to look like this:
+
 <pre>
-&lt;%= form_for(@user) do |f| %&gt;
-  &lt;%= f.label :email %&gt;
-  &lt;%= f.text_field :email %&gt;
-  &lt;br /&gt;
-  &lt;%= f.submit "Sign in" %&gt;
-&lt;% end %&gt;
+
+  
+  
+  <br>
+  
+
 </pre>
-<p>For Haml, create a file <strong>app/views/users/edit.html.haml</strong> to look like this:</p>
+
+For Haml, create a file *app/views/users/edit.html.haml* to look like this:
+
 <pre>
 = form_for(@user) do |f|
   = f.label :email
@@ -827,8 +1117,11 @@ end
   %br/
   = f.submit "Sign in"
 </pre>
-<h4>Change the Sessions Controller</h4>
-<p>Change the <code>create</code> method in the file <strong>app/controllers/sessions_controller.rb</strong> to look like this:</p>
+
+h4. Change the Sessions Controller
+
+Change the @create@ method in the file *app/controllers/sessions_controller.rb* to look like this:
+
 <pre>
 def create
   auth = request.env["omniauth.auth"]
@@ -842,34 +1135,59 @@ def create
   end
 end
 </pre>
-<h4>Test the App</h4>
-<p>Test the app with the command</p>
-<p><code>$ rails server</code></p>
-<p>Open a browser window and navigate to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
-<p>Log out and then log in. If you log in with Twitter, you should see a page requesting your email address.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Cleanup</h2>
-<p>Several unneeded files are generated in the process of creating a new Rails application.</p>
-<p>Additionally, you may want to prevent search engines from indexing your website if you’ve deployed it publicly while still in development.</p>
-<p>See instructions for <a href="http://railsapps.github.io/rails-cleanup.html">cleaning up unneeded files in Rails and banning spiders</a>.</p>
-<h4>Remove Unneeded Files</h4>
-<blockquote>
-<p><ins>If you are creating an application template, this step uses the <a href="https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/cleanup.rb">cleanup</a> recipe from the <a href="https://github.com/RailsApps/rails_apps_composer">rails_apps_composer</a> repository.</ins></p>
-</blockquote>
-<h2>Test the App</h2>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>.</p>
-<p>Stop the server with Control-C.</p>
-<h2>Deploy to Heroku</h2>
-<p>For your convenience, here are <a href="http://railsapps.github.io/rails-heroku-tutorial.html">instructions for deploying your app to Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
-<h2>Conclusion</h2>
-<p>This concludes the tutorial for creating a Ruby on Rails web application that requires Rails 3 and uses Mongoid for data storage and OmniAuth for authentication.</p>
-<h4>Credits</h4>
-<p>Daniel Kehoe (<a href="http://danielkehoe.com/">http://danielkehoe.com/</a>) implemented the application and wrote the tutorial.</p>
-<p>Was this useful to you? Follow me on Twitter:<br><a href="http://twitter.com/rails_apps">rails_apps</a><br>
-and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please create an <a href="https://github.com/RailsApps/rails3-mongoid-omniauth/issues">Issue</a> on GitHub.</p>
+
+h4. Test the App
+
+Test the app with the command
+
+@$ rails server@
+
+Open a browser window and navigate to "http://localhost:3000/":http://localhost:3000/.
+
+Log out and then log in. If you log in with Twitter, you should see a page requesting your email address.
+
+Stop the server with Control-C.
+
+h2. Cleanup
+
+Several unneeded files are generated in the process of creating a new Rails application.
+
+Additionally, you may want to prevent search engines from indexing your website if you've deployed it publicly while still in development.
+
+See instructions for "cleaning up unneeded files in Rails and banning spiders":http://railsapps.github.io/rails-cleanup.html.
+
+h4. Remove Unneeded Files
+
+bq. +If you are creating an application template, this step uses the "cleanup":https://github.com/RailsApps/rails_apps_composer/raw/master/recipes/cleanup.rb recipe from the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer repository.+
+
+h2. Test the App
+
+You can check that your app runs properly by entering the command
+
+@$ rails server@
+
+To see your application in action, open a browser window and navigate to "http://localhost:3000/":http://localhost:3000.
+
+Stop the server with Control-C.
+
+h2. Deploy to Heroku
+
+For your convenience, here are "instructions for deploying your app to Heroku":http://railsapps.github.io/rails-heroku-tutorial.html. Heroku provides low cost, easily configured Rails application hosting.
+
+h2. Conclusion
+
+This concludes the tutorial for creating a Ruby on Rails web application that requires Rails 3 and uses Mongoid for data storage and OmniAuth for authentication.
+
+h4. Credits
+
+Daniel Kehoe ("http://danielkehoe.com/":http://danielkehoe.com/) implemented the application and wrote the tutorial.
+
+Was this useful to you? Follow me on Twitter:
+"rails_apps":http://twitter.com/rails_apps
+and tweet some praise. I'd love to know you were helped out by the tutorial.
+
+Any issues? Please create an "Issue":https://github.com/RailsApps/rails3-mongoid-omniauth/issues on GitHub.
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

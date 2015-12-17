@@ -44,14 +44,22 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Example Gemfiles for Rails 3.2</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 21 February 2013</em></p>
-<p>Here are example Gemfiles for typical applications built with Rails 3.2.</p>
-<p>See <a href="http://railsapps.github.io/installing-rails.html">Installing Rails 3.2</a> for detailed instructions and advice.</p>
-<p>John Mcdowall offers some useful advice about <a href="http://mcdowall.info/posts/gemfile-best-practices-and-discourse/">Gemfile Best Practices</a>.</p>
-<h2>Rails 3.2 Gemfile</h2>
-<p>A Rails 3.2.12 application includes the following Gemfile when created with the <code>rails new</code> command:</p>
+        h1. Example Gemfiles for Rails 3.2
+
+h4. by Daniel Kehoe
+
+_Last updated 21 February 2013_
+
+Here are example Gemfiles for typical applications built with Rails 3.2.
+
+See "Installing Rails 3.2":http://railsapps.github.io/installing-rails.html for detailed instructions and advice.
+
+John Mcdowall offers some useful advice about "Gemfile Best Practices":http://mcdowall.info/posts/gemfile-best-practices-and-discourse/.
+
+h2. Rails 3.2 Gemfile
+
+A Rails 3.2.12 application includes the following Gemfile when created with the @rails new@ command:
+
 <pre>
 source 'https://rubygems.org'
 
@@ -68,30 +76,46 @@ end
 
 gem 'jquery-rails'
 </pre>
-<p>Check for the newest versions of these gems:</p>
-<ul>
-<li><a href="http://rubygems.org/gems/rails">rails</a></li>
-	<li><a href="http://rubygems.org/gems/sqlite3">sqlite3</a></li>
-	<li><a href="http://rubygems.org/gems/sass-rails">sass-rails</a></li>
-	<li><a href="http://rubygems.org/gems/coffee-rails">coffee-rails</a></li>
-	<li><a href="http://rubygems.org/gems/uglifier">uglifier</a></li>
-	<li><a href="http://rubygems.org/gems/jquery-rails">jquery-rails</a></li>
-</ul><h2>Common Additions</h2>
-<p>Here are gems that are often added to a new Rails application.</p>
-<h4>Gemfile for Ubuntu Linux</h4>
-<p>Since Rails 3.1, a JavaScript runtime has been needed for development on Linux Ubuntu. It is not needed for Mac OS X or Windows.</p>
-<p>For development on Linux Ubuntu, it’s best to install the <a href="http://nodejs.org/">Node.js</a> server-side JavaScript environment:</p>
-<p><code>sudo apt-get install nodejs</code></p>
-<p>and set it in your <code>$PATH</code>.</p>
-<p>If you don’t install Node.js, you’ll need to add this to the Gemfile for each Rails application you build:</p>
+
+Check for the newest versions of these gems:
+
+* "rails":http://rubygems.org/gems/rails
+* "sqlite3":http://rubygems.org/gems/sqlite3
+* "sass-rails":http://rubygems.org/gems/sass-rails
+* "coffee-rails":http://rubygems.org/gems/coffee-rails
+* "uglifier":http://rubygems.org/gems/uglifier
+* "jquery-rails":http://rubygems.org/gems/jquery-rails
+
+h2. Common Additions
+
+Here are gems that are often added to a new Rails application.
+
+h4. Gemfile for Ubuntu Linux
+
+Since Rails 3.1, a JavaScript runtime has been needed for development on Linux Ubuntu. It is not needed for Mac OS X or Windows.
+
+For development on Linux Ubuntu, it's best to install the "Node.js":http://nodejs.org/ server-side JavaScript environment:
+
+@sudo apt-get install nodejs@
+
+and set it in your @$PATH@.
+
+If you don't install Node.js, you'll need to add this to the Gemfile for each Rails application you build:
+
 <pre>
 gem 'therubyracer', '&gt;= 0.9.9'
 </pre>
-<p>Check for the newest version of <a href="http://rubygems.org/gems/therubyracer">therubyracer</a>.</p>
-<h4>Gemfile for Heroku</h4>
-<p>Heroku provides low cost, easily configured Rails application hosting. For your convenience, see <a href="http://railsapps.github.io/rails-heroku-tutorial.html">Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku</a>.</p>
-<p>Heroku uses PostgreSQL as its default database. If you don’t want to install PostgreSQL locally, you can set your Gemfile to use SQLite locally and PostgreSQL in production (see <a href="http://railsapps.github.io/rails-heroku-tutorial.html">the article</a> for pros and cons). You’ll likely use the Thin web server for a production app though you may wish to use the default Webrick locally.</p>
-<p>Run <code>bundle install --without production</code> to update your gems. Here’s the Gemfile you’d use:</p>
+
+Check for the newest version of "therubyracer":http://rubygems.org/gems/therubyracer.
+
+h4. Gemfile for Heroku
+
+Heroku provides low cost, easily configured Rails application hosting. For your convenience, see "Tutorial: Rails 3.2 with Ruby 1.9.3 on Heroku":http://railsapps.github.io/rails-heroku-tutorial.html.
+
+Heroku uses PostgreSQL as its default database. If you don't want to install PostgreSQL locally, you can set your Gemfile to use SQLite locally and PostgreSQL in production (see "the article":http://railsapps.github.io/rails-heroku-tutorial.html for pros and cons). You'll likely use the Thin web server for a production app though you may wish to use the default Webrick locally.
+
+Run @bundle install --without production@ to update your gems. Here's the Gemfile you'd use:
+
 <pre>
 source 'https://rubygems.org'
 
@@ -117,10 +141,15 @@ end
 
 gem 'jquery-rails'
 </pre>
-<h4>Gemfile for RSpec and Cucumber</h4>
-<p><a href="https://www.relishapp.com/rspec">RSpec</a> is a popular alternative to the Test::Unit testing framework. <a href="http://cukes.info/">Cucumber</a> is used with RSpec for Behaviour Driven Development.</p>
-<p>Several gems are commonly used with RSpec and Cucumber. <a href="https://github.com/thoughtbot/factory_girl">Factory_girl</a> is a fixtures library used to create objects needed for testing. <a href="https://github.com/jnicklas/capybara">Capybara</a> allows testing of web pages by simulating <span class="caps">HTTP</span> requests as if someone was using a browser. <a href="https://github.com/bmabey/database_cleaner">Database_cleaner</a> is used to initialize a database to a clean state during tests. <a href="http://www.copiousfreetime.org/projects/launchy/">Launchy</a> is used to launch a web browser to display the state of a web page during testing (primarily for debugging tests).</p>
-<p>Here’s a Gemfile configured for RSpec and Cucumber:</p>
+
+h4. Gemfile for RSpec and Cucumber
+
+"RSpec":https://www.relishapp.com/rspec is a popular alternative to the Test::Unit testing framework. "Cucumber":http://cukes.info/ is used with RSpec for Behaviour Driven Development.
+
+Several gems are commonly used with RSpec and Cucumber. "Factory_girl":https://github.com/thoughtbot/factory_girl is a fixtures library used to create objects needed for testing. "Capybara":https://github.com/jnicklas/capybara allows testing of web pages by simulating HTTP requests as if someone was using a browser. "Database_cleaner":https://github.com/bmabey/database_cleaner is used to initialize a database to a clean state during tests. "Launchy":http://www.copiousfreetime.org/projects/launchy/ is used to launch a web browser to display the state of a web page during testing (primarily for debugging tests).
+
+Here's a Gemfile configured for RSpec and Cucumber:
+
 <pre>
 source 'https://rubygems.org'
 
@@ -149,35 +178,47 @@ group :test do
   gem "launchy"
 end
 </pre>
-<p>Check for the newest versions of these gems:</p>
-<ul>
-<li><a href="http://rubygems.org/gems/rspec-rails">rspec-rails</a></li>
-	<li><a href="http://rubygems.org/gems/factory_girl_rails">factory_girl_rails</a></li>
-	<li><a href="http://rubygems.org/gems/cucumber-rails">cucumber-rails</a></li>
-	<li><a href="http://rubygems.org/gems/capybara">capybara</a></li>
-	<li><a href="http://rubygems.org/gems/database_cleaner">database_cleaner</a></li>
-	<li><a href="http://rubygems.org/gems/launchy">launchy</a></li>
-</ul><h2>Gems for the RailsApps Examples</h2>
-<p>Here are Gemfiles for the example apps in the <a href="http://railsapps.github.io/">Rails Apps</a> repository.</p>
-<p>A few of the example apps use the <a href="http://mongoid.org/">Mongoid</a> gem for access to a MongoDB datastore.</p>
-<ul>
-<li><a href="http://rubygems.org/gems/mongoid">mongoid</a></li>
-</ul><p>A few of the example apps use <a href="https://github.com/plataformatec/devise">Devise</a> for authentication.</p>
-<ul>
-<li><a href="http://rubygems.org/gems/devise">devise</a></li>
-</ul><p>One of the example apps uses <a href="https://github.com/intridea/omniauth">OmniAuth</a> for authentication.</p>
-<ul>
-<li><a href="http://rubygems.org/gems/omniauth">omniauth</a></li>
-</ul><p>The example apps have been tested with the indicated versions.</p>
-<p>For the RailsApps example apps built with Rails 3.2, use the following gems and specify versions optimistically (using the <code>&gt;=</code> operator).</p>
-<p>The RailsApps example apps have been tested with this configuration:</p>
-<ul>
-<li>Ruby 1.9.3</li>
-	<li>RubyGems 1.8.24</li>
-	<li>Rails 3.2.12</li>
-	<li>Rake 10.0</li>
-</ul><p><em>Note:</em> The RailsApps examples are generated with application templates created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style (as presented in the Gemfiles shown above). The functionality is the same.</p>
-<h4><a href="https://github.com/RailsApps/rails3-devise-rspec-cucumber">rails3-devise-rspec-cucumber</a></h4>
+
+Check for the newest versions of these gems:
+
+* "rspec-rails":http://rubygems.org/gems/rspec-rails
+* "factory_girl_rails":http://rubygems.org/gems/factory_girl_rails
+* "cucumber-rails":http://rubygems.org/gems/cucumber-rails
+* "capybara":http://rubygems.org/gems/capybara
+* "database_cleaner":http://rubygems.org/gems/database_cleaner
+* "launchy":http://rubygems.org/gems/launchy
+
+h2. Gems for the RailsApps Examples
+
+Here are Gemfiles for the example apps in the "Rails Apps":http://railsapps.github.io/ repository.
+
+A few of the example apps use the "Mongoid":http://mongoid.org/ gem for access to a MongoDB datastore.
+
+* "mongoid":http://rubygems.org/gems/mongoid
+
+A few of the example apps use "Devise":https://github.com/plataformatec/devise for authentication.
+
+* "devise":http://rubygems.org/gems/devise
+
+One of the example apps uses "OmniAuth":https://github.com/intridea/omniauth for authentication.
+
+* "omniauth":http://rubygems.org/gems/omniauth
+
+The example apps have been tested with the indicated versions.
+
+For the RailsApps example apps built with Rails 3.2, use the following gems and specify versions optimistically (using the @&gt;=@ operator).
+
+The RailsApps example apps have been tested with this configuration:
+
+* Ruby 1.9.3
+* RubyGems 1.8.24
+* Rails 3.2.12
+* Rake 10.0
+
+_Note:_ The RailsApps examples are generated with application templates created by the "Rails Apps Composer Gem":https://github.com/RailsApps/rails_apps_composer. For that reason, groups such as @:development@ or @:test@ are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style (as presented in the Gemfiles shown above). The functionality is the same.
+
+h4. "rails3-devise-rspec-cucumber":https://github.com/RailsApps/rails3-devise-rspec-cucumber
+
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.12'
@@ -197,7 +238,9 @@ gem "database_cleaner", "&gt;= 0.7.1", :group =&gt; :test
 gem "launchy", "&gt;= 2.0.5", :group =&gt; :test
 gem "devise", "&gt;= 2.0.4"
 </pre>
-<h4><a href="https://github.com/RailsApps/rails3-mongoid-devise">rails3-mongoid-devise</a></h4>
+
+h4. "rails3-mongoid-devise":https://github.com/RailsApps/rails3-mongoid-devise
+
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.12'
@@ -218,7 +261,9 @@ gem "bson_ext", "&gt;= 1.3.1"
 gem "mongoid", "&gt;= 2.4.3"
 gem "devise", "&gt;= 2.0.0"
 </pre>
-<h4><a href="https://github.com/RailsApps/rails3-mongoid-omniauth">rails3-mongoid-omniauth</a></h4>
+
+h4. "rails3-mongoid-omniauth":https://github.com/RailsApps/rails3-mongoid-omniauth
+
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.12'
@@ -240,7 +285,9 @@ gem "mongoid", "&gt;= 2.4.3"
 gem "omniauth", "&gt;= 1.0.2"
 gem "omniauth-twitter"
 </pre>
-<h4><a href="https://github.com/RailsApps/rails3-subdomains">rails3-subdomains</a></h4>
+
+h4. "rails3-subdomains":https://github.com/RailsApps/rails3-subdomains
+
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.12'
@@ -263,6 +310,7 @@ gem "bson_ext", "&gt;= 1.3.1"
 gem "mongoid", "&gt;= 2.4.3"
 gem "devise", "&gt;= 2.0.0"
 </pre>
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

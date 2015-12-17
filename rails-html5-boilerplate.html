@@ -44,226 +44,265 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Guide to HTML5 Boilerplate for Rails Developers</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 20 November 2011</em></p>
-<p>This is a guide to <a href="http://html5boilerplate.com/">HTML5 Boilerplate</a> for Rails developers. Like Rails on the server side or “backend”, HTML5 Boilerplate provides structure and conventions for setting up HTML5, CSS3 styles, and Javascript for front-end development. It is a popular starting point for many front-end developers. However, some aspects of HTML5 Boilerplate are not useful for Rails projects. Sorting through the HTML5 Boilerplate documentation to find what’s useful for Rails can be confusing. This article lists each component of HTML5 Boilerplate and identifies its usefulness for Rails applications.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>About HTML5 Boilerplate</h2>
-<p><a href="http://html5boilerplate.com/">HTML5 Boilerplate</a> has been available since August 10th, 2010. <a href="http://paulirish.com/about/">Paul Irish</a> and <a href="http://nimbu.in/">Divya Manian</a> launched HTML5 Boilerplate as a set of templates “collecting best practices and making an ideal project starting point.”</p>
-<p>On a first encounter, it seems HTML5 Boilerplate includes “everything but the kitchen sink.” Even finding a succinct list of components can be overwhelming. There’s an excellent list of the HTML5 Boilerplate components in Jonathan Verrecchia’s <a href="http://www.initializr.com/advanced">Initializr Advanced Customization</a>.</p>
-<p>This article provides commentary plus links to the relevant HTML5 Boilerplate documentation for each component. Descriptions are available in several places on the HTML5 Boilerplate website:</p>
-<ul>
-<li>
-<a href="http://html5boilerplate.com/">HTML5 Boilerplate home page</a> (look for “Walk through it with me, now”)</li>
-	<li><a href="http://html5boilerplate.com/docs/">Docs</a></li>
-	<li>
-<a href="http://html5boilerplate.com/docs/The-markup/">The Markup</a> (describes the <code>index.html</code> file)</li>
-	<li>
-<a href="http://html5boilerplate.com/docs/The-style/">The Style</a> (describes the <code>style.css</code> file)</li>
-</ul><h2>Installing HTML5 Boilerplate in a Rails Application</h2>
-<p>Many developers use the <a href="http://railsapps.github.io/">RailsApps example apps</a> or the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”) to create a starter app. You’ll get the useful features of HTML5 Boilerplate (as described here) when you start with a <a href="http://railsapps.github.io/">RailsApps</a> application.</p>
-<p>There are other popular Rails 3 application templates that include HTML5 Boilerplate:</p>
-<ul>
-<li><a href="https://github.com/Xac/Rails-3-HTML5-Boilerplate">Rails-3-HTML5-Boilerplate</a></li>
-	<li><a href="https://github.com/russfrisch/h5bp-rails">h5bp-rails</a></li>
-</ul><p>(Are there others? Please suggest with a comment below.)</p>
-<p>Or use a Ruby gem to add HTML5 Boilerplate to your application:</p>
-<ul>
-<li><a href="https://github.com/khelben/rails-boilerplate">rails-boilerplate</a></li>
-</ul><h2>Useful for Rails Projects</h2>
-<p>Consider adding the following components to your Rails application.</p>
-<h3>Default Application Layout</h3>
-<p>The HTML5 Boilerplate <code>index.html</code> file shows how to structure a simple web page using HTML5 markup. Initializr provides a more complex <code>index.html</code> file that shows how to use the HTML5 <code>&lt;nav&gt;</code>, <code>&lt;article&gt;</code>, and <code>&lt;aside&gt;</code> tags. It is helpful to refer to these <code>index.html</code> examples when you create an application layout file.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-content">simple index.html file</a>
-</li>
-	<li>Initializr’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;izr-samplepage">more complex index.html file</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://html5boilerplate.com/docs/head-Tips/">tips for the <code>&lt;head&gt;</code> section</a>
-</li>
-</ul><p>If you are using <span class="caps">HAML</span>, you can convert the <span class="caps">HTML</span> to <span class="caps">HAML</span> markup using the <a href="http://html2haml.heroku.com/">Html2Haml website</a>.</p>
-<h3>Viewport Metatag</h3>
-<p>Apple introduced the viewport metatag to help web developers improve the presentation of web pages on mobile devices. Setting a viewport tells the browser how content should fit on the device’s screen. Typically, you use the viewport meta tag to set the width and initial scale of the viewport. The HTML5 Boilerplate <code>index.html</code> page provides an example that sets the viewport to the width of the device with an initial scale of 1. You can add this to your Rails application layout.</p>
-<p><code>&lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;</code></p>
-<p>The above example allows zooming, something that may be desirable for a web site but not a web app. We could prevent zooming with the following values:</p>
-<p><code>&lt;meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"&gt;</code></p>
-<p>Apple’s developer documentation on <a href="http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html">Configuring the Viewport</a> offers all the details.</p>
-<ul>
-<li>HTML5 Boilerplate’s description of the <a href="http://html5boilerplate.com/docs/The-markup/#mobile-viewport--creating-a-mobile-version">viewport metatag</a>
-</li>
-</ul><h3>Google Analytics Snippet</h3>
-<p>Most developers want to use Google Analytics tracking for their web apps. The HTML5 Boilerplate <code>index.html</code> page includes the Google Analytics tracking code. As a Rails developer, you’ll likely add the code to your application layout. Alternatively you can use one of several Ruby gems that automatically insert Google Analytics code into your pages with a helper or Rack middleware. You don’t need to copy what’s provided in HTML5 Boilerplate but it offers a good reminder to add Google Analytics tracking.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-analytics">Google Analytics code</a>
-</li>
-	<li>HTML5 Boilerplate’s description of the <a href="http://html5boilerplate.com/docs/The-markup/#google-analytics-tracking-code">Google Analytics code</a>
-</li>
-</ul><h3>Sample <code>humans.txt</code> File</h3>
-<p>HTML5 Boilerplate provides a sample <code>humans.txt</code> file. By convention, a humans.txt file lists the people who contributed to building the website. It also can include a colophon (notes about tools or software used to create the website). If you have a desire to be recognized or want to satisfy the curiosity of humans (those who know to look for the file), you can consider adding a <code>humans.txt</code> file.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-humans">humans.txt file</a>
-</li>
-</ul><h2>Possibly Useful for Rails Projects</h2>
-<p>Depending on your requirements, the following components might be useful in your Rails application.</p>
-<h3>Chrome Frame</h3>
-<p>The HTML5 Boilerplate <code>index.html</code> page includes Javascript that prompts users of Internet Explorer 6 (IE6) to install the <a href="http://en.wikipedia.org/wiki/Google_Chrome_Frame">Google Chrome Frame</a> browser plug-in. The X-UA-Compatible metatag is required to force the IE rendering engine to use Chrome Frame’s rendering engine. If your website uses HTML5 features and you wish to support users of Internet Explorer 6, you can add the Javascript to your application layout files. Web browser <a href="http://www.ie6countdown.com/">market share for Internet Explorer 6</a> is rapidly decreasing so <a href="http://www.conceivablytech.com/9708/business/why-ie6-still-matters-and-why-you-should-not-care">you may not wish to support IE6</a>.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-chromeframe">Chrome Frame code</a>
-</li>
-	<li>HTML5 Boilerplate’s description of the <a href="http://html5boilerplate.com/docs/The-markup/#google-chrome-frame">Chrome Frame code</a>
-</li>
-</ul><h3>Apple Touch Icons</h3>
-<p>HTML5 Boilerplate provides five icons that serve as <a href="http://en.wikipedia.org/wiki/Favicon">favicons</a> for Apple and Android mobile devices and tablets. The icons are versions of <a href="https://raw.github.com/h5bp/html5-boilerplate/master/apple-touch-icon-114x114-precomposed.png">the orange stars</a> used on the  HTML5 Boilerplate website. For <span class="caps">IOS</span> devices such as the iPad or iPhone, these icons are used when a web page is added to the device’s home screen. For web pages that don’t specify a custom touch icon, a thumbnail screenshot of the page is used instead. Android has a default icon, and some systems fall back to the favicon if it is available. As a Rails developer, you probably won’t want the orange stars from HTML5 Boilerplate. Instead you might have a designer create a set of custom touch icons for your project or you may use one of several favicon generators to create your own icons. You may want to read Mathias Bynens’s <a href="http://mathiasbynens.be/notes/touch-icons">Everything You Always Wanted to Know About Touch Icons</a> to learn more.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-appletouchicons">touch icon files</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#favicons-and-touch-icons">touch icon files</a>
-</li>
-</ul><h3>Crossdomain.xml File</h3>
-<p>You don’t need this in your Rails app unless your app is used as a backend by a web client such as Flash or Silverlight. <a href="http://html5boilerplate.com/docs/crossdomain.xml/">What’s Crossdomain.xml For?</a> explains that “a cross-domain policy file is an <span class="caps">XML</span> document that grants a web client—such as Adobe Flash Player, Adobe Reader, etc.—permission to handle data across multiple domains.” Most developers will not need it.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-adobecrossdomain">crossdomain.xml file</a>
-</li>
-</ul><h2>Already Included in Rails Projects</h2>
-<p>There’s no need to add the following components to your Rails application.</p>
-<h3>404: Not Found Page</h3>
-<p>You won’t need to use HTML5 Boilerplate to add this. A “404: Not Found” page is provided by Rails when you generate a new Rails application.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-404">404: Not Found Page</a>
-</li>
-</ul><h3>Favicon</h3>
-<p>HTML5 Boilerplate provides a <a href="http://en.wikipedia.org/wiki/Favicon">favicon</a>. A zero byte <code>favicon.ico</code> file is provided by Rails when you generate a new Rails application so you don’t need to use HTML5 Boilerplate to add it. As a Rails developer, you might have a designer create a custom favicon for your project or you may use one of several favicon generators to create your own favicon. Browsers always request the <code>favicon.ico</code> file so a zero byte file named <code>favicon.ico</code> will eliminate 404 errors in your logfile.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-favicon">favicon file</a>
-</li>
-</ul><h3>Sample <code>robots.txt</code> File</h3>
-<p>A <code>robots.txt</code> file is provided by Rails when you generate a new Rails application so you don’t need to use HTML5 Boilerplate to add it. If you are deploying a site that is under development, you may want to modify <code>robots.txt</code> to block potential spidering while the site is unfinished.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-robots">robots.txt file</a>
-</li>
-</ul><h3>Placeholder Javascript Files</h3>
-<p>HTML5 Boilerplate provides placeholder <code>script.js</code> and <code>plugins.js</code> files as a suggested location for site-specific Javascript. When you build a new Rails app, you’ll have a placeholder <code>app/assets/javascripts/application.js</code> file that works with the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>. Don’t use the placeholder <code>script.js</code> and <code>plugins.js</code> files offered by HTML5 Boilerplate.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-scripts">placeholder Javascript files</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/plugins.js-and-script.js/">placeholder Javascript files</a>
-</li>
-</ul><h3>jQuery</h3>
-<p>The HTML5 Boilerplate <code>index.html</code> file shows how to add jQuery to a non-Rails web page. For a Rails app, don’t modify your application layout to match the HTML5 Boilerplate example. In Rails <a href="http://weblog.rubyonrails.org/2011/4/21/jquery-new-default">jQuery is the default JavaScript library</a>. The default <code>jquery-rails</code> gem provides <code>jquery.js</code> and <code>jquery_ujs.js</code> files. You won’t need to include these files using <code>&lt;script&gt;</code> tags because they are automatically included via the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>.</p>
-<p>HTML5 Boilerplate recommends loading jQuery from Google’s <span class="caps">CDN</span> (content delivery network). You can write code that checks if a connection to the <span class="caps">CDN</span> is available, then checks if the version in the <span class="caps">CDN</span> matches the version in the <code>jquery-rails</code> gem, and falls back to the version in the Rails asset pipeline if the <span class="caps">CDN</span> is not available. If you do so, you’ll only save a single <span class="caps">HTTP</span> request (the first time a user visits the app). The assets pipeline produces a cached minified Javascript file which is used for all subsequent requests. For ultimate performance, you can consider using the <span class="caps">CDN</span>; for most projects, it’s probably not worth the extra code.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;jquerydev">jQuery</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#google-cdn-for-jquery">jQuery</a>
-</li>
-</ul><h3>X-UA-Compatible Metatag</h3>
-<p>The HTML5 Boilerplate <code>index.html</code> page includes the X-UA-Compatible metatag. Versions 8 and 9 of Internet Explorer contain multiple rendering engines and the X-UA-Compatible metatag will force IE 8 or 9 to use the newest version of the IE rendering environment. Secondly, if Chrome Frame is installed, the X-UA-Compatible metatag will force IE 8 or 9 to use Chrome Frame’s rendering engine. As a Rails developer, you don’t have to add the X-UA-Compatible metatag to your application layout files or set an <span class="caps">HTTP</span> header in your ApplicationController. In production mode, the Rails <a href="https://github.com/lifo/docrails/commit/6767946374353f90ce05e68d38bcb93dcb8bae56">ActionDispatch class</a> automatically sends an <span class="caps">HTTP</span> header that sets the X-UA-Compatible header to <code>IE=Edge,chrome=1</code>. In development mode, the X-UA-Compatible header is set to <code>IE=Edge</code>. For a Rails app, there’s no need to use the X-UA-Compatible metatag snippet from HTML5 Boilerplate.</p>
-<ul>
-<li>HTML5 Boilerplate’s description of the <a href="http://html5boilerplate.com/docs/The-markup/#make-sure-the-latest-version-of-ie-is-used">X-UA-Compatible metatag</a>
-</li>
-</ul><h2>Not Useful for Rails Projects</h2>
-<p>You won’t need these components.</p>
-<h3>Web Server Configuration Files</h3>
-<p>These files will only be useful if you are a system admininstrator. If you are the system admininstrator for a web server, see <a href="https://github.com/h5bp/server-configs">Paul Irish’s best-practice server configurations</a> for Apache, <span class="caps">IIS</span>, nginx, lighttpd, Google AppEngine, and NodeJS.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-htaccess">Apache configuration file</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-nginx">nginx configuration file</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-webconfig"><span class="caps">IIS</span> configuration file</a>
-</li>
-</ul><h2>
-<span class="caps">HTML</span> and Javascript Support for <span class="caps">CSS</span>
-</h2>
-<p>You can use these components if you are implementing <span class="caps">CSS</span> styles for your application and need to support Internet Explorer versions 6, 7, or 8 or features that are missing from certain web browsers. If you are using a <span class="caps">CSS</span> toolkit such as Twitter Bootstrap or Zurb Foundation and intend to use only the provided (“pre-themed”) <span class="caps">CSS</span> styles, you can do without these components.</p>
-<h3>IE Conditional Comments (<span class="caps">HTML</span> Markup)</h3>
-<p>The HTML5 Boilerplate <code>index.html</code> page includes code that modifes the <code>&lt;html&gt;</code> tag to add <span class="caps">CSS</span> classes for older versions of Internet Explorer. This is HTML5 Boilerplate’s important contribution to cross-browser compatibility. For how it works, see Paul Irish’s <a href="http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/">Conditional stylesheets vs <span class="caps">CSS</span> hacks? Answer: Neither!</a>. If you are designing with <span class="caps">CSS</span> and accommodating specific versions of Internet Explorer, you’ll find IE conditional comments are useful.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-iecond">IE conditional comments</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#ie-html-tag-classes">IE conditional comments</a>
-</li>
-</ul><h3>Modernizr (Javascript)</h3>
-<p><a href="http://www.modernizr.com/">Modernizr</a> is a Javascript library that detects browser features and installs <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">shims, fallbacks, and polyfills</a> to add HTML5 functionalities to browsers that don’t natively support them. It is useful as a foundation for building cross-browser-compatible HTML5 and CSS3 features. If you need to test whether a browser has <span class="caps">CSS</span> transitions and transforms (for example), you can use Modernizr. HTML5 Boilerplate’s <span class="caps">CSS</span> stylesheet does not depend on Modernizr. If you are relying solely on a <span class="caps">CSS</span> toolkit such as Twitter Bootstrap or Zurb Foundation, you won’t need Modernizr.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;modernizr">Modernizr file</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#modernizr-yepnope-respond">Modernizr</a>
-</li>
-</ul><h3>HTML5 Shiv (Javascript)</h3>
-<p><a href="http://paulirish.com/2011/the-history-of-the-html5-shiv/">HTML5 Shiv</a> is Javascript code that tricks older versions of Internet Explorer into applying <span class="caps">CSS</span> styling for HTML5 elements such as the <code>&lt;article&gt;</code> tag. Its use was <a href="http://ejohn.org/blog/html5-shiv/">first suggested in 2008</a> and it has been subsequently incorporated into <a href="http://www.modernizr.com/">Modernizr</a>. You’ll only use it if you don’t need all the features of Modernizr but still need to style HTML5 elements in older versions of IE.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;html5shiv">HTML5 Shiv file</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#modernizr-yepnope-respond">HTML5 Shiv</a>
-</li>
-</ul><h3>Respond (Javascript)</h3>
-<p>Scott Jehl’s <a href="https://github.com/scottjehl/Respond">Respond</a> Javascript code enables min-width and max-width media queries in browsers (Internet Explorer 6, 7, and 8) that do not natively support CSS3 media queries. It makes it possible to do <a href="http://www.alistapart.com/articles/responsive-web-design/">responsive web design</a> in browsers that don’t support CSS3 media queries. Respond.js is <a href="http://filamentgroup.com/lab/respondjs_now_available_in_modernizr/">offered as an option</a> in the <a href="http://www.modernizr.com/download/">Modernizr download builder tool</a> and HTML5 Boilerplate includes it as part of the default Modernizr Javascript file.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;respond">respond.js file</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-markup/#respond">Respond</a>
-</li>
-</ul><h2>
-<span class="caps">CSS</span> Toolkit</h2>
-<p>You may need these components if you are implementing <span class="caps">CSS</span> styles for your application.</p>
-<h3>
-<span class="caps">CSS</span> Reset</h3>
-<p>As described by Eric Meyer, <a href="http://meyerweb.com/eric/tools/css/reset/index.html"><span class="caps">CSS</span> Reset</a> “smooths out many browser inconsistencies by explicitly assigning values to things like element margins and padding, forcing all elements to have the same font size, and so on. You can find resets in most <span class="caps">CSS</span> frameworks, and they’re a great starting point for creating your own ‘baseline’ styles.” HTML5 Boilerplate does not provide <span class="caps">CSS</span> rules for a complete <span class="caps">CSS</span> reset. Instead it offers <span class="caps">CSS</span> normalization.</p>
-<h3>
-<span class="caps">CSS</span> Normalization</h3>
-<p><span class="caps">CSS</span> normalization provides a set of <span class="caps">CSS</span> rules that make <span class="caps">HTML</span> elements such as <code>&lt;h1&gt;</code> look the same across web browsers. For a sample, see a <a href="http://necolas.github.com/normalize.css/demo.html">web page that uses normalized <span class="caps">CSS</span></a> from the <a href="http://necolas.github.com/normalize.css/">normalize.css project</a> by <a href="http://nicolasgallagher.com">Nicolas Gallagher</a> and <a href="http://twitter.com/#!/jon_neal">Jonathan Neal</a>. The HTML5 Boilerplate <code>css.style</code> file incorporates <span class="caps">CSS</span> normalization from the normalize.css project and adds a few rules of its own. If you use another <span class="caps">CSS</span> toolkit such as Twitter Bootstrap or Zurb Foundation, you won’t need the normalization from HTML5 Boilerplate.</p>
-<h3>
-<span class="caps">CSS</span> Print Styles</h3>
-<p>The HTML5 Boilerplate <code>style.css</code> file offers an example <span class="caps">CSS</span> <code>media print</code> style that is used when a web page is printed from a browser. It is a useful reference if you are writing your own <span class="caps">CSS</span> styles for printing.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-mediaqueryprint"><span class="caps">CSS</span> print styles</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-style/#print-styles"><span class="caps">CSS</span> print styles</a>
-</li>
-</ul><h3>
-<span class="caps">CSS</span> Media Queries for Responsive Design</h3>
-<p>You’ll want to design your Rails app to accommodate a variety of devices. The term <a href="http://www.alistapart.com/articles/responsive-web-design/">responsive web design</a> was coined by Ethan Marcotte and refers to using fluid grids, flexible images, and CSS3 media queries to modify a web page to accommodate devices with differing screen sizes and resolutions such as a smartphones, tablets, and desktop computers. A media query in a <span class="caps">CSS</span> stylesheet (such as <code>media screen and (max-width:320px)</code>) can detect the width of a smartphone’s screen and adjust <span class="caps">CSS</span> rules accordingly. HTML5 Boilerplate provides placeholders for media queries in its <code>style.css</code> file but does not provide <span class="caps">CSS</span> styles for different devices. You can use a <span class="caps">CSS</span> toolkit such as <a href="http://getskeleton.com/">Skeleton</a> or <a href="http://foundation.zurb.com/">Zurb Foundation</a> to design sites that adapt to different browser page sizes.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-mediaqueries">media queries placeholders</a>
-</li>
-	<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-style/#media-queries">media queries placeholders</a>
-</li>
-</ul><h3>
-<span class="caps">CSS</span> Paged Media Styles</h3>
-<p>Paged media support means browsers will break content into pages to accommodate orphans/widows. The HTML5 Boilerplate <code>style.css</code> file includes <span class="caps">CSS</span> rules for paged media. Paged media is supported only in a few browsers. You probably don’t need this.</p>
-<ul>
-<li>HTML5 Boilerplate’s description of <a href="http://html5boilerplate.com/docs/The-style/#paged-media-styles">paged media styles</a>
-</li>
-</ul><h3>
-<span class="caps">CSS</span> Helper Classes</h3>
-<p>The HTML5 Boilerplate <code>style.css</code> file includes several <span class="caps">CSS</span> classes that are often needed by web designers. You’ll probably use some of these if you are not using another <span class="caps">CSS</span> toolkit.</p>
-<ul>
-<li>HTML5 Boilerplate’s <a href="http://html5boilerplate.com/docs/The-style/#ir">image-replacement</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://html5boilerplate.com/docs/The-style/#hidden">hidden</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://html5boilerplate.com/docs/The-style/#visuallyhidden">visuallyhidden</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://html5boilerplate.com/docs/The-style/#invisible">invisible</a>
-</li>
-	<li>HTML5 Boilerplate’s <a href="http://html5boilerplate.com/docs/The-style/#clearfix">clearfix</a>
-</li>
-</ul><h3>
-<span class="caps">CSS</span> Grid</h3>
-<p>HTML5 Boilerplate does not provide a <span class="caps">CSS</span> grid system. You can add a <span class="caps">CSS</span> toolkit that provides a grid system.</p>
-<h2>Conclusion</h2>
-<p>The HTML5 Boilerplate project integrates the research and thought of a large community of front-end developers. In its downloadable form, HTML5 Boilerplate doesn’t fit easily into a typical Rails application. However, HTML5 Boilerplate serves as a useful reference for Rails developers who want to provide structure and convention for the <span class="caps">HTML</span>, <span class="caps">CSS</span>, and Javascript of an application’s front-end. Hopefully, with this guide, you can pick and choose the components that are useful for a Rails app. In the process, you’ll learn about current best practices for front-end development.</p>
-<h2>Did You Like the Article?</h2>
-<p>Was the article useful to you? Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
-<p>You can also find me on <a href="https://www.facebook.com/daniel.kehoe.sf">Facebook</a> or <a href="https://plus.google.com/+DanielKehoe/">Google+</a>.</p>
-<h4>Contributors</h4>
-<p>Thank you to <a href="http://nicolasgallagher.com">Nicolas Gallagher</a> and <a href="http://peterc.org/">Peter Cooper</a> for commenting on the first draft of this article.</p>
+        h1. Guide to HTML5 Boilerplate for Rails Developers
+
+h4. by Daniel Kehoe
+
+_Last updated 20 November 2011_
+
+This is a guide to "HTML5 Boilerplate":http://html5boilerplate.com/ for Rails developers. Like Rails on the server side or "backend", HTML5 Boilerplate provides structure and conventions for setting up HTML5, CSS3 styles, and Javascript for front-end development. It is a popular starting point for many front-end developers. However, some aspects of HTML5 Boilerplate are not useful for Rails projects. Sorting through the HTML5 Boilerplate documentation to find what's useful for Rails can be confusing. This article lists each component of HTML5 Boilerplate and identifies its usefulness for Rails applications.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to "join the RailsApps project":http://railsapps.github.io/.
+
+h2. About HTML5 Boilerplate
+
+"HTML5 Boilerplate":http://html5boilerplate.com/ has been available since August 10th, 2010. "Paul Irish":http://paulirish.com/about/ and "Divya Manian":http://nimbu.in/ launched HTML5 Boilerplate as a set of templates "collecting best practices and making an ideal project starting point."
+
+On a first encounter, it seems HTML5 Boilerplate includes "everything but the kitchen sink." Even finding a succinct list of components can be overwhelming. There's an excellent list of the HTML5 Boilerplate components in Jonathan Verrecchia's "Initializr Advanced Customization":http://www.initializr.com/advanced.
+
+This article provides commentary plus links to the relevant HTML5 Boilerplate documentation for each component. Descriptions are available in several places on the HTML5 Boilerplate website:
+
+* "HTML5 Boilerplate home page":http://html5boilerplate.com/ (look for "Walk through it with me, now")
+* "Docs":http://html5boilerplate.com/docs/
+* "The Markup":http://html5boilerplate.com/docs/The-markup/ (describes the @index.html@ file)
+* "The Style":http://html5boilerplate.com/docs/The-style/ (describes the @style.css@ file)
+
+h2. Installing HTML5 Boilerplate in a Rails Application
+
+Many developers use the "RailsApps example apps":http://railsapps.github.io/ or the "Rails Composer":http://railsapps.github.io/rails-composer/ tool ("like the 'rails new' command on steroids") to create a starter app. You'll get the useful features of HTML5 Boilerplate (as described here) when you start with a "RailsApps":http://railsapps.github.io/ application.
+
+There are other popular Rails 3 application templates that include HTML5 Boilerplate:
+
+* "Rails-3-HTML5-Boilerplate":https://github.com/Xac/Rails-3-HTML5-Boilerplate
+* "h5bp-rails":https://github.com/russfrisch/h5bp-rails
+
+(Are there others? Please suggest with a comment below.)
+
+Or use a Ruby gem to add HTML5 Boilerplate to your application:
+
+* "rails-boilerplate":https://github.com/khelben/rails-boilerplate
+
+h2. Useful for Rails Projects
+
+Consider adding the following components to your Rails application.
+
+h3. Default Application Layout
+
+The HTML5 Boilerplate @index.html@ file shows how to structure a simple web page using HTML5 markup. Initializr provides a more complex @index.html@ file that shows how to use the HTML5 @ @, @ @, and @ @ tags. It is helpful to refer to these @index.html@ examples when you create an application layout file.
+
+* HTML5 Boilerplate's "simple index.html file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-content
+* Initializr's "more complex index.html file":http://www.initializr.com/builder?print&amp;mode=custom&amp;izr-samplepage
+* HTML5 Boilerplate's "tips for the @@ section":http://html5boilerplate.com/docs/head-Tips/
+
+If you are using HAML, you can convert the HTML to HAML markup using the "Html2Haml website":http://html2haml.heroku.com/.
+
+h3. Viewport Metatag
+
+Apple introduced the viewport metatag to help web developers improve the presentation of web pages on mobile devices. Setting a viewport tells the browser how content should fit on the device's screen. Typically, you use the viewport meta tag to set the width and initial scale of the viewport. The HTML5 Boilerplate @index.html@ page provides an example that sets the viewport to the width of the device with an initial scale of 1. You can add this to your Rails application layout.
+
+@@
+
+The above example allows zooming, something that may be desirable for a web site but not a web app. We could prevent zooming with the following values:
+
+@@
+
+Apple's developer documentation on "Configuring the Viewport":http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html offers all the details.
+
+* HTML5 Boilerplate's description of the "viewport metatag":http://html5boilerplate.com/docs/The-markup/#mobile-viewport--creating-a-mobile-version
+
+h3. Google Analytics Snippet
+
+Most developers want to use Google Analytics tracking for their web apps. The HTML5 Boilerplate @index.html@ page includes the Google Analytics tracking code. As a Rails developer, you'll likely add the code to your application layout. Alternatively you can use one of several Ruby gems that automatically insert Google Analytics code into your pages with a helper or Rack middleware. You don't need to copy what's provided in HTML5 Boilerplate but it offers a good reminder to add Google Analytics tracking.
+
+* HTML5 Boilerplate's "Google Analytics code":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-analytics
+* HTML5 Boilerplate's description of the "Google Analytics code":http://html5boilerplate.com/docs/The-markup/#google-analytics-tracking-code
+
+h3. Sample @humans.txt@ File
+
+HTML5 Boilerplate provides a sample @humans.txt@ file. By convention, a humans.txt file lists the people who contributed to building the website. It also can include a colophon (notes about tools or software used to create the website). If you have a desire to be recognized or want to satisfy the curiosity of humans (those who know to look for the file), you can consider adding a @humans.txt@ file.
+
+* HTML5 Boilerplate's "humans.txt file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-humans
+
+h2. Possibly Useful for Rails Projects
+
+Depending on your requirements, the following components might be useful in your Rails application.
+
+h3. Chrome Frame
+
+The HTML5 Boilerplate @index.html@ page includes Javascript that prompts users of Internet Explorer 6 (IE6) to install the "Google Chrome Frame":http://en.wikipedia.org/wiki/Google_Chrome_Frame browser plug-in. The X-UA-Compatible metatag is required to force the IE rendering engine to use Chrome Frame's rendering engine. If your website uses HTML5 features and you wish to support users of Internet Explorer 6, you can add the Javascript to your application layout files. Web browser "market share for Internet Explorer 6":http://www.ie6countdown.com/ is rapidly decreasing so "you may not wish to support IE6":http://www.conceivablytech.com/9708/business/why-ie6-still-matters-and-why-you-should-not-care.
+
+* HTML5 Boilerplate's "Chrome Frame code":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-chromeframe
+* HTML5 Boilerplate's description of the "Chrome Frame code":http://html5boilerplate.com/docs/The-markup/#google-chrome-frame
+
+h3. Apple Touch Icons
+
+HTML5 Boilerplate provides five icons that serve as "favicons":http://en.wikipedia.org/wiki/Favicon for Apple and Android mobile devices and tablets. The icons are versions of "the orange stars":https://raw.github.com/h5bp/html5-boilerplate/master/apple-touch-icon-114x114-precomposed.png used on the  HTML5 Boilerplate website. For IOS devices such as the iPad or iPhone, these icons are used when a web page is added to the device's home screen. For web pages that don't specify a custom touch icon, a thumbnail screenshot of the page is used instead. Android has a default icon, and some systems fall back to the favicon if it is available. As a Rails developer, you probably won't want the orange stars from HTML5 Boilerplate. Instead you might have a designer create a set of custom touch icons for your project or you may use one of several favicon generators to create your own icons. You may want to read Mathias Bynens's "Everything You Always Wanted to Know About Touch Icons":http://mathiasbynens.be/notes/touch-icons to learn more.
+
+* HTML5 Boilerplate's "touch icon files":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-appletouchicons
+* HTML5 Boilerplate's description of "touch icon files":http://html5boilerplate.com/docs/The-markup/#favicons-and-touch-icons
+
+h3. Crossdomain.xml File
+
+You don't need this in your Rails app unless your app is used as a backend by a web client such as Flash or Silverlight. "What's Crossdomain.xml For?":http://html5boilerplate.com/docs/crossdomain.xml/ explains that "a cross-domain policy file is an XML document that grants a web client—such as Adobe Flash Player, Adobe Reader, etc.—permission to handle data across multiple domains." Most developers will not need it.
+
+* HTML5 Boilerplate's "crossdomain.xml file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-adobecrossdomain
+
+h2. Already Included in Rails Projects
+
+There's no need to add the following components to your Rails application.
+
+h3. 404: Not Found Page
+
+You won't need to use HTML5 Boilerplate to add this. A "404: Not Found" page is provided by Rails when you generate a new Rails application.
+
+* HTML5 Boilerplate's "404: Not Found Page":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-404
+
+h3. Favicon
+
+HTML5 Boilerplate provides a "favicon":http://en.wikipedia.org/wiki/Favicon. A zero byte @favicon.ico@ file is provided by Rails when you generate a new Rails application so you don't need to use HTML5 Boilerplate to add it. As a Rails developer, you might have a designer create a custom favicon for your project or you may use one of several favicon generators to create your own favicon. Browsers always request the @favicon.ico@ file so a zero byte file named @favicon.ico@ will eliminate 404 errors in your logfile.
+
+* HTML5 Boilerplate's "favicon file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-favicon
+
+h3. Sample @robots.txt@ File
+
+A @robots.txt@ file is provided by Rails when you generate a new Rails application so you don't need to use HTML5 Boilerplate to add it. If you are deploying a site that is under development, you may want to modify @robots.txt@ to block potential spidering while the site is unfinished.
+
+* HTML5 Boilerplate's "robots.txt file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-robots
+
+h3. Placeholder Javascript Files
+
+HTML5 Boilerplate provides placeholder @script.js@ and @plugins.js@ files as a suggested location for site-specific Javascript. When you build a new Rails app, you'll have a placeholder @app/assets/javascripts/application.js@ file that works with the "Rails asset pipeline":http://guides.rubyonrails.org/asset_pipeline.html. Don't use the placeholder @script.js@ and @plugins.js@ files offered by HTML5 Boilerplate.
+
+* HTML5 Boilerplate's "placeholder Javascript files":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-scripts
+* HTML5 Boilerplate's description of "placeholder Javascript files":http://html5boilerplate.com/docs/plugins.js-and-script.js/
+
+h3. jQuery
+
+The HTML5 Boilerplate @index.html@ file shows how to add jQuery to a non-Rails web page. For a Rails app, don't modify your application layout to match the HTML5 Boilerplate example. In Rails "jQuery is the default JavaScript library":http://weblog.rubyonrails.org/2011/4/21/jquery-new-default. The default @jquery-rails@ gem provides @jquery.js@ and @jquery_ujs.js@ files. You won't need to include these files using @@ tags because they are automatically included via the "Rails asset pipeline":http://guides.rubyonrails.org/asset_pipeline.html.
+
+HTML5 Boilerplate recommends loading jQuery from Google's CDN (content delivery network). You can write code that checks if a connection to the CDN is available, then checks if the version in the CDN matches the version in the @jquery-rails@ gem, and falls back to the version in the Rails asset pipeline if the CDN is not available. If you do so, you'll only save a single HTTP request (the first time a user visits the app). The assets pipeline produces a cached minified Javascript file which is used for all subsequent requests. For ultimate performance, you can consider using the CDN; for most projects, it's probably not worth the extra code.
+
+* HTML5 Boilerplate's "jQuery":http://www.initializr.com/builder?print&amp;mode=custom&amp;jquerydev
+* HTML5 Boilerplate's description of "jQuery":http://html5boilerplate.com/docs/The-markup/#google-cdn-for-jquery
+
+h3. X-UA-Compatible Metatag
+
+The HTML5 Boilerplate @index.html@ page includes the X-UA-Compatible metatag. Versions 8 and 9 of Internet Explorer contain multiple rendering engines and the X-UA-Compatible metatag will force IE 8 or 9 to use the newest version of the IE rendering environment. Secondly, if Chrome Frame is installed, the X-UA-Compatible metatag will force IE 8 or 9 to use Chrome Frame's rendering engine. As a Rails developer, you don't have to add the X-UA-Compatible metatag to your application layout files or set an HTTP header in your ApplicationController. In production mode, the Rails "ActionDispatch class":https://github.com/lifo/docrails/commit/6767946374353f90ce05e68d38bcb93dcb8bae56 automatically sends an HTTP header that sets the X-UA-Compatible header to @IE=Edge,chrome=1@. In development mode, the X-UA-Compatible header is set to @IE=Edge@. For a Rails app, there's no need to use the X-UA-Compatible metatag snippet from HTML5 Boilerplate.
+
+* HTML5 Boilerplate's description of the "X-UA-Compatible metatag":http://html5boilerplate.com/docs/The-markup/#make-sure-the-latest-version-of-ie-is-used
+
+h2. Not Useful for Rails Projects
+
+You won't need these components.
+
+h3. Web Server Configuration Files
+
+These files will only be useful if you are a system admininstrator. If you are the system admininstrator for a web server, see "Paul Irish's best-practice server configurations":https://github.com/h5bp/server-configs for Apache, IIS, nginx, lighttpd, Google AppEngine, and NodeJS.
+
+* HTML5 Boilerplate's "Apache configuration file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-htaccess
+* HTML5 Boilerplate's "nginx configuration file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-nginx
+* HTML5 Boilerplate's "IIS configuration file":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-webconfig
+
+h2. HTML and Javascript Support for CSS
+
+You can use these components if you are implementing CSS styles for your application and need to support Internet Explorer versions 6, 7, or 8 or features that are missing from certain web browsers. If you are using a CSS toolkit such as Twitter Bootstrap or Zurb Foundation and intend to use only the provided ("pre-themed") CSS styles, you can do without these components.
+
+h3. IE Conditional Comments (HTML Markup)
+
+The HTML5 Boilerplate @index.html@ page includes code that modifes the @&lt;html&gt;@ tag to add CSS classes for older versions of Internet Explorer. This is HTML5 Boilerplate's important contribution to cross-browser compatibility. For how it works, see Paul Irish's "Conditional stylesheets vs CSS hacks? Answer: Neither!":http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/. If you are designing with CSS and accommodating specific versions of Internet Explorer, you'll find IE conditional comments are useful.
+
+* HTML5 Boilerplate's "IE conditional comments":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-iecond
+* HTML5 Boilerplate's description of "IE conditional comments":http://html5boilerplate.com/docs/The-markup/#ie-html-tag-classes
+
+h3. Modernizr (Javascript)
+
+"Modernizr":http://www.modernizr.com/ is a Javascript library that detects browser features and installs "shims, fallbacks, and polyfills":https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills to add HTML5 functionalities to browsers that don't natively support them. It is useful as a foundation for building cross-browser-compatible HTML5 and CSS3 features. If you need to test whether a browser has CSS transitions and transforms (for example), you can use Modernizr. HTML5 Boilerplate's CSS stylesheet does not depend on Modernizr. If you are relying solely on a CSS toolkit such as Twitter Bootstrap or Zurb Foundation, you won't need Modernizr.
+
+* HTML5 Boilerplate's "Modernizr file":http://www.initializr.com/builder?print&amp;mode=custom&amp;modernizr
+* HTML5 Boilerplate's description of "Modernizr":http://html5boilerplate.com/docs/The-markup/#modernizr-yepnope-respond
+
+h3. HTML5 Shiv (Javascript)
+
+"HTML5 Shiv":http://paulirish.com/2011/the-history-of-the-html5-shiv/ is Javascript code that tricks older versions of Internet Explorer into applying CSS styling for HTML5 elements such as the @&lt;article&gt;@ tag. Its use was "first suggested in 2008":http://ejohn.org/blog/html5-shiv/ and it has been subsequently incorporated into "Modernizr":http://www.modernizr.com/. You'll only use it if you don't need all the features of Modernizr but still need to style HTML5 elements in older versions of IE.
+
+* HTML5 Boilerplate's "HTML5 Shiv file":http://www.initializr.com/builder?print&amp;mode=custom&amp;html5shiv
+* HTML5 Boilerplate's description of "HTML5 Shiv":http://html5boilerplate.com/docs/The-markup/#modernizr-yepnope-respond
+
+h3. Respond (Javascript)
+
+Scott Jehl's "Respond":https://github.com/scottjehl/Respond Javascript code enables min-width and max-width media queries in browsers (Internet Explorer 6, 7, and 8) that do not natively support CSS3 media queries. It makes it possible to do "responsive web design":http://www.alistapart.com/articles/responsive-web-design/ in browsers that don't support CSS3 media queries. Respond.js is "offered as an option":http://filamentgroup.com/lab/respondjs_now_available_in_modernizr/ in the "Modernizr download builder tool":http://www.modernizr.com/download/ and HTML5 Boilerplate includes it as part of the default Modernizr Javascript file.
+
+* HTML5 Boilerplate's "respond.js file":http://www.initializr.com/builder?print&amp;mode=custom&amp;respond
+* HTML5 Boilerplate's description of "Respond":http://html5boilerplate.com/docs/The-markup/#respond
+
+h2. CSS Toolkit
+
+You may need these components if you are implementing CSS styles for your application.
+
+h3. CSS Reset
+
+As described by Eric Meyer, "CSS Reset":http://meyerweb.com/eric/tools/css/reset/index.html "smooths out many browser inconsistencies by explicitly assigning values to things like element margins and padding, forcing all elements to have the same font size, and so on. You can find resets in most CSS frameworks, and they're a great starting point for creating your own 'baseline' styles." HTML5 Boilerplate does not provide CSS rules for a complete CSS reset. Instead it offers CSS normalization.
+
+h3. CSS Normalization
+
+CSS normalization provides a set of CSS rules that make HTML elements such as @&lt;h1&gt;@ look the same across web browsers. For a sample, see a "web page that uses normalized CSS":http://necolas.github.com/normalize.css/demo.html from the "normalize.css project":http://necolas.github.com/normalize.css/ by "Nicolas Gallagher":http://nicolasgallagher.com and "Jonathan Neal":http://twitter.com/#!/jon_neal. The HTML5 Boilerplate @css.style@ file incorporates CSS normalization from the normalize.css project and adds a few rules of its own. If you use another CSS toolkit such as Twitter Bootstrap or Zurb Foundation, you won't need the normalization from HTML5 Boilerplate.
+
+h3. CSS Print Styles
+
+The HTML5 Boilerplate @style.css@ file offers an example CSS @media print@ style that is used when a web page is printed from a browser. It is a useful reference if you are writing your own CSS styles for printing.
+
+* HTML5 Boilerplate's "CSS print styles":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-mediaqueryprint
+* HTML5 Boilerplate's description of "CSS print styles":http://html5boilerplate.com/docs/The-style/#print-styles
+
+h3. CSS Media Queries for Responsive Design
+
+You'll want to design your Rails app to accommodate a variety of devices. The term "responsive web design":http://www.alistapart.com/articles/responsive-web-design/ was coined by Ethan Marcotte and refers to using fluid grids, flexible images, and CSS3 media queries to modify a web page to accommodate devices with differing screen sizes and resolutions such as a smartphones, tablets, and desktop computers. A media query in a CSS stylesheet (such as @media screen and (max-width:320px)@) can detect the width of a smartphone's screen and adjust CSS rules accordingly. HTML5 Boilerplate provides placeholders for media queries in its @style.css@ file but does not provide CSS styles for different devices. You can use a CSS toolkit such as "Skeleton":http://getskeleton.com/ or "Zurb Foundation":http://foundation.zurb.com/ to design sites that adapt to different browser page sizes.
+
+* HTML5 Boilerplate's "media queries placeholders":http://www.initializr.com/builder?print&amp;mode=custom&amp;h5bp-mediaqueries
+* HTML5 Boilerplate's description of "media queries placeholders":http://html5boilerplate.com/docs/The-style/#media-queries
+
+h3. CSS Paged Media Styles
+
+Paged media support means browsers will break content into pages to accommodate orphans/widows. The HTML5 Boilerplate @style.css@ file includes CSS rules for paged media. Paged media is supported only in a few browsers. You probably don't need this.
+
+* HTML5 Boilerplate's description of "paged media styles":http://html5boilerplate.com/docs/The-style/#paged-media-styles
+
+h3. CSS Helper Classes
+
+The HTML5 Boilerplate @style.css@ file includes several CSS classes that are often needed by web designers. You'll probably use some of these if you are not using another CSS toolkit.
+
+* HTML5 Boilerplate's "image-replacement":http://html5boilerplate.com/docs/The-style/#ir
+* HTML5 Boilerplate's "hidden":http://html5boilerplate.com/docs/The-style/#hidden
+* HTML5 Boilerplate's "visuallyhidden":http://html5boilerplate.com/docs/The-style/#visuallyhidden
+* HTML5 Boilerplate's "invisible":http://html5boilerplate.com/docs/The-style/#invisible
+* HTML5 Boilerplate's "clearfix":http://html5boilerplate.com/docs/The-style/#clearfix
+
+h3. CSS Grid
+
+HTML5 Boilerplate does not provide a CSS grid system. You can add a CSS toolkit that provides a grid system.
+
+h2. Conclusion
+
+The HTML5 Boilerplate project integrates the research and thought of a large community of front-end developers. In its downloadable form, HTML5 Boilerplate doesn't fit easily into a typical Rails application. However, HTML5 Boilerplate serves as a useful reference for Rails developers who want to provide structure and convention for the HTML, CSS, and Javascript of an application's front-end. Hopefully, with this guide, you can pick and choose the components that are useful for a Rails app. In the process, you'll learn about current best practices for front-end development.
+
+h2. Did You Like the Article?
+
+Was the article useful to you? Follow "@rails_apps":http://twitter.com/rails_apps on Twitter and tweet some praise. I'd love to know you were helped out by the article.
+
+You can also find me on "Facebook":https://www.facebook.com/daniel.kehoe.sf or "Google+":https://plus.google.com/+DanielKehoe/.
+
+h4. Contributors
+
+Thank you to "Nicolas Gallagher":http://nicolasgallagher.com and "Peter Cooper":http://peterc.org/ for commenting on the first draft of this article.
+   
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

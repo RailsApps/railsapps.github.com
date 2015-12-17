@@ -44,61 +44,108 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Rails with Git and GitHub</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 4 September 2013</em></p>
-<p>Using Git and GitHub with Rails. <a href="http://git-scm.com/">Git</a> provides a source control repository. Use Git to roll back code changes as needed, when you are collaborating with others, and when you must deploy an app for hosting with a service such as Heroku. Get a <a href="https://github.com/">GitHub</a> account for remote backup and collaboration.</p>
-<p>If you are building a throw-away app for your own education, you may decide not to use Git, but sooner or later you will need to learn to use Git to participate in the open source community. Git is not easy to understand or learn (see a <a href="http://news.ycombinator.com/item?id=4199772">discussion</a>) but it is a worthwhile and essential tool for software development.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>Git Explained</h2>
-<p>You’ll use Git to record the changes you make to your project over time. In Git, these changes are called “commits.”</p>
-<p>Commits contain a change a user has made to the code and some additional useful metadata. This metadata includes the time the change was made, your name, and a message you add to describe the change. Git itself is a specialized database that stores these commits. Git provides a complex set of commands that allow more than one developer to make changes and stay in sync; maintain and access different versions of a project; and retrieve past versions of a project.</p>
-<h2>Learning Git</h2>
-<p>If you are new to Git, you can read a free online version of the book <a href="http://git-scm.com/book">Pro Git</a> by Scott Chacon.</p>
-<p>GitHub offers a quick interactive tutorial at <a href="http://try.github.com/">try.github.com</a>.</p>
-<p>The best Git tutorial is <a href="http://gitimmersion.com/">Git Immersion</a> from EdgeCase.</p>
-<p>I recommend reading Charles Duan’s article <a href="http://www.sbf5.com/~cduan/technical/git/">Understanding Git Conceptually</a> with any other tutorial.</p>
-<p>Michael Hartl’s Rails Tutorial book covers <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control">Version Control with Git</a> for typical Rails projects.</p>
-<h2>Got Git?</h2>
-<p>Check that Git is installed on your computer:</p>
+        h1. Rails with Git and GitHub
+
+h4. by Daniel Kehoe
+
+_Last updated 4 September 2013_
+
+Using Git and GitHub with Rails. "Git":http://git-scm.com/ provides a source control repository. Use Git to roll back code changes as needed, when you are collaborating with others, and when you must deploy an app for hosting with a service such as Heroku. Get a "GitHub":https://github.com/ account for remote backup and collaboration.
+
+If you are building a throw-away app for your own education, you may decide not to use Git, but sooner or later you will need to learn to use Git to participate in the open source community. Git is not easy to understand or learn (see a "discussion":http://news.ycombinator.com/item?id=4199772) but it is a worthwhile and essential tool for software development.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to "join the RailsApps project":http://railsapps.github.io/.
+
+h2. Git Explained
+
+You'll use Git to record the changes you make to your project over time. In Git, these changes are called "commits."
+
+Commits contain a change a user has made to the code and some additional useful metadata. This metadata includes the time the change was made, your name, and a message you add to describe the change. Git itself is a specialized database that stores these commits. Git provides a complex set of commands that allow more than one developer to make changes and stay in sync; maintain and access different versions of a project; and retrieve past versions of a project.
+
+h2. Learning Git
+
+If you are new to Git, you can read a free online version of the book "Pro Git":http://git-scm.com/book by Scott Chacon.
+
+GitHub offers a quick interactive tutorial at "try.github.com":http://try.github.com/.
+
+The best Git tutorial is "Git Immersion":http://gitimmersion.com/ from EdgeCase.
+
+I recommend reading Charles Duan's article "Understanding Git Conceptually":http://www.sbf5.com/~cduan/technical/git/ with any other tutorial.
+
+Michael Hartl's Rails Tutorial book covers "Version Control with Git":http://ruby.railstutorial.org/ruby-on-rails-tutorial-book?version=3.2#sec:version_control for typical Rails projects.
+
+h2. Got Git?
+
+Check that Git is installed on your computer:
+
 <pre>
 $ git version
 </pre>
-<h2>Install Git</h2>
-<p>Here are instructions if you need to install Git.</p>
-<h3>Install Git on Mac OS X</h3>
-<p>The easiest way to install Git is with <a href="http://mac.github.com/">GitHub for Mac</a>.</p>
-<p>Before you download GitHub for Mac, get a <a href="https://github.com/signup/free">free GitHub account</a>. When you register, use your real name. Your GitHub account is as important as a résumé or a business card so use the name by which you are known professionally.</p>
-<p>Download the <a href="http://mac.github.com/">GitHub for Mac</a> application. Drag the application into your Applications folder. Launch the GitHub application to begin installation. You’ll be asked for your GitHub account username and password. The GitHub application will generate and install a <em>public key</em>. The public key is used to encrypt connections between your computer and GitHub. You’ll get an email message from GitHub informing you that a new public key was added to your GitHub account.</p>
-<p>In the GitHub application, you’ll see this screen next:</p>
-<p><img src="http://railsapps.github.io/images/installing-git.png" title="Installing Git" alt="Installing Git"></p>
-<p>Before continuing, click the button to “Install Command Line Tools.”</p>
-<p>The application will install the Git executable into the hidden <strong>/usr/local/bin/</strong> system folder. You’ll be prompted for your Mac login password to make the addition to your system files (the button is labeled “Install Helper”). The application will inform you that installation is complete. Clicking “Continue” will give you an option to identify local repositories (folders on your laptop that you want to back up to GitHub). Skip this step and select “Done.” You’ll see the GitHub for Mac main window.</p>
-<p>You can quit GitHub for Mac. It is a graphical front-end for Git that you can use to become familiar with Git. Very few Rails developers use the GitHub for Mac application; since you will be using the Terminal to build Rails applications, it is easier to use Git from the command line. Installing GitHub for Mac is just the easiest way to install the Git executable.</p>
-<h3>Install Git on Ubuntu Linux</h3>
-<p>If Git isn’t installed on your Ubuntu system, use the apt-get package manager to install it:</p>
+
+h2. Install Git
+
+Here are instructions if you need to install Git.
+
+h3. Install Git on Mac OS X
+
+The easiest way to install Git is with "GitHub for Mac":http://mac.github.com/.
+
+Before you download GitHub for Mac, get a "free GitHub account":https://github.com/signup/free. When you register, use your real name. Your GitHub account is as important as a résumé or a business card so use the name by which you are known professionally.
+
+Download the "GitHub for Mac":http://mac.github.com/ application. Drag the application into your Applications folder. Launch the GitHub application to begin installation. You'll be asked for your GitHub account username and password. The GitHub application will generate and install a _public key_. The public key is used to encrypt connections between your computer and GitHub. You'll get an email message from GitHub informing you that a new public key was added to your GitHub account.
+
+In the GitHub application, you'll see this screen next:
+
+!http://railsapps.github.io/images/installing-git.png(Installing Git)!
+
+Before continuing, click the button to "Install Command Line Tools."
+
+The application will install the Git executable into the hidden */usr/local/bin/* system folder. You'll be prompted for your Mac login password to make the addition to your system files (the button is labeled "Install Helper"). The application will inform you that installation is complete. Clicking "Continue" will give you an option to identify local repositories (folders on your laptop that you want to back up to GitHub). Skip this step and select "Done." You'll see the GitHub for Mac main window.
+
+You can quit GitHub for Mac. It is a graphical front-end for Git that you can use to become familiar with Git. Very few Rails developers use the GitHub for Mac application; since you will be using the Terminal to build Rails applications, it is easier to use Git from the command line. Installing GitHub for Mac is just the easiest way to install the Git executable.
+
+h3. Install Git on Ubuntu Linux
+
+If Git isn't installed on your Ubuntu system, use the apt-get package manager to install it:
+
 <pre>
 $ sudo apt-get install git-core
 </pre>
-<p>You’ll need privileges as system administrator.</p>
-<h3>Install Git on Windows</h3>
-<p>Use the application from the <a href="http://msysgit.github.com/">msysGit project</a>.</p>
-<p>It provides both a command line and <span class="caps">GUI</span> version.</p>
-<h2>Git Config</h2>
-<p>Check your Git configuration parameters:</p>
+
+You'll need privileges as system administrator.
+
+h3. Install Git on Windows
+
+Use the application from the "msysGit project":http://msysgit.github.com/.
+
+It provides both a command line and GUI version.
+
+h2. Git Config
+
+Check your Git configuration parameters:
+
 <pre>
 $ git config -l --global
 user.name=Daniel Kehoe
 user.email=daniel@danielkehoe.com
 </pre>
-<p>The email address will identify you to any services that use your Git repo, such as GitHub and Heroku.</p>
-<p>Life will be easier if you use the same email address for all services where you use Git (so sign up for GitHub and Heroku using the same address).</p>
-<h2>Ignore Files</h2>
-<p>When you use the <code>rails new</code> command, Rails creates a <strong>.gitignore</strong> file for you in your application root directory. You may want to modify it:</p>
+
+The email address will identify you to any services that use your Git repo, such as GitHub and Heroku.
+
+Life will be easier if you use the same email address for all services where you use Git (so sign up for GitHub and Heroku using the same address).
+
+h2. Ignore Files
+
+When you use the @rails new@ command, Rails creates a *.gitignore* file for you in your application root directory. You may want to modify it:
+
 <pre>
 .bundle
 db/*.sqlite3
@@ -106,79 +153,122 @@ log/*.log
 tmp/
 .DS_Store
 </pre>
-<p>The RailsApps project has a more extensive <a href="https://github.com/RailsApps/rails-composer/blob/master/files/gitignore.txt">example <strong>.gitignore</strong> file</a> you might want to examine.</p>
-<h2>Initialize Git For Your Rails Application</h2>
-<p>You’ll need to do this if you have created a new Rails application. If you’ve created a Rails application using the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”), the program will have done this for you already.</p>
-<p>Be sure you are in your application’s root directory.</p>
-<p>Initialize Git and check in your first commit:</p>
+
+The RailsApps project has a more extensive "example *.gitignore* file":https://github.com/RailsApps/rails-composer/blob/master/files/gitignore.txt you might want to examine.
+
+h2. Initialize Git For Your Rails Application
+
+You'll need to do this if you have created a new Rails application. If you've created a Rails application using the "Rails Composer":http://railsapps.github.io/rails-composer/ tool ("like the 'rails new' command on steroids"), the program will have done this for you already.
+
+Be sure you are in your application's root directory.
+
+Initialize Git and check in your first commit:
+
 <pre>
 $ git init
 $ git add .
 $ git commit -m 'initial commit'
 </pre>
-<p>The <code>-m 'initial commit'</code> argument attaches a comment (“m” for “message”) to the commit. You should include a comment with every commit.</p>
-<p>You can check your commit status at any time with:</p>
+
+The @-m 'initial commit'@ argument attaches a comment ("m" for "message") to the commit. You should include a comment with every commit.
+
+You can check your commit status at any time with:
+
 <pre>
 $ git status
 </pre>
-<h2>Get a GitHub Account</h2>
-<p>Use a GitHub repository if you want an offsite copy of your work or you plan to share your work with others.</p>
-<p>Get a <a href="https://github.com/signup/free">free GitHub account</a> if you don’t already have one. It’s advisable to register using the email address that you’ve used to configure git locally (see “Git Config” above).</p>
-<p>Check that your GitHub account is set up properly:</p>
+
+h2. Get a GitHub Account
+
+Use a GitHub repository if you want an offsite copy of your work or you plan to share your work with others.
+
+Get a "free GitHub account":https://github.com/signup/free if you don't already have one. It's advisable to register using the email address that you've used to configure git locally (see "Git Config" above).
+
+Check that your GitHub account is set up properly:
+
 <pre>
 $ ssh -T -p 443 git@ssh.github.com
 </pre>
-<p>If your account is set up correctly, you’ll see a message:</p>
+
+If your account is set up correctly, you'll see a message:
+
 <pre>
 Hi ...! You've successfully authenticated, but GitHub does not provide shell access.
 </pre>
-<p>The first time you connect, you will be warned (by ssh) that you have not previously connected with the host at ssh.github.com:</p>
+
+The first time you connect, you will be warned (by ssh) that you have not previously connected with the host at ssh.github.com:
+
 <pre>
 The authenticity of host '[ssh.github.com]:443 ...' can't be established.
 Are you sure you want to continue connecting (yes/no)?
 </pre>
-<p>Unless you are the victim of a particularly insidious and unlikely exploit, you can safely answer “yes.”</p>
-<p>If you see an error message such as <code>Host key verification failed</code>, review GitHub’s document <a href="http://help.github.com/set-up-git-redirect/">setting up Git and <span class="caps">SSH</span> keys</a> or the guide <a href="http://help.github.com/ssh-issues/">troubleshoot common <span class="caps">SSH</span> Problems</a>.</p>
-<h2>Save it to GitHub</h2>
-<p>Go to GitHub and create a new empty repository (<a href="https://github.com/repositories/new">https://github.com/repositories/new</a>) into which you can push your local git repo.</p>
-<p>Add GitHub as a remote repository for your project and push your local project to the remote repository:</p>
+
+Unless you are the victim of a particularly insidious and unlikely exploit, you can safely answer "yes."
+
+If you see an error message such as @Host key verification failed@, review GitHub's document "setting up Git and SSH keys":http://help.github.com/set-up-git-redirect/ or the guide "troubleshoot common SSH Problems":http://help.github.com/ssh-issues/.
+
+h2. Save it to GitHub
+
+Go to GitHub and create a new empty repository ("https://github.com/repositories/new":https://github.com/repositories/new) into which you can push your local git repo.
+
+Add GitHub as a remote repository for your project and push your local project to the remote repository:
+
 <pre>
 $ git remote add origin git@github.com:YOUR_GITHUB_ACCOUNT/YOUR_PROJECT_NAME.git
 $ git push origin master
 </pre>
-<p>At each stage of completion, you should check your code into your local repository:</p>
+
+At each stage of completion, you should check your code into your local repository:
+
 <pre>
 $ git commit -am "some helpful comment"
 </pre>
-<p>Note the <code>-am</code> argument. Use <code>-m</code> to add a commit message. Use <code>-a</code> to automatically remove any files you may have marked for deletion (otherwise you have to use “git rm,” adding an additional step). You can combine <code>-m</code> and <code>-a</code> as <code>-am</code>.</p>
-<p>Then push your changes to the remote repository:</p>
+
+Note the @-am@ argument. Use @-m@ to add a commit message. Use @-a@ to automatically remove any files you may have marked for deletion (otherwise you have to use "git rm," adding an additional step). You can combine @-m@ and @-a@ as @-am@.
+
+Then push your changes to the remote repository:
+
 <pre>
 $ git push origin master
 </pre>
-<h2>Git Commit Messages</h2>
-<p>If you’re working on a team, your colleagues will appreciate if you follow convention for the style of your commit messages:</p>
-<ul>
-<li>Limit the first line of the commit message to 50 characters.</li>
-	<li>Use the imperative tense for the commit message (“fix” not “fixed”).</li>
-</ul><p>See an explanation and other suggestions: <a href="http://365git.tumblr.com/post/3308646748/writing-git-commit-messages">Writing Git commit messages</a> and <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">A Note About Git Commit Messages</a>.</p>
-<h2>Git Workflow</h2>
-<p>When you are using Git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your Git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such “granular” commits. Instead, get in the habit of creating a Git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and “squash” the commits so your comrades see just one commit for the entire feature.</p>
-<p>Here’s how to create a new Git branch for a feature named “login”:</p>
+
+h2. Git Commit Messages
+
+If you're working on a team, your colleagues will appreciate if you follow convention for the style of your commit messages:
+
+* Limit the first line of the commit message to 50 characters.
+* Use the imperative tense for the commit message ("fix" not "fixed").
+
+See an explanation and other suggestions: "Writing Git commit messages":http://365git.tumblr.com/post/3308646748/writing-git-commit-messages and "A Note About Git Commit Messages":http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html.
+
+h2. Git Workflow
+
+When you are using Git for version control, you can commit every time you save a file, even for the tiniest typo fixes. If only you will ever see your Git commits, no one will care. But if you are working on a team, either commercially or as part of an open source project, you will drive your fellow programmers crazy if they try to follow your work and see such "granular" commits. Instead, get in the habit of creating a Git branch each time you begin work to implement a feature. When your new feature is complete, merge the branch and "squash" the commits so your comrades see just one commit for the entire feature.
+
+Here's how to create a new Git branch for a feature named "login":
+
 <pre>
 $ git checkout -b login
 </pre>
-<p>The command creates a new branch named “login” and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with Git).</p>
-<p>When the new feature is complete, merge the working branch to “master” and squash the commits so you have just one commit for the entire feature:</p>
+
+The command creates a new branch named "login" and switches to it, analogous to copying all your files to a new directory and moving to work in the new directory (though that is not really what happens with Git).
+
+When the new feature is complete, merge the working branch to "master" and squash the commits so you have just one commit for the entire feature:
+
 <pre>
 $ git checkout master
 $ git merge --squash login
 $ git commit -am "implement 'login' feature"
 </pre>
-<p>You can delete the working branch when you’re done:</p>
+
+You can delete the working branch when you're done:
+
 <pre>
 $ git branch -D login
 </pre>
-<p>Experienced Git user? Have a recommendation? Leave a comment below.</p>
+
+Experienced Git user? Have a recommendation? Leave a comment below.
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

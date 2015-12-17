@@ -45,351 +45,493 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Install Ruby on Rails · Ubuntu Linux</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 27 August 2015</em></p>
-<p>Install Ruby on Rails 4.2 on Ubuntu Linux. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.2, the newest version of Rails, on Ubuntu.</p>
-<p>This in-depth installation guide is used by developers to configure their working environment for real-world Rails development. This guide doesn’t cover installation of Ruby on Rails for a production server.</p>
-<p>To develop with Rails on Ubuntu, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.</p>
-<p>For an overview of what’s changed in each Rails release, see a <a href="http://railsapps.github.io/rails-release-history.html">Ruby on Rails Release History</a>.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is useful, please support us and <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>Ruby on Rails on Ubuntu</h2>
-<p>Ubuntu is a popular platform for Rails development, as are other Unix-based operating systems such as Mac OS X. Installation is relatively easy and widespread help is available in the Rails developer community.</p>
-<h3>Use a Ruby Version Manager</h3>
-<p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a> or Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>.</p>
-<p>Conveniently, you can use <span class="caps">RVM</span> to install Ruby.</p>
-<h3>Don’t Install Ruby from a Package</h3>
-<p>Ubuntu provides a package manager system for installing system software. You’ll use this to prepare your computer before installing Ruby. However, don’t use <code>apt-get</code> to install Ruby. The package manager will install an outdated version of Ruby. And it will install Ruby at the system level (for all users). It’s better to use <span class="caps">RVM</span> to install Ruby within your user environment.</p>
-<h3>Hosted Development</h3>
-<p>You can use Ruby on Rails without actually installing it on your computer. Hosted development, using a service such as <a href="https://c9.io/">Cloud9</a>, means you get a computer “in the cloud” that you use from your web browser. Any computer can access the hosted development environment, though you’ll need a broadband connection. Cloud9 is free for small projects.</p>
-<p>Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to “work in the cloud” using Cloud9. Cloud9 is a good option if you have trouble installing Ruby on Rails on your computer.</p>
-<h2>Prepare Your System</h2>
-<p>You’ll need to prepare your computer with the required system software before installing Ruby on Rails.</p>
-<p>You’ll need superuser (root) access to update the system software.</p>
-<p>Update your package manager first:</p>
+        h1. Install Ruby on Rails · Ubuntu Linux
+
+h4. by Daniel Kehoe
+
+_Last updated 16 December 2015_
+
+Install Ruby on Rails 4.2 on Ubuntu Linux. Up-to-date, detailed instructions for the Rails newest release. How to install Rails 4.2, the newest version of Rails, on Ubuntu.
+
+This in-depth installation guide is used by developers to configure their working environment for real-world Rails development. This guide doesn't cover installation of Ruby on Rails for a production server.
+
+To develop with Rails on Ubuntu, you'll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework.
+
+For an overview of what's changed in each Rails release, see a "Ruby on Rails Release History":http://railsapps.github.io/rails-release-history.html.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Support for the project comes from subscribers. If this article is useful, please support us and "join the RailsApps project":http://railsapps.github.io/.
+
+h2. Ruby on Rails on Ubuntu
+
+Ubuntu is a popular platform for Rails development, as are other Unix-based operating systems such as Mac OS X. Installation is relatively easy and widespread help is available in the Rails developer community.
+
+h3. Use a Ruby Version Manager
+
+You'll need an easy way to switch between Ruby versions. Just as important, you'll have a dependency mess if you install gems into the system environment. I recommend "RVM":https://rvm.io/ to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as "Chruby":https://github.com/postmodern/chruby or Sam Stephenson's "rbenv":https://github.com/sstephenson/rbenv.
+
+Conveniently, you can use RVM to install Ruby.
+
+h3. Don't Install Ruby from a Package
+
+Ubuntu provides a package manager system for installing system software. You'll use this to prepare your computer before installing Ruby. However, don't use @apt-get@ to install Ruby. The package manager will install an outdated version of Ruby. And it will install Ruby at the system level (for all users). It's better to use RVM to install Ruby within your user environment.
+
+h3. Hosted Development
+
+You can use Ruby on Rails without actually installing it on your computer. Hosted development, using a service such as "Cloud9":https://c9.io/, means you get a computer "in the cloud" that you use from your web browser. Any computer can access the hosted development environment, though you’ll need a broadband connection. Cloud9 is free for small projects.
+
+Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to "work in the cloud" using Cloud9. Cloud9 is a good option if you have trouble installing Ruby on Rails on your computer.
+
+h2. Prepare Your System
+
+You'll need to prepare your computer with the required system software before installing Ruby on Rails.
+
+You'll need superuser (root) access to update the system software.
+
+Update your package manager first:
+
 <pre>
 $ sudo apt-get update
 </pre>
-<p>This must finish without error or the following step will fail.</p>
-<p>Install <a href="http://en.wikipedia.org/wiki/CURL">Curl</a>:</p>
+
+This must finish without error or the following step will fail.
+
+Install "Curl":http://en.wikipedia.org/wiki/CURL:
+
 <pre>
 $ sudo apt-get install curl
 </pre>
-<p>You’ll use Curl for installing <span class="caps">RVM</span>.</p>
-<h2>Install Ruby Using <span class="caps">RVM</span>
-</h2>
-<p>Use <span class="caps">RVM</span>, the <a href="https://rvm.io/">Ruby Version Manager</a>, to install Ruby and manage your Rails versions.</p>
-<p>If you have an older version of Ruby installed on your computer, there’s no need to remove it. <span class="caps">RVM</span> will leave your “system Ruby” untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the <span class="caps">RVM</span> version will take precedence.</p>
-<p>Ruby 2.2.3 was current when this was written. You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>. <span class="caps">RVM</span> will install the newest stable Ruby version.</p>
-<p>The <span class="caps">RVM</span> website explains <a href="https://rvm.io/rvm/install/">how to install <span class="caps">RVM</span></a>. Here’s the simplest way:</p>
+
+You'll use Curl for installing RVM.
+
+h2. Install Ruby Using RVM
+
+Use RVM, the "Ruby Version Manager":https://rvm.io/, to install Ruby and manage your Rails versions.
+
+If you have an older version of Ruby installed on your computer, there's no need to remove it. RVM will leave your "system Ruby" untouched and use your shell to intercept any calls to Ruby. Any older Ruby versions will remain on your system and the RVM version will take precedence.
+
+Ruby 2.2.4 was current when this was written. You can check for the current "recommended version of Ruby":http://www.ruby-lang.org/en/downloads/. RVM will install the newest stable Ruby version.
+
+The RVM website explains "how to install RVM":https://rvm.io/rvm/install/. Here's the simplest way:
+
 <pre>
 $ \curl -L https://get.rvm.io | bash -s stable --ruby
 </pre>
-<p>Note the backslash before “curl” (this avoids potential version conflicts).</p>
-<p>The “—ruby” flag will install the newest version of Ruby.</p>
-<p><span class="caps">RVM</span> includes an “autolibs” option to identify and install system software needed for your operating system. See the article <a href="https://blog.engineyard.com/2013/rvm-ruby-2-0"><span class="caps">RVM</span> Autolibs: Automatic Dependency Handling and Ruby 2.0</a> for more information.</p>
-<h4>If You Already Have <span class="caps">RVM</span> Installed</h4>
-<p>If you already have <span class="caps">RVM</span> installed, update it to the latest version and install Ruby:</p>
+
+Note the backslash before "curl" (this avoids potential version conflicts).
+
+The "--ruby" flag will install the newest version of Ruby.
+
+RVM includes an "autolibs" option to identify and install system software needed for your operating system. See the article "RVM Autolibs: Automatic Dependency Handling and Ruby 2.0":https://blog.engineyard.com/2013/rvm-ruby-2-0 for more information.
+
+h4. If You Already Have RVM Installed
+
+If you already have RVM installed, update it to the latest version and install Ruby:
+
 <pre>
 $ rvm get stable --autolibs=enable
 $ rvm install ruby
-$ rvm --default use ruby-2.2.3
+$ rvm --default use ruby-2.2.4
 </pre>
-<h4>Installation Troubleshooting and Advice</h4>
-<h4>
-<span class="caps">RVM</span> Troubleshooting</h4>
-<p>If you have trouble installing Ruby with <span class="caps">RVM</span>, you can get help directly from the <span class="caps">RVM</span> team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
-<p><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></p>
-<p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> because the <span class="caps">RVM</span> team is helpful and friendly. <span class="caps">IRC</span> on freenode requires registration (see <a href="http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration">how to register</a>).</p>
-<h2>Install Node.js</h2>
-<p>Since Rails 3.1, a JavaScript runtime has been needed for development on Ubuntu Linux. The JavaScript runtime is required to compile code for the Rails asset pipeline. For development on Ubuntu Linux it is best to install the <a href="http://nodejs.org/">Node.js</a> server-side JavaScript environment.</p>
+
+h4. Installation Troubleshooting and Advice
+
+h4. RVM Troubleshooting
+
+If you have trouble installing Ruby with RVM, you can get help directly from the RVM team using the IRC (Internet Relay Chat) channel #rvm on irc.freenode.net:
+
+"http://webchat.freenode.net/?channels=rvm":http://webchat.freenode.net/?channels=rvm
+
+If you’ve never used IRC, it’s worthwhile to figure out how to use IRC because the RVM team is helpful and friendly. IRC on freenode requires registration (see "how to register":http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration).
+
+h2. Install Node.js
+
+Since Rails 3.1, a JavaScript runtime has been needed for development on Ubuntu Linux. The JavaScript runtime is required to compile code for the Rails asset pipeline. For development on Ubuntu Linux it is best to install the "Node.js":http://nodejs.org/ server-side JavaScript environment.
+
 <pre>
 $ sudo apt-get install nodejs
 </pre>
-<p>and set it in your <code>$PATH</code>.</p>
-<p>If you don’t install Node.js, you’ll need to add this to the Gemfile for each Rails application you build:</p>
+
+and set it in your @$PATH@.
+
+If you don't install Node.js, you'll need to add this to the Gemfile for each Rails application you build:
+
 <pre>
 gem 'therubyracer'
 </pre>
-<h2>Check the Gem Manager</h2>
-<p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the gem manager in Ruby.</p>
-<p>Check the installed gem manager version. You may see:</p>
+
+h2. Check the Gem Manager
+
+"RubyGems":https://rubygems.org/gems/rubygems-update is the gem manager in Ruby.
+
+Check the installed gem manager version. You may see:
+
 <pre>
 $ gem -v
-2.2.3
+2.2.4
 </pre>
-<p>At the time this was written, a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems</a> version was available. Use <code>gem update --system</code> to upgrade the Ruby gem manager:</p>
+
+At the time this was written, a "newer RubyGems":https://rubygems.org/gems/rubygems-update version was available. Use @gem update --system@ to upgrade the Ruby gem manager:
+
 <pre>
 $ gem update --system
 </pre>
-<h2>
-<span class="caps">RVM</span> Gemsets</h2>
-<p>Not all Rails developers use <span class="caps">RVM</span> to manage gems, but many recommend it.</p>
-<p>Display a list of gemsets:</p>
+
+h2. RVM Gemsets
+
+Not all Rails developers use RVM to manage gems, but many recommend it.
+
+Display a list of gemsets:
+
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.2.3
+gemsets for ruby-2.2.4
 =&gt; (default)
    global
 </pre>
-<p>Only the “default” and “global” gemsets are pre-installed.</p>
-<p>If you get an error “rvm is not a function,” close your console and open it again.</p>
-<h2 id="gems">RVM’s Global Gemset</h2>
-<p>See what gems are installed in the “global” gemset:</p>
+
+Only the "default" and "global" gemsets are pre-installed.
+
+If you get an error "rvm is not a function," close your console and open it again.
+
+h2(#gems). RVM's Global Gemset
+
+See what gems are installed in the "global" gemset:
+
 <pre>
 $ rvm gemset use global
 $ gem list
 </pre>
-<p>A trouble-free development environment requires the newest versions of the default gems.</p>
-<p>Several gems are installed with Ruby or the <span class="caps">RVM</span> default gemset:</p>
-<ul>
-<li><a href="http://rubygems.org/gems/bundler-unload">bundler-unload</a></li>
-	<li><a href="http://rubygems.org/gems/rake">rake</a></li>
-	<li><a href="http://rubygems.org/gems/rubygems-bundler">rubygems-bundler</a></li>
-	<li><a href="http://rubygems.org/gems/rvm">rvm</a></li>
-</ul><p>To get a list of gems that are outdated:</p>
+
+A trouble-free development environment requires the newest versions of the default gems.
+
+Several gems are installed with Ruby or the RVM default gemset:
+
+* "bundler-unload":http://rubygems.org/gems/bundler-unload
+* "rake":http://rubygems.org/gems/rake
+* "rubygems-bundler":http://rubygems.org/gems/rubygems-bundler
+* "rvm":http://rubygems.org/gems/rvm
+
+To get a list of gems that are outdated:
+
 <pre>
 $ gem outdated
 ### list not shown for brevity
 </pre>
-<p>To update all stale gems:</p>
+
+To update all stale gems:
+
 <pre>
 $ gem update
 ### list not shown for brevity
 </pre>
-<p>In particular, rake should be updated to version 10.2.1 or newer.</p>
-<h4>Stay Current</h4>
-<p>You can track updates to gems at the RubyGems.org site by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>. Search for each gem you use and “subscribe” to see a feed of updates in the dashboard (an <span class="caps">RSS</span> feed is available from the dashboard). After you’ve built an application and set up a GitHub repository, you can stay informed with <a href="https://gemnasium.com/">Gemnasium</a> or <a href="https://www.versioneye.com/">VersionEye</a>. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.</p>
-<h4>Faster Gem Installation</h4>
-<p>By default, when you install gems, documentation files will be installed. Developers seldom use gem documentation files (they’ll browse the web instead). Installing gem documentation files takes time, so many developers like to toggle the default so no documentation is installed.</p>
-<p>Here’s how to speed up gem installation by disabling the documentation step:</p>
+
+In particular, rake should be updated to version 10.2.1 or newer.
+
+h4. Stay Current
+
+You can track updates to gems at the RubyGems.org site by creating an account and visiting your "dashboard":https://rubygems.org/dashboard. Search for each gem you use and "subscribe" to see a feed of updates in the dashboard (an RSS feed is available from the dashboard). After you've built an application and set up a GitHub repository, you can stay informed with "Gemnasium":https://gemnasium.com/ or "VersionEye":https://www.versioneye.com/. These services survey your GitHub repo and send email notifications when gem versions change. Gemnasium and VersionEye are free for public repositories with a premium plan for private repositories.
+
+h4. Faster Gem Installation
+
+By default, when you install gems, documentation files will be installed. Developers seldom use gem documentation files (they'll browse the web instead). Installing gem documentation files takes time, so many developers like to toggle the default so no documentation is installed.
+
+Here's how to speed up gem installation by disabling the documentation step:
+
 <pre>
 $ echo "gem: --no-document" &gt;&gt; ~/.gemrc
 </pre>
-<p>This adds the line <code>gem: --no-document</code> to the hidden <strong>.gemrc</strong> file in your home directory.</p>
-<h4>Install Bundler</h4>
-<p>The <a href="https://rubygems.org/gems/bundler">Bundler</a> gem is an essential tool for managing gems when developing and running Rails applications. <span class="caps">RVM</span> used to install Bundler automatically. As of version 1.26.11 (released March 31, 2015), <span class="caps">RVM</span> no longer installs Bundler automatically. You must install Bundler:</p>
+
+This adds the line @gem: --no-document@ to the hidden *.gemrc* file in your home directory.
+
+h4. Install Bundler
+
+The "Bundler":https://rubygems.org/gems/bundler gem is an essential tool for managing gems when developing and running Rails applications. RVM used to install Bundler automatically. As of version 1.26.11 (released March 31, 2015), RVM no longer installs Bundler automatically. You must install Bundler:
+
 <pre>
 $ gem install bundler
 </pre>
-<h4>Nokogiri</h4>
-<p><a href="http://nokogiri.org/">Nokogiri</a> is a gem that is a dependency for many other gems. Nokogiri is a gem that requires compilation for your specific operating system. As such, if your system environment doesn’t match Nokogiri’s requirements, compilation of Nokogiri will fail. If your system is configured properly, you’ll be able to compile Nokogiri. However, compilation takes time. Every time you install the Nokogiri gem, you’ll wait (as long as five minutes).</p>
-<p>To save time, install the Nokogiri gem in the <span class="caps">RVM</span> global gemset:</p>
+
+h4. Nokogiri
+
+"Nokogiri":http://nokogiri.org/ is a gem that is a dependency for many other gems. Nokogiri is a gem that requires compilation for your specific operating system. As such, if your system environment doesn't match Nokogiri's requirements, compilation of Nokogiri will fail. If your system is configured properly, you'll be able to compile Nokogiri. However, compilation takes time. Every time you install the Nokogiri gem, you'll wait (as long as five minutes).
+
+To save time, install the Nokogiri gem in the RVM global gemset:
+
 <pre>
 $ gem install nokogiri
 </pre>
-<p>During installation, Nokogiri will display two lengthy messages in the console. It will also pause without displaying any progress for as long as five minutes. Don’t assume installation has failed unless you see an error message or you’ve waited more than ten minutes.</p>
-<p>If installation fails, make sure your system is configured properly (look for help on <a href="http://stackoverflow.com/questions/tagged/nokogiri">Stack Overflow</a>).</p>
-<h2>Rails Installation Options</h2>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a>. Rails 4.2.4 was current when this was written.</p>
-<p>You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.</p>
-<p>If you install Rails at this point, you will install it into the global gemset.</p>
-<p>Instead, make a gemset just for the current stable release:</p>
+
+During installation, Nokogiri will display two lengthy messages in the console. It will also pause without displaying any progress for as long as five minutes. Don't assume installation has failed unless you see an error message or you've waited more than ten minutes.
+
+If installation fails, make sure your system is configured properly (look for help on "Stack Overflow":http://stackoverflow.com/questions/tagged/nokogiri).
+
+h2. Rails Installation Options
+
+Check for the "current version of Rails":http://rubygems.org/gems/rails. Rails 4.2.4 was current when this was written.
+
+You can install Rails directly into the global gemset. However, many developers prefer to keep the global gemset sparse and install Rails into project-specific gemsets, so each project has the appropriate version of Rails.
+
+If you install Rails at this point, you will install it into the global gemset.
+
+Instead, make a gemset just for the current stable release:
+
 <pre>
-$ rvm use ruby-2.2.3@rails4.2 --create
+$ rvm use ruby-2.2.4@rails4.2 --create
 </pre>
-<p>Here are the options you have for installing Rails.</p>
-<p>If you want the most recent stable release:</p>
+
+Here are the options you have for installing Rails.
+
+If you want the most recent stable release:
+
 <pre>
 $ gem install rails
 $ rails -v
 </pre>
-<p>If you want the newest beta version or release candidate, you can install with <code>--pre</code>.</p>
+
+If you want the newest beta version or release candidate, you can install with @--pre@.
+
 <pre>
 $ gem install rails --pre
 $ rails -v
 </pre>
-<p>Or you can get a specific version.</p>
-<p>For example, if you want the Rails 3.2.18 release:</p>
+
+Or you can get a specific version.
+
+For example, if you want the Rails 3.2.18 release:
+
 <pre>
 $ gem install rails --version=3.2.18
 $ rails -v
 </pre>
-<h2>Create a Workspace Folder</h2>
-<p>You’ll need a convenient folder to store your Rails projects. You can give it any name, such as <strong>code/</strong> or <strong>projects/</strong>. For this tutorial, we’ll call it <strong>workspace/</strong>.</p>
-<p>Create a projects folder and move into the folder:</p>
+
+h2. Create a Workspace Folder
+
+You'll need a convenient folder to store your Rails projects. You can give it any name, such as *code/* or *projects/*. For this tutorial, we'll call it *workspace/*.
+
+Create a projects folder and move into the folder:
+
 <pre>
 $ mkdir workspace
 $ cd workspace
 </pre>
-<p>This is where you’ll create your Rails applications.</p>
-<h2>New Rails Application</h2>
-<p>Here’s how to create a project-specific gemset, installing Rails, and creating a new application.</p>
+
+This is where you'll create your Rails applications.
+
+h2. New Rails Application
+
+Here's how to create a project-specific gemset, installing Rails, and creating a new application.
+
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 $ gem install rails
 $ rails new .
 </pre>
-<p>We’ll name the new application “myapp.” Obviously, you can give it any name you like.</p>
-<p>With this workflow, you’ll first create a root directory for your application, then move into the new directory.</p>
-<p>With one command you’ll create a new project-specific gemset. The option “—ruby-version” creates <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the root directory. <span class="caps">RVM</span> recognizes these files in an application’s root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.</p>
-<p>When we create the gemset, it will be empty (though it inherits use of all the gems in the global gemset). We immediately install Rails. The command <code>gem install rails</code> installs the most recent release of Rails.</p>
-<p>Finally we run <code>rails new .</code>. We use the Unix “dot” convention to refer to the current directory. This assigns the name of the directory to the new application.</p>
-<p>This approach is different from the way most beginners are taught to create a Rails application. Most instructions suggest using <code>rails new myapp</code> to generate a new application and then enter the directory to begin work. Our approach makes it easy to create a project-specific gemset and install Rails before the application is created.</p>
-<p>The <code>rails new</code> command generates the default Rails starter app. If you wish, you can use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate a starter application with a choice of basic features and popular gems.</p>
-<h4>Quick Test</h4>
-<p>For a “smoke test” to see if everything runs, display a list of Rake tasks.</p>
+
+We'll name the new application "myapp." Obviously, you can give it any name you like.
+
+With this workflow, you'll first create a root directory for your application, then move into the new directory.
+
+With one command you'll create a new project-specific gemset. The option "--ruby-version" creates *.ruby-version* and *.ruby-gemset* files in the root directory. RVM recognizes these files in an application's root directory and loads the required version of Ruby and the correct gemset whenever you enter the directory.
+
+When we create the gemset, it will be empty (though it inherits use of all the gems in the global gemset). We immediately install Rails. The command @gem install rails@ installs the most recent release of Rails.
+
+Finally we run @rails new .@. We use the Unix "dot" convention to refer to the current directory. This assigns the name of the directory to the new application.
+
+This approach is different from the way most beginners are taught to create a Rails application. Most instructions suggest using @rails new myapp@ to generate a new application and then enter the directory to begin work. Our approach makes it easy to create a project-specific gemset and install Rails before the application is created.
+
+The @rails new@ command generates the default Rails starter app. If you wish, you can use the "Rails Composer":http://railsapps.github.io/rails-composer/ tool to generate a starter application with a choice of basic features and popular gems.
+
+h4. Quick Test
+
+For a "smoke test" to see if everything runs, display a list of Rake tasks.
+
 <pre>
 $ rake -T
 </pre>
-<p>There’s no need to run <code>bundle exec rake</code> instead of <code>rake</code> when you are using <span class="caps">RVM</span> (see <a href="https://rvm.io/integration/bundler/"><span class="caps">RVM</span> and bundler integration</a>).</p>
-<p>This concludes the instructions for installing Ruby and Rails. Read on for additional advice and tips.</p>
-<h2>Rails Starter Apps</h2>
-<p>The starter application you create with <code>rails new</code> is very basic.</p>
-<p>Use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to build a full-featured Rails starter app.</p>
-<p>You’ll get a choice of starter applications with basic features and popular gems.</p>
-<p>Here’s how to generate a new Rails application using the Rails Composer tool:</p>
-<p>Using the conventional approach:</p>
+
+There's no need to run @bundle exec rake@ instead of @rake@ when you are using RVM (see "RVM and bundler integration":https://rvm.io/integration/bundler/).
+
+This concludes the instructions for installing Ruby and Rails. Read on for additional advice and tips.
+
+h2. Rails Starter Apps
+
+The starter application you create with @rails new@ is very basic.
+
+Use the "Rails Composer":http://railsapps.github.io/rails-composer/ tool to build a full-featured Rails starter app.
+
+You'll get a choice of starter applications with basic features and popular gems.
+
+Here's how to generate a new Rails application using the Rails Composer tool:
+
+Using the conventional approach:
+
 <pre>
 $ rails new myapp -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
-<p>Or, first creating an empty application root directory:</p>
+
+Or, first creating an empty application root directory:
+
 <pre>
 $ mkdir myapp
 $ cd myapp
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 $ gem install rails
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
 </pre>
-<p>The <code>-m</code> option loads an application template that is hosted on GitHub.</p>
-<p>You can add the <code>-T</code> flags to skip Test::Unit if you are using RSpec for testing.</p>
-<p>You can add the <code>-O</code> flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.</p>
-<p>If you get an error “OpenSSL certificate verify failed” when you try to generate a new Rails app, see the article <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
-<h4>Rails Tutorials and Example Applications</h4>
-<p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. Purchasing a <a href="https://tutorials.railsapps.org/">subscription for the tutorials</a> gives the project financial support.</p>
-<table>
-<tr>
-<th>Example Applications for Rails 4.2 </th>
-		<th>Tutorial </th>
-		<th>Comments </th>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/learn-rails">Learn Rails</a> </td>
-		<td> <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> </td>
-		<td> introduction to Rails for beginners </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-bootstrap">Rails and Bootstrap</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-bootstrap">Rails Bootstrap Tutorial</a>  </td>
-		<td> starter app for Rails and Bootstrap </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-foundation">Rails and Foundation</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-foundation">Rails Foundation Tutorial</a> </td>
-		<td> starter app for Rails and Zurb Foundation </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-mailinglist-activejob">Mailing List with Active Job</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-mailinglist-activejob">Mailing List with Active Job Tutorial</a> </td>
-		<td> background processing </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-omniauth">OmniAuth and Rails</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-omniauth/">OmniAuth Tutorial</a> </td>
-		<td> OmniAuth for authentication </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-devise">Devise and Rails</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-devise">Devise Tutorial</a> </td>
-		<td> Devise for authentication </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-devise-role">Role-Based Authorization</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-devise-roles">Role-Based Authorization Tutorial</a> </td>
-		<td> Simple authorization </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-devise-pundit">Pundit and Rails</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-devise-pundit">Rails Pundit Tutorial</a> </td>
-		<td> Pundit for authorization </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-signup-download">Sign Up and Download</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-signup-download">Sign Up and Download Tutorial</a> </td>
-		<td> Devise with authorization to download a <span class="caps">PDF</span> file </td>
-	</tr>
-<tr>
-<td> <a href="https://github.com/RailsApps/rails-stripe-checkout">Stripe Checkout</a> </td>
-		<td> <a href="http://railsapps.github.io/rails-stripe-checkout">Stripe Checkout Tutorial</a> </td>
-		<td> selling a product with Stripe Checkout </td>
-	</tr>
-</table><h2>Adding a Gemset to an Existing Application</h2>
-<p>If you’ve already created an application with the command <code>rails new myapp</code>, you can still create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s root directory:</p>
+
+The @-m@ option loads an application template that is hosted on GitHub.
+
+You can add the @-T@ flags to skip Test::Unit if you are using RSpec for testing.
+
+You can add the @-O@ flags to skip Active Record if you are using a NoSQL datastore such as MongoDB.
+
+If you get an error "OpenSSL certificate verify failed" when you try to generate a new Rails app, see the article "OpenSSL errors and Rails":http://railsapps.github.io/openssl-certificate-verify-failed.html.
+
+h4. Rails Tutorials and Example Applications
+
+The "RailsApps project":http://railsapps.github.io/ provides example apps that show how real-world Rails applications are built. Each example is known to work and can serve as your personal "reference implementation". Each is an open source project. Dozens of developers use the apps, report problems as they arise, and propose solutions as GitHub issues. Purchasing a "subscription for the tutorials":https://tutorials.railsapps.org/ gives the project financial support.
+
+|_. Example Applications for Rails 4.2 |_. Tutorial |_. Comments |
+| "Learn Rails":https://github.com/RailsApps/learn-rails | "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html | introduction to Rails for beginners |
+| "Rails and Bootstrap":https://github.com/RailsApps/rails-bootstrap | "Rails Bootstrap Tutorial":http://railsapps.github.io/rails-bootstrap  | starter app for Rails and Bootstrap |
+| "Rails and Foundation":https://github.com/RailsApps/rails-foundation | "Rails Foundation Tutorial":http://railsapps.github.io/rails-foundation | starter app for Rails and Zurb Foundation |
+| "Mailing List with Active Job":https://github.com/RailsApps/rails-mailinglist-activejob | "Mailing List with Active Job Tutorial":http://railsapps.github.io/rails-mailinglist-activejob | background processing |
+| "OmniAuth and Rails":https://github.com/RailsApps/rails-omniauth | "OmniAuth Tutorial":http://railsapps.github.io/rails-omniauth/ | OmniAuth for authentication |
+| "Devise and Rails":https://github.com/RailsApps/rails-devise | "Devise Tutorial":http://railsapps.github.io/rails-devise | Devise for authentication |
+| "Role-Based Authorization":https://github.com/RailsApps/rails-devise-role | "Role-Based Authorization Tutorial":http://railsapps.github.io/rails-devise-roles | Simple authorization |
+| "Pundit and Rails":https://github.com/RailsApps/rails-devise-pundit | "Rails Pundit Tutorial":http://railsapps.github.io/rails-devise-pundit | Pundit for authorization |
+| "Sign Up and Download":https://github.com/RailsApps/rails-signup-download | "Sign Up and Download Tutorial":http://railsapps.github.io/rails-signup-download | Devise with authorization to download a PDF file |
+| "Stripe Checkout":https://github.com/RailsApps/rails-stripe-checkout | "Stripe Checkout Tutorial":http://railsapps.github.io/rails-stripe-checkout | selling a product with Stripe Checkout |
+
+h2. Adding a Gemset to an Existing Application
+
+If you've already created an application with the command @rails new myapp@, you can still create a project-specific gemset. Here's how to create a gemset for an application named "myapp" and create  *.ruby-version* and *.ruby-gemset* files in the application's root directory:
+
 <pre>
-$ rvm use ruby-2.2.3@myapp --ruby-version --create
+$ rvm use ruby-2.2.4@myapp --ruby-version --create
 </pre>
-<p>You’ll need to install Rails and the gems listed in your Gemfile into the new gemset by running:</p>
+
+You'll need to install Rails and the gems listed in your Gemfile into the new gemset by running:
+
 <pre>
 $ gem install rails
 $ bundle install
 </pre>
-<h3>Specifying a Gemset for an Existing Application</h3>
-<p>If you have already created both an application and a gemset, but not <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files, here’s how to add the files. For example, if you want to use an existing gemset named “ruby-2.2.3@myapp”:</p>
+
+h3. Specifying a Gemset for an Existing Application
+
+If you have already created both an application and a gemset, but not *.ruby-version* and *.ruby-gemset* files, here's how to add the files. For example, if you want to use an existing gemset named "ruby-2.2.4@myapp":
+
 <pre>
-$ echo "ruby-2.2.3" &gt; .ruby-version
+$ echo "ruby-2.2.4" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
-<p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
-<h2>Databases for Rails</h2>
-<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. <span class="caps">RVM</span> installs SQLite and there’s nothing to configure.</p>
-<p>Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command <code>rails new myapp --database=</code> will show you a list of supported databases.</p>
+
+Using *.ruby-version* and *.ruby-gemset* files means you'll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.
+
+h2. Databases for Rails
+
+Rails uses the "SQLite":http://www.sqlite.org/ database by default. RVM installs SQLite and there's nothing to configure.
+
+Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command @rails new myapp --database=@ will show you a list of supported databases.
+
 <pre>
 Supported for preconfiguration are: mysql, oracle, postgresql, sqlite3, frontbase, ibm_db, sqlserver, jdbcmysql, jdbcsqlite3, jdbcpostgresql, jdbc.
 </pre>
-<p>For example, to create a new Rails application to use <a href="http://www.postgresql.org/">PostgreSQL</a>:</p>
+
+For example, to create a new Rails application to use "PostgreSQL":http://www.postgresql.org/:
+
 <pre>
 $ rails new myapp --database=postgresql
 </pre>
-<p>The <code>--database=postgresql</code> parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file.</p>
-<p>Don’t use the <code>--database=</code> argument with the Rails Composer tool. You’ll select a database from a menu instead.</p>
-<h2>Deployment</h2>
-<p>If you wish to run your own servers, you can deploy a Rails application using <a href="http://en.wikipedia.org/wiki/Capistrano">Capistrano</a> deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.</p>
-<h3>Hosting</h3>
-<p>For easy deployment, use a “platform as a service” provider such as:</p>
-<ul>
-<li><a href="http://www.heroku.com/">Heroku</a></li>
-	<li><a href="http://www.cloudfoundry.com/">CloudFoundry</a></li>
-	<li><a href="http://www.engineyard.com/">EngineYard</a></li>
-	<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
-</ul><p>For deployment on Heroku, see the article:</p>
-<ul>
-<li><a href="http://railsapps.github.io/rails-heroku-tutorial.html">Rails on Heroku</a></li>
-</ul><h2>Security</h2>
-<p>By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the <a href="http://guides.rubyonrails.org/security.html">Ruby On Rails Security Guide</a> for an overview of potential issues and watch the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Ruby on Rails Security Mailing List</a> for announcements and discussion.</p>
-<h3>Your Application’s Secret Token</h3>
-<p>Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encrypts cookie data using a secret key. When you create a new Rails application using the <code>rails new</code> command, a unique secret key is generated. If you’ve used the Rails Composer tool to generate the application, the application’s secret token will be unique, just as with any Rails application generated with the <code>rails new</code> command.</p>
-<p>The file <strong>config/secrets.yml</strong> contains secret tokens for development and production.</p>
-<p>Take care to hide the secret token you use in production. Don’t expose it in a public GitHub repo, or people could change their session information, and potentially access your site without permission. It’s best to set the secret token in a Unix shell variable.</p>
-<p>If you need to create a new secret token:</p>
+
+The @--database=postgresql@ parameter will add the pg database adapter gem to the Gemfile and create a suitable config/database.yml file.
+
+Don't use the @--database=@ argument with the Rails Composer tool. You'll select a database from a menu instead.
+
+h2. Deployment
+
+If you wish to run your own servers, you can deploy a Rails application using "Capistrano":http://en.wikipedia.org/wiki/Capistrano deployment scripts. However, unless system administration is a personal passion, it is much easier to deploy your application with a “platform as a service” provider such as Heroku.
+
+h3. Hosting
+
+For easy deployment, use a “platform as a service” provider such as:
+
+* "Heroku":http://www.heroku.com/
+* "CloudFoundry":http://www.cloudfoundry.com/
+* "EngineYard":http://www.engineyard.com/
+* "OpenShift":https://openshift.redhat.com/app/
+
+For deployment on Heroku, see the article:
+
+* "Rails on Heroku":http://railsapps.github.io/rails-heroku-tutorial.html
+
+h2. Security
+
+By design, Rails encourages practices that avoid common web application vulnerabilities. The Rails security team actively investigates and patches vulnerabilities. If you use the most current version of Rails, you will be protected from known vulnerabilities. See the "Ruby On Rails Security Guide":http://guides.rubyonrails.org/security.html for an overview of potential issues and watch the "Ruby on Rails Security Mailing List":https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security for announcements and discussion.
+
+h3. Your Application’s Secret Token
+
+Rails uses a session store to provide persistence between page requests. The default session store uses cookies. To prevent decoding of cookie data and hijacking a session, Rails encrypts cookie data using a secret key. When you create a new Rails application using the @rails new@ command, a unique secret key is generated. If you've used the Rails Composer tool to generate the application, the application's secret token will be unique, just as with any Rails application generated with the @rails new@ command.
+
+The file *config/secrets.yml* contains secret tokens for development and production.
+
+Take care to hide the secret token you use in production. Don't expose it in a public GitHub repo, or people could change their session information, and potentially access your site without permission. It's best to set the secret token in a Unix shell variable.
+
+If you need to create a new secret token:
+
 <pre>
 $ rake secret
 </pre>
-<p>The command <code>rake secret</code> generates a new random secret you can use. The command won’t install the key; you have to copy the key from the console output to the appropriate file.</p>
-<h2>Troubleshooting</h2>
-<h4>Problems with <span class="caps">RVM</span>
-</h4>
-<p>You can get help directly from the <span class="caps">RVM</span> team using the <span class="caps">IRC</span> (Internet Relay Chat) channel #rvm on irc.freenode.net:</p>
-<p><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></p>
-<p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> because the <span class="caps">RVM</span> team is helpful and friendly. <span class="caps">IRC</span> on freenode requires registration (see <a href="http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration">how to register</a>).</p>
-<h4>Problems with “Segmentation Fault”</h4>
-<p>If you get a “segfault” when you try <code>rails new</code>, try removing and reinstalling <span class="caps">RVM</span>.</p>
-<h4>Problems with “Gem::RemoteFetcher::FetchError: SSL_connect”</h4>
-<p>Ruby and RubyGems (starting with Ruby 1.9.3p194 and RubyGems 1.8.23) require verification of server <span class="caps">SSL</span> certificates when Ruby makes an Internet connection via https. If you run <code>rails new</code> and get an error “Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate” see this article suggesting solutions: <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
-<h4>Problems with “Certificate Verify Failed”</h4>
-<p>Are you getting an error “OpenSSL certificate verify failed” when you try to generate a new Rails app from an application template? See this article suggesting solutions: <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
-<h2>Where to Get Help</h2>
-<p>Your best source for help with problems is <a href="http://stackoverflow.com/questions/tagged/ruby-on-rails-3">Stack Overflow</a>. Your issue may have been encountered and addressed by others.</p>
-<p>You can also try <a href="http://www.railshotline.com/">Rails Hotline</a>, a free telephone hotline for Rails help staffed by volunteers.</p>
-<h2>Credits</h2>
-<p>Daniel Kehoe wrote the article.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
+
+The command @rake secret@ generates a new random secret you can use. The command won't install the key; you have to copy the key from the console output to the appropriate file.
+
+h2. Troubleshooting
+
+h4. Problems with RVM
+
+You can get help directly from the RVM team using the IRC (Internet Relay Chat) channel #rvm on irc.freenode.net:
+
+"http://webchat.freenode.net/?channels=rvm":http://webchat.freenode.net/?channels=rvm
+
+If you’ve never used IRC, it’s worthwhile to figure out how to use IRC because the RVM team is helpful and friendly. IRC on freenode requires registration (see "how to register":http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration).
+
+h4. Problems with "Segmentation Fault"
+
+If you get a "segfault" when you try @rails new@, try removing and reinstalling RVM.
+
+h4. Problems with "Gem::RemoteFetcher::FetchError: SSL_connect"
+
+Ruby and RubyGems (starting with Ruby 1.9.3p194 and RubyGems 1.8.23) require verification of server SSL certificates when Ruby makes an Internet connection via https. If you run @rails new@ and get an error "Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate" see this article suggesting solutions: "OpenSSL errors and Rails":http://railsapps.github.io/openssl-certificate-verify-failed.html.
+
+h4. Problems with "Certificate Verify Failed"
+
+Are you getting an error "OpenSSL certificate verify failed" when you try to generate a new Rails app from an application template? See this article suggesting solutions: "OpenSSL errors and Rails":http://railsapps.github.io/openssl-certificate-verify-failed.html.
+
+h2. Where to Get Help
+
+Your best source for help with problems is "Stack Overflow":http://stackoverflow.com/questions/tagged/ruby-on-rails-3. Your issue may have been encountered and addressed by others.
+
+You can also try "Rails Hotline":http://www.railshotline.com/, a free telephone hotline for Rails help staffed by volunteers.
+
+h2. Credits
+
+Daniel Kehoe wrote the article.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

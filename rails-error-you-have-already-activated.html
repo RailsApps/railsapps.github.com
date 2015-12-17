@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Rails Error: “Could not be loaded… You have already activated…” &#183; RailsApps</title>
+  <title>Rails Error: You have already activated &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,27 +44,42 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Rails Error: “Could not be loaded… You have already activated…”</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 15 December 2012</em></p>
-<p>Here’s help for the error “You have already activated (…) but your Gemfile requires (…)”.</p>
-<p>This is a note for developers using the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool. Others may find it helpful as well.</p>
-<h2>Quick Fix</h2>
-<p>Try removing the gem that is a problem, specifying the version number:</p>
+        h1. Rails Error: “Could not be loaded… You have already activated…”
+
+h4. by Daniel Kehoe
+
+_Last updated 15 December 2012_
+
+Here's help for the error "You have already activated (...) but your Gemfile requires (...)".
+
+This is a note for developers using the "Rails Composer":http://railsapps.github.io/rails-composer/ tool. Others may find it helpful as well.
+
+h2. Quick Fix
+
+Try removing the gem that is a problem, specifying the version number:
+
 <pre>
 gem uninstall some_gem -v 3.0.4
 </pre>
-<p>And install the newest version of the gem:</p>
+
+And install the newest version of the gem:
+
 <pre>
 gem install some_gem
 </pre>
-<p>Read on if you want to know what is happening.</p>
-<h2>Errors with the Rails Composer Tool or the rails_apps_composer Gem</h2>
-<p>If you are using the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool, or the <a href="http://railsapps.github.io/rails_apps_composer/">rails_apps_composer</a> gem, or generating an application from an application template using the <code>rails new</code> command:</p>
+
+Read on if you want to know what is happening.
+
+h2. Errors with the Rails Composer Tool or the rails_apps_composer Gem
+
+If you are using the "Rails Composer":http://railsapps.github.io/rails-composer/ tool, or the "rails_apps_composer":http://railsapps.github.io/rails_apps_composer/ gem, or generating an application from an application template using the @rails new@ command:
+
 <pre>
 rails new myapp -m (some application template)
 </pre>
-<p>and seeing this error:</p>
+
+and seeing this error:
+
 <pre>
 Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
     composer  Running 'after bundler' callbacks.
@@ -72,66 +87,108 @@ The template [...] could not be loaded.
 Error: You have already activated ..., but your Gemfile requires .... 
 Using bundle exec may solve this.
 </pre>
-<p>See the section <a href="#composer">Rails Composer</a> below.</p>
-<h2>Other Error Cases</h2>
-<p>You may be running a command such as:</p>
+
+See the section "Rails Composer":#composer below.
+
+h2. Other Error Cases
+
+You may be running a command such as:
+
 <pre>
 rake db:migrate
 </pre>
-<p>and seeing this error:</p>
+
+and seeing this error:
+
 <pre>
-You have already activated &lt;some gem version&gt;, but your Gemfile requires &lt;some newer gem version&gt;. Using bundle exec may solve this.
+You have already activated , but your Gemfile requires . Using bundle exec may solve this.
 </pre>
-<p>See the section <a href="#others">Other Cases</a> below.</p>
-<h2 id="composer">Rails Composer</h2>
-<p>The error is caused by conflicting gem versions (see the section <a href="#explanation">What is Happening</a> for details). Ignore the misleading hint in the error message: “using bundle exec” will not solve this.</p>
-<p>When you use the <code>rails new</code> command, the Rails gem and all its related gems must be present, either in your system environment, or (if you use <a href="https://rvm.io/">rvm</a>) from a default rvm gemset. The Rails Composer tool wants to use the newest available gem versions. Occasionally one of the gems (often a gem required as a dependency for another gem) has been recently updated. If that’s the case, <code>rails new</code> uses the Rails gemset (containing the outdated gem) and then tries to run the Rails Composer application template with a new set of gems (containing an updated gem). The outdated gem has already been activated so the application template cannot be loaded, resulting in the error you see.</p>
-<p>Try removing the outdated gem from the initial gemset:</p>
+
+See the section "Other Cases":#others below.
+
+h2(#composer). Rails Composer
+
+The error is caused by conflicting gem versions (see the section "What is Happening":#explanation for details). Ignore the misleading hint in the error message: "using bundle exec" will not solve this. 
+
+When you use the @rails new@ command, the Rails gem and all its related gems must be present, either in your system environment, or (if you use "rvm":https://rvm.io/) from a default rvm gemset. The Rails Composer tool wants to use the newest available gem versions. Occasionally one of the gems (often a gem required as a dependency for another gem) has been recently updated. If that's the case, @rails new@ uses the Rails gemset (containing the outdated gem) and then tries to run the Rails Composer application template with a new set of gems (containing an updated gem). The outdated gem has already been activated so the application template cannot be loaded, resulting in the error you see.
+
+Try removing the outdated gem from the initial gemset:
+
 <pre>
 $ gem uninstall some_gem
 </pre>
-<p>And install the newest version of the gem:</p>
+
+And install the newest version of the gem:
+
 <pre>
 gem install some_gem
 </pre>
-<p>Then run the <code>rails new</code> command again.</p>
-<p>To fully resolve the problem, you may need to install <a href="https://rvm.io/">rvm</a> and create and use a new gemset before you run the <code>rails new</code> command again. Installing Rails into a new gemset before running <code>rails new</code> will populate the gemset with the most current available gems (including any gems required by a gem dependency).</p>
+
+Then run the @rails new@ command again.
+
+To fully resolve the problem, you may need to install "rvm":https://rvm.io/ and create and use a new gemset before you run the @rails new@ command again. Installing Rails into a new gemset before running @rails new@ will populate the gemset with the most current available gems (including any gems required by a gem dependency).
+
 <pre>
 $ rvm ruby-1.9.3@my_new_gemset --create --default
 </pre>
-<p><em>Doesn’t work for you? Please add to the comments below.</em></p>
-<h2 id="others">Other Cases</h2>
-<p>For other cases, the solution is simple. Prepend the command with <code>bundle exec</code>.</p>
-<p>For example, if you saw the error when you ran:</p>
+
+_Doesn't work for you? Please add to the comments below._
+
+h2(#others). Other Cases
+
+For other cases, the solution is simple. Prepend the command with @bundle exec@.
+
+For example, if you saw the error when you ran:
+
 <pre>
 rake db:migrate
 </pre>
-<p>try running:</p>
+
+try running:
+
 <pre>
 bundle exec rake db:migrate
 </pre>
-<p>Using <code>bundle exec</code> invokes Bundler and loads the versions of gems specified by your Gemfile before attempting to run an executable provided by a gem. With <code>bundle exec</code> you’ll use the versions of the gems declared in your Gemfile. So instead of using whatever version of rake is currently active on your system, <code>bundle exec rake db:migrate</code> will use the version of rake specified in the Gemfile to execute the command. If you don’t use <code>bundle exec</code>, you have to hope that the “system executbale” version of the gem is the same as the version specified in the Gemfile (or the same as a dependency of a gem specified in the Gemfile).</p>
-<p>If you’re using rvm, you shouldn’t see this problem because rvm versions 1.11.0 and newer include the <a href="http://mpapis.github.com/rubygems-bundler/">rubygems-bundler</a> gem to handle this. With the rubygems-bundler gem, you don’t need to use <code>bundle exec</code>. See <a href="https://rvm.io/integration/bundler/">rvm and bundler integration</a>.</p>
-<p><em>Doesn’t work for you? Please add to the comments below.</em></p>
-<h2 id="explanation">What is Happening</h2>
-<p>RubyGems is a package manager for the Ruby programming language that provides a standard format for distributing Ruby programs and libraries (in a self-contained format called a “gem”). Gems add functionality to a Rails app. The gems you use in a Rails application are specified in a Gemfile that is part of your application.</p>
-<p>Rails uses <a href="http://gembundler.com/">Bundler</a> to manage gem versions. Bundler makes sure the versions of gems specified in your Gemfile (and other gems which are dependencies of your specified gems) are used when you develop or deploy your Rails application. The command <code>bundle install</code> downloads gems specified in your Gemfile and installs the gems as part of the system-installed Ruby version.</p>
-<p>If newer versions of gems exist, and particular versions are not specified in your Gemfile, you can run <code>bundle update</code> to install the newer gem versions. Often, gems that are not specified in your Gemfile, but are dependencies of other gems, will be updated by <code>bundle update</code>.</p>
-<p>Many Rails developers use Wayne Seguin’s rvm, the <a href="https://rvm.io/">Ruby Version Manager</a>, to make it easy to run different versions of Ruby on one computer. The rvm utility also makes it easy to create different sets of gems and switch between “gemsets.”</p>
-<p>The error “You have already activated (some gem version), but your Gemfile requires (some newer gem version)” results when one version of a gem has been recently used (loaded into memory) and a different version is requested. Rather than force a different version to load, RubyGems aborts and shows the error.</p>
-<p>In the simplest case, this could happen when you run <code>bundle install</code> and Bundler loads gems specified by the Gemfile into the shell environment. Then, if you use the command line to execute a command offered by a gem, RubyGems may attempt to use a system version of the gem and will abort because you’ve already loaded a different version of the gem.</p>
-<p>For example, if your Gemfile specifies a gem that depends on rake-0.8.7 but you’ve installed a version of Ruby that comes with rake-0.9.0 and you try:</p>
+
+Using @bundle exec@ invokes Bundler and loads the versions of gems specified by your Gemfile before attempting to run an executable provided by a gem. With @bundle exec@ you'll use the versions of the gems declared in your Gemfile. So instead of using whatever version of rake is currently active on your system, @bundle exec rake db:migrate@ will use the version of rake specified in the Gemfile to execute the command. If you don't use @bundle exec@, you have to hope that the "system executbale" version of the gem is the same as the version specified in the Gemfile (or the same as a dependency of a gem specified in the Gemfile).
+
+If you’re using rvm, you shouldn't see this problem because rvm versions 1.11.0 and newer include the "rubygems-bundler":http://mpapis.github.com/rubygems-bundler/ gem to handle this. With the rubygems-bundler gem, you don’t need to use @bundle exec@. See "rvm and bundler integration":https://rvm.io/integration/bundler/.
+
+_Doesn't work for you? Please add to the comments below._
+
+h2(#explanation). What is Happening
+
+RubyGems is a package manager for the Ruby programming language that provides a standard format for distributing Ruby programs and libraries (in a self-contained format called a "gem"). Gems add functionality to a Rails app. The gems you use in a Rails application are specified in a Gemfile that is part of your application.
+
+Rails uses "Bundler":http://gembundler.com/ to manage gem versions. Bundler makes sure the versions of gems specified in your Gemfile (and other gems which are dependencies of your specified gems) are used when you develop or deploy your Rails application. The command @bundle install@ downloads gems specified in your Gemfile and installs the gems as part of the system-installed Ruby version.
+
+If newer versions of gems exist, and particular versions are not specified in your Gemfile, you can run @bundle update@ to install the newer gem versions. Often, gems that are not specified in your Gemfile, but are dependencies of other gems, will be updated by @bundle update@.
+
+Many Rails developers use Wayne Seguin's rvm, the "Ruby Version Manager":https://rvm.io/, to make it easy to run different versions of Ruby on one computer. The rvm utility also makes it easy to create different sets of gems and switch between "gemsets."
+
+The error "You have already activated (some gem version), but your Gemfile requires (some newer gem version)" results when one version of a gem has been recently used (loaded into memory) and a different version is requested. Rather than force a different version to load, RubyGems aborts and shows the error.
+
+In the simplest case, this could happen when you run @bundle install@ and Bundler loads gems specified by the Gemfile into the shell environment. Then, if you use the command line to execute a command offered by a gem, RubyGems may attempt to use a system version of the gem and will abort because you've already loaded a different version of the gem.
+
+For example, if your Gemfile specifies a gem that depends on rake-0.8.7 but you've installed a version of Ruby that comes with rake-0.9.0 and you try:
+
 <pre>
 $ bundle install
 $ rake db:migrate
 </pre>
-<p>You’ll see:</p>
+
+You'll see:
+
 <pre>
 You have already activated rake 0.9.0, but your Gemfile requires rake 0.8.7. Consider using bundle exec.
 </pre>
-<p>You’ll always see this error if you have a newer version of rake activated on your machine than the one specified in a project’s Gemfile.</p>
-<p>As Yehuda Katz explains (in <a href="http://yehudakatz.com/2011/05/30/gem-versioning-and-bundler-doing-it-right/">Gem Versioning and Bundler: Doing it Right</a>), “Bundler’s sandbox relies on its ability to be present at the very beginning of the Ruby process, and to therefore have the ability to ensure that the versions of all loaded libraries will reflect the ones listed in the Gemfile.lock. By running a system executable, you are executing Ruby code before Bundler can modify the load path and replace the normal Rubygems loading mechanism, allowing arbitrary unmanaged gems to get loaded into memory.”</p>
-<p>In a more complex case, you may have activated (loaded into memory) a gem by running a command on the command line or running an application and subsequently running a script such as an application template that requires a different gem version. In this case, RubyGems will abort and the script will fail.</p>
+
+You'll always see this error if you have a newer version of rake activated on your machine than the one specified in a project's Gemfile.
+
+As Yehuda Katz explains (in "Gem Versioning and Bundler: Doing it Right":http://yehudakatz.com/2011/05/30/gem-versioning-and-bundler-doing-it-right/), "Bundler’s sandbox relies on its ability to be present at the very beginning of the Ruby process, and to therefore have the ability to ensure that the versions of all loaded libraries will reflect the ones listed in the Gemfile.lock. By running a system executable, you are executing Ruby code before Bundler can modify the load path and replace the normal Rubygems loading mechanism, allowing arbitrary unmanaged gems to get loaded into memory."
+
+In a more complex case, you may have activated (loaded into memory) a gem by running a command on the command line or running an application and subsequently running a script such as an application template that requires a different gem version. In this case, RubyGems will abort and the script will fail.
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

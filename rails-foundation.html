@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Foundation and Rails &#183; RailsApps</title>
+  <title>rails foundation &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,79 +44,118 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Foundation and Rails</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 4 April 2014</em></p>
-<p>Foundation 5.2 and Rails. How to set up a Rails application with Zurb Foundation. <a href="http://foundation.zurb.com/">Zurb Foundation</a> provides a standard grid for layout plus dozens of reusable components for page elements such as navigation, forms, and buttons. It gives <span class="caps">CSS</span> the kind of structure and convention that makes Rails popular for back-end development. Developers use Foundation to add attractive <span class="caps">CSS</span> styling and JavaScript effects to web applications.</p>
-<p>A complete <a href="https://github.com/RailsApps/rails-foundation">rails-foundation</a> example application is available from the RailsApps project. There’s no need to copy code from this article, just use the <a href="https://github.com/RailsApps/rails-foundation">rails-foundation</a> example application.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is helpful to you, please <a href="http://railsapps.github.io/">join the RailsApps project</a> to support our work.</p>
-<h2>What’s Here</h2>
-<p>This article covers:</p>
-<ul>
-<li>Installation of Foundation</li>
-	<li>Application Layout</li>
-	<li>Flash Messages</li>
-	<li>Navigation Links</li>
-</ul><p>In summary, here are the steps for adding Foundation to a Rails application:</p>
-<ul>
-<li>add a gem to the <strong>Gemfile</strong>
-</li>
-	<li>modify the file <strong>app/assets/javascripts/application.js</strong> to add Foundation’s Javascript files</li>
-	<li>add the file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> to add Foundation’s <span class="caps">CSS</span> files</li>
-	<li>modify the file <strong>app/views/layouts/application.html.erb</strong> to change the application layout</li>
-</ul><p>Complete instructions are below.</p>
-<h2>Zurb Foundation Gem</h2>
-<p>Zurb Foundation is packaged as a gem.</p>
-<p>We’ll use the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to generate files for an application layout, navigation links, and flash messages styled with Foundation <span class="caps">CSS</span> classes and layout.</p>
-<p>In your <strong>Gemfile</strong>, add:</p>
+        h1. Foundation and Rails
+
+h4. by Daniel Kehoe
+
+_Last updated 4 April 2014_
+
+Foundation 5.2 and Rails. How to set up a Rails application with Zurb Foundation. "Zurb Foundation":http://foundation.zurb.com/ provides a standard grid for layout plus dozens of reusable components for page elements such as navigation, forms, and buttons. It gives CSS the kind of structure and convention that makes Rails popular for back-end development. Developers use Foundation to add attractive CSS styling and JavaScript effects to web applications.
+
+A complete "rails-foundation":https://github.com/RailsApps/rails-foundation example application is available from the RailsApps project. There's no need to copy code from this article, just use the "rails-foundation":https://github.com/RailsApps/rails-foundation example application.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Support for the project comes from subscribers. If this article is helpful to you, please "join the RailsApps project":http://railsapps.github.io/ to support our work.
+
+h2. What's Here
+
+This article covers:
+
+* Installation of Foundation
+* Application Layout
+* Flash Messages
+* Navigation Links
+
+In summary, here are the steps for adding Foundation to a Rails application:
+
+* add a gem to the *Gemfile*
+* modify the file *app/assets/javascripts/application.js* to add Foundation's Javascript files
+* add the file *app/assets/stylesheets/framework_and_overrides.css.scss* to add Foundation's CSS files
+* modify the file *app/views/layouts/application.html.erb* to change the application layout
+
+Complete instructions are below.
+
+h2. Zurb Foundation Gem
+
+Zurb Foundation is packaged as a gem.
+
+We'll use the "rails_layout":https://github.com/RailsApps/rails_layout gem to generate files for an application layout, navigation links, and flash messages styled with Foundation CSS classes and layout.
+
+In your *Gemfile*, add:
+
 <pre>
 gem 'foundation-rails'
 group :development do
   gem 'rails_layout'
 end
 </pre>
-<p>You don’t need the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem deployed to production, so put it in the <code>development</code> group.</p>
-<p>Run <code>$ bundle install</code> in the Terminal.</p>
-<p>Rather than following the installation instructions provided in the <a href="http://foundation.zurb.com/docs/applications.html">Foundation Documentation</a>, we’ll use the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to set up Zurb Foundation and create the files we need. Our approach is slightly different from the Zurb instructions but yields the same results.</p>
-<h2>Rails Layout Gem</h2>
-<p>The generator provided by the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem will set up Foundation and add the necessary files. Run:</p>
+
+You don't need the "rails_layout":https://github.com/RailsApps/rails_layout gem deployed to production, so put it in the @development@ group.
+
+Run @$ bundle install@ in the Terminal.
+
+Rather than following the installation instructions provided in the "Foundation Documentation":http://foundation.zurb.com/docs/applications.html, we'll use the "rails_layout":https://github.com/RailsApps/rails_layout gem to set up Zurb Foundation and create the files we need. Our approach is slightly different from the Zurb instructions but yields the same results.
+
+h2. Rails Layout Gem
+
+The generator provided by the "rails_layout":https://github.com/RailsApps/rails_layout gem will set up Foundation and add the necessary files. Run:
+
 <pre>
 $ rails generate layout:install foundation5 --force
 </pre>
-<p>With the <code>--force</code> argument, the rails_layout gem will replace existing files.</p>
-<p>The rails_layout gem will rename the file:</p>
-<ul>
-<li><strong>app/assets/stylesheets/application.css</strong></li>
-</ul><p>to:</p>
-<ul>
-<li><strong>app/assets/stylesheets/application.css.scss</strong></li>
-</ul><p>It will create the file:</p>
-<ul>
-<li><strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong></li>
-</ul><p>and modify the file:</p>
-<ul>
-<li><strong>app/assets/javascripts/application.js</strong></li>
-</ul><p>The gem will create or replace four files:</p>
-<ul>
-<li><strong>app/views/layouts/application.html.erb</strong></li>
-	<li><strong>app/views/layouts/_messages.html.erb</strong></li>
-	<li><strong>app/views/layouts/_navigation.html.erb</strong></li>
-	<li><strong>app/views/layouts/_navigation_links.html.erb</strong></li>
-</ul><p>Let’s examine the files to see how our application is configured to use Zurb Foundation.</p>
-<h2>Renaming the application.css File</h2>
-<p>The rails_layout gem renamed the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>. Note the <strong>.scss</strong> file extension. This will allow you to use the advantages of the Sass syntax for your application stylesheet. Stylesheets can use variables, mixins, and nesting of <span class="caps">CSS</span> rules when you use Sass. For more on the advantages of Sass and how to use it, see the <a href="http://sass-lang.com/">Sass</a> website or the <a href="http://railscasts.com/episodes/268-sass-basics">Sass Basics RailsCast</a> from Ryan Bates.</p>
-<p>Sass has two syntaxes. The most commonly used syntax is known as “<span class="caps">SCSS</span>” (for “Sassy <span class="caps">CSS</span>”), and is a superset of the <span class="caps">CSS</span> syntax. This means that every valid <span class="caps">CSS</span> stylesheet is valid <span class="caps">SCSS</span> as well. You can use Sass in any file by adding the file extension <strong>.scss</strong>. The asset pipeline will preprocess any <strong>.scss</strong> file and expand it as standard <span class="caps">CSS</span>.</p>
-<p>Before you continue, make sure that the rails_layout gem renamed the <strong>app/assets/stylesheets/application.css</strong> file as <strong>app/assets/stylesheets/application.css.scss</strong>. Otherwise you won’t see the <span class="caps">CSS</span> styling we will apply.</p>
-<h2>The application.css.scss File</h2>
-<p>The Rails asset pipeline will concatenate and compact <span class="caps">CSS</span> stylesheets for delivery to the browser when you add them to this directory:</p>
-<ul>
-<li><strong>app/assets/stylesheets/</strong></li>
-</ul><p>The asset pipeline helps web pages display faster in the browser by combining all <span class="caps">CSS</span> files into a single file (it does the same for JavaScript).</p>
-<p>Let’s examine the file <strong>app/assets/stylesheets/application.css.scss</strong>:</p>
+
+With the @--force@ argument, the rails_layout gem will replace existing files.
+
+The rails_layout gem will rename the file:
+
+* *app/assets/stylesheets/application.css*
+
+to:
+
+* *app/assets/stylesheets/application.css.scss*
+
+It will create the file:
+
+* *app/assets/stylesheets/framework_and_overrides.css.scss*
+
+and modify the file:
+
+* *app/assets/javascripts/application.js*
+
+The gem will create or replace four files:
+
+* *app/views/layouts/application.html.erb*
+* *app/views/layouts/_messages.html.erb*
+* *app/views/layouts/_navigation.html.erb*
+* *app/views/layouts/_navigation_links.html.erb*
+
+Let's examine the files to see how our application is configured to use Zurb Foundation.
+
+h2. Renaming the application.css File
+
+The rails_layout gem renamed the *app/assets/stylesheets/application.css* file as *app/assets/stylesheets/application.css.scss*. Note the *.scss* file extension. This will allow you to use the advantages of the Sass syntax for your application stylesheet. Stylesheets can use variables, mixins, and nesting of CSS rules when you use Sass. For more on the advantages of Sass and how to use it, see the "Sass":http://sass-lang.com/ website or the "Sass Basics RailsCast":http://railscasts.com/episodes/268-sass-basics from Ryan Bates.
+
+Sass has two syntaxes. The most commonly used syntax is known as "SCSS" (for "Sassy CSS"), and is a superset of the CSS syntax. This means that every valid CSS stylesheet is valid SCSS as well. You can use Sass in any file by adding the file extension *.scss*. The asset pipeline will preprocess any *.scss* file and expand it as standard CSS.
+
+Before you continue, make sure that the rails_layout gem renamed the *app/assets/stylesheets/application.css* file as *app/assets/stylesheets/application.css.scss*. Otherwise you won't see the CSS styling we will apply.
+
+h2. The application.css.scss File
+
+The Rails asset pipeline will concatenate and compact CSS stylesheets for delivery to the browser when you add them to this directory:
+
+* *app/assets/stylesheets/*
+
+The asset pipeline helps web pages display faster in the browser by combining all CSS files into a single file (it does the same for JavaScript).
+
+Let's examine the file *app/assets/stylesheets/application.css.scss*:
+
 <pre>
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
@@ -132,18 +171,31 @@ $ rails generate layout:install foundation5 --force
  *= require_self
  */
 </pre>
-<p>The <strong>app/assets/stylesheets/application.css.scss</strong> file serves two purposes.</p>
-<p>First, you can add any <span class="caps">CSS</span> rules to the file that you want to use anywhere on your website. Second, the file serves as a <em>manifest</em>, providing a list of files that should be concatenated and included in the single <span class="caps">CSS</span> file that is delivered to the browser.</p>
-<h4>A Global <span class="caps">CSS</span> File</h4>
-<p>Any <span class="caps">CSS</span> style rules that you add to the <strong>app/assets/stylesheets/application.css.scss</strong> file will be available to any view in the application. You could use this file for any style rules that are used on every page, particularly simple utility rules such as highlighting or resetting the appearance of links. However, in practice, you are more likely to modify the style rules provided by Zurb Foundation. These modifications don’t belong in the <strong>app/assets/stylesheets/application.css.scss</strong> file; they will go in the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file.</p>
-<p>In general, it’s bad practice to place a lot of <span class="caps">CSS</span> in the <strong>app/assets/stylesheets/application.css.scss</strong> file (unless your <span class="caps">CSS</span> is very limited). Instead, structure your <span class="caps">CSS</span> in multiple files. <span class="caps">CSS</span> that is used on only a single page can go in a file with a name that matches the page. Or, if sections of the website share common elements, such as themes for landing pages or administrative pages, make a file for each theme. How you organize your <span class="caps">CSS</span> is up to you; the asset pipeline lets you organize your <span class="caps">CSS</span> so it is easier to develop and maintain. Just add the files to the <strong>app/assets/stylesheets/</strong> folder.</p>
-<h4>A Manifest File</h4>
-<p>It’s not obvious from the name of the <strong>app/assets/stylesheets/application.css.scss</strong> file that it serves as a <em>manifest file</em> as well as a location for miscellaneous <span class="caps">CSS</span> rules. For most websites, you can ignore its role as a manifest file. In the comments at the top of the file, the <code>*= require_self</code> directive indicates that any <span class="caps">CSS</span> in the file should be delivered to the browser. The <code>*= require_tree .</code> directive (note the Unix “dot operator”) indicates any files in the same folder, including files in subfolders, should be combined into a single file for delivery to the browser.</p>
-<p>If your website is large and complex, you can remove the <code>*= require_tree .</code> directive and specify individual files to be included in the file that is generated by the asset pipeline. This gives you the option of reducing the size of the application-wide <span class="caps">CSS</span> file that is delivered to the browser. For example, you might segregate a file that includes <span class="caps">CSS</span> that is used only in the site’s administrative section. In general, only large and complex sites need this optimization. The speed of rendering a single large <span class="caps">CSS</span> file is faster than fetching multiple files.</p>
-<h2>Zurb Foundation JavaScript</h2>
-<p>Zurb Foundation provides both <span class="caps">CSS</span> and JavaScript libraries.</p>
-<p>Like the <strong>application.css.scss</strong> file, the <strong>application.js</strong> file is a manifest that allows a developer to designate the JavaScript files that will be combined for delivery to the browser.</p>
-<p>The rails_layout gem modified the file <strong>app/assets/javascripts/application.js</strong> to include the Foundation JavaScript libraries:</p>
+
+The *app/assets/stylesheets/application.css.scss* file serves two purposes.
+
+First, you can add any CSS rules to the file that you want to use anywhere on your website. Second, the file serves as a _manifest_, providing a list of files that should be concatenated and included in the single CSS file that is delivered to the browser.
+
+h4. A Global CSS File
+
+Any CSS style rules that you add to the *app/assets/stylesheets/application.css.scss* file will be available to any view in the application. You could use this file for any style rules that are used on every page, particularly simple utility rules such as highlighting or resetting the appearance of links. However, in practice, you are more likely to modify the style rules provided by Zurb Foundation. These modifications don't belong in the *app/assets/stylesheets/application.css.scss* file; they will go in the *app/assets/stylesheets/framework_and_overrides.css.scss* file.
+
+In general, it's bad practice to place a lot of CSS in the *app/assets/stylesheets/application.css.scss* file (unless your CSS is very limited). Instead, structure your CSS in multiple files. CSS that is used on only a single page can go in a file with a name that matches the page. Or, if sections of the website share common elements, such as themes for landing pages or administrative pages, make a file for each theme. How you organize your CSS is up to you; the asset pipeline lets you organize your CSS so it is easier to develop and maintain. Just add the files to the *app/assets/stylesheets/* folder.
+
+h4. A Manifest File
+
+It's not obvious from the name of the *app/assets/stylesheets/application.css.scss* file that it serves as a _manifest file_ as well as a location for miscellaneous CSS rules. For most websites, you can ignore its role as a manifest file. In the comments at the top of the file, the @*= require_self@ directive indicates that any CSS in the file should be delivered to the browser. The @*= require_tree .@ directive (note the Unix "dot operator") indicates any files in the same folder, including files in subfolders, should be combined into a single file for delivery to the browser.
+
+If your website is large and complex, you can remove the @*= require_tree .@ directive and specify individual files to be included in the file that is generated by the asset pipeline. This gives you the option of reducing the size of the application-wide CSS file that is delivered to the browser. For example, you might segregate a file that includes CSS that is used only in the site's administrative section. In general, only large and complex sites need this optimization. The speed of rendering a single large CSS file is faster than fetching multiple files.
+
+h2. Zurb Foundation JavaScript
+
+Zurb Foundation provides both CSS and JavaScript libraries.
+
+Like the *application.css.scss* file, the *application.js* file is a manifest that allows a developer to designate the JavaScript files that will be combined for delivery to the browser.
+
+The rails_layout gem modified the file *app/assets/javascripts/application.js* to include the Foundation JavaScript libraries:
+
 <pre>
 //= require jquery
 //= require jquery_ujs
@@ -154,16 +206,21 @@ $(function() {
   $(document).foundation();
 });
 </pre>
-<p>It added the directive <code>//= require foundation</code> before <code>//= require_tree .</code>.</p>
-<p>The last three lines use jQuery to load the Foundation JavaScript libraries after the browser has fired a “<span class="caps">DOM</span> ready” event (which means the page is fully rendered and not waiting for additional files to download).</p>
+
+It added the directive @//= require foundation@ before @//= require_tree .@.
+
+The last three lines use jQuery to load the Foundation JavaScript libraries after the browser has fired a "DOM ready" event (which means the page is fully rendered and not waiting for additional files to download).
+
 <pre>
 $(function() {
   $(document).foundation();
 });
 </pre>
-<h2>Zurb Foundation <span class="caps">CSS</span>
-</h2>
-<p>The rails_layout gem added a file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> containing:</p>
+
+h2. Zurb Foundation CSS
+
+The rails_layout gem added a file *app/assets/stylesheets/framework_and_overrides.css.scss* containing:
+
 <pre>
 // import the CSS framework
 @import "foundation";
@@ -171,194 +228,282 @@ $(function() {
 .
 .
 </pre>
-<p>The file <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> is automatically included and compiled into your Rails application.css file by the <code>*= require_tree .</code> statement in the <strong>app/assets/stylesheets/application.css.scss</strong> file.</p>
-<p>The <code>@import "foundation";</code> directive will import the Foundation <span class="caps">CSS</span> rules from the Foundation gem.</p>
-<p>You could add the Foundation <code>@import</code> code to the <strong>app/assets/stylesheets/application.css.scss</strong> file. However, it is better to have a separate <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file. You may wish to modify the Foundation <span class="caps">CSS</span> rules; placing changes to Foundation <span class="caps">CSS</span> rules in the <strong>framework_and_overrides.css.scss</strong> file will keep your <span class="caps">CSS</span> better organized.</p>
-<h4>Using Sass Mixins with Foundation</h4>
-<p>In addition to the simple <code>@import "foundation";</code> directive, the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> contains a collection of Sass mixins. These are examples that you can remove.</p>
-<p>You can use Sass mixins to map Foundation class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply <span class="caps">CSS</span> style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with Zurb Foundation, Bootstrap, or other front-end frameworks. The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> explains how to use Sass mixins.</p>
-<h2>Using Foundation <span class="caps">CSS</span> Classes</h2>
-<p>Now that you’ve installed Zurb Foundation, you have a rich library of interactive effects you can add to your pages.</p>
-<p>Take a look at the <a href="http://foundation.zurb.com/docs/">Foundation documentation</a> to see your options. Here are just a few examples:</p>
-<ul>
-<li><a href="http://foundation.zurb.com/docs/components/buttons.html">buttons</a></li>
-	<li><a href="http://foundation.zurb.com/docs/components/pricing-tables.html">pricing tables</a></li>
-	<li><a href="http://foundation.zurb.com/docs/components/reveal.html">modal dialogs</a></li>
-</ul><p>At a simpler level, Foundation provides a collection of carefully-crafted styling rules in the form of <span class="caps">CSS</span> classes. These are building blocks you use for page layout and typographic styling. For example, Foundation gives you <span class="caps">CSS</span> classes to set up rows and columns in a grid system.</p>
-<p>Let’s take a closer look at the Foundation grid system.</p>
-<h4>Foundation Grid</h4>
-<p>By default, the Foundation grid is 940 pixels wide. Two grids are available; “small” for browsers less than 768 pixels in width, and “large” for all others. Start by designing for the small screen with the classes prefixed “small”; then add classes prefixed “large” to change the layout for a large screen. The layout will change when the browser width is less than 768 pixels wide.</p>
-<p>The grid gives you 12 columns by default. You can organize your layout in horizontal and vertical sections using <code>row</code> and <code>columns</code> classes.</p>
-<p>For example, you could use Foundation grid classes to set up an application layout with a footer as a row with two sections:</p>
+
+The file *app/assets/stylesheets/framework_and_overrides.css.scss* is automatically included and compiled into your Rails application.css file by the @*= require_tree .@ statement in the *app/assets/stylesheets/application.css.scss* file.
+
+The @@import "foundation";@ directive will import the Foundation CSS rules from the Foundation gem.
+
+You could add the Foundation @@import@ code to the *app/assets/stylesheets/application.css.scss* file. However, it is better to have a separate *app/assets/stylesheets/framework_and_overrides.css.scss* file. You may wish to modify the Foundation CSS rules; placing changes to Foundation CSS rules in the *framework_and_overrides.css.scss* file will keep your CSS better organized.
+
+h4. Using Sass Mixins with Foundation
+
+In addition to the simple @@import "foundation";@ directive, the *app/assets/stylesheets/framework_and_overrides.css.scss* contains a collection of Sass mixins. These are examples that you can remove.
+
+You can use Sass mixins to map Foundation class names to your own semantic class names. The rails_layout gem provides examples of Sass mixins that apply CSS style rules to the default application layout. In doing so, the default application layout is free of framework-specific code and can be used with Zurb Foundation, Bootstrap, or other front-end frameworks. The book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html explains how to use Sass mixins.
+
+h2. Using Foundation CSS Classes
+
+Now that you've installed Zurb Foundation, you have a rich library of interactive effects you can add to your pages.
+
+Take a look at the "Foundation documentation":http://foundation.zurb.com/docs/ to see your options. Here are just a few examples:
+
+* "buttons":http://foundation.zurb.com/docs/components/buttons.html
+* "pricing tables":http://foundation.zurb.com/docs/components/pricing-tables.html
+* "modal dialogs":http://foundation.zurb.com/docs/components/reveal.html
+
+At a simpler level, Foundation provides a collection of carefully-crafted styling rules in the form of CSS classes. These are building blocks you use for page layout and typographic styling. For example, Foundation gives you CSS classes to set up rows and columns in a grid system.
+
+Let's take a closer look at the Foundation grid system.
+
+h4. Foundation Grid
+
+By default, the Foundation grid is 940 pixels wide. Two grids are available; "small" for browsers less than 768 pixels in width, and "large" for all others. Start by designing for the small screen with the classes prefixed "small"; then add classes prefixed "large" to change the layout for a large screen. The layout will change when the browser width is less than 768 pixels wide.
+
+The grid gives you 12 columns by default. You can organize your layout in horizontal and vertical sections using @row@ and @columns@ classes.
+
+For example, you could use Foundation grid classes to set up an application layout with a footer as a row with two sections:
+
 <pre>
-&lt;footer class="row"&gt;
-  &lt;section class="small-4 columns"&gt;
+ 
+   
     Copyright 2013
-  &lt;/section&gt;
-  &lt;section class="small-8 columns"&gt;
+   
+   
     All rights reserved.
-  &lt;/section&gt;
-&lt;/footer&gt;
+   
+ 
 </pre>
-<p>The Foundation <code>row</code> class will create a horizontal break. The footer will contain two side-by-side sections. The first will be four columns wide; the second will be eight columns wide.</p>
-<p>To better understand the grid system with all its options, see the <a href="http://foundation.zurb.com/docs/components/grid.html">documentation for the Foundation Grid</a>.</p>
-<h2>Application Layout with Zurb Foundation</h2>
-<p>Generating a new Rails application with the <code>rails new</code> command will create a default application layout. Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page.</p>
-<p>Let’s look at the application layout file created by the rails_layout gem:</p>
-<p>Examine the contents of the file <strong>app/views/layouts/application.html.erb</strong>:</p>
+
+The Foundation @row@ class will create a horizontal break. The footer will contain two side-by-side sections. The first will be four columns wide; the second will be eight columns wide.
+
+To better understand the grid system with all its options, see the "documentation for the Foundation Grid":http://foundation.zurb.com/docs/components/grid.html.
+
+h2. Application Layout with Zurb Foundation
+
+Generating a new Rails application with the @rails new@ command will create a default application layout. Rails will use the layout defined in the file *app/views/layouts/application.html.erb* as a default for rendering any page.
+
+Let's look at the application layout file created by the rails_layout gem:
+
+Examine the contents of the file *app/views/layouts/application.html.erb*:
+
 <pre>
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "Rails Foundation" %&gt;&lt;/title&gt;
-    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Rails Foundation" %&gt;"&gt;
-    &lt;%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" =&gt; true %&gt;
-    &lt;%# Modernizr is required for Zurb Foundation %&gt;
-    &lt;%= javascript_include_tag "vendor/modernizr" %&gt;
-    &lt;%= javascript_include_tag "application", "data-turbolinks-track" =&gt; true %&gt;
-    &lt;%= csrf_meta_tags %&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;header&gt;
-      &lt;%= render 'layouts/navigation' %&gt;
-    &lt;/header&gt;
-    &lt;main role="main"&gt;
-       &lt;%= render 'layouts/messages' %&gt;
-       &lt;%= yield %&gt;
-    &lt;/main&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+
+
+  
+    
+    
+    "&gt;
+     true %&gt;
+    
+    
+     true %&gt;
+    
+  
+  
+     
+      
+     
+    
+       
+       
+    
+  
+
 </pre>
-<p>The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> covers the application layout file in detail.</p>
-<p>If you use the Sass mixins provided by the rails_layout gem in the <strong>app/assets/stylesheets/framework_and_overrides.css.scss</strong> file, there’s no need to use Foundation classes directly in the application layout (Foundation classes will be applied to the <span class="caps">HTML</span> element <code>main</code>).</p>
-<p>If you don’t use Sass mixins, you can add Foundation classes directly to the application layout. For example, you might set the <code>main</code> element to be twelve columns wide using Foundation classes:</p>
+
+The book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html covers the application layout file in detail.
+
+If you use the Sass mixins provided by the rails_layout gem in the *app/assets/stylesheets/framework_and_overrides.css.scss* file, there's no need to use Foundation classes directly in the application layout (Foundation classes will be applied to the HTML element @main@).
+
+If you don't use Sass mixins, you can add Foundation classes directly to the application layout. For example, you might set the @main@ element to be twelve columns wide using Foundation classes:
+
 <pre>
-&lt;main role="main" class="small-12 columns"&gt;
+
 </pre>
-<p>See the <a href="http://foundation.zurb.com/docs/components/grid.html">documentation for the Foundation Grid</a>.</p>
-<h4>Modernizr JavaScript Library</h4>
-<p>The application layout file includes:</p>
+
+See the "documentation for the Foundation Grid":http://foundation.zurb.com/docs/components/grid.html.
+
+h4. Modernizr JavaScript Library
+
+The application layout file includes:
+
 <pre>
 .
 .
 .
-&lt;%# Modernizr is required for Zurb Foundation %&gt;
-&lt;%= javascript_include_tag "vendor/custom.modernizr" %&gt;
+
+
 .
 .
 .
 </pre>
-<p>The <a href="http://modernizr.com/">Modernizr</a> JavaScript library is a prerequisite for Foundation. Modernizr makes it possible for older browsers to use HTML5 elements. It also detects mobile devices. It must be loaded before Foundation, so it is included above <code>javascript_include_tag "application"</code>.</p>
-<h2>Flash Messages with Zurb Foundation</h2>
-<p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a <em>flash message</em>. The name comes from the term “flash memory” and should not be confused with the “Adobe Flash” web development platform that was once popular for animated websites.</p>
-<p>Rails uses <code>:notice</code> and <code>:alert</code> as flash message keys. Foundation provides a base class <code>alert-box</code> with additional classes <code>success</code> and <code>alert</code>. A bit of parsing is required to get a Rails “notice” message to be styled with the Foundation <code>success</code> style. Any other message, including a Rails “alert” message, will be styled with the Foundation <code>alert</code> style.</p>
-<p>By default, Foundation applies a green background to <code>success</code> and a red background to <code>alert</code>. Foundation provides additional classes <code>info</code> (blue) and <code>warning</code> (amber). With a little hacking, it’s possible to create a Rails flash message with a custom name, such as <code>:info</code>, that will display with the Foundation <code>info</code> class. However, it’s wise to stick with the Rails convention of using only “alert” and “notice.”</p>
-<p>You can include code to display flash messages directly in your application layout file or you can create a partial.</p>
-<p>The application layout file includes a messages partial:</p>
+
+The "Modernizr":http://modernizr.com/ JavaScript library is a prerequisite for Foundation. Modernizr makes it possible for older browsers to use HTML5 elements. It also detects mobile devices. It must be loaded before Foundation, so it is included above @javascript_include_tag "application"@.
+
+h2. Flash Messages with Zurb Foundation
+
+Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a _flash message_. The name comes from the term "flash memory" and should not be confused with the "Adobe Flash" web development platform that was once popular for animated websites.
+
+Rails uses @:notice@ and @:alert@ as flash message keys. Foundation provides a base class @alert-box@ with additional classes @success@ and @alert@. A bit of parsing is required to get a Rails "notice" message to be styled with the Foundation @success@ style. Any other message, including a Rails "alert" message, will be styled with the Foundation @alert@ style.
+
+By default, Foundation applies a green background to @success@ and a red background to @alert@. Foundation provides additional classes @info@ (blue) and @warning@ (amber). With a little hacking, it's possible to create a Rails flash message with a custom name, such as @:info@, that will display with the Foundation @info@ class. However, it's wise to stick with the Rails convention of using only "alert" and "notice."
+
+You can include code to display flash messages directly in your application layout file or you can create a partial.
+
+The application layout file includes a messages partial:
+
 <pre>
-&lt;%= render 'layouts/messages' %&gt;
+
 </pre>
-<p>Examine the file <strong>app/views/layouts/_messages.html.erb</strong>:</p>
+
+Examine the file *app/views/layouts/_messages.html.erb*:
+
 <pre>
-&lt;%# Rails flash messages styled for Zurb Foundation %&gt;
-&lt;% flash.each do |name, msg| %&gt;
-  &lt;% if msg.is_a?(String) %&gt;
-    &lt;div data-alert class="alert-box round &lt;%= name.to_s == 'notice' ? 'success' : 'alert' %&gt;"&gt;
-      &lt;%= content_tag :div, msg %&gt;
-      &lt;a href="#" class="close"&gt;&amp;times;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;% end %&gt;
-&lt;% end %&gt;
+
+
+  
+    <div class="alert-box round &lt;%= name.to_s == 'notice' ? 'success' : 'alert' %&gt;">
+      
+      <a href="#" class="close">×</a>
+    </div>
+  
+
 </pre>
-<p>We use <code>each</code> to iterate through the flash hash, retrieving a <code>name</code> and <code>msg</code> that are passed to a block to be output as a string. The expression <code>if msg.is_a?(String)</code> serves as a test to make sure we only display messages that are strings. We construct a div that applies Foundation <span class="caps">CSS</span> styling around the message. Foundation recognizes a class <code>alert-box</code> and <code>round</code> (for rounded corners). A class of either <code>success</code> or <code>alert</code> styles the message. Rails <code>notice</code> messages will get styled with the Foundation <code>success</code> class. Any other Rails messages, including <code>alert</code> messages, will get styled with the Foundation <code>alert</code> class.</p>
-<p>We use the Rails <code>content_tag</code> view helper to create a div containing the message.</p>
-<p>Finally, we create a “close” icon by applying the class <code>close</code> to a link. We use the <span class="caps">HTML</span> entity <code>&amp;times;</code> (a big “X” character) for the link; it could be the word “close” or anything else we like. Foundation’s integrated JavaScript library will hide the alert box when the “close” link is clicked.</p>
-<p>Foundation provides <a href="http://foundation.zurb.com/docs/components/alert-boxes.html">detailed documentation</a> if you want to change the styling of the alert boxes.</p>
-<h2>Navigation Partial with Zurb Foundation</h2>
-<p>The layout and styling required for the Foundation navigation bar are in the navigation partial file.</p>
-<p>The application layout file includes a navigation partial:</p>
+
+We use @each@ to iterate through the flash hash, retrieving a @name@ and @msg@ that are passed to a block to be output as a string. The expression @if msg.is_a?(String)@ serves as a test to make sure we only display messages that are strings. We construct a div that applies Foundation CSS styling around the message. Foundation recognizes a class @alert-box@ and @round@ (for rounded corners). A class of either @success@ or @alert@ styles the message. Rails @notice@ messages will get styled with the Foundation @success@ class. Any other Rails messages, including @alert@ messages, will get styled with the Foundation @alert@ class.
+
+We use the Rails @content_tag@ view helper to create a div containing the message.
+
+Finally, we create a "close" icon by applying the class @close@ to a link. We use the HTML entity @×@ (a big "X" character) for the link; it could be the word "close" or anything else we like. Foundation's integrated JavaScript library will hide the alert box when the "close" link is clicked.
+
+Foundation provides "detailed documentation":http://foundation.zurb.com/docs/components/alert-boxes.html if you want to change the styling of the alert boxes.
+
+h2. Navigation Partial with Zurb Foundation
+
+The layout and styling required for the Foundation navigation bar are in the navigation partial file.
+
+The application layout file includes a navigation partial:
+
 <pre>
-&lt;%= render 'layouts/navigation' %&gt;
+
 </pre>
-<p>Examine the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
+
+Examine the file *app/views/layouts/_navigation.html.erb*:
+
 <pre>
-&lt;%# navigation styled for Zurb Foundation 5 %&gt;
-&lt;nav class="top-bar" data-topbar&gt;
-  &lt;ul class="title-area"&gt;
-    &lt;li class="name"&gt;&lt;%= link_to 'Home', root_path %&gt;&lt;/li&gt;
-    &lt;li class="toggle-topbar menu-icon"&gt;&lt;a href="#"&gt;Menu&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-  &lt;div class="top-bar-section"&gt;
-    &lt;ul&gt;
-      &lt;%= render 'layouts/navigation_links' %&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-&lt;/nav&gt;
+
+ 
+  <ul class="title-area">
+    <li class="name">
+    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+  </ul>
+  <div class="top-bar-section">
+    <ul>
+      
+    </ul>
+  </div>
+ 
 </pre>
-<p>The navigation partial includes layout and Foundation classes needed to produce a responsive navigation bar.</p>
-<p>The responsive navigation bar adjusts to different browser widths. At small sizes, the navigation links will disappear and be replaced by an icon labeled “Menu.” Clicking the icon will reveal a vertical menu of navigation links. The navigation menu is a great demonstration of the ability of Zurb Foundation to adjust to the small screen size of a tablet or smartphone.</p>
-<p>If you’d like to add a site name or logo to the tutorial application, you can replace the link helper <code>&lt;%= link_to 'Home', root_path %&gt;</code>. It is important to preserve the enclosing layout and classes, even if you don’t want to display a site name or logo. The enclosing layout is used to generate the navigation menu when the browser window shrinks to accommodate a tablet or smartphone.</p>
-<p>We wrap the nested partial <code>render 'layouts/navigation_links'</code> with a Foundation class to complete the navigation bar.</p>
-<h2>Navigation Links Partial</h2>
-<p>The file <strong>app/views/layouts/_navigation_links.html.erb</strong> is very simple:</p>
+
+The navigation partial includes layout and Foundation classes needed to produce a responsive navigation bar.
+
+The responsive navigation bar adjusts to different browser widths. At small sizes, the navigation links will disappear and be replaced by an icon labeled "Menu." Clicking the icon will reveal a vertical menu of navigation links. The navigation menu is a great demonstration of the ability of Zurb Foundation to adjust to the small screen size of a tablet or smartphone.
+
+If you'd like to add a site name or logo to the tutorial application, you can replace the link helper @@. It is important to preserve the enclosing layout and classes, even if you don't want to display a site name or logo. The enclosing layout is used to generate the navigation menu when the browser window shrinks to accommodate a tablet or smartphone.
+
+We wrap the nested partial @render 'layouts/navigation_links'@ with a Foundation class to complete the navigation bar.
+
+h2. Navigation Links Partial
+
+The file *app/views/layouts/_navigation_links.html.erb* is very simple:
+
 <pre>
-&lt;%# add navigation links to this file %&gt;
+
 </pre>
-<p>You can add links to this file, for example:</p>
+
+You can add links to this file, for example:
+
 <pre>
-&lt;%# add navigation links to this file %&gt;
-&lt;li&gt;&lt;%= link_to 'About', page_path('about') %&gt;&lt;/li&gt;
-&lt;li&gt;&lt;%= link_to 'Contact', new_contact_path %&gt;&lt;/li&gt;
-</pre>
-<p>The navigation links partial is simply a list of navigation links. It doesn’t require additional <span class="caps">CSS</span> styling. By separating the links from the styling that creates the navigation bar, we segregate the code that is unique to Zurb Foundation. In the future, if the Zurb Foundation layout or <span class="caps">CSS</span> classes change, we can make changes without touching the navigation links.</p>
-<h2>Set up SimpleForm with Zurb Foundation</h2>
-<p>Rails provides a set of view helpers for forms. They are described in the <a href="http://guides.rubyonrails.org/form_helpers.html">RailsGuides: Rails Form Helpers</a> document. Many developers use an alternative set of form helpers named SimpleForm, provided by the <a href="https://github.com/plataformatec/simple_form">SimpleForm gem</a>. The SimpleForm helpers are more powerful, easier to use, and offer an option for styling with Zurb Foundation.</p>
-<p>In your <strong>Gemfile</strong>, add:</p>
+
+</pre><li>
+<li>
+
+
+The navigation links partial is simply a list of navigation links. It doesn't require additional CSS styling. By separating the links from the styling that creates the navigation bar, we segregate the code that is unique to Zurb Foundation. In the future, if the Zurb Foundation layout or CSS classes change, we can make changes without touching the navigation links.
+
+h2. Set up SimpleForm with Zurb Foundation
+
+Rails provides a set of view helpers for forms. They are described in the "RailsGuides: Rails Form Helpers":http://guides.rubyonrails.org/form_helpers.html document. Many developers use an alternative set of form helpers named SimpleForm, provided by the "SimpleForm gem":https://github.com/plataformatec/simple_form. The SimpleForm helpers are more powerful, easier to use, and offer an option for styling with Zurb Foundation.
+
+In your *Gemfile*, add:
+
 <pre>
 gem 'simple_form'
 </pre>
-<p>Run <code>$ bundle install</code>.</p>
-<p>Run the generator to install SimpleForm with a Zurb Foundation option:</p>
+
+Run @$ bundle install@.
+
+Run the generator to install SimpleForm with a Zurb Foundation option:
+
 <pre>
 $ rails generate simple_form:install --foundation
 </pre>
-<p>which installs several configuration files:</p>
+
+which installs several configuration files:
+
 <pre>
 config/initializers/simple_form.rb
 config/initializers/simple_form_foundation.rb
 config/locales/simple_form.en.yml
 lib/templates/erb/scaffold/_form.html.erb
 </pre>
-<p>Here the SimpleForm gem uses the <code>rails generate</code> command to create files for initialization and localization (language translation). SimpleForm can be customized with settings in the initialization file.</p>
-<h2>Themes for Zurb Foundation</h2>
-<p>Frameworks such as Foundation are intended to provide the building blocks for a custom website design. If you’ve got strong design skills, or can partner with an experienced web designer, you can develop a custom design that expresses the purpose and motif of your website. If you don’t have the skill or resources to customize the design, you can use the generic Foundation design.</p>
-<p>An alternative is to purchase a pre-designed theme for your website. Here are sites that offer pre-built themes for sale:</p>
-<ul>
-<li><a href="https://railsthemes.com/">RailsThemes</a></li>
-	<li><a href="http://www.foundationmade.com">FoundationMade</a></li>
-	<li><a href="http://www.bluejaythemes.com/">Blue Jay Themes</a></li>
-</ul><p>You can design your own pages using Foundation, or customize a theme, with a drag-and-drop design tool:</p>
-<ul>
-<li><a href="http://www.divshot.com/">Divshot</a></li>
-</ul><h2>Resources for Zurb Foundation</h2>
-<p>Zurb provides a collection of example layouts:</p>
-<ul>
-<li><a href="http://foundation.zurb.com/templates.html"><span class="caps">HTML</span> Templates</a></li>
-</ul><p>Find contributed examples of Foundation layouts and design elements here:</p>
-<ul>
-<li><a href="http://patterntap.com/code">Pattern Tap</a></li>
-</ul><p>Zurb maintains a list of Foundation third-party tools and projects:</p>
-<ul>
-<li><a href="http://foundation.zurb.com/develop/tools.html">Foundation Tools</a></li>
-</ul><h2>Getting Help for Zurb Foundation</h2>
-<p>Zurb has a community forum for questions and answers:</p>
-<ul>
-<li><a href="http://foundation.zurb.com/forum">Foundation Forum</a></li>
-</ul><p><a href="http://stackoverflow.com/questions/tagged/zurb-foundation">Stack Overflow</a> is a popular site for questions and answers about Zurb Foundation.</p>
-<h2>Did You Like the Article?</h2>
-<p>Was the article useful to you? Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
-<p>You can also find me on <a href="https://www.facebook.com/daniel.kehoe.sf">Facebook</a> or <a href="https://plus.google.com/+DanielKehoe/">Google+</a>.</p>
+
+Here the SimpleForm gem uses the @rails generate@ command to create files for initialization and localization (language translation). SimpleForm can be customized with settings in the initialization file.
+
+h2. Themes for Zurb Foundation
+
+Frameworks such as Foundation are intended to provide the building blocks for a custom website design. If you've got strong design skills, or can partner with an experienced web designer, you can develop a custom design that expresses the purpose and motif of your website. If you don't have the skill or resources to customize the design, you can use the generic Foundation design.
+
+An alternative is to purchase a pre-designed theme for your website. Here are sites that offer pre-built themes for sale:
+
+* "RailsThemes":https://railsthemes.com/
+* "FoundationMade":http://www.foundationmade.com
+* "Blue Jay Themes":http://www.bluejaythemes.com/
+
+You can design your own pages using Foundation, or customize a theme, with a drag-and-drop design tool:
+
+* "Divshot":http://www.divshot.com/
+
+h2. Resources for Zurb Foundation
+
+Zurb provides a collection of example layouts:
+
+* "HTML Templates":http://foundation.zurb.com/templates.html
+
+Find contributed examples of Foundation layouts and design elements here:
+
+* "Pattern Tap":http://patterntap.com/code
+
+Zurb maintains a list of Foundation third-party tools and projects:
+
+* "Foundation Tools":http://foundation.zurb.com/develop/tools.html
+
+h2. Getting Help for Zurb Foundation
+
+Zurb has a community forum for questions and answers:
+
+* "Foundation Forum":http://foundation.zurb.com/forum
+
+"Stack Overflow":http://stackoverflow.com/questions/tagged/zurb-foundation is a popular site for questions and answers about Zurb Foundation.
+
+h2. Did You Like the Article?
+
+Was the article useful to you? Follow "@rails_apps":http://twitter.com/rails_apps on Twitter and tweet some praise. I'd love to know you were helped out by the article.
+
+You can also find me on "Facebook":https://www.facebook.com/daniel.kehoe.sf or "Google+":https://plus.google.com/+DanielKehoe/.
+
+
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

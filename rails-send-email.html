@@ -44,62 +44,93 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Send Email with Rails</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 12 December 2012</em></p>
-<p>Sending email from a Ruby on Rails application. How to <a href="#configure">configure Rails to send email</a> using Gmail or Mandrill accounts. With an introduction comparing <a href="#providers">Email Service Providers</a> for application transactional email or mailing lists.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2 id="providers">Email Service Providers</h2>
-<p>In many applications, you’ll need infrastructure for three types of email:</p>
-<ul>
-<li>company email</li>
-	<li>email sent from the app (“transactional email”)</li>
-	<li>broadcast email for newsletters or announcements</li>
-</ul><p>No single vendor is optimal for all three types of email; you likely will use several vendors.</p>
-<p>For “company email,” that is, sending individual email to customers or business associates, you’ll probably use Gmail or <a href="http://www.google.com/enterprise/apps/business/index.html">Google Apps for Business</a>. For a single address, you can set up a single Gmail account to receive and <a href="http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370">send email from a different address</a>. More likely, you’ll want several email addresses for your company mail. For that, use Google Apps for Business.</p>
-<h3>Transactional Email</h3>
-<p>For simple testing of email, it’s easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations, you will need a hosted <span class="caps">SMTP</span> relay service (also known as an <span class="caps">ESP</span> or “email service provider”). Considerable expertise is required to keep email from being filtered as spam (see MailChimp’s <a href="http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/">Email Delivery For IT Professionals</a>). Use an <span class="caps">ESP</span> to increase reliability of delivery. The best services track deliveries and show how well your email is being delivered.</p>
-<p>Many of these services offer a free plan allowing up to 200 emails/day:</p>
-<ul>
-<li><a href="http://mandrill.com/">Mandrill by MailChimp</a></li>
-	<li><a href="http://sendgrid.com/pricing.html">SendGrid</a></li>
-	<li><a href="http://mailgun.net/pricing">Mailgun</a></li>
-	<li><a href="http://aws.amazon.com/ses/pricing/" title="SES">Amazon Simple Email Service</a></li>
-	<li><a href="http://elasticemail.com/pricing">Elastic Email</a></li>
-	<li><a href="http://www.critsend.com/pricing">CritSend</a></li>
-	<li><a href="https://www.mailjet.com/pricing">Mailjet</a></li>
-	<li><a href="http://www.messagegears.com/">MessageGears</a></li>
-	<li><a href="https://secure.postageapp.com/register">PostageApp</a></li>
-	<li><a href="http://postmarkapp.com/pricing">Postmark</a></li>
-	<li><a href="https://www.serversmtp.com/en/cart.php?systpl=turbo-smtp&amp;systpl=turbo-smtp&amp;currency=3">turboSMTP</a></li>
-</ul><p>I recommend the <a href="http://mandrill.com/">Mandrill by MailChimp</a> service (please <a href="#comment">leave a comment</a> below with your opinion or recommendation). The Mandrill transactional email service integrates well with the MailChimp email list manager service. Plus, you can send up to 12,000 emails/month from the service for free.</p>
-<p>Sign up for a MailChimp account to get started. After you’ve created your MailChimp account, see the instructions <a href="http://help.mandrill.com/entries/21681117-how-do-i-use-mandrill-if-i-already-have-a-mailchimp-account">How do I use Mandrill if I already have a MailChimp account?</a>.</p>
-<h3>Mailing List</h3>
-<p>In addition to sending transactional email messages, you likely will want to send newsletters or announcements to your entire mailing list. <span class="caps">SMTP</span> relay services such as SendGrid often offer rudimentary bulk email services but you may want to consider using a dedicated service for mass emailing. You’ll get features such as management of “unsubscribe” requests and templates to design attractive messages.</p>
-<p>For broadcast email, consider using a service such as:</p>
-<ul>
-<li><a href="http://mailchimp.com/pricing/">MailChimp</a></li>
-	<li><a href="https://www.madmimi.com/service_agreements/choose_plan">MadMimi</a></li>
-	<li><a href="http://www.campaignmonitor.com/pricing/">CampaignMonitor</a></li>
-	<li><a href="http://www.constantcontact.com/pricing/email-marketing.jsp">Constant Contact</a></li>
-	<li><a href="http://www.ymlp.com/pricing.html"><span class="caps">YMLP</span></a></li>
-	<li><a href="http://www.jangomail.com/pricing.asp">JangoMail</a></li>
-	<li><a href="http://www.icontact.com/affordable-email-marketing">iContact</a></li>
-	<li><a href="http://www.verticalresponse.com/pricing">VerticalResponse</a></li>
-</ul><p>I recommend <a href="http://mailchimp.com/">MailChimp</a> (please <a href="#comment">leave a comment</a> below with your opinion or recommendation). MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free. After you sign up for a MailChimp account, get your <span class="caps">API</span> key. Look under “Account” for “<span class="caps">API</span> Keys and Authorized Apps.” Note that the Mandrill <span class="caps">API</span> key (which you get on the <a href="http://mandrill.com/">mandrill.com</a> site) is different from the MailChimp <span class="caps">API</span> key (which you get on the <a href="http://mailchimp.com/">mailchimp.com</a> site).</p>
-<h2 id="configure">Configure Email</h2>
-<p>You must configure your application for your email account if you want your application to send email messages.</p>
-<p>If you’ve used <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> to create a starter application, the tool has already made the necessary configuration changes. However, you must configure the application for your email account.</p>
-<h2>Configure Devise for Email</h2>
-<p>If you are using the Devise <code>confirmable</code> module to send email, modify the file:</p>
-<p><strong>config/initializers/devise.rb</strong></p>
-<p>to set the <code>config.mailer_sender</code> option for the return email address for messages that Devise sends from the application.</p>
-<h2 id="actionmailer">Configure ActionMailer</h2>
-<p>Rails Composer configures ActionMailer for development in the <strong>config/environments/development.rb</strong> file:</p>
+        h1. Send Email with Rails
+
+h4. by Daniel Kehoe
+
+_Last updated 12 December 2012_
+
+Sending email from a Ruby on Rails application. How to "configure Rails to send email":#configure using Gmail or Mandrill accounts. With an introduction comparing "Email Service Providers":#providers for application transactional email or mailing lists.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to "join the RailsApps project":http://railsapps.github.io/.
+
+h2(#providers). Email Service Providers
+
+In many applications, you'll need infrastructure for three types of email:
+
+* company email
+* email sent from the app ("transactional email")
+* broadcast email for newsletters or announcements
+
+No single vendor is optimal for all three types of email; you likely will use several vendors.
+
+For "company email," that is, sending individual email to customers or business associates, you'll probably use Gmail or "Google Apps for Business":http://www.google.com/enterprise/apps/business/index.html. For a single address, you can set up a single Gmail account to receive and "send email from a different address":http://support.google.com/mail/bin/answer.py?hl=en&amp;ctx=mail&amp;answer=22370. More likely, you'll want several email addresses for your company mail. For that, use Google Apps for Business.
+
+h3. Transactional Email
+
+For simple testing of email, it's easy to use Gmail to send email messages from the application. For deployment, when the application must send dozens or thousands of acknowledgments or invitations, you will need a hosted SMTP relay service (also known as an ESP or "email service provider"). Considerable expertise is required to keep email from being filtered as spam (see MailChimp's "Email Delivery For IT Professionals":http://mailchimp.com/resources/guides/html/email-delivery-for-it-professionals/). Use an ESP to increase reliability of delivery. The best services track deliveries and show how well your email is being delivered.
+
+Many of these services offer a free plan allowing up to 200 emails/day:
+
+* "Mandrill by MailChimp":http://mandrill.com/
+* "SendGrid":http://sendgrid.com/pricing.html
+* "Mailgun":http://mailgun.net/pricing
+* "Amazon Simple Email Service (SES)":http://aws.amazon.com/ses/pricing/
+* "Elastic Email":http://elasticemail.com/pricing
+* "CritSend":http://www.critsend.com/pricing
+* "Mailjet":https://www.mailjet.com/pricing
+* "MessageGears":http://www.messagegears.com/
+* "PostageApp":https://secure.postageapp.com/register
+* "Postmark":http://postmarkapp.com/pricing
+* "turboSMTP":https://www.serversmtp.com/en/cart.php?systpl=turbo-smtp&amp;systpl=turbo-smtp&amp;currency=3
+
+I recommend the "Mandrill by MailChimp":http://mandrill.com/ service (please "leave a comment":#comment below with your opinion or recommendation). The Mandrill transactional email service integrates well with the MailChimp email list manager service. Plus, you can send up to 12,000 emails/month from the service for free.
+
+Sign up for a MailChimp account to get started. After you've created your MailChimp account, see the instructions "How do I use Mandrill if I already have a MailChimp account?":http://help.mandrill.com/entries/21681117-how-do-i-use-mandrill-if-i-already-have-a-mailchimp-account.
+
+h3. Mailing List
+
+In addition to sending transactional email messages, you likely will want to send newsletters or announcements to your entire mailing list. SMTP relay services such as SendGrid often offer rudimentary bulk email services but you may want to consider using a dedicated service for mass emailing. You'll get features such as management of "unsubscribe" requests and templates to design attractive messages.
+
+For broadcast email, consider using a service such as:
+
+* "MailChimp":http://mailchimp.com/pricing/
+* "MadMimi":https://www.madmimi.com/service_agreements/choose_plan
+* "CampaignMonitor":http://www.campaignmonitor.com/pricing/
+* "Constant Contact":http://www.constantcontact.com/pricing/email-marketing.jsp
+* "YMLP":http://www.ymlp.com/pricing.html
+* "JangoMail":http://www.jangomail.com/pricing.asp
+* "iContact":http://www.icontact.com/affordable-email-marketing
+* "VerticalResponse":http://www.verticalresponse.com/pricing
+
+I recommend "MailChimp":http://mailchimp.com/ (please "leave a comment":#comment below with your opinion or recommendation). MailChimp allows you to send up to 12,000 emails/month to list of 2000 or fewer subscribers for free. After you sign up for a MailChimp account, get your API key. Look under "Account" for "API Keys and Authorized Apps." Note that the Mandrill API key (which you get on the "mandrill.com":http://mandrill.com/ site) is different from the MailChimp API key (which you get on the "mailchimp.com":http://mailchimp.com/ site).
+
+h2(#configure). Configure Email
+
+You must configure your application for your email account if you want your application to send email messages.
+
+If you've used "Rails Composer":http://railsapps.github.io/rails-composer/ to create a starter application, the tool has already made the necessary configuration changes. However, you must configure the application for your email account.
+
+h2. Configure Devise for Email
+
+If you are using the Devise @confirmable@ module to send email, modify the file:
+
+*config/initializers/devise.rb*
+
+to set the @config.mailer_sender@ option for the return email address for messages that Devise sends from the application.
+
+h2(#actionmailer). Configure ActionMailer
+
+Rails Composer configures ActionMailer for development in the *config/environments/development.rb* file:
+
 <pre>
 # ActionMailer Config
 config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
@@ -109,9 +140,13 @@ config.action_mailer.perform_deliveries = false
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
-<p>In development, <code>config.action_mailer.default_url_options</code> is set for a host at <code>localhost:3000</code>. If you are sending email with Devise, this will enable links in Devise confirmation email messages to work properly during development.</p>
-<p>Email messages are visible in the log file so there is no need to send email in development. The configuration above will raise delivery errors in development.</p>
-<p>Rails Composer configures ActionMailer for production in the <strong>config/environments/production.rb</strong> file:</p>
+
+In development, @config.action_mailer.default_url_options@ is set for a host at @localhost:3000@. If you are sending email with Devise, this will enable links in Devise confirmation email messages to work properly during development.
+
+Email messages are visible in the log file so there is no need to send email in development. The configuration above will raise delivery errors in development.
+
+Rails Composer configures ActionMailer for production in the *config/environments/production.rb* file:
+
 <pre>
 config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
 # ActionMailer Config
@@ -121,18 +156,28 @@ config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = false
 config.action_mailer.default :charset =&gt; "utf-8"
 </pre>
-<p>This will set the example application to deliver email in production. The configuration above will not raise delivery errors in production.</p>
-<p>For production, you’ll need to change the <code>config.action_mailer.default_url_options</code> host option from <code>example.com</code> to your own domain.</p>
-<p>ActionMailer is configured for testing in the <strong>config/environments/test.rb</strong> file:</p>
+
+This will set the example application to deliver email in production. The configuration above will not raise delivery errors in production.
+
+For production, you'll need to change the @config.action_mailer.default_url_options@ host option from @example.com@ to your own domain.
+
+ActionMailer is configured for testing in the *config/environments/test.rb* file:
+
 <pre>
 # ActionMailer Config
 config.action_mailer.default_url_options = { :host =&gt; 'example.com' }
 </pre>
-<p>For testing, <code>config.action_mailer.default_url_options</code> is set for a host at <code>example.com</code>. Any value allows tests to run.</p>
-<h3 id="gmail">Use a Gmail account</h3>
-<p>In production, you should use an email service provider such as <a href="http://mandrill.com/">Mandrill</a> to increase deliverability for email messages from your app.</p>
-<p>Use Gmail for experimenting, if you want to keep things simple.</p>
-<p>If you have selected Gmail, Rails Composer will set the file <strong>config/environments/production.rb</strong> to look like this:</p>
+
+For testing, @config.action_mailer.default_url_options@ is set for a host at @example.com@. Any value allows tests to run.
+
+h3(#gmail). Use a Gmail account
+
+In production, you should use an email service provider such as "Mandrill":http://mandrill.com/ to increase deliverability for email messages from your app.
+
+Use Gmail for experimenting, if you want to keep things simple.
+
+If you have selected Gmail, Rails Composer will set the file *config/environments/production.rb* to look like this:
+
 <pre>
 config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
@@ -144,10 +189,15 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_PASSWORD"]
 }
 </pre>
-<p>You can replace <code>ENV["GMAIL_USERNAME"]</code> and <code>ENV["GMAIL_PASSWORD"]</code> with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
-<h3 id="mandrill">Use a Mandrill account</h3>
-<p>Use an <span class="caps">SMTP</span> relay service such as Mandrill if you want to increase deliverability for email messages from your application.</p>
-<p>If you have selected Mandrill, Rails Composer will set the file <strong>config/environments/production.rb</strong> to look like this:</p>
+
+You can replace @ENV["GMAIL_USERNAME"]@ and @ENV["GMAIL_PASSWORD"]@ with your Gmail username and password. However, committing the file to a public GitHub repository will expose your secret password. See the article "Rails Environment Variables":http://railsapps.github.io/rails-environment-variables.html to learn how to set local environment variables to keep email account passwords secret.
+
+h3(#mandrill). Use a Mandrill account
+
+Use an SMTP relay service such as Mandrill if you want to increase deliverability for email messages from your application.
+
+If you have selected Mandrill, Rails Composer will set the file *config/environments/production.rb* to look like this:
+
 <pre>
 config.action_mailer.smtp_settings = {
   :address   =&gt; "smtp.mandrillapp.com",
@@ -156,13 +206,21 @@ config.action_mailer.smtp_settings = {
   :password  =&gt; ENV["MANDRILL_API_KEY"]
 }
 </pre>
-<p>Note that the password will be your Mandrill <span class="caps">API</span> key.</p>
-<p>You can replace <code>ENV["MANDRILL_USERNAME"]</code> and <code>ENV["MANDRILL_API_KEY"]</code> with your Mandrill username and <span class="caps">API</span> key. However, committing the file to a public GitHub repository will expose your secret <span class="caps">API</span> key. See the article <a href="http://railsapps.github.io/rails-environment-variables.html">Rails Environment Variables</a> to learn how to set local environment variables to keep email account passwords secret.</p>
-<h2>Credits</h2>
-<p>Daniel Kehoe wrote the article.</p>
-<h2 id="comment">Did You Like the Article?</h2>
-<p>Was this useful to you? Follow <a href="http://twitter.com/rails_apps">rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please leave a comment below.</p>
+
+Note that the password will be your Mandrill API key.
+
+You can replace @ENV["MANDRILL_USERNAME"]@ and @ENV["MANDRILL_API_KEY"]@ with your Mandrill username and API key. However, committing the file to a public GitHub repository will expose your secret API key. See the article "Rails Environment Variables":http://railsapps.github.io/rails-environment-variables.html to learn how to set local environment variables to keep email account passwords secret.
+
+h2. Credits
+
+Daniel Kehoe wrote the article.
+
+h2(#comment). Did You Like the Article?
+
+Was this useful to you? Follow "rails_apps":http://twitter.com/rails_apps on Twitter and tweet some praise. I'd love to know you were helped out by the tutorial.
+
+Any issues? Please leave a comment below.
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

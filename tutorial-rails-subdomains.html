@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Rails Tutorial for Subdomains with Devise &#183; RailsApps</title>
+  <title>Rails Tutorial &#183; Subdomains with Devise &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,52 +44,90 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Rails Tutorial for Subdomains with Devise</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 20 August 2012</em></p>
-<p>Ruby on Rails tutorial showing how to create a Rails 3.2 application with subdomains and authentication using Devise.</p>
-<h4>What Is Implemented</h4>
-<p>The example app implements a common use of subdomains, often called “Basecamp-style subdomains in Rails.” Visitors to the main site create a user account which is hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain.</p>
-<h4>What Is Not Implemented</h4>
-<p>Another common use of subdomains can be called “blog-style subdomains.” This approach is familiar to users of sites such as wordpress.com where each user can create multiple blogs and each is hosted on its own subdomain. For example, a user with the email address “user@example.com@” can own more than one blog, for example, “puppyphotos.wordpress.com” and “kittenphotos.wordpress.com”. The “blog-style subdomains” approach is not implemented in this example application.</p>
-<h4>Based on the Rails3-Mongoid-Devise Example App</h4>
-<p>This app extends the <a href="https://github.com/RailsApps/rails3-mongoid-devise">Rails 3 + Mongoid + Devise</a> example app. You can see a <a href="http://railsapps.github.io/tutorial-rails-mongoid-devise.html">tutorial for the Rails 3 + Mongoid + Devise</a>. <a href="http://mongoid.org/">Mongoid</a> gives access to a MongoDB datastore for quick development without schemas or migrations. <a href="https://github.com/plataformatec/devise">Devise</a> gives you ready-made authentication.</p>
-<h4>Similar Examples and Tutorials</h4>
-<p>See a list of additional <a href="http://railsapps.github.io/rails-examples-tutorials.html">Rails examples, tutorials, and starter apps</a>.</p>
-<h2>
-<a href="http://www.twitter.com/rails_apps"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" title="Follow on Twitter" alt="Follow on Twitter"></a> Follow on Twitter</h2>
-<p>Follow the project on Twitter: <a href="http://twitter.com/rails_apps">@rails_apps</a>. Tweet some praise if you like what you’ve found.</p>
-<h2>
-<img src="http://railsapps.github.io/images/rails-36x36.jpg" title="Tutorial" alt="Tutorial"> Tutorial</h2>
-<p>This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you’re advised to look for an introduction to Rails elsewhere. See recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a> and resources for getting started with <a href="http://railsapps.github.io/rails.html">Rails</a>.</p>
-<h2>Before You Start</h2>
-<p>If you follow this tutorial closely, you’ll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, <a href="http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x">good file compare tools</a> are <a href="http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge">FileMerge</a>, <a href="http://sourcegear.com/diffmerge/">DiffMerge</a>, <a href="http://www.kaleidoscopeapp.com/">Kaleidoscope</a>, or Ian Baird’s <a href="http://www.changesapp.com/">Changes</a>.</p>
-<p>If you clone and install the example app and find problems or wish to suggest improvements, please create a <a href="https://github.com/RailsApps/rails3-subdomains/issues">GitHub issue</a>.</p>
-<p>To improve this tutorial, please leave comments below.</p>
-<h2>Installing MongoDB</h2>
-<p>If you don’t have MongoDB installed on your computer, you’ll need to install it and set it up to be always running on your computer (run at launch). On Mac OS X, the easiest way to install MongoDB is to install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then run the following:</p>
+        h1. Rails Tutorial for Subdomains with Devise
+
+h4. by Daniel Kehoe
+
+_Last updated 20 August 2012_
+
+Ruby on Rails tutorial showing how to create a Rails 3.2 application with subdomains and authentication using Devise.
+
+h4. What Is Implemented
+
+The example app implements a common use of subdomains, often called "Basecamp-style subdomains in Rails." Visitors to the main site create a user account which is hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain.
+
+h4. What Is Not Implemented
+
+Another common use of subdomains can be called "blog-style subdomains." This approach is familiar to users of sites such as wordpress.com where each user can create multiple blogs and each is hosted on its own subdomain. For example, a user with the email address "user@example.com@" can own more than one blog, for example, "puppyphotos.wordpress.com" and "kittenphotos.wordpress.com". The "blog-style subdomains" approach is not implemented in this example application.
+
+h4. Based on the Rails3-Mongoid-Devise Example App
+
+This app extends the "Rails 3 + Mongoid + Devise":https://github.com/RailsApps/rails3-mongoid-devise example app. You can see a "tutorial for the Rails 3 + Mongoid + Devise":http://railsapps.github.io/tutorial-rails-mongoid-devise.html. "Mongoid":http://mongoid.org/ gives access to a MongoDB datastore for quick development without schemas or migrations. "Devise":https://github.com/plataformatec/devise gives you ready-made authentication.
+
+h4. Similar Examples and Tutorials
+
+See a list of additional "Rails examples, tutorials, and starter apps":http://railsapps.github.io/rails-examples-tutorials.html.
+
+h2. !http://twitter-badges.s3.amazonaws.com/t_logo-a.png(Follow on Twitter)!:http://www.twitter.com/rails_apps Follow on Twitter
+
+Follow the project on Twitter: "@rails_apps":http://twitter.com/rails_apps. Tweet some praise if you like what you've found.
+
+h2. !http://railsapps.github.io/images/rails-36x36.jpg(Tutorial)! Tutorial
+
+This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you're advised to look for an introduction to Rails elsewhere. See recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial and resources for getting started with "Rails":http://railsapps.github.io/rails.html.
+
+h2. Before You Start
+
+If you follow this tutorial closely, you'll have a working application that closely matches the example app in this GitHub repository. The example app is your reference implementation. If you find problems with the app you build from this tutorial, download the example app (in Git speak, clone it) and use a file compare tool to identify differences that may be causing errors. On a Mac, "good file compare tools":http://stackoverflow.com/questions/187064/graphical-diff-for-mac-os-x are "FileMerge":http://en.wikipedia.org/wiki/Apple_Developer_Tools#FileMerge, "DiffMerge":http://sourcegear.com/diffmerge/, "Kaleidoscope":http://www.kaleidoscopeapp.com/, or Ian Baird's "Changes":http://www.changesapp.com/.
+
+If you clone and install the example app and find problems or wish to suggest improvements, please create a "GitHub issue":https://github.com/RailsApps/rails3-subdomains/issues.
+
+To improve this tutorial, please leave comments below.
+
+h2. Installing MongoDB
+
+If you don't have MongoDB installed on your computer, you'll need to install it and set it up to be always running on your computer (run at launch). On Mac OS X, the easiest way to install MongoDB is to install "Homebrew":http://mxcl.github.com/homebrew/ and then run the following:
+
 <pre>
 brew install mongodb
 </pre>
-<p>Homebrew will provide post-installation instructions to get MongoDB running. The last line of the installation output shows you the MongoDB install location (for example, <strong>/usr/local/Cellar/mongodb/1.8.0-x86_64</strong>). You’ll find the MongoDB configuration file there. After an installation using Homebrew, the default data directory will be <strong>/usr/local/var/mongodb</strong>.</p>
-<h2>Creating the Application</h2>
-<p>You have several options for getting the code. You can <em>copy from the tutorial</em>, <em>fork</em>, <em>clone</em>, or <em>generate</em>.</p>
-<h3>Copy from the Tutorial</h3>
-<p>To create the application, you can cut and paste the code from the tutorial into your own files. It’s a bit tedious and error-prone but you’ll have a good opportunity to examine the code closely.</p>
-<h3>Fork</h3>
-<p>If you’d like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and <a href="http://help.github.com/send-pull-requests/">make pull requests</a>. Your code contributions are welcome!</p>
-<h3>Clone</h3>
-<p>If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You’ll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).</p>
-<h3>Generate</h3>
-<p>You can use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool to generate a new version of the example app. You’ll be able to give it your own project name when you generate the app. Generating the application gives you additional options.</p>
-<p>To build the example application, run the command:</p>
+
+Homebrew will provide post-installation instructions to get MongoDB running. The last line of the installation output shows you the MongoDB install location (for example, */usr/local/Cellar/mongodb/1.8.0-x86_64*). You'll find the MongoDB configuration file there. After an installation using Homebrew, the default data directory will be */usr/local/var/mongodb*.
+
+h2. Creating the Application
+
+You have several options for getting the code. You can _copy from the tutorial_, _fork_, _clone_, or _generate_.
+
+h3. Copy from the Tutorial
+
+To create the application, you can cut and paste the code from the tutorial into your own files. It's a bit tedious and error-prone but you'll have a good opportunity to examine the code closely.
+
+h3. Fork
+
+If you'd like to add features (or bug fixes) to improve the example application, you can fork the GitHub repo and "make pull requests":http://help.github.com/send-pull-requests/. Your code contributions are welcome!
+
+h3. Clone
+
+If you want to copy and customize the app with changes that are only useful for your own project, you can download or clone the GitHub repo. You'll need to search-and-replace the project name throughout the application. You probably should generate the app instead (see below).
+
+h3. Generate
+
+You can use the "Rails Composer":http://railsapps.github.io/rails-composer/ tool to generate a new version of the example app. You'll be able to give it your own project name when you generate the app. Generating the application gives you additional options.
+
+To build the example application, run the command:
+
 <pre>
 $ rails new rails3-subdomains -m https://raw.github.com/RailsApps/rails-composer/master/composer-Rails3_2.rb -T -O
 </pre>
-<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
-<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails3-subdomains</code> on your computer. You can use a different name if you wish.</p>
-<p>You’ll see a prompt:</p>
+
+Use the @-T -O@ flags to skip Test::Unit files and Active Record files.
+
+The @$@ character indicates a shell prompt; don't include it when you run the command.
+
+This creates a new Rails app named @rails3-subdomains@ on your computer. You can use a different name if you wish.
+
+You'll see a prompt:
+
 <pre>
 question  Install an example application?
       1)  I want to build my own application
@@ -99,33 +137,57 @@ question  Install an example application?
       5)  rails3-mongoid-omniauth
       6)  rails3-subdomains
 </pre>
-<p>Choose <strong>6) rails3-subdomains</strong>.</p>
-<p>The application generator template will ask you for additional preferences.</p>
-<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
-<p>You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.</p>
-<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
-<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Use or create a project-specific rvm gemset?” See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
-<p>Finally, the program will ask if you want to create a GitHub repository.</p>
-<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-subdomains folder and running the command again.</p>
-<h2>Assumptions</h2>
-<p>Before beginning this tutorial, you need to install</p>
-<ul>
-<li>The Ruby language (version 1.9.3 or newer)</li>
-	<li>Rails 3.2</li>
-</ul><p>Check that appropriate versions of Ruby and Rails are installed in your development environment:</p>
-<p><code>$ ruby -v</code><br><code>$ rails -v</code></p>
-<p>Be sure to read <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
-<h2>Create the Rails Application</h2>
-<p>Before you write any code, you’ll start by generating a starter app using an application template script.</p>
-<p>If you’ve developed other applications in Rails, you’ll know that the <code>rails new</code> command creates a basic Rails application. Here we’ll use the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool (“like the <code>rails new</code> command on steroids”) to create a more complex “starter” app. The starter app simplifies the tutorial. If you want a tutorial that shows you the steps to build the starter app, see the <a href="http://railsapps.github.io/tutorial-rails3-mongoid-devise.html">rails3-mongoid-devise</a> tutorial.</p>
-<p>For the starter app we need, use the command:</p>
+
+Choose *6) rails3-subdomains*.
+
+The application generator template will ask you for additional preferences.
+
+For this tutorial, choose "WEBrick" for your development webserver.
+
+You can choose to set a robots.txt file to ban spiders and keep your site out of Google search results.
+
+If you are a Linux user and you haven't installed node.js, you'll need to answer "yes" to install the 'therubyracer' JavaScript runtime.
+
+If you have installed "rvm":https://rvm.io/, the Ruby Version Manager, I recommend you answer "yes" to the prompt, "Use or create a project-specific rvm gemset?" See the article "Installing Rails":http://railsapps.github.io/installing-rails.html to learn about the benefits of using rvm.
+
+Finally, the program will ask if you want to create a GitHub repository.
+
+If you get an error "You have already activated (...) but your Gemfile requires (...)", try deleting the rails3-subdomains folder and running the command again.
+
+h2. Assumptions
+
+Before beginning this tutorial, you need to install
+
+* The Ruby language (version 1.9.3 or newer)
+* Rails 3.2
+
+Check that appropriate versions of Ruby and Rails are installed in your development environment:
+
+@$ ruby -v@
+@$ rails -v@
+
+Be sure to read "Installing Rails":http://railsapps.github.io/installing-rails.html for detailed instructions and advice.
+
+h2. Create the Rails Application
+
+Before you write any code, you'll start by generating a starter app using an application template script.
+
+If you've developed other applications in Rails, you'll know that the @rails new@ command creates a basic Rails application. Here we'll use the "Rails Composer":http://railsapps.github.io/rails-composer/ tool ("like the @rails new@ command on steroids") to create a more complex "starter" app. The starter app simplifies the tutorial. If you want a tutorial that shows you the steps to build the starter app, see the "rails3-mongoid-devise":http://railsapps.github.io/tutorial-rails3-mongoid-devise.html tutorial.
+
+For the starter app we need, use the command:
+
 <pre>
 $ rails new rails3-subdomains -m https://raw.github.com/RailsApps/rails-composer/master/composer-Rails3_2.rb -T -O
 </pre>
-<p>Use the <code>-T -O</code> flags to skip Test::Unit files and Active Record files.</p>
-<p>The <code>$</code> character indicates a shell prompt; don’t include it when you run the command.</p>
-<p>This creates a new Rails app named <code>rails3-subdomains</code> on your computer. You can use a different name if you wish.</p>
-<p>You’ll see a prompt:</p>
+
+Use the @-T -O@ flags to skip Test::Unit files and Active Record files.
+
+The @$@ character indicates a shell prompt; don't include it when you run the command.
+
+This creates a new Rails app named @rails3-subdomains@ on your computer. You can use a different name if you wish.
+
+You'll see a prompt:
+
 <pre>
 question  Install an example application?
       1)  I want to build my own application
@@ -135,25 +197,45 @@ question  Install an example application?
       5)  rails3-mongoid-omniauth
       6)  rails3-subdomains
 </pre>
-<p>Choose <strong>4) rails3-mongoid-devise</strong>.</p>
-<p>Wait! Why are we choosing “rails3-mongoid-devise” when we want to build a “rails3-subdomains” app? We could select the “rails3-subdomains” app and get a complete application. If you want to work through each step in the tutorial, select the “rails3-mongoid-devise” app and we’ll modify it.</p>
-<p>The application generator template will ask you for additional preferences.</p>
-<p>For this tutorial, choose “WEBrick” for your development webserver.</p>
-<p>You can choose to set a robots.txt file to ban spiders. Choosing “no” makes sense if you want your prelaunch site to show up in Google search results.</p>
-<p>If you are a Linux user and you haven’t installed node.js, you’ll need to answer “yes” to install the ‘therubyracer’ JavaScript runtime.</p>
-<p>If you have installed <a href="https://rvm.io/">rvm</a>, the Ruby Version Manager, I recommend you answer “yes” to the prompt, “Use or create a project-specific rvm gemset?” See the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> to learn about the benefits of using rvm.</p>
-<p>Finally, the program will ask if you want to create a GitHub repository.</p>
-<p>If you get an error “You have already activated (…) but your Gemfile requires (…)”, try deleting the rails3-subdomains folder and running the command again.</p>
-<p>After you create the application, switch to its folder to continue work directly in the application:</p>
-<p><code>$ cd rails3-subdomains</code></p>
-<h2>Set Up Source Control (Git)</h2>
-<p>When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.</p>
-<p>At this point, you should create a GitHub repository for your project.</p>
-<p>See detailed instructions for <a href="http://railsapps.github.io/rails-git.html">Git and Rails</a>.</p>
-<p>Git has already been initialized by the application template script but you will need to check your code into your new GitHub repository.</p>
-<h2>Set Up Gems</h2>
-<p>The Rails Composer program sets up your Gemfile and (if you are using rvm) creates a project-specific gemset.</p>
-<p>Open your <strong>Gemfile</strong> and you should see the following. Gem version numbers may differ:</p>
+
+Choose *4) rails3-mongoid-devise*.
+
+Wait! Why are we choosing "rails3-mongoid-devise" when we want to build a "rails3-subdomains" app? We could select the "rails3-subdomains" app and get a complete application. If you want to work through each step in the tutorial, select the "rails3-mongoid-devise" app and we'll modify it.
+
+The application generator template will ask you for additional preferences.
+
+For this tutorial, choose "WEBrick" for your development webserver.
+
+You can choose to set a robots.txt file to ban spiders. Choosing "no" makes sense if you want your prelaunch site to show up in Google search results.
+
+If you are a Linux user and you haven't installed node.js, you'll need to answer "yes" to install the 'therubyracer' JavaScript runtime.
+
+If you have installed "rvm":https://rvm.io/, the Ruby Version Manager, I recommend you answer "yes" to the prompt, "Use or create a project-specific rvm gemset?" See the article "Installing Rails":http://railsapps.github.io/installing-rails.html to learn about the benefits of using rvm.
+
+Finally, the program will ask if you want to create a GitHub repository.
+
+If you get an error "You have already activated (...) but your Gemfile requires (...)", try deleting the rails3-subdomains folder and running the command again.
+
+After you create the application, switch to its folder to continue work directly in the application:
+
+@$ cd rails3-subdomains@
+
+h2. Set Up Source Control (Git)
+
+When you generate the starter app, the template sets up a source control repository and makes an initial commit of the code.
+
+At this point, you should create a GitHub repository for your project.
+
+See detailed instructions for "Git and Rails":http://railsapps.github.io/rails-git.html.
+
+Git has already been initialized by the application template script but you will need to check your code into your new GitHub repository.
+
+h2. Set Up Gems
+
+The Rails Composer program sets up your Gemfile and (if you are using rvm) creates a project-specific gemset.
+
+Open your *Gemfile* and you should see the following. Gem version numbers may differ:
+
 <pre>
 source 'https://rubygems.org'
 gem 'rails', '3.2.13'
@@ -174,73 +256,119 @@ gem "launchy", "&gt;= 2.1.2", :group =&gt; :test
 gem "factory_girl_rails", "&gt;= 4.0.0", :group =&gt; [:development, :test]
 gem "devise", "&gt;= 2.1.2"
 </pre>
-<p>Check for the <a href="http://rubygems.org/gems/rails">current version of Rails</a> and replace <code>gem 'rails', '3.2.13'</code> accordingly.</p>
-<p><em>Note:</em> Rails Composer templates are created by the <a href="https://github.com/RailsApps/rails_apps_composer">Rails Apps Composer Gem</a>. For that reason, groups such as <code>:development</code> or <code>:test</code> are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.</p>
-<h3>Install the Required Gems</h3>
-<p>When you add a new gem to the Gemfile, you should run the <code>bundle install</code> command to install the required gems on your computer. Run:</p>
+
+Check for the "current version of Rails":http://rubygems.org/gems/rails and replace @gem 'rails', '3.2.13'@ accordingly.
+
+_Note:_ Rails Composer templates are created by the "Rails Apps Composer Gem":https://github.com/RailsApps/rails_apps_composer. For that reason, groups such as @:development@ or @:test@ are specified inline. You can reformat the Gemfiles to organize groups in an eye-pleasing block style. The functionality is the same.
+
+h3. Install the Required Gems
+
+When you add a new gem to the Gemfile, you should run the @bundle install@ command to install the required gems on your computer. Run:
+
 <pre>
 bundle install
 </pre>
-<p>You can check which gems are installed on your computer with:</p>
+
+You can check which gems are installed on your computer with:
+
 <pre>
 $ gem list
 </pre>
-<p>Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.</p>
-<h4>Haml</h4>
-<p>In this tutorial, we’ll use the default “<span class="caps">ERB</span>” Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for <a href="http://railsapps.github.io/rails-haml.html">Haml and Rails</a>.</p>
-<h4>RSpec</h4>
-<p>The <a href="https://github.com/RailsApps/rails3-mongoid-devise">Rails 3 + Mongoid + Devise</a> example app uses RSpec for unit testing. Run <code>rake -T</code> to check that rake tasks for RSpec are available. You should be able to run <code>rake spec</code> to run all specs provided with the example app.</p>
-<h4>Cucumber</h4>
-<p>The <a href="https://github.com/RailsApps/rails3-mongoid-devise">Rails 3 + Mongoid + Devise</a> example app sets up Cucumber for specifications and acceptance testing. You should be able to run <code>rake cucumber</code> (or more simply, <code>cucumber</code>) to run the Cucumber scenarios and steps provided with the example app.</p>
-<h4>Mongoid</h4>
-<p>The <a href="https://github.com/RailsApps/rails3-mongoid-devise">Rails 3 + Mongoid + Devise</a> example app uses Mongoid for access to a a MongoDB datastore. The datastore is initialized with a default user in the the file <strong>db/seeds.rb</strong>.</p>
-<p>If you need to, you can run <code>$ rake db:reset</code> to drop and then recreate the database using your seeds.rb file.</p>
-<h2>Test the App</h2>
-<h4>Seed the Database</h4>
-<p>Add the default user to the MongoDB database by running the command:</p>
-<p><code>$ rake db:seed</code></p>
-<h4>Test the App</h4>
-<p>You can check that your app runs properly by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To see your application in action, open a browser window and navigate to <a href="http://localhost:3000">http://localhost:3000/</a>. You should see the default user listed on the home page. When you click on the user’s name, you should be required to log in before seeing the user’s detail page.</p>
-<p>To sign in as the default user, (unless you’ve changed it) use</p>
-<ul>
-<li>email: user@example.com</li>
-	<li>password: changeme</li>
-</ul><p>You should delete or change the pre-configured logins before you deploy your application.</p>
-<p>Stop the server with Control-C.</p>
-<h2>One Subdomain Per User</h2>
-<h4>Use Case</h4>
-<p>Each user will have access to their own profile page with a unique <span class="caps">URL</span> that includes a custom subdomain. When a user creates a new account, they will be given an opportunity to specify a user ID that will be used as the subdomain. For example, when I sign up for an account, I might specify my User ID as “kehoe” and my profile page will be available at <code>kehoe.example.com</code>.</p>
-<h4>User Name as a Subdomain</h4>
-<p>The rails3-mongoid-devise example app has a field in the User model named “name.” We’ll use this for the user-specific subdomain.</p>
-<p>If you wish, you could rename the “name” field as “subdomain” or “account” or use another label that better matches the requirements of your application. You could also add fields to the User model such as “firstname” and “lastname.” If you do so, you’ll need to change the forms in the <strong>app/views/devise/registrations</strong> directory as well as <strong>app/models/user.rb</strong>. For simplicity, we’ll just use the “name” field to set the subdomain.</p>
-<p>In its current form, the User model allows any string to be stored as the user name. To use it as a subdomain, we’ll need to make sure it only contains alphanumeric characters (with an optional underscore). We’ll also limit the name to a maximum of 32 characters. Finally, we don’t want users to choose names such as “www” that will result in URLs such as “http://www.myapp.com”.</p>
-<p>Modify <strong>app/models/user.rb</strong> to add the following validations:</p>
+
+Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.
+
+h4. Haml
+
+In this tutorial, we'll use the default "ERB" Rails template engine. Optionally, you can use another template engine, such as Haml. See instructions for "Haml and Rails":http://railsapps.github.io/rails-haml.html.
+
+h4. RSpec
+
+The "Rails 3 + Mongoid + Devise":https://github.com/RailsApps/rails3-mongoid-devise example app uses RSpec for unit testing. Run @rake -T@ to check that rake tasks for RSpec are available. You should be able to run @rake spec@ to run all specs provided with the example app.
+
+h4. Cucumber
+
+The "Rails 3 + Mongoid + Devise":https://github.com/RailsApps/rails3-mongoid-devise example app sets up Cucumber for specifications and acceptance testing. You should be able to run @rake cucumber@ (or more simply, @cucumber@) to run the Cucumber scenarios and steps provided with the example app.
+
+h4. Mongoid
+
+The "Rails 3 + Mongoid + Devise":https://github.com/RailsApps/rails3-mongoid-devise example app uses Mongoid for access to a a MongoDB datastore. The datastore is initialized with a default user in the the file *db/seeds.rb*.
+
+If you need to, you can run @$ rake db:reset@ to drop and then recreate the database using your seeds.rb file.
+
+h2. Test the App
+
+h4. Seed the Database
+
+Add the default user to the MongoDB database by running the command:
+
+@$ rake db:seed@
+
+h4. Test the App
+
+You can check that your app runs properly by entering the command
+
+@$ rails server@
+
+To see your application in action, open a browser window and navigate to "http://localhost:3000/":http://localhost:3000. You should see the default user listed on the home page. When you click on the user's name, you should be required to log in before seeing the user's detail page.
+
+To sign in as the default user, (unless you've changed it) use
+
+* email: user@example.com
+* password: changeme
+
+You should delete or change the pre-configured logins before you deploy your application.
+
+Stop the server with Control-C.
+
+h2. One Subdomain Per User
+
+h4. Use Case
+
+Each user will have access to their own profile page with a unique URL that includes a custom subdomain. When a user creates a new account, they will be given an opportunity to specify a user ID that will be used as the subdomain. For example, when I sign up for an account, I might specify my User ID as "kehoe" and my profile page will be available at @kehoe.example.com@.
+
+h4. User Name as a Subdomain
+
+The rails3-mongoid-devise example app has a field in the User model named "name." We'll use this for the user-specific subdomain.
+
+If you wish, you could rename the "name" field as "subdomain" or "account" or use another label that better matches the requirements of your application. You could also add fields to the User model such as "firstname" and "lastname." If you do so, you'll need to change the forms in the *app/views/devise/registrations* directory as well as *app/models/user.rb*. For simplicity, we'll just use the "name" field to set the subdomain.
+
+In its current form, the User model allows any string to be stored as the user name. To use it as a subdomain, we'll need to make sure it only contains alphanumeric characters (with an optional underscore). We'll also limit the name to a maximum of 32 characters. Finally, we don't want users to choose names such as "www" that will result in URLs such as "http://www.myapp.com".
+
+Modify *app/models/user.rb* to add the following validations:
+
 <pre>
 validates_format_of :name, with: /^[a-z0-9_]+$/, message: "must be lowercase alphanumerics only"
 validates_length_of :name, maximum: 32, message: "exceeds maximum of 32 characters"
 validates_exclusion_of :name, in: ['www', 'mail', 'ftp'], message: "is not available"
 </pre>
-<p>We’ll modify the <strong>db/seeds.rb</strong> file to supply an appropriate user name when we initialize the datastore:</p>
+
+We'll modify the *db/seeds.rb* file to supply an appropriate user name when we initialize the datastore:
+
 <pre>
 # user = User.create! :name =&gt; 'First User', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 user = User.create! :name =&gt; 'myname', :email =&gt; 'user@example.com', :password =&gt; 'please', :password_confirmation =&gt; 'please'
 </pre>
-<h2>User’s Profile Page</h2>
-<h4>Use Case</h4>
-<p>We’ll display a profile page for a user when anyone enters a <span class="caps">URL</span> with a subdomain that matches an existing user. For example, visiting <code>kehoe.example.com</code> will display kehoe’s profile page.</p>
-<h4>Controller and Views for the Profile Page</h4>
-<p>Create a controller for profiles:</p>
+
+h2. User's Profile Page
+
+h4. Use Case
+
+We'll display a profile page for a user when anyone enters a URL with a subdomain that matches an existing user. For example, visiting @kehoe.example.com@ will display kehoe's profile page.
+
+h4. Controller and Views for the Profile Page
+
+Create a controller for profiles:
+
 <pre>
 $ rails generate controller Profiles show
 </pre>
-<p>Before we display a profile, we’ll try to find the user with a name that matches the subdomain attribute of the request object. If the user is not found, we’ll raise an exception and display an error message.</p>
-<p><strong>app/controllers/profiles_controller.rb</strong></p>
+
+Before we display a profile, we'll try to find the user with a name that matches the subdomain attribute of the request object. If the user is not found, we'll raise an exception and display an error message.
+
+*app/controllers/profiles_controller.rb*
+
 <pre>
-class ProfilesController &lt; ApplicationController
-  def show
-    @user = User.where(:name =&gt; request.subdomain).first || not_found
+class ProfilesController  request.subdomain).first || not_found
   end
 
   def not_found
@@ -248,49 +376,62 @@ class ProfilesController &lt; ApplicationController
   end
 end
 </pre>
-<p>Next, modify the view to display a user’s profile. Add the following code:</p>
-<p><strong>app/views/profile/show.html.erb</strong></p>
+
+Next, modify the view to display a user's profile. Add the following code:
+
+*app/views/profile/show.html.erb*
+
 <pre>
-&lt;h1&gt;Profile&lt;/h1&gt;
-&lt;h3&gt;&lt;%= @user.name %&gt;&lt;/h3&gt;
-&lt;h3&gt;&lt;%= @user.email %&gt;&lt;/h3&gt;
+<h1>Profile</h1>
+<h3></h3>
+<h3></h3>
 </pre>
-<p>If you prefer Haml, it looks likes this:</p>
-<p><strong>app/views/profile/show.html.haml</strong></p>
+
+If you prefer Haml, it looks likes this:
+
+*app/views/profile/show.html.haml*
+
 <pre>
 %h1 Profile
 %h4= @user.name
 %h4= @user.email
 </pre>
-<h2>Remove Access Control for the Users Page</h2>
-<p>As implemented in rails3-mongoid-devise example app, no visitor can view the user detail page (user/show) if they are not logged in. That serves to demonstrate use of authentication implemented as a filter in the Users controller. We’ll remove this feature by commenting out <code>before_filter :authenticate_user!</code> to simplify our demonstration of subdomains.</p>
-<p><strong>app/controllers/users_controller.rb</strong></p>
+
+h2. Remove Access Control for the Users Page
+
+As implemented in rails3-mongoid-devise example app, no visitor can view the user detail page (user/show) if they are not logged in. That serves to demonstrate use of authentication implemented as a filter in the Users controller. We'll remove this feature by commenting out @before_filter :authenticate_user!@ to simplify our demonstration of subdomains.
+
+*app/controllers/users_controller.rb*
+
 <pre>
-class UsersController &lt; ApplicationController
-  # before_filter :authenticate_user!
+class UsersController 
 
-  def show
-    @user = User.find(params[:id])
+Skip this step if you want to retain access control to prevent display of the user detail page.
 
-  end
+You also might want to limit access so only an administrator can see the user detail page. For implementation suggestions, seethe Devise wiki for "How to add an admin role":https://github.com/plataformatec/devise/wiki/How-To:-Add-an-Admin-role.
 
-end
-</pre>
-<p>Skip this step if you want to retain access control to prevent display of the user detail page.</p>
-<p>You also might want to limit access so only an administrator can see the user detail page. For implementation suggestions, seethe Devise wiki for <a href="https://github.com/plataformatec/devise/wiki/How-To:-Add-an-Admin-role">How to add an admin role</a>.</p>
-<h2>Implement Routing for Subdomains</h2>
-<p>Rails 3.0 introduced support for routing constrained by subdomains.</p>
-<p>A subdomain can be specified explicitly, like this:</p>
+h2. Implement Routing for Subdomains
+
+Rails 3.0 introduced support for routing constrained by subdomains.
+
+A subdomain can be specified explicitly, like this:
+
 <pre>
 match '/' =&gt; 'home#index', :constraints =&gt; { :subdomain =&gt; 'www' }
 </pre>
-<p>Or a set of subdomains can be matched using a regular expression:</p>
+
+Or a set of subdomains can be matched using a regular expression:
+
 <pre>
 match '/' =&gt; 'profiles#show', :constraints =&gt; { :subdomain =&gt; /.+/ }
 </pre>
-<p>Finally, for greatest flexibility, router constraints can also take objects, allowing custom code.</p>
-<p>Create a class like this:</p>
-<p><strong>lib/subdomain.rb</strong></p>
+
+Finally, for greatest flexibility, router constraints can also take objects, allowing custom code.
+
+Create a class like this:
+
+*lib/subdomain.rb*
+
 <pre>
 class Subdomain
   def self.matches?(request)
@@ -303,13 +444,18 @@ class Subdomain
   end
 end
 </pre>
-<p>This class allows use of a route when a subdomain is present in the request object. If the subdomain is “www,” the class will respond as if a subdomain is not present.</p>
-<p>Make sure the class is autoloaded when the application starts. You can <code>require 'subdomain'</code> at the top of the <strong>config/routes.rb</strong> file. Or you can modify the file <strong>config/application.rb</strong> (recommended):</p>
+
+This class allows use of a route when a subdomain is present in the request object. If the subdomain is "www," the class will respond as if a subdomain is not present.
+
+Make sure the class is autoloaded when the application starts. You can @require 'subdomain'@ at the top of the *config/routes.rb* file. Or you can modify the file *config/application.rb* (recommended):
+
 <pre>
 # config.autoload_paths += %W(#{config.root}/extras)
 config.autoload_paths += %W(#{config.root}/lib)
 </pre>
-<p>Use this class when you create routes in the file <strong>config/routes.rb</strong>:</p>
+
+Use this class when you create routes in the file *config/routes.rb*:
+
 <pre>
 devise_for :users
 resources :users, :only =&gt; :show
@@ -318,31 +464,48 @@ constraints(Subdomain) do
 end
 root :to =&gt; "home#index"
 </pre>
-<p>A match from a “/” <span class="caps">URL</span> (such as http://myname.myapp.com) will route to the <code>show</code> action of the <code>Profiles</code> controller only when a subdomain is present. If a subdomain is not present (or is “www”), a route with less priority will be applied (in this case, a route to the <code>index</code> action of the <code>Home</code> controller).</p>
-<p>Be sure to comment out (or remove) the route that was added by the Rails generator when we created the controller:</p>
+
+A match from a "/" URL (such as http://myname.myapp.com) will route to the @show@ action of the @Profiles@ controller only when a subdomain is present. If a subdomain is not present (or is "www"), a route with less priority will be applied (in this case, a route to the @index@ action of the @Home@ controller).
+
+Be sure to comment out (or remove) the route that was added by the Rails generator when we created the controller:
+
 <pre>
 #get "profiles/show"
 </pre>
-<h2>
-<span class="caps">URL</span> Helpers With Subdomains</h2>
-<p>Applications that do not use subdomains use routing helpers to generate links that either include the site’s hostname (for example, <code>users_url</code> generates <code>http://mysite.com/users</code>) or links that only contain a relative path (for example, <code>users_path</code> generates <code>/users</code>). To provide navigation between sites hosted on the subdomains and the main site, you must use <span class="caps">URL</span> helpers (“users_url”) not path helpers (“users_path”) because path helpers do not include a hostname.</p>
-<p>Rails 3.1 provides a way to include a subdomain as part of the hostname when generating links.</p>
-<p>You can specify a hostname when creating a link, with the syntax:</p>
-<p><code>root_url(:subdomain =&gt; @subdomain)</code></p>
-<p>If you need a link to the main site (a <span class="caps">URL</span> without a subdomain), you can force the <span class="caps">URL</span> helper to drop the subdomain:</p>
-<p><code>root_url(:host =&gt; request.domain)</code></p>
-<p>It should be possible to use <code>root_url(:subdomain =&gt; false)</code> but it seems there is an unresolved issue in Rails 3.1 (see <a href="https://github.com/rails/rails/issues/2025">https://github.com/rails/rails/issues/2025</a>).</p>
-<h4>Home Page</h4>
-<p>The rails3-mongoid-devise example app provides a home page that lists all registered users. We’ll modify the home page to add a link to each user’s profile page, using a <span class="caps">URL</span> with a custom subdomain.</p>
-<p><strong>app/views/home/index.html.erb</strong></p>
+
+h2. URL Helpers With Subdomains
+
+Applications that do not use subdomains use routing helpers to generate links that either include the site's hostname (for example, @users_url@ generates @http://mysite.com/users@) or links that only contain a relative path (for example, @users_path@ generates @/users@). To provide navigation between sites hosted on the subdomains and the main site, you must use URL helpers ("users_url") not path helpers ("users_path") because path helpers do not include a hostname.
+
+Rails 3.1 provides a way to include a subdomain as part of the hostname when generating links.
+
+You can specify a hostname when creating a link, with the syntax:
+
+@root_url(:subdomain =&gt; @subdomain)@
+
+If you need a link to the main site (a URL without a subdomain), you can force the URL helper to drop the subdomain:
+
+@root_url(:host =&gt; request.domain)@
+
+It should be possible to use @root_url(:subdomain =&gt; false)@ but it seems there is an unresolved issue in Rails 3.1 (see "https://github.com/rails/rails/issues/2025":https://github.com/rails/rails/issues/2025).
+
+h4. Home Page
+
+The rails3-mongoid-devise example app provides a home page that lists all registered users. We'll modify the home page to add a link to each user's profile page, using a URL with a custom subdomain.
+
+*app/views/home/index.html.erb*
+
 <pre>
-&lt;h3&gt;Home&lt;/h3&gt;
-&lt;% @users.each do |user| %&gt;
-  &lt;p&gt;&lt;%= user.name %&gt; &lt;%= link_to root_url(:subdomain =&gt; user.name), root_url(:subdomain =&gt; user.name) %&gt;&lt;/p&gt;
-&lt;% end %&gt;
+<h3>Home</h3>
+
+  <p>  user.name), root_url(:subdomain =&gt; user.name) %&gt;</p>
+
 </pre>
-<p>If you prefer Haml, it looks likes this:</p>
-<p><strong>app/views/home/index.html.haml</strong></p>
+
+If you prefer Haml, it looks likes this:
+
+*app/views/home/index.html.haml*
+
 <pre>
 %h3 Home
 - @users.each do |user|
@@ -350,16 +513,23 @@ root :to =&gt; "home#index"
     = user.name
     = link_to root_url(:subdomain =&gt; user.name), root_url(:subdomain =&gt; user.name)
 </pre>
-<h4>Modify the Users Page</h4>
-<p>We’ll add a link to the user’s profile page on the page that displays a list of all registered users.</p>
-<p><strong>app/views/users/show.html.erb</strong></p>
+
+h4. Modify the Users Page
+
+We'll add a link to the user's profile page on the page that displays a list of all registered users.
+
+*app/views/users/show.html.erb*
+
 <pre>
-&lt;p&gt;User: &lt;%= @user.name %&gt;&lt;/p&gt;
-&lt;p&gt;Email: &lt;%= @user.email if @user.email %&gt;&lt;/p&gt;
-&lt;p&gt;Profile: &lt;%= link_to root_url(:subdomain =&gt; @user.name), root_url(:subdomain =&gt; @user.name) %&gt;&lt;/p&gt;
+<p>User: </p>
+<p>Email: </p>
+<p>Profile:  @user.name), root_url(:subdomain =&gt; @user.name) %&gt;</p>
 </pre>
-<p>If you prefer Haml, it looks likes this:</p>
-<p><strong>app/views/users/show.html.haml</strong></p>
+
+If you prefer Haml, it looks likes this:
+
+*app/views/users/show.html.haml*
+
 <pre>
 %p
   User: #{@user.name}
@@ -368,43 +538,51 @@ root :to =&gt; "home#index"
 %p
   Profile: #{link_to root_url(:subdomain =&gt; @user.name), root_url(:subdomain =&gt; @user.name)}
 </pre>
-<h4>Navigation Links</h4>
-<p>We want a visitor to sign up on the main site but only log in on their subdomain-hosted site.</p>
-<p>We’ll change the navigation links to show “Sign up” on the main site and “Login” on the subdomain sites.</p>
-<p><strong>app/views/layouts/_navigation.html.erb</strong></p>
+
+h4. Navigation Links
+
+We want a visitor to sign up on the main site but only log in on their subdomain-hosted site.
+
+We'll change the navigation links to show "Sign up" on the main site and "Login" on the subdomain sites.
+
+*app/views/layouts/_navigation.html.erb*
+
 <pre>
-&lt;%= link_to "Rails3 Subdomains", root_path, :class =&gt; 'brand' %&gt;
-&lt;ul class="nav"&gt;
-  &lt;li&gt;
-    &lt;%= link_to 'Main', root_url(:host =&gt; request.domain) %&gt;
-  &lt;/li&gt;
-  &lt;% if request.subdomain.present? &amp;&amp; request.subdomain != "www" %&gt;
-    &lt;% if user_signed_in? %&gt;
-      &lt;li&gt;
-        &lt;%= link_to 'Edit account', edit_user_registration_url %&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;%= link_to 'Logout', destroy_user_session_url, :method=&gt;'delete' %&gt;
-      &lt;/li&gt;
-    &lt;% else %&gt;
-      &lt;li&gt;
-        &lt;%= link_to 'Login', new_user_session_url %&gt;
-      &lt;/li&gt;
-    &lt;% end %&gt;
-  &lt;% else %&gt;
-    &lt;li&gt;
-      &lt;%= link_to 'Sign up', new_user_registration_url(:host =&gt; request.domain) %&gt;
-    &lt;/li&gt;
-    &lt;% if user_signed_in? %&gt;
-      &lt;li&gt;
-        &lt;%= link_to 'Logout', destroy_user_session_url, :method=&gt;'delete' %&gt;
-      &lt;/li&gt;
-    &lt;% end %&gt;
-  &lt;% end %&gt;
-&lt;/ul&gt;
-</pre>
-<p>If you prefer Haml, it looks likes this:</p>
-<p><strong>app/views/layouts/_navigation.html.haml</strong></p>
+ 'brand' %&gt;
+</pre></pre><ul class="nav">
+  <li>
+     request.domain) %&gt;
+  </li>
+  
+    
+      <li>
+        
+      </li>
+      <li>
+        'delete' %&gt;
+      </li>
+    
+      <li>
+        
+      </li>
+    
+  
+    <li>
+       request.domain) %&gt;
+    </li>
+    
+      <li>
+        'delete' %&gt;
+      </li>
+    
+  
+</ul>
+
+
+If you prefer Haml, it looks likes this:
+
+*app/views/layouts/_navigation.html.haml*
+
 <pre>
 %li
   = link_to 'Main', root_url(:host =&gt; request.domain)
@@ -424,41 +602,75 @@ root :to =&gt; "home#index"
     %li
       = link_to('Logout', destroy_user_session_url, :method=&gt;'delete')
 </pre>
-<h2>Test the Application With Subdomains</h2>
-<p>If you launch the application, it will be running at <a href="http://localhost:3000/">http://localhost:3000/</a> or <a href="http://0.0.0.0:3000/">http://0.0.0.0:3000/</a>. However, unless you’ve made some configuration changes to your computer, you won’t be able to resolve an address that uses a subdomain, such as <a href="http://foo.localhost:3000/">http://foo.localhost:3000/</a>.</p>
-<h4>Some Options</h4>
-<p>There are several complex solutions to this problem. You could set up your own domain name server on your localhost and create an A entry to catch all subdomains. You could modify your <strong>/etc/hosts</strong> file (but it won’t accommodate dynamically created subdomains). You can create a <a href="http://en.wikipedia.org/wiki/Proxy_auto-config" title="PAC">proxy auto-config</a> file and set it up as the proxy in your web browser preferences.</p>
-<h4>Use lvh.me</h4>
-<p>There’s a far simpler solution that does not require reconfiguring your computer or web browser preferences. The developer Levi Cook registered a domain, <a href="http://lvh.me:3000/">lvh.me</a> (short for: local virtual host me), that resolves to the localhost IP address 127.0.0.1 and supports wildcards (accommodating dynamically created subdomains).</p>
-<h4>Seed the Datastore</h4>
-<p>You’ve changed the name of the default user in the the <strong>db/seeds.rb</strong> file.</p>
-<p>Re-initialize the MongoDB datastore by running the command:</p>
-<p><code>$ rake db:seed</code></p>
-<h4>Test the App</h4>
-<p>Start the app by entering the command</p>
-<p><code>$ rails server</code></p>
-<p>To test the application, visit <a href="http://lvh.me:3000/">http://lvh.me:3000/</a>. You should see a list of registered users with links to their profile pages.</p>
-<p>Try <a href="http://myname.lvh.me:3000/">http://myname.lvh.me:3000/</a>. You should see the profile page for the default user “myname.”</p>
-<p>Try <a href="http://foo.lvh.me:3000/">http://foo.lvh.me:3000/</a>. You should see the “user not found” error message.</p>
-<p>Try <a href="http://www.lvh.me:3000/">http://www.lvh.me:3000/</a>. You should be redirected to the application home page at <a href="http://lvh.me:3000/">http://lvh.me:3000/</a>.</p>
-<h2>Optional: Allow Sessions To Be Shared Across Subdomains</h2>
-<p>The application allows a user to log in to either the main site (<a href="http://lvh.me:3000/">http://lvh.me:3000/</a>) or a user site (<a href="http://myname.lvh.me:3000/">http://myname.lvh.me:3000/</a>). Logging in creates a user session. In its current form, the application maintains separate and independent user sessions for the main site and each subdomain. That’s because session data for each visitor is managed by browser-based cookies and cookies are not shared across domains (and, by default, not shared across subdomains). Not only is the user login not maintained between the main site and subdomains, but flash messages (used to communicate between actions) are lost because they are stored in sessions.</p>
-<p>For the example application, we want a visitor to sign up on the main site but only log in on their subdomain-hosted site. As implemented, we don’t want sessions to be shared across subdomains.</p>
-<p>However, your requirements may differ. If you wish to maintain sessions between the main site and subdomain-hosted sites, modify the configuration file to add the parameter <code>:domain =&gt; :all</code>:</p>
-<p><strong>config/initializers/session_store.rb</strong></p>
+
+h2. Test the Application With Subdomains
+
+If you launch the application, it will be running at "http://localhost:3000/":http://localhost:3000/ or "http://0.0.0.0:3000/":http://0.0.0.0:3000/. However, unless you've made some configuration changes to your computer, you won't be able to resolve an address that uses a subdomain, such as "http://foo.localhost:3000/":http://foo.localhost:3000/.
+
+h4. Some Options
+
+There are several complex solutions to this problem. You could set up your own domain name server on your localhost and create an A entry to catch all subdomains. You could modify your */etc/hosts* file (but it won't accommodate dynamically created subdomains). You can create a "proxy auto-config (PAC)":http://en.wikipedia.org/wiki/Proxy_auto-config file and set it up as the proxy in your web browser preferences.
+
+h4. Use lvh.me
+
+There's a far simpler solution that does not require reconfiguring your computer or web browser preferences. The developer Levi Cook registered a domain, "lvh.me":http://lvh.me:3000/ (short for: local virtual host me), that resolves to the localhost IP address 127.0.0.1 and supports wildcards (accommodating dynamically created subdomains).
+
+h4. Seed the Datastore
+
+You've changed the name of the default user in the the *db/seeds.rb* file.
+
+Re-initialize the MongoDB datastore by running the command:
+
+@$ rake db:seed@
+
+h4. Test the App
+
+Start the app by entering the command
+
+@$ rails server@
+
+To test the application, visit "http://lvh.me:3000/":http://lvh.me:3000/. You should see a list of registered users with links to their profile pages.
+
+Try "http://myname.lvh.me:3000/":http://myname.lvh.me:3000/. You should see the profile page for the default user "myname."
+
+Try "http://foo.lvh.me:3000/":http://foo.lvh.me:3000/. You should see the "user not found" error message.
+
+Try "http://www.lvh.me:3000/":http://www.lvh.me:3000/. You should be redirected to the application home page at "http://lvh.me:3000/":http://lvh.me:3000/.
+
+h2. Optional: Allow Sessions To Be Shared Across Subdomains
+
+The application allows a user to log in to either the main site ("http://lvh.me:3000/":http://lvh.me:3000/) or a user site ("http://myname.lvh.me:3000/":http://myname.lvh.me:3000/). Logging in creates a user session. In its current form, the application maintains separate and independent user sessions for the main site and each subdomain. That's because session data for each visitor is managed by browser-based cookies and cookies are not shared across domains (and, by default, not shared across subdomains). Not only is the user login not maintained between the main site and subdomains, but flash messages (used to communicate between actions) are lost because they are stored in sessions.
+
+For the example application, we want a visitor to sign up on the main site but only log in on their subdomain-hosted site. As implemented, we don't want sessions to be shared across subdomains.
+
+However, your requirements may differ. If you wish to maintain sessions between the main site and subdomain-hosted sites, modify the configuration file to add the parameter @:domain =&gt; :all@:
+
+*config/initializers/session_store.rb*
+
 <pre>
 Rails3Subdomains::Application.config.session_store :cookie_store, :key =&gt; '_rails3-subdomains_session', :domain =&gt; :all
 </pre>
-<h2>Deploy to Heroku</h2>
-<p>For your convenience, here are <a href="http://railsapps.github.io/rails-heroku-tutorial.html">instructions for deploying your app to Heroku</a>. Heroku provides low cost, easily configured Rails application hosting.</p>
-<h2>Conclusion</h2>
-<p>This concludes the tutorial for creating a Rails 3 web application that uses subdomains and provides user management and authentication using Devise.</p>
-<h4>Credits</h4>
-<p>Thank you to <a href="http://bcardarella.com/">Brian Cardarella</a> for a helpful blog post on <a href="http://bcardarella.com/post/716951242/custom-subdomains-in-rails-3">Custom Subdomains in Rails 3</a>.</p>
-<p>Daniel Kehoe (<a href="http://danielkehoe.com/">http://danielkehoe.com/</a>) implemented the application and wrote the tutorial.</p>
-<p>Was this useful to you? Follow me on Twitter:<br><a href="http://twitter.com/rails_apps">rails_apps</a><br>
-and tweet some praise. I’d love to know you were helped out by the tutorial.</p>
-<p>Any issues? Please create an <a href="https://github.com/RailsApps/rails3-subdomains/issues">issue</a> on GitHub.</p>
+
+h2. Deploy to Heroku
+
+For your convenience, here are "instructions for deploying your app to Heroku":http://railsapps.github.io/rails-heroku-tutorial.html. Heroku provides low cost, easily configured Rails application hosting.
+
+h2. Conclusion
+
+This concludes the tutorial for creating a Rails 3 web application that uses subdomains and provides user management and authentication using Devise.
+
+h4. Credits
+
+Thank you to "Brian Cardarella":http://bcardarella.com/ for a helpful blog post on "Custom Subdomains in Rails 3":http://bcardarella.com/post/716951242/custom-subdomains-in-rails-3.
+
+Daniel Kehoe ("http://danielkehoe.com/":http://danielkehoe.com/) implemented the application and wrote the tutorial.
+
+Was this useful to you? Follow me on Twitter:
+"rails_apps":http://twitter.com/rails_apps
+and tweet some praise. I'd love to know you were helped out by the tutorial.
+
+Any issues? Please create an "issue":https://github.com/RailsApps/rails3-subdomains/issues on GitHub.
+
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">

@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Rails Application Layout &#183; RailsApps</title>
+  <title>Rails Application Layout for HTML5 &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
@@ -44,172 +44,255 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="content wikistyle gollum textile">
-        <h1>Rails Application Layout</h1>
-<h4>by Daniel Kehoe</h4>
-<p><em>Last updated 3 August 2014</em></p>
-<p>Rails application layout for HTML5. Shows how to set up an application layout with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling for Rails.</p>
-<h4>If You Are New to Rails</h4>
-<p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
-<h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
-<h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
-<h2>Background</h2>
-<p>The default application layout is where you put <span class="caps">HTML</span> that you want to include on every page of your website.</p>
-<p>Every Rails application needs a well-designed application layout. The Rails default starter application, which is created when you run <code>rails new</code>, provides a barebones application layout. You’ll want to add navigation links, include flash messages for errors and notifications, and apply <span class="caps">CSS</span> styling.</p>
-<p>Rails will use the layout defined in the file <strong>app/views/layouts/application.html.erb</strong> as a default for rendering any page. See the RailsGuide <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-render">Layouts and Rendering in Rails</a> for details. The book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a> provides an in-depth explanation.</p>
-<h4>HTML5 Boilerplate</h4>
-<p>The well-known HTML5 Boilerplate project has been recommending “best practice” tweaks to web pages since 2010. Very few of the HTML5 Boilerplate recommendations are relevant for Rails developers, as Rails already provides almost everything required. If you want to learn more, the article <a href="http://railsapps.github.io/rails-html5-boilerplate.html">HTML5 Boilerplate for Rails Developers</a> looks at the recommendations.</p>
-<h4>Front-end Frameworks</h4>
-<p>This article shows how to set up a simple application layout with navigation links, messages for alerts and notices, and <span class="caps">CSS</span> styling for Rails. If you intend to use a front-end framework such as Bootstrap or Zurb Foundation, see these articles for information about how to set up the application layout:</p>
-<ul>
-<li><a href="http://railsapps.github.io/twitter-bootstrap-rails.html"><strong>Rails and Bootstrap</strong></a></li>
-	<li><a href="http://railsapps.github.io/rails-foundation.html"><strong>Rails and Foundation</strong></a></li>
-</ul><h4>Rails Layout Gem</h4>
-<p>This article shows how to use the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to generate files for an application layout, navigation links, and flash messages styled with simple <span class="caps">CSS</span> classes and layout. You don’t have to use the gem; you can copy the code directly from this article.</p>
-<h2>Rails Default Application Layout</h2>
-<p>Generating a new Rails application with the <code>rails new</code> command will create an application layout in the file <strong>app/views/layouts/application.html.erb</strong>. Here is the default with Rails:</p>
+        h1. Rails Application Layout
+
+h4. by Daniel Kehoe
+
+_Last updated 3 August 2014_
+
+Rails application layout for HTML5. Shows how to set up an application layout with navigation links, messages for alerts and notices, and CSS styling for Rails.
+
+h4. If You Are New to Rails
+
+If you're new to Rails, see "What is Ruby on Rails?":http://railsapps.github.io/what-is-ruby-rails.html, the book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html, and recommendations for a "Rails tutorial":https://tutorials.railsapps.org/rails-tutorial.
+
+h4. !http://railsapps.github.io/images/join/join-railsapps.png(Join RailsApps)!:http://railsapps.github.io/
+
+h4. What is the RailsApps Project?
+
+This is an article from the RailsApps project. The "RailsApps project":http://railsapps.github.io/ provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Each application is accompanied by a tutorial so there is no mystery code. Support for the project comes from subscribers. Please accept our invitation to "join the RailsApps project":http://railsapps.github.io/.
+
+h2. Background
+
+The default application layout is where you put HTML that you want to include on every page of your website.
+
+Every Rails application needs a well-designed application layout. The Rails default starter application, which is created when you run @rails new@, provides a barebones application layout. You'll want to add navigation links, include flash messages for errors and notifications, and apply CSS styling.
+
+Rails will use the layout defined in the file *app/views/layouts/application.html.erb* as a default for rendering any page. See the RailsGuide "Layouts and Rendering in Rails":http://guides.rubyonrails.org/layouts_and_rendering.html#using-render for details. The book "Learn Ruby on Rails":http://learn-rails.com/learn-ruby-on-rails.html provides an in-depth explanation.
+
+h4. HTML5 Boilerplate
+
+The well-known HTML5 Boilerplate project has been recommending "best practice" tweaks to web pages since 2010. Very few of the HTML5 Boilerplate recommendations are relevant for Rails developers, as Rails already provides almost everything required. If you want to learn more, the article "HTML5 Boilerplate for Rails Developers":http://railsapps.github.io/rails-html5-boilerplate.html looks at the recommendations.
+
+h4. Front-end Frameworks
+
+This article shows how to set up a simple application layout with navigation links, messages for alerts and notices, and CSS styling for Rails. If you intend to use a front-end framework such as Bootstrap or Zurb Foundation, see these articles for information about how to set up the application layout:
+
+* "*Rails and Bootstrap*":http://railsapps.github.io/twitter-bootstrap-rails.html
+* "*Rails and Foundation*":http://railsapps.github.io/rails-foundation.html
+
+h4. Rails Layout Gem
+
+This article shows how to use the "rails_layout":https://github.com/RailsApps/rails_layout gem to generate files for an application layout, navigation links, and flash messages styled with simple CSS classes and layout. You don't have to use the gem; you can copy the code directly from this article.
+
+h2. Rails Default Application Layout
+
+Generating a new Rails application with the @rails new@ command will create an application layout in the file *app/views/layouts/application.html.erb*. Here is the default with Rails:
+
 <pre>
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;title&gt;Myapp&lt;/title&gt;
-  &lt;%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" =&gt; true %&gt;
-  &lt;%= javascript_include_tag "application", "data-turbolinks-track" =&gt; true %&gt;
-  &lt;%= csrf_meta_tags %&gt;
-&lt;/head&gt;
-&lt;body&gt;
 
-&lt;%= yield %&gt;
 
-&lt;/body&gt;
-&lt;/html&gt;
+
+  Myapp
+   true %&gt;
+   true %&gt;
+  
+
+
+
+
+
+
+
 </pre>
-<p>This is a barebones application layout.</p>
-<p>It contains a <code>title</code> for your web pages.</p>
-<p>The <code>stylesheet_link_tag</code> and <code>javascript_include_tag</code> elements add <span class="caps">CSS</span> stylesheets and JavaScript from the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails asset pipeline</a>. The <code>data-turbolinks-track</code> attribute supports Rails <a href="https://github.com/rails/turbolinks/blob/master/README.md">Turbolinks</a>.</p>
-<p>The <code>csrf_meta_tags</code> element is a view helper that prevents <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">cross-site request forgeries</a> when users input data in forms.</p>
-<p>The content from a Rails view is inserted where you place the <code>yield</code> keyword. See the RailsGuide <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-render">Layouts and Rendering in Rails</a> for details about how Rails combines views with layouts.</p>
-<h2>The Rails Layout Gem</h2>
-<p>You can use the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem to generate files for an improved application layout. It will add navigation links and flash messages plus simple <span class="caps">CSS</span> classes for styling.</p>
-<p>In your <strong>Gemfile</strong>, add:</p>
+
+This is a barebones application layout.
+
+It contains a @title@ for your web pages.
+
+The @stylesheet_link_tag@ and @javascript_include_tag@ elements add CSS stylesheets and JavaScript from the "Rails asset pipeline":http://guides.rubyonrails.org/asset_pipeline.html. The @data-turbolinks-track@ attribute supports Rails "Turbolinks":https://github.com/rails/turbolinks/blob/master/README.md.
+
+The @csrf_meta_tags@ element is a view helper that prevents "cross-site request forgeries":https://en.wikipedia.org/wiki/Cross-site_request_forgery when users input data in forms.
+
+The content from a Rails view is inserted where you place the @yield@ keyword. See the RailsGuide "Layouts and Rendering in Rails":http://guides.rubyonrails.org/layouts_and_rendering.html#using-render for details about how Rails combines views with layouts.
+
+h2. The Rails Layout Gem
+
+You can use the "rails_layout":https://github.com/RailsApps/rails_layout gem to generate files for an improved application layout. It will add navigation links and flash messages plus simple CSS classes for styling.
+
+In your *Gemfile*, add:
+
 <pre>
 group :development do
   gem 'rails_layout'
 end
 </pre>
-<p>You don’t need the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem deployed to production, so put it in the development group.</p>
-<p>Run <code>$ bundle install</code> in the Terminal.</p>
-<p>The rails_layout gem uses the <code>rails generate</code> command to create files. Run:</p>
+
+You don’t need the "rails_layout":https://github.com/RailsApps/rails_layout gem deployed to production, so put it in the development group.
+
+Run @$ bundle install@ in the Terminal.
+
+The rails_layout gem uses the @rails generate@ command to create files. Run:
+
 <pre>
 $ rails generate layout:install simple --force
 </pre>
-<p>The <code>--force</code> argument will force the gem to replace the existing <strong>app/views/layouts/application.html.erb</strong> file.</p>
-<p>The gem will add five files to your project:</p>
-<ul>
-<li><strong>app/views/layouts/application.html.erb</strong></li>
-	<li><strong>app/views/layouts/_messages.html.erb</strong></li>
-	<li><strong>app/views/layouts/_navigation.html.erb</strong></li>
-	<li><strong>app/views/layouts/_navigation_links.html.erb</strong></li>
-	<li><strong>app/assets/stylesheets/simple.css</strong></li>
-</ul><p>Next we’ll examine the files created by the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem.</p>
-<h2>Improved Application Layout</h2>
-<p>Here is the file <strong>app/views/layouts/application.html.erb</strong> created by the <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem:</p>
+
+The @--force@ argument will force the gem to replace the existing *app/views/layouts/application.html.erb* file.
+
+The gem will add five files to your project:
+
+* *app/views/layouts/application.html.erb*
+* *app/views/layouts/_messages.html.erb*
+* *app/views/layouts/_navigation.html.erb*
+* *app/views/layouts/_navigation_links.html.erb*
+* *app/assets/stylesheets/simple.css*
+
+Next we'll examine the files created by the "rails_layout":https://github.com/RailsApps/rails_layout gem.
+
+h2. Improved Application Layout
+
+Here is the file *app/views/layouts/application.html.erb* created by the "rails_layout":https://github.com/RailsApps/rails_layout gem:
+
 <pre>
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;&lt;%= content_for?(:title) ? yield(:title) : "My Application" %&gt;&lt;/title&gt;
-    &lt;meta name="description" content="&lt;%= content_for?(:description) ? yield(:description) : "Learn Rails" %&gt;"&gt;
-    &lt;%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" =&gt; true %&gt;
-    &lt;%= javascript_include_tag "application", "data-turbolinks-track" =&gt; true %&gt;
-    &lt;%= csrf_meta_tags %&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;header&gt;
-      &lt;%= render 'layouts/navigation' %&gt;
-    &lt;/header&gt;
-    &lt;main role="main"&gt;
-      &lt;%= render 'layouts/messages' %&gt;
-      &lt;%= yield %&gt;
-    &lt;/main&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+
+
+  
+    
+    
+    "&gt;
+     true %&gt;
+     true %&gt;
+    
+  
+  
+     
+      
+     
+    
+      
+      
+    
+  
+
 </pre>
-<h3>Viewport</h3>
-<p>The <code>viewport</code> metatag improves the presentation of web pages on mobile devices. Setting a viewport tells the browser how content should fit on the device’s screen. Apple’s developer documentation on <a href="http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html">Configuring the Viewport</a> provides details.</p>
-<h3>Title and Description</h3>
-<p>The <em>title</em> and <em>description</em> metatags help make your web pages search-engine friendly. Google uses contents of the title tag to display titles in search results. And it will sometimes use the content of a description metatag in search results snippets. See Google’s explanation of how it uses <a href="http://support.google.com/webmasters/bin/answer.py?hl=en&amp;answer=35624">Site Title and Description</a>.</p>
-<p>The code uses the Ruby <a href="http://ruby.about.com/od/beginningruby/a/The-Ternary-Or-Conditional-Operator.htm">ternary operator</a>. It is a conditional statement that says, “if <code>content_for?(:title)</code> is present in the view file, use <code>yield(:title)</code> to include it, otherwise just display ‘My Application’.”</p>
-<p>You can use a <code>content_for</code> statement to set a title and description on each individual page.</p>
-<p>The combination of <code>content_for?</code> with <code>yield</code> allows you to inject data into the application layout from any view. Set up a view file containing the code:</p>
+
+h3. Viewport
+
+The @viewport@ metatag improves the presentation of web pages on mobile devices. Setting a viewport tells the browser how content should fit on the device’s screen. Apple’s developer documentation on "Configuring the Viewport":http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html provides details.
+
+h3. Title and Description
+
+The _title_ and _description_ metatags help make your web pages search-engine friendly. Google uses contents of the title tag to display titles in search results. And it will sometimes use the content of a description metatag in search results snippets. See Google’s explanation of how it uses "Site Title and Description":http://support.google.com/webmasters/bin/answer.py?hl=en&amp;answer=35624.
+
+The code uses the Ruby "ternary operator":http://ruby.about.com/od/beginningruby/a/The-Ternary-Or-Conditional-Operator.htm. It is a conditional statement that says, "if @content_for?(:title)@ is present in the view file, use @yield(:title)@ to include it, otherwise just display 'My Application'."
+
+You can use a @content_for@ statement to set a title and description on each individual page.
+
+The combination of @content_for?@ with @yield@ allows you to inject data into the application layout from any view. Set up a view file containing the code:
+
 <pre>
-&lt;% content_for :title do %&gt;My Title&lt;% end %&gt;
-&lt;% content_for :description do %&gt;My Description&lt;% end %&gt;
+My Title
+My Description
 </pre>
-<p>When a controller renders the view template and combines it with the application layout, the text “My Title” will replace <code>&lt;%= content_for?(:title) ? yield(:title) : "My Application" %&gt;</code> in the application layout. If no <code>content_for</code> block is found in the view template, the alternate text “My Application” will be used.</p>
-<h3>Body Tag</h3>
-<p>The simplest form of the <code>&lt;body&gt;</code> tag is all you need for many applications. However, if you’re using JavaScript extensively and wish to execute JavaScript conditionally on a page, it’s helpful to set the controller name and action in the <code>&lt;body&gt;</code> tag:</p>
+
+When a controller renders the view template and combines it with the application layout, the text "My Title" will replace @@ in the application layout. If no @content_for@ block is found in the view template, the alternate text "My Application" will be used.
+
+h3. Body Tag
+
+The simplest form of the @@ tag is all you need for many applications. However, if you're using JavaScript extensively and wish to execute JavaScript conditionally on a page, it's helpful to set the controller name and action in the @@ tag:
+
 <pre>
-&lt;body class="&lt;%= controller_name %&gt; &lt;%= action_name %&gt;"&gt;
+
 </pre>
-<p>See the article <a href="http://railsapps.github.io/rails-javascript-include-external.html">Adding JavaScript to Rails</a> for details.</p>
-<h3>HTML5 Elements</h3>
-<p>The improved application layout contains tags that are structural elements from the HTML5 specification:</p>
-<ul>
-<li><code>&lt;header&gt;</code></li>
-	<li><code>&lt;main&gt;</code></li>
-</ul><p>These elements add structure to a web page. The tags don’t add any new behavior but make it easier to determine the structure of the page and apply <span class="caps">CSS</span> styles.</p>
-<p>The <code>&lt;header&gt;</code> tag is typically used for branding or navigation.</p>
-<p>We wrap a navigation partial in the <code>&lt;header&gt;</code> tag:</p>
+
+See the article "Adding JavaScript to Rails":http://railsapps.github.io/rails-javascript-include-external.html for details.
+
+h3. HTML5 Elements
+
+The improved application layout contains tags that are structural elements from the HTML5 specification:
+
+* @ @
+* @@
+
+These elements add structure to a web page. The tags don't add any new behavior but make it easier to determine the structure of the page and apply CSS styles.
+
+The @ @ tag is typically used for branding or navigation.
+
+We wrap a navigation partial in the @ @ tag:
+
 <pre>
-&lt;header&gt;
-  &lt;%= render 'layouts/navigation' %&gt;
-&lt;/header&gt;
+ 
+  
+ 
 </pre>
-<p>The <code>&lt;main&gt;</code> tag is among the newest HTML5 elements (see the <a href="http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-main-element">W3C specification</a> for details). From the specification: “The main content area of a document includes content that is unique to that document and excludes content that is repeated across a set of documents such as site navigation links, copyright information, site logos.” We follow the advice of the specification and wrap our unique content in the <code>&lt;main&gt;</code> tag.</p>
-<p>The specification recommends, “Authors are advised to use <span class="caps">ARIA</span> role=‘main’ attribute on the main element until user agents implement the required role mapping.” <a href="http://www.w3.org/WAI/intro/aria"><span class="caps">ARIA</span></a>, the Accessible Rich Internet Applications Suite, is a specification to make web applications more accessible to people with disabilities. That means the <code>role="main"</code> attribute is there for any web browsers that don’t yet recognize the <code>&lt;main&gt;</code> tag, and may help people with disabilities.</p>
+
+The @@ tag is among the newest HTML5 elements (see the "W3C specification":http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-main-element for details). From the specification: "The main content area of a document includes content that is unique to that document and excludes content that is repeated across a set of documents such as site navigation links, copyright information, site logos." We follow the advice of the specification and wrap our unique content in the @@ tag.
+
+The specification recommends, "Authors are advised to use ARIA role='main' attribute on the main element until user agents implement the required role mapping." "ARIA":http://www.w3.org/WAI/intro/aria, the Accessible Rich Internet Applications Suite, is a specification to make web applications more accessible to people with disabilities. That means the @role="main"@ attribute is there for any web browsers that don't yet recognize the @@ tag, and may help people with disabilities.
+
 <pre>
-&lt;main role="main"&gt;
-  &lt;%= render 'layouts/messages' %&gt;
-  &lt;%= yield %&gt;
-&lt;/main&gt;
+
+  
+  
+
 </pre>
-<p>We wrap a messages partial and <code>yield</code> expression in a <code>&lt;main role="main"&gt;</code> element.</p>
-<p>You could add a <code>&lt;footer&gt;</code> tag. It typically contains links to copyright information, legal disclaimers, or contact information.</p>
-<h3>Navigation Partial</h3>
-<p>You’ll likely need navigation links on every page of your web application.</p>
-<p>You can add navigation links directly to your application layout file but many developers prefer to create a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> – a “partial” – to better organize the default application layout.</p>
-<p>Examine the file <strong>app/views/layouts/_navigation.html.erb</strong>:</p>
+
+We wrap a messages partial and @yield@ expression in a @@ element.
+
+You could add a @ @ tag. It typically contains links to copyright information, legal disclaimers, or contact information.
+
+h3. Navigation Partial
+
+You’ll likely need navigation links on every page of your web application.
+
+You can add navigation links directly to your application layout file but many developers prefer to create a "partial template":http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials – a "partial" – to better organize the default application layout.
+
+Examine the file *app/views/layouts/_navigation.html.erb*:
+
 <pre>
-&lt;ul class="nav"&gt;
-  &lt;li&gt;&lt;%= link_to 'Home', root_path %&gt;&lt;/li&gt;
-  &lt;%= render 'layouts/navigation_links' %&gt;
-&lt;/ul&gt;
-</pre>
-<p>The navigation partial contains a <code>link_to</code> helper for a navigation link to the application home page. You’ll need to set <code>root to:</code> in the <strong>config/routes.rb</strong> file so you’ll have a <code>root_path</code> value.</p>
-<p>The navigation partial includes a nested partial, the navigation links partial, in the file <strong>app/views/layouts/_navigation_links.html.erb</strong>:</p>
+</pre><ul class="nav">
+  <li>
+  
+</ul>
+
+
+The navigation partial contains a @link_to@ helper for a navigation link to the application home page. You'll need to set @root to:@ in the *config/routes.rb* file so you'll have a @root_path@ value.
+
+The navigation partial includes a nested partial, the navigation links partial, in the file *app/views/layouts/_navigation_links.html.erb*:
+
 <pre>
-&lt;%# add navigation links to this file %&gt;
+
 </pre>
-<p>As you add pages to your application, you can add links to this file.</p>
-<p>In a simple application, it is not necessary to nest a navigation links partial. Use it to isolate the complex markup required by a front-end framework from a simple list of links needed for navigation, if you wish.</p>
-<h3>Flash Messages</h3>
-<p>Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a <em>flash message</em>. The name comes from the term “flash memory” and should not be confused with the “Adobe Flash” web development platform that was once popular for animated websites. The flash message is documented in the <a href="http://guides.rubyonrails.org/action_controller_overview.html#the-flash">RailsGuides: Action Controller Overview</a>.</p>
-<p>Code to display flash messages can go directly in your application layout file or you can use a partial.</p>
-<p>Here the application layout references a partial contained in the file <strong>app/views/layouts/_messages.html.erb</strong>:</p>
+
+As you add pages to your application, you can add links to this file.
+
+In a simple application, it is not necessary to nest a navigation links partial. Use it to isolate the complex markup required by a front-end framework from a simple list of links needed for navigation, if you wish.
+
+h3. Flash Messages
+
+Rails provides a standard convention to display alerts (including error messages) and other notices (including success messages), called a <em>flash message</em>. The name comes from the term "flash memory" and should not be confused with the "Adobe Flash" web development platform that was once popular for animated websites. The flash message is documented in the "RailsGuides: Action Controller Overview":http://guides.rubyonrails.org/action_controller_overview.html#the-flash.
+
+Code to display flash messages can go directly in your application layout file or you can use a partial.
+
+Here the application layout references a partial contained in the file *app/views/layouts/_messages.html.erb*:
+
 <pre>
-&lt;% flash.each do |name, msg| %&gt;
-  &lt;% if msg.is_a?(String) %&gt;
-    &lt;%= content_tag :div, msg, :class =&gt; "flash_#{name}" %&gt;
-  &lt;% end %&gt;
-&lt;% end %&gt;
+
+  
+     "flash_#{name}" %&gt;
+  
+
 </pre>
-<p>We use <code>each</code> to iterate through the flash hash, retrieving a <code>name</code> and <code>msg</code> that are passed to a block to be output as a string. The expression <code>if msg.is_a?(String)</code> serves as a test to make sure we only display messages that are strings. We use the Rails <code>content_tag</code> view helper to create the <span class="caps">HTML</span> <code>div</code>. Finally, we apply a <span class="caps">CSS</span> <code>class</code> and combine the word “flash” with “notice” or “alert” to make the <span class="caps">CSS</span> class.</p>
-<h2>Simple <span class="caps">CSS</span>
-</h2>
-<p>The <a href="https://github.com/RailsApps/rails_layout">rails_layout</a> gem adds a <span class="caps">CSS</span> file for simple styling of the navigation links and flash messages. If you don’t want to use Twitter Bootstrap, Zurb Foundation, or another <span class="caps">CSS</span> front-end framework, you can apply simple <span class="caps">CSS</span> styling for your navigation links and flash messages with the following code.</p>
-<p>Examine the file <strong>app/assets/stylesheets/simple.css</strong>:</p>
+
+We use @each@ to iterate through the flash hash, retrieving a @name@ and @msg@ that are passed to a block to be output as a string. The expression @if msg.is_a?(String)@ serves as a test to make sure we only display messages that are strings. We use the Rails @content_tag@ view helper to create the HTML @div@. Finally, we apply a CSS @class@ and combine the word "flash" with "notice" or "alert" to make the CSS class.
+
+h2. Simple CSS
+
+The "rails_layout":https://github.com/RailsApps/rails_layout gem adds a CSS file for simple styling of the navigation links and flash messages. If you don’t want to use Twitter Bootstrap, Zurb Foundation, or another CSS front-end framework, you can apply simple CSS styling for your navigation links and flash messages with the following code.
+
+Examine the file *app/assets/stylesheets/simple.css*:
+
 <pre>
 /*
  * Simple CSS stylesheet for a navigation bar and flash messages.
@@ -261,10 +344,15 @@ ul.nav li a {
   color: #b94a48;
 }
 </pre>
-<p>The <span class="caps">CSS</span> rules set a background color for the <code>main</code> section of the page, plus styles for a header, navigation links, and flash messages.</p>
-<h2>Did You Like the Article?</h2>
-<p>Was the article useful to you? Follow <a href="http://twitter.com/rails_apps">@rails_apps</a> on Twitter and tweet some praise. I’d love to know you were helped out by the article.</p>
-<p>You can also find me on <a href="https://www.facebook.com/daniel.kehoe.sf">Facebook</a> or <a href="https://plus.google.com/+DanielKehoe/">Google+</a>.</p>
+
+The CSS rules set a background color for the @main@ section of the page, plus styles for a header, navigation links, and flash messages.
+
+h2. Did You Like the Article?
+
+Was the article useful to you? Follow "@rails_apps":http://twitter.com/rails_apps on Twitter and tweet some praise. I'd love to know you were helped out by the article.
+
+You can also find me on "Facebook":https://www.facebook.com/daniel.kehoe.sf or "Google+":https://plus.google.com/+DanielKehoe/.
+    
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">
