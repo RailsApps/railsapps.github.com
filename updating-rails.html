@@ -46,7 +46,7 @@
       <div class="content wikistyle gollum textile">
         <h1>Updating to Rails 5.0</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 19 December 2015</em></p>
+<p><em>Last updated 27 December 2015</em></p>
 <p>Upgrading to Rails 5.0, the newest Ruby on Rails version. How to update Rails versions and upgrade Rails applications. Instructions and advice.</p>
 <h4>How to Upgrade Rails</h4>
 <p>This article shows how to add a new version of Rails while keeping an old version. Rails is revised frequently and you’ll likely need more than one version. Don’t simply replace an old version of Rails with another. Instead, set up your development environment with multiple versions of Rails so you can easily switch between them.</p>
@@ -56,7 +56,7 @@
 <p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. It is important to set up your development environment with the most current version of all the gems that are needed for development.</p>
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
-<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from subscribers. If this article is helpful, please <a href="http://railsapps.github.io/">join the RailsApps project</a>.</p>
+<p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from developers who purchase the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>.</p>
 <h4>Stay Informed</h4>
 <p>These two weekly email newsletters will keep you informed about new Rails releases:</p>
 <ul>
@@ -76,7 +76,7 @@
 <p>Rails developers love to debate the merits of their tools and you’ll hear strong opinions about preferences for <span class="caps">RVM</span>, chruby, or rbenv. <a href="https://github.com/postmodern/chruby">Chruby</a> is the simplest; you’ll need a separate tool such as <a href="https://github.com/postmodern/ruby-install">ruby-install</a> to install Ruby versions. <a href="https://github.com/sstephenson/rbenv">Rbenv</a> is a favorite among people who are experienced Unix users. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> for beginners because it is robust and full-featured, with options for installing Ruby and managing sets of gems. This article will show how to use <span class="caps">RVM</span> to manage Rails versions, though you can adapt the principles for chruby or rbenv.</p>
 <h4>Installing Ruby Versions</h4>
 <p>These articles from the RailsApps project will show you how to install multiple versions of Ruby using <span class="caps">RVM</span>:</p>
-<p><a href="http://railsapps.github.io/installrubyonrails-mac.html"><strong>Install Ruby on Rails – Mac OS X Yosemite</strong></a></p>
+<p><a href="http://railsapps.github.io/installrubyonrails-mac.html"><strong>Install Ruby on Rails – Mac OS X</strong></a></p>
 <p><a href="http://railsapps.github.io/installrubyonrails-ubuntu.html"><strong>Install Ruby on Rails – Ubuntu</strong></a></p>
 <p>If you’re using Windows, see the article <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a>.</p>
 <p>If you are not using <span class="caps">RVM</span> already, see the articles to get started with multiple versions of Ruby. The articles are detailed and provide good advice, so it is worthwhile to take a look if you haven’t read the articles previously.</p>
@@ -86,6 +86,7 @@
 <p>Notable additions in Rails 5.0 include an option for an <span class="caps">API</span>-only application suitable for use as a backend to JavaScript or mobile applications. Also <a href="https://github.com/rails/rails/tree/master/actioncable">Action Cable</a> for live features such as chat and notifications.</p>
 <p>Learn more about Rails 5.0:</p>
 <ul>
+	<li><a href="http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html">Rails 5.0 Release Notes</a></li>
 	<li><a href="http://weblog.rubyonrails.org/2015/12/18/Rails-5-0-beta1/">Rails 5.0.0.beta1: Action Cable, <span class="caps">API</span> mode, Rails command</a></li>
 	<li><a href="http://blog.michelada.io/whats-new-in-rails-5" title="Mario Alberto Chavez">What’s new in Rails 5?</a></li>
 	<li><a href="https://blog.engineyard.com/2015/a-look-at-rails-5" title="Engine Yard">A Look at Rails 5</a></li>
@@ -110,7 +111,7 @@ $ gem update --system
 <pre>
 $ rvm gemset list
 
-gemsets for ruby-2.2.4
+gemsets for ruby-2.3.0
 =&gt; (default)
    global
 </pre>
@@ -174,7 +175,7 @@ $ bundle update rails
 <h4>Rails 4.2</h4>
 <p>First, make a gemset just for the 4.2 release:</p>
 <pre>
-$ rvm use ruby-2.2.4@rails4.2 --create
+$ rvm use ruby-2.3.0@rails4.2 --create
 </pre>
 <p>If you want the Rails 4.2.5 release:</p>
 <pre>
@@ -184,7 +185,7 @@ $ rails -v
 <h4>Rails 5.0</h4>
 <p>Make another gemset for the Rails 5.0 pre-release version:</p>
 <pre>
-$ rvm use ruby-2.2.4@rails5.0 --create
+$ rvm use ruby-2.3.0@rails5.0 --create
 $ gem install rails --pre
 $ rails -v
 </pre>
@@ -192,7 +193,7 @@ $ rails -v
 <p>You can install a specific version if you need it.</p>
 <p>For example, if you want the Rails 3.2.18 release:</p>
 <pre>
-$ rvm use ruby-2.2.4@rails3.2 --create
+$ rvm use ruby-2.3.0@rails3.2 --create
 $ gem install rails --version=3.2.18
 $ rails -v
 </pre>
@@ -200,16 +201,16 @@ $ rails -v
 <p>You can easily switch between gemsets.</p>
 <p>For example, to use Rails 4.2:</p>
 <pre>
-$ rvm use ruby-2.2.4@rails4.2
+$ rvm use ruby-2.3.0@rails4.2
 </pre>
 <p>To use Rails 5.0:</p>
 <pre>
-$ rvm use ruby-2.2.4@rails5.0
+$ rvm use ruby-2.3.0@rails5.0
 </pre>
 <h2>Specifying Gemsets</h2>
 <p>If you’ve already created an application, you can create a project-specific gemset. Here’s how to create a gemset for an application named “myapp” and create  <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in the application’s project directory:</p>
 <pre>
-$ rvm use ruby-2.2.4@myapp --ruby-version --create
+$ rvm use ruby-2.3.0@myapp --ruby-version --create
 </pre>
 <p>The next time you <code>cd</code> into the project directory, <span class="caps">RVM</span> will read the <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files and automatically configure your development environment to use the correct Ruby version and gemset. If it is a new gemset, and a Gemfile is present in the project directory, you can use <code>bundle install</code> to install the necessary gems.</p>
 <h2>Examine Version Differences</h2>
@@ -218,9 +219,9 @@ $ rvm use ruby-2.2.4@myapp --ruby-version --create
 <p>Or do the research yourself. First, create a starter app with the old version of Rails. Then switch gemsets and create a starter app with the new version of Rails.</p>
 <p>Let’s assume you want to compare Rails 4.2 and Rails 5.0.</p>
 <pre>
-$ rvm use ruby-2.2.4@rails4.2
+$ rvm use ruby-2.3.0@rails4.2
 $ rails new myapp4.2
-$ rvm use ruby-2.2.4@rails5.0
+$ rvm use ruby-2.3.0@rails5.0
 $ rails new myapp5.0
 </pre>
 <p>Compare the two applications with a file compare tool.</p>
@@ -238,9 +239,9 @@ $ cd myapp
 <pre>
 $ rvm gemset rename myapp Rails4.2_myapp
 </pre>
-<p>If not, create a project-specific gemset using Ruby Ruby 2.2.4 and Rails 4.2:</p>
+<p>If not, create a project-specific gemset using Ruby Ruby 2.3.0 and Rails 4.2:</p>
 <pre>
-$ rvm use ruby-2.2.4@rails4.2_myapp --create
+$ rvm use ruby-2.3.0@rails4.2_myapp --create
 $ rvm gemset list
 $ bundle install
 </pre>
@@ -254,7 +255,7 @@ $ git checkout -b upgrading
 <h4>Rails 5.0</h4>
 <p>Create a new project-specific gemset for Rails 5.0:</p>
 <pre>
-$ rvm use ruby-2.2.4@Rails5.0_myapp --create
+$ rvm use ruby-2.3.0@Rails5.0_myapp --create
 $ rvm gemset list
 </pre>
 <p>Check that the only installed gems are those from the global gemset:</p>
