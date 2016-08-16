@@ -51,7 +51,7 @@
 <h4>How to Upgrade Rails</h4>
 <p>This article shows how to add a new version of Rails while keeping an old version. Rails is revised frequently and you’ll likely need more than one version. Don’t simply replace an old version of Rails with another. Instead, set up your development environment with multiple versions of Rails so you can easily switch between them. This article shows how to switch between versions of Ruby and Rails using <a href="https://rvm.io/"><span class="caps">RVM</span></a>, the Ruby Version Manager.</p>
 <h4>Updating Rails Applications</h4>
-<p>Rails is actively maintained by a large community of developers, which means constant innovation, improvements, and attention to security. You must actively and regularly maintain your Rails applications. Upgrade your Rails applications whenever a new version of Rails is released. If you neglect to update regularly, upgrading several versions at once may require considerable effort, making it difficult to resolve security vulnerabilities quickly. If you don’t update Rails, you leave your application and its server open to attack.</p>
+<p>Rails is actively maintained by a large community of developers, which means constant innovation, improvements, and attention to security. You must actively and regularly maintain your Rails applications. Upgrade your Rails applications whenever a new version of Rails is released. If you neglect to update regularly, upgrading several versions at once may require considerable effort, making it difficult to resolve security vulnerabilities quickly. If you don’t update Rails, you leave your application and its server open to attack. Here’s advice on timing:</p>
 <ul>
 	<li>update security patch versions immediately</li>
 	<li>wait a month after a new major version is released to see if others report issues</li>
@@ -59,7 +59,7 @@
 </ul>
 <p>If you wait too long to upgrade, the community moves on and you’ll find it difficult get help with any issues.</p>
 <h4>Don’t Just Update Rails</h4>
-<p>Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully. Rails is not just a Ruby gem, it is a complex and rapidly evolving ecosystem. It is important to set up your development environment with the most current version of all the gems that are needed for development.</p>
+<p>It is important to set up your development environment with the most current version of all the gems that are needed for development. Developers often install the newest version of Rails but neglect other components needed for Rails to run successfully.</p>
 <h4><a href="http://railsapps.github.io/"><img src="http://railsapps.github.io/images/join/join-railsapps.png" title="Join RailsApps" alt="Join RailsApps"></a></h4>
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal “reference implementation.” Support for the project comes from developers who purchase the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>.</p>
@@ -221,7 +221,7 @@ $ rvm use ruby-2.3.1@myapp --ruby-version --create
 <p>The next time you <code>cd</code> into the project directory, <span class="caps">RVM</span> will read the <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files and automatically configure your development environment to use the correct Ruby version and gemset. If it is a new gemset, and a Gemfile is present in the project directory, you can use <code>bundle install</code> to install the necessary gems.</p>
 <h2>Examine Version Differences</h2>
 <p>Before you update Rails, take time to find out how the default new Rails application has changed.</p>
-<p>There are two ways to compare differences between Rails versions:</p>
+<p>There are two ways to compare differences in a simple Rails application:</p>
 <ul>
 	<li>visit the site <a href="http://railsdiff.org/">railsdiff.org</a>
 </li>
@@ -239,6 +239,14 @@ $ rails new myapp5.0
 <p>Compare the two applications with a file compare tool.</p>
 <p>Major Rails updates often make many changes. Patch updates seldom change the default new Rails application.</p>
 <h2>Updating a Rails Application</h2>
+<p>First, review the official release notes:</p>
+<ul>
+	<li><a href="http://guides.rubyonrails.org/5_0_release_notes.html">Ruby on Rails 5.0 Release Notes</a></li>
+</ul>
+<p>The release notes are very detailed. In many cases, none of the changes will affect your application. Scan the release notes to identify any issues that may affect you. You’ll have to know your application well enough that you recognize changes that may affect your code.</p>
+<p>Then</p>
+<h4>Using <span class="caps">RVM</span>
+</h4>
 <p>With <span class="caps">RVM</span>, it’s convenient to preserve the set of gems that are known to work with your application. If you have difficulties with new gem versions, you can switch back to the older gemset easily, without reinstalling your old gems.</p>
 <p>Let’s assume you have an application named “myapp” that runs with Rails 4.2.5.</p>
 <p>We’ll upgrade it to Rails 5.0.</p>
@@ -318,7 +326,7 @@ $ rails rails:update
 <p>Don’t blindly allow <code>rails rails:update</code> to overwrite your files. Many of your files will be different because you’ve made changes from a default new Rails application. You’ll need to check each file to determine if <code>rails rails:update</code> is seeing your own changes or pointing out changes due to a Rails update.</p>
 <p>When <code>rails rails:update</code> offers to overwrite a file, enter <code>d</code> (for “diff”) and review the differences. Most differences will be your own. If you’re uncertain, don’t overwrite the file; make a note for yourself and investigate later. If you are certain that the difference is due to a Rails version change, you can allow <code>rails rails:update</code> to overwrite the file.</p>
 <h4>New Default Initializers</h4>
-<p>As of Rails 5.0, a configuration file groups all changed configuration settings into a single initializer file. Take a look at the file:</p>
+<p>As of Rails 5.0, a configuration file shows all changed configuration settings in a single initializer file. Take a look at the file:</p>
 <ul>
 	<li><em>config/initializers/new_framework_defaults.rb</em></li>
 </ul>
