@@ -3,10 +3,10 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Install Ruby on Rails 5.0 &#183; Mac OS X &#183; RailsApps</title>
+  <title>Install Ruby on Rails 5.0 &#183; macOS &#183; RailsApps</title>
   <meta name="viewport" content="width=device-width">
-  <meta name="description" content="How to install Install Ruby on Rails on Mac OS X El Capitan. Complete guide to installation and set up.">
-  <meta name="keywords" content="tutorial install Ruby on Rails Mac El Capitan">
+  <meta name="description" content="How to install Install Ruby on Rails on macOS Sierra. Complete guide to installation and set up.">
+  <meta name="keywords" content="tutorial install Ruby on Rails Mac Sierra">
   <link href="https://plus.google.com/117374718581973393536" rel="publisher">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/normalize.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/css/foundation.min.css">
@@ -77,19 +77,19 @@
       <div class="content wikistyle gollum textile">
         <br />
         <br />
-        <h1>Install Ruby on Rails 5.0 · Mac OS X El Capitan</h1>
+        <h1>Install Ruby on Rails 5.0 · macOS Sierra</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 25 August 2016</em></p>
-<p>Install Ruby on Rails 5.0 on Mac OS X El Capitan. Up-to-date and detailed instructions, plus troubleshooting, for the Rails newest release. How to set up and install Rails 5.0, the newest version of Rails, on Mac OS X 10.11 El Capitan.</p>
+<p><em>Last updated 5 October 2016</em></p>
+<p>Install Ruby on Rails 5.0 on macOS Sierra. Up-to-date and detailed instructions, plus troubleshooting, for the Rails newest release. How to set up and install Rails 5.0, the newest version of Rails, on macOS 10.12 Sierra.</p>
 <p>This in-depth installation guide is used by professional developers to configure their working environment for real-world Rails development. Beginners can use it, too. You can find shorter articles elsewhere but this explains everything, covers everything, and is up to date.</p>
 <p>If you like the level of detail and explanation in this article, you will like my book <a href="http://learn-rails.com/learn-ruby-on-rails.html"><em>Learn Ruby on Rails</em></a> and you may want to try my intermediate-level tutorials, the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>.</p>
 <h4>If You Are New to Rails</h4>
-<p>To use Rails on Mac OS X, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework. If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html"><em>Learn Ruby on Rails</em></a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>. This article explains how to install Rails.</p>
+<p>To use Rails on macOS, you’ll need Ruby (an interpreter for the Ruby programming language) plus gems (software libraries) containing the Rails web application development framework. If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html"><em>Learn Ruby on Rails</em></a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>. This article explains how to install Rails.</p>
 <h4>What is the RailsApps Project?</h4>
 <p>This is an article from the RailsApps project. The <a href="http://railsapps.github.io/">RailsApps project</a> provides example applications that developers use as starter apps. Hundreds of developers use the apps, report problems as they arise, and propose solutions. Rails changes frequently; each application is known to work and serves as your personal "reference implementation." Support for the project comes from people who purchase the <a href="https://tutorials.railsapps.org/">Capstone Rails Tutorials</a>. You might want to try the <a href="http://railsapps.github.io/">RailsApps Example Applications</a> and the Capstone Rails Tutorials.</p>
 <h2>Summary</h2>
 <ol>
-<li>Step 1. Upgrade Your System to OS X El Capitan</li>
+<li>Step 1. Upgrade Your System to macOS Sierra</li>
 <li>Step 2. Install XCode Command Line Tools</li>
 <li>Step 3. Configure Git</li>
 <li>Step 4. Install Homebrew</li>
@@ -99,12 +99,12 @@
 <li>Step 8. Update RubyGems</li>
 <li>Step 9. Install Rails</li>
 </ol>
-<h2>Ruby on Rails for Mac OS X El Capitan</h2>
-<p>These instructions can be used for Mac OS X 10.9 Mavericks or 10.10 Yosemite. However, you should upgrade to El Capitan if you can.</p>
-<p>Mac OS X comes with a "system Ruby" pre-installed. Mac OS X El Capitan includes Ruby 2.0.0p645 which is not the newest version. Do not use the system Ruby (see <a href="https://robots.thoughtbot.com/psa-do-not-use-system-ruby">an article</a> for why). You should update to Ruby 2.3.1 by using RVM, the Ruby Version Manager. You'll find instructions below.</p>
+<h2>Ruby on Rails for macOS Sierra</h2>
+<p>These instructions can be used for macOS 10.9 Mavericks, 10.10 Yosemite, or 10.11 El Capitan. However, you should upgrade to Sierra if you can.</p>
+<p>macOS comes with a "system Ruby" pre-installed. macOS Sierra includes Ruby 2.0.0p645 which is not the newest version. Do not use the system Ruby (see <a href="https://robots.thoughtbot.com/psa-do-not-use-system-ruby">an article</a> for why). You should update to Ruby 2.3.1 by using RVM, the Ruby Version Manager. You'll find instructions below.</p>
 <p>If you are maintaining older Rails applications, you will likely need to install older Ruby versions. And in the future, you will need to install newer Ruby versions as they are released. Even if you are a student only building new Rails applications, you should be prepared to manage multiple versions of Ruby. These are all reasons to use a Ruby version manager such as <a href="https://rvm.io/"><span class="caps">RVM</span></a>.</p>
-<h3>If You Updated to Mac OS X El Capitan</h3>
-<p>If you updated to El Capitan from an earlier version of Mac OS X (sometimes called an "over the top" installation), and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a> (full instructions below). Though Rails is still intact after an update, read through this article and take this opportunity to update your development environment.</p>
+<h3>If You Updated to macOS Sierra</h3>
+<p>If you updated to Sierra from an earlier version of macOS (sometimes called an "over the top" installation), and you previously installed a Rails development environment, your earlier installation remains intact. You will need to <a href="http://railsapps.github.io/xcode-command-line-tools.html">install the new version of Xcode Command Line Tools</a> (full instructions below). Though Rails is still intact after an update, read through this article and take this opportunity to update your development environment.</p>
 <h3>Use a Ruby Version Manager</h3>
 <p>You’ll need an easy way to switch between Ruby versions. Just as important, you’ll have a dependency mess if you install gems into the system environment. I recommend <a href="https://rvm.io/"><span class="caps">RVM</span></a> to manage Ruby versions and gems because it is popular, well-supported, and full-featured. If you are an experienced Unix administrator, you can consider alternatives such as <a href="https://github.com/postmodern/chruby">Chruby</a> or Sam Stephenson’s <a href="https://github.com/sstephenson/rbenv">rbenv</a>. Conveniently, you can use <span class="caps">RVM</span> to install Ruby.</p>
 <h3>Don’t Use a One-Click Installer</h3>
@@ -114,11 +114,11 @@
 <p>Using a hosted environment means you are no longer dependent on the physical presence of a computer that stores all your files. If your computer crashes or is stolen, you can continue to use your hosted environment from any other computer. Likewise, if you frequently work on more than one computer, a hosted environment eliminates the difficulty of maintaining duplicate development environments. For these reasons some developers prefer to "work in the cloud" using Cloud9. For more on Cloud9, see the article <a href="http://railsapps.github.io/rubyonrails-cloud9.html">Ruby on Rails with Cloud9</a>. Cloud9 is a good option if you have trouble installing Ruby on Rails on your Mac.</p>
 <h2>Prepare Your Computer</h2>
 <p>You’ll need to prepare your computer before installing Ruby on Rails.</p>
-<h3>Upgrade Mac OS X to 10.11</h3>
-<p>Mac OS X El Capitan was released on September 30, 2015. Make sure you have the latest version of Mac OS X. Under the Apple menu, check "About This Mac." It should show "Version 10.11.1" or newer. If you’ve owned your Mac for several years and haven’t updated Mac OS X, be prepared to spend several hours updating the operating system.</p>
-<p>If you need to upgrade, see Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to OS X El Capitan</a>. You can install Mac OS X 10.11 (El Capitan) from the Mac App Store for free. Allow plenty of time for the download and installation (it may take several hours).</p>
+<h3>Upgrade macOS to 10.12</h3>
+<p>MacOS Sierra was released on September 20, 2016. Make sure you have the latest version of macOS. Under the Apple menu, check "About This Mac." It should show "Version 10.12.0" or newer. If you’ve owned your Mac for several years and haven’t updated macOS, be prepared to spend several hours updating the operating system.</p>
+<p>If you need to upgrade, see Apple’s instructions <a href="http://www.apple.com/osx/how-to-upgrade/">How to upgrade to macOS Sierra</a>. You can install macOS 10.12 (Sierra) from the Mac App Store for free. Allow plenty of time for the download and installation (it may take several hours).</p>
 <h3>Terminal Application</h3>
-<p>You’ll need to use the Terminal application to install Ruby and develop Rails applications. The <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> or <em>console</em> gives us access to the Unix command line, or <em>shell</em>. We call the command line the shell because it is the outer layer of the operating system’s internal mechanisms (which we call the kernel). Search for the Mac OS X Terminal application by pressing the Command-Spacebar combination (which Apple calls "Spotlight Search") and searching for "Terminal." Or look in the <strong>Applications/Utilities/</strong> folder for the Terminal application.</p>
+<p>You’ll need to use the Terminal application to install Ruby and develop Rails applications. The <a href="http://en.wikipedia.org/wiki/Terminal.app">Terminal application</a> or <em>console</em> gives us access to the Unix command line, or <em>shell</em>. We call the command line the shell because it is the outer layer of the operating system’s internal mechanisms (which we call the kernel). Search for the macOS Terminal application by pressing the Command-Spacebar combination (which Apple calls "Spotlight Search") and searching for "Terminal." Or look in the <strong>Applications/Utilities/</strong> folder for the Terminal application.</p>
 <p>Launch the Terminal application. Then try out the terminal application by entering a shell command:</p>
 <pre>
 $ whoami
@@ -128,7 +128,7 @@ $ whoami
 <p>To learn more about Unix shell commands, read <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> or <a href="http://www.learnenough.com/command-line-tutorial">Learn Enough Command Line to Be Dangerous</a>.</p>
 <h3>Is Xcode Already Installed?</h3>
 <p>You need to install Apple's Xcode Command Line Tools to get the Unix tools needed to install Ruby and develop with Rails.</p>
-<p>Xcode is Apple's software library for OS X developers. You need the full Xcode package if you are doing development of applications for the Apple operating systems but you don't need all of Xcode for Rails development. You just need the Xcode Command Line Tools. Here's how to install the Xcode Command Line Tools.</p>
+<p>Xcode is Apple's software library for macOS developers. You need the full Xcode package if you are doing development of applications for the Apple operating systems but you don't need all of Xcode for Rails development. You just need the Xcode Command Line Tools. Here's how to install the Xcode Command Line Tools.</p>
 <p> Check if you have previously installed the full Xcode package:</p>
 <pre>
 $ xcode-select -p
@@ -156,7 +156,7 @@ or
 <h3>Install Xcode Command Line Tools</h3>
 <p>Before installing Ruby, you’ll need to prepare your computer by installing Apple’s <a href="http://railsapps.github.io/xcode-command-line-tools.html">Xcode Command Line Tools</a>.</p>
 <p>The Xcode Command Line Tools provide a C language compiler needed to install Ruby. For many Rails projects, you will need the C language compiler to install gems that use native extensions.</p>
-<p>Mac OS X El Capitan will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code>, <code>git</code>, or <code>make</code>.</p>
+<p>macOS Sierra will alert you when you enter a command in the terminal that requires Xcode Command Line Tools. For example, you can enter <code>gcc</code>, <code>git</code>, or <code>make</code>.</p>
 <p>Try it. Enter:</p>
 <pre>
 $ gcc
@@ -213,7 +213,7 @@ user.email=me@example.com
 $ brew
 -bash: brew: command not found
 </pre>
-<p>RVM requires <a href="http://brew.sh/">Homebrew</a>, a package manager for OS X. Many developers use Homebrew to install various Unix software packages.</p>
+<p>RVM requires <a href="http://brew.sh/">Homebrew</a>, a package manager for macOS. Many developers use Homebrew to install various Unix software packages.</p>
 <p>To avoid RVM installation issues, install Homebrew before RVM. If Homebrew is not installed, install it:</p>
 <pre>
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -225,7 +225,7 @@ To proceed, enter your password...
 Password:
 </pre>
 <p>Ignore the scary warning and enter your Mac password. You won't see the characters as you type. Press enter when you are done.</p>
-<p>You may notice that we use Ruby to install Homebrew. We use the Mac OS X pre-installed system version of Ruby to install Homebrew. Soon we'll add a newer version of Ruby using RVM.</p>
+<p>You may notice that we use Ruby to install Homebrew. We use the macOS pre-installed system version of Ruby to install Homebrew. Soon we'll add a newer version of Ruby using RVM.</p>
 <h2>Install GPG</h2>
 <p>You can use Homebrew to install <a href="https://en.wikipedia.org/wiki/GNU_Privacy_Guard">gpg</a>, an encryption program used to check the security of the RVM download. Installing gpg eliminates a warning message which will halt installation of RVM.</p>
 <pre>
@@ -244,7 +244,7 @@ $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 $ \curl -L https://get.rvm.io | bash -s stable
 </pre>
 <p>Note the backslash before "curl" (this avoids potential version conflicts).</p>
-<p><span class="caps">RVM</span> includes an "autolibs" option to identify and install components needed for your operating system. See the article <a href="https://blog.engineyard.com/2013/rvm-ruby-2-0"><span class="caps">RVM</span> Autolibs: Automatic Dependency Handling and Ruby 2.0</a> for more information. RVM will update your system and install dependencies required for installing Ruby on Mac OS X.</p>
+<p><span class="caps">RVM</span> includes an "autolibs" option to identify and install components needed for your operating system. See the article <a href="https://blog.engineyard.com/2013/rvm-ruby-2-0"><span class="caps">RVM</span> Autolibs: Automatic Dependency Handling and Ruby 2.0</a> for more information. RVM will update your system and install dependencies required for installing Ruby on macOS.</p>
 <p>You may see a message:</p>
 <pre>
 mkdir: /etc/openssl: Permission denied
@@ -482,13 +482,13 @@ $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you switch to your application root directory on your local machine.</p>
 <h2>Databases for Rails</h2>
-<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. Mac OS X come with SQLite pre-installed and there’s nothing to configure.</p>
+<p>Rails uses the <a href="http://www.sqlite.org/">SQLite</a> database by default. macOS come with SQLite pre-installed and there’s nothing to configure.</p>
 <p>Though SQLite is adequate for development (and even some production applications), a new Rails application can be configured for other databases. The command <code>rails new myapp --database=</code> will show you a list of supported databases.</p>
 <pre>
 Supported for preconfiguration are: mysql, oracle, postgresql, sqlite3, frontbase, ibm_db, sqlserver, jdbcmysql, jdbcsqlite3, jdbcpostgresql, jdbc.
 </pre>
 <h3>PostgreSQL</h3>
-<p>Use the easy-to-install Max OS X <a href="http://postgresapp.com/">Postgres.app</a> if you’d like to use PostgreSQL.</p>
+<p>Use the easy-to-install macOS <a href="http://postgresapp.com/">Postgres.app</a> if you’d like to use PostgreSQL.</p>
 <p>To create a new Rails application to use <a href="http://www.postgresql.org/">PostgreSQL</a>:</p>
 <pre>
 $ rails new myapp --database=postgresql
@@ -525,7 +525,7 @@ $ rake secret
 <p><a href="http://webchat.freenode.net/?channels=rvm">http://webchat.freenode.net/?channels=rvm</a></p>
 <p>If you’ve never used <span class="caps">IRC</span>, it’s worthwhile to figure out how to use <span class="caps">IRC</span> because the <span class="caps">RVM</span> team is helpful and friendly. <span class="caps">IRC</span> on freenode requires registration (see <a href="http://en.wikipedia.org/wiki/Wikipedia:IRC/Tutorial#Nickname_registration">how to register</a>).</p>
 <h4>Problems with "Segmentation Fault"</h4>
-<p>If you get a "segfault" when you try <code>rails new</code>, try removing and reinstalling <span class="caps">RVM</span>. If you are not using the current version of Mac OS X, you should upgrade before installing <span class="caps">RVM</span>.</p>
+<p>If you get a "segfault" when you try <code>rails new</code>, try removing and reinstalling <span class="caps">RVM</span>. If you are not using the current version of macOS, you should upgrade before installing <span class="caps">RVM</span>.</p>
 <h4>Problems with "Gem::RemoteFetcher::FetchError: SSL_connect"</h4>
 <p>Ruby and RubyGems (starting with Ruby 1.9.3p194 and RubyGems 1.8.23) require verification of server <span class="caps">SSL</span> certificates when Ruby makes an Internet connection via https. If you run <code>rails new</code> and get an error "Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate" see this article suggesting solutions: <a href="http://railsapps.github.io/openssl-certificate-verify-failed.html">OpenSSL errors and Rails</a>.</p>
 <h4>Problems with "Certificate Verify Failed"</h4>
@@ -577,7 +577,7 @@ $ sudo chmod g+w /usr/local/Cellar
              <dd><a href="https://tutorials.railsapps.org/rails-tutorial">Rails Tutorial</a></dd>
              <dd><a href="http://learn-rails.com/ruby-on-rails-tutorial-for-beginners">Ruby on Rails Tutorial for Beginners</a></dd>
              <dd><a href="http://railsapps.github.io/installing-rails.html">Install Ruby on Rails</a></dd>
-             <dd><a href="http://railsapps.github.io/installrubyonrails-mac.html">Install Ruby on Rails - Mac OS X</a></dd>
+             <dd><a href="http://railsapps.github.io/installrubyonrails-mac.html">Install Ruby on Rails - macOS</a></dd>
              <dd><a href="http://railsapps.github.io/installrubyonrails-ubuntu.html">Install Ruby on Rails - Ubuntu</a></dd>
              <dd><a href="http://railsapps.github.io/rubyonrails-nitrous-io.html">Ruby on Rails - Nitrous.io</a></dd>
              <dd><a href="http://railsapps.github.io/updating-rails.html">Update Rails</a></dd>
