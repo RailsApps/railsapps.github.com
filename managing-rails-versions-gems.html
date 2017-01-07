@@ -46,17 +46,14 @@
       <div class="content wikistyle gollum textile">
         <h1>Managing Rails Versions and Gems</h1>
 <h4>by Daniel Kehoe</h4>
-<p><em>Last updated 29 December 2014</em></p>
+<p><em>Last updated 7 January 2017</em></p>
 <p>Learn tips and tricks for managing Rails and Ruby gems. Relieve your headaches when versions collide.</p>
 <p>This is a guide for developers using the example apps from the <a href="http://railsapps.github.io/">Rails Apps</a> repository. Others may find it helpful as well.</p>
 <p>Before you install one of the <a href="https://github.com/RailsApps">Rails example apps</a>, there are a few things you should know about managing the pieces of the Rails platform. Often, everything “just works,” but when it doesn’t, here’s what you need to review. Read on if you’d like to know how all the moving parts work together.</p>
 <p>If you’re new to Rails, see <a href="http://railsapps.github.io/what-is-ruby-rails.html">What is Ruby on Rails?</a>, the book <a href="http://learn-rails.com/learn-ruby-on-rails.html">Learn Ruby on Rails</a>, and recommendations for a <a href="https://tutorials.railsapps.org/rails-tutorial">Rails tutorial</a>.</p>
 <h2>Install Rails</h2>
 <p>See <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> for detailed instructions and advice.</p>
-<h2>Background</h2>
-<p>The Ruby on Rails platform is a living ecosystem: a community of developers, their projects, and complex dependencies among their projects. At times (often before and after the release of a major new version of Rails) the ecosystem enters a state of disequilibrium and important pieces no longer work together easily. These times of disequilibrium are valuable for the ecosystem because, as a whole, developers innovate and Rails improves during these times.</p>
-<p>For you as a developer, it may feel like a trainwreck. You productivity will stall as you try to sort out what is broken and how to fix it. But you’ll find help here.</p>
-<h4>Example Apps</h4>
+<h2>Example Apps</h2>
 <p>The example apps from the <a href="http://railsapps.github.io/">Rails Apps</a> repository help you keep current with changing Rails and gem versions.</p>
 <p>Each example provides a set of useful, popular Rails gems integrated into a working application. Each example is known to work and can serve as your personal “reference implementation”. Each is an open source project. Many developers use the apps, report problems as they arise, and propose solutions as GitHub issues.</p>
 <p>These examples provide a working <strong>Rails app</strong> with a <strong>detailed tutorial</strong> that can be used to create a <strong>starter app</strong>. Each of these example apps can be created using the <a href="http://railsapps.github.io/rails-composer/">Rails Composer</a> tool (“like the ‘rails new’ command on steroids”):</p>
@@ -121,7 +118,7 @@
 <p>Ruby is the programming language used for Rails projects.</p>
 <p>What version of Ruby is installed on your machine? Check with:</p>
 <p><code>$ ruby -v</code></p>
-<p>For the example apps it should be version 2.2.0.</p>
+<p>Make sure it is the most recent version of Ruby.</p>
 <p>You can check for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
 <p>See instructions for <a href="http://railsapps.github.io/installing-rails.html">Installing Rails</a> to install a newer version of Ruby if necessary.</p>
 <h2>RubyGems</h2>
@@ -129,40 +126,13 @@
 <p>The RubyGems package management system comes as part of a standard Ruby language installation.</p>
 <p>What version of the RubyGems system is installed on your machine? Check with:</p>
 <p><code>$ gem -v</code></p>
-<p>For the example apps it should be version 1.8.17 or newer.</p>
-<p>The RubyGems package management system is part of a standard Ruby language installation. It can be updated by installing the rubygems-update gem.</p>
-<p>You can check for the current <a href="https://rubygems.org/gems/rubygems-update">rubygems-update gem</a>.</p>
 <p>Use <code>gem update --system</code> to upgrade the RubyGems system.</p>
-<p>As of release 1.8.0 (4 May 2011), the RubyGems system gem began a series of rapid updates (with <a href="http://blog.majesticseacreature.com/mending-the-rubygems-fences">controversy</a> and a promised <a href="http://blog.majesticseacreature.com/establishing-release-management-policies-for">resolution</a>). The example apps all work with version 1.8.15 but if you install a gem and find it doesn’t work, roll back to an older version of RubyGems:</p>
-<p><code>gem update --system 1.7.2</code></p>
-<p>or even:</p>
-<p><code>gem update --system 1.3.7</code></p>
 <h2>Rails</h2>
 <p>Rails itself is a gem, which means it can be installed and updated like any other gem.</p>
 <p>What version of Rails is installed on your machine? Check with:</p>
 <p><code>$ rails -v</code></p>
 <p>You can check for the newest released <a href="https://rubygems.org/gems/rails">Rails version</a>.</p>
-<p>For the example apps it should be version 3.2.</p>
 <p>See instructions for <a href="http://railsapps.github.io/installing-rails.html">Installing Rails 3.2</a> to install or update Rails. I recommend that you create a new gemset using <a href="http://rvm.beginrescueend.com/">rvm</a> before installing a new version of Rails (rather than using <code>gem update rails</code>). With rvm, you can switch gemsets to run your application under an earlier version of Rails.</p>
-<h2>Rake</h2>
-<p><a href="http://lukaszwrobel.pl/blog/rake-tutorial">Rake</a> is a software task management or “build” tool used extensively by Rails and many gems.</p>
-<p>What version of rake is installed on your machine? Check with:</p>
-<p><code>$ rake --version</code></p>
-<p>You can check for the newest released <a href="https://rubygems.org/gems/rake">rake gem</a>.</p>
-<p>For apps built with Rails 3.2, use rake 0.9.2.2 or newer.</p>
-<p>If you are using an older version of Rake, you should update Rake to 0.9.2 or newer immediately after creating a new gemset and before installing Rails 3.2.</p>
-<p>Here’s how to update Rake:</p>
-<pre>
-$ gem update rake
-$ rake --version
-</pre>
-<p>If you see this error message when installing one of the <a href="http://railsapps.github.io/">Rails Apps examples</a>, you should create a new gemset, update Rake, and create a fresh install of Rails 3.2:</p>
-<pre>
-The template ... could not be loaded.
-Error: You have already activated rake 0.8.7, but your Gemfile requires rake 0.9.x.
-Consider using bundle exec.
-</pre>
-<p>See an explanation by David Chelimsky in his blog post <a href="http://blog.davidchelimsky.net/2011/05/28/rake-09-and-gem-version-constraints/">Rake 0.9 and Gem Version Constraints</a> about collisions among versions of Rake and gems.</p>
 <h2>Bundler and the Gemfile</h2>
 <p>The <a href="http://gembundler.com/">Ruby Bundler</a> manages an application’s gems. Bundler works by reading a <strong>Gemfile</strong> in an application’s root directory, downloading and unpacking specified versions of each required gem, resolving any dependencies among gems, and creating a <strong>Gemfile.lock</strong> file to force use of the specified gem versions.</p>
 <p>Each of the example apps is provided with a gemfile that specifies a known working set of required gems.</p>
@@ -198,15 +168,10 @@ Consider using bundle exec.
 <p><span class="caps">RVM</span> recognizes <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files in a directory and loads a specified gemset.</p>
 <p>Here’s how to create <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files if you’re using a gemset named “ruby-2.2.0@myapp”:</p>
 <pre>
-$ echo "ruby-2.2.0" &gt; .ruby-version
+$ echo "ruby-2.4.0" &gt; .ruby-version
 $ echo "myapp" &gt; .ruby-gemset
 </pre>
 <p>Using <strong>.ruby-version</strong> and <strong>.ruby-gemset</strong> files means you’ll automatically be using the correct Rails and gem version when you run your application on your local machine. This works best if you create an rvm gemset specifically for your application.</p>
-<h2>Using Pik to Manage Multiple Versions of Rails on Windows</h2>
-<p>For Windows users juggling different versions of Ruby, <a href="https://github.com/vertiginous/pik">pik</a> is a tool similar to <span class="caps">RVM</span>. The pik set of commands for managing multiple rubies is similar to that of <span class="caps">RVM</span>.</p>
-<h4>Install Pik</h4>
-<p>The readme section on the <a href="https://github.com/vertiginous/pik">repository home page</a> gives the requirements for running pik, the most notable of which is that it requires Mat’s Ruby Interpreter version 1.8.7-p330. Make sure to install this version as your “default” Ruby version, which can be done most easily using <a href="http://rubyinstaller.org/downloads/archives">RubyInstaller</a>. In addition to Mat’s Ruby Interpreter, RubyInstaller also includes <a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">DevKit</a> and other useful tools for Ruby programmers using Windows.</p>
-<p>Pik can be installed with Windows Installer or by simply typing: </p><pre>C:\gem install pik</pre> once RubyInstaller 1.8.7-p330 has been installed and configured.
       </div>
       <div class="comments" id="comments">
         <div class="content wikistyle gollum">
