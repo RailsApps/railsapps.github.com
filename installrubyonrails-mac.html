@@ -1,13 +1,948 @@
 <!DOCTYPE html>
-<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
-<html>
-<head>
-  <meta http-equiv="refresh" content="0; url=https://learn-rails.com/install-rails-mac/index.html">
-  <link rel="canonical" href="https://learn-rails.com/install-rails-mac/index.html" />
-  <title>Install Ruby on Rails · Mac · Complete Guide</title>
-  <meta name="description" content="How to install Ruby on Rails on a Mac. Up-to-date instructions from the author of the book, Learn Ruby on Rails." />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Install Rails Mac</title>
+    <link rel="canonical" href="https://railsapps.github.io/installrubyonrails-mac.html" />
+    <script type="text/javascript">
+      window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
+        window.analytics.load("l1stqfqqbf");
+        window.analytics.page();
+        window.analytics.ready(function () {
+          ga('require', 'linker');
+          ga('linker:autoLink', ['railscomposer.com','learn-rails.com','blog.railsapps.org','tutorials.railsapps.org']);
+        });
+    </script>
+    <meta name="description" content="Install Rails Mac. Install Ruby on Rails on macOS." />
+    <link rel="stylesheet" href="https://unpkg.com/@vladocar/basic.css@1.0.3/css/basic.css">
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "name": "Install Ruby on Rails on Mac",
+        "description": "Install Rails Mac. Install Ruby on Rails on macOS.",
+        "image": [
+          "/assets/images/icons/rails.png"
+         ],
+        "datePublished": "2020-12-19T08:00:00+08:00",
+        "dateModified": "2021-05-16T08:00:00+08:00"
+      }
+      </script>
   </head>
-<body>
-See the updated page at <a href="https://learn-rails.com/install-rails-mac/index.html">learn-rails.com</a>.
-</body>
+
+  <body>
+
+<main style="margin: 5%">
+  <header>
+    <h1 id="title">Install Rails Mac</h1>
+  </header>
+  <section>
+    <article>
+      <h4>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</h4>
+    </article>
+  </section>
+  <div id="content">
+
+<p>How to <strong>install Ruby on Rails on a Mac</strong>. With Ruby 3.0 and Rails 6.1 on macOS Big Sur or Catalina. Up-to-date and kitchen-tested instructions, with troubleshooting tips, from the author of the book, <em><a href="https://learn-rails.com/">Learn Ruby on Rails</a></em>.</p>
+
+<p>This article will help you set up a development environment for Ruby on Rails. This guide is for beginners as well as experienced developers setting up a new computer. If you need Ruby but not Rails, follow the guide to <a href="https://mac.install.guide/ruby/index.html">Install Ruby on macOS</a>.</p>
+
+<p>This guide provides full details, how to:</p>
+
+<ul>
+  <li>update to macOS</li>
+  <li>install Xcode Command Line Tools</li>
+  <li>install Homebrew</li>
+  <li>configure Git</li>
+  <li>install a software version manager</li>
+  <li>install Node and Yarn</li>
+  <li>install Ruby 3.0</li>
+  <li>update gems</li>
+  <li>install Rails 6.1</li>
+  <li>create a new Rails application</li>
+  <li>tips and troubleshooting</li>
+</ul>
+
+<h2>Installation steps</h2>
+
+<p>Here are steps to install Ruby on Rails (details in this complete guide).</p>
+
+<ul>
+  <li>prepare your Mac</li>
+  <li>install Homebrew or a software version manager</li>
+  <li>install Ruby</li>
+  <li>install Node and Yarn</li>
+  <li>update <code>$PATH</code> settings in the <code>.zshrc</code> file if necessary</li>
+</ul>
+
+<p>Setting up your development environment includes checking that macOS is up to date, installing the Xcode Command Line Tools (to add needed Unix utilities), configuring Git (an important tool for save-as-you-go file storage), installing the Homebrew package manager (to add more software packages), and choosing a software version manager for Ruby.</p>
+
+<p>After you&#39;ve prepared your computer and installed Ruby, it&#39;s easy to install Rails. But you&#39;ll also have to set up a JavaScript environment with Node and Yarn, which is required for creating a new Rails application.</p>
+
+<h2>Installation choices</h2>
+
+<p>Before you install Ruby, you should choose Homebrew or a software version manager. You have several choices for version managers. Plus Homebrew and Docker. Here&#39;s what I recommend:</p>
+
+<ul>
+  <li><a href="https://asdf-vm.com/">asdf</a> (recommended)</li>
+  <li><a href="https://github.com/postmodern/chruby">chruby</a> (recommended)</li>
+  <li><a href="https://github.com/sstephenson/rbenv">rbenv</a></li>
+  <li><a href="https://rvm.io/">rvm</a></li>
+  <li><a href="https://www.docker.com/">Docker</a></li>
+  <li><a href="https://brew.sh/">Homebrew</a> (recommended)</li>
+  <li>system Ruby</li>
+</ul>
+
+<p>First, understand the difference between Homebrew and software version managers. Homebrew is a package manager that adds Ruby, other languages, and software packages to the Mac. It can install one (and only one!) version of Ruby (the latest version). You can also install software version managers that install and switch between multiple versions of a language such as Ruby. Finally, some developers use Docker, which is a container system that sets up multiple development environments (like having multiple computers with different configurations). Here&#39;s how to choose.</p>
+
+<p>Install with <strong>Homebrew</strong> if you’re building only one project with Ruby (for example, if you are a student learning Ruby). If you’re a solo developer and you need to juggle multiple projects that can&#39;t be updated all at once, use asdf or chruby or rbenv. Choose <strong>asdf</strong> if you&#39;re using multiple languages such as Ruby, Node, and Python; this makes it a good choice for Rails developers. Otherwise <strong>chruby</strong> or <strong>rbenv</strong> are fine for just managing Ruby versions. Finally, use <strong>Docker</strong> (or <a href="https://nixos.org/guides/dev-environment.html">Nix</a>) if you’re on a team with a complex project environment (for example, Ruby, Node, Redis, and PostgreSQL all in one project). Here are details.</p>
+
+<p><a href="https://asdf-vm.com/">Asdf</a> and <a href="https://github.com/postmodern/chruby">chruby</a> are software version managers. If you need to switch between versions of Ruby, use asdf or chruby. <strong>Asdf</strong> is your best choice because it is a universal version manager that installs and manages Ruby, JavaScript, Python, Elixir, and several other languages. <strong>Chruby</strong> is efficient and simple but it works only with Ruby.</p>
+
+<p><a href="https://github.com/sstephenson/rbenv">Rbenv</a> and <a href="https://rvm.io/">rvm</a> are also popular as Ruby version managers. Sam Stephenson&#39;s <strong>rbenv</strong> has a more complex implementation than chruby (it installs extra “shim” files). <strong>RVM</strong> was once the most popular of Ruby version managers but its additional features (gemsets) are no longer needed and add unnecessary complexity.</p>
+
+<p><a href="https://www.docker.com/">Docker</a> is a containerization tool that some developers use for version management. The primary use case for Docker is to create a reproducible virtual server that contains a configured version of any software dependency needed to run an application (language, databases, message queues). As such, it is ideal for creating a &quot;frozen&quot; version of a development environment for deployment to a server. You can also develop locally within a container but it will run slower, require more memory, and adds configuration complexity compared to a simple version manager. To keep things simple, don&#39;t use Docker for local development unless your application is disturbingly complex.</p>
+
+<p>If you don&#39;t need a version manager, install Ruby using the <a href="https://brew.sh/">Homebrew</a> package manager. Use this approach if you are only building a casual project that you will not maintain, or if you are just trying out Ruby to learn the language. You can easily remove Ruby after installing with Homebrew (and re-install a newer version when you need it). Don&#39;t install Ruby with Homebrew if you need to switch among Ruby versions (use asdf or chruby in this case).</p>
+
+<p>Finally, you should know that macOS comes with a <strong>system Ruby</strong> pre-installed. MacOS Big Sur or Catalina includes Ruby 2.6.3 which is not the newest version. If you use the system Ruby you&#39;ll need root access (sudo) to install gems (introducing a security risk). And you&#39;ll end up with a cluster of (sometimes incompatible) gems that can&#39;t be easily removed to restore your system to a clean state. Please use either asdf, chruby, or Homebrew.</p>
+
+<p>You&#39;ll find instructions here for installing Ruby using asdf, chruby, or Homebrew.</p>
+
+<p>Have you decided whether you&#39;ll install Ruby with asdf, chruby, or Homebrew? In the next sections, you&#39;ll</p>
+
+<ul>
+  <li><a href="/install-rails-mac/1.html">check your macOS version</a></li>
+  <li><a href="/install-rails-mac/2.html">install Xcode Command Line Tools</a></li>
+  <li><a href="/install-rails-mac/3.html">install Homebrew</a></li>
+  <li>either directly <a href="/install-rails-mac/20.html">install Ruby with Homebrew</a> or <a href="/install-rails-mac/5.html">install a software version manager</a></li>
+  <li>and finally <a href="/install-rails-mac/7.html">install Ruby with asdf</a> or <a href="/install-rails-mac/19.html">chruby</a>.</li>
+</ul>
+
+<p>Continue to the next section to check your computer before installing Ruby.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Update macOS</h2>
+
+<p>It&#39;s best to use the newest macOS version. The latest release is macOS Big Sur 11.0 (Big Sur was released on November 12, 2020). If you have an older Mac, Big Sur will run slowly, so you might want to use macOS Catalina.</p>
+
+<h3>Upgrade macOS</h3>
+
+<p>Check your macOS version. Under the Apple menu, check &quot;About This Mac.&quot; It should show &quot;Version 10.15.7” (for Catalina) or &quot;Version 11.0.1” (for Big Sur) or newer.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/macos-big-sur.png"/></figure>
+
+<p>If you need to upgrade, see Apple&#39;s instructions <a href="https://www.apple.com/macos/how-to-upgrade/">Upgrade to macOS Big Sur</a>. From macOS Catalina 10.15 or Mojave 10.14, you can upgrade using Software Update in System Preferences. For earlier versions, you can upgrade to macOS Big Sur from the App Store. Allow plenty of time for the download and installation (it may take several hours, especially if you&#39;ve owned your Mac for several years and haven&#39;t updated macOS).</p>
+
+<p>After you’ve upgraded, you’ll use the macOS Terminal application to continue with this guide. See the section, <a href="/install-rails-mac/18.html">Finding and Using the Mac Terminal</a>, if you need help finding the Terminal.</p>
+
+<p>Next, let&#39;s check if your Terminal application is set up properly.</p>
+
+<h3>Z shell</h3>
+
+<p>By default, <a href="https://en.wikipedia.org/wiki/Z_shell">Zsh</a> (the Z shell) is the program that runs in the Terminal that interprets Unix commands. Before macOS 10.15 Catalina, the Terminal used the Bash shell as its default. Open the Terminal application and check which shell program is running in your terminal:</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">echo</span> <span class="syntax-all syntax-parameter">$SHELL</span>
+/bin/zsh</code></pre>
+
+<p>Don&#39;t type the <code>$</code> (that&#39;s just a prompt to let you know you are in the console).</p>
+
+<p>If you see <code>/bin/bash</code> you can update the default to Zsh by running <code>chsh -s /bin/zsh</code>.</p>
+
+<h3>Configuring the shell</h3>
+
+<p>You can configure the Zsh system environment by creating a file in your user home folder that the Z shell will read when the Terminal application is launched. The configuration file is named <code>.zshrc</code>. By the way, if you’re curious, the <code>rc</code> in the file name stands for “run commands.”</p>
+
+<p>The <code>.zshrc</code> file doesn&#39;t exist by default in macOS so you need to create it. First, in the Terminal, make sure you are in your home folder:</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">pwd</span>
+/Users/daniel</code></pre>
+
+<p>Check if the file exists already:</p>
+
+<pre><code class="code-highlighted code-bash">$ ls .zshrc
+ls: .zshrc: No such file or directory</code></pre>
+
+<p>If the file already exists, you can edit it. Otherwise, create an empty <code>.zshrc</code> file and check that it exists:</p>
+
+<pre><code class="code-highlighted code-bash">$ touch .zshrc
+$ ls .zshrc
+.zshrc</code></pre>
+
+<p>Now, when needed, you can edit the file. You&#39;ll need to edit the <code>.zshrc</code> file when you set up the software version manager, so it&#39;s good to have it ready.</p>
+
+<p>Setting the <code>$PATH</code> in the <code>.zshrc</code> file lets you specify the folder that contains the latest Ruby version.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/macos-zsh.png"/></figure>
+
+<p>Here&#39;s what your <code>$PATH</code> looks like when macOS is fresh, before adding Homebrew.</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">echo</span> <span class="syntax-all syntax-parameter">$PATH</span>
+/usr/bin:/bin:/usr/sbin:/sbin</code></pre>
+
+<p>This <code>$PATH</code> will give you the default system Ruby if you enter <code>ruby -v</code> in the terminal application.</p>
+
+<h3>Tip: macOS hidden files</h3>
+
+<p>The <code>.zshrc</code> file is hidden so you won’t see it in the macOS file browser when you want to edit it.</p>
+
+<p>Configuration files are often hidden in macOS. It’s easy to hide a file; just use a dot as the first character in the file name.</p>
+
+<p>You can list all files, including hidden files, with the <code>ls -lag</code> command in the Terminal.</p>
+
+<p>In the macOS Finder (the file browser), you can enter Command + Shift + . to show hidden files. If you want to hide those files again, you can enter the same keystrokes.</p>
+
+<p>You can force the Mac to always display hidden files by entering the following command in the Terminal application:</p>
+
+<pre><code class="code-highlighted code-bash">$ defaults write com.apple.finder AppleShowAllFiles TRUE<span class="syntax-all syntax-keyword">;</span> killall Finder</code></pre>
+
+<p>Hidden files will appear in gray in the Finder window.</p>
+
+<p>Your macOS and Terminal application are set up. Next we&#39;ll check if Apple&#39;s Xcode Command Line Tools are installed.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Xcode Command Line Tools</h2>
+
+<p>You need to install Apple&#39;s Xcode Command Line Tools to get the Unix tools needed to install Ruby and develop applications. Apple’s Xcode Command Line Tools provide a C language compiler. You&#39;ll need it to install Ruby. Also, for many Ruby projects, you will need the C language compiler to automatically install gems that use native extensions (some gems speed up Ruby by using code written in C).</p>
+
+<p>Xcode is Apple&#39;s software library for macOS developers. Xcode is over 40GB. You don&#39;t need all of it!. You just need the Xcode Command Line Tools. Only install the full 40GB Xcode package if you plan on doing development of applications for the Apple operating systems (macOS or iOS apps). Here you’ll learn how to just install the Command Line Tools that give you common Unix utilities.</p>
+
+<p>It&#39;s easiest to install Command Line Tools as a part of installing Homebrew, the Unix utilities package manager. <strong>If you have a fresh install of macOS, skip ahead to the next section,</strong> <a href="/install-rails-mac/3.html">Install Homebrew</a>.</p>
+
+<p>If you updated your macOS from an earlier version, you may have an outdated version of Xcode. Read on to check if you have a troublesome out-of-date Command Line Tools.</p>
+
+<h3>Is Xcode already installed?</h3>
+
+<p>If you updated your macOS from an earlier version (sometimes called an &quot;over the top&quot; installation), and you previously installed a Ruby development environment, your earlier installation remains intact. You will need to install the new version of Xcode Command Line Tools to avoid headaches. First, check what you have.</p>
+
+<p>Check if you previously installed the full Xcode package:</p>
+
+<pre><code class="code-highlighted code-bash">$ xcode-select -p</code></pre>
+
+<h4>Scenario 1</h4>
+
+<p>If you see, <code>xcode-select: error: unable to get active developer directory...</code>, the Xcode package is not installed.</p>
+
+<p>Good! Jump to the section, <a href="/install-rails-mac/3.html">Install Homebrew</a>.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/xcode-not-installed.png"/></figure>
+
+<p><em>The Xcode package is not installed</em></p>
+
+<h4>Scenario 2</h4>
+
+<p>If you see a file location that contains spaces in the path:</p>
+
+<pre><code class="code-highlighted code-bash">/Applications/Apple Dev Tools/Xcode.app/Contents/Developer</code></pre>
+
+<p>you will have problems installing Ruby. You should delete Xcode before continuing.</p>
+
+<h4>Scenario 3</h4>
+
+<p>If you see:</p>
+
+<pre><code class="code-highlighted code-bash">/Applications/Xcode.app/Contents/Developer</code></pre>
+
+<p>The full Xcode package is already installed. Perhaps you installed it previously. If Xcode is installed, you will need to update Xcode to the newest version (Xcode 12.2 or newer). Go to the App Store application and check &quot;Updates.&quot; After updating Xcode, be sure to launch the Xcode application and accept the Apple license terms.</p>
+
+<h4>Scenario 4</h4>
+
+<p>If you see:</p>
+
+<pre><code class="code-highlighted code-bash">/Library/Developer/CommandLineTools</code></pre>
+
+<p>The Xcode Command Line Tools may be installed or an empty directory may be present.</p>
+
+<p>Here&#39;s how to test:</p>
+
+<pre><code class="code-highlighted code-bash">$ ls /Library/Developer/CommandLineTools/usr/bin/git</code></pre>
+
+<p>You should see:</p>
+
+<pre><code class="code-highlighted code-bash">/Library/Developer/CommandLineTools/usr/bin/git</code></pre>
+
+<p>Check that you can run <code>git</code>:</p>
+
+<pre><code class="code-highlighted code-bash">$ git --version
+git version 2.30.1 (Apple Git-130)</code></pre>
+
+<p>If Xcode Command Line Tools are installed, you can skip ahead to install Homebrew.</p>
+
+<p>If the Xcode Command Line Tools folder is empty, you should remove it.</p>
+
+<p>Remove the empty folder:</p>
+
+<pre><code class="code-highlighted code-bash">$ sudo rm -rf /Library/Developer/CommandLineTools</code></pre>
+
+<p>You are using sudo for admin access so you must enter the password you use to log in to your computer (you will not see the password after entering it). After removing the folder, continue to the section, &quot;Install Homebrew.&quot;</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Install Homebrew</h2>
+
+<p>Developers use the <a href="https://brew.sh/">Homebrew</a> utility to install various Unix software packages. If you haven&#39;t already installed Xcode Command Line Tools, Homebrew will install it.</p>
+
+<p>Tip: If you did not use a password to log in to your Mac (that is, if your password is blank), you cannot install Homebrew.</p>
+
+<p>Check if Homebrew is installed:</p>
+
+<pre><code class="code-highlighted code-bash">$ brew</code></pre>
+
+<p>Homebrew is not installed if you see:</p>
+
+<pre><code class="code-highlighted code-bash">zsh: <span class="syntax-all syntax-constant">command</span> not found: brew</code></pre>
+
+<p>If Homebrew is not installed, there should be no Homebrew files in <code>/usr/local</code> (for macOS Intel) or <code>/opt/homebrew</code> (for Apple Silicon).</p>
+
+<p>Homebrew provides an installation script (check that it hasn&#39;t changed at the <a href="https://brew.sh/">Homebrew site</a>).</p>
+
+<pre><code class="code-highlighted code-bash">$ /bin/bash -c <span class="syntax-all syntax-string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span></code></pre>
+
+<p>The Homebrew installation script will ask you to enter your Mac user password.</p>
+
+<pre><code class="code-highlighted code-bash">Password:</code></pre>
+
+<p>You won&#39;t see the characters as you type. Press enter when you are done.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/homebrew-enter-password.png"/></figure>
+
+<p>You&#39;ll see a list of files and folders that Homebrew will install. If you haven&#39;t already installed XCode CommandLine Tools, you&#39;ll see a message that &quot;The XCode Command Line Tools will be installed.&quot; Press return to continue when prompted by the Homebrew installation script. It takes five to ten minutes to download and install the Command Line Tools.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/install-homebrew.png"/></figure>
+
+<p>Homebrew installation takes many minutes (you’ll see diagnostic and progress messages).</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/homebrew-complete.png"/></figure>
+
+<p>On Mac Intel machines, that&#39;s all you need to do; Homebrew is ready to use. On Mac Intel, Homebrew installs itself into the <code>/usr/local/bin</code> directory, which is already configured for access by the shell with the macOS default <code>$PATH</code> environment variable (the default is set by the <code>/usr/libexec/path_helper</code> command).</p>
+
+<p>On Apple Silicon machines, there&#39;s one more step. Homebrew files are installed into the <code>/opt/homebrew</code> folder. But the folder is not part of the default <code>$PATH</code>. Follow Homebrew&#39;s advice and create a <code>~/.zprofile</code> file which contains a command which sets up Homebrew. Homebrew shows instructions at the end of the installation process:</p>
+
+<pre><code class="code-highlighted code-bash">- Add Homebrew to your PATH <span class="syntax-all syntax-keyword">in</span> /Users/daniel/.zprofile:
+<span class="syntax-all syntax-constant">echo</span> <span class="syntax-all syntax-string">&#39;eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;&#39;</span> <span class="syntax-all syntax-keyword">&gt;&gt;</span> /Users/daniel/.zprofile
+<span class="syntax-all syntax-constant">eval</span> <span class="syntax-all syntax-string">&quot;$(/opt/homebrew/bin/brew shellenv)&quot;</span></code></pre>
+
+<p>Copy and paste from the Homebrew instructions because they include your own user directory name (the example above contains my user directory name).</p>
+
+<p>After you&#39;ve installed Homebrew, check that Homebrew is installed properly.</p>
+
+<pre><code class="code-highlighted code-bash">$ brew doctor</code></pre>
+
+<p>You should see:</p>
+
+<pre><code class="code-highlighted code-bash">Your system is ready to brew.</code></pre>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/brew-doctor.png"/></figure>
+
+<p>On Apple Silicon, if you see <code>zsh: command not found: brew</code>, check that you&#39;ve created a <code>~/.zprofile</code> file as described above and restarted your terminal application.</p>
+
+<p>If Homebrew is successfully installed, there will be Homebrew files in <code>/usr/local</code> (for macOS Intel) or <code>/opt/homebrew</code> (for Apple Silicon).</p>
+
+<p>As you use Homebrew, it is helpful to see a list of all the packages you&#39;ve installed, or packages and dependencies.</p>
+
+<pre><code class="code-highlighted code-bash">$ brew list
+$ brew deps --tree --installed</code></pre>
+
+<p>Right now, immediately after installation, these commands show nothing is installed.</p>
+
+<p>Next we&#39;ll configure Git, an essential tool for any developer. But first, be aware that you may have to reinstall Command Line Tools after a macOS upgrade.</p>
+
+<h3>After a macOS Upgrade</h3>
+
+<p>After a macOS upgrade (for example, from macOS 11.2.2 to 11.2.3), the upgrade process may remove the Command Line Tools. This can be annoying if you install an upgrade and then find you can&#39;t use commands such as <code>git</code>. You may encounter an error like:</p>
+
+<pre><code class="code-highlighted code-bash">xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools),
+missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun</code></pre>
+
+<p>Checking for the Command Line Tools folder may show that the folder is there:</p>
+
+<pre><code class="code-highlighted code-bash">$ xcode-select -p
+/Library/Developer/CommandLineTools</code></pre>
+
+<p>But look closely and the Command Line Tools folder may be missing essential folders and files after a macOS upgrade. It should look like this:</p>
+
+<pre><code class="code-highlighted code-bash">$ ls -l /Library/Developer/CommandLineTools
+total 0
+drwxr-xr-x  5 root  wheel  160 Jan  9 07:43 Library
+drwxr-xr-x  5 root  wheel  160 Apr 24 16:19 SDKs
+drwxr-xr-x  7 root  wheel  224 Apr 24 16:19 usr</code></pre>
+
+<p>It may look like this after an upgrade:</p>
+
+<pre><code class="code-highlighted code-bash">$ ls -l /Library/Developer/CommandLineTools
+total 0
+drwxr-xr-x  7 root  wheel  224 Apr 24 16:19 usr</code></pre>
+
+<p>Homebrew is installed but <code>brew doctor</code> will show problems:</p>
+
+<pre><code class="code-highlighted code-bash">% brew doctor
+
+Warning: Git could not be found <span class="syntax-all syntax-keyword">in</span> your PATH.
+Homebrew uses Git <span class="syntax-all syntax-keyword">for</span> <span class="syntax-all syntax-parameter">several</span> internal functions, and some formulae use Git
+checkouts instead of stable tarballs. You may want to install Git:
+  brew install git
+
+Warning: No developer tools installed.
+Install the Command Line Tools:
+  xcode-select --install</code></pre>
+
+<p>You&#39;ve already installed Homebrew and allowed Homebrew to install Xcode Command Line Tools. Now you must re-install Xcode Command Line Tools from the command line:</p>
+
+<pre><code class="code-highlighted code-bash">$ xcode-select --install</code></pre>
+
+<p>A message will pop up on the screen. Confirm that you want to install the tools.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/install-Xcode-CLT.png"/></figure>
+
+<p>You&#39;ll see a progress indicator as the software downloads.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/install-Xcode-CLT-progress.png"/></figure>
+
+<p>Finally you&#39;ll see a confirmation that the software was installed.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/install-Xcode-CLT-progress.png"/></figure>
+
+<p>Verify that you&#39;ve successfully installed Xcode Command Line Tools.</p>
+
+<pre><code class="code-highlighted code-bash">$ xcode-select -p
+/Library/Developer/CommandLineTools</code></pre>
+
+<p>Check that you can run <code>git</code>:</p>
+
+<pre><code class="code-highlighted code-bash">git --version
+git version 2.30.1 (Apple Git-130)</code></pre>
+
+<p>You&#39;ve seen how to reinstall Command Line Tools after a macOS upgrade.</p>
+
+<p>Next, if you haven&#39;t already done so, we&#39;ll configure Git, an essential tool for any developer.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Configure Git</h2>
+
+<p><a href="http://git-scm.com/">Git</a> is automatically installed as part of the Xcode Command Line Tools. It is essential software for save-as-you-go control of the code you write.</p>
+
+<p>Before installing Ruby, you should configure Git. Using <a href="https://github.com/">GitHub</a> or a similar service, developers collaborate with others and deploy applications for hosting. As a Ruby developer, you&#39;ll use Git with a GitHub account for remote backup and collaboration.</p>
+
+<p>Before you configure Git, you should <a href="https://help.github.com/articles/signing-up-for-a-new-github-account/">create an account on GitHub</a> (it&#39;s free). It is important to use the same email address for GitHub and your Git configuration.</p>
+
+<p>Check that Git is installed:</p>
+
+<pre><code class="code-highlighted code-bash">$ git version</code></pre>
+
+<p>You should see git version 2.24.3 (or newer).</p>
+
+<p>Configure Git if you haven&#39;t used it before. First, list the current settings with the git config -l --global command.</p>
+
+<pre><code class="code-highlighted code-bash">$ git config -l --global
+fatal: unable to <span class="syntax-all syntax-constant">read</span> config file <span class="syntax-all syntax-string">&#39;/Users/.../.gitconfig&#39;</span>: No such file or directory</code></pre>
+
+<p>Then set your name and email address (use your real name and the same email address as your GitHub account). Don&#39;t just copy and paste the code you see here, use your own name and email.</p>
+
+<pre><code class="code-highlighted code-bash">$ git config --global user.name <span class="syntax-all syntax-string">&quot;Your Real Name&quot;</span>
+$ git config --global user.email me@example.com</code></pre>
+
+<p>Check your Git configuration:</p>
+
+<pre><code class="code-highlighted code-bash">$ git config -l --global
+user.name=Your Real Name
+user.email=me@example.com</code></pre>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/configure-git.png"/></figure>
+
+<h3>Set up password-less login</h3>
+
+<p>After you create an account on GitHub, <a href="https://help.github.com/articles/connecting-to-github-with-ssh/">set up an SSH key</a> so you don&#39;t have to enter a username and password every time you connect to GitHub from the Terminal.</p>
+
+<pre><code class="code-highlighted code-bash">$ ssh-keygen -t ed25519 -C <span class="syntax-all syntax-string">&quot;me@example.com&quot;</span>
+Generating public/private ed25519 key pair.
+Enter file <span class="syntax-all syntax-keyword">in</span> which to save the key (/Users/me/.ssh/id_ed25519):
+Created directory <span class="syntax-all syntax-string">&#39;/Users/me/.ssh&#39;</span>.
+Enter passphrase (empty <span class="syntax-all syntax-keyword">for</span> <span class="syntax-all syntax-parameter">no</span> passphrase):
+Enter same passphrase again:
+Your identification has been saved <span class="syntax-all syntax-keyword">in</span> /Users/me/.ssh/id_ed25519.
+Your public key has been saved <span class="syntax-all syntax-keyword">in</span> /Users/me/.ssh/id_ed25519.pub.
+The key fingerprint is:
+SHA256:R+t5PZM+g/3f7t/u3ZtGxpcbj1Mmmpcv1mK5Sa5OC8A me@example.com
+The key<span class="syntax-all syntax-string">&#39;s randomart image is:
+</span><span class="syntax-all syntax-string">+--[ED25519 256]--+
+</span><span class="syntax-all syntax-string">|                 |
+</span><span class="syntax-all syntax-string">|                 |
+</span><span class="syntax-all syntax-string">|          .      |
+</span><span class="syntax-all syntax-string">|       . . .     |
+</span><span class="syntax-all syntax-string">|        E o   . .|
+</span><span class="syntax-all syntax-string">|         + . ..B+|
+</span><span class="syntax-all syntax-string">|          + o=OO=|
+</span><span class="syntax-all syntax-string">|           ++=#*O|
+</span><span class="syntax-all syntax-string">|           .+=*^^|
+</span><span class="syntax-all syntax-string">+----[SHA256]-----+
+</span></code></pre>
+
+<p>The <code>ssh-keygen</code> command creates an encrypted key. You&#39;ll be prompted for a file in which to save the key. Press enter for the default.</p>
+
+<p>You&#39;ll be prompted for a passphrase to enter whenever you use the encrypted key. You can enter RETURN for no passphrase. This is safe if you are sure only you can log into your Mac user account and access the terminal. If someone else can use your terminal, they can push code to GitHub projects that require your credentials. My advice: Enter a passphrase if you are likely to leave your computer unattended and your account logged in. Otherwise, save yourself extra effort and leave the passphrase empty if you&#39;re the only one who can use your account to push code to GitHub.</p>
+
+<p>You&#39;ll need to enter the public key (NOT the private key) to set up password-less login on your GitHub account.</p>
+
+<p>Use a shortcut to copy the public key to your macOS clipboard:</p>
+
+<pre><code class="code-highlighted code-bash">$ pbcopy <span class="syntax-all syntax-keyword">&lt;</span> <span class="syntax-all syntax-keyword">~</span>/.ssh/id_ed25519.pub</code></pre>
+
+<p>Or you can display the public key with the <code>cat ~/.ssh/id_ed25519.pub</code> command and copy and paste it.</p>
+
+<p>Copy the public key from the Terminal and <a href="https://github.com/settings/ssh">paste it here</a> in your GitHub settings.</p>
+
+<p>Verify the SSH key is configured correctly:</p>
+
+<pre><code class="code-highlighted code-bash">$ ssh -T git@github.com
+The authenticity of host <span class="syntax-all syntax-string">&#39;github.com (52.74.223.119)&#39;</span> can<span class="syntax-all syntax-string">&#39;t be established.
+</span><span class="syntax-all syntax-string">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+</span><span class="syntax-all syntax-string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></code></pre>
+
+<p>After answering &quot;yes&quot; to continue, you should see:</p>
+
+<pre><code class="code-highlighted code-bash">Warning: Permanently added <span class="syntax-all syntax-string">&#39;github.com,52.74.223.119&#39;</span> (RSA) to the list of known hosts.
+Hi (name)<span class="syntax-all syntax-keyword">!</span> You<span class="syntax-all syntax-string">&#39;ve successfully authenticated, but GitHub does not provide shell access.
+</span></code></pre>
+
+<p>Now you&#39;ll be ready to use GitHub when you need it. Unless you&#39;ve encountered a connection problem.</p>
+
+<h3>Troubleshooting connection problems</h3>
+
+<p>Some Internet service providers (ISPs) block connections on port 22. Your ISP may be blocking port 22 if you get error messages like this:</p>
+
+<pre><code class="code-highlighted code-bash">$ ssh -T git@github.com
+ssh: connect to host github.com port 22: Connection refused
+$ ssh -T git@github.com
+ssh: connect to host github.com port 22: Network is unreachable</code></pre>
+
+<p>It&#39;s difficult to see that the problem lies with your ISP and not your computer or GitHub. You can connect on port 443 instead. Try the workaround.</p>
+
+<p>Create a file <code>~/.ssh/config</code> and add a setting so connections to GitHub will use port 443.</p>
+
+<pre><code class="code-highlighted code-bash">$ touch <span class="syntax-all syntax-keyword">~</span>/.ssh/config</code></pre>
+
+<p>Edit the file to add:</p>
+
+<pre><code class="code-highlighted code-bash">Host github.com
+  Hostname ssh.github.com
+  Port 443</code></pre>
+
+<p>After saving the ssh configuration file, try connecting to GitHub with <code>ssh</code>:</p>
+
+<pre><code class="code-highlighted code-bash">$ ssh -T git@github.com
+The authenticity of host <span class="syntax-all syntax-string">&#39;[ssh.github.com]:443 ([192.30.255.122]:443)&#39;</span> can<span class="syntax-all syntax-string">&#39;t be established.
+</span><span class="syntax-all syntax-string">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+</span><span class="syntax-all syntax-string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="syntax-all syntax-string">Warning: Permanently added &#39;</span>[ssh.github.com]:443,[192.30.255.122]:443<span class="syntax-all syntax-string">&#39; (RSA) to the list of known hosts.
+</span><span class="syntax-all syntax-string">Hi DanielKehoe! You&#39;</span>ve successfully authenticated, but GitHub does not provide shell access.</code></pre>
+
+<p>Now you&#39;ll be ready to use GitHub when you need it.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Install Asdf Version Manager</h2>
+
+<p>Most developers will need to install newer Ruby versions as they are released. And they will maintain applications that use older Ruby versions. A version manager makes it easy to switch between Ruby versions.</p>
+
+<p>For a version manager, I recommend <a href="https://asdf-vm.com/">asdf</a>. Asdf can manage versions of many languages, including Ruby and Node (especially helpful to Ruby on Rails developers).</p>
+
+<p>The asdf website provides <a href="https://asdf-vm.com/#/core-manage-asdf">asdf installation instructions</a>. Older versions of the instructions say you should manually install dependencies (including <code>coreutils</code>) with Homebrew but I&#39;ve found that dependencies are automatically installed by the Homebrew asdf script (the Homebrew &quot;formula&quot;).</p>
+
+<h3>Install asdf</h3>
+
+<p>You can install asdf using Homebrew.</p>
+
+<pre><code class="code-highlighted code-bash">$ brew install asdf</code></pre>
+
+<p>After installing asdf with Homebrew, you can view the installed dependencies with <code>brew deps --tree --installed</code>.</p>
+
+<p>We must add asdf to the shell environment before we can use it to manage Ruby versions. The Homebrew post-installation message for asdf doesn&#39;t mention this, but the asdf website explains it is needed. The post-installation message for asdf from Homebrew just says, &quot;zsh completions have been installed to: /opt/homebrew/share/zsh/site-functions&quot; (on Apple Silicon), meaning that asdf commands can be auto-completed by pressing the tab key when you are using the terminal application.</p>
+
+<h3>Add asdf to the .zshrc file</h3>
+
+<p>Use a shortcut to configure your shell to use asdf:</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">echo</span> -e <span class="syntax-all syntax-string">&quot;\n. $(brew --prefix asdf)/asdf.sh&quot;</span> <span class="syntax-all syntax-keyword">&gt;&gt;</span> <span class="syntax-all syntax-keyword">~</span>/.zshrc</code></pre>
+
+<p>This will add asdf to your <code>$PATH</code> configuration.</p>
+
+<p>Check the <code>.zshrc</code> file.</p>
+
+<pre><code class="code-highlighted code-bash">$ cat <span class="syntax-all syntax-keyword">~</span>/.zshrc</code></pre>
+
+<p>You should see configuration commands for asdf on the last line. For Mac Intel:</p>
+
+<pre><code class="code-highlighted code-bash"><span class="syntax-all syntax-constant">.</span> /usr/local/opt/asdf/asdf.sh</code></pre>
+
+<p>On Apple Silicon:</p>
+
+<pre><code class="code-highlighted code-bash"><span class="syntax-all syntax-constant">.</span> /opt/homebrew/opt/asdf/asdf.sh</code></pre>
+
+<p>Configuration for asdf should always be the last line in the <code>.zshrc</code> file, after setting any <code>$PATH</code> configuration.</p>
+
+<p>🚩 Close and reopen the Terminal window for the changes to the <code>.zshrc</code> file to be recognized.</p>
+
+<p>After closing and reopening the Terminal window, use <code>asdf --version</code> to check that asdf was installed successfully.</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf --version
+v0.8.0</code></pre>
+
+<p>If the asdf command doesn&#39;t work, make sure you&#39;ve added the asdf configuration to your <code>.zshrc</code>file and restarted the terminal application.</p>
+
+<p>You can also check that asdf appears in your <code>$PATH</code> configuration (this is the Apple Silicon version where Homebrew installs packages in <code>/opt/homebrew/</code>):</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">echo</span> <span class="syntax-all syntax-parameter">$PATH</span>
+/Users/daniel/.asdf/shims:/opt/homebrew/opt/asdf/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</code></pre>
+
+<h3>Add the .asdfrc configuration file</h3>
+
+<p>If you are working on any older projects that use a <code>.ruby-version</code> file to specify a Ruby version, add a <code>.asdfrc</code> configuration file to your user home directory to enable asdf to read <code>.ruby-version</code> files.</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">echo</span> <span class="syntax-all syntax-string">&quot;legacy_version_file = yes&quot;</span> <span class="syntax-all syntax-keyword">&gt;&gt;</span> <span class="syntax-all syntax-keyword">~</span>/.asdfrc</code></pre>
+
+<p>Confirm the creation of the configuration file.</p>
+
+<pre><code class="code-highlighted code-bash">$ cat <span class="syntax-all syntax-keyword">~</span>/.asdfrc
+legacy_version_file = yes</code></pre>
+
+<h3>Asdf <code>.tool-versions</code> file</h3>
+
+<p>When you work on a project, you can tell asdf which language versions you need by adding a <code>.tool-versions</code> file to your project folder. This is a multi-language alternative to configuration with the <code>.ruby-version</code> file.</p>
+
+<pre><code class="code-highlighted code-bash">ruby 3.0.0
+nodejs 10.16.0</code></pre>
+
+<h3>More</h3>
+
+<p>The <a href="/install-rails-mac/15.html">Uninstall Ruby</a> page explains how to remove asdf, if you decide not to use it.</p>
+
+<p>Now you can install the newest Ruby version.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Install Node and Yarn</h2>
+
+<p>Node and Yarn manage the JavaScript used by a Rails application. Unless you create backend-only (API) Rails applications, there will always be a little (and sometimes too much) JavaScript in your Rails application.</p>
+
+<h3>Install Node</h3>
+
+<p>You’ll need to install Node, the server version of JavaScript, before you develop any Rails applications. Node must be installed on your computer to run JavaScript in the local development environment.</p>
+
+<p>Early versions of Rails only required the Ruby language for development. More recently (after Rails 5.1), Rails uses Node to run the JavaScript build tool, Webpack, to bundle together any JavaScript files used in an application. It’s difficult to develop fullstack Rails applications without installing Node.</p>
+
+<p>It’s easy to install Node with asdf. Alternatively, you can download and install Node with Homebrew with <code>brew install node</code>, or directly from the <a href="https://nodejs.org/">nodejs.org</a> website. Or you can <a href="https://github.com/nvm-sh/nvm">install NVM</a>, the Node version manager, and use NVM to install Node. I recommend keeping it simple and just installing Node with asdf.</p>
+
+<p>First, be sure you&#39;ve completed the section, <a href="/install-rails-mac/5.html">Asdf Version Manager</a>.</p>
+
+<p>Install the asdf plugin for Node (it tells asdf how to install Node):</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf plugin add nodejs
+initializing plugin repository...
+Cloning into <span class="syntax-all syntax-string">&#39;/Users/macbook/.asdf/repository&#39;</span>...
+remote: Enumerating objects: 33, done.
+remote: Counting objects: 100% (33/33), done.
+remote: Compressing objects: 100% (30/30), done.
+remote: Total 2633 (delta 18), reused 10 (delta 3), pack-reused 2600
+Receiving objects: 100% (2633/2633), 611.28 KiB <span class="syntax-all syntax-keyword">|</span> 619.00 KiB/s, done.
+Resolving deltas: 100% (1253/1253), done.</code></pre>
+
+<p>See all the versions of Node that are available:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf list all nodejs</code></pre>
+
+<p>Download authentication keys (required for security):</p>
+
+<pre><code class="code-highlighted code-bash">$ bash -c <span class="syntax-all syntax-string">&#39;${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring&#39;</span></code></pre>
+
+<p>Install the latest version of Node:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf install nodejs latest</code></pre>
+
+<p>You need to specify a default version of Node in your home <code>~/.tool-versions</code> file. You can set the <code>~/.tool-versions</code> file with a command:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf global nodejs 15.4.0</code></pre>
+
+<p>To verify that Node is installed:</p>
+
+<pre><code class="code-highlighted code-bash">$ node --version
+v15.4.0</code></pre>
+
+<p>You should see <code>v15.4.0</code> or newer.</p>
+
+<h3>Install Yarn</h3>
+
+<p>Yarn is a package manager for JavaScript. It’s similar to the better-known NPM (Node Package Manager). It’s used by Rails to manage JavaScript dependencies.</p>
+
+<p>Install the asdf plugin for Yarn:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf plugin add yarn</code></pre>
+
+<p>See all the versions of Yarn that are available:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf list all yarn</code></pre>
+
+<p>Install the latest version of Yarn:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf install yarn latest</code></pre>
+
+<p>You need to specify a default version of Yarn in your home <code>~/.tool-versions</code> file. You can set the <code>~/.tool-versions</code> file with a command:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf global yarn 1.22.10</code></pre>
+
+<p>To verify that Yarn is installed:</p>
+
+<pre><code class="code-highlighted code-bash">$ yarn --version
+v1.22.10</code></pre>
+
+<p>You should see <code>v1.22.10</code> or newer.</p>
+
+<p>The JavaScript build tools are now installed and ready. Next we&#39;ll install Ruby.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Install Ruby with Asdf</h2>
+
+<p>Here are instructions for installing Ruby using asdf, the software version manager. If you are not using asdf, you can see instructions for <a href="/install-rails-mac/19.html">Installing Ruby with chruby</a> or <a href="/install-rails-mac/20.html">Homebrew</a>.</p>
+
+<p>If you plan to use asdf, be sure you&#39;ve completed the section, <a href="/install-rails-mac/5.html">Install Asdf Version Manager</a>.</p>
+
+<h3>Mac system Ruby</h3>
+
+<p>MacOS comes with a &quot;system Ruby&quot; pre-installed. MacOS Big Sur and Catalina include Ruby 2.6.3 which is not the newest version. It&#39;s a bad idea to use the Mac system Ruby. See the article <a href="https://mac.install.guide/faq/do-not-use-mac-system-ruby/index.html">Do not use the MacOS system Ruby</a>. You can see the system Ruby with <code>which ruby</code> and <code>ruby -v</code>.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/macos-system-ruby.png"/></figure>
+
+<p>Leave the system Ruby in place and use the software version manager to install the newest Ruby version.</p>
+
+<h3>Install Ruby with Asdf</h3>
+
+<p>Check online for the current <a href="http://www.ruby-lang.org/en/downloads/">recommended version of Ruby</a>.</p>
+
+<p>When this was written, Ruby 3.0.1 was the newest version (3.0.0 was released on Dec 25, 2020).</p>
+
+<p>First, install the asdf plugin for Ruby:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf plugin add ruby</code></pre>
+
+<p>See all the versions of Ruby that are available:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf list all ruby</code></pre>
+
+<p>If you don&#39;t see the newest version of Ruby, update the asdf plugin for Ruby and try again:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf plugin-update ruby
+$ asdf list all ruby</code></pre>
+
+<p>Install the latest version of Ruby:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf install ruby latest</code></pre>
+
+<p>You’ll see diagnostic messages and progress updates. Installation may take thirty minutes or more.</p>
+
+<p>You need to specify a default version of Ruby in your home <code>~/.tool-versions</code> file. You can set the <code>~/.tool-versions</code> file with a command:</p>
+
+<pre><code class="code-highlighted code-bash">$ asdf global ruby 3.0.1</code></pre>
+
+<p>🚩 After installation, close and re-open the terminal window.</p>
+
+<h3>Verify installation of Ruby</h3>
+
+<p>Verify that the newest version of Ruby is installed with <code>ruby -v</code>.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/verify-ruby-install.png"/></figure>
+
+<p>When this was written, Ruby 3.0.1 was the newest version (3.0.0 was released on Dec 25, 2020).</p>
+
+<p>If you see Ruby version 2.6.3, it is the system Ruby and you likely forgot to close and re-open the terminal window.</p>
+
+<p>If you see <code>No version set for command ruby</code>, you need to specify a default version of Ruby in your asdf <code>~/.tool-versions</code> file.</p>
+
+<p>For example, create a <code>~/.tool-versions</code> file like this:</p>
+
+<pre><code class="code-highlighted code-bash">ruby 3.0.1</code></pre>
+
+<p>The <a href="/install-rails-mac/15.html">Uninstall Ruby</a> section explains where Ruby versions are installed and how to remove them.</p>
+
+<p>Next, you can optimize the Ruby development environment by updating gems.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Update gems</h2>
+
+<p>Experienced developers use a few tricks to optimize the Ruby development environment and keep it up to date. It&#39;s best if everything is up to date before you start a new project.</p>
+
+<h3>Faster Gem Installation</h3>
+
+<p>By default, when you install gems, documentation files will be installed. Developers seldom use gem documentation files (they browse the web instead). Installing gem documentation files takes time, so many developers like to toggle the default so no documentation is installed.</p>
+
+<p>Here&#39;s how to speed up gem installation by disabling the documentation step:</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">echo</span> <span class="syntax-all syntax-string">&quot;gem: --no-document&quot;</span> <span class="syntax-all syntax-keyword">&gt;&gt;</span> <span class="syntax-all syntax-keyword">~</span>/.gemrc</code></pre>
+
+<p>This adds the line <code>gem: --no-document</code> to a hidden <code>.gemrc</code> file in your home directory.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/faster-gem-installation.png"/></figure>
+
+<h3>Check the gem manager</h3>
+
+<p><a href="https://rubygems.org/gems/rubygems-update">RubyGems</a> is the package manager in Ruby. We use it to install software packages that add functionality to Ruby.</p>
+
+<p>Check the installed gem manager version.</p>
+
+<pre><code class="code-highlighted code-bash">$ gem -v
+3.1.4</code></pre>
+
+<p>You can check if a <a href="https://rubygems.org/gems/rubygems-update">newer RubyGems</a> version is available. Use <code>gem update --system</code> to upgrade the Ruby gem manager if your version is old:</p>
+
+<pre><code class="code-highlighted code-bash">$ gem update --system</code></pre>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/update-system-gem.png"/></figure>
+
+<h3>Updating gems</h3>
+
+<p>With Ruby, you’ve installed a collection of default gems that were current at the time of the Ruby release. It is likely some gems have been updated since the newest version of Ruby was released.</p>
+
+<p>You can see a list of all gems installed with Ruby:</p>
+
+<pre><code class="code-highlighted code-bash">$ gem list
+<span class="syntax-all syntax-keyword">***</span> LOCAL GEMS <span class="syntax-all syntax-keyword">***</span>
+<span class="syntax-all syntax-constant">.</span>
+<span class="syntax-all syntax-constant">.</span>
+<span class="syntax-all syntax-constant">.</span></code></pre>
+
+<p>To get a list of gems that are outdated:</p>
+
+<pre><code class="code-highlighted code-bash">$ gem outdated
+<span class="syntax-all syntax-constant">.</span>
+<span class="syntax-all syntax-constant">.</span>
+<span class="syntax-all syntax-constant">.</span></code></pre>
+
+<p>To update all stale gems:</p>
+
+<pre><code class="code-highlighted code-bash">$ gem update
+Updating installed gems
+<span class="syntax-all syntax-constant">.</span>
+<span class="syntax-all syntax-constant">.</span>
+<span class="syntax-all syntax-constant">.</span></code></pre>
+
+<p>You can track updates to gems at the RubyGems.org site by creating an account and visiting your <a href="https://rubygems.org/dashboard">dashboard</a>.</p>
+
+<p>Everything is ready. You can install Rails.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Install Rails</h2>
+
+<p>After setting up your development environment and installing Ruby, it’s easy to install Rails. It’s just a gem!</p>
+
+<p>Check for the <a href="https://rubygems.org/gems/rails">current version of Rails</a>. Rails 6.1.1 was current when this was written.</p>
+
+<p>Here are the options you have for installing Rails.</p>
+
+<p>If you want to install the current stable release:</p>
+
+<pre><code class="code-highlighted code-bash">$ gem install rails</code></pre>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/install-rails.png"/></figure>
+
+<p>If you want the newest beta version or release candidate, you can install with --pre.</p>
+
+<pre><code class="code-highlighted code-bash">$ gem install rails --pre</code></pre>
+
+<p>Or you can get a specific version.</p>
+
+<p>For example, if you want the Rails 5.2.4 release:</p>
+
+<pre><code class="code-highlighted code-bash">$ gem install rails --version=5.2.4</code></pre>
+
+<p>🚩 After installation, close and re-open the terminal window.</p>
+
+<p>Verify that the correct version of Rails is installed with <code>rails -v</code>.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/verify-rails-installation.png"/></figure>
+
+<p>If you get a warning, <code>Ignoring ... because its extensions are not built. Try: gem pristine ...</code>, close and re-open the terminal window to start a new terminal session and try again.</p>
+
+<p>Rails is now installed. If you want, you can close the Terminal window. Everything is installed, so you won&#39;t lose anything by closing the Terminal.</p>
+
+<p>Next, try building a Rails application.</p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+<h2>Rails New</h2>
+
+<h3>Create a Workspace Folder</h3>
+
+<p>You&#39;ll need a convenient folder to store your Rails projects. You can give it any name, such as <code>code</code> or <code>projects</code>. For this tutorial, we&#39;ll call it <code>workspace</code>.</p>
+
+<p>Create a projects folder and move into the folder:</p>
+
+<pre><code class="code-highlighted code-bash">$ mkdir workspace
+$ <span class="syntax-all syntax-constant">cd</span> workspace</code></pre>
+
+<p>This is where you&#39;ll create your Rails applications.</p>
+
+<h3>Rails new</h3>
+
+<p>Here&#39;s how to create a simple Rails application.</p>
+
+<pre><code class="code-highlighted code-bash">$ rails new --minimal myapp</code></pre>
+
+<p>The <code>rails new</code> command generates the default Rails starter app. The option <code>--minimal</code> speeds up creation of a Rails app, leaving out many Rails &quot;extras&quot; that are not needed for a simple application.</p>
+
+<p>We&#39;ll name the new application <code>myapp</code>. You can give it another name you like.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/rails-new.png"/></figure>
+
+<p>You&#39;ll do all the work of developing your application inside the <code>myapp</code> folder, sometimes called the project root.</p>
+
+<p>For a &quot;smoke test&quot; to see if everything runs, move into the <code>myapp</code> folder and run <code>rails -T</code> to display a list of Rake tasks.</p>
+
+<pre><code class="code-highlighted code-bash">$ <span class="syntax-all syntax-constant">cd</span> myapp
+$ rails -T</code></pre>
+
+<p>Run the application with the Rails server command:</p>
+
+<pre><code class="code-highlighted code-bash">$ rails server</code></pre>
+
+<p>Use your web browser to visit the application at <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
+
+<figure><img src="https://learn-rails.com/assets/images/install-rails-mac/rails-success.png"/></figure>
+
+<p>Use Control-c to stop the server.</p>
+
+<p>This concludes the instructions for installing Ruby and Rails. </p>
+
+<blockquote>
+<p>A newer version of this article is available as the <a href="https://learn-rails.com/install-rails-mac/index.html%22">Install Rails Mac</a> guide on the <a href="https://learn-rails.com/">Learn Rails</a> website.</p>
+</blockquote>
+
+  </div>
+  </main>
+  </body>
 </html>
